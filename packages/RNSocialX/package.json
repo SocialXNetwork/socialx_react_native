@@ -1,0 +1,65 @@
+{
+  "name": "RNSocialX",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "postinstall:compat:react-native-vector-icons": "rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json",
+    "postinstall:compat:react-native-text-gradient": "node ./node_modules/react-native-text-gradient/patch-rn.js",
+    "postinstall:link-native": "react-native link",
+    "postinstall": "npm-run-all postinstall:*",
+    "test": "jest",
+    "bundle:ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bugsnag.bundle --sourcemap-output ios-release.bugsnag.bundle.map",
+    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android-release.bugsnag.bundle --sourcemap-output android-release.bugsnag.bundle.map",
+    "start:js": "react-native start",
+    "start:ios": "react-native run-ios",
+    "start:android": "react-native run-android"
+  },
+  "dependencies": {
+    "@socialx/api-blockchain": "^0.0.1",
+    "@socialx/api-data": "^0.0.1",
+    "@socialx/api-storage": "^0.0.1",
+    "@socialx/commons": "^0.0.1",
+    "buffer": "^5.2.0",
+    "jsc-android": "^224109.1.0",
+    "react": "^16.4.2",
+    "react-native": "^0.56.0",
+    "react-native-crypto": "^2.1.2",
+    "react-native-randombytes": "^3.5.0",
+    "react-native-stream": "^0.1.9",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "vm-browserify": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/react": "^16.4.11",
+    "@types/react-native": "^0.56.12",
+    "@types/react-test-renderer": "^16.0.2",
+    "babel-jest": "^23.4.2",
+    "babel-preset-react-native": "^5.0.2",
+    "jest": "^23.5.0",
+    "react-native-typescript-transformer": "^1.2.10",
+    "react-test-renderer": "^16.4.2",
+    "ts-jest": "^23.1.4",
+    "typescript": "^3.0.1"
+  },
+  "jest": {
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ]
+  }
+}
