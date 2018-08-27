@@ -1,0 +1,1 @@
+export {WithFooGreeter} from './WithFooGreeter';
