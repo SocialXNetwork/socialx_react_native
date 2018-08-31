@@ -20,6 +20,8 @@
     "@socialx/api-storage": "^0.0.1",
     "@socialx/commons": "^0.0.1",
     "buffer": "^5.2.0",
+    "emoji-regex": "^7.0.1",
+    "hex-rgb": "^3.0.0",
     "jsc-android": "^224109.1.0",
     "react": "^16.4.2",
     "react-native": "^0.56.0",
@@ -60,6 +62,11 @@
     ],
     "modulePaths": [
       "<rootDir>"
+    ]
+  },
+  "rnpm": {
+    "assets": [
+      "./src/environment/theme/assets/fonts"
     ]
   }
 }
