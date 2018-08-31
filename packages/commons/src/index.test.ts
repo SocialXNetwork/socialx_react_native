@@ -1,5 +1,5 @@
-import index from './index';
+import {decodeBase64Text} from './index';
 
-test('index', () => {
-	expect(index()).toBe('index');
+test('decodeBase64Text decodes string', () => {
+	expect(decodeBase64Text('dGVzdA==')).toBe('test');
 });

@@ -3,6 +3,11 @@ package com.rnsocialx;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.rnfs.RNFSPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +29,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImageResizerPackage(),
+            new PickerPackage(),
+            new RNFSPackage(),
+            new VectorIconsPackage(),
+            new FastImageViewPackage(),
             new RandomBytesPackage()
       );
     }
