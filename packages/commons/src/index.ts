@@ -1,1 +1,1 @@
-export default () => 'index';
+export * from './decodeBase64Text';
