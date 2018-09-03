@@ -39,7 +39,7 @@ const style: any = {
 		paddingLeft: Sizes.smartHorizontalScale(10),
 	},
 	sendIcon: {
-		fontsSize: Sizes.smartHorizontalScale(30),
+		fontSize: Sizes.smartHorizontalScale(30),
 		color: Colors.pink,
 	},
 };

@@ -3,8 +3,7 @@ import {Keyboard, Platform, Text, TextInput, TextInputProps, TouchableOpacity, V
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {OS_TYPES} from '../../environment/consts';
-import {Colors, Sizes} from '../../environment/theme';
-import style from './SXTextInput.style';
+import style, {customStyleProps} from './SXTextInput.style';
 
 export enum TKeyboardKeys {
 	default = 'default',
@@ -42,7 +41,7 @@ interface ISXTextInputProps {
 	cancelButtonTextColor: string;
 	canCancel: boolean;
 	onSubmitPressed: (event: any) => void;
-	onChangeText: (value: string) => void;
+	onChangeText?: (value: string) => void;
 	hasFocus: boolean;
 	blurOnSubmit: boolean;
 	borderColor: string;
@@ -63,26 +62,63 @@ interface ISXTextInputState {
 	hasFocus: boolean;
 }
 
+const InputIcon: React.SFC<{size: InputSizes; icon: string; iconColor: string}> = ({size, icon, iconColor}) => {
+	let iconHeight = customStyleProps.iconHeightNormal;
+	if (size === InputSizes.Small) {
+		iconHeight = customStyleProps.iconHeightSmall;
+	} else if (size === InputSizes.Large) {
+		iconHeight = customStyleProps.iconHeightLarge;
+	}
+	return (
+		<View style={[style.iconContainer, style['iconContainer' + size]]}>
+			<Icon name={icon} size={iconHeight} color={iconColor} />
+		</View>
+	);
+};
+
+const CancelButton: React.SFC<{
+	persistCancel: boolean;
+	canCancel: boolean;
+	hasFocus: boolean;
+	onPressCancel: () => void;
+	cancelButtonTextColor: string;
+}> = ({persistCancel, canCancel, hasFocus, onPressCancel, cancelButtonTextColor}) => {
+	if (persistCancel && canCancel && Platform.OS === OS_TYPES.IOS) {
+		return (
+			<TouchableOpacity style={style.cancelButton} onPress={onPressCancel}>
+				<Text style={[style.cancelButtonText, {color: cancelButtonTextColor}]}>Cancel</Text>
+			</TouchableOpacity>
+		);
+	} else if (hasFocus && canCancel && Platform.OS === OS_TYPES.IOS) {
+		return (
+			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
+				<Text style={[style.cancelButtonText, {color: cancelButtonTextColor}]}>Cancel</Text>
+			</TouchableOpacity>
+		);
+	}
+	return null;
+};
+
 export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState> {
 	public static defaultProps = {
 		width: 0,
 		icon: '',
-		iconColor: Colors.shuttleGray,
+		iconColor: customStyleProps.defaultIconColor,
 		placeholder: '',
-		placeholderColor: Colors.grayText,
+		placeholderColor: customStyleProps.defaultPlaceholderColor,
 		disabled: false,
 		isPassword: false,
 		keyboardType: TKeyboardKeys.default,
 		returnKeyType: TRKeyboardKeys.default,
-		cancelButtonTextColor: Colors.white,
+		cancelButtonTextColor: customStyleProps.defaultCancelButtonTextColor,
 		canCancel: false,
 		hasFocus: false,
 		blurOnSubmit: false,
-		borderColor: Colors.pink,
+		borderColor: customStyleProps.defaultBorderColor,
 		numberOfLines: 1,
 		autoFocus: false,
 		size: InputSizes.Normal,
-		borderWidth: Sizes.smartHorizontalScale(2),
+		borderWidth: customStyleProps.defaultBorderWidth,
 		multiline: false,
 		autoCorrect: false,
 		autoCapitalize: 'none',
@@ -102,7 +138,32 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 	public inputComponent: any;
 
 	public render() {
-		const isMultiline = this.props.numberOfLines > 1 || this.props.multiline;
+		const {
+			icon,
+			iconColor,
+			size,
+			width,
+			disabled,
+			canCancel,
+			cancelButtonTextColor,
+			onPressCancel,
+			persistCancel,
+			autoFocus,
+			onChangeText,
+			onSubmitPressed,
+			returnKeyType,
+			isPassword,
+			keyboardType,
+			placeholder,
+			placeholderColor,
+			autoCorrect,
+			autoCapitalize,
+			blurOnSubmit,
+			numberOfLines,
+		} = this.props;
+		const {hasFocus} = this.state;
+
+		const isMultiLine = this.props.numberOfLines > 1 || this.props.multiline;
 		const inputContainerStyles = [
 			style.inputContainer,
 			{
@@ -112,45 +173,51 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 		];
 		const textInputStyles = [
 			style.textInput,
-			style['textInput' + this.props.size],
-			...(isMultiline ? [style.multilineTextInput] : []),
+			style['textInput' + size],
+			...(isMultiLine ? [style.multilineTextInput] : []),
 		];
 
 		const valueProps: Partial<TextInputProps> = {};
-		if ('value' in this.props) {
+		if (!!this.props.value) {
 			valueProps.value = this.props.value;
 		}
 
 		return (
-			<View style={this.getContainerStyles()}>
+			<View style={[style.container, width ? {width} : {}, disabled ? style.disabledInput : {}]}>
 				<View style={inputContainerStyles}>
-					{this.renderInputIcon()}
+					{icon && <InputIcon icon={icon} iconColor={iconColor} size={size} />}
 					<TextInput
 						allowFontScaling={false}
-						autoFocus={this.props.autoFocus}
+						autoFocus={autoFocus}
 						{...valueProps}
-						onChangeText={this.textChangedHandler}
-						onSubmitEditing={this.props.onSubmitPressed}
+						onChangeText={onChangeText}
+						onSubmitEditing={onSubmitPressed}
 						ref={(component: any) => (this.inputComponent = component)}
 						onFocus={() => this.updateFocusHandler(true)}
 						onBlur={() => this.updateFocusHandler(false)}
-						returnKeyType={this.props.returnKeyType}
-						editable={!this.props.disabled}
-						secureTextEntry={this.props.isPassword}
-						keyboardType={this.props.keyboardType}
+						returnKeyType={returnKeyType}
+						editable={!disabled}
+						secureTextEntry={isPassword}
+						keyboardType={keyboardType}
 						style={textInputStyles}
-						placeholder={this.props.placeholder}
-						placeholderTextColor={this.props.placeholderColor}
-						autoCorrect={this.props.autoCorrect}
-						underlineColorAndroid={Colors.transparent}
-						autoCapitalize={this.props.autoCapitalize}
+						placeholder={placeholder}
+						placeholderTextColor={placeholderColor}
+						autoCorrect={autoCorrect}
+						underlineColorAndroid={customStyleProps.defaultUnderlineColorAndroid}
+						autoCapitalize={autoCapitalize}
 						clearButtonMode={'while-editing'} // only works on iOS
-						blurOnSubmit={this.props.blurOnSubmit}
-						numberOfLines={this.props.numberOfLines}
-						multiline={isMultiline}
+						blurOnSubmit={blurOnSubmit}
+						numberOfLines={numberOfLines}
+						multiline={isMultiLine}
 					/>
 				</View>
-				{this.renderCancelButton()}
+				<CancelButton
+					canCancel={canCancel}
+					hasFocus={hasFocus}
+					cancelButtonTextColor={cancelButtonTextColor}
+					onPressCancel={onPressCancel}
+					persistCancel={persistCancel}
+				/>
 			</View>
 		);
 	}
@@ -161,63 +228,10 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 		}
 	};
 
-	// todo @serkan @jake is this worth creating a function instance per mount?
-	private getContainerStyles = () => [
-		style.container,
-		...(this.props.width ? [{width: this.props.width}] : []),
-		...(this.props.disabled ? [style.disabledInput] : []),
-	];
-
-	private renderInputIcon = () => {
-		if (this.props.icon) {
-			return (
-				<View style={[style.iconContainer, style['iconContainer' + this.props.size]]}>
-					<Icon name={this.props.icon} size={this.getIconHeight()} color={this.props.iconColor} />
-				</View>
-			);
-		}
-		return null;
-	};
-
-	private renderCancelButton = () => {
-		if (this.props.persistCancel && this.props.canCancel && Platform.OS === OS_TYPES.IOS) {
-			return (
-				<TouchableOpacity style={style.cancelButton} onPress={this.props.onPressCancel}>
-					<Text style={[style.cancelButtonText, {color: this.props.cancelButtonTextColor}]}>Cancel</Text>
-				</TouchableOpacity>
-			);
-		} else if (this.state.hasFocus && this.props.canCancel && Platform.OS === OS_TYPES.IOS) {
-			return (
-				<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
-					<Text style={[style.cancelButtonText, {color: this.props.cancelButtonTextColor}]}>Cancel</Text>
-				</TouchableOpacity>
-			);
-		}
-		return null;
-	};
-
 	private updateFocusHandler = (value: boolean) => {
 		this.setState({
 			hasFocus: value,
 		});
-		if (this.props.focusUpdateHandler) {
-			this.props.focusUpdateHandler(value);
-		}
-	};
-
-	private textChangedHandler = (value: string) => {
-		if (this.props.onChangeText) {
-			this.props.onChangeText(value);
-		}
-	};
-
-	private getIconHeight = () => {
-		let ret = Sizes.smartHorizontalScale(30);
-		if (this.props.size === InputSizes.Small) {
-			ret = Sizes.smartHorizontalScale(15);
-		} else if (this.props.size === InputSizes.Large) {
-			ret = Sizes.smartHorizontalScale(40);
-		}
-		return ret;
+		this.props.focusUpdateHandler(value);
 	};
 }
