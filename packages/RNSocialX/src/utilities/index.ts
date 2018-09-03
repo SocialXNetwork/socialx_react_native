@@ -1,2 +1,2 @@
-export * from './permissions';
-export * from './toast';
+export {requestResourcePermission} from './permissions';
+export {showToastMessage} from './toast';
