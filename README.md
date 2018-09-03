@@ -30,6 +30,14 @@ The following android updates have been made based on [this](http://albertgao.xy
 - 3.1 update gradle
 - 3.2 update versions
 
+For compatibility with [image crop lib](https://github.com/ivpusic/react-native-image-crop-picker) we added:
+```
+ maven {
+            url "https://jitpack.io"
+        } 
+```
+in RNSocialX/android/build.gradle to allprojects.repositories
+
 Before you begin, make sure you have installed the following tooling
 
 - node >=8.11
