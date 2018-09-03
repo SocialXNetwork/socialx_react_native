@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import style, {customStyleProps} from './CommentTextInput.style';
 
 interface ICommentTextInputProps {
-	placeholder:    string;
+	placeholder: string;
 	autoFocus?: boolean;
 	showSendButton: boolean;
 	commentText: string;
