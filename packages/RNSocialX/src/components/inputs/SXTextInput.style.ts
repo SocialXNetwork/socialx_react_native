@@ -69,3 +69,15 @@ const style: any = {
 };
 
 export default StyleSheet.create(style);
+
+export const customStyleProps = {
+	defaultIconColor: Colors.shuttleGray,
+	defaultPlaceholderColor: Colors.grayText,
+	defaultCancelButtonTextColor: Colors.white,
+	defaultBorderColor: Colors.pink,
+	defaultBorderWidth: Sizes.smartHorizontalScale(2),
+	defaultUnderlineColorAndroid: Colors.transparent,
+	iconHeightSmall: Sizes.smartHorizontalScale(30),
+	iconHeightNormal: Sizes.smartHorizontalScale(30),
+	iconHeightLarge: Sizes.smartHorizontalScale(30),
+};
