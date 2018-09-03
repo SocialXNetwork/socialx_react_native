@@ -1,8 +1,15 @@
-export * from './Animations';
-export * from './ApplicationStyles';
-export * from './Colors';
-export * from './Fonts';
-export * from './Icons';
-export * from './Images';
-export * from './Metrics';
-export * from './Sizes';
+export {
+	Animations,
+	AnimatedFaIcon,
+	AnimatedFastImage,
+	AnimatedImage,
+	AnimatedIonicon,
+	AnimatedText,
+} from './Animations';
+export {ApplicationStyles} from './ApplicationStyles';
+export {Colors, colorWithAlpha} from './Colors';
+export {Fonts} from './Fonts';
+export {Icons} from './Icons';
+export {Images} from './Images';
+export {Metrics} from './Metrics';
+export {Sizes, SIMILAR_MEDIA_CONTAINER_PADDING} from './Sizes';
