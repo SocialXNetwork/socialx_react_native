@@ -3,4 +3,4 @@ import {someData} from './someData';
 
 export {foo} from './foo';
 
-const gun = database('https://localhost');
+const gun = database(['https://localhost']);

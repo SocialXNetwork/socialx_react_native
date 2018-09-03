@@ -582,10 +582,6 @@
   version "23.3.1"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.1.tgz#a4319aedb071d478e6f407d1c4578ec8156829cf"
 
-"@types/node@^10.9.2":
-  version "10.9.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.9.4.tgz#0f4cb2dc7c1de6096055357f70179043c33e9897"
-
 "@types/prop-types@*":
   version "15.5.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.5.tgz#17038dd322c2325f5da650a94d5f9974943625e3"
@@ -1443,8 +1439,8 @@ bcrypt-pbkdf@^1.0.0:
     tweetnacl "^0.14.3"
 
 big-integer@^1.6.7:
-  version "1.6.34"
-  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.34.tgz#701affc8f0d73c490930a6b482dc23ed6ffc7484"
+  version "1.6.35"
+  resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.35.tgz#e093c3a50f63fb6bda0b5511c9425f1befcba74d"
 
 blueimp-md5@^2.5.0:
   version "2.10.0"
@@ -4311,8 +4307,8 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
 nwsapi@^2.0.7:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.0.8.tgz#e3603579b7e162b3dbedae4fb24e46f771d8fa24"
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.0.9.tgz#77ac0cdfdcad52b6a1151a84e73254edc33ed016"
 
 oauth-sign@~0.9.0:
   version "0.9.0"

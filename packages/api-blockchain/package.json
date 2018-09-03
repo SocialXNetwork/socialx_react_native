@@ -9,12 +9,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@socialx/commons": "^0.0.1",
-    "@socialx/api-storage": "^0.0.1"
+    "@socialx/api-storage": "^0.0.1",
+    "@socialx/commons": "^0.0.1"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",
-    "@types/node": "^10.9.2",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
   },
