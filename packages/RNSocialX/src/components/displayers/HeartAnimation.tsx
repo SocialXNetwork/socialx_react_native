@@ -4,7 +4,7 @@ import {Animated, Easing, StyleSheet, View} from 'react-native';
 
 import {Animations, Sizes} from '../../environment/theme';
 
-export interface IHeartAnimationProps {
+interface IHeartAnimationProps {
 	ended: (status: boolean) => void;
 }
 
