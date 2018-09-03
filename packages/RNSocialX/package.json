@@ -23,6 +23,7 @@
     "emoji-regex": "^7.0.1",
     "hex-rgb": "^3.0.0",
     "jsc-android": "^224109.1.0",
+    "lottie-react-native": "^2.5.8",
     "native-base": "^2.8.0",
     "react": "^16.4.2",
     "react-native": "^0.56.0",
