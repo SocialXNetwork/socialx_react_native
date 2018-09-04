@@ -34,6 +34,7 @@
     "react-native-fs": "^2.11.15",
     "react-native-image-crop-picker": "^0.21.1",
     "react-native-image-resizer": "^1.0.0",
+    "react-native-linear-gradient": "^2.4.2",
     "react-native-mime-types": "^2.2.1",
     "react-native-randombytes": "^3.5.0",
     "react-native-stream": "^0.1.9",
