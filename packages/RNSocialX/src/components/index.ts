@@ -1,5 +1,8 @@
 export {Foo} from './Foo';
 
+export {AvatarImage} from './avatar/AvatarImage';
+export {AvatarName} from './avatar/AvatarName';
+
 export {HeartAnimation} from './displayers/HeartAnimation';
 
 export {CommentTextInput} from './inputs/CommentTextInput';
