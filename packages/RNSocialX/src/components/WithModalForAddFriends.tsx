@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {findNodeHandle, View} from 'react-native';
-import {ModalTagFriends} from '../components';
+
 import {FriendsSearchResult} from '../types';
+import {ModalTagFriends} from './index';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
 	{

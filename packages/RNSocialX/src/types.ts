@@ -9,6 +9,11 @@ export interface ITranslatedProps {
 	getText: (value: string, ...args: any[]) => string;
 }
 
+export interface IResizeProps {
+	marginBottom: number;
+	safeRunAfterKeyboardHide: (handler: () => void) => void;
+}
+
 /**
  * TODO list: @Serkan: find better structure to define shared types across components.
  */

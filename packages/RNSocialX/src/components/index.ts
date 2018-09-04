@@ -22,3 +22,4 @@ export {HeaderLogo} from './navigation/HeaderLogo';
 export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
+export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';

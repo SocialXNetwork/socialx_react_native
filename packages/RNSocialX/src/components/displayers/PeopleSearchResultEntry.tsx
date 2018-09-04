@@ -3,8 +3,8 @@ import {Image, Text, View} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import {AvatarImage, ButtonSizes, PrimaryButton} from '../';
-import {WithTranslations} from '../../enhancers';
 import {Colors, Icons} from '../../environment/theme';
+import {ITranslatedProps} from '../../types';
 import style from './PeopleSearchResultEntry.style';
 
 const IN_ANIMATION_NAME = 'rotate';
@@ -12,7 +12,7 @@ const IN_ANIMATION_DURATION = 300;
 const OUT_ANIMATION_NAME = 'fadeOutRight';
 const OUT_ANIMATION_DURATION = 300;
 
-interface IGroupCreateSearchResultEntryProps {
+interface IGroupCreateSearchResultEntryProps extends ITranslatedProps {
 	avatarURL?: string;
 	fullName: string;
 	location: string;
@@ -31,24 +31,20 @@ const IsFriend: React.SFC = () => (
 	</Animatable.View>
 );
 
-interface IAddFriendProps {
+interface IAddFriendProps extends ITranslatedProps {
 	afterAnimationHandler: () => void;
 	animatedButton: React.RefObject<any>;
 }
 
-const AddFriend: React.SFC<IAddFriendProps> = ({afterAnimationHandler, animatedButton}) => (
+const AddFriend: React.SFC<IAddFriendProps> = ({afterAnimationHandler, animatedButton, getText}) => (
 	<Animatable.View ref={animatedButton}>
-		<WithTranslations>
-			{({getText}) => (
-				<PrimaryButton
-					label={getText('button.add')}
-					size={ButtonSizes.Small}
-					autoWidth={true}
-					borderColor={Colors.transparent}
-					onPress={() => addButtonPressedHandler(afterAnimationHandler, animatedButton)}
-				/>
-			)}
-		</WithTranslations>
+		<PrimaryButton
+			label={getText('button.add')}
+			size={ButtonSizes.Small}
+			autoWidth={true}
+			borderColor={Colors.transparent}
+			onPress={() => addButtonPressedHandler(afterAnimationHandler, animatedButton)}
+		/>
 	</Animatable.View>
 );
 
@@ -64,6 +60,7 @@ export const PeopleSearchResultEntry: React.SFC<IGroupCreateSearchResultEntryPro
 	avatarURL,
 	fullName,
 	location,
+	getText,
 }) => {
 	const animatedButton: React.RefObject<any> = React.createRef();
 
@@ -77,7 +74,7 @@ export const PeopleSearchResultEntry: React.SFC<IGroupCreateSearchResultEntryPro
 				</View>
 			</View>
 			{selected && <IsFriend />}
-			{!selected && <AddFriend afterAnimationHandler={addHandler} animatedButton={animatedButton} />}
+			{!selected && <AddFriend afterAnimationHandler={addHandler} animatedButton={animatedButton} getText={getText} />}
 		</View>
 	);
 };

@@ -4,7 +4,7 @@ import {Platform} from 'react-native';
 import {OS_TYPES} from '../../environment/consts';
 import {ModalManager} from './ModalManager';
 
-interface IManagedModal {
+export interface IManagedModal {
 	onDismiss: () => void;
 	onModalHide: () => void;
 }
