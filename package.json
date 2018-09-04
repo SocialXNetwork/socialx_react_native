@@ -31,7 +31,8 @@
       "RNSocialX/buffer/**",
       "RNSocialX/jsc-android",
       "RNSocialX/jsc-android/**",
-      "RNSocialX/lottie-react-native/**"
+      "RNSocialX/lottie-*",
+      "RNSocialX/lottie-*/**"
     ]
   },
   "scripts": {
