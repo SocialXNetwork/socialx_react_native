@@ -1,3 +1,5 @@
+// TODO: @Serkan -> later review usage of this class and its static methods
+
 export class ModalManager {
 	public static toggleModalShow(visible: boolean) {
 		if (!visible && ModalManager.afterModalClosedHandler !== null) {
