@@ -18,6 +18,8 @@ export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/Pri
 export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress, ITouchableWithDoublePressProps} from './interaction/TouchableWithDoublePress';
 
+export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
+
 export {ModalTagFriends} from './modals/ModalTagFriends';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
