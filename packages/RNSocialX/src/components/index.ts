@@ -17,6 +17,7 @@ export {LikeAnimatingButton} from './interaction/LikeAnimatingButton';
 export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/PrimaryButton';
 export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress, ITouchableWithDoublePressProps} from './interaction/TouchableWithDoublePress';
+export {ISuggestionCardItem, SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 
 export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
 
