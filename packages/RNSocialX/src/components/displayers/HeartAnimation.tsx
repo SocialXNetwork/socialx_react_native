@@ -8,7 +8,13 @@ interface IHeartAnimationProps {
 	ended: (status: boolean) => void;
 }
 
-export class HeartAnimation extends React.Component<IHeartAnimationProps> {
+export class HeartAnimation extends React.PureComponent<IHeartAnimationProps> {
+	public static defaultProps = {
+		ended: () => {
+			/**/
+		},
+	};
+
 	private animationProgress = new Animated.Value(0);
 
 	componentDidMount() {
