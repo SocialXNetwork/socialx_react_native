@@ -6,6 +6,8 @@ export {AvatarName} from './avatar/AvatarName';
 export {HeartAnimation} from './displayers/HeartAnimation';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 
+export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
+
 export {CommentTextInput} from './inputs/CommentTextInput';
 export {SXTextInput, TKeyboardKeys, TRKeyboardKeys, InputSizes} from './inputs/SXTextInput';
 
@@ -20,5 +22,3 @@ export {ModalTagFriends} from './modals/ModalTagFriends';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
 export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';
-
-export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
