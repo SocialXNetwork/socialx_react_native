@@ -11,9 +11,11 @@ export interface ITranslatedProps {
 
 export interface IResizeProps {
 	marginBottom: number;
-	safeRunAfterKeyboardHide: (handler: () => void) => void;
+	// safeRunAfterKeyboardHide: (handler: () => void) => void;
 }
 
 /**
- * TODO list: @Serkan: find better structure to define shared types across components.
+ * TODO list:
+ * 1. @Serkan: find better structure to define shared types across components.
+ * 2. safeRunAfterKeyboardHide should be handled different way!
  */

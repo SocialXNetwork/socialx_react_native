@@ -1,5 +1,7 @@
 export {Foo} from './Foo';
 
+export {ActivityRecentCommentCard} from './activityCards/ActivityRecentCommentCard';
+
 export {AvatarImage} from './avatar/AvatarImage';
 export {AvatarName} from './avatar/AvatarName';
 
@@ -16,7 +18,7 @@ export {IconButton} from './interaction/IconButton';
 export {LikeAnimatingButton} from './interaction/LikeAnimatingButton';
 export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/PrimaryButton';
 export {ToggleIconButton} from './interaction/ToggleIconButton';
-export {TouchableWithDoublePress, ITouchableWithDoublePressProps} from './interaction/TouchableWithDoublePress';
+export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
 export {ISuggestionCardItem, SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 
 export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
@@ -25,3 +27,5 @@ export {ModalTagFriends} from './modals/ModalTagFriends';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
 export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';
+
+export {WithModalForAddFriends} from './WithModalForAddFriends';

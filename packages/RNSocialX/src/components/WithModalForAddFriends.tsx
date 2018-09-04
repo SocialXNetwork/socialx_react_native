@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {findNodeHandle, View} from 'react-native';
 
-import {FriendsSearchResult} from '../types';
-import {ModalTagFriends} from './index';
+import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../types';
+import {IManagedModal, ModalTagFriends} from './';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
 	{
@@ -56,7 +56,7 @@ interface IWithModalForAddFriendsState {
 	taggedFriends: FriendsSearchResult[];
 }
 
-interface IWithModalForAddFriendsProps {
+interface IWithModalForAddFriendsProps extends IResizeProps, ITranslatedProps, IManagedModal {
 	children(props: IModalForAddFriendsProps): JSX.Element;
 }
 
@@ -80,6 +80,7 @@ export class WithModalForAddFriends extends React.Component<
 	}
 
 	public render() {
+		const {children, marginBottom, getText, onDismiss, onModalHide} = this.props;
 		const {modalVisible, blurViewRef, friendsSearchResults, taggedFriends, taggedFriendsInModal} = this.state;
 		return (
 			<View style={{flex: 1}}>
@@ -88,13 +89,17 @@ export class WithModalForAddFriends extends React.Component<
 					doneHandler={this.handleTagFriendsEditFinished}
 					cancelHandler={this.closeTagFriendsModal}
 					blurViewRef={blurViewRef}
-					onSearchUpdated={this.friendsSearchUpdatedHandler}
 					searchResults={friendsSearchResults}
-					selectTagUserInModal={this.tagFriendHandler}
 					selectedUsers={taggedFriendsInModal}
+					onSearchUpdated={this.friendsSearchUpdatedHandler}
+					selectTagUserInModal={this.tagFriendHandler}
+					marginBottom={marginBottom}
+					getText={getText}
+					onModalHide={onModalHide}
+					onDismiss={onDismiss}
 				/>
 				<View ref={this.baseScreen} style={{flex: 1}}>
-					{this.props.children({
+					{children({
 						addedFriends: taggedFriends,
 						showAddFriendsModal: this.showTagFriendsModal,
 					})}

@@ -13,7 +13,7 @@ const OUT_ANIMATION_NAME = 'fadeOutRight';
 const OUT_ANIMATION_DURATION = 300;
 
 interface IGroupCreateSearchResultEntryProps extends ITranslatedProps {
-	avatarURL?: string;
+	avatarURL: string;
 	fullName: string;
 	location: string;
 	selected: boolean;

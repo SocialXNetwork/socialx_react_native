@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StyleProp, TouchableOpacity, TouchableOpacityProps, View, ViewStyle} from 'react-native';
 
-export interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
+interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 	onSinglePress: () => void;
 	onDoublePress: () => void;
 	children: JSX.Element;
