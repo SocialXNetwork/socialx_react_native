@@ -8,8 +8,8 @@ interface IAvatarImageProps {
 	style: StyleProp<ImageStyle>;
 }
 
-export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style: customStyle}) => {
-	return <Image source={image} resizeMode={'cover'} style={customStyle} />;
+export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style = styles.avatarImage}) => {
+	return <Image source={image} resizeMode={'cover'} style={style} />;
 };
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(90);
@@ -21,7 +21,3 @@ const styles = StyleSheet.create({
 		borderRadius: AVATAR_SIZE / 2,
 	},
 });
-
-AvatarImage.defaultProps = {
-	style: styles.avatarImage,
-};

@@ -11,28 +11,28 @@ export enum ButtonSizes {
 
 export interface IPrimaryButtonProps {
 	label: string;
-	width?: number;
-	disabled?: boolean;
+	width: number;
+	disabled: boolean;
 	onPress: () => void;
-	size?: ButtonSizes;
-	autoWidth?: boolean;
-	borderColor?: string;
-	textColor?: string;
-	loading?: boolean;
-	containerStyle?: StyleProp<ViewStyle>;
+	size: ButtonSizes;
+	autoWidth: boolean;
+	borderColor: string;
+	textColor: string;
+	loading: boolean;
+	containerStyle: StyleProp<ViewStyle>;
 }
 
 export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
-	borderColor,
-	size,
-	containerStyle,
 	label,
-	loading,
 	onPress,
-	disabled,
-	width,
-	autoWidth,
-	textColor,
+	width = 0,
+	disabled = false,
+	size = ButtonSizes.Normal,
+	autoWidth = false,
+	borderColor = defaultColor,
+	textColor = defaultColor,
+	loading = false,
+	containerStyle = {},
 }) => {
 	const buttonDisabled = disabled || loading;
 
@@ -61,15 +61,4 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 			</View>
 		</TouchableOpacity>
 	);
-};
-
-PrimaryButton.defaultProps = {
-	width: 0,
-	disabled: false,
-	size: ButtonSizes.Normal,
-	autoWidth: false,
-	borderColor: defaultColor,
-	textColor: defaultColor,
-	loading: false,
-	containerStyle: {},
 };
