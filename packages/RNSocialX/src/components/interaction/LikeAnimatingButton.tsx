@@ -2,11 +2,12 @@ import * as React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 import {AnimatedFaIcon, Colors, Fonts, Sizes} from '../../environment/theme';
+import {ITranslatedProps} from '../../types';
 import {showToastMessage} from '../../utilities';
 
 const PULSATE_PERIOD = 700;
 
-interface ILikeAnimatingButtonProps {
+interface ILikeAnimatingButtonProps extends ITranslatedProps {
 	likedByMe: boolean;
 	label: false | string;
 	onPress: () => Promise<any>;
@@ -40,6 +41,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 	}
 
 	public render() {
+		const {label, onPress} = this.props;
 		const iconSource = this.state.likedByMe ? 'heart' : 'heart-o';
 		const likeColor = this.state.likedByMe ? Colors.pink : Colors.black;
 		const likeStyles = [styles.likeButton, {color: likeColor}];
@@ -47,25 +49,27 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 		return (
 			<TouchableOpacity
 				style={styles.container}
-				disabled={!this.props.onPress || this.state.touchDisabled}
+				disabled={!onPress || this.state.touchDisabled}
 				onPress={this.buttonPressedHandler}
 			>
 				<AnimatedFaIcon ref={this.animatedIconRef} name={iconSource} style={likeStyles} />
-				{this.props.label && <Text style={styles.label}>{this.props.label}</Text>}
+				{label && <Text style={styles.label}>{label}</Text>}
 			</TouchableOpacity>
 		);
 	}
 
 	private buttonPressedHandler = async () => {
+		const {onPress, getText} = this.props;
+
 		this.animatedIconRef.animate('pulsate', PULSATE_PERIOD).then(this.onAnimationEndHandler);
 		this.toggleAnimationFlags(true);
 
-		if (this.props.onPress) {
+		if (onPress) {
 			try {
-				this.nextLikeValue = await this.props.onPress();
+				this.nextLikeValue = await onPress();
 				this.toggleAnimationFlags(false);
 			} catch (ex) {
-				showToastMessage('Like failed with exception:' + ex);
+				showToastMessage(`${getText('toast.message.on.like.failed')}: ${ex}`);
 				this.toggleAnimationFlags(false);
 			}
 		}

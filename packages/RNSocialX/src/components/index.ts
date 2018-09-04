@@ -1,5 +1,6 @@
 export {Foo} from './Foo';
 
+export {ActivityFriendRequestCard} from './activityCards/ActivityFriendRequestCard';
 export {ActivityRecentCommentCard} from './activityCards/ActivityRecentCommentCard';
 export {ActivitySuperLikedCard} from './activityCards/ActivitySuperLikedCard';
 
@@ -18,9 +19,9 @@ export {GradientButton} from './interaction/GradientButton';
 export {IconButton} from './interaction/IconButton';
 export {LikeAnimatingButton} from './interaction/LikeAnimatingButton';
 export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/PrimaryButton';
+export {ISuggestionCardItem, SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
-export {ISuggestionCardItem, SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 
 export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
 
