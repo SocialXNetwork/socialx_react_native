@@ -19,7 +19,6 @@ interface ILikeAnimatingButtonState {
 
 export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonProps, ILikeAnimatingButtonState> {
 	public static defaultProps = {
-		likedByMe: false,
 		label: undefined,
 	};
 
