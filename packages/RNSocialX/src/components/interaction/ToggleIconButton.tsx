@@ -7,8 +7,8 @@ interface IToggleIconButtonProps {
 	selectedSource: number;
 	unselectedSource: number;
 	selected: boolean;
-	onPress: () => void;
-	iconStyle: StyleProp<ImageStyle>;
+	onPress?: () => void;
+	iconStyle?: StyleProp<ImageStyle>;
 }
 
 export const ToggleIconButton: React.SFC<IToggleIconButtonProps> = ({
@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
 });
 
 ToggleIconButton.defaultProps = {
-	selectedSource: 0,
-	unselectedSource: 1,
-	selected: true,
 	onPress: () => {
 		/**/
 	},
