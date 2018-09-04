@@ -2,7 +2,7 @@ export interface FriendsSearchResult {
 	id: string;
 	fullName: string;
 	location: string;
-	avatarURL?: string;
+	avatarURL: string;
 }
 
 export interface ITranslatedProps {

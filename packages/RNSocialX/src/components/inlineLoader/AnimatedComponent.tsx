@@ -4,7 +4,7 @@ import {Animated, Easing, StyleProp, ViewStyle} from 'react-native';
 const FADE_ANIMATION_DURATION = 700;
 
 interface IAnimatedComponentProps {
-	animatedStyle?: StyleProp<ViewStyle>;
+	animatedStyle: StyleProp<ViewStyle>;
 }
 
 interface IAnimatedComponentState {

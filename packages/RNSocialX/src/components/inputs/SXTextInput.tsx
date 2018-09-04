@@ -22,9 +22,8 @@ export enum TRKeyboardKeys {
 }
 
 export enum InputSizes {
-	// here the values and keys should be the same!
-	Normal = 'Normal',
 	Small = 'Small',
+	Normal = 'Normal',
 	Large = 'Large',
 }
 
@@ -41,7 +40,7 @@ interface ISXTextInputProps {
 	cancelButtonTextColor: string;
 	canCancel: boolean;
 	onSubmitPressed: (event: any) => void;
-	onChangeText?: (value: string) => void;
+	onChangeText: (value: string) => void;
 	hasFocus: boolean;
 	blurOnSubmit: boolean;
 	borderColor: string;

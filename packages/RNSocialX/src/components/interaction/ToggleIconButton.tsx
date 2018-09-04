@@ -16,7 +16,7 @@ export const ToggleIconButton: React.SFC<IToggleIconButtonProps> = ({
 	selected,
 	selectedSource,
 	unselectedSource,
-	iconStyle,
+	iconStyle = styles.icon,
 }) => (
 	<TouchableWithoutFeedback onPress={onPress}>
 		<Image source={selected ? selectedSource : unselectedSource} style={iconStyle} resizeMode={'contain'} />
@@ -30,7 +30,3 @@ const styles: any = StyleSheet.create({
 		marginRight: Sizes.smartHorizontalScale(19),
 	},
 });
-
-ToggleIconButton.defaultProps = {
-	iconStyle: styles.icon,
-};

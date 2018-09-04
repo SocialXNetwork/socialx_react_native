@@ -6,7 +6,7 @@ import style, {customStyleProps} from './CommentTextInput.style';
 
 interface ICommentTextInputProps {
 	placeholder: string;
-	autoFocus?: boolean;
+	autoFocus: boolean;
 	showSendButton: boolean;
 	commentText: string;
 	onCommentSend: () => void;
@@ -24,7 +24,7 @@ const sendCommentHandler = (onCommentSend: () => void) => {
 
 export const CommentTextInput: React.SFC<ICommentTextInputProps> = ({
 	placeholder,
-	autoFocus,
+	autoFocus = true,
 	commentText,
 	onCommentTextChange,
 	showSendButton,
@@ -53,7 +53,3 @@ export const CommentTextInput: React.SFC<ICommentTextInputProps> = ({
 		)}
 	</View>
 );
-
-CommentTextInput.defaultProps = {
-	autoFocus: true,
-};

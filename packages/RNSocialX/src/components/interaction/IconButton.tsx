@@ -13,7 +13,13 @@ interface IIconButtonProps {
 	iconStyle: StyleProp<ImageStyle>;
 }
 
-export const IconButton: React.SFC<IIconButtonProps> = ({iconStyle, label, iconSource, onPress, iconType}) => (
+export const IconButton: React.SFC<IIconButtonProps> = ({
+	iconStyle,
+	label = false,
+	iconSource = styles.iconStyle,
+	onPress,
+	iconType,
+}) => (
 	<TouchableOpacity style={styles.container} disabled={!onPress} onPress={onPress}>
 		{iconType === 'image' && (
 			<Image source={iconSource as ImageRequireSource} style={iconStyle} resizeMode={'contain'} />
@@ -23,8 +29,3 @@ export const IconButton: React.SFC<IIconButtonProps> = ({iconStyle, label, iconS
 		{label && <Text style={styles.label}>{label}</Text>}
 	</TouchableOpacity>
 );
-
-IconButton.defaultProps = {
-	label: false,
-	iconStyle: styles.iconStyle,
-};

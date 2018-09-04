@@ -11,7 +11,7 @@ export interface IManagedModal {
 
 interface IWithManagedTransitionsProps {
 	modalVisible: boolean;
-	afterDismiss?: () => void;
+	afterDismiss: () => void;
 
 	children(props: IManagedModal): JSX.Element;
 }

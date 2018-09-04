@@ -32,19 +32,17 @@ const customStyleProps = {
 };
 
 interface ISpinKitLoaderProps {
-	spinnerType?: SpinnerTypes;
-	spinnerSize?: number;
-	spinnerColor?: string;
+	spinnerType: SpinnerTypes;
+	spinnerSize: number;
+	spinnerColor: string;
 }
 
-export const SpinKitLoader: React.SFC<ISpinKitLoaderProps> = ({spinnerSize, spinnerColor, spinnerType}) => (
+export const SpinKitLoader: React.SFC<ISpinKitLoaderProps> = ({
+	spinnerSize = customStyleProps.defaultSpinnerSize,
+	spinnerColor = customStyleProps.defaultSpinnerColor,
+	spinnerType = SpinnerTypes.NineCubeGrid,
+}) => (
 	<View style={style.spinnerContainer}>
 		<Spinner isVisible={true} size={spinnerSize} type={spinnerType} color={spinnerColor} />
 	</View>
 );
-
-SpinKitLoader.defaultProps = {
-	spinnerType: SpinnerTypes.NineCubeGrid,
-	spinnerSize: customStyleProps.defaultSpinnerSize,
-	spinnerColor: customStyleProps.defaultSpinnerColor,
-};
