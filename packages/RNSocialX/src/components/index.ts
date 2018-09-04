@@ -13,3 +13,4 @@ export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
+export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';
