@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Image, ImageStyle, StyleProp, StyleSheet} from 'react-native';
+import {Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet} from 'react-native';
 
 import {Sizes} from '../../environment/theme';
 
 interface IAvatarImageProps {
-	image: number;
+	image: ImageSourcePropType;
 	style: StyleProp<ImageStyle>;
 }
 

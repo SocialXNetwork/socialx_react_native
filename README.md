@@ -38,6 +38,18 @@ For compatibility with [image crop lib](https://github.com/ivpusic/react-native-
 ```
 in RNSocialX/android/build.gradle to allprojects.repositories
 
+The following RN packages are linked:
+1. react-native-randombytes 
+2. react-native-fast-image
+3. react-native-vector-icons
+4. react-native-fs
+5. react-native-image-crop-picker
+6. react-native-image-resizer
+7. lottie-react-native
+8. lottie-ios (iOS only)
+9. react-native-linear-gradient
+10. react-native-blur
+
 Before you begin, make sure you have installed the following tooling
 
 - node >=8.11

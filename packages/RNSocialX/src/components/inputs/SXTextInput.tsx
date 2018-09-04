@@ -103,6 +103,7 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 	public static defaultProps = {
 		width: 0,
 		icon: '',
+		value: '',
 		iconColor: customStyleProps.defaultIconColor,
 		placeholder: '',
 		placeholderColor: customStyleProps.defaultPlaceholderColor,
@@ -127,6 +128,9 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 			/**/
 		},
 		onPressCancel: () => {
+			/**/
+		},
+		onSubmitPressed: (event: any) => {
 			/**/
 		},
 	};
