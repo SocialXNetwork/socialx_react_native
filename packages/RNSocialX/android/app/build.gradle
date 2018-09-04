@@ -147,6 +147,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-blur')
     compile project(':react-native-linear-gradient')
     compile project(':lottie-react-native')
     compile project(':react-native-image-resizer')
