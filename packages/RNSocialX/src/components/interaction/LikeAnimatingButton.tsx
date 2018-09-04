@@ -8,7 +8,7 @@ const PULSATE_PERIOD = 700;
 
 interface ILikeAnimatingButtonProps {
 	likedByMe: boolean;
-	label: string;
+	label?: string;
 	onPress: () => Promise<any>;
 }
 
@@ -21,9 +21,6 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 	public static defaultProps = {
 		likedByMe: false,
 		label: undefined,
-		onPress: async () => {
-			/**/
-		},
 	};
 
 	public state = {
