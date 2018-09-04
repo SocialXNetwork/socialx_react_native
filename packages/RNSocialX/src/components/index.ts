@@ -1,6 +1,7 @@
 export {Foo} from './Foo';
 
 export {ActivityRecentCommentCard} from './activityCards/ActivityRecentCommentCard';
+export {ActivitySuperLikedCard} from './activityCards/ActivitySuperLikedCard';
 
 export {AvatarImage} from './avatar/AvatarImage';
 export {AvatarName} from './avatar/AvatarName';
