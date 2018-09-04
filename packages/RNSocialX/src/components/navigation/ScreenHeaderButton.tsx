@@ -6,10 +6,10 @@ import {defaultColor, HEADER_BUTTON_SIZE, styles} from './ScreenHeaderButton.sty
 
 interface IScreenHeaderButtonProps {
 	onPress: () => void;
-	iconName?: string;
-	iconSource?: number;
-	iconColor?: string;
-	iconSize?: number;
+	iconName: false | string;
+	iconSource: false | number;
+	iconColor: string;
+	iconSize: number;
 }
 
 export const ScreenHeaderButton: React.SFC<IScreenHeaderButtonProps> = ({
@@ -30,6 +30,6 @@ export const ScreenHeaderButton: React.SFC<IScreenHeaderButtonProps> = ({
 ScreenHeaderButton.defaultProps = {
 	iconColor: defaultColor,
 	iconSize: HEADER_BUTTON_SIZE,
-	iconSource: undefined,
-	iconName: undefined,
+	iconSource: false,
+	iconName: false,
 };

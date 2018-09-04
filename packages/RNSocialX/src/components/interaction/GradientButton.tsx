@@ -20,14 +20,14 @@ export const GradientButton: React.SFC<IGradientButtonProps> = (props) => {
 			start={{x: 0, y: 0.5}}
 			end={{x: 1, y: 0.5}}
 			colors={[colorStart, colorEnd]}
-			style={[style.container, buttonDisabled ? style.disabledButton : {}]}
+			style={[styles.container, buttonDisabled ? styles.disabledButton : {}]}
 		>
-			<PrimaryButton {...buttonProps} containerStyle={style.innerButtonContainer} />
+			<PrimaryButton {...buttonProps} containerStyle={styles.innerButtonContainer} />
 		</LinearGradient>
 	);
 };
 
-const style = StyleSheet.create({
+const styles: any = StyleSheet.create({
 	container: {
 		borderRadius: Sizes.smartVerticalScale(50) / 2,
 	},

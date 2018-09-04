@@ -6,11 +6,11 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import styles from './IconButton.style';
 
 interface IIconButtonProps {
-	label?: string;
+	label: false | string;
 	iconSource: ImageRequireSource | string; // use string for an Ionicon or FontAwesome source
 	iconType: string; // use "io" or "fa"
-	onPress?: () => void;
-	iconStyle?: StyleProp<ImageStyle>;
+	onPress: () => void;
+	iconStyle: StyleProp<ImageStyle>;
 }
 
 export const IconButton: React.SFC<IIconButtonProps> = ({iconStyle, label, iconSource, onPress, iconType}) => (
@@ -25,9 +25,6 @@ export const IconButton: React.SFC<IIconButtonProps> = ({iconStyle, label, iconS
 );
 
 IconButton.defaultProps = {
-	label: undefined,
-	onPress: () => {
-		/**/
-	},
+	label: false,
 	iconStyle: styles.iconStyle,
 };

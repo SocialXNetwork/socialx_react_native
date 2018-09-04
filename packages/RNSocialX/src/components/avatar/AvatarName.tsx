@@ -5,13 +5,19 @@ import {CONTAINER_HEIGHT_NAME_ONLY, fullNameDefaultColor, styles, userNameDefaul
 
 interface IAvatarNameProps {
 	fullName: string;
-	username?: string;
-	fullNameColor?: string;
-	userNameColor?: string;
+	hasUsername: boolean;
+	username: string;
+	fullNameColor: string;
+	userNameColor: string;
 }
 
-export const AvatarName: React.SFC<IAvatarNameProps> = ({fullName, username, fullNameColor, userNameColor}) => {
-	const hasUsername = username && username !== '';
+export const AvatarName: React.SFC<IAvatarNameProps> = ({
+	fullName,
+	username,
+	hasUsername,
+	fullNameColor,
+	userNameColor,
+}) => {
 	return (
 		<View style={[styles.container, !hasUsername ? {height: CONTAINER_HEIGHT_NAME_ONLY} : {}]}>
 			<Text style={[styles.fullName, {color: fullNameColor}]}>{fullName}</Text>
@@ -21,6 +27,7 @@ export const AvatarName: React.SFC<IAvatarNameProps> = ({fullName, username, ful
 };
 
 AvatarName.defaultProps = {
+	hasUsername: false,
 	username: undefined,
 	fullNameColor: fullNameDefaultColor,
 	userNameColor: userNameDefaultColor,

@@ -8,7 +8,7 @@ const PULSATE_PERIOD = 700;
 
 interface ILikeAnimatingButtonProps {
 	likedByMe: boolean;
-	label?: string;
+	label: false | string;
 	onPress: () => Promise<any>;
 }
 
@@ -19,7 +19,7 @@ interface ILikeAnimatingButtonState {
 
 export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonProps, ILikeAnimatingButtonState> {
 	public static defaultProps = {
-		label: undefined,
+		label: false,
 	};
 
 	public state = {
@@ -43,6 +43,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 		const iconSource = this.state.likedByMe ? 'heart' : 'heart-o';
 		const likeColor = this.state.likedByMe ? Colors.pink : Colors.black;
 		const likeStyles = [styles.likeButton, {color: likeColor}];
+
 		return (
 			<TouchableOpacity
 				style={styles.container}
@@ -89,7 +90,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 	};
 }
 
-const styles = StyleSheet.create({
+const styles: any = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		paddingHorizontal: Sizes.smartHorizontalScale(5),

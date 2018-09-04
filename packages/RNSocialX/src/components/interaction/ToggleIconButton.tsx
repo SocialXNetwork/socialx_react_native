@@ -7,8 +7,8 @@ interface IToggleIconButtonProps {
 	selectedSource: number;
 	unselectedSource: number;
 	selected: boolean;
-	onPress?: () => void;
-	iconStyle?: StyleProp<ImageStyle>;
+	onPress: () => void;
+	iconStyle: StyleProp<ImageStyle>;
 }
 
 export const ToggleIconButton: React.SFC<IToggleIconButtonProps> = ({
@@ -23,7 +23,7 @@ export const ToggleIconButton: React.SFC<IToggleIconButtonProps> = ({
 	</TouchableWithoutFeedback>
 );
 
-const styles = StyleSheet.create({
+const styles: any = StyleSheet.create({
 	icon: {
 		width: Sizes.smartHorizontalScale(20),
 		height: Sizes.smartHorizontalScale(17),
@@ -32,8 +32,5 @@ const styles = StyleSheet.create({
 });
 
 ToggleIconButton.defaultProps = {
-	onPress: () => {
-		/**/
-	},
 	iconStyle: styles.icon,
 };
