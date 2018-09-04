@@ -5,7 +5,7 @@ import {Sizes} from '../../environment/theme';
 
 interface IAvatarImageProps {
 	image: number;
-	style?: StyleProp<ImageStyle>;
+	style: StyleProp<ImageStyle>;
 }
 
 export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style: customStyle}) => {
