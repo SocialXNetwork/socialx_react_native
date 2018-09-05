@@ -8,22 +8,26 @@ import style from './ModalConfirmation.style';
 
 interface IModalConfirmationPropsExtended extends ITranslatedProps {
 	confirmActive: boolean;
-	title?: string;
-	message?: string;
-	confirmButton?: string;
-	cancelButton?: string;
-	confirmHandler?: () => void;
-	declineHandler?: () => void;
+	title: string | null;
+	message: string | null;
+	confirmButton: string;
+	cancelButton: string;
+	confirmHandler: () => void;
+	declineHandler: () => void;
 }
 
 export const ModalConfirmation: React.SFC<IModalConfirmationPropsExtended> = ({
 	confirmActive,
-	title,
-	message,
+	title = null,
+	message = null,
 	confirmButton = 'button.yes',
-	confirmHandler,
 	cancelButton = 'button.no',
-	declineHandler,
+	confirmHandler = () => {
+		/**/
+	},
+	declineHandler = () => {
+		/**/
+	},
 	getText,
 }) => (
 	<WithManagedTransitions modalVisible={confirmActive}>

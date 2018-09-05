@@ -20,6 +20,7 @@
     "@socialx/commons": "^0.0.1",
     "buffer": "^5.2.0",
     "emoji-regex": "^7.0.1",
+    "formik": "^1.1.2",
     "hex-rgb": "^3.0.0",
     "jsc-android": "^224109.1.0",
     "lottie-react-native": "^2.5.8",
