@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {ActivityIndicator, Image, Text, TouchableOpacity, View} from 'react-native';
 
 import {AvatarImage} from '../';

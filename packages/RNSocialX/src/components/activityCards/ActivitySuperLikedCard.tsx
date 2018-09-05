@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React from 'react';
+import * as React from 'react';
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
 import {AvatarImage} from '../';

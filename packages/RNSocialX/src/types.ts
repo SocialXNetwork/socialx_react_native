@@ -37,6 +37,34 @@ export interface IConfirmActions {
 	hideConfirm: () => void;
 }
 
+// Media types
+
+export interface MediaTypes {
+	key: string;
+	name: string;
+	category: string;
+}
+
+export const MediaTypeImage: MediaTypes = {
+	key: 'image',
+	name: 'Photo',
+	category: 'Photography',
+};
+
+export const MediaTypeVideo: MediaTypes = {
+	key: 'video',
+	name: 'Video',
+	category: 'Videos',
+};
+
+export interface GridMediaObject {
+	url: string;
+	type: MediaTypes;
+	index: number;
+}
+
+// END Media types
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.

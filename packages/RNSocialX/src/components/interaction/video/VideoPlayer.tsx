@@ -24,7 +24,7 @@ interface IVideoPlayerState {
 	userPaused: boolean;
 	muted: boolean;
 	ended: boolean;
-	resizeMode?: string;
+	resizeMode: string;
 	playReady: boolean;
 	fullscreen: boolean;
 }

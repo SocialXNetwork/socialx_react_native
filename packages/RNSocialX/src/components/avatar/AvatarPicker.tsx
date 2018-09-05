@@ -1,5 +1,5 @@
 import {ActionSheet} from 'native-base';
-import React from 'react';
+import * as React from 'react';
 import {ImageSourcePropType, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -28,7 +28,7 @@ const AVATAR_CAMERA_OPTIONS = {
 interface IAvatarPickerProps extends ITranslatedProps {
 	avatarImage: ImageSourcePropType;
 	afterImagePick: (image: string) => void;
-	avatarSize?: number;
+	avatarSize: number;
 }
 
 const showGalleryPhotoPicker = async (afterImagePick: (image: string) => void) => {
