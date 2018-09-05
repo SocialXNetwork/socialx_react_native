@@ -42,6 +42,8 @@ export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTran
 
 export {ModalActivityIndicator} from './modals/ModalActivityIndicator';
 export {ModalConfirmation} from './modals/ModalConfirmation';
+export {ModalInputSMSCode} from './modals/ModalInputSMSCode';
+export {ModalMediaInfo} from './modals/ModalMediaInfo';
 export {ModalTagFriends} from './modals/ModalTagFriends';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
