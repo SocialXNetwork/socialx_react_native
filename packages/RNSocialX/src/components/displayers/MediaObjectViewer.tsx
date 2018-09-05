@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {Image, Platform, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import FastImage from 'react-native-fast-image';
 // @ts-ignore

@@ -12,6 +12,7 @@ export {AvatarPicker} from './avatar/AvatarPicker';
 export {AddFriendsList} from './displayers/AddFriendsList';
 export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
 export {HeartAnimation} from './displayers/HeartAnimation';
+export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 
