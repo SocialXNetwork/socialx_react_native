@@ -15,6 +15,8 @@ export {HeartAnimation} from './displayers/HeartAnimation';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
+export {PhotoGrid} from './displayers/PhotoGrid';
+export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';
 export {ITopContainerSharedProps, ProfileTopContainer} from './displayers/ProfileTopContainer';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';

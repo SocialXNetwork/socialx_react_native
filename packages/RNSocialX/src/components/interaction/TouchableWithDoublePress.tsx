@@ -9,7 +9,7 @@ interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 }
 
 export class TouchableWithDoublePress extends React.Component<ITouchableWithDoublePressProps> {
-	public defaultProps = {
+	public static defaultProps = {
 		disabled: false,
 	};
 

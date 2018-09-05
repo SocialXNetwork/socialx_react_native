@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
+import {ITranslatedProps} from '../../../types';
 import {SuggestionCard} from './SuggestionCard';
 import styles from './SuggestionsCarousel.style';
 
@@ -16,7 +17,7 @@ export interface ISuggestionCardItem {
 	friend: boolean;
 }
 
-interface ISuggestionsCarouselProps {
+interface ISuggestionsCarouselProps extends ITranslatedProps {
 	items: ISuggestionCardItem[];
 }
 
@@ -24,7 +25,7 @@ interface ISuggestionsCarouselState {
 	items: ISuggestionCardItem[];
 }
 
-export class SuggestionsCarousel extends Component<ISuggestionsCarouselProps, ISuggestionsCarouselState> {
+export class SuggestionsCarousel extends React.Component<ISuggestionsCarouselProps, ISuggestionsCarouselState> {
 	public static getDerivedStateFromProps(props: ISuggestionsCarouselProps, state: ISuggestionsCarouselState) {
 		if (props.items && state.items.length === 0) {
 			return {
@@ -61,7 +62,9 @@ export class SuggestionsCarousel extends Component<ISuggestionsCarouselProps, IS
 	}
 
 	private renderItem = (data: {item: ISuggestionCardItem; index: number}) => {
-		return <SuggestionCard item={data.item} deleteCard={() => this.deleteCard(data.index)} />;
+		return (
+			<SuggestionCard item={data.item} deleteCard={() => this.deleteCard(data.index)} getText={this.props.getText} />
+		);
 	};
 
 	private deleteCard = (cardIndex: number) => {

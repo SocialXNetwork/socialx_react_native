@@ -7,27 +7,9 @@ import PhotoView from 'react-native-photo-view';
 
 import {IVideoOptions, TouchableWithDoublePress, VideoPlayer} from '../';
 import {OS_TYPES} from '../../environment/consts';
-import {ITranslatedProps} from '../../types';
+import {ITranslatedProps, MediaTypeImage, MediaTypes, MediaTypeVideo} from '../../types';
 
-export interface MediaTypes {
-	key: string;
-	name: string;
-	category: string;
-}
-
-export const MediaTypeImage: MediaTypes = {
-	key: 'image',
-	name: 'Photo',
-	category: 'Photography',
-};
-
-export const MediaTypeVideo: MediaTypes = {
-	key: 'video',
-	name: 'Video',
-	category: 'Videos',
-};
-
-export interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
+interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	uri: string;
 	style: StyleProp<ViewStyle>;
 	resizeMode: FastImage.ResizeMode;
@@ -49,18 +31,25 @@ const getMimeType = (uri: string, type: MediaTypes | undefined, extension: strin
 	return mime.lookup(uri);
 };
 
-export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = (props) => {
-	const {
-		uri,
-		style: customStyle,
-		resizeMode = 'cover',
-		extension = 'jpg',
-		type = MediaTypeImage,
-		onPress,
-		onDoublePress,
-		getText,
-		canZoom = false,
-	} = props;
+export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
+	uri,
+	style: customStyle,
+	resizeMode = 'cover',
+	extension = 'jpg',
+	type = MediaTypeImage,
+	getText,
+	canZoom = false,
+	muted,
+	thumbOnly,
+	paused,
+	resizeToChangeAspectRatio,
+	onPress = () => {
+		/**/
+	},
+	onDoublePress = () => {
+		/**/
+	},
+}) => {
 	const ImageComponent = Platform.OS === OS_TYPES.Android && uri.startsWith('https://') ? FastImage : Image;
 	const mediaMimeType = getMimeType(uri, type, extension);
 
@@ -99,7 +88,16 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = (props) => 
 				)}
 			{mediaMimeType &&
 				mediaMimeType.startsWith(MediaTypeVideo.key) && (
-					<VideoPlayer videoURL={uri} containerStyle={customStyle} {...props} />
+					<VideoPlayer
+						videoURL={uri}
+						onPress={onPress}
+						containerStyle={customStyle}
+						muted={muted}
+						thumbOnly={thumbOnly}
+						resizeMode={resizeMode}
+						resizeToChangeAspectRatio={resizeToChangeAspectRatio}
+						paused={paused}
+					/>
 				)}
 		</View>
 	);
