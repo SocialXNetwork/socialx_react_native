@@ -5,6 +5,13 @@ export interface FriendsSearchResult {
 	avatarURL: string;
 }
 
+export enum SearchResultKind {
+	Friend = 'FRIEND',
+	NotFriend = 'NOT_FRIEND',
+	FriendRequestSent = 'FRIEND_REQUEST_SENT',
+	Group = 'group',
+}
+
 export type getTextSignature = (value: string, ...args: any[]) => string;
 
 export interface ITranslatedProps {
