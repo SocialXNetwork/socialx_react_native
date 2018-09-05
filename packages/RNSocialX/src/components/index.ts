@@ -28,6 +28,7 @@ export {SettingCheckbox} from './inputs/SettingCheckbox';
 export {SharePostInput} from './inputs/SharePostInput';
 export {SXTextInput, TKeyboardKeys, TRKeyboardKeys, InputSizes} from './inputs/SXTextInput';
 
+export {CloseButton} from './interaction/CloseButton';
 export {GradientButton} from './interaction/GradientButton';
 export {IconButton} from './interaction/IconButton';
 export {LikeAnimatingButton} from './interaction/LikeAnimatingButton';
