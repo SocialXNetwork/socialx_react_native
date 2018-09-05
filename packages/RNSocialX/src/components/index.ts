@@ -7,6 +7,7 @@ export {ActivityGenericCard} from './activityCards/ActivityGenericCard';
 
 export {AvatarImage} from './avatar/AvatarImage';
 export {AvatarName} from './avatar/AvatarName';
+export {AvatarPicker} from './avatar/AvatarPicker';
 
 export {AddFriendsList} from './displayers/AddFriendsList';
 export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
