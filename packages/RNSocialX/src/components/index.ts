@@ -41,6 +41,7 @@ export {IVideoOptions, VideoPlayer} from './interaction/video';
 export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
 
 export {ModalActivityIndicator} from './modals/ModalActivityIndicator';
+export {ModalConfirmation} from './modals/ModalConfirmation';
 export {ModalTagFriends} from './modals/ModalTagFriends';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
