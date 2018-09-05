@@ -7,6 +7,8 @@ export {ActivitySuperLikedCard} from './activityCards/ActivitySuperLikedCard';
 export {AvatarImage} from './avatar/AvatarImage';
 export {AvatarName} from './avatar/AvatarName';
 
+export {AddFriendsList} from './displayers/AddFriendsList';
+export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
 export {HeartAnimation} from './displayers/HeartAnimation';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 
