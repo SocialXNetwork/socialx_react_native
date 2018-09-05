@@ -13,24 +13,20 @@ interface INotificationsWithBadgeProps {
 
 export const NotificationsWithBadge: React.SFC<INotificationsWithBadgeProps> = ({
 	item,
-	notifications,
+	notifications: {loading, myNotifications},
 	selectedTab,
 	tabChange,
-}) => {
-	const {myNotifications, loading} = notifications;
+}) => (
+	<View style={styles.container}>
+		<TabButton item={item} selectedTab={selectedTab} tabChange={tabChange} />
 
-	return (
-		<View style={styles.container}>
-			<TabButton item={item} selectedTab={selectedTab} tabChange={tabChange} />
-
-			{!loading &&
-				(myNotifications && myNotifications.length > 0 ? (
-					<View style={styles.background}>
-						<Text style={styles.badge}>{myNotifications.length.toString()}</Text>
-					</View>
-				) : (
-					<View />
-				))}
-		</View>
-	);
-};
+		{!loading &&
+			(myNotifications && myNotifications.length > 0 ? (
+				<View style={styles.background}>
+					<Text style={styles.badge}>{myNotifications.length.toString()}</Text>
+				</View>
+			) : (
+				<View />
+			))}
+	</View>
+);
