@@ -6,15 +6,20 @@ import style, {customStyleProps} from './SettingCheckbox.style';
 interface ISettingCheckboxProps {
 	title: string;
 	value: boolean;
-	description?: string;
-	onValueUpdated?: () => void;
+	description: string | false;
+	onValueUpdated: () => void;
 }
 
-export const SettingCheckbox: React.SFC<ISettingCheckboxProps> = ({title, description, value, onValueUpdated}) => (
+export const SettingCheckbox: React.SFC<ISettingCheckboxProps> = ({
+	title,
+	description = false,
+	value,
+	onValueUpdated,
+}) => (
 	<View style={style.container}>
 		<View style={style.leftContainer}>
 			<Text style={style.title}>{title}</Text>
-			<Text style={style.description}>{description}</Text>
+			{description && <Text style={style.description}>{description}</Text>})
 		</View>
 		<Switch
 			style={style.switch}
