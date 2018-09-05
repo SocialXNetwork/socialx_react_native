@@ -3,6 +3,7 @@ export {Foo} from './Foo';
 export {ActivityFriendRequestCard} from './activityCards/ActivityFriendRequestCard';
 export {ActivityRecentCommentCard} from './activityCards/ActivityRecentCommentCard';
 export {ActivitySuperLikedCard} from './activityCards/ActivitySuperLikedCard';
+export {ActivityGenericCard} from './activityCards/ActivityGenericCard';
 
 export {AvatarImage} from './avatar/AvatarImage';
 export {AvatarName} from './avatar/AvatarName';

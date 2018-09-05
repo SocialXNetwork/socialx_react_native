@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
-// @ts-ignore
 import Spinner from 'react-native-spinkit';
 
 import {Colors, Sizes} from '../../environment/theme';
