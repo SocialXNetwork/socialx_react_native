@@ -14,6 +14,7 @@ export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
 export {HeartAnimation} from './displayers/HeartAnimation';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
+export {NavigationTabBar} from './displayers/NavigationTabBar';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
 export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';
