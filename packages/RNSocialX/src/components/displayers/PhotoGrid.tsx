@@ -18,14 +18,14 @@ interface IHeaderType {
 
 interface IPhotoGridProps {
 	onLoadMore: () => void;
-	thumbWidth?: number;
-	thumbHeight?: number;
+	thumbWidth: number;
+	thumbHeight: number;
 	renderGridItem: (type: React.ReactText, data: any) => JSX.Element;
 	dataProvider: DataProvider;
-	scrollViewProps?: any;
-	header?: IHeaderType;
-	extendedState?: any;
-	onScroll?: (rawEvent: any, offsetX: number, offsetY: number) => void;
+	scrollViewProps: object;
+	header: IHeaderType | undefined;
+	extendedState: object;
+	onScroll: (rawEvent: any, offsetX: number, offsetY: number) => void;
 }
 
 let lastKnownGridHeight: number = 0;
@@ -67,7 +67,7 @@ const renderGridItemOrHeader = (
 	type: React.ReactText,
 	data: any,
 	renderGridItem: (type: React.ReactText, data: any) => JSX.Element,
-	header?: IHeaderType,
+	header: IHeaderType | undefined,
 ) => {
 	if (type === ViewTypes.HEADER_LAYOUT && header) {
 		return header.element;
@@ -79,9 +79,11 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 	dataProvider,
 	renderGridItem,
 	onLoadMore,
-	onScroll,
-	extendedState,
-	scrollViewProps,
+	onScroll = () => {
+		/**/
+	},
+	extendedState = {},
+	scrollViewProps = {},
 	thumbHeight = Sizes.getThumbSize(),
 	thumbWidth = Sizes.getThumbSize(),
 	header,
