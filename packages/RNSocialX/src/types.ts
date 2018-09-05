@@ -5,8 +5,10 @@ export interface FriendsSearchResult {
 	avatarURL: string;
 }
 
+export type getTextSignature = (value: string, ...args: any[]) => string;
+
 export interface ITranslatedProps {
-	getText: (value: string, ...args: any[]) => string;
+	getText: getTextSignature;
 }
 
 export interface IResizeProps {

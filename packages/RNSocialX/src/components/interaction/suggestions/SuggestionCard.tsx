@@ -9,7 +9,6 @@ import styles, {colors} from './SuggestionCard.style';
 interface ISuggestionCardProps extends ITranslatedProps {
 	item: ISuggestionCardItem;
 	deleteCard: () => void;
-	getText: (value: string, ...args: any[]) => string;
 }
 
 export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({item, deleteCard, getText}) => (
