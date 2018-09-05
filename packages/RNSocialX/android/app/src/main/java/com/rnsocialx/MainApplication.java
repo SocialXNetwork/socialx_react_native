@@ -3,6 +3,7 @@ package com.rnsocialx;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import iyegoroff.RNTextGradient.RNTextGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNTextGradientPackage(),
             new BlurViewPackage(),
             new LinearGradientPackage(),
             new LottiePackage(),
