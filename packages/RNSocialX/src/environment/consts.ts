@@ -13,9 +13,6 @@ export enum DeviceOrientations {
 	Upsidedown = 'PORTRAITUPSIDEDOWN',
 }
 
-export const AndroidType = 'android';
-export const IosType = 'ios';
-
 export const OS_TYPES = {
 	IOS: 'ios',
 	Android: 'android',
