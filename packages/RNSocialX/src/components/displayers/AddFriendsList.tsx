@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
 
 import {Icons} from '../../environment/theme';

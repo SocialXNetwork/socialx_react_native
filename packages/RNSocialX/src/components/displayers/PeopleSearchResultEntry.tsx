@@ -38,6 +38,7 @@ interface IAddFriendProps extends ITranslatedProps {
 
 const AddFriend: React.SFC<IAddFriendProps> = ({afterAnimationHandler, animatedButton, getText}) => (
 	<Animatable.View ref={animatedButton}>
+		// @ts-ignore
 		<PrimaryButton
 			label={getText('button.add')}
 			size={ButtonSizes.Small}

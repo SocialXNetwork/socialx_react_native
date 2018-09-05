@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {Text, View} from 'react-native';
 
 import {AvatarImage, ButtonSizes, IconButton, PrimaryButton} from '../../';
@@ -17,6 +17,7 @@ export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({item, deleteCar
 		<AvatarImage image={{uri: item.avatarURL}} style={styles.avatar} />
 		<Text style={styles.name}>{item.name}</Text>
 		<Text style={styles.reason}>Followed by placeholder</Text>
+		// @ts-ignore
 		<PrimaryButton
 			label={getText('button.add.friend')}
 			size={ButtonSizes.Small}
@@ -26,6 +27,7 @@ export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({item, deleteCar
 			onPress={() => console.log('Add friend')}
 		/>
 		<View style={styles.iconContainer}>
+			// @ts-ignore
 			<IconButton iconSource={'ios-close'} iconType={'io'} onPress={deleteCard} iconStyle={styles.icon} />
 		</View>
 	</View>
