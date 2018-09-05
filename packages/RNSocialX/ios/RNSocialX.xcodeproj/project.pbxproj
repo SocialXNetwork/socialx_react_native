@@ -65,6 +65,7 @@
 		8B41763D5747480F95501DCF /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77C63A39D127486EB8D7A53A /* Foundation.ttf */; };
 		8F60C9D5D076412FA23431B0 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7DCF8617434B1E8DCE6E09 /* libRCTImageResizer.a */; };
 		958F5D6136624411BCCCE29B /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A9547CC4B06438D8DB2E404 /* Roboto_medium.ttf */; };
+		96D7F2C0802D44F288847A88 /* libRNTextGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E73F56689524B1CA0DA2005 /* libRNTextGradient.a */; };
 		98743DAF818542128D33BD5A /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD65A36A935C41B0A3650795 /* libFastImage.a */; };
 		9CD404CA213E5DAF00B17B88 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD404A8213E5D2200B17B88 /* Lottie.framework */; };
 		9CD404CB213E5DAF00B17B88 /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CD404A8213E5D2200B17B88 /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -408,6 +409,13 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
+		9C5F06C6213FEFDB00074D2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCAE36182ECF4F15BD81B27E /* RNTextGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNTextGradient;
+		};
 		9CD404A7213E5D2200B17B88 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FD7F4DD6B6AD4CA589815172 /* Lottie.xcodeproj */;
@@ -557,6 +565,7 @@
 		814EA4A3816B4A3281E729DD /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		841D4C270EF141639969BAA6 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		8E73F56689524B1CA0DA2005 /* libRNTextGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNTextGradient.a; sourceTree = "<group>"; };
 		93F0B6875C734D5594BD5501 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		948C98DEC32749F3AF650682 /* Lottie.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Lottie.framework; path = System/Library/Frameworks/Lottie.framework; sourceTree = SDKROOT; };
 		979C333FB25442B2ACAF8C7C /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -575,6 +584,7 @@
 		CD65A36A935C41B0A3650795 /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		D61150F3767F47BA8ECAA6A5 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
 		D6188065130A412C82626002 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		DCAE36182ECF4F15BD81B27E /* RNTextGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNTextGradient.xcodeproj; path = "../node_modules/react-native-text-gradient/ios/RNTextGradient.xcodeproj"; sourceTree = "<group>"; };
 		E0DD96D4266D47AB84A96F78 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		E1217AE0565E4DBD843671CE /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		E1AF336BB41A4C4C97F6C3E5 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -622,6 +632,7 @@
 				720ED5CD830F4BF48C3978C7 /* libLottie.a in Frameworks */,
 				15209B8B0FD14E02BA38BF27 /* libBVLinearGradient.a in Frameworks */,
 				2C865C197FEA46F8A6DC5B9B /* libRNBlur.a in Frameworks */,
+				96D7F2C0802D44F288847A88 /* libRNTextGradient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,6 +869,7 @@
 				FD7F4DD6B6AD4CA589815172 /* Lottie.xcodeproj */,
 				703E98CF76A7493E844262A0 /* BVLinearGradient.xcodeproj */,
 				5C4FA6E5A01741C1A7EA26D9 /* RNBlur.xcodeproj */,
+				DCAE36182ECF4F15BD81B27E /* RNTextGradient.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -913,6 +925,7 @@
 				22A0C356A6864224A021F69F /* libLottie.a */,
 				7DBE0C2B52C345B385C6E758 /* libBVLinearGradient.a */,
 				34CE383ED06B4D4D8AE7AD50 /* libRNBlur.a */,
+				8E73F56689524B1CA0DA2005 /* libRNTextGradient.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -963,6 +976,14 @@
 			isa = PBXGroup;
 			children = (
 				9C17C866213D196100B9D217 /* libRCTImageResizer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C5F06C3213FEFDB00074D2D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C5F06C7213FEFDB00074D2D /* libRNTextGradient.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1209,6 +1230,10 @@
 				{
 					ProductGroup = 9C17C852213D196100B9D217 /* Products */;
 					ProjectRef = 4AE3934316D14C5FBED32858 /* RNRandomBytes.xcodeproj */;
+				},
+				{
+					ProductGroup = 9C5F06C3213FEFDB00074D2D /* Products */;
+					ProjectRef = DCAE36182ECF4F15BD81B27E /* RNTextGradient.xcodeproj */;
 				},
 				{
 					ProductGroup = 9C17C856213D196100B9D217 /* Products */;
@@ -1534,6 +1559,13 @@
 			remoteRef = 9C17C874213D196100B9D217 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		9C5F06C7213FEFDB00074D2D /* libRNTextGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNTextGradient.a;
+			remoteRef = 9C5F06C6213FEFDB00074D2D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9CD404A8213E5D2200B17B88 /* Lottie.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1790,6 +1822,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = RNSocialXTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1805,6 +1838,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1835,6 +1869,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = RNSocialXTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1850,6 +1885,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1881,6 +1917,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = RNSocialX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1911,6 +1948,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = RNSocialX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1948,6 +1986,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = "RNSocialX-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1962,6 +2001,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2002,6 +2042,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = "RNSocialX-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2016,6 +2057,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2055,6 +2097,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = "RNSocialX-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2069,6 +2112,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2108,6 +2152,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-text-gradient/ios/**",
 				);
 				INFOPLIST_FILE = "RNSocialX-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2122,6 +2167,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

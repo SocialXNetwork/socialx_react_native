@@ -42,6 +42,7 @@
     "react-native-snap-carousel": "^3.7.2",
     "react-native-stream": "^0.1.9",
     "react-native-swipeable": "^0.6.0",
+    "react-native-text-gradient": "^0.0.15",
     "react-native-vector-icons": "^5.0.0",
     "react-native-video": "^3.2.0",
     "react-navigation": "^2.12.1",

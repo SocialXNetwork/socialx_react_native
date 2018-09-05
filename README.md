@@ -49,6 +49,7 @@ The following RN packages are linked:
 8. lottie-ios (iOS only)
 9. react-native-linear-gradient
 10. react-native-blur
+11. react-native-text-gradient
 
 Before you begin, make sure you have installed the following tooling
 
