@@ -4,14 +4,12 @@ import {StyleProp, TouchableOpacity, TouchableOpacityProps, View, ViewStyle} fro
 interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 	onSinglePress: () => void;
 	onDoublePress: () => void;
-	children: JSX.Element;
 	disabled: boolean;
 	style: StyleProp<ViewStyle>;
 }
 
 export class TouchableWithDoublePress extends React.Component<ITouchableWithDoublePressProps> {
 	public defaultProps = {
-		children: <View />,
 		disabled: false,
 	};
 

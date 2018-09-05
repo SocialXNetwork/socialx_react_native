@@ -11,6 +11,7 @@ export {AvatarName} from './avatar/AvatarName';
 export {AddFriendsList} from './displayers/AddFriendsList';
 export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
 export {HeartAnimation} from './displayers/HeartAnimation';
+export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
