@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import {Keyboard, Platform, Text, TextInput, TextInputProps, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -98,7 +98,7 @@ const CancelButton: React.SFC<{
 	return null;
 };
 
-export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState> {
+export class SXTextInput extends React.Component<ISXTextInputProps, ISXTextInputState> {
 	public static defaultProps = {
 		width: 0,
 		icon: '',
@@ -138,7 +138,7 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 		hasFocus: false,
 	};
 
-	public inputComponent: any;
+	private inputRef: React.RefObject<TextInput> = React.createRef();
 
 	public render() {
 		const {
@@ -195,7 +195,7 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 						{...valueProps}
 						onChangeText={onChangeText}
 						onSubmitEditing={onSubmitPressed}
-						ref={(component: any) => (this.inputComponent = component)}
+						ref={this.inputRef}
 						onFocus={() => this.updateFocusHandler(true)}
 						onBlur={() => this.updateFocusHandler(false)}
 						returnKeyType={returnKeyType}
@@ -226,8 +226,8 @@ export class SXTextInput extends Component<ISXTextInputProps, ISXTextInputState>
 	}
 
 	public focusInput = () => {
-		if (this.inputComponent) {
-			this.inputComponent.focus();
+		if (this.inputRef.current) {
+			this.inputRef.current.focus();
 		}
 	};
 

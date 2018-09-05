@@ -24,6 +24,7 @@ export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/Pri
 export {ISuggestionCardItem, SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
+export {VideoPlayer} from './interaction/video';
 
 export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
 

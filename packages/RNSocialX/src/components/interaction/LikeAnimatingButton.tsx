@@ -61,7 +61,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 	private buttonPressedHandler = async () => {
 		const {onPress, getText} = this.props;
 
-		this.animatedIconRef.animate('pulsate', PULSATE_PERIOD).then(this.onAnimationEndHandler);
+		this.animatedIconRef.current.animate('pulsate', PULSATE_PERIOD).then(this.onAnimationEndHandler);
 		this.toggleAnimationFlags(true);
 
 		if (onPress) {
@@ -77,7 +77,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 
 	private onAnimationEndHandler = () => {
 		if (this.animating) {
-			this.animatedIconRef.animate('pulsate', PULSATE_PERIOD).then(this.onAnimationEndHandler);
+			this.animatedIconRef.current.animate('pulsate', PULSATE_PERIOD).then(this.onAnimationEndHandler);
 		} else {
 			this.setState({
 				likedByMe: this.nextLikeValue,
