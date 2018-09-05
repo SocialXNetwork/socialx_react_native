@@ -23,6 +23,7 @@ export {TextGradient} from './displayers/TextGradient';
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
 
 export {CommentTextInput} from './inputs/CommentTextInput';
+export {SharePostInput} from './inputs/SharePostInput';
 export {SXTextInput, TKeyboardKeys, TRKeyboardKeys, InputSizes} from './inputs/SXTextInput';
 
 export {GradientButton} from './interaction/GradientButton';
