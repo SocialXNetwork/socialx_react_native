@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import {MediaObjectViewer} from './MediaObjectViewer';
+import {MediaObjectViewer} from '../MediaObjectViewer';
 import style from './WallPostMedia.style';
 
 interface IMediaProps {

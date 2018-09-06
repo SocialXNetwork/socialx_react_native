@@ -65,6 +65,23 @@ export interface GridMediaObject {
 
 // END Media types
 
+export interface IMediaProps {
+	type: string;
+	url: string;
+}
+
+export interface ISimpleComment {
+	id: string;
+	text: string;
+	likes: Array<{
+		userId: string;
+	}>;
+	owner: {
+		userId: string;
+		username: string;
+	};
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.
