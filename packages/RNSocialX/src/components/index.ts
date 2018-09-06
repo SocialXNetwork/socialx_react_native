@@ -19,6 +19,7 @@ export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
 export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';
 export {ITopContainerSharedProps, ProfileTopContainer} from './displayers/ProfileTopContainer';
+export {RichText} from './displayers/RichText/RichText';
 export {TextGradient} from './displayers/TextGradient';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
