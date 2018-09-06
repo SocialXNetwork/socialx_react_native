@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 import {FormikBag, FormikErrors, FormikProps, withFormik} from 'formik';
-import {SXTextInput} from '..';
+import {PrimaryTextInput} from '..';
 import {OS_TYPES} from '../../environment/consts';
 import {ApplicationStyles, Colors, Icons} from '../../environment/theme';
 import {IResizeProps, ITranslatedProps} from '../../types';
@@ -84,7 +84,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 								/>
 							</View>
 							<View style={style.descriptionContainer}>
-								<SXTextInput
+								<PrimaryTextInput
 									autoCapitalize={'sentences'}
 									autoCorrect={true}
 									numberOfLines={3}
