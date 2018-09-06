@@ -4,9 +4,9 @@ import Modal from 'react-native-modal';
 
 import {ITranslatedProps} from '../../types';
 import {WithManagedTransitions} from '../managedTransitions';
-import style from './ModalConfirmation.style';
+import style from './ConfirmationModal.style';
 
-interface IModalConfirmationPropsExtended extends ITranslatedProps {
+interface IConfirmationModalPropsExtended extends ITranslatedProps {
 	confirmActive: boolean;
 	title: string | null;
 	message: string | null;
@@ -16,7 +16,7 @@ interface IModalConfirmationPropsExtended extends ITranslatedProps {
 	declineHandler: () => void;
 }
 
-export const ModalConfirmation: React.SFC<IModalConfirmationPropsExtended> = ({
+export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
 	confirmActive,
 	title = null,
 	message = null,

@@ -4,7 +4,7 @@ import Swipeable from 'react-native-swipeable';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {AvatarImage} from '../';
-import {IConfirmActions, IModalConfirmationProps, ITranslatedProps} from '../../types';
+import {IConfirmActions, IConfirmationModalProps, ITranslatedProps} from '../../types';
 import style from './ActivityGenericCard.style';
 
 interface IActivityGenericCardProps extends ITranslatedProps, IConfirmActions {
@@ -28,7 +28,7 @@ const SwipeLeftContent: React.SFC<{label: string}> = ({label}) => (
 const confirmDismissNotification = (
 	confirmed: boolean,
 	requestId: string,
-	showConfirm: (confirmationOptions: IModalConfirmationProps) => void,
+	showConfirm: (confirmationOptions: IConfirmationModalProps) => void,
 	hideConfirm: () => void,
 	onCheckNotification: (requestId: string) => void,
 	confirmTitle: string,

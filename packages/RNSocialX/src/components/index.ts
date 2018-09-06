@@ -1,5 +1,3 @@
-export {Foo} from './Foo';
-
 export {ActivityFriendRequestCard} from './activityCards/ActivityFriendRequestCard';
 export {ActivityRecentCommentCard} from './activityCards/ActivityRecentCommentCard';
 export {ActivitySuperLikedCard} from './activityCards/ActivitySuperLikedCard';
@@ -21,6 +19,7 @@ export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';
 export {ITopContainerSharedProps, ProfileTopContainer} from './displayers/ProfileTopContainer';
 export {RichText} from './displayers/RichText/RichText';
 export {TextGradient} from './displayers/TextGradient';
+export {WallPostCard} from './displayers/WallPostCard';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
 
@@ -41,12 +40,12 @@ export {IVideoOptions, VideoPlayer} from './interaction/video';
 
 export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
 
-export {ModalActivityIndicator} from './modals/ModalActivityIndicator';
-export {ModalConfirmation} from './modals/ModalConfirmation';
-export {ModalInputSMSCode} from './modals/ModalInputSMSCode';
-export {ModalMediaInfo} from './modals/ModalMediaInfo';
-export {ModalReportProblem, IReportData} from './modals/ModalReportProblem';
-export {ModalTagFriends} from './modals/ModalTagFriends';
+export {ActivityIndicatorModal} from './modals/ActivityIndicatorModal';
+export {ConfirmationModal} from './modals/ConfirmationModal';
+export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
+export {MediaInfoModal} from './modals/MediaInfoModal';
+export {ReportProblemModal, IReportData} from './modals/ReportProblemModal';
+export {TagFriendsModal} from './modals/TagFriendsModal';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
 export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';

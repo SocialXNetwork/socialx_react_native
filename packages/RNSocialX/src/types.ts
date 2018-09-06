@@ -23,7 +23,7 @@ export interface IResizeProps {
 	// safeRunAfterKeyboardHide: (handler: () => void) => void;
 }
 
-export interface IModalConfirmationProps {
+export interface IConfirmationModalProps {
 	title?: string;
 	message?: string;
 	confirmButton?: string;
@@ -33,7 +33,7 @@ export interface IModalConfirmationProps {
 }
 
 export interface IConfirmActions {
-	showConfirm: (confirmationOptions: IModalConfirmationProps) => void;
+	showConfirm: (confirmationOptions: IConfirmationModalProps) => void;
 	hideConfirm: () => void;
 }
 
