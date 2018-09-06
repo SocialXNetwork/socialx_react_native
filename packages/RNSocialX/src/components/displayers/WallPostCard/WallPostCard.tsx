@@ -44,7 +44,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	likedByMe: boolean;
 	canDelete: boolean;
 	media: undefined | IMediaProps[];
-	likes: undefined | any;
+	likes: undefined | any; // IUserQuery; // @Alex TODO: fix typing after backend is ready
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
 	suggested: undefined | ISuggestionCardItem[];
