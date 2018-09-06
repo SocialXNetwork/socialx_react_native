@@ -82,6 +82,21 @@ export interface ISimpleComment {
 	};
 }
 
+export interface IWallPostComment {
+	id: string;
+	text: string;
+	user: {
+		fullName: string;
+		avatarURL?: string;
+		id: string;
+	};
+	timestamp: Date;
+	numberOfLikes: number;
+	likes: any[]; // IUserQuery[]; // @Alex TODO: fix typing after backend is ready
+	likedByMe: boolean;
+	replies: IWallPostComment[];
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.
