@@ -3,7 +3,7 @@ import {Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {BlurView} from 'react-native-blur';
 import Modal from 'react-native-modal';
 
-import {IManagedModal, InputSizes, PeopleSearchResultEntry, SXTextInput, TRKeyboardKeys} from '..';
+import {IManagedModal, InputSizes, PeopleSearchResultEntry, PrimaryTextInput, TRKeyboardKeys} from '..';
 import {OS_TYPES} from '../../environment/consts';
 import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './TagFriendsModal.style';
@@ -50,7 +50,7 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 					<View style={style.pinkContainer}>
 						<Text style={style.title}>{getText('modal.tag.friends.title')}</Text>
 						<View style={style.inputContainer}>
-							<SXTextInput
+							<PrimaryTextInput
 								autoFocus={true}
 								autoCorrect={true}
 								onChangeText={onSearchUpdated}

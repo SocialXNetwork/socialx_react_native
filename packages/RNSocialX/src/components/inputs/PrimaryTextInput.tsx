@@ -3,7 +3,7 @@ import {Keyboard, Platform, Text, TextInput, TextInputProps, TouchableOpacity, V
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {OS_TYPES} from '../../environment/consts';
-import style, {customStyleProps} from './SXTextInput.style';
+import style, {customStyleProps} from './PrimaryTextInput.style';
 
 export enum TKeyboardKeys {
 	default = 'default',
@@ -27,7 +27,7 @@ export enum InputSizes {
 	Large = 'Large',
 }
 
-interface ISXTextInputProps {
+interface IPrimaryTextInputProps {
 	width: number;
 	icon: string;
 	iconColor: string;
@@ -57,7 +57,7 @@ interface ISXTextInputProps {
 	onPressCancel: () => void;
 }
 
-interface ISXTextInputState {
+interface IPrimaryTextInputState {
 	hasFocus: boolean;
 }
 
@@ -98,7 +98,7 @@ const CancelButton: React.SFC<{
 	return null;
 };
 
-export class SXTextInput extends React.Component<ISXTextInputProps, ISXTextInputState> {
+export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IPrimaryTextInputState> {
 	public static defaultProps = {
 		width: 0,
 		icon: '',

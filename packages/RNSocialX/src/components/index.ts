@@ -26,7 +26,7 @@ export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
 export {CommentTextInput} from './inputs/CommentTextInput';
 export {SettingCheckbox} from './inputs/SettingCheckbox';
 export {SharePostInput} from './inputs/SharePostInput';
-export {SXTextInput, TKeyboardKeys, TRKeyboardKeys, InputSizes} from './inputs/SXTextInput';
+export {PrimaryTextInput, TKeyboardKeys, TRKeyboardKeys, InputSizes} from './inputs/PrimaryTextInput';
 
 export {CloseButton} from './interaction/CloseButton';
 export {GradientButton} from './interaction/GradientButton';
@@ -44,6 +44,7 @@ export {ActivityIndicatorModal} from './modals/ActivityIndicatorModal';
 export {ConfirmationModal} from './modals/ConfirmationModal';
 export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
 export {MediaInfoModal} from './modals/MediaInfoModal';
+export {OfflineOverlay} from './modals/OfflineOverlayModal';
 export {ReportProblemModal, IReportData} from './modals/ReportProblemModal';
 export {TagFriendsModal} from './modals/TagFriendsModal';
 

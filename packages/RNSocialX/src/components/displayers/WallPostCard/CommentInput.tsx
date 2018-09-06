@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Animated, Dimensions, Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
 
-import {InputSizes, SXTextInput, TRKeyboardKeys} from '../../';
+import {InputSizes, PrimaryTextInput, TRKeyboardKeys} from '../../';
 import {AnimatedFastImage, Colors, Sizes} from '../../../environment/theme';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -41,7 +41,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 					style={[styles.commentInputAvatar, {width: animationValues.width, height: animationValues.height}]}
 				/>
 				<Animated.View style={[styles.commentInputView, {borderWidth: animationValues.border}]}>
-					<SXTextInput
+					<PrimaryTextInput
 						width={SCREEN_WIDTH - 90}
 						borderWidth={0}
 						size={InputSizes.Small}
