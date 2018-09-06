@@ -8,6 +8,8 @@ declare module 'react-native-spinkit';
 
 declare module 'react-native-android-keyboard-adjust';
 
+declare module 'react-native-modal-dropdown';
+
 // declare module 'react-native-image-crop-picker';
 
 // declare module 'react-native-image-resizer';
