@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Alert, Animated, Keyboard, Linking, Platform, Text, View} from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
-import {HeartAnimation, ISuggestionCardItem, ModalReportProblem} from '../../';
+import {HeartAnimation, ISuggestionCardItem, ReportProblemModal} from '../../';
 import {OS_TYPES} from '../../../environment/consts';
 import {IMediaProps, IResizeProps, ISimpleComment, ITranslatedProps} from '../../../types';
 import {
@@ -148,7 +148,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		return (
 			<View style={styles.container} ref={this.containerViewRef}>
 				{!this.state.hideAdvancedMenu && (
-					<ModalReportProblem
+					<ReportProblemModal
 						visible={this.state.reportProblemModalVisible}
 						confirmHandler={this.reportProblemHandler}
 						declineHandler={this.toggleDeclineReportModal}

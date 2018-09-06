@@ -3,14 +3,14 @@ import * as React from 'react';
 import {ActivityIndicator, Platform, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 
-import {TKeyboardKeys, WithManagedTransitions} from '../';
+import {TKeyboardKeys, WithManagedTransitions} from '..';
 import {OS_TYPES} from '../../environment/consts';
 import {IResizeProps, ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './ModalInputSMSCode.style';
+import style, {customStyleProps} from './InputSMSCodeModal.style';
 
 const NUMBER_OF_DIGITS = 6;
 
-interface IModalInputSMSCodeComponentProps extends ITranslatedProps, IResizeProps {
+interface IInputSMSCodeModalComponentProps extends ITranslatedProps, IResizeProps {
 	visible: boolean;
 	phoneNumber: string;
 	errorMessage: string | null;
@@ -20,11 +20,11 @@ interface IModalInputSMSCodeComponentProps extends ITranslatedProps, IResizeProp
 	resendHandler: () => void;
 }
 
-interface IWithSMSCodeProps extends IModalInputSMSCodeComponentProps, IResizeProps, ITranslatedProps {
+interface IWithSMSCodeProps extends IInputSMSCodeModalComponentProps, IResizeProps, ITranslatedProps {
 	smsCode: string;
 }
 
-const ModalInputSMSCodeComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
+const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 	values: {
 		visible,
 		phoneNumber,
@@ -111,7 +111,7 @@ const ModalInputSMSCodeComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 );
 
 const formikSettings = {
-	mapPropsToValues: (props: IModalInputSMSCodeComponentProps) => ({...props, smsCode: ''}),
+	mapPropsToValues: (props: IInputSMSCodeModalComponentProps) => ({...props, smsCode: ''}),
 	validate: ({smsCode}: IWithSMSCodeProps) => {
 		const errors: FormikErrors<IWithSMSCodeProps> = {};
 		if (!smsCode || smsCode.length < NUMBER_OF_DIGITS) {
@@ -121,9 +121,9 @@ const formikSettings = {
 	},
 	handleSubmit: async (
 		{smsCode}: IWithSMSCodeProps,
-		{props}: FormikBag<IModalInputSMSCodeComponentProps, IModalInputSMSCodeComponentProps>,
+		{props}: FormikBag<IInputSMSCodeModalComponentProps, IInputSMSCodeModalComponentProps>,
 	) => props.confirmHandler(smsCode),
 	enableReinitialize: true,
 };
 
-export const ModalInputSMSCode = withFormik(formikSettings)(ModalInputSMSCodeComponent as any);
+export const InputSMSCodeModal = withFormik(formikSettings)(InputSMSCodeModalComponent as any);

@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 
 import {ITranslatedProps, MediaTypes} from '../../types';
 import {WithManagedTransitions} from '../managedTransitions';
-import styles from './ModalMediaInfo.style';
+import styles from './MediaInfoModal.style';
 
 interface IMediaInfoOverlayProps extends ITranslatedProps {
 	visible: boolean;
@@ -30,7 +30,7 @@ const openURL = async (url: string, errorText: string) => {
 	}
 };
 
-export const ModalMediaInfo: React.SFC<IMediaInfoOverlayProps> = ({
+export const MediaInfoModal: React.SFC<IMediaInfoOverlayProps> = ({
 	visible,
 	mediaHash,
 	mediaSize,

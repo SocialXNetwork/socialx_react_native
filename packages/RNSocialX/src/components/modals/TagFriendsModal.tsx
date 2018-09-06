@@ -3,12 +3,12 @@ import {Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {BlurView} from 'react-native-blur';
 import Modal from 'react-native-modal';
 
-import {IManagedModal, InputSizes, PeopleSearchResultEntry, SXTextInput, TRKeyboardKeys} from '../';
+import {IManagedModal, InputSizes, PeopleSearchResultEntry, SXTextInput, TRKeyboardKeys} from '..';
 import {OS_TYPES} from '../../environment/consts';
 import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './ModalTagFriends.style';
+import style, {customStyleProps} from './TagFriendsModal.style';
 
-interface IModalTagFriendsProps extends ITranslatedProps, IManagedModal, IResizeProps {
+interface ITagFriendsModalProps extends ITranslatedProps, IManagedModal, IResizeProps {
 	visible: boolean;
 	doneHandler: () => void;
 	cancelHandler: () => void;
@@ -19,7 +19,7 @@ interface IModalTagFriendsProps extends ITranslatedProps, IManagedModal, IResize
 	selectTagUserInModal: (friend: FriendsSearchResult) => void;
 }
 
-export const ModalTagFriends: React.SFC<IModalTagFriendsProps> = ({
+export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 	visible,
 	blurViewRef,
 	onSearchUpdated,

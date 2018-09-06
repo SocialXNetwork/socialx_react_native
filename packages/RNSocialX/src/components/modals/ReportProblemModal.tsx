@@ -5,25 +5,25 @@ import Modal from 'react-native-modal';
 import ModalDropdown from 'react-native-modal-dropdown';
 
 import {FormikBag, FormikErrors, FormikProps, withFormik} from 'formik';
-import {SXTextInput} from '../';
+import {SXTextInput} from '..';
 import {OS_TYPES} from '../../environment/consts';
 import {ApplicationStyles, Colors, Icons} from '../../environment/theme';
 import {IResizeProps, ITranslatedProps} from '../../types';
 import {WithManagedTransitions} from '../managedTransitions';
-import style from './ModalReportProblem.style';
+import style from './ReportProblemModal.style';
 
 export interface IReportData {
 	reason: string;
 	description: string;
 }
 
-interface IModalReportProblemProps extends IResizeProps, ITranslatedProps {
+interface IReportProblemModalProps extends IResizeProps, ITranslatedProps {
 	visible: boolean;
 	confirmHandler: (data: IReportData) => void;
 	declineHandler: () => void;
 }
 
-interface IModalReportProblemComponentProps extends IReportData, IModalReportProblemProps {}
+interface IReportProblemModalComponentProps extends IReportData, IReportProblemModalProps {}
 
 const REPORT_REASONS = [
 	'modal.report.problem.reason.sample1',
@@ -32,7 +32,7 @@ const REPORT_REASONS = [
 	'modal.report.problem.reason.sample4',
 ];
 
-const ModalReportProblemComponent: React.SFC<FormikProps<IModalReportProblemComponentProps>> = ({
+const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComponentProps>> = ({
 	values: {visible, declineHandler, marginBottom, getText, description},
 	isValid,
 	handleSubmit,
@@ -124,19 +124,19 @@ const ModalReportProblemComponent: React.SFC<FormikProps<IModalReportProblemComp
 );
 
 const formikSettings = {
-	mapPropsToValues: (props: IModalReportProblemProps) => ({...props, reason: REPORT_REASONS[0], description: ''}),
-	validate: ({reason, description}: IModalReportProblemComponentProps) => {
-		const errors: FormikErrors<IModalReportProblemComponentProps> = {};
+	mapPropsToValues: (props: IReportProblemModalProps) => ({...props, reason: REPORT_REASONS[0], description: ''}),
+	validate: ({reason, description}: IReportProblemModalComponentProps) => {
+		const errors: FormikErrors<IReportProblemModalComponentProps> = {};
 		if (!description) {
 			errors.description = 'modal.report.problem.description.required';
 		}
 		return errors;
 	},
 	handleSubmit: (
-		{reason, description}: IModalReportProblemComponentProps,
-		{props}: FormikBag<IModalReportProblemProps, IModalReportProblemComponentProps>,
+		{reason, description}: IReportProblemModalComponentProps,
+		{props}: FormikBag<IReportProblemModalProps, IReportProblemModalComponentProps>,
 	) => props.confirmHandler({reason, description}),
 	enableReinitialize: true,
 };
 
-export const ModalReportProblem = withFormik(formikSettings)(ModalReportProblemComponent as any);
+export const ReportProblemModal = withFormik(formikSettings)(ReportProblemModalComponent as any);

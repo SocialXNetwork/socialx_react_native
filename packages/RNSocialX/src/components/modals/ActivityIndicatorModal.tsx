@@ -3,15 +3,15 @@ import {ActivityIndicator, Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 
 import {WithManagedTransitions} from '../managedTransitions';
-import style, {customStyleProps} from './ModalActivityIndicator.style';
+import style, {customStyleProps} from './ActivityIndicatorModal.style';
 
-interface IModalActivityIndicatorProps {
+interface IActivityIndicatorModalProps {
 	activityIndicatorTitle: string | null;
 	activityIndicatorMessage: string | null;
 	showActivityIndicator: boolean;
 }
 
-export const ModalActivityIndicator: React.SFC<IModalActivityIndicatorProps> = ({
+export const ActivityIndicatorModal: React.SFC<IActivityIndicatorModalProps> = ({
 	activityIndicatorTitle = null,
 	activityIndicatorMessage = null,
 	showActivityIndicator,

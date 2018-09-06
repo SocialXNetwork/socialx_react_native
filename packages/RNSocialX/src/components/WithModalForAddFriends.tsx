@@ -2,7 +2,7 @@ import * as React from 'react';
 import {findNodeHandle, View} from 'react-native';
 
 import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../types';
-import {IManagedModal, ModalTagFriends} from './';
+import {IManagedModal, TagFriendsModal} from './';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
 	{
@@ -84,7 +84,7 @@ export class WithModalForAddFriends extends React.Component<
 		const {modalVisible, blurViewRef, friendsSearchResults, taggedFriends, taggedFriendsInModal} = this.state;
 		return (
 			<View style={{flex: 1}}>
-				<ModalTagFriends
+				<TagFriendsModal
 					visible={modalVisible}
 					doneHandler={this.handleTagFriendsEditFinished}
 					cancelHandler={this.closeTagFriendsModal}
