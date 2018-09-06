@@ -13,6 +13,15 @@ const ApplicationStylesTi: any = {
 		textAlign: 'center',
 		flex: 1,
 	},
+	inputErrorText: {
+		...Fonts.centuryGothic,
+		color: Colors.monza,
+		fontSize: Sizes.smartHorizontalScale(12),
+		lineHeight: Sizes.smartHorizontalScale(16),
+	},
+	buttonDisabled: {
+		opacity: 0.3,
+	},
 };
 
 export const ApplicationStyles = StyleSheet.create(ApplicationStylesTi);
