@@ -5,10 +5,10 @@ import {SpinKitLoader, SpinnerTypes} from './SpinKitLoader';
 
 export interface IWithLoaderProps {
 	isLoading: boolean;
-	animatedStyle: any;
-	spinnerType: SpinnerTypes;
-	spinnerSize: number;
-	spinnerColor: string;
+	animatedStyle?: any;
+	spinnerType?: SpinnerTypes;
+	spinnerSize?: number;
+	spinnerColor?: string;
 }
 
 export const WithInlineLoader: React.SFC<IWithLoaderProps> = ({

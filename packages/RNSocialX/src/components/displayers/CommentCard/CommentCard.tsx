@@ -18,7 +18,7 @@ interface ICommentCardProps extends ITranslatedProps {
 	onViewUserProfile: (userId: string) => void;
 	requestingLike: boolean;
 	onShowOptionsMenu: () => void;
-	getCommentContainerWidth: (value: number) => void;
+	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: object;
 }
 
@@ -36,7 +36,7 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 			onCommentLike,
 			requestingLike,
 			onShowOptionsMenu,
-			getCommentContainerWidth,
+			onCommentContainerWidthChange,
 			commentLikesPosition,
 			getText,
 		} = this.props;
@@ -65,7 +65,7 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 					</View>
 					<View
 						style={styles.actionsContainer}
-						onLayout={(event) => getCommentContainerWidth(event.nativeEvent.layout.width)}
+						onLayout={(event) => onCommentContainerWidthChange(event.nativeEvent.layout.width)}
 					>
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
 						<TouchableOpacity

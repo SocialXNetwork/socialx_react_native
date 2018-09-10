@@ -97,6 +97,11 @@ export interface IWallPostComment {
 	replies: IWallPostComment[];
 }
 
+export enum CommentsSortingOptions {
+	Likes = 'Likes',
+	Recent = 'Recent',
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.
