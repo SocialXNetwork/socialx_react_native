@@ -10,6 +10,7 @@ export {AvatarPicker} from './avatar/AvatarPicker';
 export {AddFriendsList} from './displayers/AddFriendsList';
 export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
 export {CommentCard} from './displayers/CommentCard';
+export {DotsMenuButton} from './displayers/DotsMenuButton';
 export {HeartAnimation} from './displayers/HeartAnimation';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
@@ -43,6 +44,7 @@ export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTran
 
 export {ActivityIndicatorModal} from './modals/ActivityIndicatorModal';
 export {ConfirmationModal} from './modals/ConfirmationModal';
+export {DotsMenuModal} from './modals/DotsMenuModal';
 export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
 export {MediaInfoModal} from './modals/MediaInfoModal';
 export {OfflineOverlay} from './modals/OfflineOverlayModal';
