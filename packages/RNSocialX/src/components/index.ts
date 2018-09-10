@@ -24,6 +24,8 @@ export {ITopContainerSharedProps, ProfileTopContainer} from './displayers/Profil
 export {SocialXAccountCurrencyItem, AccountCurrencyData} from './displayers/SocialXAccountCurrencyItem';
 export {SocialXAccountTitleCard} from './displayers/SocialXAccountTitleCard';
 export {RichText} from './displayers/RichText/RichText';
+export {SearchHeader} from './displayers/SearchHeader';
+export {SuggestedUserCard} from './displayers/SuggestedUserCard';
 export {TextGradient} from './displayers/TextGradient';
 export {WallPostCard} from './displayers/WallPostCard';
 

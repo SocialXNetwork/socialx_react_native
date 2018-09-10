@@ -4,7 +4,7 @@ import {Text, View} from 'react-native';
 
 import styles, {animations} from './MaintenanceScreen.style';
 
-export default class MaintenanceScreen extends React.Component {
+export class MaintenanceScreen extends React.Component {
 	public render() {
 		return (
 			<View style={styles.container}>
