@@ -20,7 +20,7 @@ export interface ILaunchScreenProps extends ITranslatedProps {
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 }
 
-export default class LaunchScreen extends React.Component<ILaunchScreenProps, any> {
+export class LaunchScreen extends React.Component<ILaunchScreenProps, any> {
 	private static navigationOptions = {
 		header: null,
 	};
