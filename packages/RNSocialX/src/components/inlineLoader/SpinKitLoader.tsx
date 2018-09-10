@@ -31,9 +31,9 @@ const customStyleProps = {
 };
 
 interface ISpinKitLoaderProps {
-	spinnerType: SpinnerTypes;
-	spinnerSize: number;
-	spinnerColor: string;
+	spinnerType?: SpinnerTypes;
+	spinnerSize?: number;
+	spinnerColor?: string;
 }
 
 export const SpinKitLoader: React.SFC<ISpinKitLoaderProps> = ({
