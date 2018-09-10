@@ -36,6 +36,7 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 	disabled,
 	header,
 }) => (
+	// @ts-ignore
 	<PhotoGrid
 		thumbWidth={USER_MEDIA_THUMB_SIZE}
 		thumbHeight={USER_MEDIA_THUMB_SIZE}
