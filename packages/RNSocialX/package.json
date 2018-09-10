@@ -43,6 +43,7 @@
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-photo-view": "^1.5.2",
     "react-native-randombytes": "^3.5.0",
+    "react-native-smart-splash-screen": "^2.3.5",
     "react-native-snap-carousel": "^3.7.2",
     "react-native-stream": "^0.1.9",
     "react-native-swipeable": "^0.6.0",

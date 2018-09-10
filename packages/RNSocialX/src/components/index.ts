@@ -1,3 +1,5 @@
+export {Foo} from './Foo';
+
 export {ActivityFriendRequestCard} from './activityCards/ActivityFriendRequestCard';
 export {ActivityRecentCommentCard} from './activityCards/ActivityRecentCommentCard';
 export {ActivitySuperLikedCard} from './activityCards/ActivitySuperLikedCard';
