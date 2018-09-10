@@ -1,6 +1,6 @@
 export {HelloFoo} from './HelloFoo';
 
-export {CommentsScreen} from './commentsStack/CommensScreen';
+export {CommentsScreen} from './commentsStack/CommentsScreen';
 
 export {ReferralScreen} from './myProfile/ReferralScreen';
 export {SocialXAccountScreen} from './myProfile/SocialXAccountScreen';
