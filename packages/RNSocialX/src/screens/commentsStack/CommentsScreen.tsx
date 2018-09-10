@@ -18,8 +18,8 @@ import {NavigationScreenProp} from 'react-navigation';
 
 import {OS_TYPES} from '../../environment/consts';
 import {CommentsSortingOptions, IMediaProps, ITranslatedProps, IWallPostComment} from '../../types';
-import {customStyleProps} from './CommensScreen.style';
-import {CommentsScreenView} from './CommensScreen.view';
+import {customStyleProps} from './CommentsScreen.style';
+import {CommentsScreenView} from './CommentsScreen.view';
 
 interface ICommentsScreenNavScreenProps {
 	params: {

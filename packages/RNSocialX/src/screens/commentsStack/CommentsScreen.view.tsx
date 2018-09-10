@@ -10,7 +10,7 @@ import {CommentCard, CommentTextInput} from '../../components';
 import {WallPostMedia} from '../../components/displayers/WallPostCard';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {IMediaProps, IResizeProps, ITranslatedProps, IWallPostComment} from '../../types';
-import style from './CommensScreen.style';
+import style from './CommentsScreen.style';
 import {NoComments, PostActions, PostLikes, PostOwner, PostText} from './components';
 
 const scrollRef: RefObject<ScrollView> = React.createRef();
