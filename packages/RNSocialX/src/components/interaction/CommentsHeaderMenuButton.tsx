@@ -7,9 +7,8 @@ import * as React from 'react';
 import {Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {DotsMenuButton} from '../../../components';
-import {CommentsSortingOptions, ITranslatedProps} from '../../../types';
-import style, {customStyleProps} from './HeaderRight.style';
+import {CommentsSortingOptions, ITranslatedProps} from '../../types';
+import style, {customStyleProps} from './CommentsHeaderMenuButton.style';
 
 const getSortingSectionHeaderItem = (title: string) => [
 	{
@@ -41,12 +40,16 @@ const getSortingItems = (selectedValue: CommentsSortingOptions, onValueChange: (
 		};
 	});
 
-interface IHeaderRightProps extends ITranslatedProps {
+interface ICommentsHeaderMenuButtonProps extends ITranslatedProps {
 	sortOption: CommentsSortingOptions;
 	onValueChange: (value: string) => void;
 }
 
-export const HeaderRight: React.SFC<IHeaderRightProps> = ({getText, sortOption, onValueChange}) => {
+export const CommentsHeaderMenuButton: React.SFC<ICommentsHeaderMenuButtonProps> = ({
+	getText,
+	sortOption,
+	onValueChange,
+}) => {
 	const headerItem = getSortingSectionHeaderItem(getText('comments.order.title'));
 	const menuItems = getSortingItems(sortOption, onValueChange);
 	return (

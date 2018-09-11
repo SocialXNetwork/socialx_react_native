@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
+import {Colors, Fonts, Sizes} from '../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(40);
 

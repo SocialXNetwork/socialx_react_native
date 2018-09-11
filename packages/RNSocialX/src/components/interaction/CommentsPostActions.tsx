@@ -6,16 +6,16 @@
 import * as React from 'react';
 import {View} from 'react-native';
 
-import {IconButton, LikeAnimatingButton} from '../../../components';
-import {ITranslatedProps} from '../../../types';
-import styles from './PostActions.style';
+import {IconButton, LikeAnimatingButton} from '../../components';
+import {ITranslatedProps} from '../../types';
+import styles from './CommentsPostActions.style';
 
 interface IPostActionsProps extends ITranslatedProps {
 	likedByMe: boolean;
 	onLikePress: () => void;
 }
 
-export const PostActions: React.SFC<IPostActionsProps> = ({likedByMe, onLikePress, getText}) => (
+export const CommentsPostActions: React.SFC<IPostActionsProps> = ({likedByMe, onLikePress, getText}) => (
 	<View style={styles.container}>
 		<LikeAnimatingButton onPress={onLikePress} likedByMe={likedByMe} getText={getText} />
 		// @ts-ignore
