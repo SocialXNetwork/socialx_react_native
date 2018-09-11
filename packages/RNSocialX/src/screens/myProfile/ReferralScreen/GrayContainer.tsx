@@ -8,7 +8,7 @@ interface IGrayContainerProps {
 	text: string;
 }
 
-const GrayContainer: React.SFC<IGrayContainerProps> = ({heading, text}) => {
+export const GrayContainer: React.SFC<IGrayContainerProps> = ({heading, text}) => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.heading}>{heading}</Text>
@@ -16,5 +16,3 @@ const GrayContainer: React.SFC<IGrayContainerProps> = ({heading, text}) => {
 		</View>
 	);
 };
-
-export default GrayContainer;
