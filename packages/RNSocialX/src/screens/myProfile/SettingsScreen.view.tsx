@@ -31,13 +31,13 @@ export interface SettingsData {
 	username: string;
 }
 
-interface ISettingsScreenComponentProps extends SettingsData, ITranslatedProps {
+interface ISettingsFormProps extends SettingsData, ITranslatedProps {
 	onSaveChanges: (values: SettingsData) => void;
 }
 
-interface ISettingsScreenViewProps extends ISettingsScreenComponentProps, IWithLoaderProps {}
+interface ISettingsScreenViewProps extends ISettingsFormProps, IWithLoaderProps {}
 
-const SettingsForm: React.SFC<ISettingsScreenComponentProps> = ({
+const SettingsForm: React.SFC<ISettingsFormProps> = ({
 	aboutText,
 	firstName,
 	lastName,
