@@ -2,6 +2,9 @@ export {HelloFoo} from './HelloFoo';
 
 export {CommentsScreen} from './commentsStack/CommentsScreen';
 
+export {PhotoScreen} from './mainStack/PhotoScreen';
+export {UserProfileScreen} from './mainStack/UserProfileScreen';
+
 export {TrendingScreen, PeopleTab, TagsTab, TopTab, PlacesTab} from './mainTabNav/searchTab';
 
 export {ReferralScreen} from './myProfile/ReferralScreen';
