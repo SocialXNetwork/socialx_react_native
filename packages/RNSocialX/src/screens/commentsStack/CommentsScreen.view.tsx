@@ -25,8 +25,6 @@ interface ICommentsScreenComponentProps extends IWithLoaderProps, ITranslatedPro
 	onViewUserProfile: (userId: string) => void;
 	commentText: string;
 	showSendButton: boolean;
-	noCommentsText: string;
-	commentInputPlaceholder: string;
 	onShowOptionsMenu: (comment: IWallPostComment) => void;
 	postData: any;
 	postOwner: object;
@@ -37,6 +35,7 @@ interface ICommentsScreenComponentProps extends IWithLoaderProps, ITranslatedPro
 	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: object;
 	optionsProps: object;
+	isReplyScreen: boolean;
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
@@ -49,8 +48,6 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	commentText,
 	showSendButton,
 	onCommentTextChange,
-	noCommentsText,
-	commentInputPlaceholder,
 	onShowOptionsMenu,
 	postData,
 	postOwner,
@@ -64,9 +61,15 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	optionsProps,
 	isLoading,
 	marginBottom,
+	isReplyScreen,
 }) => {
 	const {id, likes, media, text, timestamp} = postData;
 	const likedByMe = !!likes.find((like: any) => like.userId === currentUser.userId);
+
+	const noCommentsText = isReplyScreen ? getText('replies.screen.no.comments') : getText('comments.screen.no.comments');
+	const commentInputPlaceholder = isReplyScreen
+		? getText('replies.screen.comment.input.placeholder')
+		: getText('comments.screen.comment.input.placeholder');
 
 	return (
 		<SafeAreaView style={[style.container, Platform.select({ios: {marginBottom}})]}>
