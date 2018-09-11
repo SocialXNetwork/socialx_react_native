@@ -1,12 +1,12 @@
 /**
  * TODO list:
- * 1. Props: postUser, currentUser, postComments, reloadComments, loadingComments, sendComment, likeComment,
- * removeCommentLike, deleteComment, likePost, unlikePost
- * 2. decide where `marginBottom` should come from?
- * 3. after sendComment optimistically insert that into local database and fix if there is a problem
- * 4. consider adding a global optimistic update handler
- * 5. delete option should be available only for own comments
- * 6. Check navigation usage! Relevant use case.
+ * 1. Props data: postUser, currentUser, postComments, loadingComments,
+ * 2. Props actions: reloadComments, sendComment, likeComment, removeCommentLike, deleteComment, likePost, unlikePost
+ * 3. decide where `marginBottom` should come from?
+ * 4. after sendComment optimistically insert that into local database and fix if there is a problem
+ * 5. consider adding a global optimistic update handler
+ * 6. delete option should be available only for own comments
+ * 7. Check navigation usage! Relevant use case.
  */
 
 import {ActionSheet} from 'native-base';
@@ -25,8 +25,6 @@ interface ICommentsScreenNavScreenProps {
 		commentId?: string; // only available for replies
 		postId?: string; // only for main comments screen
 		startComment: boolean;
-		onSelectionChange: any;
-		sortOption: CommentsSortingOptions;
 		postData: object;
 	};
 }
@@ -70,10 +68,6 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 
 	public componentDidMount() {
 		StatusBar.setBarStyle('dark-content', true);
-		this.props.navigation.setParams({
-			onSelectionChange: this.updateSortingHandler,
-			sortOption: this.state.sortOption,
-		});
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustResize();
 		}
@@ -88,8 +82,8 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 
 	public render() {
 		const {getText, navigation, postUser, currentUser, postComments, loadingComments} = this.props;
-		const {postData, sortOption, onSelectionChange} = navigation.state.params;
-		const optionsProps = {sortOption, onSelectionChange};
+		const {postData} = navigation.state.params;
+		const optionsProps = {sortOption: this.state.sortOption, onSelectionChange: this.updateSortingHandler};
 		const {commentText, showSendButton} = this.state;
 
 		return (
@@ -158,9 +152,6 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 
 	private updateSortingHandler = (value: CommentsSortingOptions) => {
 		this.setState({
-			sortOption: value,
-		});
-		this.props.navigation.setParams({
 			sortOption: value,
 		});
 	};
