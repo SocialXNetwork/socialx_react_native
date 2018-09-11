@@ -3,10 +3,9 @@ import * as React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {AvatarImage} from '../../../components';
-import {ITranslatedProps} from '../../../types';
-import {HeaderRight} from './HeaderRight';
-import styles from './PostOwner.style';
+import {AvatarImage, CommentsHeaderMenuButton} from '../';
+import {ITranslatedProps} from '../../types';
+import styles from './CommentsPostOwner.style';
 
 interface IPostOwnerProps extends ITranslatedProps {
 	owner: any;
@@ -16,7 +15,7 @@ interface IPostOwnerProps extends ITranslatedProps {
 	showUserProfile: (userId: string) => void;
 }
 
-export const PostOwner: React.SFC<IPostOwnerProps> = ({
+export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 	owner,
 	timestamp,
 	onBackPress,
@@ -39,7 +38,7 @@ export const PostOwner: React.SFC<IPostOwnerProps> = ({
 				<Text style={styles.timestamp}>{`${timeStampDate} at ${timeStampHour}`}</Text>
 			</View>
 			<View style={styles.dotsContainer}>
-				<HeaderRight
+				<CommentsHeaderMenuButton
 					sortOption={optionsProps.sortOption}
 					onValueChange={optionsProps.onSelectionChange}
 					getText={getText}

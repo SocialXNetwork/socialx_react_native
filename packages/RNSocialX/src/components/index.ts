@@ -11,11 +11,15 @@ export {AvatarPicker} from './avatar/AvatarPicker';
 
 export {AddFriendsList} from './displayers/AddFriendsList';
 export {CheckboxButtonWithIcon} from './displayers/CheckboxButtonWithIcon';
+export {CommentsPostLikes} from './displayers/CommentsPostLikes';
+export {CommentsPostOwner} from './displayers/CommentsPostOwner';
+export {CommentsPostText} from './displayers/CommentsPostText';
 export {CommentCard} from './displayers/CommentCard';
 export {DotsMenuButton} from './displayers/DotsMenuButton';
 export {HeartAnimation} from './displayers/HeartAnimation';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
+export {NoComments} from './displayers/NoComments';
 export {NavigationTabBar} from './displayers/NavigationTabBar';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
@@ -37,6 +41,8 @@ export {SharePostInput} from './inputs/SharePostInput';
 export {PrimaryTextInput, TKeyboardKeys, TRKeyboardKeys, InputSizes} from './inputs/PrimaryTextInput';
 
 export {CloseButton} from './interaction/CloseButton';
+export {CommentsHeaderMenuButton} from './interaction/CommentsHeaderMenuButton';
+export {CommentsPostActions} from './interaction/CommentsPostActions';
 export {GradientButton} from './interaction/GradientButton';
 export {IconButton} from './interaction/IconButton';
 export {LikeAnimatingButton} from './interaction/LikeAnimatingButton';

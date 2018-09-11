@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Text, View} from 'react-native';
 
-import {ITranslatedProps} from '../../../types';
-import styles from './PostLikes.style';
+import {ITranslatedProps} from '../../types';
+import styles from './CommentsPostLikes.style';
 
 interface IPostLikesProps extends ITranslatedProps {
 	likes: Array<{
@@ -12,7 +12,7 @@ interface IPostLikesProps extends ITranslatedProps {
 	showUserProfile: (userId: string) => void;
 }
 
-export const PostLikes: React.SFC<IPostLikesProps> = ({likes, showUserProfile, getText}) => {
+export const CommentsPostLikes: React.SFC<IPostLikesProps> = ({likes, showUserProfile, getText}) => {
 	if (likes.length > 0) {
 		const lastLikeUser = likes[likes.length - 1];
 		const secondLastLike = likes.length >= 2 ? likes[likes.length - 2] : null;

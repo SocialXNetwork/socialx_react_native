@@ -6,12 +6,19 @@
 import React, {RefObject} from 'react';
 import {Platform, SafeAreaView, ScrollView} from 'react-native';
 
-import {CommentCard, CommentTextInput} from '../../components';
+import {
+	CommentCard,
+	CommentsPostActions,
+	CommentsPostLikes,
+	CommentsPostOwner,
+	CommentsPostText,
+	CommentTextInput,
+	NoComments,
+} from '../../components';
 import {WallPostMedia} from '../../components/displayers/WallPostCard';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {IMediaProps, IResizeProps, ITranslatedProps, IWallPostComment} from '../../types';
 import style from './CommentsScreen.style';
-import {NoComments, PostActions, PostLikes, PostOwner, PostText} from './components';
 
 const scrollRef: RefObject<ScrollView> = React.createRef();
 
@@ -80,7 +87,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					ref={scrollRef}
 					onLayout={() => scrollRef.current && scrollRef.current.scrollToEnd()}
 				>
-					<PostOwner
+					<CommentsPostOwner
 						owner={postOwner}
 						timestamp={timestamp}
 						onBackPress={onCommentsBackPress}
@@ -88,7 +95,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 						getText={getText}
 						showUserProfile={onViewUserProfile}
 					/>
-					{text ? <PostText text={text} /> : null}
+					{text ? <CommentsPostText text={text} /> : null}
 					{media && (
 						<WallPostMedia
 							mediaObjects={media}
@@ -97,8 +104,8 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 							noInteraction={false}
 						/>
 					)}
-					<PostLikes getText={getText} likes={likes} showUserProfile={onViewUserProfile} />
-					<PostActions likedByMe={likedByMe} onLikePress={() => onLikePress(likedByMe, id)} getText={getText} />
+					<CommentsPostLikes getText={getText} likes={likes} showUserProfile={onViewUserProfile} />
+					<CommentsPostActions likedByMe={likedByMe} onLikePress={() => onLikePress(likedByMe, id)} getText={getText} />
 					{comments.length === 0 ? (
 						<NoComments text={noCommentsText} />
 					) : (
