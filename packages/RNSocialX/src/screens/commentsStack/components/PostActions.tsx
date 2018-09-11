@@ -12,7 +12,7 @@ import styles from './PostActions.style';
 
 interface IPostActionsProps extends ITranslatedProps {
 	likedByMe: boolean;
-	onLikePress: (likedByMe?: boolean, postId?: string) => Promise<any>;
+	onLikePress: () => void;
 }
 
 export const PostActions: React.SFC<IPostActionsProps> = ({likedByMe, onLikePress, getText}) => (
