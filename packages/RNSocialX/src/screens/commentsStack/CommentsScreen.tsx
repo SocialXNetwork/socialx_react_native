@@ -93,15 +93,6 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 		const optionsProps = {sortOption, onSelectionChange};
 		const {commentText, showSendButton} = this.state;
 
-		const isRepliesScreen = navigation.state.params.commentId !== undefined;
-
-		const noCommentsText = isRepliesScreen
-			? getText('replies.screen.no.comments')
-			: getText('comments.screen.no.comments');
-		const commentInputPlaceholder = isRepliesScreen
-			? getText('replies.screen.comment.input.placeholder')
-			: getText('comments.screen.comment.input.placeholder');
-
 		return (
 			<CommentsScreenView
 				isLoading={loadingComments}
@@ -114,8 +105,6 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 				onCommentTextChange={this.onCommentTextChangeHandler}
 				commentText={commentText}
 				showSendButton={showSendButton}
-				noCommentsText={noCommentsText}
-				commentInputPlaceholder={commentInputPlaceholder}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
 				postData={postData}
 				postOwner={postUser}
@@ -128,6 +117,7 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 				optionsProps={optionsProps}
 				getText={getText}
 				marginBottom={0}
+				isReplyScreen={navigation.state.params.commentId !== undefined}
 			/>
 		);
 	}
