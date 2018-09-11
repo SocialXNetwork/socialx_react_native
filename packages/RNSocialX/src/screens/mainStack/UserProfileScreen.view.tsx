@@ -3,7 +3,7 @@ import {Animated, Dimensions, RefreshControl, ScrollView, View} from 'react-nati
 import {AnimatedValue} from 'react-navigation';
 import {DataProvider} from 'recyclerlistview';
 
-import {IWallPostCardProps, NoPhotos, PhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
+import {IWallPostCardProps, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
 import {IPostLike, ITranslatedProps, SearchResultKind} from '../../types';
@@ -35,7 +35,6 @@ interface IUserProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps
 	gridMediaProvider: DataProvider;
 	onViewMediaFullscreen: (index: number) => void;
 	currentUserId: string;
-	isCurrentUser: boolean;
 	onIconPress: (tab: string) => void;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
@@ -67,7 +66,6 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	aboutMeText,
 	numberOfViews,
 	currentUserId,
-	isCurrentUser,
 	onIconPress,
 	listTranslate,
 	gridTranslate,
@@ -101,6 +99,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
 					scrollEnabled={hasPhotos}
 				>
+					// @ts-ignore
 					<ProfileTopContainer
 						avatarURL={avatarURL}
 						fullName={fullName}
@@ -113,8 +112,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 						onAddFriend={onAddFriend}
 						onShowFriendshipOptions={onShowFriendshipOptions}
 						relationship={relationship}
-						isCurrentUser={isCurrentUser}
-						onEditProfile={() => console.log('onEditProfile')}
+						isCurrentUser={false}
 						onIconPress={onIconPress}
 						aboutMeText={aboutMeText}
 						tabs={true}
@@ -153,9 +151,8 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 								}}
 								style={[styles.gridContainer, {transform: [{translateX: gridTranslate}]}]}
 							>
-								// @ts-ignore
-								<PhotoGrid
-									onLoadMore={loadMorePhotosHandler}
+								<ProfilePhotoGrid
+									loadMorePhotosHandler={loadMorePhotosHandler}
 									gridMediaProvider={gridMediaProvider}
 									onViewMediaFullScreen={onViewMediaFullscreen}
 									header={{

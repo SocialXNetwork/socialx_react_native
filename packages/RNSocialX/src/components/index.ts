@@ -25,7 +25,7 @@ export {NavigationTabBar} from './displayers/NavigationTabBar';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
 export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';
-export {ITopContainerSharedProps, ProfileTopContainer} from './displayers/ProfileTopContainer';
+export {ProfileTopContainer} from './displayers/ProfileTopContainer';
 export {SocialXAccountCurrencyItem, AccountCurrencyData} from './displayers/SocialXAccountCurrencyItem';
 export {SocialXAccountTitleCard} from './displayers/SocialXAccountTitleCard';
 export {RichText} from './displayers/RichText/RichText';
@@ -57,7 +57,7 @@ export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTran
 
 export {ActivityIndicatorModal} from './modals/ActivityIndicatorModal';
 export {ConfirmationModal} from './modals/ConfirmationModal';
-export {DotsMenuModal} from './modals/DotsMenuModal';
+export {DotsMenuModal, DotsMenuItem} from './modals/DotsMenuModal';
 export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
 export {MediaInfoModal} from './modals/MediaInfoModal';
 export {OfflineOverlay} from './modals/OfflineOverlayModal';
