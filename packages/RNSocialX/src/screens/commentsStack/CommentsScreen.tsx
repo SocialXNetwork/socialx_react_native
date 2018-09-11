@@ -1,4 +1,5 @@
 /**
+ * old screen -> screens/CommentsScreen/index.tsx + data.hoc.tsx
  * TODO list:
  * 1. Props data: postUser, currentUser, postComments, loadingComments,
  * 2. Props actions: reloadComments, sendComment, likeComment, removeCommentLike, deleteComment, likePost, unlikePost
