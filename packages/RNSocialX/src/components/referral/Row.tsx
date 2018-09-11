@@ -6,12 +6,20 @@ import styles from './Row.style';
 interface IRowProps {
 	title: string;
 	value: string;
-	border?: boolean;
-	onCopyText?: () => void;
-	last?: boolean;
+	border: boolean;
+	last: boolean;
+	onCopyText: () => void;
 }
 
-const Row: React.SFC<IRowProps> = ({title, value, border, onCopyText, last}) => {
+export const Row: React.SFC<IRowProps> = ({
+	title,
+	value,
+	border = false,
+	last = false,
+	onCopyText = () => {
+		/**/
+	},
+}) => {
 	const containerStyles = last ? [styles.container, {borderBottomWidth: 1}] : styles.container;
 	const rightStyles = border ? [styles.text, styles.border] : styles.text;
 
@@ -24,5 +32,3 @@ const Row: React.SFC<IRowProps> = ({title, value, border, onCopyText, last}) => 
 		</View>
 	);
 };
-
-export default Row;

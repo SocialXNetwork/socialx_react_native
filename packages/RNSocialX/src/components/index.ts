@@ -60,4 +60,7 @@ export {TagFriendsModal} from './modals/TagFriendsModal';
 export {HeaderLogo} from './navigation/HeaderLogo';
 export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';
 
+export {Container} from './referral/Container';
+export {Row} from './referral/Row';
+
 export {WithModalForAddFriends} from './WithModalForAddFriends';
