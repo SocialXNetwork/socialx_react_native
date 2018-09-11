@@ -23,7 +23,7 @@ interface IPhotoGridProps {
 	renderGridItem: (type: React.ReactText, data: any) => JSX.Element;
 	dataProvider: DataProvider;
 	scrollViewProps: object;
-	header: IHeaderType | undefined;
+	header: IHeaderType;
 	extendedState: object;
 	onScroll: (rawEvent: any, offsetX: number, offsetY: number) => void;
 }
@@ -67,7 +67,7 @@ const renderGridItemOrHeader = (
 	type: React.ReactText,
 	data: any,
 	renderGridItem: (type: React.ReactText, data: any) => JSX.Element,
-	header: IHeaderType | undefined,
+	header: IHeaderType,
 ) => {
 	if (type === ViewTypes.HEADER_LAYOUT && header) {
 		return header.element;
@@ -90,7 +90,7 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 }) => (
 	<RecyclerListView
 		renderAheadOffset={1500}
-		layoutProvider={getGridProvider(thumbWidth!, thumbHeight!, header!)}
+		layoutProvider={getGridProvider(thumbWidth, thumbHeight, header)}
 		dataProvider={dataProvider}
 		rowRenderer={(...args) => renderGridItemOrHeader(args[0], args[1], renderGridItem, header)}
 		onEndReached={onLoadMore}

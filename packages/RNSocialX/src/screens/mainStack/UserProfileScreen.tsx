@@ -13,7 +13,7 @@ import {DataProvider} from 'recyclerlistview';
 // import {ipfsConfig as base} from 'configuration';
 import uuidv4 from 'uuid/v4';
 
-import {CloseButton, IWallPostCardProps} from '../../components';
+import {CloseButton} from '../../components';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
 import {IMediaProps, ITranslatedProps} from '../../types';
 import {UserProfileScreenView} from './UserProfileScreen.view';
@@ -22,20 +22,6 @@ import {headerDefaultStyles} from './UserProfileScreen.style';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
-
-const INITIAL_STATE = {
-	numberOfPhotos: 0,
-	numberOfLikes: 0,
-	numberOfFriends: 0,
-	numberOfViews: 0,
-	avatarURL: null,
-	fullName: '',
-	userName: '',
-	aboutMeText: '',
-	recentPosts: [],
-	isLoading: true,
-	refreshing: false,
-};
 
 interface IUserProfileScreenProps extends ITranslatedProps {
 	navigation: NavigationScreenProp<any>;
@@ -48,16 +34,6 @@ interface IUserProfileScreenProps extends ITranslatedProps {
 }
 
 interface IUserProfileScreenState {
-	numberOfPhotos: number;
-	numberOfLikes: number;
-	numberOfFriends: number;
-	numberOfViews: number;
-	avatarURL: any;
-	fullName: string;
-	userName: string;
-	aboutMeText: string;
-	recentPosts: IWallPostCardProps[];
-	isLoading: boolean;
 	refreshing: boolean;
 	gridMediaProvider: DataProvider;
 	listTranslate: AnimatedValue;
@@ -89,7 +65,7 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 		});
 
 		this.state = {
-			...INITIAL_STATE,
+			refreshing: false,
 			gridMediaProvider: this.gridPhotosProvider,
 			listTranslate: new Animated.Value(0),
 			gridTranslate: new Animated.Value(SCREEN_WIDTH),
@@ -140,7 +116,6 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 				refreshing={refreshing}
 				gridMediaProvider={gridMediaProvider}
 				currentUserId={currentUser.userId}
-				isCurrentUser={false}
 				onIconPress={this.onIconPressHandler}
 				listTranslate={this.state.listTranslate}
 				gridTranslate={this.state.gridTranslate}

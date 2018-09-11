@@ -5,7 +5,8 @@ export {CommentsScreen} from './commentsStack/CommentsScreen';
 export {PhotoScreen} from './mainStack/PhotoScreen';
 export {UserProfileScreen} from './mainStack/UserProfileScreen';
 
-export {TrendingScreen, PeopleTab, TagsTab, TopTab, PlacesTab} from './mainTabNav/searchTab';
+export {MyProfileScreen} from './mainTabNav/MyProfileScreen';
+export {TrendingScreen, PeopleTab, TagsTab, TopTab, PlacesTab} from './mainTabNav/SearchScreen';
 
 export {ReferralScreen} from './myProfile/ReferralScreen';
 export {SettingsScreen} from './myProfile/SettingsScreen';

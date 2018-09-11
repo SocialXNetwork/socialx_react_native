@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 import {AvatarImage, ButtonSizes, PrimaryButton} from '../../';
 import {PROFILE_TAB_ICON_TYPES} from '../../../environment/consts';
@@ -7,7 +7,7 @@ import {ITranslatedProps, SearchResultKind} from '../../../types';
 import {Statistics, Tabs} from './';
 import styles, {buttonWidth, colors} from './ProfileTopContainer.style';
 
-export interface ITopContainerSharedProps extends ITranslatedProps {
+interface IProfileTopContainerProps extends ITranslatedProps {
 	avatarURL: any;
 	fullName: string;
 	userName: false | string;
@@ -18,7 +18,7 @@ export interface ITopContainerSharedProps extends ITranslatedProps {
 	onAddFriend: () => void;
 	onShowFriendshipOptions: () => void;
 	relationship: SearchResultKind;
-	onViewProfilePhoto?: () => void;
+	onViewProfilePhoto: () => void;
 	isCurrentUser: boolean;
 	onEditProfile: () => void;
 	tabs: boolean;
@@ -27,7 +27,7 @@ export interface ITopContainerSharedProps extends ITranslatedProps {
 	aboutMeText: false | string;
 }
 
-export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
+export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	avatarURL,
 	fullName,
 	userName = false,
@@ -35,20 +35,17 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 	numberOfLikes,
 	numberOfFriends,
 	numberOfViews,
-	onAddFriend = async () => {
-		/**/
-	},
+	onAddFriend,
 	onShowFriendshipOptions = () => {
 		/**/
 	},
 	relationship = SearchResultKind.NotFriend,
+	onViewProfilePhoto,
 	isCurrentUser,
 	onEditProfile = () => {
 		/**/
 	},
-	onIconPress = () => {
-		/**/
-	},
+	onIconPress,
 	aboutMeText = false,
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
@@ -59,9 +56,9 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 	return (
 		<View style={styles.topContainer}>
 			<View style={styles.background} />
-			<View style={styles.avatarContainer}>
+			<TouchableOpacity activeOpacity={1} onPress={onViewProfilePhoto} style={styles.avatarContainer}>
 				<AvatarImage image={{uri: avatarURL}} style={styles.avatar} />
-			</View>
+			</TouchableOpacity>
 			<View style={styles.statisticsContainer}>
 				<View style={styles.leftStatistics}>
 					<Statistics text={getText('profile.statistics.photos')} value={numberOfPhotos} />
