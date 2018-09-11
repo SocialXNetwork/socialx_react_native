@@ -1,8 +1,18 @@
+/**
+ * TODO list:
+ * 1. Props data: currentUser, loading
+ * 2. Props actions: createPost
+ * 3. Refactor props.navigation.state.params.mediaObjects, that is sent from NavigationTabBar component with navigate action
+ * 4. @Serkan: check pattern for this.addedFriends
+ * 5. (Later) Get rid of navigation workaround for passing onSendPress
+ * 6. (Later) Consider using Formik to manage all user input data.
+ */
+
 import {ActionSheet} from 'native-base';
 import * as React from 'react';
 import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
-import {CloseButton, ScreenHeaderButton, WithManagedTransitions, WithModalForAddFriends} from '../../components';
+import {CloseButton, ScreenHeaderButton, WithModalForAddFriends} from '../../components';
 import {FriendsSearchResult, IResizeProps, ITranslatedProps, WallPostPhotoOptimized} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
@@ -11,6 +21,13 @@ import {
 	PickerImageMultiple,
 } from '../../utilities';
 import {PhotoScreenView} from './PhotoScreen.view';
+
+interface WallPostPhotoData {
+	mediaObjects: WallPostPhotoOptimized[];
+	title?: string;
+	location?: string;
+	taggedFriends?: FriendsSearchResult[];
+}
 
 interface IPhotoScreenNavParams {
 	params: {
@@ -24,8 +41,7 @@ interface IPhotoScreenProps extends ITranslatedProps, IResizeProps {
 	navigationOptions: NavigationScreenConfig<any>;
 	currentUser: any;
 	loading: boolean;
-	// addMedia: any;
-	// createPost: any;
+	createPost: (wallPostData: WallPostPhotoData) => void;
 }
 
 interface IPhotoScreenState {
@@ -55,39 +71,30 @@ export class PhotoScreen extends React.Component<IPhotoScreenProps, IPhotoScreen
 		const {locationEnabled, location, tagFriends, shareText, mediaObjects} = this.state;
 
 		return (
-			<WithManagedTransitions modalVisible={false /*TODO*/}>
-				{({onDismiss, onModalHide}) => (
-					<WithModalForAddFriends
-						getText={getText}
-						marginBottom={marginBottom}
-						onDismiss={onDismiss}
-						onModalHide={onModalHide}
-					>
-						{({showAddFriendsModal, addedFriends}) => {
-							this.addedFriends = addedFriends; // TODO: addedFriends is needed in other methods here.. options?
-							return (
-								<PhotoScreenView
-									isLoading={loading}
-									showTagFriendsModal={showAddFriendsModal}
-									avatarURL={currentUser.avatarURL}
-									mediaObjects={mediaObjects.map((mediaObject) => mediaObject.path)}
-									taggedFriends={addedFriends}
-									locationEnabled={locationEnabled}
-									location={location}
-									tagFriends={tagFriends}
-									onTagFriendsToggle={this.onTagFriendsToggleHandler}
-									onLocationTextUpdate={this.onLocationTextUpdate}
-									onLocationToggle={this.onLocationToggle}
-									onShareTextUpdate={this.onShareTextUpdateHandler}
-									shareText={shareText}
-									onAddMedia={this.onAddMediaHandler}
-									getText={getText}
-								/>
-							);
-						}}
-					</WithModalForAddFriends>
-				)}
-			</WithManagedTransitions>
+			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
+				{({showAddFriendsModal, addedFriends}) => {
+					this.addedFriends = addedFriends;
+					return (
+						<PhotoScreenView
+							isLoading={loading}
+							showTagFriendsModal={showAddFriendsModal}
+							avatarURL={currentUser.avatarURL}
+							mediaObjects={mediaObjects.map((mediaObject) => mediaObject.path)}
+							taggedFriends={addedFriends}
+							locationEnabled={locationEnabled}
+							location={location}
+							tagFriends={tagFriends}
+							onTagFriendsToggle={this.onTagFriendsToggleHandler}
+							onLocationTextUpdate={this.onLocationTextUpdate}
+							onLocationToggle={this.onLocationToggle}
+							onShareTextUpdate={this.onShareTextUpdateHandler}
+							shareText={shareText}
+							onAddMedia={this.onAddMediaHandler}
+							getText={getText}
+						/>
+					);
+				}}
+			</WithModalForAddFriends>
 		);
 	}
 
@@ -145,6 +152,16 @@ export class PhotoScreen extends React.Component<IPhotoScreenProps, IPhotoScreen
 	};
 
 	private sendPostHandler = () => {
-		const {mediaObjects} = this.state;
+		const {mediaObjects, tagFriends, shareText, locationEnabled, location} = this.state;
+		const {createPost} = this.props;
+
+		const wallPostData: WallPostPhotoData = {
+			mediaObjects,
+			location: locationEnabled && location !== '' ? location : undefined,
+			taggedFriends: tagFriends && this.addedFriends.length > 0 ? this.addedFriends : undefined,
+			title: shareText ? shareText : undefined,
+		};
+
+		createPost(wallPostData);
 	};
 }

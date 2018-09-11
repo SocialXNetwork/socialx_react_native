@@ -2,7 +2,7 @@ import * as React from 'react';
 import {findNodeHandle, View} from 'react-native';
 
 import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../types';
-import {IManagedModal, TagFriendsModal} from './';
+import {TagFriendsModal, WithManagedTransitions} from './';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
 	{
@@ -56,7 +56,7 @@ interface IWithModalForAddFriendsState {
 	taggedFriends: FriendsSearchResult[];
 }
 
-interface IWithModalForAddFriendsProps extends IResizeProps, ITranslatedProps, IManagedModal {
+interface IWithModalForAddFriendsProps extends IResizeProps, ITranslatedProps {
 	children(props: IModalForAddFriendsProps): JSX.Element;
 }
 
@@ -80,24 +80,28 @@ export class WithModalForAddFriends extends React.Component<
 	}
 
 	public render() {
-		const {children, marginBottom, getText, onDismiss, onModalHide} = this.props;
+		const {children, marginBottom, getText} = this.props;
 		const {modalVisible, blurViewRef, friendsSearchResults, taggedFriends, taggedFriendsInModal} = this.state;
 		return (
 			<View style={{flex: 1}}>
-				<TagFriendsModal
-					visible={modalVisible}
-					doneHandler={this.handleTagFriendsEditFinished}
-					cancelHandler={this.closeTagFriendsModal}
-					blurViewRef={blurViewRef}
-					searchResults={friendsSearchResults}
-					selectedUsers={taggedFriendsInModal}
-					onSearchUpdated={this.friendsSearchUpdatedHandler}
-					selectTagUserInModal={this.tagFriendHandler}
-					marginBottom={marginBottom}
-					getText={getText}
-					onModalHide={onModalHide}
-					onDismiss={onDismiss}
-				/>
+				<WithManagedTransitions modalVisible={modalVisible}>
+					{({onDismiss, onModalHide}) => (
+						<TagFriendsModal
+							visible={modalVisible}
+							doneHandler={this.handleTagFriendsEditFinished}
+							cancelHandler={this.closeTagFriendsModal}
+							blurViewRef={blurViewRef}
+							searchResults={friendsSearchResults}
+							selectedUsers={taggedFriendsInModal}
+							onSearchUpdated={this.friendsSearchUpdatedHandler}
+							selectTagUserInModal={this.tagFriendHandler}
+							marginBottom={marginBottom}
+							getText={getText}
+							onModalHide={onModalHide}
+							onDismiss={onDismiss}
+						/>
+					)}
+				</WithManagedTransitions>
 				<View ref={this.baseScreen} style={{flex: 1}}>
 					{children({
 						addedFriends: taggedFriends,
