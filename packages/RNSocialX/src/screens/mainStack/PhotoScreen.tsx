@@ -1,4 +1,5 @@
 /**
+ * old screen -> screens/PhotoScreen/index.tsx
  * TODO list:
  * 1. Props data: currentUser, loading
  * 2. Props actions: createPost
