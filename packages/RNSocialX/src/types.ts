@@ -1,3 +1,5 @@
+import {Image as PickerImage} from 'react-native-image-crop-picker';
+
 export interface FriendsSearchResult {
 	id: string;
 	fullName: string;
@@ -100,6 +102,12 @@ export interface IWallPostComment {
 export enum CommentsSortingOptions {
 	Likes = 'Likes',
 	Recent = 'Recent',
+}
+
+export interface WallPostPhotoOptimized extends PickerImage {
+	contentOptimizedPath?: string;
+	type: string;
+	pathx: string;
 }
 
 /**
