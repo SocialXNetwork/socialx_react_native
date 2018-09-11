@@ -10,30 +10,30 @@ import styles, {buttonWidth, colors} from './ProfileTopContainer.style';
 export interface ITopContainerSharedProps extends ITranslatedProps {
 	avatarURL: any;
 	fullName: string;
-	username: false | string;
+	userName: false | string;
 	numberOfPhotos: number;
 	numberOfLikes: number;
-	numberOfFollowers: number;
+	numberOfFriends: number;
 	numberOfViews: number;
-	onAddFriend: () => Promise<any>;
+	onAddFriend: () => void;
 	onShowFriendshipOptions: () => void;
-	friendRequestStatus: SearchResultKind;
+	relationship: SearchResultKind;
 	onViewProfilePhoto?: () => void;
-	ownUser: boolean;
+	isCurrentUser: boolean;
 	onEditProfile: () => void;
 	tabs: boolean;
 	activeTab: string;
-	onIconPress: () => void;
+	onIconPress: (tab: string) => void;
 	aboutMeText: false | string;
 }
 
 export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 	avatarURL,
 	fullName,
-	username = false,
+	userName = false,
 	numberOfPhotos,
 	numberOfLikes,
-	numberOfFollowers,
+	numberOfFriends,
 	numberOfViews,
 	onAddFriend = async () => {
 		/**/
@@ -41,8 +41,8 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 	onShowFriendshipOptions = () => {
 		/**/
 	},
-	friendRequestStatus = SearchResultKind.NotFriend,
-	ownUser,
+	relationship = SearchResultKind.NotFriend,
+	isCurrentUser,
 	onEditProfile = () => {
 		/**/
 	},
@@ -54,7 +54,7 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
 	getText,
 }) => {
-	const friendButtonHandler = friendRequestStatus === SearchResultKind.Friend ? onShowFriendshipOptions : onAddFriend;
+	const relationshipButtonHandler = relationship === SearchResultKind.Friend ? onShowFriendshipOptions : onAddFriend;
 
 	return (
 		<View style={styles.topContainer}>
@@ -68,22 +68,22 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 					<Statistics text={getText('profile.statistics.likes')} value={numberOfLikes} />
 				</View>
 				<View style={styles.rightStatistics}>
-					<Statistics text={getText('profile.statistics.friends')} value={numberOfFollowers} />
+					<Statistics text={getText('profile.statistics.friends')} value={numberOfFriends} />
 					<Statistics text={getText('profile.statistics.view.count')} value={numberOfViews} />
 				</View>
 			</View>
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{fullName}</Text>
-				{username && <Text style={styles.username}>@{username}</Text>}
+				{userName && <Text style={styles.userName}>@{userName}</Text>}
 				{aboutMeText && <Text style={styles.about}>{aboutMeText}</Text>}
 			</View>
 			<View style={styles.buttonsContainer}>
-				{!ownUser && (
+				{!isCurrentUser && (
 					// @ts-ignore
 					<PrimaryButton
 						width={buttonWidth}
 						label={
-							friendRequestStatus === SearchResultKind.Friend
+							relationship === SearchResultKind.Friend
 								? getText('profile.top.container.button.friends')
 								: getText('profile.top.container.button.not.friends')
 						}
@@ -91,14 +91,14 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 						borderColor={colors.white}
 						textColor={colors.white}
 						containerStyle={styles.button}
-						onPress={friendButtonHandler}
+						onPress={relationshipButtonHandler}
 					/>
 				)}
 				// @ts-ignore
 				<PrimaryButton
 					width={buttonWidth}
 					label={
-						ownUser
+						isCurrentUser
 							? getText('profile.top.container.button.edit.profile')
 							: getText('profile.top.container.button.send.message')
 					}
@@ -106,10 +106,10 @@ export const ProfileTopContainer: React.SFC<ITopContainerSharedProps> = ({
 					borderColor={colors.pink}
 					textColor={colors.pink}
 					containerStyle={styles.ghostButton}
-					onPress={ownUser ? onEditProfile : () => console.log('Message')}
+					onPress={isCurrentUser ? onEditProfile : () => console.log('Message')}
 				/>
 			</View>
-			{tabs && <Tabs onIconPress={onIconPress!} activeTab={activeTab!} />}
+			{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
 		</View>
 	);
 };

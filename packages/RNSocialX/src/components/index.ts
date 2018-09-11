@@ -20,6 +20,7 @@ export {HeartAnimation} from './displayers/HeartAnimation';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {NoComments} from './displayers/NoComments';
+export {NoPhotos} from './displayers/NoPhotos';
 export {NavigationTabBar} from './displayers/NavigationTabBar';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
@@ -31,7 +32,7 @@ export {RichText} from './displayers/RichText/RichText';
 export {SearchHeader} from './displayers/SearchHeader';
 export {SuggestedUserCard} from './displayers/SuggestedUserCard';
 export {TextGradient} from './displayers/TextGradient';
-export {WallPostCard} from './displayers/WallPostCard';
+export {WallPostCard, IWallPostCardProps} from './displayers/WallPostCard';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
 

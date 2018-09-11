@@ -6,7 +6,7 @@ import {PROFILE_TAB_ICON_TYPES} from '../../../environment/consts';
 import styles from './Tabs.style';
 
 interface ITabs {
-	onIconPress: (value: string) => void;
+	onIconPress: (tab: string) => void;
 	activeTab: string;
 }
 

@@ -110,6 +110,11 @@ export interface WallPostPhotoOptimized extends PickerImage {
 	pathx: string;
 }
 
+export interface IPostLike {
+	userId: string;
+	userName: string;
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.

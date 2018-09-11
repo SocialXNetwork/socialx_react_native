@@ -5,7 +5,7 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import {HeartAnimation, ISuggestionCardItem, ReportProblemModal} from '../../';
 import {OS_TYPES} from '../../../environment/consts';
-import {IMediaProps, IResizeProps, ISimpleComment, ITranslatedProps} from '../../../types';
+import {IMediaProps, IPostLike, IResizeProps, ISimpleComment, ITranslatedProps} from '../../../types';
 import {
 	BestComments,
 	CommentInput,
@@ -36,7 +36,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	numberOfComments: number;
 	numberOfWalletCoins: number;
 	onImagePress: (index: number) => void;
-	onLikeButtonPress: () => Promise<any>;
+	onLikeButtonPress: () => void;
 	onDeletePress: (postId: string) => void;
 	onUserPress: (userId: string) => void;
 	onCommentPress: (startComment: boolean) => void;
@@ -44,7 +44,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	likedByMe: boolean;
 	canDelete: boolean;
 	media: undefined | IMediaProps[];
-	likes: undefined | any; // IUserQuery; // @Alex TODO: fix typing after backend is ready
+	likes: IPostLike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
 	suggested: undefined | ISuggestionCardItem[];
@@ -80,7 +80,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		taggedFriends: [],
 		location: false,
 		postText: false,
-		likes: undefined,
+		likes: [],
 	};
 
 	public state = {
@@ -304,7 +304,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 			this.setState({heartAnimation: true});
 		} else {
 			this.setState({heartAnimation: true});
-			await this.props.onLikeButtonPress();
+			this.props.onLikeButtonPress();
 		}
 	};
 
