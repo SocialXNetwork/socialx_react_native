@@ -1,9 +1,8 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
-import {GrayContainer} from './GrayContainer';
+import {Container, Row} from '../../../components';
 import styles, {shareIcon} from './ReferralScreen.style';
-import Row from './Row';
 
 const HEADING = 'Lorem ipsum dolor';
 const TEXT = 'Lorem ipsum dolor sit amet, consectetur adipi elit, sed do eiusmod tempor incididunt ut labore';
@@ -18,10 +17,15 @@ interface IReferralScreenViewProps {
 
 export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({copyToClipboard, onShare}) => (
 	<View style={styles.container}>
-		<GrayContainer heading={HEADING} text={TEXT} />
+		// @ts-ignore
+		<Container heading={HEADING} text={TEXT} />
+		// @ts-ignore
 		<Row title={'Total referrals'} value={'18'} />
+		// @ts-ignore
 		<Row title={'SOCX earned through referrals'} value={'13,048'} last={true} />
-		<GrayContainer heading={'Share'} text={TEXT} />
+		// @ts-ignore
+		<Container heading={'Share'} text={TEXT} />
+		// @ts-ignore
 		<Row title={'Invite URL'} value={URL} border={true} onCopyText={() => copyToClipboard(URL)} />
 		<Row title={'Invite Code'} value={CODE} border={true} onCopyText={() => copyToClipboard(CODE)} last={true} />
 		<View style={styles.footer}>
