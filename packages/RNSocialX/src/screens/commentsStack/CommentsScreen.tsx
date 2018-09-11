@@ -3,9 +3,8 @@
  * 1. Props: postUser, currentUser, postComments, reloadComments, loadingComments, sendComment, likeComment,
  * removeCommentLike, deleteComment, likePost, unlikePost
  * 2. decide where `marginBottom` should come from?
- * 3. make sure input reset will happen only after sendComment was with success!
- * 4. check onLikePressHandler, since now it's no longer waiting for an async call result.
- * Related to LikeAnimatingButton
+ * 3. after sendComment optimistically insert that into local database and fix if there is a problem
+ * 4. consider adding a global optimistic update handler
  * 5. delete option should be available only for own comments
  * 6. Check navigation usage! Relevant use case.
  */

@@ -10,7 +10,7 @@ export interface IWallPostActions extends ITranslatedProps {
 	likedByMe: boolean;
 	numberOfSuperLikes: number;
 	numberOfWalletCoins: number;
-	onLikePress: () => Promise<any>;
+	onLikePress: () => void;
 	onSuperLikePress: () => void;
 	onCommentsPress: () => void;
 	onWalletCoinsButtonPress: () => void;
@@ -18,7 +18,7 @@ export interface IWallPostActions extends ITranslatedProps {
 
 export const WallPostActions: React.SFC<IWallPostActions> = ({
 	likedByMe,
-	onLikePress = async () => {
+	onLikePress = () => {
 		/**/
 	},
 	onCommentsPress,
