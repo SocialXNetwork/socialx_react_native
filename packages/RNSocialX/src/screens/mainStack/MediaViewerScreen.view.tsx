@@ -26,83 +26,71 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	platformSpecificCarouselProps: any;
 }
 
-export class MediaViewerScreenView extends React.Component<IMediaViewerScreenViewProps> {
-	public render() {
-		const {
-			mediaObjects,
-			carouselRef,
-			carouselContainerOnLayout,
-			orientation,
-			startIndex,
-			viewport,
-			activeSlide,
-			slideChanged,
-			isInfoOverlayVisible,
-			getText,
-			showMediaInfoOverlay,
-			closeMediaInfoOverlay,
-			onExitFullScreen,
-			platformSpecificCarouselProps,
-		} = this.props;
-		const currentMediaObject = mediaObjects[activeSlide];
+export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
+	mediaObjects,
+	carouselRef,
+	carouselContainerOnLayout,
+	orientation,
+	startIndex,
+	viewport,
+	activeSlide,
+	slideChanged,
+	isInfoOverlayVisible,
+	getText,
+	showMediaInfoOverlay,
+	closeMediaInfoOverlay,
+	onExitFullScreen,
+	platformSpecificCarouselProps,
+}) => {
+	const currentMediaObject = mediaObjects[activeSlide];
 
-		return (
-			<SafeAreaView style={styles.safeView}>
-				<MediaInfoModal
-					visible={isInfoOverlayVisible}
-					closeHandler={closeMediaInfoOverlay}
-					mediaHash={currentMediaObject.hash}
-					mediaSize={currentMediaObject.size}
-					mediaType={currentMediaObject.type}
-					mediaName={null}
-					mediaURL={currentMediaObject.url}
-					getText={getText}
-				/>
-				<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
-					<Carousel
-						ref={carouselRef}
-						activeSlide={activeSlide}
-						data={mediaObjects}
-						renderItem={this.renderCarouseltem}
-						sliderWidth={viewport.width}
-						itemWidth={viewport.width}
-						firstItem={startIndex}
-						onSnapToItem={slideChanged}
-						{...platformSpecificCarouselProps}
-					/>
-					<CloseButton isPortrait={orientation === DeviceOrientations.Portrait} onExitFullScreen={onExitFullScreen} />
-					<View style={styles.screenFooter} pointerEvents={'none'}>
-						<MediaInfoSection mediaObjects={mediaObjects} activeSlide={activeSlide} />
-						<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
-					</View>
-					<TouchableOpacity style={styles.infoButton} onPress={showMediaInfoOverlay}>
-						<Icon name={'ios-information-circle-outline'} style={styles.infoIcon} />
-					</TouchableOpacity>
-				</View>
-			</SafeAreaView>
-		);
-	}
-
-	private renderCarouseltem = ({item, index}: {item: IMediaProps; index: number}) => {
-		const {
-			viewport: {width},
-			activeSlide,
-		} = this.props;
-
-		return (
-			// @ts-ignore
-			<MediaObjectViewer
-				type={item.type}
-				paused={index !== activeSlide}
-				uri={item.url}
-				style={[styles.carouselMediaObject, {width}]}
-				resizeMode={'contain'}
-				resizeToChangeAspectRatio={true}
-				canZoom={true}
+	return (
+		<SafeAreaView style={styles.safeView}>
+			<MediaInfoModal
+				visible={isInfoOverlayVisible}
+				closeHandler={closeMediaInfoOverlay}
+				mediaHash={currentMediaObject.hash}
+				mediaSize={currentMediaObject.size}
+				mediaType={currentMediaObject.type}
+				mediaName={null}
+				mediaURL={currentMediaObject.url}
+				getText={getText}
 			/>
-		);
-	};
-}
+			<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
+				<Carousel
+					ref={carouselRef}
+					activeSlide={activeSlide}
+					data={mediaObjects}
+					renderItem={({item, index}: {item: IMediaProps; index: number}) => (
+						// @ts-ignore
+						<MediaObjectViewer
+							type={item.type}
+							paused={index !== activeSlide}
+							uri={item.url}
+							style={[styles.carouselMediaObject, {width: viewport.width}]}
+							resizeMode={'contain'}
+							resizeToChangeAspectRatio={true}
+							canZoom={true}
+						/>
+					)}
+					sliderWidth={viewport.width}
+					itemWidth={viewport.width}
+					firstItem={startIndex}
+					onSnapToItem={slideChanged}
+					{...platformSpecificCarouselProps}
+				/>
+				<CloseButton isPortrait={orientation === DeviceOrientations.Portrait} onExitFullScreen={onExitFullScreen} />
+				<View style={styles.screenFooter} pointerEvents={'none'}>
+					<MediaInfoSection mediaObjects={mediaObjects} activeSlide={activeSlide} />
+					<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
+				</View>
+				<TouchableOpacity style={styles.infoButton} onPress={showMediaInfoOverlay}>
+					<Icon name={'ios-information-circle-outline'} style={styles.infoIcon} />
+				</TouchableOpacity>
+			</View>
+		</SafeAreaView>
+	);
+};
 
 const CloseButton: React.SFC<{isPortrait: boolean; onExitFullScreen: () => void}> = ({
 	isPortrait,
