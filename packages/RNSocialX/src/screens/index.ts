@@ -2,6 +2,7 @@ export {HelloFoo} from './HelloFoo';
 
 export {CommentsScreen} from './commentsStack/CommentsScreen';
 
+export {CreateWallPostScreen} from './mainStack/CreateWallPostScreen';
 export {PhotoScreen} from './mainStack/PhotoScreen';
 export {UserProfileScreen} from './mainStack/UserProfileScreen';
 
