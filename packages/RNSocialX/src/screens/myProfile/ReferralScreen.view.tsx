@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
-import {Container, Row} from '../../../components';
+import {Container, Row} from '../../components';
 import styles, {shareIcon} from './ReferralScreen.style';
 
 const HEADING = 'Lorem ipsum dolor';

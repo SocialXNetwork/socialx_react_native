@@ -1,8 +1,15 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
-    "typeRoots": ["./node_modules/@types"]
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-native",
+    "lib": ["es6"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es6",
+    "noEmit": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

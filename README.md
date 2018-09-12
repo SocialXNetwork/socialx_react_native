@@ -50,6 +50,7 @@ The following RN packages are linked:
 9. react-native-linear-gradient
 10. react-native-blur
 11. react-native-text-gradient
+12. react-native-spinkit
 
 Before you begin, make sure you have installed the following tooling
 
@@ -79,6 +80,8 @@ in order to avoid compatibility issues with recent react native
 
 There are some open issues that need to be followed
 
+- packages/RNSocialX/src/environment/consts.ts there's a weird problem with asset re-exports
+- https://github.com/ds300/react-native-typescript-transformer/issues/74 blocks us from using shared typescript configuration
 - https://github.com/facebook/react-native/issues/20415 (blocker for node globals)
 - https://github.com/facebook/react-native/issues/19859 (solved with a transform hack)
 - https://github.com/facebook/react-native/issues/4968 (requires occasional

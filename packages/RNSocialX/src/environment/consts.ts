@@ -1,4 +1,5 @@
-import {Icons} from './theme';
+// DO NOT SHORTEN THIS IMPORT! For some reason, RN/Typescript cannot import the icons like that
+import {Icons} from './theme/Icons';
 
 export enum FormTypes {
 	Input,

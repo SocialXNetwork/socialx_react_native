@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Clipboard, Platform, Share, ShareOptions} from 'react-native';
 import {NavigationScreenProp} from 'react-navigation';
 
-import {OS_TYPES} from '../../../environment/consts';
+import {OS_TYPES} from '../../environment/consts';
 import {ReferralScreenView} from './ReferralScreen.view';
 
 interface IReferralScreenProps {

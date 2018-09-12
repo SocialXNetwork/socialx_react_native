@@ -46,7 +46,9 @@
     "react-native-randombytes": "^3.5.0",
     "react-native-smart-splash-screen": "^2.3.5",
     "react-native-snap-carousel": "^3.7.2",
+    "react-native-spinkit": "^1.1.1",
     "react-native-stream": "^0.1.9",
+    "react-native-svg": "^6.5.2",
     "react-native-svg-charts": "^5.2.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-text-gradient": "^0.0.15",
@@ -106,7 +108,9 @@
   },
   "rnpm": {
     "assets": [
-      "./src/environment/theme/assets/fonts"
+      "./src/environment/theme/assets/fonts",
+      "./src/environment/theme/assets/icons",
+      "./src/environment/theme/assets/images"
     ]
   }
 }
