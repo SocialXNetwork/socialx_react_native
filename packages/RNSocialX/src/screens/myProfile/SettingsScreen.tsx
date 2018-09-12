@@ -12,7 +12,6 @@ import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
 import {ScreenHeaderButton} from '../../components';
 import {ITranslatedProps} from '../../types';
-import {customStyleProps} from './SettingsScreen.style';
 import {SettingsData, SettingsScreenView} from './SettingsScreen.view';
 
 interface ISettingsScreenProps extends ITranslatedProps {
@@ -24,7 +23,7 @@ interface ISettingsScreenProps extends ITranslatedProps {
 }
 
 const saveChanges = (saveData: SettingsData, {currentUser, updateUserProfile}: ISettingsScreenProps) => {
-	const avatarHasChanged = currentUser.avatarURL !== saveData.avatarImage.uri;
+	const avatarHasChanged = currentUser.avatarURL !== saveData.avatarURL;
 	updateUserProfile(saveData, avatarHasChanged);
 };
 
@@ -47,7 +46,6 @@ export class SettingsScreen extends React.Component<ISettingsScreenProps> {
 
 	public render() {
 		const {currentUser, getText} = this.props;
-		const avatarURL = currentUser ? currentUser.avatarURL : customStyleProps.avatarPlaceholderImg;
 		return (
 			<SettingsScreenView
 				isLoading={!currentUser}
@@ -56,7 +54,7 @@ export class SettingsScreen extends React.Component<ISettingsScreenProps> {
 				lastName={currentUser ? currentUser.name.split(' ')[1] : ''}
 				email={currentUser ? currentUser.email : ''}
 				miningEnabled={currentUser ? currentUser.miningEnabled || false : false}
-				avatarImage={{uri: avatarURL}}
+				avatarURL={currentUser ? currentUser.avatarURL : null}
 				username={currentUser ? currentUser.username : ''}
 				onSaveChanges={(saveData: SettingsData) => saveChanges(saveData, this.props)}
 				getText={getText}
