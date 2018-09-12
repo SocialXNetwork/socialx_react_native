@@ -68,8 +68,12 @@ export interface GridMediaObject {
 // END Media types
 
 export interface IMediaProps {
-	type: string;
 	url: string;
+	hash: string;
+	type: MediaTypes;
+	size: number;
+	numberOfLikes: number;
+	numberOfComments: number;
 }
 
 export interface ISimpleComment {
