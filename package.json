@@ -48,9 +48,11 @@
     "test:api-data": "cd packages/api-data/ && yarn run test && cd ../../",
     "test:RNSocialX": "cd packages/RNSocialX/ && yarn run test && cd ../../",
     "test": "npm-run-all test:*",
+    "start:storybook": "cd packages/RNSocialX/ && yarn run start:storybook && cd ../../",
     "start:js": "cd packages/RNSocialX/ && yarn run start:js && cd ../../",
-    "start:android": "cd packages/RNSocialX/ && yarn run start:android && cd ../../",
-    "start:ios": "cd packages/RNSocialX/ && yarn run start:ios&& cd ../../"
+    "start:android:emulator": "${ANDROID_HOME}/emulator/emulator -avd $(${ANDROID_HOME}/emulator/emulator -list-avds | head -n 1)",
+    "run:android": "cd packages/RNSocialX/ && yarn run run:android && cd ../../",
+    "run:ios": "cd packages/RNSocialX/ && yarn run run:ios&& cd ../../"
   },
   "devDependencies": {
     "husky": "^0.14.3",
