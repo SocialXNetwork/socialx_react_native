@@ -17,6 +17,8 @@ export {CommentsPostText} from './displayers/CommentsPostText';
 export {CommentCard} from './displayers/CommentCard';
 export {DotsMenuButton} from './displayers/DotsMenuButton';
 export {HeartAnimation} from './displayers/HeartAnimation';
+export {IntroFirstSlide} from './displayers/IntroFirstSlide';
+export {IntroGenericSlide} from './displayers/IntroGenericSlide';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {NoComments} from './displayers/NoComments';

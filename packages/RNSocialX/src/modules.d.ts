@@ -14,6 +14,8 @@ declare module 'react-native-smart-splash-screen';
 
 declare module 'react-native-svg-charts';
 
+declare module 'react-native-app-intro-slider';
+
 // declare module 'react-native-image-crop-picker';
 
 // declare module 'react-native-image-resizer';
