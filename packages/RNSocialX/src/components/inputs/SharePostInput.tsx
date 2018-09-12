@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ImageSourcePropType, Text, TextInput, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 
 import {AvatarImage} from '../';
 import style, {customStyleProps} from './SharePostInput.style';
@@ -7,7 +7,7 @@ import style, {customStyleProps} from './SharePostInput.style';
 const MAX_POST_LENGTH = 500;
 
 interface ISharePostInputProps {
-	avatarSource: ImageSourcePropType;
+	avatarSource: string | null;
 	placeholder: string;
 	text: string;
 	onTextUpdate: (value: string) => void;

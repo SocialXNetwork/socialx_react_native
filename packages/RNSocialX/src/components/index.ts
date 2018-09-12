@@ -17,6 +17,8 @@ export {CommentsPostText} from './displayers/CommentsPostText';
 export {CommentCard} from './displayers/CommentCard';
 export {DotsMenuButton} from './displayers/DotsMenuButton';
 export {HeartAnimation} from './displayers/HeartAnimation';
+export {IntroFirstSlide} from './displayers/IntroFirstSlide';
+export {IntroGenericSlide} from './displayers/IntroGenericSlide';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {NoComments} from './displayers/NoComments';
@@ -33,6 +35,10 @@ export {SearchHeader} from './displayers/SearchHeader';
 export {SuggestedUserCard} from './displayers/SuggestedUserCard';
 export {TextGradient} from './displayers/TextGradient';
 export {WallPostCard, IWallPostCardProps} from './displayers/WallPostCard';
+
+export {FeedWithNoPosts} from './feed/FeedWithNoPosts';
+export {LoadingFooter} from './feed/LoadingFooter';
+export {ShareSection} from './feed/ShareSection';
 
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
 
