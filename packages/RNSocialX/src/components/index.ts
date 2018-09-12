@@ -34,6 +34,10 @@ export {SuggestedUserCard} from './displayers/SuggestedUserCard';
 export {TextGradient} from './displayers/TextGradient';
 export {WallPostCard, IWallPostCardProps} from './displayers/WallPostCard';
 
+export {FeedWithNoPosts} from './feed/FeedWithNoPosts';
+export {LoadingFooter} from './feed/LoadingFooter';
+export {ShareSection} from './feed/ShareSection';
+
 export {WithInlineLoader, IWithLoaderProps, SpinnerTypes} from './inlineLoader';
 
 export {CommentTextInput} from './inputs/CommentTextInput';
