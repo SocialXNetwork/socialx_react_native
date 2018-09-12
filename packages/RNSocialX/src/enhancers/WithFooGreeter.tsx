@@ -41,7 +41,7 @@ export class WithFooGreeterAndCounter extends React.Component<
 		counter: 0,
 	};
 
-	intervalHandle?: number;
+	intervalHandle?: NodeJS.Timer;
 
 	componentDidMount() {
 		this.intervalHandle = setInterval(this.increment, 1000);
