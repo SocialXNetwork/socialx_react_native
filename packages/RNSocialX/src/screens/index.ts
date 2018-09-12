@@ -3,6 +3,7 @@ export {HelloFoo} from './HelloFoo';
 export {CommentsScreen} from './commentsStack/CommentsScreen';
 
 export {CreateWallPostScreen} from './mainStack/CreateWallPostScreen';
+export {MediaViewerScreen} from './mainStack/MediaViewerScreen';
 export {PhotoScreen} from './mainStack/PhotoScreen';
 export {UserProfileScreen} from './mainStack/UserProfileScreen';
 
