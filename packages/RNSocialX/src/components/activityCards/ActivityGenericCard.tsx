@@ -75,7 +75,7 @@ export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
 			>
 				<View style={style.swipeContainer}>
 					<TouchableOpacity style={style.leftContainer} onPress={() => onViewUserProfile(userId)}>
-						<AvatarImage image={{uri: avatarURL}} style={style.avatarImage} />
+						<AvatarImage image={avatarURL} style={style.avatarImage} />
 						<View style={style.avatarNameContainer}>
 							<Text style={style.fullName}>{fullName}</Text>
 							{username && <Text style={style.username}>{'@' + username}</Text>}
