@@ -53,7 +53,7 @@ export const ActivitySuperLikedCard: React.SFC<IActivitySuperLikedCardProps> = (
 }) => {
 	return (
 		<View style={style.container}>
-			<AvatarImage image={{uri: avatarURL}} style={style.avatarImage} />
+			<AvatarImage image={avatarURL} style={style.avatarImage} />
 			<View style={style.rightContainer}>
 				<View style={style.topRightRow}>
 					<Text style={style.fullName}>{fullName}</Text>

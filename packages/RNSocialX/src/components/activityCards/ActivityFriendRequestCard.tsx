@@ -39,7 +39,7 @@ export const ActivityFriendRequestCard: React.SFC<IFriendRequestProps> = ({
 	return (
 		<View style={style.container}>
 			<TouchableOpacity style={style.leftContainer} onPress={() => onViewUserProfile(userId)}>
-				<AvatarImage image={{uri: avatarURL}} style={style.avatarImage} />
+				<AvatarImage image={avatarURL} style={style.avatarImage} />
 				<View style={style.avatarNameContainer}>
 					<Text style={style.fullName}>{fullName}</Text>
 					{username !== '' && <Text style={style.username}>{'@' + username}</Text>}
