@@ -12,6 +12,7 @@ export {ReferralScreen} from './myProfile/ReferralScreen';
 export {SettingsScreen} from './myProfile/SettingsScreen';
 export {SocialXAccountScreen} from './myProfile/SocialXAccountScreen';
 
+export {ForgotPasswordScreen} from './preAuth/ForgotPasswordScreen';
 export {LaunchScreen} from './preAuth/LaunchScreen';
 export {TermsAndConditionsScreen} from './preAuth/TermsAndConditionsScreen';
 

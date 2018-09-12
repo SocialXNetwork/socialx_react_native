@@ -1,6 +1,6 @@
-import {Formik, FormikActions, FormikErrors, FormikProps} from 'formik';
+import {Formik, FormikErrors, FormikProps} from 'formik';
 import * as React from 'react';
-import {ImageURISource, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {string} from 'yup';
@@ -73,10 +73,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				}
 				return errors;
 			}}
-			onSubmit={async (values: SettingsData, {resetForm, setErrors}: FormikActions<SettingsData>) => {
-				await onSaveChanges(values);
-				resetForm(values);
-			}}
+			onSubmit={(values: SettingsData) => onSaveChanges(values)}
 			render={({
 				values: {
 					aboutText: aboutTextValue,
