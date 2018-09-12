@@ -43,7 +43,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	onAddComment: (height: number) => void;
 	likedByMe: boolean;
 	canDelete: boolean;
-	media: undefined | IMediaProps[];
+	media: IMediaProps[];
 	likes: IPostLike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
@@ -75,7 +75,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		numberOfWalletCoins: 0,
 		canDelete: false,
 		likedByMe: false,
-		media: undefined,
+		media: false,
 		suggested: undefined,
 		taggedFriends: [],
 		location: false,

@@ -10,7 +10,7 @@ export enum FormTypes {
 export enum DeviceOrientations {
 	Portrait = 'PORTRAIT',
 	Landscape = 'LANDSCAPE',
-	Uknown = 'UNKNOWN',
+	Unknown = 'UNKNOWN',
 	Upsidedown = 'PORTRAITUPSIDEDOWN',
 }
 

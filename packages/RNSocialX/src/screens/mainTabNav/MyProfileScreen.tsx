@@ -5,7 +5,7 @@
  * 3. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
  * 3.1 we can do this at the top level, without navigation
  * 4. Refactor the commented part into the header component
- * 5. Implement onViewProfilePhoto
+ * 5. Implement onViewProfilePhoto (check IPFS)
  */
 
 import * as React from 'react';

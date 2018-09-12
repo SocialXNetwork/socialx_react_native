@@ -117,7 +117,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 	<WithInlineLoader isLoading={isLoading}>
 		<KeyboardAwareScrollView style={style.scrollView} alwaysBounceVertical={true} keyboardShouldPersistTaps={'handled'}>
 			<SharePostInput
-				avatarSource={{uri: avatarURL}}
+				avatarSource={avatarURL}
 				placeholder={getText('photo.screen.share.input.placeholder')}
 				text={shareText}
 				onTextUpdate={onShareTextUpdate}

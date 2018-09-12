@@ -1,15 +1,24 @@
-import * as React from 'react';
-import {Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet} from 'react-native';
+/**
+ * TODO list:
+ * 1. @Ionut: refactor all usages to send image of correct updated type
+ * 2. @Serkan: is this the correct place to decide about using placeholder for an image
+ * or should we do this at the top most level in components and screens!
+ * with DRY principle in mind it should go here IMO.
+ * 3. @Serkan: discuss nullable types in general!
+ */
 
-import {Sizes} from '../../environment/theme';
+import * as React from 'react';
+import {Image, ImageStyle, StyleProp, StyleSheet} from 'react-native';
+
+import {Images, Sizes} from '../../environment/theme';
 
 interface IAvatarImageProps {
-	image: ImageSourcePropType;
+	image: string | null;
 	style: StyleProp<ImageStyle>;
 }
 
 export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style = styles.avatarImage}) => {
-	return <Image source={image} resizeMode={'cover'} style={style} />;
+	return <Image source={image ? {uri: image} : Images.user_avatar_placeholder} resizeMode={'cover'} style={style} />;
 };
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(90);
