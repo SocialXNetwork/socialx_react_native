@@ -3,6 +3,7 @@ import {Colors, Fonts, Sizes} from '../../environment/theme';
 
 const style: any = {
 	container: {
+		backgroundColor: Colors.white,
 		width: '100%',
 		flexDirection: 'row',
 		paddingLeft: Sizes.smartHorizontalScale(25),

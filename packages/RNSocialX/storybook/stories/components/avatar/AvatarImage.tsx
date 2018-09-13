@@ -8,5 +8,4 @@ const image = 'https://www.w3schools.com/w3css/img_lights.jpg';
 
 storiesOf('Components/avatar', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	// .add('AvatarImage', () => <AvatarImage image={image} />)
 	.add('AvatarImage', () => <AvatarImage image={image} style={{width: 200, height: 200, borderRadius: 10}} />);
