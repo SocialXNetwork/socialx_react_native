@@ -9,6 +9,9 @@ import './components/avatar/AvatarPicker';
 import './components/displayers/AddFriendsList';
 import './components/displayers/CheckboxButtonWithIcon';
 import './components/displayers/DotsMenuButton';
+import './components/displayers/HeartAnimation';
+import './components/displayers/MediaHorizontalScroller';
+import './components/displayers/MediaObjectViewer';
 import './components/displayers/PeopleSearchResultEntry';
 
 import './components/navigation/HeaderLogo';
