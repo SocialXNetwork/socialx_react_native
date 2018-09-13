@@ -18,6 +18,7 @@ export {SocialXAccountScreen} from './myProfile/SocialXAccountScreen';
 
 export {ForgotPasswordScreen} from './preAuth/ForgotPasswordScreen';
 export {LaunchScreen} from './preAuth/LaunchScreen';
+export {LoginScreen} from './preAuth/LoginScreen';
 export {TermsAndConditionsScreen} from './preAuth/TermsAndConditionsScreen';
 
 export {MaintenanceScreen} from './primaryNav/MaintenanceScreen';
