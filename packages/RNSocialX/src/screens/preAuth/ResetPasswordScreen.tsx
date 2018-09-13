@@ -16,7 +16,7 @@ import {ResetPasswordScreenView} from './ResetPasswordScreen.view';
 interface IResetPasswordScreenProps extends ITranslatedProps {
 	navigation: NavigationScreenProp<any>;
 	navigationOptions: NavigationScreenConfig<any>;
-	resetPassword: (username: string, resetCode: string, password: string) => void;
+	resetPassword: (userName: string, resetCode: string, password: string) => void;
 	showActivityIndicator: (message: string) => void;
 	hideActivityIndicator: () => void;
 }
@@ -37,12 +37,12 @@ export class ResetPasswordScreen extends React.PureComponent<IResetPasswordScree
 		const {params} = navigation.state;
 
 		showActivityIndicator(getText('reset.password.resetting'));
-		if (!params.username) {
+		if (!params.userName) {
 			ModalManager.safeRunAfterModalClosed(() => {
 				Alert.alert(getText('general.error.message'));
 			});
 		} else {
-			resetPassword(params.username, resetCode, password);
+			resetPassword(params.userName, resetCode, password);
 
 			ModalManager.safeRunAfterModalClosed(() => {
 				Alert.alert(getText('reset.password.success'));

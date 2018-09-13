@@ -12,7 +12,7 @@ const ITEM_WIDTH = (45 / 100) * SCREEN_WIDTH;
 export interface ISuggestionCardItem {
 	userId: string;
 	name: string;
-	username: string;
+	userName: string;
 	avatarURL: string;
 	friend: boolean;
 }

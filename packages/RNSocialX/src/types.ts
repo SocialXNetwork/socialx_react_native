@@ -84,7 +84,7 @@ export interface ISimpleComment {
 	}>;
 	owner: {
 		userId: string;
-		username: string;
+		userName: string;
 	};
 }
 

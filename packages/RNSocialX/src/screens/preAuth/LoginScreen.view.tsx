@@ -12,11 +12,11 @@ const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 interface ILoginFormProps extends ITranslatedProps {
-	onStartLogin: (username: string, password: string) => void;
+	onStartLogin: (userName: string, password: string) => void;
 }
 
 interface LoginScreenData {
-	username: string;
+	userName: string;
 	password: string;
 }
 
@@ -25,13 +25,13 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 		{({marginBottom, safeRunAfterKeyboardHide}) => (
 			<Formik
 				initialValues={{
-					username: '',
+					userName: '',
 					password: '',
 				}}
-				validate={({username, password}: LoginScreenData) => {
+				validate={({userName, password}: LoginScreenData) => {
 					const errors: FormikErrors<LoginScreenData> = {};
-					if (!username) {
-						errors.username = getText('login.username.required');
+					if (!userName) {
+						errors.userName = getText('login.userName.required');
 					}
 					if (!password) {
 						errors.password = getText('login.password.required');
@@ -39,11 +39,11 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 					return errors;
 				}}
 				onSubmit={(values: LoginScreenData) => {
-					safeRunAfterKeyboardHide(() => onStartLogin(values.username, values.password));
+					safeRunAfterKeyboardHide(() => onStartLogin(values.userName, values.password));
 					Keyboard.dismiss();
 				}}
 				render={({
-					values: {username, password},
+					values: {userName, password},
 					errors,
 					handleBlur,
 					handleSubmit,
@@ -54,20 +54,20 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 				}: FormikProps<LoginScreenData>) => (
 					<React.Fragment>
 						<PrimaryTextInput
-							placeholder={getText('login.username.input')}
+							placeholder={getText('login.userName.input')}
 							placeholderColor={customStyleProps.inputPlaceholderColor}
 							returnKeyType={TRKeyboardKeys.next}
 							keyboardType={TKeyboardKeys.emailAddress}
-							value={username}
+							value={userName}
 							onChangeText={(value: string) => {
-								setFieldValue('username', value);
-								setFieldTouched('username');
+								setFieldValue('userName', value);
+								setFieldTouched('userName');
 							}}
-							focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('username')}
+							focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('userName')}
 							onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
 							ref={usernameRef}
 						/>
-						{touched.username && errors.username && <Text style={style.errorText}>{errors.username}</Text>}
+						{touched.userName && errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
 						<View style={style.passwordContainer}>
 							<PrimaryTextInput
 								placeholder={getText('login.password.input')}
@@ -103,7 +103,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 );
 
 interface ILoginScreenViewProps extends ITranslatedProps {
-	onStartLogin: (username: string, password: string) => void;
+	onStartLogin: (userName: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onNavigateToUploadKey: () => void;

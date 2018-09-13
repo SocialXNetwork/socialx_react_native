@@ -16,7 +16,7 @@ import {ForgotPasswordScreenView} from './ForgotPasswordScreen.view';
 interface IForgotPasswordScreenProps extends ITranslatedProps {
 	navigation: NavigationScreenProp<any>;
 	navigationOptions: NavigationScreenConfig<any>;
-	sendResetCode: (username: string) => void;
+	sendResetCode: (userName: string) => void;
 }
 
 export const ForgotPasswordScreen: React.SFC<IForgotPasswordScreenProps> = ({getText, sendResetCode}) => (

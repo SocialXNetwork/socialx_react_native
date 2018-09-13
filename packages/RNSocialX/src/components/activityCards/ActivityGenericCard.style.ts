@@ -36,7 +36,7 @@ const style: any = {
 		color: Colors.postFullName,
 		fontSize: Sizes.smartHorizontalScale(14),
 	},
-	username: {
+	userName: {
 		...Fonts.centuryGothic,
 		color: Colors.postHour,
 		fontSize: Sizes.smartHorizontalScale(11),
