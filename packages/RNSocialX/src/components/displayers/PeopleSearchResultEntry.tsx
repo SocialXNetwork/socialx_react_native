@@ -12,7 +12,7 @@ const IN_ANIMATION_DURATION = 300;
 const OUT_ANIMATION_NAME = 'fadeOutRight';
 const OUT_ANIMATION_DURATION = 300;
 
-interface IGroupCreateSearchResultEntryProps extends ITranslatedProps {
+interface IPeopleSearchResultEntryProps extends ITranslatedProps {
 	avatarURL: string;
 	fullName: string;
 	location: string;
@@ -55,7 +55,7 @@ const addButtonPressedHandler = (afterAnimationHandler: () => void, animatedButt
 	});
 };
 
-export const PeopleSearchResultEntry: React.SFC<IGroupCreateSearchResultEntryProps> = ({
+export const PeopleSearchResultEntry: React.SFC<IPeopleSearchResultEntryProps> = ({
 	addHandler,
 	selected,
 	avatarURL,
@@ -68,7 +68,7 @@ export const PeopleSearchResultEntry: React.SFC<IGroupCreateSearchResultEntryPro
 	return (
 		<View style={[style.container, selected ? style.containerSelected : {}]}>
 			<View style={style.leftContainer}>
-				<AvatarImage image={{uri: avatarURL}} style={style.avatarImage} />
+				<AvatarImage image={avatarURL} style={style.avatarImage} />
 				<View style={style.avatarNameContainer}>
 					<Text style={style.fullName}>{fullName}</Text>
 					<Text style={style.location}>{location}</Text>

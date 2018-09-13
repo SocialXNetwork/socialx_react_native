@@ -7,5 +7,5 @@ import CenterView from '../../../helpers/CenterView';
 storiesOf('Components/avatar', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('AvatarName', () => (
-		<AvatarName fullName={'Alex Sirbu'} userName={'alexsirbu'} fullNameColor={'white'} userNameColor={'white'} />
+		<AvatarName fullName={'Alex Sirbu'} userName={'alexsirbu'} fullNameColor={'black'} userNameColor={'black'} />
 	));
