@@ -8,12 +8,12 @@
  */
 
 import * as React from 'react';
-import {Image, ImageStyle, StyleProp, StyleSheet} from 'react-native';
+import {Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet} from 'react-native';
 
 import {Images, Sizes} from '../../environment/theme';
 
 interface IAvatarImageProps {
-	image: string | null;
+	image: ImageSourcePropType | string | null;
 	style: StyleProp<ImageStyle>;
 }
 
