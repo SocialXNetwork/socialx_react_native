@@ -1,8 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import {Colors} from '../../src/environment/theme';
-
 export interface ICenterViewProps {
 	children?: object;
 	style?: object;
@@ -17,6 +15,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: Colors.background,
+		backgroundColor: '#ddd',
 	},
 });

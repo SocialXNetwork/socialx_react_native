@@ -3,9 +3,9 @@ import {Colors, Fonts, Sizes} from '../../environment/theme';
 
 const styles: any = {
 	container: {
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		width: '100%',
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 	buttonText: {
