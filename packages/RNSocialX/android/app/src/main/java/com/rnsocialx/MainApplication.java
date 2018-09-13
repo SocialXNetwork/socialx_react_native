@@ -3,6 +3,7 @@ package com.rnsocialx;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.react.rnspinkit.RNSpinkitPackage;
 import iyegoroff.RNTextGradient.RNTextGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNDeviceInfo(),
             new RNSpinkitPackage(),
             new RNTextGradientPackage(),
             new BlurViewPackage(),
