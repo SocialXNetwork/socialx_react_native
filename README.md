@@ -51,6 +51,7 @@ The following RN packages are linked:
 10. react-native-blur
 11. react-native-text-gradient
 12. react-native-spinkit
+13. react-native-device-info
 
 Before you begin, make sure you have installed the following tooling
 
