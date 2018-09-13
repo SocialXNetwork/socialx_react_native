@@ -1,13 +1,9 @@
 import * as React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
+import {IMediaProps} from '../../../types';
 import {MediaObjectViewer} from '../MediaObjectViewer';
 import style from './WallPostMedia.style';
-
-interface IMediaProps {
-	type: string;
-	url: string;
-}
 
 interface ISingleMediaPostProps {
 	mediaObject: IMediaProps;
@@ -29,7 +25,7 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 		thumbOnly={noInteraction}
 		uri={mediaObject.url}
 		style={style.postMediaContainerFullWidth}
-		extension={mediaObject.type}
+		extension={mediaObject.extension}
 	/>
 );
 
@@ -47,7 +43,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObj
 				thumbOnly={true}
 				uri={mediaObjects[0].url}
 				style={style.fullWidthHeight}
-				extension={mediaObjects[0].type}
+				extension={mediaObjects[0].extension}
 			/>
 		</View>
 		<View style={style.fullHeightHalfWidth}>
@@ -57,7 +53,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObj
 				thumbOnly={true}
 				uri={mediaObjects[1].url}
 				style={style.fullWidthHeight}
-				extension={mediaObjects[1].type}
+				extension={mediaObjects[1].extension}
 			/>
 		</View>
 	</View>
@@ -79,7 +75,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 					thumbOnly={true}
 					uri={mediaObjects[0].url}
 					style={style.fullWidthHeight}
-					extension={mediaObjects[0].type}
+					extension={mediaObjects[0].extension}
 				/>
 			</View>
 			<View style={style.fullHeightHalfWidth}>
@@ -89,7 +85,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 					thumbOnly={true}
 					uri={mediaObjects[1].url}
 					style={style.fullWidthHalfHeight}
-					extension={mediaObjects[1].type}
+					extension={mediaObjects[1].extension}
 				/>
 				<TouchableOpacity style={style.fullWidthHalfHeight} onPress={() => onMediaObjectView(2)}>
 					// @ts-ignore
@@ -97,7 +93,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 						thumbOnly={true}
 						uri={mediaObjects[2].url}
 						style={style.fullWidthHeight}
-						extension={mediaObjects[2].type}
+						extension={mediaObjects[2].extension}
 					/>
 					{numberOfMoreMediaObjects > 0 && (
 						<View style={style.moreOverlay}>

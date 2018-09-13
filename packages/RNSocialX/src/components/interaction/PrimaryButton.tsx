@@ -39,8 +39,8 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 	const containerStyles = [
 		styles.container,
 		{borderColor},
-		containerStyle ? containerStyle : {},
 		styles['container' + size],
+		containerStyle ? containerStyle : {},
 		buttonDisabled ? styles.disabledButton : {},
 	];
 
