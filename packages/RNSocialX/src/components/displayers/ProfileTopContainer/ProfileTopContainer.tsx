@@ -91,20 +91,22 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 						onPress={relationshipButtonHandler}
 					/>
 				)}
-				// @ts-ignore
-				<PrimaryButton
-					width={buttonWidth}
-					label={
-						isCurrentUser
-							? getText('profile.top.container.button.edit.profile')
-							: getText('profile.top.container.button.send.message')
-					}
-					size={ButtonSizes.Small}
-					borderColor={colors.pink}
-					textColor={colors.pink}
-					containerStyle={styles.ghostButton}
-					onPress={isCurrentUser ? onEditProfile : () => console.log('Message')}
-				/>
+				{
+					// @ts-ignore
+					<PrimaryButton
+						width={buttonWidth}
+						label={
+							isCurrentUser
+								? getText('profile.top.container.button.edit.profile')
+								: getText('profile.top.container.button.send.message')
+						}
+						size={ButtonSizes.Small}
+						borderColor={colors.pink}
+						textColor={colors.pink}
+						containerStyle={styles.ghostButton}
+						onPress={isCurrentUser ? onEditProfile : () => console.log('Message')}
+					/>
+				}
 			</View>
 			{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
 		</View>

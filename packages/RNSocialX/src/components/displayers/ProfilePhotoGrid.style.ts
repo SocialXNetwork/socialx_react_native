@@ -19,6 +19,15 @@ const style: any = {
 		borderRightWidth: 2,
 		borderColor: Colors.white,
 	},
+	storybook: {
+		width: USER_MEDIA_THUMB_SIZE,
+		height: USER_MEDIA_THUMB_SIZE,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#888',
+		borderWidth: 2,
+		borderColor: Colors.white,
+	},
 };
 
 export default StyleSheet.create(style);

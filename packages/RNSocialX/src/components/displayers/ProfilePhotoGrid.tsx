@@ -21,10 +21,13 @@ const GridItem: React.SFC<{
 	onViewMediaFullScreen: (index: number) => void;
 }> = ({mediaData, onViewMediaFullScreen}) => {
 	const styles = (mediaData.index! - 1) % 3 === 0 ? [style.gridMediaThumb, style.centerGridItem] : style.gridMediaThumb;
+
 	return (
 		<TouchableOpacity onPress={() => onViewMediaFullScreen(mediaData.index!)}>
-			// @ts-ignore
-			<MediaObjectViewer type={mediaData.type} uri={mediaData.url} style={styles} thumbOnly={true} />
+			{
+				// @ts-ignore
+				<MediaObjectViewer type={mediaData.type} uri={mediaData.url} style={styles} thumbOnly={true} />
+			}
 		</TouchableOpacity>
 	);
 };
@@ -49,7 +52,7 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 		scrollViewProps={{
 			bounces: true,
 			showsVerticalScrollIndicator: false,
-			scrollEnabled: disabled,
+			scrollEnabled: !disabled,
 		}}
 	/>
 );

@@ -1,4 +1,5 @@
 import './components/activityCards/ActivityFriendRequestCard';
+import './components/activityCards/ActivityGenericCard';
 import './components/activityCards/ActivityRecentCommentCard';
 import './components/activityCards/ActivitySuperLikedCard';
 
@@ -13,5 +14,7 @@ import './components/displayers/HeartAnimation';
 import './components/displayers/MediaHorizontalScroller';
 import './components/displayers/MediaObjectViewer';
 import './components/displayers/PeopleSearchResultEntry';
+import './components/displayers/ProfilePhotoGrid';
+import './components/displayers/ProfileTopContainer';
 
 import './components/navigation/HeaderLogo';

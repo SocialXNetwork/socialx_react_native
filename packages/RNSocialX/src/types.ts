@@ -71,6 +71,7 @@ export interface IMediaProps {
 	url: string;
 	hash: string;
 	type: MediaTypes;
+	extension: string;
 	size: number;
 	numberOfLikes: number;
 	numberOfComments: number;
