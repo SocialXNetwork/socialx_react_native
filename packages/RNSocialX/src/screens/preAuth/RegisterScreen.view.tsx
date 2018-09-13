@@ -33,7 +33,7 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 export interface RegisterData {
 	email: string;
 	name: string;
-	username: string;
+	userName: string;
 	phoneNumber: string;
 	password: string;
 	avatarImage: ImageSourcePropType;
@@ -114,7 +114,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					initialValues={{
 						email: '',
 						name: '',
-						username: '',
+						userName: '',
 						phoneNumber: '',
 						password: '',
 						confirmPassword: '',
@@ -126,7 +126,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					validate={({
 						email,
 						name,
-						username,
+						userName,
 						phoneNumber,
 						password,
 						confirmPassword,
@@ -142,8 +142,8 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 						if (!name) {
 							errors.name = getText('register.screen.name.required');
 						}
-						if (!username) {
-							errors.username = getText('register.screen.username.required');
+						if (!userName) {
+							errors.userName = getText('register.screen.userName.required');
 						}
 						if (!phoneNumber) {
 							errors.phoneNumber = getText('register.screen.phone.number.required');
@@ -182,7 +182,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					onSubmit={({
 						email,
 						name,
-						username,
+						userName,
 						phoneNumber,
 						countryCallingCode,
 						password,
@@ -194,7 +194,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							onStartRegister({
 								email,
 								name,
-								username,
+								userName,
 								phoneNumber: phoneUtil.format(rawPhoneNumber, PhoneNumberFormat.E164),
 								password,
 								avatarImage,
@@ -206,7 +206,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 						values: {
 							email,
 							name,
-							username,
+							userName,
 							phoneNumber,
 							password,
 							confirmPassword,
@@ -284,19 +284,19 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								/>
 							</View>
 							<View style={style.textInputContainer}>
-								<ErrorMessage text={errors.username} visible={!!touched.username && !!errors.username} />
+								<ErrorMessage text={errors.userName} visible={!!touched.userName && !!errors.userName} />
 								<PrimaryTextInput
 									iconColor={Colors.iron}
 									icon={'user'}
-									placeholder={getText('register.username')}
+									placeholder={getText('register.userName')}
 									placeholderColor={Colors.postText}
 									borderColor={Colors.transparent}
 									returnKeyType={TRKeyboardKeys.next}
-									value={username}
+									value={userName}
 									ref={usernameRef}
 									onChangeText={(value: string) => {
-										setFieldValue('username', value);
-										setFieldTouched('username');
+										setFieldValue('userName', value);
+										setFieldTouched('userName');
 									}}
 									onSubmitPressed={() => phoneNumberRef.current && phoneNumberRef.current.focus()}
 								/>
@@ -410,7 +410,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<PrimaryButton
 									label={getText('register.button.have.code')}
 									onPress={onAlreadyHaveCode}
-									disabled={username === '' || !!errors.username}
+									disabled={userName === '' || !!errors.userName}
 									borderColor={Colors.transparent}
 								/>
 							</View>

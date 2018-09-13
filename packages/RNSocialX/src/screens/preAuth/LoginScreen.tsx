@@ -3,7 +3,7 @@
  * TODO list:
  * 1. Props data: none :)
  * 2. Props actions: doLogin
- * 3. @Jake, @Serkan, decide what will be used for login: username, email, phonenumber?
+ * 3. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
  * 4. Decide if we will have a verification step: code sent via SMS or email.
  * 5. (later) Get rid of navigation hacks!
  */
@@ -18,7 +18,7 @@ import {LoginScreenView} from './LoginScreen.view';
 interface ILoginScreenProps extends ITranslatedProps {
 	navigation: NavigationScreenProp<any>;
 	navigationOptions: NavigationScreenConfig<any>;
-	doLogin: (username: string, password: string) => void;
+	doLogin: (userName: string, password: string) => void;
 }
 
 export class LoginScreen extends React.Component<ILoginScreenProps> {

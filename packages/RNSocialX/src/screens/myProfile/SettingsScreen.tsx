@@ -55,7 +55,7 @@ export class SettingsScreen extends React.Component<ISettingsScreenProps> {
 				email={currentUser ? currentUser.email : ''}
 				miningEnabled={currentUser ? currentUser.miningEnabled || false : false}
 				avatarURL={currentUser ? currentUser.avatarURL : null}
-				username={currentUser ? currentUser.username : ''}
+				userName={currentUser ? currentUser.userName : ''}
 				onSaveChanges={(saveData: SettingsData) => saveChanges(saveData, this.props)}
 				getText={getText}
 			/>

@@ -10,7 +10,7 @@ import style from './ActivityGenericCard.style';
 interface IActivityGenericCardProps extends ITranslatedProps, IConfirmActions {
 	avatarURL: string;
 	fullName: string;
-	username: string;
+	userName: string;
 	userId: string;
 	text: string;
 	onCheckNotification: (requestId: string) => void;
@@ -55,7 +55,7 @@ export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
 	userId,
 	avatarURL,
 	fullName,
-	username,
+	userName,
 	text,
 	requestId,
 	showConfirm,
@@ -78,7 +78,7 @@ export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
 						<AvatarImage image={avatarURL} style={style.avatarImage} />
 						<View style={style.avatarNameContainer}>
 							<Text style={style.fullName}>{fullName}</Text>
-							{username && <Text style={style.username}>{'@' + username}</Text>}
+							{userName && <Text style={style.userName}>{'@' + userName}</Text>}
 							<Text style={style.friendRequest}>{text}</Text>
 						</View>
 					</TouchableOpacity>

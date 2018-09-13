@@ -28,7 +28,7 @@ export interface SettingsData {
 	email: string;
 	miningEnabled: boolean;
 	avatarURL: string | null;
-	username: string;
+	userName: string;
 }
 
 interface ISettingsScreenViewProps extends SettingsData, ITranslatedProps, IWithLoaderProps {
@@ -41,7 +41,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	lastName,
 	email,
 	avatarURL,
-	username,
+	userName,
 	miningEnabled,
 	getText,
 	onSaveChanges,
@@ -55,7 +55,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				lastName,
 				email,
 				avatarURL,
-				username,
+				userName,
 				miningEnabled,
 			}}
 			validate={({firstName: firstNameValue, lastName: lastNameValue, email: emailValue}: SettingsData) => {
@@ -81,7 +81,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					lastName: lastNameValue,
 					email: emailValue,
 					avatarURL: avatarURLValue,
-					username: usernameValue,
+					userName: usernameValue,
 					miningEnabled: miningEnabledValue,
 				},
 				errors,
@@ -108,7 +108,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						</View>
 						<AvatarName
 							fullName={firstNameValue + ' ' + lastNameValue}
-							username={usernameValue}
+							userName={usernameValue}
 							fullNameColor={customStyleProps.avatarFullNameColor}
 							userNameColor={customStyleProps.avatarUserNameColor}
 						/>

@@ -16,7 +16,7 @@ const style: any = {
 		lineHeight: Sizes.smartHorizontalScale(20),
 		textAlign: 'center',
 	},
-	username: {
+	userName: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(17),

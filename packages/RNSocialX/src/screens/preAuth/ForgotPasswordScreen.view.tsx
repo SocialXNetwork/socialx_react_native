@@ -7,28 +7,28 @@ import {ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './ForgotPasswordScreen.style';
 
 interface IForgotPasswordScreenViewProps extends ITranslatedProps {
-	onSendResetCode: (username: string) => void;
+	onSendResetCode: (userName: string) => void;
 }
 
 interface ForgotPasswordData {
-	username: string;
+	userName: string;
 }
 
 export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps> = ({onSendResetCode, getText}) => (
 	<Formik
 		initialValues={{
-			username: '',
+			userName: '',
 		}}
-		validate={({username}: ForgotPasswordData) => {
+		validate={({userName}: ForgotPasswordData) => {
 			const errors: FormikErrors<ForgotPasswordData> = {};
-			if (!username) {
-				errors.username = getText('forgot.password.username.required');
+			if (!userName) {
+				errors.userName = getText('forgot.password.userName.required');
 			}
 			return errors;
 		}}
-		onSubmit={(values: ForgotPasswordData) => onSendResetCode(values.username)}
+		onSubmit={(values: ForgotPasswordData) => onSendResetCode(values.userName)}
 		render={({
-			values: {username},
+			values: {userName},
 			errors,
 			handleBlur,
 			handleSubmit,
@@ -43,18 +43,18 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 				<Text style={style.descriptionText}>{getText('forgot.password.instructions')}</Text>
 				<View style={style.usernameInputContainer}>
 					<PrimaryTextInput
-						placeholder={getText('forgot.password.username')}
+						placeholder={getText('forgot.password.userName')}
 						iconColor={customStyleProps.usernameInputIconColor}
 						icon={'user'}
 						blurOnSubmit={true}
 						returnKeyType={TRKeyboardKeys.go}
-						value={username}
+						value={userName}
 						onSubmitPressed={handleSubmit}
 						onChangeText={(value: string) => {
-							setFieldValue('username', value);
+							setFieldValue('userName', value);
 						}}
 					/>
-					{errors.username && <Text style={style.errorText}>{errors.username}</Text>}
+					{errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
 				</View>
 				// @ts-ignore
 				<PrimaryButton

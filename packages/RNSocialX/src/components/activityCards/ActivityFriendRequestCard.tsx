@@ -8,7 +8,7 @@ import style, {customStyleProps} from './ActivityFriendRequestCard.style';
 interface IFriendRequestProps extends ITranslatedProps {
 	avatarURL: string;
 	fullName: string;
-	username: string;
+	userName: string;
 	userId: string;
 	onRequestConfirmed: () => void;
 	onRequestDeclined: () => void;
@@ -26,7 +26,7 @@ const InlineLoader: React.SFC = () => (
 export const ActivityFriendRequestCard: React.SFC<IFriendRequestProps> = ({
 	loadingConfirmed,
 	loadingDeclined,
-	username,
+	userName,
 	fullName,
 	userId,
 	onViewUserProfile,
@@ -42,7 +42,7 @@ export const ActivityFriendRequestCard: React.SFC<IFriendRequestProps> = ({
 				<AvatarImage image={avatarURL} style={style.avatarImage} />
 				<View style={style.avatarNameContainer}>
 					<Text style={style.fullName}>{fullName}</Text>
-					{username !== '' && <Text style={style.username}>{'@' + username}</Text>}
+					{userName !== '' && <Text style={style.userName}>{'@' + userName}</Text>}
 					<Text style={style.friendRequest}>{getText('notifications.card.friend.request.title')}</Text>
 				</View>
 			</TouchableOpacity>

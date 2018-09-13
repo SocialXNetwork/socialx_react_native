@@ -27,7 +27,7 @@ export const BestComments: React.SFC<IBestCommentsProps> = ({
 							onPress={() => onUserPress(comment.owner.userId)}
 							suppressHighlighting={true}
 						>
-							{comment.owner.username + '  '}
+							{comment.owner.userName + '  '}
 						</Text>
 						<Text onPress={() => onCommentPress(false)}>{comment.text}</Text>
 					</Text>
