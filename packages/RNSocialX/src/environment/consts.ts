@@ -1,3 +1,4 @@
+import * as React from 'react';
 // DO NOT SHORTEN THIS IMPORT! For some reason, RN/Typescript cannot import the icons like that
 import {Icons} from './theme/Icons';
 
@@ -56,3 +57,15 @@ export enum NOTIFICATION_TYPES {
 	GROUP_REQUEST = 'GROUP_REQUEST',
 	SUPER_LIKED = 'SUPER_LIKED',
 }
+
+export interface IKeyboardContextProps {
+	marginBottom: number;
+	safeRunAfterKeyboardHide: (handler: () => void) => void;
+}
+
+export const KeyboardContext: React.Context<IKeyboardContextProps> = React.createContext({
+	marginBottom: 0,
+	safeRunAfterKeyboardHide: (handler: () => void) => {
+		/**/
+	},
+});

@@ -59,7 +59,7 @@ export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
 export {IVideoOptions, VideoPlayer} from './interaction/video';
 
-export {WithManagedTransitions, ModalManager, IManagedModal} from './managedTransitions';
+export {WithManagedTransitions, ModalManager, IManagedModal, ManagedKeyboard} from './managedTransitions';
 
 export {ActivityIndicatorModal} from './modals/ActivityIndicatorModal';
 export {ConfirmationModal} from './modals/ConfirmationModal';

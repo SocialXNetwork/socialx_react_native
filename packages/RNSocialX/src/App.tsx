@@ -1,13 +1,22 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HelloFoo} from './app';
+
+import {HelloFoo} from './app/';
+import {ManagedKeyboard} from './components/';
+import {KeyboardContext} from './environment/consts';
 
 export default class App extends React.Component<{}> {
 	public render() {
 		return (
-			<View style={styles.container}>
-				<HelloFoo style={styles.placeholder} message={'SocialX'} />
-			</View>
+			<ManagedKeyboard>
+				{(keyboardContextProps) => (
+					<KeyboardContext.Provider value={keyboardContextProps}>
+						<View style={styles.container}>
+							<HelloFoo style={styles.placeholder} message={'SocialX'} />
+						</View>
+					</KeyboardContext.Provider>
+				)}
+			</ManagedKeyboard>
 		);
 	}
 }
