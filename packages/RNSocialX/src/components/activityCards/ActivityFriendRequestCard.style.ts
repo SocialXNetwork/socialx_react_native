@@ -7,6 +7,7 @@ const BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
 const style: any = {
 	container: {
+		backgroundColor: Colors.white,
 		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
