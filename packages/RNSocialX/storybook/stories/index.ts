@@ -18,6 +18,7 @@ import './components/displayers/NavigationItems';
 import './components/displayers/PeopleSearchResultEntry';
 import './components/displayers/ProfilePhotoGrid';
 import './components/displayers/ProfileTopContainer';
+import './components/displayers/RichText';
 import './components/displayers/TextGradient';
 import './components/displayers/WallPostCard/BestComments';
 import './components/displayers/WallPostCard/CommentInput';
@@ -29,6 +30,8 @@ import './components/displayers/WallPostCard/ViewAllComments';
 import './components/displayers/WallPostCard/WallPostActions';
 import './components/displayers/WallPostCard/WallPostCard';
 import './components/displayers/WallPostCard/WallPostMedia';
+
+import './components/hocs/WithInlineLoader';
 
 import './components/inputs/CommentTextInput';
 import './components/inputs/PrimaryTextInput';
