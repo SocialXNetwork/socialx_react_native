@@ -77,7 +77,7 @@ export const customStyleProps = {
 	defaultBorderColor: Colors.pink,
 	defaultBorderWidth: Sizes.smartHorizontalScale(2),
 	defaultUnderlineColorAndroid: Colors.transparent,
-	iconHeightSmall: Sizes.smartHorizontalScale(30),
+	iconHeightSmall: Sizes.smartHorizontalScale(15),
 	iconHeightNormal: Sizes.smartHorizontalScale(30),
 	iconHeightLarge: Sizes.smartHorizontalScale(30),
 };

@@ -49,6 +49,9 @@ import './components/modals/ActivityIndicatorModal';
 import './components/modals/ConfirmationModal';
 import './components/modals/InputSMSCodeModal';
 import './components/modals/MediaInfoModal';
+import './components/modals/OfflineOverlayModal';
+import './components/modals/ReportProblemModal';
+import './components/modals/TagFriendsModal';
 
 import './components/navigation/HeaderLogo';
 import './components/navigation/ScreenHeaderButton';
