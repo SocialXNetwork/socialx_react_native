@@ -1,6 +1,7 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
-import {Alert, Text} from 'react-native';
+import {Text} from 'react-native';
 
 import {TouchableWithDoublePress} from '../../../../src/components';
 import {Colors} from '../../../../src/environment/theme';
@@ -13,8 +14,8 @@ storiesOf('Components/interaction', module)
 			<Text style={{margin: 15, fontSize: 20}}>Press once or twice</Text>
 			<TouchableWithDoublePress
 				disabled={false}
-				onSinglePress={() => Alert.alert('Pressed once!')}
-				onDoublePress={() => Alert.alert('Pressed twice!')}
+				onSinglePress={action('Pressed once!')}
+				onDoublePress={action('Pressed twice!')}
 				style={{width: '50%', height: 40, backgroundColor: Colors.pink, borderRadius: 5}}
 			/>
 		</React.Fragment>

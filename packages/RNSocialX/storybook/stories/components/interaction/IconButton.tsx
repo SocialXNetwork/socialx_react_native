@@ -1,6 +1,6 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
-import {Alert} from 'react-native';
 
 import {IconButton} from '../../../../src/components';
 import {Colors} from '../../../../src/environment/theme';
@@ -11,7 +11,7 @@ storiesOf('Components/interaction', module)
 	.add('IconButton', () => (
 		<IconButton
 			label={'Button (Surprising, I know)'}
-			onPress={() => Alert.alert('Pressed!')}
+			onPress={action('Pressed!')}
 			iconType={'io'}
 			iconSource={'ios-add-circle'}
 			iconStyle={{fontSize: 25, color: Colors.pink}}

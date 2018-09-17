@@ -1,6 +1,6 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
-import {Alert} from 'react-native';
 
 import {ButtonSizes, PrimaryButton} from '../../../../src/components';
 import {Colors} from '../../../../src/environment/theme';
@@ -13,7 +13,7 @@ storiesOf('Components/interaction', module)
 		<PrimaryButton
 			label={'Button (Surprising, I know)'}
 			disabled={false}
-			onPress={() => Alert.alert('Pressed!')}
+			onPress={action('Pressed!')}
 			size={ButtonSizes.Normal}
 			autoWidth={true}
 			borderColor={Colors.pink}
