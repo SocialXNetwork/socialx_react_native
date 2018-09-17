@@ -51,6 +51,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	likes: IPostLike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
+	suggested: undefined | ISuggestionCardItem[];
 	noInput: boolean;
 }
 
