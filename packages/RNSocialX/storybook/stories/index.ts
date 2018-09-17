@@ -19,4 +19,6 @@ import './components/displayers/ProfilePhotoGrid';
 import './components/displayers/ProfileTopContainer';
 import './components/displayers/TextGradient';
 
+import './components/inputs/CommentTextInput';
+
 import './components/navigation/HeaderLogo';
