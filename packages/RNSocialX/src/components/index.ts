@@ -23,7 +23,7 @@ export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
 export {NoComments} from './displayers/NoComments';
 export {NoPhotos} from './displayers/NoPhotos';
-export {NavigationTabBar} from './displayers/NavigationTabBar';
+export {NavigationTabBar, NavigationItems} from './displayers/NavigationTabBar';
 export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
 export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';

@@ -12,7 +12,6 @@ import {
 	PickerImageMultiple,
 } from '../../../utilities';
 import {NavigationItems} from './';
-import styles from './NavigationTabBar.style';
 
 const INITIAL_SCREEN = 'UserFeedTab';
 
@@ -36,7 +35,7 @@ export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBa
 
 	public render() {
 		return (
-			<SafeAreaView style={styles.container} onLayout={this.layoutHandler}>
+			<SafeAreaView onLayout={this.layoutHandler}>
 				<NavigationItems
 					notifications={this.props.notifications}
 					selectedTab={this.state.selectedTab}

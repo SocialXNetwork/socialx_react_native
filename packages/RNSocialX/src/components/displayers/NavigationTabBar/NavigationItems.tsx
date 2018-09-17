@@ -88,7 +88,7 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 	showPhotoOptionsMenu,
 	tabChange,
 }) => (
-	<React.Fragment>
+	<View style={styles.container}>
 		{MENU_ITEMS.map((item, index) => {
 			if (item.type === MENU_BUTTON_TYPE.MENU_BUTTON_CAMERA) {
 				return (
@@ -119,5 +119,5 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 				);
 			}
 		})}
-	</React.Fragment>
+	</View>
 );
