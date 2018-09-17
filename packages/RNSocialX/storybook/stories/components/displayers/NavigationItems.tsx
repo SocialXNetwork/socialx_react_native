@@ -1,6 +1,6 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
-import {Alert} from 'react-native';
 
 import {NavigationItems} from '../../../../src/components/';
 import CenterView from '../../../helpers/CenterView';
@@ -11,7 +11,7 @@ storiesOf('Components/displayers', module)
 		<NavigationItems
 			notifications={new Array(5)}
 			selectedTab={'UserFeedTab'}
-			showPhotoOptionsMenu={() => Alert.alert('showPhotoOptionsMenu')}
-			tabChange={(tab: string) => Alert.alert('tabChange: ' + tab)}
+			showPhotoOptionsMenu={action('showPhotoOptionsMenu')}
+			tabChange={action('tabChange')}
 		/>
 	));

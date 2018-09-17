@@ -1,6 +1,6 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
-import {Alert} from 'react-native';
 
 import {CommentTextInput} from '../../../../src/components/';
 import CenterView from '../../../helpers/CenterView';
@@ -25,7 +25,7 @@ class CommentTextInputStory extends React.Component {
 
 	private onSendHandler = () => {
 		this.setState({value: ''});
-		Alert.alert('Comment sent!');
+		action('Comment sent!');
 	};
 }
 
