@@ -6,7 +6,7 @@
 import * as React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-import {AnimatedFaIcon, Colors, Fonts, Sizes} from '../../environment/theme';
+import {AnimatedFaIcon, Animations, Colors, Fonts, Sizes} from '../../environment/theme';
 import {ITranslatedProps} from '../../types';
 import {showToastMessage} from '../../utilities';
 
@@ -32,7 +32,8 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 		prevState: Readonly<ILikeAnimatingButtonState>,
 	) {
 		if (nextProps.likedByMe !== prevState.optimisticLikedByMe) {
-			showToastMessage(nextProps.getText('toast.message.on.like.failed'));
+			// TODO: investigate NativeBase as this crashes the app
+			// showToastMessage(nextProps.getText('toast.message.on.like.failed'));
 			return {
 				optimisticLikedByMe: nextProps.likedByMe,
 			};
@@ -77,7 +78,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 		});
 
 		onPress();
-		await this.animatedIconRef.current.animate('pulsate', PULSATE_PERIOD);
+		await this.animatedIconRef.current.animate(Animations.pulsate, PULSATE_PERIOD);
 
 		this.setState({
 			touchDisabled: false,
