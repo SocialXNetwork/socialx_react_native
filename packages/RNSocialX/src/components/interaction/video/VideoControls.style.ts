@@ -46,6 +46,13 @@ const styles: any = {
 		paddingRight: Sizes.smartHorizontalScale(10),
 		paddingTop: Sizes.smartHorizontalScale(10),
 	},
+	loadingContainer: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 };
 
 export const defaultColor = Colors.pink;

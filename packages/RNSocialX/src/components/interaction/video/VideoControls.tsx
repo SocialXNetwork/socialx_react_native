@@ -1,3 +1,7 @@
+/**
+ * TODO list:
+ * 1. @Ionut, mute and resize icons on the right side of the video don't show on Android!
+ */
 import * as React from 'react';
 import {ActivityIndicator, Platform, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,10 +29,10 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 	onVideoPlayStart,
 	onVideoMuteToggle,
 	onVideoEnterFullScreen,
-}) => {
-	if (playReady) {
-		if (!thumbOnly) {
-			return (
+}) => (
+	<React.Fragment>
+		{playReady &&
+			!thumbOnly && (
 				<View style={styles.container}>
 					{showPlayButton && (
 						<TouchableOpacity onPress={onVideoPlayStart}>
@@ -44,19 +48,16 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 						</TouchableOpacity>
 					)}
 				</View>
-			);
-		}
-
-		return (
+			)}
+		{thumbOnly && (
 			<View style={styles.thumbOverlay}>
 				<Icon name={'md-videocam'} style={styles.thumbVideoIcon} />
 			</View>
-		);
-	}
-
-	return (
-		<View style={styles.controlsView}>
-			<ActivityIndicator size={'large'} color={defaultColor} />
-		</View>
-	);
-};
+		)}
+		{!playReady && (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator size={'large'} color={defaultColor} />
+			</View>
+		)}
+	</React.Fragment>
+);
