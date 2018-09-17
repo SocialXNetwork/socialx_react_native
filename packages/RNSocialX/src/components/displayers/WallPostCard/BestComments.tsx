@@ -5,20 +5,14 @@ import {Colors, Fonts, Sizes} from '../../../environment/theme';
 import {ISimpleComment} from '../../../types';
 
 interface IBestCommentsProps {
-	numberOfComments: number;
 	bestComments: ISimpleComment[];
 	onUserPress: (userId: string) => void;
 	onCommentPress: (start: boolean) => void;
 }
 
-export const BestComments: React.SFC<IBestCommentsProps> = ({
-	numberOfComments,
-	bestComments,
-	onUserPress,
-	onCommentPress,
-}) => {
-	if (numberOfComments > 0) {
-		return (
+export const BestComments: React.SFC<IBestCommentsProps> = ({bestComments, onUserPress, onCommentPress}) => (
+	<React.Fragment>
+		{bestComments.length > 0 && (
 			<View style={styles.bestCommentsContainer}>
 				{bestComments.map((comment: ISimpleComment, index: number) => (
 					<Text style={styles.commentContainer} numberOfLines={2} key={index}>
@@ -33,11 +27,9 @@ export const BestComments: React.SFC<IBestCommentsProps> = ({
 					</Text>
 				))}
 			</View>
-		);
-	}
-
-	return null;
-};
+		)}
+	</React.Fragment>
+);
 
 const style: any = {
 	bestCommentsContainer: {

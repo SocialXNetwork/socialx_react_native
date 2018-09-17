@@ -13,14 +13,14 @@ export const Location: React.SFC<ILocationProps> = ({location = false, getText})
 	if (location) {
 		return (
 			<React.Fragment>
-				<Text style={styles.grayText}>{getText('text.and')}</Text>
+				<Text style={styles.grayText}>{` ${getText('text.at')} `}</Text>
 				<Icon
 					name={'md-pin'}
 					size={Sizes.smartHorizontalScale(12)}
 					color={Colors.postText}
 					style={styles.locationPin}
 				/>
-				<Text> location</Text>
+				<Text>{` ${location}`}</Text>
 			</React.Fragment>
 		);
 	}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Keyboard, Platform, Text, TextInput, TextInputProps, TouchableOpacity, View} from 'react-native';
+import {Keyboard, Platform, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {OS_TYPES} from '../../environment/consts';
@@ -163,36 +163,29 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 			autoCapitalize,
 			blurOnSubmit,
 			numberOfLines,
+			multiline,
+			value,
+			borderColor,
+			borderWidth,
 		} = this.props;
 		const {hasFocus} = this.state;
 
-		const isMultiLine = this.props.numberOfLines > 1 || this.props.multiline;
-		const inputContainerStyles = [
-			style.inputContainer,
-			{
-				borderColor: this.props.borderColor,
-				borderWidth: this.props.borderWidth,
-			},
-		];
+		const isMultiLine = numberOfLines > 1 || multiline;
+		const inputContainerStyles = [style.inputContainer, {borderColor, borderWidth}];
 		const textInputStyles = [
 			style.textInput,
 			style['textInput' + size],
 			...(isMultiLine ? [style.multilineTextInput] : []),
 		];
 
-		const valueProps: Partial<TextInputProps> = {};
-		if (!!this.props.value) {
-			valueProps.value = this.props.value;
-		}
-
 		return (
 			<View style={[style.container, width ? {width} : {}, disabled ? style.disabledInput : {}]}>
 				<View style={inputContainerStyles}>
-					{icon && <InputIcon icon={icon} iconColor={iconColor} size={size} />}
+					{icon !== '' && <InputIcon icon={icon} iconColor={iconColor} size={size} />}
 					<TextInput
 						allowFontScaling={false}
 						autoFocus={autoFocus}
-						{...valueProps}
+						value={value || ''}
 						onChangeText={onChangeText}
 						onSubmitEditing={onSubmitPressed}
 						ref={this.inputRef}

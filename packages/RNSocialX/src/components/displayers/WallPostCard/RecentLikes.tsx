@@ -5,16 +5,15 @@ import {ITranslatedProps} from '../../../types';
 import styles from './RecentLikes.style';
 
 interface IRecentLikesProps extends ITranslatedProps {
-	likes: undefined | any; // TODO: @Alex fix typing after backend is ready
-	numberOfLikes: number;
+	likes: undefined | any[]; // TODO: @Alex fix typing after backend is ready
 	onUserPress: (userId: string) => void;
 }
 
-export const RecentLikes: React.SFC<IRecentLikesProps> = ({likes, numberOfLikes, onUserPress, getText}) => {
-	if (likes && numberOfLikes > 0) {
-		const lastLikeUser = likes[numberOfLikes - 1];
-		const numberOfOtherLikes = numberOfLikes - 1;
-		const secondLastLike = numberOfLikes >= 2 ? likes[numberOfLikes - 2] : null;
+export const RecentLikes: React.SFC<IRecentLikesProps> = ({likes, onUserPress, getText}) => {
+	if (likes && likes.length > 0) {
+		const lastLikeUser = likes[likes.length - 1];
+		const numberOfOtherLikes = likes.length - 1;
+		const secondLastLike = likes.length >= 2 ? likes[likes.length - 2] : null;
 		const andText = ` ${getText('text.and')} `;
 
 		return (

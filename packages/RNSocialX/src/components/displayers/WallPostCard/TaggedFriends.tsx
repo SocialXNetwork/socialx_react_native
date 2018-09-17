@@ -16,13 +16,13 @@ export const TaggedFriends: React.SFC<ITaggedFriendsProps> = ({friends, getText}
 		<React.Fragment>
 			{hasFriends && (
 				<React.Fragment>
-					<Text style={styles.grayText}>{getText('text.with')}</Text>
+					<Text style={styles.grayText}>{` ${getText('text.with')} `}</Text>
 					<Text key={1}>{friends[0].fullName}</Text>
 				</React.Fragment>
 			)}
 			{hasMoreThanOneFriend && (
 				<React.Fragment>
-					<Text style={styles.grayText}>{getText('text.and')}</Text>
+					<Text style={styles.grayText}>{` ${getText('text.and')} `}</Text>
 					<Text>{`${friends.length - 1} ${getText('text.others')}`}</Text>
 				</React.Fragment>
 			)}
