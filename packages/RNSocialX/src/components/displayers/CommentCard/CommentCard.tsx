@@ -1,6 +1,11 @@
+/**
+ * TODO list:
+ * 1. Nothing showing from container with style actionsContainer?
+ */
+
 import moment from 'moment';
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {StyleProp, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 
 import {AvatarImage} from '../../';
 import {AnimatedText} from '../../../environment/theme';
@@ -19,7 +24,7 @@ interface ICommentCardProps extends ITranslatedProps {
 	requestingLike: boolean;
 	onShowOptionsMenu: () => void;
 	onCommentContainerWidthChange: (value: number) => void;
-	commentLikesPosition: object;
+	commentLikesPosition: StyleProp<ViewStyle>;
 }
 
 export class CommentCard extends React.Component<ICommentCardProps> {
@@ -49,7 +54,7 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 		return (
 			<View style={styles.container}>
 				<TouchableOpacity onPress={() => onViewUserProfile(user.id)}>
-					<AvatarImage image={{uri: user.avatarURL}} style={styles.avatarImage} />
+					<AvatarImage image={user.avatarURL} style={styles.avatarImage} />
 				</TouchableOpacity>
 				<View style={styles.rightContainer}>
 					<View>
