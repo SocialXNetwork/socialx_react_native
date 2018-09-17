@@ -23,4 +23,8 @@ import './components/inputs/CommentTextInput';
 import './components/inputs/SettingCheckbox';
 import './components/inputs/SharePostInput';
 
+import './components/interaction/GradientButton';
+import './components/interaction/IconButton';
+import './components/interaction/PrimaryButton';
+
 import './components/navigation/HeaderLogo';

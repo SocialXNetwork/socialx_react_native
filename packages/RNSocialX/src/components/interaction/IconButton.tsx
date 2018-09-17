@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, ImageRequireSource, ImageStyle, StyleProp, Text, TouchableOpacity} from 'react-native';
+import {Image, ImageRequireSource, Text, TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
@@ -10,22 +10,26 @@ interface IIconButtonProps {
 	iconSource: ImageRequireSource | string; // use string for an Ionicon or FontAwesome source
 	iconType: string; // use "io" or "fa"
 	onPress: () => void;
-	iconStyle: StyleProp<ImageStyle>;
+	iconStyle: any;
+	textStyle: any;
+	containerStyle: any;
 }
 
 export const IconButton: React.SFC<IIconButtonProps> = ({
 	iconStyle,
+	textStyle,
+	containerStyle,
 	label = false,
-	iconSource = styles.iconStyle,
+	iconSource,
 	onPress,
 	iconType,
 }) => (
-	<TouchableOpacity style={styles.container} disabled={!onPress} onPress={onPress}>
+	<TouchableOpacity style={[styles.container, containerStyle]} disabled={!onPress} onPress={onPress}>
 		{iconType === 'image' && (
-			<Image source={iconSource as ImageRequireSource} style={iconStyle} resizeMode={'contain'} />
+			<Image source={iconSource as ImageRequireSource} style={[styles.icon, iconStyle]} resizeMode={'contain'} />
 		)}
-		{iconType === 'io' && <Ionicon name={iconSource as string} style={iconStyle} />}
-		{iconType === 'fa' && <FontAwesome name={iconSource as string} style={iconStyle} />}
-		{label && <Text style={styles.label}>{label}</Text>}
+		{iconType === 'io' && <Ionicon name={iconSource as string} style={[styles.icon, iconStyle]} />}
+		{iconType === 'fa' && <FontAwesome name={iconSource as string} style={[styles.icon, iconStyle]} />}
+		{label && <Text style={[styles.label, textStyle]}>{label}</Text>}
 	</TouchableOpacity>
 );
