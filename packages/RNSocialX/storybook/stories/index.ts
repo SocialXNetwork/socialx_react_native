@@ -17,5 +17,6 @@ import './components/displayers/NavigationItems';
 import './components/displayers/PeopleSearchResultEntry';
 import './components/displayers/ProfilePhotoGrid';
 import './components/displayers/ProfileTopContainer';
+import './components/displayers/TextGradient';
 
 import './components/navigation/HeaderLogo';
