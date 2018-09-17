@@ -47,6 +47,8 @@ import './components/interaction/VideoPlayer';
 
 import './components/modals/ActivityIndicatorModal';
 import './components/modals/ConfirmationModal';
+import './components/modals/InputSMSCodeModal';
+import './components/modals/MediaInfoModal';
 
 import './components/navigation/HeaderLogo';
 import './components/navigation/ScreenHeaderButton';
