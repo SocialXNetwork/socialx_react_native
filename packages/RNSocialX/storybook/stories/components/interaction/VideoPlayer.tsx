@@ -1,11 +1,47 @@
+import {boolean, withKnobs} from '@storybook/addon-knobs';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 
 import {VideoPlayer} from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
-const video = 'http://techslides.com/demos/sample-videos/small.mp4';
+const VIDEO_URL = 'https://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4';
 
 storiesOf('Components/interaction', module)
+	.addDecorator(withKnobs)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	.add('VideoPlayer', () => <VideoPlayer videoURL={video} />);
+	.add('VideoPlayer', () => {
+		const paused = boolean('paused', true);
+		const muted = boolean('muted', false);
+		return (
+			<VideoPlayer
+				videoURL={VIDEO_URL}
+				containerStyle={{
+					width: '100%',
+					height: 250,
+				}}
+				paused={paused}
+				muted={muted}
+				resizeMode={'cover'}
+				thumbOnly={false}
+				onPressVideo={() => console.log('onPressVideo, should pause')}
+				onMuteVideo={() => console.log('onMuteVideo')}
+				onUpdateResizeMode={() => console.log('onUpdateResizeMode')}
+			/>
+		);
+	})
+	.add('VideoPlayer thumbnail', () => {
+		return (
+			<VideoPlayer
+				videoURL={VIDEO_URL}
+				containerStyle={{
+					width: '100%',
+					height: 250,
+				}}
+				resizeMode={'contain'}
+				paused={true}
+				thumbOnly={true}
+				onPressVideo={() => console.log('onPressVideo, show full screen screen')}
+			/>
+		);
+	});

@@ -147,6 +147,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-video')
     compile project(':react-native-device-info')
     compile project(':react-native-spinkit')
     compile project(':react-native-text-gradient')

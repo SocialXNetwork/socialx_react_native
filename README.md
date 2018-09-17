@@ -52,6 +52,7 @@ The following RN packages are linked:
 11. react-native-text-gradient
 12. react-native-spinkit
 13. react-native-device-info
+14. react-native-video
 
 Before you begin, make sure you have installed the following tooling
 
