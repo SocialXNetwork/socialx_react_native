@@ -8,11 +8,15 @@ import styles, {defaultColor} from './OfflineOverlayModal.style';
 
 const CONNECTION_EVENT_NAME = 'connectionChange';
 
-interface IOfflineOverlayState {
+interface IOfflineOverlayModalProps extends ITranslatedProps {
+	visible: boolean;
+}
+
+interface IOfflineOverlayModalState {
 	offline: boolean;
 }
 
-export class OfflineOverlay extends React.Component<ITranslatedProps, IOfflineOverlayState> {
+export class OfflineOverlayModal extends React.Component<IOfflineOverlayModalProps, IOfflineOverlayModalState> {
 	public state = {
 		offline: false,
 	};
@@ -27,15 +31,16 @@ export class OfflineOverlay extends React.Component<ITranslatedProps, IOfflineOv
 	}
 
 	public render() {
-		const {offline} = this.state;
+		const visible = this.state.offline || this.props.visible;
+
 		return (
-			<WithManagedTransitions modalVisible={offline}>
+			<WithManagedTransitions modalVisible={visible}>
 				{({onDismiss, onModalHide}) => (
 					<Modal
 						// @ts-ignore
 						onDismiss={onDismiss}
 						onModalHide={onModalHide}
-						isVisible={offline}
+						isVisible={visible}
 						backdropOpacity={0.2}
 						animationIn={'slideInDown'}
 						animationOut={'slideOutUp'}

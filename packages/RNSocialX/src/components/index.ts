@@ -66,7 +66,7 @@ export {ConfirmationModal} from './modals/ConfirmationModal';
 export {DotsMenuModal, DotsMenuItem} from './modals/DotsMenuModal';
 export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
 export {MediaInfoModal} from './modals/MediaInfoModal';
-export {OfflineOverlay} from './modals/OfflineOverlayModal';
+export {OfflineOverlayModal} from './modals/OfflineOverlayModal';
 export {ReportProblemModal, IReportData} from './modals/ReportProblemModal';
 export {TagFriendsModal} from './modals/TagFriendsModal';
 
