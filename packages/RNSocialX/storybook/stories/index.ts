@@ -42,6 +42,7 @@ import './components/interaction/PrimaryButton';
 import './components/interaction/SuggestionsCarousel';
 import './components/interaction/ToggleIconButton';
 import './components/interaction/TouchableWithDoublePress';
+import './components/interaction/VideoPlayer';
 
 import './components/navigation/HeaderLogo';
 import './components/navigation/ScreenHeaderButton';
