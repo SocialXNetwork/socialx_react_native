@@ -17,9 +17,10 @@ const styles: any = {
 		color: Colors.postButtonColor,
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
-	iconStyle: {
+	icon: {
 		width: ICON_DEFAULT_SIZE,
 		height: ICON_DEFAULT_SIZE,
+		fontSize: ICON_DEFAULT_SIZE,
 	},
 };
 

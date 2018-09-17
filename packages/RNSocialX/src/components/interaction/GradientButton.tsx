@@ -22,8 +22,10 @@ export const GradientButton: React.SFC<IGradientButtonProps> = (props) => {
 			colors={[colorStart, colorEnd]}
 			style={[styles.container, buttonDisabled ? styles.disabledButton : {}]}
 		>
-			// @ts-ignore
-			<PrimaryButton {...buttonProps} containerStyle={styles.innerButtonContainer} />
+			{
+				// @ts-ignore
+				<PrimaryButton {...buttonProps} containerStyle={styles.innerButtonContainer} />
+			}
 		</LinearGradient>
 	);
 };
