@@ -27,7 +27,7 @@ export class TouchableWithDoublePress extends React.Component<ITouchableWithDoub
 
 	private getTapCount = () => {
 		let taps = this.tapCount;
-		let singleTapTimer = 0;
+		let singleTapTimer: any;
 		taps++;
 		this.tapCount++;
 

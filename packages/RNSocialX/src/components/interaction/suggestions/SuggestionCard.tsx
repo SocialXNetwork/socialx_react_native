@@ -13,21 +13,25 @@ interface ISuggestionCardProps extends ITranslatedProps {
 
 export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({item, deleteCard, getText}) => (
 	<View style={styles.container}>
-		<AvatarImage image={{uri: item.avatarURL}} style={styles.avatar} />
+		<AvatarImage image={item.avatarURL} style={styles.avatar} />
 		<Text style={styles.name}>{item.name}</Text>
 		<Text style={styles.reason}>Followed by placeholder</Text>
-		// @ts-ignore
-		<PrimaryButton
-			label={getText('button.add.friend')}
-			size={ButtonSizes.Small}
-			borderColor={colors.pink}
-			textColor={colors.white}
-			containerStyle={styles.buttonContainer}
-			onPress={() => console.log('Add friend')}
-		/>
-		<View style={styles.iconContainer}>
+		{
 			// @ts-ignore
-			<IconButton iconSource={'ios-close'} iconType={'io'} onPress={deleteCard} iconStyle={styles.icon} />
+			<PrimaryButton
+				label={getText('button.add.friend')}
+				size={ButtonSizes.Small}
+				borderColor={colors.pink}
+				textColor={colors.white}
+				containerStyle={styles.buttonContainer}
+				onPress={() => console.log('Add friend')}
+			/>
+		}
+		<View style={styles.iconContainer}>
+			{
+				// @ts-ignore
+				<IconButton iconSource={'ios-close'} iconType={'io'} onPress={deleteCard} iconStyle={styles.icon} />
+			}
 		</View>
 	</View>
 );
