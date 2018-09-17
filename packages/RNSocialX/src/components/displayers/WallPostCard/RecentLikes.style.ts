@@ -5,7 +5,7 @@ const styles: any = {
 	recentLikesContainer: {
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		flexDirection: 'row',
-		marginTop: -Sizes.smartVerticalScale(5),
+		marginTop: Sizes.smartVerticalScale(5),
 		marginBottom: Sizes.smartVerticalScale(5),
 	},
 	likedText: {

@@ -18,8 +18,19 @@ import './components/displayers/PeopleSearchResultEntry';
 import './components/displayers/ProfilePhotoGrid';
 import './components/displayers/ProfileTopContainer';
 import './components/displayers/TextGradient';
+import './components/displayers/WallPostCard/BestComments';
+import './components/displayers/WallPostCard/CommentInput';
+import './components/displayers/WallPostCard/PostText';
+import './components/displayers/WallPostCard/RecentLikes';
+import './components/displayers/WallPostCard/TaggedFriends';
+import './components/displayers/WallPostCard/UserDetails';
+import './components/displayers/WallPostCard/ViewAllComments';
+import './components/displayers/WallPostCard/WallPostActions';
+import './components/displayers/WallPostCard/WallPostCard';
+import './components/displayers/WallPostCard/WallPostMedia';
 
 import './components/inputs/CommentTextInput';
+import './components/inputs/PrimaryTextInput';
 import './components/inputs/SettingCheckbox';
 import './components/inputs/SharePostInput';
 

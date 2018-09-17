@@ -1,3 +1,10 @@
+/**
+ * TODO List:
+ * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
+ * 2. @Alex: check prop suggested. Is this used here?
+ * 3. @Alex: check prop noInput. Should this be passed to CommentInput?
+ */
+
 import moment from 'moment';
 import * as React from 'react';
 import {Alert, Animated, Keyboard, Linking, Platform, Text, View} from 'react-native';
@@ -31,7 +38,6 @@ export interface ISimpleWallPostCardProps {
 
 export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslatedProps, IResizeProps {
 	governanceVersion: boolean;
-	numberOfLikes: number;
 	numberOfSuperLikes: number;
 	numberOfComments: number;
 	numberOfWalletCoins: number;
@@ -69,7 +75,6 @@ export interface IWallPostCardState {
 export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
 	public static defaultProps = {
 		governanceVersion: false,
-		numberOfLikes: 0,
 		numberOfSuperLikes: 0,
 		numberOfComments: 0,
 		numberOfWalletCoins: 0,
@@ -114,7 +119,6 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 	): boolean {
 		return (
 			this.props.id !== nextProps.id ||
-			this.props.numberOfLikes !== nextProps.numberOfLikes ||
 			this.props.numberOfComments !== nextProps.numberOfComments ||
 			this.state.reportProblemModalVisible !== nextState.reportProblemModalVisible ||
 			this.state.fullTextVisible !== nextState.fullTextVisible ||
@@ -138,7 +142,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 	public render() {
 		const timeStampDate = moment(this.props.timestamp).format('MMM DD');
 		const timeStampHour = moment(this.props.timestamp).format('hh:mma');
-		const formatedTimestamp = this.getFormatedPostTime(this.props.timestamp);
+		const formatedTimestamp = this.getFormattedPostTime(this.props.timestamp);
 		const animationValues = {
 			border: this.state.inputBorderWidth,
 			width: this.state.inputAvatarWidth,
@@ -199,19 +203,13 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 						/>
 					)}
 				</View>
-				<RecentLikes
-					likes={this.props.likes}
-					numberOfLikes={this.props.numberOfLikes}
-					onUserPress={this.props.onUserPress}
-					getText={this.props.getText}
-				/>
+				<RecentLikes likes={this.props.likes} onUserPress={this.props.onUserPress} getText={this.props.getText} />
 				<ViewAllComments
 					numberOfComments={this.props.numberOfComments}
 					onCommentPress={this.props.onCommentPress}
 					getText={this.props.getText}
 				/>
 				<BestComments
-					numberOfComments={this.props.numberOfComments}
 					bestComments={this.props.bestComments}
 					onUserPress={this.props.onUserPress}
 					onCommentPress={this.props.onCommentPress}
@@ -339,7 +337,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		}
 	};
 
-	private getFormatedPostTime = (timestamp: Date) => {
+	private getFormattedPostTime = (timestamp: Date) => {
 		const diff = moment(timestamp).fromNow();
 		const split = diff.split(/([0-9]+)/).filter(Boolean);
 		const value = split[0];

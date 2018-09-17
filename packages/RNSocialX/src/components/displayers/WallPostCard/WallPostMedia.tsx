@@ -37,24 +37,28 @@ interface IDualMediaPostProps {
 const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObjectView}) => (
 	<View style={style.postMediaContainerFullWidth}>
 		<View style={style.fullHeightHalfWidth}>
-			// @ts-ignore
-			<MediaObjectViewer
-				onPress={() => onMediaObjectView(0)}
-				thumbOnly={true}
-				uri={mediaObjects[0].url}
-				style={style.fullWidthHeight}
-				extension={mediaObjects[0].extension}
-			/>
+			{
+				// @ts-ignore
+				<MediaObjectViewer
+					onPress={() => onMediaObjectView(0)}
+					thumbOnly={true}
+					uri={mediaObjects[0].url}
+					style={style.fullWidthHeight}
+					extension={mediaObjects[0].extension}
+				/>
+			}
 		</View>
 		<View style={style.fullHeightHalfWidth}>
-			// @ts-ignore
-			<MediaObjectViewer
-				onPress={() => onMediaObjectView(1)}
-				thumbOnly={true}
-				uri={mediaObjects[1].url}
-				style={style.fullWidthHeight}
-				extension={mediaObjects[1].extension}
-			/>
+			{
+				// @ts-ignore
+				<MediaObjectViewer
+					onPress={() => onMediaObjectView(1)}
+					thumbOnly={true}
+					uri={mediaObjects[1].url}
+					style={style.fullWidthHeight}
+					extension={mediaObjects[1].extension}
+				/>
+			}
 		</View>
 	</View>
 );
@@ -69,32 +73,39 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 	return (
 		<View style={style.postMediaContainerFullWidth}>
 			<View style={style.fullHeightHalfWidth}>
-				// @ts-ignore
-				<MediaObjectViewer
-					onPress={() => onMediaObjectView(0)}
-					thumbOnly={true}
-					uri={mediaObjects[0].url}
-					style={style.fullWidthHeight}
-					extension={mediaObjects[0].extension}
-				/>
-			</View>
-			<View style={style.fullHeightHalfWidth}>
-				// @ts-ignore
-				<MediaObjectViewer
-					onPress={() => onMediaObjectView(1)}
-					thumbOnly={true}
-					uri={mediaObjects[1].url}
-					style={style.fullWidthHalfHeight}
-					extension={mediaObjects[1].extension}
-				/>
-				<TouchableOpacity style={style.fullWidthHalfHeight} onPress={() => onMediaObjectView(2)}>
+				{
 					// @ts-ignore
 					<MediaObjectViewer
+						onPress={() => onMediaObjectView(0)}
 						thumbOnly={true}
-						uri={mediaObjects[2].url}
+						uri={mediaObjects[0].url}
 						style={style.fullWidthHeight}
-						extension={mediaObjects[2].extension}
+						extension={mediaObjects[0].extension}
 					/>
+				}
+			</View>
+			<View style={style.fullHeightHalfWidth}>
+				<View style={style.fullWidthHalfHeight}>
+					{
+						// @ts-ignore
+						<MediaObjectViewer
+							onPress={() => onMediaObjectView(1)}
+							thumbOnly={true}
+							uri={mediaObjects[1].url}
+							extension={mediaObjects[1].extension}
+						/>
+					}
+				</View>
+				<TouchableOpacity style={style.fullWidthHalfHeight} onPress={() => onMediaObjectView(2)}>
+					{
+						// @ts-ignore
+						<MediaObjectViewer
+							thumbOnly={true}
+							uri={mediaObjects[2].url}
+							style={style.fullWidthHeight}
+							extension={mediaObjects[2].extension}
+						/>
+					}
 					{numberOfMoreMediaObjects > 0 && (
 						<View style={style.moreOverlay}>
 							<Text style={style.moreText}>{`+${numberOfMoreMediaObjects} more`}</Text>
@@ -108,8 +119,8 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 
 interface IWallPostMediaProps {
 	mediaObjects: IMediaProps[];
-	onMediaObjectView?: (index: number) => void;
-	onLikeButtonPressed?: () => Promise<any>;
+	onMediaObjectView: (index: number) => void;
+	onLikeButtonPressed: () => void;
 	noInteraction?: boolean;
 }
 
