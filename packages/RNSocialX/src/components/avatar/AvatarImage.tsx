@@ -13,7 +13,7 @@ import {Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet} from 'rea
 import {Images, Sizes} from '../../environment/theme';
 
 interface IAvatarImageProps {
-	image: ImageSourcePropType | string | null;
+	image: ImageSourcePropType | string | null | undefined;
 	style: StyleProp<ImageStyle>;
 }
 

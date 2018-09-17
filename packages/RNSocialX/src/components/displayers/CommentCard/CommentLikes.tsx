@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {StyleProp, Text, View, ViewStyle} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './CommentLikes.style';
 
 interface ICommentLikesProps {
 	numberOfLikes: number;
-	commentLikesPosition: object;
+	commentLikesPosition: StyleProp<ViewStyle>;
 }
 
 export const CommentLikes: React.SFC<ICommentLikesProps> = ({numberOfLikes, commentLikesPosition}) => (

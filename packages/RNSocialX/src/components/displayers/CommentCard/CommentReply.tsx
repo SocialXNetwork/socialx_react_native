@@ -15,7 +15,7 @@ interface ICommentReplyProps {
 export const CommentReply: React.SFC<ICommentReplyProps> = ({reply, onViewUserProfile, onCommentReply}) => (
 	<View style={styles.replyEntry}>
 		<TouchableOpacity style={styles.replyUserContainer} onPress={() => onViewUserProfile(reply.user.id)}>
-			<AvatarImage image={{uri: reply.user.avatarURL}} style={styles.replyAvatar} />
+			<AvatarImage image={reply.user.avatarURL} style={styles.replyAvatar} />
 			<Text numberOfLines={1} style={styles.replyUserFullName}>
 				{reply.user.fullName}
 			</Text>
