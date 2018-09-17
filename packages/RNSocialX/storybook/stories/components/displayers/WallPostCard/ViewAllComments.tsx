@@ -9,7 +9,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('ViewAllComments', () => {
-		const numberOfComments = number('numberOfComments', 0);
+		const numberOfComments = number('numberOfComments', 5);
 		return (
 			<ViewAllComments
 				numberOfComments={numberOfComments}

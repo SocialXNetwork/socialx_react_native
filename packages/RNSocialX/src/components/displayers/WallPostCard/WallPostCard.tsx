@@ -1,8 +1,6 @@
 /**
  * TODO List:
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
- * 2. @Alex: check prop suggested. Is this used here?
- * 3. @Alex: check prop noInput. Should this be passed to CommentInput?
  */
 
 import moment from 'moment';
@@ -53,7 +51,6 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	likes: IPostLike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
-	suggested: undefined | ISuggestionCardItem[];
 	noInput: boolean;
 }
 
@@ -81,7 +78,6 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		canDelete: false,
 		likedByMe: false,
 		media: false,
-		suggested: undefined,
 		taggedFriends: [],
 		location: false,
 		postText: false,
@@ -215,7 +211,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 					onCommentPress={this.props.onCommentPress}
 				/>
 				<CommentInput
-					noInput={false}
+					noInput={this.props.noInput}
 					comment={this.state.comment}
 					disabled={this.props.listLoading}
 					avatarURL={this.props.currentUser.avatarURL}
@@ -370,6 +366,6 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 
 		split[0] = value;
 		split[1] = type;
-		return split.join(' ').concat(' AGO');
+		return split.join(' ').toUpperCase();
 	};
 }

@@ -88,7 +88,6 @@ storiesOf('Components/displayers', module)
 					},
 				]}
 				listLoading={listLoading}
-				suggested={undefined}
 				noInput={false}
 			/>
 		);
