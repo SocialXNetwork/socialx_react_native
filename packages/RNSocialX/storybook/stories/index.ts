@@ -20,5 +20,7 @@ import './components/displayers/ProfileTopContainer';
 import './components/displayers/TextGradient';
 
 import './components/inputs/CommentTextInput';
+import './components/inputs/SettingCheckbox';
+import './components/inputs/SharePostInput';
 
 import './components/navigation/HeaderLogo';
