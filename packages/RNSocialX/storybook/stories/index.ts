@@ -45,5 +45,8 @@ import './components/interaction/ToggleIconButton';
 import './components/interaction/TouchableWithDoublePress';
 import './components/interaction/VideoPlayer';
 
+import './components/modals/ActivityIndicatorModal';
+import './components/modals/ConfirmationModal';
+
 import './components/navigation/HeaderLogo';
 import './components/navigation/ScreenHeaderButton';
