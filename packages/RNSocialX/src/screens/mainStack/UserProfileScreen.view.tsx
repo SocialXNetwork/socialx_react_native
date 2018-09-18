@@ -6,7 +6,7 @@ import {DataProvider} from 'recyclerlistview';
 import {IWallPostCardProps, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {IPostLike, ITranslatedProps, SearchResultKind} from '../../types';
+import {ILike, ITranslatedProps, SearchResultKind} from '../../types';
 
 import styles, {colors} from './UserProfileScreen.style';
 
@@ -99,33 +99,35 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
 					scrollEnabled={hasPhotos}
 				>
-					// @ts-ignore
-					<ProfileTopContainer
-						avatarURL={avatarURL}
-						fullName={fullName}
-						userName={userName}
-						numberOfFriends={numberOfFriends}
-						numberOfLikes={numberOfLikes}
-						numberOfPhotos={numberOfPhotos}
-						numberOfViews={numberOfViews}
-						onViewProfilePhoto={onViewProfilePhoto}
-						onAddFriend={onAddFriend}
-						onShowFriendshipOptions={onShowFriendshipOptions}
-						relationship={relationship}
-						isCurrentUser={false}
-						onIconPress={onIconPress}
-						aboutMeText={aboutMeText}
-						tabs={true}
-						activeTab={activeTab}
-						getText={getText}
-					/>
+					{
+						// @ts-ignore
+						<ProfileTopContainer
+							avatarURL={avatarURL}
+							fullName={fullName}
+							userName={userName}
+							numberOfFriends={numberOfFriends}
+							numberOfLikes={numberOfLikes}
+							numberOfPhotos={numberOfPhotos}
+							numberOfViews={numberOfViews}
+							onViewProfilePhoto={onViewProfilePhoto}
+							onAddFriend={onAddFriend}
+							onShowFriendshipOptions={onShowFriendshipOptions}
+							relationship={relationship}
+							isCurrentUser={false}
+							onIconPress={onIconPress}
+							aboutMeText={aboutMeText}
+							tabs={true}
+							activeTab={activeTab}
+							getText={getText}
+						/>
+					}
 					{hasPhotos && (
 						<View style={contentContainerStyle}>
 							<Animated.View style={[styles.postsContainer, {transform: [{translateX: listTranslate}]}]}>
 								{recentPosts.map((post: IWallPostCardProps, i) => {
 									let likedByMe = false;
 									if (post.likes.length > 0) {
-										likedByMe = !!post.likes.find((like: IPostLike) => like.userId === currentUserId);
+										likedByMe = !!post.likes.find((like: ILike) => like.userId === currentUserId);
 									}
 
 									return (

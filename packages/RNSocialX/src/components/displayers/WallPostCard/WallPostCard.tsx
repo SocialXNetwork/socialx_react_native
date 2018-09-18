@@ -10,7 +10,7 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import {HeartAnimation, ISuggestionCardItem, ReportProblemModal} from '../../';
 import {OS_TYPES} from '../../../environment/consts';
-import {IMediaProps, IPostLike, IResizeProps, ISimpleComment, ITranslatedProps} from '../../../types';
+import {ILike, IMediaProps, IResizeProps, ISimpleComment, ITranslatedProps} from '../../../types';
 import {
 	BestComments,
 	CommentInput,
@@ -48,7 +48,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	likedByMe: boolean;
 	canDelete: boolean;
 	media: IMediaProps[];
-	likes: IPostLike[];
+	likes: ILike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
 	suggested: undefined | ISuggestionCardItem[];
