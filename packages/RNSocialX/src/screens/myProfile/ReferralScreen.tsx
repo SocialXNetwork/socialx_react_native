@@ -18,7 +18,7 @@ export class ReferralScreen extends Component<IReferralScreenProps> {
 		return <ReferralScreenView copyToClipboard={this.copyToClipboardHandler} onShare={this.onShareHandler} />;
 	}
 
-	private onShareHandler = async () => {
+	private onShareHandler = () => {
 		const iOSContent = {
 			title: 'Shared message from SocialX',
 			url: 'http://www.lorem.ipsum.com',
