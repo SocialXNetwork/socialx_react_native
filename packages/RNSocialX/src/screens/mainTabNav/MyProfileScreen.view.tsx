@@ -58,21 +58,23 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
 					scrollEnabled={hasPhotos}
 				>
-					// @ts-ignore
-					<ProfileTopContainer
-						avatarURL={avatarURL}
-						fullName={fullName}
-						userName={userName}
-						numberOfFriends={numberOfFriends}
-						numberOfLikes={numberOfLikes}
-						numberOfPhotos={numberOfPhotos}
-						numberOfViews={numberOfViews}
-						onViewProfilePhoto={onViewProfilePhoto}
-						isCurrentUser={true}
-						aboutMeText={aboutMeText}
-						onEditProfile={onEditProfile}
-						getText={getText}
-					/>
+					{
+						// @ts-ignore
+						<ProfileTopContainer
+							avatarURL={avatarURL}
+							fullName={fullName}
+							userName={userName}
+							numberOfFriends={numberOfFriends}
+							numberOfLikes={numberOfLikes}
+							numberOfPhotos={numberOfPhotos}
+							numberOfViews={numberOfViews}
+							onViewProfilePhoto={onViewProfilePhoto}
+							isCurrentUser={true}
+							aboutMeText={aboutMeText}
+							onEditProfile={onEditProfile}
+							getText={getText}
+						/>
+					}
 					{hasPhotos && (
 						<View style={styles.gridContainer}>
 							<ProfilePhotoGrid

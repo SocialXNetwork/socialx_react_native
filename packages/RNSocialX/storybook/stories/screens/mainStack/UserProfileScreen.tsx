@@ -9,11 +9,9 @@ import {IWallPostCardProps} from '../../../../src/components';
 import {PROFILE_TAB_ICON_TYPES} from '../../../../src/environment/consts';
 import {UserProfileScreenView} from '../../../../src/screens/mainStack/UserProfileScreen.view';
 import {ILike, ISimpleComment, MediaTypeImage, SearchResultKind} from '../../../../src/types';
-import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
-	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('UserProfileScreen', () => {
 		const avatar = 'https://www.w3schools.com/w3css/img_lights.jpg';
 		const userAvatar =
