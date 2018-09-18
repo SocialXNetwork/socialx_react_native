@@ -1,21 +1,25 @@
-/* tslint:disable:ordered-imports */
+import './commentsStack/CommentsScreen';
 
+import './intro/IntroScreen';
+
+import './mainStack/CreateWallPostScreen';
+import './mainStack/MediaViewerScreen';
 import './mainStack/PhotoScreen';
-import './myProfile/ReferralScreen';
-import './preAuth/ResetPasswordScreen';
+import './mainStack/UserProfileScreen';
+
 import './mainTabNav/MyProfileScreen';
 import './mainTabNav/NotificationsScreen';
-import './mainStack/CreateWallPostScreen';
-import './myProfile/SettingsScreen';
-import './preAuth/RegisterScreen';
-import './mainStack/MediaViewerScreen';
-import './myProfile/SocialXAccountScreen';
-import './preAuth/TermsAndConditionsScreen';
-import './preAuth/LoginScreen';
-import './preAuth/LaunchScreen';
-import './intro/IntroScreen';
-import './preAuth/ForgotPasswordScreen';
 import './mainTabNav/UserFeedScreen';
-import './mainStack/UserProfileScreen';
+
+import './myProfile/ReferralScreen';
+import './myProfile/SettingsScreen';
+import './myProfile/SocialXAccountScreen';
+
+import './preAuth/ForgotPasswordScreen';
+import './preAuth/LaunchScreen';
+import './preAuth/LoginScreen';
+import './preAuth/RegisterScreen';
+import './preAuth/ResetPasswordScreen';
+import './preAuth/TermsAndConditionsScreen';
+
 import './primaryNav/MaintenanceScreen';
-import './commentsStack/CommentsScreen';
