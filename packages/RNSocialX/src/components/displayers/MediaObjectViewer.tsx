@@ -12,7 +12,7 @@ import {ITranslatedProps, MediaTypeImage, MediaTypes, MediaTypeVideo} from '../.
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	uri: string;
 	style: StyleProp<ViewStyle>;
-	resizeMode: FastImage.ResizeMode;
+	resizeMode: 'cover' | 'contain';
 	extension: string;
 	type: MediaTypes;
 	onPress: () => void;
@@ -90,7 +90,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 				mediaMimeType.startsWith(MediaTypeVideo.key) && (
 					<VideoPlayer
 						videoURL={uri}
-						onPress={onPress}
+						onPressVideo={onPress}
 						containerStyle={customStyle}
 						muted={muted}
 						thumbOnly={thumbOnly}
