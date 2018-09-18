@@ -1,5 +1,6 @@
 /* tslint:disable:ordered-imports */
 
+import './mainTabNav/MyProfileScreen';
 import './mainStack/CreateWallPostScreen';
 import './myProfile/SettingsScreen';
 import './preAuth/RegisterScreen';
