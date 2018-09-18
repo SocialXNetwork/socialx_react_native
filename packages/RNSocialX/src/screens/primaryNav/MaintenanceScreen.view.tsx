@@ -2,9 +2,12 @@ import LottieView from 'lottie-react-native';
 import * as React from 'react';
 import {Text, View} from 'react-native';
 
+import {ITranslatedProps} from '../../types';
 import styles, {animations} from './MaintenanceScreen.style';
 
-export const MaintenanceScreenView: React.SFC = () => (
+interface IMaintenanceScreenViewProps extends ITranslatedProps {}
+
+export const MaintenanceScreenView: React.SFC<IMaintenanceScreenViewProps> = ({getText}) => (
 	<View style={styles.container}>
 		<LottieView
 			style={styles.icon}
@@ -16,7 +19,6 @@ export const MaintenanceScreenView: React.SFC = () => (
 			}}
 			loop={true}
 		/>
-		<Text style={styles.text}>App currently under maintenance,</Text>
-		<Text style={styles.text}> try again later!</Text>
+		<Text style={styles.text}>{getText('maintenance.message')}</Text>
 	</View>
 );
