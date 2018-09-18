@@ -63,21 +63,18 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				<Carousel
 					// activeSlide={activeSlide}
 					data={mediaObjects}
-					renderItem={({item, index}: {item: IMediaProps; index: number}) => {
-						console.log('renderItem', index);
-						return (
-							// @ts-ignore
-							<MediaObjectViewer
-								type={item.type}
-								paused={index !== activeSlide}
-								uri={item.url}
-								style={[styles.carouselMediaObject, {width: viewport.width}]}
-								resizeMode={'contain'}
-								resizeToChangeAspectRatio={true}
-								canZoom={false}
-							/>
-						);
-					}}
+					renderItem={({item, index}: {item: IMediaProps; index: number}) => (
+						// @ts-ignore
+						<MediaObjectViewer
+							type={item.type}
+							paused={index !== activeSlide}
+							uri={item.url}
+							style={[styles.carouselMediaObject, {width: viewport.width}]}
+							resizeMode={'contain'}
+							resizeToChangeAspectRatio={true}
+							canZoom={false}
+						/>
+					)}
 					sliderWidth={viewport.width}
 					itemWidth={viewport.width}
 					firstItem={startIndex}
