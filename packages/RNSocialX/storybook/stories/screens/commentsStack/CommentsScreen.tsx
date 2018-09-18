@@ -4,11 +4,9 @@ import * as React from 'react';
 
 import {CommentsScreenView} from '../../../../src/screens/commentsStack/CommentsScreen.view';
 import {CommentsSortingOptions} from '../../../../src/types';
-import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Screens/commentsStack', module)
 	.addDecorator(withKnobs)
-	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('CommentsScreen', () => {
 		const isLoading = boolean('isLoading', false);
 		const marginBottom = number('marginBottom', 0);
