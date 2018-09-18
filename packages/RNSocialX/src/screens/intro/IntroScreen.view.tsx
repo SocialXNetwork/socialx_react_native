@@ -68,13 +68,13 @@ export const IntroScreenView: React.SFC<IIntroScreenViewProps> = ({doneButtonHan
 			}))}
 			activeDotColor={customStyleProps.activeDotColor}
 			dotColor={customStyleProps.dotColor}
-			renderItem={<SlideItem />}
+			renderItem={(props: any) => <SlideItem {...props} />}
 			renderNextButton={NextButton}
 			renderDoneButton={DoneButton}
 			onDone={doneButtonHandler}
 			onSkip={skipButtonHandler}
 			showSkipButton={true}
-			renderSkipButton={SkipButton}
+			renderSkipButton={() => <SkipButton getText={getText} />}
 		/>
 	);
 };

@@ -56,14 +56,16 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 					/>
 					{errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
 				</View>
-				// @ts-ignore
-				<PrimaryButton
-					disabled={!isValid}
-					label={getText('forgot.password.send.button')}
-					autoWidth={true}
-					borderColor={customStyleProps.transparentBorder}
-					onPress={handleSubmit}
-				/>
+				{
+					// @ts-ignore
+					<PrimaryButton
+						disabled={!isValid}
+						label={getText('forgot.password.send.button')}
+						autoWidth={true}
+						borderColor={customStyleProps.transparentBorder}
+						onPress={handleSubmit}
+					/>
+				}
 			</ScrollView>
 		)}
 	/>
