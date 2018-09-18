@@ -198,7 +198,7 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 		});
 	};
 
-	private onLikePressHandler = async (likedByMe: boolean, postId: string) => {
+	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
 		const {likePost, unlikePost} = this.props;
 
 		if (likedByMe) {

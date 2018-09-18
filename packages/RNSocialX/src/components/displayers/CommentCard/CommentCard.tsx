@@ -1,8 +1,3 @@
-/**
- * TODO list:
- * 1. Nothing showing from container with style actionsContainer?
- */
-
 import moment from 'moment';
 import * as React from 'react';
 import {StyleProp, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
@@ -21,7 +16,6 @@ interface ICommentCardProps extends ITranslatedProps {
 	onCommentReply: (startReply: boolean) => void;
 	isReply: boolean;
 	onViewUserProfile: (userId: string) => void;
-	requestingLike: boolean;
 	onShowOptionsMenu: () => void;
 	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: StyleProp<ViewStyle>;
@@ -39,7 +33,6 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 			onViewUserProfile,
 			onCommentReply,
 			onCommentLike,
-			requestingLike,
 			onShowOptionsMenu,
 			onCommentContainerWidthChange,
 			commentLikesPosition,
@@ -73,10 +66,7 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 						onLayout={(event) => onCommentContainerWidthChange(event.nativeEvent.layout.width)}
 					>
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
-						<TouchableOpacity
-							onPress={() => this.onCommentLikeHandler(onCommentLike, requestingLike, animatedText)}
-							disabled={requestingLike}
-						>
+						<TouchableOpacity onPress={() => this.onCommentLikeHandler(onCommentLike, animatedText)}>
 							<AnimatedText ref={animatedText} style={styles.actionButtonText}>
 								{likedByMe ? getText('comments.screen.actions.unlike') : getText('comments.screen.actions.like')}
 							</AnimatedText>
@@ -98,20 +88,8 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 		);
 	}
 
-	private onCommentLikeHandler = async (
-		onCommentLike: () => void,
-		requestingLike: boolean,
-		animatedText: React.RefObject<any>,
-	) => {
+	private onCommentLikeHandler = (onCommentLike: () => void, animatedText: React.RefObject<any>) => {
 		onCommentLike();
-		await animatedText.current.animate('pulsate', PULSATE_PERIOD);
-		this.onAnimationEndHandler(requestingLike, animatedText);
-	};
-
-	private onAnimationEndHandler = async (requestingLike: boolean, animatedText: React.RefObject<any>) => {
-		if (requestingLike) {
-			await animatedText.current.animate('pulsate', PULSATE_PERIOD);
-			this.onAnimationEndHandler(requestingLike, animatedText);
-		}
+		animatedText.current.animate('pulse', PULSATE_PERIOD);
 	};
 }

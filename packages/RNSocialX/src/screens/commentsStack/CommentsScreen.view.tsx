@@ -1,10 +1,5 @@
-/**
- * TODO list:
- * 1. revisit requestingLike prop on CommentCard, which now has a hardcoded value
- */
-
-import React, {RefObject} from 'react';
-import {Platform, SafeAreaView, ScrollView} from 'react-native';
+import React from 'react';
+import {Platform, SafeAreaView, ScrollView, TextInput} from 'react-native';
 
 import {
 	CommentCard,
@@ -20,7 +15,18 @@ import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader'
 import {IMediaProps, IResizeProps, ITranslatedProps, IWallPostComment} from '../../types';
 import style from './CommentsScreen.style';
 
-const scrollRef: RefObject<ScrollView> = React.createRef();
+const onStartCommentHandler = (commentInputRef: React.RefObject<TextInput>) => {
+	if (commentInputRef.current) {
+		commentInputRef.current.focus();
+	}
+};
+
+const onCommentSendHandler = (commentInputRef: React.RefObject<TextInput>, onCommentSend: () => void) => {
+	if (commentInputRef.current) {
+		commentInputRef.current.blur();
+	}
+	onCommentSend();
+};
 
 interface ICommentsScreenComponentProps extends IWithLoaderProps, ITranslatedProps, IResizeProps {
 	comments: IWallPostComment[];
@@ -37,7 +43,7 @@ interface ICommentsScreenComponentProps extends IWithLoaderProps, ITranslatedPro
 	postOwner: object;
 	onCommentsBackPress: () => void;
 	onImagePress: (index: any, medias: IMediaProps[]) => void;
-	onLikePress: (likedByMe: boolean, postId: string) => Promise<any>;
+	onLikePress: (likedByMe: boolean, postId: string) => void;
 	currentUser: any;
 	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: object;
@@ -78,6 +84,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 		? getText('replies.screen.comment.input.placeholder')
 		: getText('comments.screen.comment.input.placeholder');
 
+	const scrollRef: React.RefObject<ScrollView> = React.createRef();
+	const commentInputRef: React.RefObject<TextInput> = React.createRef();
+
 	return (
 		<SafeAreaView style={[style.container, Platform.select({ios: {marginBottom}})]}>
 			<WithInlineLoader isLoading={isLoading}>
@@ -97,15 +106,20 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					/>
 					{text ? <CommentsPostText text={text} /> : null}
 					{media && (
+						// @ts-ignore
 						<WallPostMedia
 							mediaObjects={media}
 							onMediaObjectView={(index: number) => onImagePress(index, media)}
-							// onLikeButtonPressed={this.onDoubleTapLikeHandler}
 							noInteraction={false}
 						/>
 					)}
 					<CommentsPostLikes getText={getText} likes={likes} showUserProfile={onViewUserProfile} />
-					<CommentsPostActions likedByMe={likedByMe} onLikePress={() => onLikePress(likedByMe, id)} getText={getText} />
+					<CommentsPostActions
+						likedByMe={likedByMe}
+						onLikePress={() => onLikePress(likedByMe, id)}
+						getText={getText}
+						onStartComment={() => onStartCommentHandler(commentInputRef)}
+					/>
 					{comments.length === 0 ? (
 						<NoComments text={noCommentsText} />
 					) : (
@@ -116,7 +130,6 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 								onCommentLike={() => onCommentLike(comment)}
 								onCommentReply={(startReply: boolean) => onCommentReply(comment, startReply)}
 								onViewUserProfile={onViewUserProfile}
-								requestingLike={false}
 								onShowOptionsMenu={() => onShowOptionsMenu(comment)}
 								onCommentContainerWidthChange={(width: number) => onCommentContainerWidthChange(width)}
 								commentLikesPosition={commentLikesPosition}
@@ -126,8 +139,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					)}
 				</ScrollView>
 				<CommentTextInput
+					ref={commentInputRef}
 					autoFocus={startComment}
-					onCommentSend={onCommentSend}
+					onCommentSend={() => onCommentSendHandler(commentInputRef, onCommentSend)}
 					placeholder={commentInputPlaceholder}
 					showSendButton={showSendButton}
 					commentText={commentText}
