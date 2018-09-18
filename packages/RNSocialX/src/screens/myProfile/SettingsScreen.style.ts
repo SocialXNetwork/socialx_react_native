@@ -85,7 +85,7 @@ export const customStyleProps = {
 	avatarPickerSize: Sizes.smartHorizontalScale(103),
 	avatarFullNameColor: Colors.postFullName,
 	avatarUserNameColor: Colors.postHour,
-	aboutTextBorderColor: Colors.dustWhite,
+	aboutMeTextBorderColor: Colors.dustWhite,
 	userDataInputIconColor: Colors.iron,
 	userDataInputPlaceholderColor: Colors.postText,
 	userDataInputBorderColor: Colors.transparent,

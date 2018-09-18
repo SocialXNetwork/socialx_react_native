@@ -22,7 +22,7 @@ import style, {customStyleProps} from './SettingsScreen.style';
 const EMAIL_SCHEMA = string().email();
 
 export interface SettingsData {
-	aboutText: string;
+	aboutMeText: string;
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -36,7 +36,7 @@ interface ISettingsScreenViewProps extends SettingsData, ITranslatedProps, IWith
 }
 
 export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
-	aboutText,
+	aboutMeText,
 	firstName,
 	lastName,
 	email,
@@ -50,7 +50,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	<WithInlineLoader isLoading={isLoading}>
 		<Formik
 			initialValues={{
-				aboutText,
+				aboutMeText,
 				firstName,
 				lastName,
 				email,
@@ -76,7 +76,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 			onSubmit={(values: SettingsData) => onSaveChanges(values)}
 			render={({
 				values: {
-					aboutText: aboutTextValue,
+					aboutMeText: aboutMeTextValue,
 					firstName: firstNameValue,
 					lastName: lastNameValue,
 					email: emailValue,
@@ -116,12 +116,12 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							<PrimaryTextInput
 								autoCapitalize={'sentences'}
 								autoCorrect={true}
-								value={aboutTextValue}
+								value={aboutMeTextValue}
 								placeholder={getText('settings.screen.about.text.placeholder')}
-								borderColor={customStyleProps.aboutTextBorderColor}
+								borderColor={customStyleProps.aboutMeTextBorderColor}
 								multiline={true}
-								onChangeText={(value: string) => setFieldValue('aboutText', value)}
-								focusUpdateHandler={(value) => !value && handleBlur('aboutText')}
+								onChangeText={(value: string) => setFieldValue('aboutMeText', value)}
+								focusUpdateHandler={(value) => !value && handleBlur('aboutMeText')}
 							/>
 						</View>
 						<Text style={style.personalDetails}>{getText('settings.screen.personal.details')}</Text>

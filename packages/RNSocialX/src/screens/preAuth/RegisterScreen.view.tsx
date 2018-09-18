@@ -236,14 +236,16 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								marginBottom={0}
 							/>
 							<View style={style.avatarPickerContainer}>
-								// @ts-ignore
-								<AvatarPicker
-									getText={getText}
-									avatarImage={avatarImage}
-									afterImagePick={(localPhotoPath: string) =>
-										setFieldValue('avatarImage', {uri: localPhotoPath}, false)
-									}
-								/>
+								{
+									// @ts-ignore
+									<AvatarPicker
+										getText={getText}
+										avatarImage={avatarImage}
+										afterImagePick={(localPhotoPath: string) =>
+											setFieldValue('avatarImage', {uri: localPhotoPath}, false)
+										}
+									/>
+								}
 							</View>
 							<View style={[style.textInputContainer, style.textInputContainerFirst]}>
 								<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
@@ -397,22 +399,26 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								/>
 							</View>
 							<View style={style.buttonContainer}>
-								// @ts-ignore
-								<PrimaryButton
-									label={getText('register.button.label')}
-									onPress={handleSubmit}
-									disabled={!(isValid && termsAccepted)}
-									borderColor={Colors.transparent}
-								/>
+								{
+									// @ts-ignore
+									<PrimaryButton
+										label={getText('register.button.label')}
+										onPress={handleSubmit}
+										disabled={!(isValid && termsAccepted)}
+										borderColor={Colors.transparent}
+									/>
+								}
 							</View>
 							<View style={style.buttonContainer}>
-								// @ts-ignore
-								<PrimaryButton
-									label={getText('register.button.have.code')}
-									onPress={onAlreadyHaveCode}
-									disabled={userName === '' || !!errors.userName}
-									borderColor={Colors.transparent}
-								/>
+								{
+									// @ts-ignore
+									<PrimaryButton
+										label={getText('register.button.have.code')}
+										onPress={onAlreadyHaveCode}
+										disabled={userName === '' || !!errors.userName}
+										borderColor={Colors.transparent}
+									/>
+								}
 							</View>
 						</React.Fragment>
 					)}
