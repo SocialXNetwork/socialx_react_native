@@ -106,10 +106,13 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					/>
 					{text ? <CommentsPostText text={text} /> : null}
 					{media && (
-						// @ts-ignore
 						<WallPostMedia
 							mediaObjects={media}
 							onMediaObjectView={(index: number) => onImagePress(index, media)}
+							onLikeButtonPressed={() => {
+								/**/
+							}}
+							// onLikeButtonPressed={this.onDoubleTapLikeHandler}
 							noInteraction={false}
 						/>
 					)}
