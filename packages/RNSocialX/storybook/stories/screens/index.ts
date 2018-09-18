@@ -1,5 +1,6 @@
 /* tslint:disable:ordered-imports */
 
+import './preAuth/TermsAndConditionsScreen';
 import './preAuth/LoginScreen';
 import './preAuth/LaunchScreen';
 import './intro/IntroScreen';
