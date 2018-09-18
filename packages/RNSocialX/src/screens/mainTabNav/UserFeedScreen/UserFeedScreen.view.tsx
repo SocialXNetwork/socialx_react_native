@@ -26,7 +26,7 @@ interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	currentUser: any;
 	noPosts: boolean;
 	shareSectionPlaceholder: string | null;
-	onLikePress: (likedByMe: boolean, postId: string) => Promise<any>;
+	onLikePress: (likedByMe: boolean, postId: string) => boolean;
 	onPostDeletePress: (post: IWallPostCardProps) => void;
 	onUserPress: (userId: string) => void;
 	loadingMore: boolean;

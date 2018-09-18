@@ -191,7 +191,7 @@ export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserF
 		}
 	};
 
-	private onLikePressHandler = async (likedByMe: boolean, postId: string) => {
+	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
 		const {likePost, unlikePost} = this.props;
 
 		if (likedByMe) {
