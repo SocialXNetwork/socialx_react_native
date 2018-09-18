@@ -2,6 +2,7 @@ import {action} from '@storybook/addon-actions';
 import {boolean, number, select, text, withKnobs} from '@storybook/addon-knobs';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
+import {Animated} from 'react-native';
 import {DataProvider} from 'recyclerlistview';
 
 import {IWallPostCardProps} from '../../../../src/components';
@@ -156,8 +157,8 @@ storiesOf('Screens/mainStack', module)
 				onViewMediaFullscreen={action('onViewMediaFullScreen')}
 				currentUserId={'999'}
 				onIconPress={action('onIconPress')}
-				listTranslate={null}
-				gridTranslate={null}
+				listTranslate={new Animated.Value(0)}
+				gridTranslate={new Animated.Value(0)}
 				activeTab={PROFILE_TAB_ICON_TYPES.LIST}
 				containerHeight={containerHeight}
 				onLayoutChange={action('onLayoutChange')}
