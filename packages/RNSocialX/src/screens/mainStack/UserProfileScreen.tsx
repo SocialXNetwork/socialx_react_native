@@ -1,8 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: currentUser, visitedUser
- * 2. Props actions: addFriend, likePost, unlikePost, refreshUser
- * 3. @Serkan: Take a look over onViewProfilePhotoHandler function, it uses ipfs
+ * 1. @Serkan: Take a look over onViewProfilePhotoHandler function, it uses ipfs
  */
 
 import {ActionSheet} from 'native-base';
@@ -13,9 +11,11 @@ import {DataProvider} from 'recyclerlistview';
 // import {ipfsConfig as base} from 'configuration';
 import uuidv4 from 'uuid/v4';
 
+import {IWithUserProfileEnhancedActions, IWithUserProfileEnhancedData, WithUserProfile} from '../../enhancers/screens';
+
 import {CloseButton} from '../../components';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {IMediaProps, ITranslatedProps} from '../../types';
+import {IMediaProps} from '../../types';
 import {UserProfileScreenView} from './UserProfileScreen.view';
 
 import {headerDefaultStyles} from './UserProfileScreen.style';
@@ -23,18 +23,11 @@ import {headerDefaultStyles} from './UserProfileScreen.style';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
 
-interface IUserProfileScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
-	currentUser: any;
-	visitedUser: any;
-	addFriend: (userId: string) => void;
-	likePost: (postId: string) => void;
-	unlikePost: (postId: string) => void;
-	refreshUser: () => void;
+interface INavigationProps {
+	navigation: NavigationScreenProp<{}>;
 }
 
 interface IUserProfileScreenState {
-	refreshing: boolean;
 	gridMediaProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
@@ -42,14 +35,18 @@ interface IUserProfileScreenState {
 	containerHeight: number;
 }
 
-export class UserProfileScreen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
+type IUserProfileScreenProps = INavigationProps & IWithUserProfileEnhancedData & IWithUserProfileEnhancedActions;
+
+class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
 	public static navigationOptions = (options: any) => ({
 		title: 'PROFILE',
 		headerLeft: <View />,
 		headerRight: (
 			<View style={{flexDirection: 'row'}}>
-				// @ts-ignore
-				<CloseButton navigation={options.navigation} />
+				{
+					// @ts-ignore
+					<CloseButton navigation={options.navigation} />
+				}
 			</View>
 		),
 		headerStyle: headerDefaultStyles,
@@ -65,7 +62,6 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 		});
 
 		this.state = {
-			refreshing: false,
 			gridMediaProvider: this.gridPhotosProvider,
 			listTranslate: new Animated.Value(0),
 			gridTranslate: new Animated.Value(SCREEN_WIDTH),
@@ -75,8 +71,8 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 	}
 
 	public render() {
-		const {currentUser, visitedUser} = this.props;
-		const {refreshing, gridMediaProvider} = this.state;
+		const {currentUser, visitedUser, loadingPosts} = this.props;
+		const {activeTab, listTranslate, gridTranslate, containerHeight, gridMediaProvider} = this.state;
 		const {
 			recentPosts,
 			numberOfLikes,
@@ -93,7 +89,8 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 
 		return (
 			<UserProfileScreenView
-				isLoading={loading || recentPosts.loading}
+				isLoading={loading}
+				refreshing={loadingPosts}
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
@@ -113,14 +110,13 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 				onRefresh={this.onRefreshHandler}
 				onViewProfilePhoto={this.onViewProfilePhotoHandler}
 				onViewMediaFullscreen={this.onViewMediaFullscreenHandler}
-				refreshing={refreshing}
 				gridMediaProvider={gridMediaProvider}
-				currentUserId={currentUser.userId}
+				currentUser={currentUser}
 				onIconPress={this.onIconPressHandler}
-				listTranslate={this.state.listTranslate}
-				gridTranslate={this.state.gridTranslate}
-				activeTab={this.state.activeTab}
-				containerHeight={this.state.containerHeight}
+				listTranslate={listTranslate}
+				gridTranslate={gridTranslate}
+				activeTab={activeTab}
+				containerHeight={containerHeight}
 				onLayoutChange={this.onLayoutChangeHandler}
 				getText={this.props.getText}
 			/>
@@ -128,15 +124,17 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 	}
 
 	private loadMorePhotosHandler = () => {
-		const {gridMediaProvider, refreshing} = this.state;
-		const {mediaObjects} = this.props.visitedUser;
+		const {gridMediaProvider} = this.state;
+		const {visitedUser} = this.props;
+		const {mediaObjects} = visitedUser;
+
 		const headerElement = [{index: uuidv4()}];
 
 		if (mediaObjects.length === 0) {
 			this.setState({
 				gridMediaProvider: gridMediaProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < mediaObjects.length && !refreshing) {
+		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
@@ -181,12 +179,12 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 	};
 
 	private onRefreshHandler = () => {
-		const {refreshUser} = this.props;
-		if (!this.state.refreshing) {
-			this.setState({
-				refreshing: true,
-			});
-			refreshUser();
+		const {loadMorePosts, loadMorePhotos, visitedUser} = this.props;
+
+		if (this.state.activeTab === PROFILE_TAB_ICON_TYPES.LIST) {
+			loadMorePosts(visitedUser.userId);
+		} else {
+			loadMorePhotos(visitedUser.userId);
 		}
 	};
 
@@ -267,3 +265,7 @@ export class UserProfileScreen extends React.Component<IUserProfileScreenProps, 
 		// TODO: API call to remove + refresh user query so relationship is updated!
 	};
 }
+
+export const UserProfileScreen = ({navigation}: INavigationProps) => (
+	<WithUserProfile>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithUserProfile>
+);

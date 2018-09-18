@@ -10,7 +10,15 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import {HeartAnimation, ISuggestionCardItem, ReportProblemModal} from '../../';
 import {OS_TYPES} from '../../../environment/consts';
-import {ILike, IMediaProps, IResizeProps, ISimpleComment, ITranslatedProps} from '../../../types';
+import {
+	ICurrentUser,
+	ILike,
+	IMediaProps,
+	IPostOwner,
+	IResizeProps,
+	ISimpleComment,
+	ITranslatedProps,
+} from '../../../types';
 import {
 	BestComments,
 	CommentInput,
@@ -30,8 +38,8 @@ export interface ISimpleWallPostCardProps {
 	location: false | string;
 	taggedFriends: Array<{fullName: string}>;
 	timestamp: Date;
-	owner: any; // IUserQuery; // TODO: @Alex fix typing after backend is ready
-	currentUser: any; // IUserQuery; // @Alex TODO: fix typing after backend is ready
+	owner: IPostOwner;
+	currentUser: ICurrentUser;
 }
 
 export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslatedProps, IResizeProps {

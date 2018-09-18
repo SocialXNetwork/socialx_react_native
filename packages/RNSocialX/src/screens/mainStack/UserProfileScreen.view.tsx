@@ -6,7 +6,7 @@ import {DataProvider} from 'recyclerlistview';
 import {IWallPostCardProps, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {ILike, ITranslatedProps, SearchResultKind} from '../../types';
+import {ICurrentUser, ILike, ITranslatedProps, SearchResultKind} from '../../types';
 
 import styles, {colors} from './UserProfileScreen.style';
 
@@ -34,7 +34,7 @@ interface IUserProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps
 	refreshing: boolean;
 	gridMediaProvider: DataProvider;
 	onViewMediaFullscreen: (index: number) => void;
-	currentUserId: string;
+	currentUser: ICurrentUser;
 	onIconPress: (tab: string) => void;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
@@ -65,7 +65,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onLikePress,
 	aboutMeText,
 	numberOfViews,
-	currentUserId,
+	currentUser,
 	onIconPress,
 	listTranslate,
 	gridTranslate,
@@ -127,7 +127,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 								{recentPosts.map((post: IWallPostCardProps, i) => {
 									let likedByMe = false;
 									if (post.likes.length > 0) {
-										likedByMe = !!post.likes.find((like: ILike) => like.userId === currentUserId);
+										likedByMe = !!post.likes.find((like: ILike) => like.userId === currentUser.userId);
 									}
 
 									return (
@@ -140,6 +140,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												onImagePress={(index: number) => onImagePress(index, post.media)}
 												onLikeButtonPress={() => onLikePress(likedByMe, post.id)}
 												noInput={true}
+												currentUser={currentUser}
 											/>
 										</View>
 									);

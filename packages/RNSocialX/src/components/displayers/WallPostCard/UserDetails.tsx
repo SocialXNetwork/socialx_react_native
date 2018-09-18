@@ -32,7 +32,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 		<FastImage source={{uri: user.avatarURL}} style={styles.smallAvatarImage} />
 		<View style={styles.topRightContainer}>
 			<Text style={styles.fullName}>
-				{user.name}
+				{user.fullName}
 				<TaggedFriends friends={taggedFriends} getText={getText} />
 				<Location location={location} getText={getText} />
 			</Text>

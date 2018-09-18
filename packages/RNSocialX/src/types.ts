@@ -1,4 +1,5 @@
 import {Image as PickerImage} from 'react-native-image-crop-picker';
+import {IWallPostCardProps} from './components';
 
 export interface FriendsSearchResult {
 	id: string;
@@ -87,6 +88,12 @@ export interface ISimpleComment {
 	};
 }
 
+export interface IPostOwner {
+	userId: string;
+	fullName: string;
+	avatarURL: string;
+}
+
 export interface IWallPostComment {
 	id: string;
 	text: string;
@@ -116,6 +123,41 @@ export interface WallPostPhotoOptimized extends PickerImage {
 export interface ILike {
 	userId: string;
 	userName: string;
+}
+
+// =====================================================
+// ENHANCER DATA TYPES
+// =====================================================
+
+export interface ICurrentUser {
+	userId: string;
+	avatarURL: string;
+	fullName: string;
+	userName: string;
+	aboutMeText: string;
+	numberOfLikes: number;
+	numberOfPhotos: number;
+	numberOfFriends: number;
+	numberOfViews: number;
+	loading: boolean;
+	mediaObjects: IMediaProps[];
+	recentPosts: IWallPostCardProps[];
+}
+
+export interface IVisitedUser {
+	userId: string;
+	avatarURL: string;
+	fullName: string;
+	userName: string;
+	aboutMeText: string;
+	numberOfLikes: number;
+	numberOfPhotos: number;
+	numberOfFriends: number;
+	numberOfViews: number;
+	loading: boolean;
+	mediaObjects: IMediaProps[];
+	recentPosts: IWallPostCardProps[];
+	relationship: SearchResultKind;
 }
 
 /**
