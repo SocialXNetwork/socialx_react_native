@@ -5,17 +5,16 @@ const CIRCLE_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
 const style: any = {
 	buttonCircle: {
-		width: CIRCLE_BUTTON_SIZE,
-		height: CIRCLE_BUTTON_SIZE,
 		borderRadius: CIRCLE_BUTTON_SIZE / 2,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: Colors.white,
+		overflow: 'hidden',
 	},
 	pinkIcon: {
 		color: Colors.pink,
 		fontSize: Sizes.smartHorizontalScale(30),
-		lineHeight: Sizes.smartHorizontalScale(30),
+		lineHeight: CIRCLE_BUTTON_SIZE,
+		width: CIRCLE_BUTTON_SIZE,
+		textAlign: 'center',
+		backgroundColor: Colors.white,
 	},
 	doneIcon: {
 		color: Colors.white,
