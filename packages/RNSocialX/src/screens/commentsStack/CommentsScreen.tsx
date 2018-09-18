@@ -1,13 +1,11 @@
 /**
  * old screen -> screens/CommentsScreen/index.tsx + data.hoc.tsx
  * TODO list:
- * 1. Props data: postUser, currentUser, postComments, loadingComments,
- * 2. Props actions: reloadComments, sendComment, likeComment, removeCommentLike, deleteComment, likePost, unlikePost
- * 3. decide where `marginBottom` should come from?
- * 4. after sendComment optimistically insert that into local database and fix if there is a problem
- * 5. consider adding a global optimistic update handler
- * 6. delete option should be available only for own comments
- * 7. Check navigation usage! Relevant use case.
+ * 1. decide where `marginBottom` should come from?
+ * 2. after sendComment optimistically insert that into local database and fix if there is a problem
+ * 3. consider adding a global optimistic update handler
+ * 4. delete option should be available only for own comments
+ * 5. Check navigation usage! Relevant use case.
  */
 
 import {ActionSheet} from 'native-base';
@@ -16,18 +14,22 @@ import {Clipboard, Platform, StatusBar} from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import {NavigationScreenProp} from 'react-navigation';
 
+import {IWithCommentsEnhancedActions, IWithCommentsEnhancedData, WithComments} from '../../enhancers/screens';
+
 import {OS_TYPES} from '../../environment/consts';
-import {CommentsSortingOptions, IMediaProps, ITranslatedProps, IWallPostComment} from '../../types';
+import {CommentsSortingOptions, IMediaProps, IWallPostComment} from '../../types';
 import {customStyleProps} from './CommentsScreen.style';
 import {CommentsScreenView} from './CommentsScreen.view';
 
-interface ICommentsScreenNavScreenProps {
-	params: {
-		commentId?: string; // only available for replies
-		postId?: string; // only for main comments screen
-		startComment: boolean;
-		postData: object;
-	};
+interface INavigationProps {
+	navigation: NavigationScreenProp<{
+		params: {
+			commentId?: string; // only available for replies
+			postId?: string; // only for main comments screen
+			startComment: boolean;
+			postData: object;
+		};
+	}>;
 }
 
 interface ICommentsScreenState {
@@ -37,22 +39,12 @@ interface ICommentsScreenState {
 	commentLikesPosition: object;
 }
 
-interface ICommentsScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<ICommentsScreenNavScreenProps>;
-	postUser: any;
-	currentUser: any;
-	postComments: IWallPostComment[];
-	reloadComments: (sortOption: CommentsSortingOptions) => void;
-	loadingComments: boolean;
-	sendComment: (text: string, targetPostId: string | undefined, targetCommentId: string | undefined) => void;
-	likeComment: (commentId: string) => void;
-	removeCommentLike: (commentId: string) => void;
-	deleteComment: (commentId: string) => void;
-	likePost: (postId: string) => void;
-	unlikePost: (postId: string) => void;
-}
+type ICommentsScreenProps = INavigationProps & IWithCommentsEnhancedData & IWithCommentsEnhancedActions;
 
-export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScreenState> {
+// Go to the end of the file for the actual export, the Screen component is
+// for providing screen-level local state to the view. This is again for
+// explicit separation of levels of concerns
+class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	private static navigationOptions = {
 		header: null,
 	};
@@ -221,3 +213,8 @@ export class CommentsScreen extends Component<ICommentsScreenProps, ICommentsScr
 		}
 	};
 }
+
+// We do it explicitly here instead of a generic wrapper for flexibility
+export const CommentsScreen = ({navigation}: INavigationProps) => (
+	<WithComments>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithComments>
+);
