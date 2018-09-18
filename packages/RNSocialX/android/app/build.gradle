@@ -147,6 +147,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-photo-view')
     compile project(':react-native-svg')
     compile project(':react-native-video')
     compile project(':react-native-device-info')

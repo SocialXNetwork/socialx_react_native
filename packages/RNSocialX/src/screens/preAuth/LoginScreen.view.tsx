@@ -87,13 +87,15 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 							{touched.password && errors.password && <Text style={style.errorText}>{errors.password}</Text>}
 						</View>
 						<View style={style.fullWidth}>
-							// @ts-ignore
-							<PrimaryButton
-								label={getText('login.login.button')}
-								onPress={handleSubmit}
-								disabled={!isValid}
-								borderColor={customStyleProps.borderTransparent}
-							/>
+							{
+								// @ts-ignore
+								<PrimaryButton
+									label={getText('login.login.button')}
+									onPress={handleSubmit}
+									disabled={!isValid}
+									borderColor={customStyleProps.borderTransparent}
+								/>
+							}
 						</View>
 					</React.Fragment>
 				)}
@@ -138,13 +140,15 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={style.forgotPassword}>
 				<Text style={style.forgotPasswordText}>{getText('login.forgot.password')}</Text>
 			</TouchableOpacity>
-			// @ts-ignore
-			<PrimaryButton
-				label={getText('login.use.unlock.file')}
-				onPress={onNavigateToUploadKey}
-				borderColor={customStyleProps.borderTransparent}
-				disabled={false}
-			/>
+			{
+				// @ts-ignore
+				<PrimaryButton
+					label={getText('login.use.unlock.file')}
+					onPress={onNavigateToUploadKey}
+					borderColor={customStyleProps.borderTransparent}
+					disabled={false}
+				/>
+			}
 			<View style={style.noAccountContainer}>
 				<Text style={style.noAccountQuestion}>{getText('login.no.account.text')}</Text>
 				<TouchableOpacity onPress={onNavigateToRegister}>

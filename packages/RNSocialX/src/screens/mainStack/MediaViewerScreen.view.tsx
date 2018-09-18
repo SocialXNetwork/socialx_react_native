@@ -1,10 +1,17 @@
+/**
+ * TODO list:
+ * 1. @Ionut, check later <Carousel/> activeSlide prop.
+ * 2. check canZoom, that is making the carousel feel really slow on slide change
+ * 3. More testing on android with release build, see https://github.com/archriss/react-native-snap-carousel/blob/master/doc/KNOWN_ISSUES.md#android-performance
+ */
+
 import * as React from 'react';
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
-import Carousel, {CarouselStatic} from 'react-native-snap-carousel';
+import {Platform, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {MediaInfoModal, MediaObjectViewer} from '../../components';
-import {DeviceOrientations, OS_TYPES} from '../../environment/consts';
+import {DeviceOrientations} from '../../environment/consts';
 import {IMediaProps, ITranslatedProps} from '../../types';
 import styles from './MediaViewerScreen.style';
 
@@ -20,15 +27,12 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	isInfoOverlayVisible: boolean;
 	showMediaInfoOverlay: () => void;
 	closeMediaInfoOverlay: () => void;
-	carouselRef: CarouselStatic<IMediaProps> | null;
 	carouselContainerOnLayout: (event: any) => void;
 	onExitFullScreen: () => void;
-	platformSpecificCarouselProps: any;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	mediaObjects,
-	carouselRef,
 	carouselContainerOnLayout,
 	orientation,
 	startIndex,
@@ -40,7 +44,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	showMediaInfoOverlay,
 	closeMediaInfoOverlay,
 	onExitFullScreen,
-	platformSpecificCarouselProps,
 }) => {
 	const currentMediaObject = mediaObjects[activeSlide];
 
@@ -58,26 +61,39 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 			/>
 			<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
 				<Carousel
-					ref={carouselRef}
-					activeSlide={activeSlide}
+					// activeSlide={activeSlide}
 					data={mediaObjects}
-					renderItem={({item, index}: {item: IMediaProps; index: number}) => (
-						// @ts-ignore
-						<MediaObjectViewer
-							type={item.type}
-							paused={index !== activeSlide}
-							uri={item.url}
-							style={[styles.carouselMediaObject, {width: viewport.width}]}
-							resizeMode={'contain'}
-							resizeToChangeAspectRatio={true}
-							canZoom={true}
-						/>
-					)}
+					renderItem={({item, index}: {item: IMediaProps; index: number}) => {
+						console.log('renderItem', index);
+						return (
+							// @ts-ignore
+							<MediaObjectViewer
+								type={item.type}
+								paused={index !== activeSlide}
+								uri={item.url}
+								style={[styles.carouselMediaObject, {width: viewport.width}]}
+								resizeMode={'contain'}
+								resizeToChangeAspectRatio={true}
+								canZoom={false}
+							/>
+						);
+					}}
 					sliderWidth={viewport.width}
 					itemWidth={viewport.width}
 					firstItem={startIndex}
 					onSnapToItem={slideChanged}
-					{...platformSpecificCarouselProps}
+					{...Platform.select({
+						android: {
+							windowSize: 5,
+							initialNumToRender: 5,
+							// layout: 'stack',
+							// useScrollView: true,
+						},
+						ios: {
+							windowSize: 3,
+							initialNumToRender: 3,
+						},
+					})}
 				/>
 				<CloseButton isPortrait={orientation === DeviceOrientations.Portrait} onExitFullScreen={onExitFullScreen} />
 				<View style={styles.screenFooter} pointerEvents={'none'}>

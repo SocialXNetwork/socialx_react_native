@@ -6,7 +6,6 @@
 import * as React from 'react';
 import {Dimensions, Platform, View} from 'react-native';
 import Orientation, {orientation} from 'react-native-orientation';
-import {CarouselStatic} from 'react-native-snap-carousel';
 import {NavigationScreenProp, NavigationStackScreenOptions} from 'react-navigation';
 
 import {CloseButton} from '../../components';
@@ -64,8 +63,6 @@ export class MediaViewerScreen extends React.Component<IMediaViewerScreenProps, 
 		isInfoOverlayVisible: false,
 	};
 
-	private carouselRef: CarouselStatic<IMediaProps> | null = null;
-
 	public componentDidMount() {
 		// due to Android problems with Carousel on orientation change enable tilt only on iOS
 		if (Platform.OS === OS_TYPES.IOS) {
@@ -95,10 +92,8 @@ export class MediaViewerScreen extends React.Component<IMediaViewerScreenProps, 
 				isInfoOverlayVisible={this.state.isInfoOverlayVisible}
 				showMediaInfoOverlay={this.showMediaInfoOverlayHandler}
 				closeMediaInfoOverlay={this.closeMediaInfoOverlayHandler}
-				carouselRef={this.carouselRef}
 				carouselContainerOnLayout={this.carouselContainerOnLayoutHandler}
 				onExitFullScreen={this.onExitFullScreenHandler}
-				platformSpecificCarouselProps={this.getPlatformSpecificCarouselProps()}
 				getText={this.props.getText}
 			/>
 		);
@@ -139,22 +134,5 @@ export class MediaViewerScreen extends React.Component<IMediaViewerScreenProps, 
 		this.setState({
 			isInfoOverlayVisible: false,
 		});
-	};
-
-	private getPlatformSpecificCarouselProps = () => {
-		const props: any = {};
-		if (Platform.OS === OS_TYPES.IOS) {
-			props.windowSize = 1;
-			props.initialNumToRender = 1;
-		} else {
-			props.windowSize = 5;
-			props.initialNumToRender = 5;
-			// ret.initialNumToRender = this.props.startIndex;
-			// ret.layout = 'stack';
-			// ret.useScrollView = true;
-			// TODO: explore other options for Android issues:
-			// https://github.com/archriss/react-native-snap-carousel/blob/master/doc/
-		}
-		return props;
 	};
 }

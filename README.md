@@ -53,6 +53,8 @@ The following RN packages are linked:
 12. react-native-spinkit
 13. react-native-device-info
 14. react-native-video
+15. react-native-photo-view
+16. react-native-svg
 
 Before you begin, make sure you have installed the following tooling
 
