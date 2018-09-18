@@ -27,25 +27,29 @@ export const LaunchScreenView: React.SFC<ILaunchScreenViewProps> = ({
 		</View>
 		<TextGradient
 			text={getText('launch.get.rewarded')}
-			colors={[customStylesProps.gradientTextEndColor, customStylesProps.gradientTextEndColor]}
+			colors={[customStylesProps.gradientTextStartColor, customStylesProps.gradientTextEndColor]}
 			style={style.getRewardedGradient}
 		/>
 		<View style={style.bottomPaddingContainer}>
-			// @ts-ignore
-			<GradientButton
-				colorStart={customStylesProps.gradientTextStartColor}
-				colorEnd={customStylesProps.gradientTextEndColor}
-				label={getText('launch.login')}
-				borderColor={customStylesProps.transparentBorderColor}
-				onPress={navigateToLoginScreen}
-			/>
-			<View style={style.signUpTopPadding}>
+			{
 				// @ts-ignore
-				<PrimaryButton
-					label={getText('launch.signUp')}
+				<GradientButton
+					colorStart={customStylesProps.gradientTextStartColor}
+					colorEnd={customStylesProps.gradientTextEndColor}
+					label={getText('launch.login')}
 					borderColor={customStylesProps.transparentBorderColor}
-					onPress={navigateToSignUpScreen}
+					onPress={navigateToLoginScreen}
 				/>
+			}
+			<View style={style.signUpTopPadding}>
+				{
+					// @ts-ignore
+					<PrimaryButton
+						label={getText('launch.signUp')}
+						borderColor={customStylesProps.transparentBorderColor}
+						onPress={navigateToSignUpScreen}
+					/>
+				}
 			</View>
 		</View>
 	</View>

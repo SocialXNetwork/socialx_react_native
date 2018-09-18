@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 import { getStorybookUI, configure } from '@storybook/react-native';
 
+import { KeyboardContext } from '../src/environment/consts';
+import { ManagedKeyboard } from '../src/components/managedTransitions';
+
 // import stories (components or screens)
 configure(() => {
   require('./stories/screens');
@@ -19,7 +22,13 @@ class StorybookUIHMRRoot extends Component {
   render() {
     return (
       <Root>
-        <StorybookUIRoot/>
+        <ManagedKeyboard>
+          {(keyboardContextProps) => (
+            <KeyboardContext.Provider value={keyboardContextProps}>
+              <StorybookUIRoot/>
+            </KeyboardContext.Provider>
+          )}
+        </ManagedKeyboard>
       </Root>
     );
   }
