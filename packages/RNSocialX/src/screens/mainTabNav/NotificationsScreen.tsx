@@ -9,7 +9,7 @@ import {Alert} from 'react-native';
 import {NavigationScreenProp, NavigationStackScreenOptions} from 'react-navigation';
 
 import {NOTIFICATION_TYPES} from '../../environment/consts';
-import {ITranslatedProps} from '../../types';
+import {IConfirmActions, ITranslatedProps} from '../../types';
 import {NotificationsScreenView} from './NotificationsScreen.view';
 
 // TODO: used this until we have all type of activity cards from the backend!
@@ -94,7 +94,7 @@ const SAMPLE_ACTIVITY_CARDS = [
 	},
 ];
 
-interface INotificationsScreenProps extends ITranslatedProps {
+interface INotificationsScreenProps extends ITranslatedProps, IConfirmActions {
 	notifications: any;
 	loading: boolean;
 	loadNotifications: () => void;
@@ -118,7 +118,7 @@ export class NotificationsScreen extends React.Component<INotificationsScreenPro
 	};
 
 	public render() {
-		const {notifications, loading, getText} = this.props;
+		const {notifications, loading, getText, showConfirm, hideConfirm} = this.props;
 
 		return (
 			<NotificationsScreenView
@@ -135,6 +135,8 @@ export class NotificationsScreen extends React.Component<INotificationsScreenPro
 				// onGroupRequestDeclined={this.onGroupRequestDeclinedHandler}
 				onViewUserProfile={this.onViewUserProfile}
 				getText={getText}
+				showConfirm={showConfirm}
+				hideConfirm={hideConfirm}
 			/>
 		);
 	}

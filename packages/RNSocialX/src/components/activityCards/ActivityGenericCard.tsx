@@ -16,7 +16,6 @@ interface IActivityGenericCardProps extends ITranslatedProps, IConfirmActions {
 	onCheckNotification: (requestId: string) => void;
 	requestId: string;
 	onViewUserProfile: (userId: string) => void;
-	loading: boolean;
 }
 
 const SwipeLeftContent: React.SFC<{label: string}> = ({label}) => (
@@ -50,7 +49,6 @@ const confirmDismissNotification = (
 };
 
 export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
-	loading,
 	onViewUserProfile,
 	userId,
 	avatarURL,
@@ -82,23 +80,13 @@ export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
 							<Text style={style.friendRequest}>{text}</Text>
 						</View>
 					</TouchableOpacity>
-					{!loading && (
-						<TouchableOpacity
-							onPress={() =>
-								confirmDismissNotification(
-									false,
-									requestId,
-									showConfirm,
-									hideConfirm,
-									onCheckNotification,
-									confirmTitle,
-								)
-							}
-						>
-							<Icon name={'md-close'} style={style.iconButton} />
-						</TouchableOpacity>
-					)}
-					{loading && <ActivityIndicator size={'small'} />}
+					<TouchableOpacity
+						onPress={() =>
+							confirmDismissNotification(false, requestId, showConfirm, hideConfirm, onCheckNotification, confirmTitle)
+						}
+					>
+						<Icon name={'md-close'} style={style.iconButton} />
+					</TouchableOpacity>
 				</View>
 			</Swipeable>
 		</View>

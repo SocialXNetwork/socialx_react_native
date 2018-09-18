@@ -12,7 +12,6 @@ storiesOf('Components/activityCards', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('ActivityGenericCard', () => (
 		<ActivityGenericCard
-			loading={false}
 			onViewUserProfile={() => {
 				/**/
 			}}
