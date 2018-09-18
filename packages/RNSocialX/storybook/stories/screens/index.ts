@@ -1,5 +1,7 @@
 /* tslint:disable:ordered-imports */
 
+import './myProfile/SettingsScreen';
+import './preAuth/RegisterScreen';
 import './myProfile/SocialXAccountScreen';
 import './preAuth/TermsAndConditionsScreen';
 import './preAuth/LoginScreen';

@@ -19,7 +19,7 @@ export const SettingCheckbox: React.SFC<ISettingCheckboxProps> = ({
 	<View style={style.container}>
 		<View style={style.leftContainer}>
 			<Text style={style.title}>{title}</Text>
-			{description && <Text style={style.description}>{description}</Text>})
+			{description && <Text style={style.description}>{description}</Text>}
 		</View>
 		<Switch
 			style={style.switch}

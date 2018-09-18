@@ -49,7 +49,7 @@ export class SettingsScreen extends React.Component<ISettingsScreenProps> {
 		return (
 			<SettingsScreenView
 				isLoading={!currentUser}
-				aboutText={currentUser ? currentUser.bio : ''}
+				aboutMeText={currentUser ? currentUser.bio : ''}
 				firstName={currentUser ? currentUser.name.split(' ')[0] : ''}
 				lastName={currentUser ? currentUser.name.split(' ')[1] : ''}
 				email={currentUser ? currentUser.email : ''}
