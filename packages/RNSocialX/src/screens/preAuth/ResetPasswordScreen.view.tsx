@@ -135,14 +135,16 @@ export const ResetPasswordScreenView: React.SFC<IResetPasswordScreenViewProps> =
 					/>
 					<ErrorMessage text={errors.confirmPassword} visible={!!errors.confirmPassword && !!touched.confirmPassword} />
 				</View>
-				// @ts-ignore
-				<PrimaryButton
-					disabled={!isValid}
-					label={getText('reset.password.set.button')}
-					autoWidth={true}
-					borderColor={defaultColors.transparent}
-					onPress={handleSubmit}
-				/>
+				{
+					// @ts-ignore
+					<PrimaryButton
+						disabled={!isValid}
+						label={getText('reset.password.set.button')}
+						autoWidth={true}
+						borderColor={defaultColors.transparent}
+						onPress={handleSubmit}
+					/>
+				}
 			</KeyboardAwareScrollView>
 		)}
 	/>

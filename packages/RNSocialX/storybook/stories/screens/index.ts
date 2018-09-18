@@ -1,5 +1,7 @@
 /* tslint:disable:ordered-imports */
 
+import './myProfile/ReferralScreen';
+import './preAuth/ResetPasswordScreen';
 import './mainTabNav/MyProfileScreen';
 import './mainStack/CreateWallPostScreen';
 import './myProfile/SettingsScreen';
