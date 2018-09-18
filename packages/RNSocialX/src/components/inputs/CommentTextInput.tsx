@@ -13,43 +13,29 @@ interface ICommentTextInputProps {
 	onCommentTextChange: (value: string) => void;
 }
 
-const textInput: React.RefObject<TextInput> = React.createRef();
-
-const sendCommentHandler = (onCommentSend: () => void) => {
-	if (textInput.current) {
-		textInput.current.blur();
-	}
-	onCommentSend();
-};
-
-export const CommentTextInput: React.SFC<ICommentTextInputProps> = ({
-	placeholder,
-	autoFocus = true,
-	commentText,
-	onCommentTextChange,
-	showSendButton,
-	onCommentSend,
-}) => (
-	<View style={style.inputContainer}>
-		<TextInput
-			ref={textInput}
-			onChangeText={onCommentTextChange}
-			style={style.textInput}
-			placeholder={placeholder}
-			autoFocus={autoFocus}
-			multiline={true}
-			autoCorrect={false}
-			underlineColorAndroid={customStyleProps.underlineColorAndroid}
-			autoCapitalize={'none'}
-			value={commentText}
-			placeholderTextColor={customStyleProps.placeholderTextColor}
-		/>
-		{showSendButton && (
-			<View style={style.sendButtonContainer}>
-				<TouchableOpacity onPress={() => sendCommentHandler(onCommentSend)} style={style.sendButton}>
-					<Icon name={'md-send'} style={style.sendIcon} />
-				</TouchableOpacity>
-			</View>
-		)}
-	</View>
+export const CommentTextInput = React.forwardRef<TextInput, ICommentTextInputProps>(
+	({placeholder, autoFocus = true, commentText, onCommentTextChange, showSendButton, onCommentSend}, ref) => (
+		<View style={style.inputContainer}>
+			<TextInput
+				ref={ref}
+				onChangeText={onCommentTextChange}
+				style={style.textInput}
+				placeholder={placeholder}
+				autoFocus={autoFocus}
+				multiline={true}
+				autoCorrect={false}
+				underlineColorAndroid={customStyleProps.underlineColorAndroid}
+				autoCapitalize={'none'}
+				value={commentText}
+				placeholderTextColor={customStyleProps.placeholderTextColor}
+			/>
+			{showSendButton && (
+				<View style={style.sendButtonContainer}>
+					<TouchableOpacity onPress={onCommentSend} style={style.sendButton}>
+						<Icon name={'md-send'} style={style.sendIcon} />
+					</TouchableOpacity>
+				</View>
+			)}
+		</View>
+	),
 );

@@ -13,19 +13,20 @@ import styles from './CommentsPostActions.style';
 interface IPostActionsProps extends ITranslatedProps {
 	likedByMe: boolean;
 	onLikePress: () => void;
+	onStartComment: () => void;
 }
 
-export const CommentsPostActions: React.SFC<IPostActionsProps> = ({likedByMe, onLikePress, getText}) => (
+export const CommentsPostActions: React.SFC<IPostActionsProps> = ({
+	likedByMe,
+	onLikePress,
+	onStartComment,
+	getText,
+}) => (
 	<View style={styles.container}>
 		<LikeAnimatingButton onPress={onLikePress} likedByMe={likedByMe} getText={getText} />
-		// @ts-ignore
-		<IconButton
-			iconSource={'comment-o'}
-			iconType={'fa'}
-			onPress={() => {
-				/**/
-			}}
-			iconStyle={styles.icon}
-		/>
+		{
+			// @ts-ignore
+			<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onStartComment} iconStyle={styles.icon} />
+		}
 	</View>
 );

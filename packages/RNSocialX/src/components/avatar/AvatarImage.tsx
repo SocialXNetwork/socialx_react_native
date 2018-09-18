@@ -17,9 +17,13 @@ interface IAvatarImageProps {
 	style: StyleProp<ImageStyle>;
 }
 
-export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style = styles.avatarImage}) => {
-	return <Image source={image ? {uri: image} : Images.user_avatar_placeholder} resizeMode={'cover'} style={style} />;
-};
+export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style = styles.avatarImage}) => (
+	<Image
+		source={image ? (typeof image === 'string' ? {uri: image} : image) : Images.user_avatar_placeholder}
+		resizeMode={'cover'}
+		style={style}
+	/>
+);
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(90);
 
