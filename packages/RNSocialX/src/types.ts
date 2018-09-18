@@ -80,9 +80,7 @@ export interface IMediaProps {
 export interface ISimpleComment {
 	id: string;
 	text: string;
-	likes: Array<{
-		userId: string;
-	}>;
+	likes: ILike[];
 	owner: {
 		userId: string;
 		userName: string;
@@ -99,7 +97,7 @@ export interface IWallPostComment {
 	};
 	timestamp: Date;
 	numberOfLikes: number;
-	likes: any[]; // IUserQuery[]; // @Alex TODO: fix typing after backend is ready
+	likes: ILike[];
 	likedByMe: boolean;
 	replies: IWallPostComment[];
 }
@@ -115,7 +113,7 @@ export interface WallPostPhotoOptimized extends PickerImage {
 	pathx: string;
 }
 
-export interface IPostLike {
+export interface ILike {
 	userId: string;
 	userName: string;
 }
