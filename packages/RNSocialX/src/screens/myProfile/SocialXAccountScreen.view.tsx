@@ -37,16 +37,24 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 				))}
 				<View style={styles.bottomContainer}>
 					<View style={styles.buttonContainer}>
-						// @ts-ignore
-						<PrimaryButton label={getText('button.SEND')} borderColor={borderColor} onPress={this.props.sendHandler} />
+						{
+							// @ts-ignore
+							<PrimaryButton
+								label={getText('button.SEND')}
+								borderColor={borderColor}
+								onPress={this.props.sendHandler}
+							/>
+						}
 					</View>
 					<View style={styles.buttonContainer}>
-						// @ts-ignore
-						<PrimaryButton
-							label={getText('button.RECEIVE')}
-							borderColor={borderColor}
-							onPress={this.props.receiveHandler}
-						/>
+						{
+							// @ts-ignore
+							<PrimaryButton
+								label={getText('button.RECEIVE')}
+								borderColor={borderColor}
+								onPress={this.props.receiveHandler}
+							/>
+						}
 					</View>
 				</View>
 			</ScrollView>

@@ -87,6 +87,7 @@
     "@types/react-native-orientation": "^5.0.1",
     "@types/react-native-photo-view": "^1.5.2",
     "@types/react-native-snap-carousel": "^3.7.1",
+    "@types/react-native-svg-charts": "^5.0.1",
     "@types/react-native-vector-icons": "^4.6.3",
     "@types/react-native-video": "^2.0.6",
     "@types/react-navigation": "^2.0.19",
