@@ -1,8 +1,9 @@
 /* tslint:disable:ordered-imports */
 
+import './mainStack/CreateWallPostScreen';
 import './myProfile/SettingsScreen';
 import './preAuth/RegisterScreen';
-import './mainStack/MediaViewer';
+import './mainStack/MediaViewerScreen';
 import './myProfile/SocialXAccountScreen';
 import './preAuth/TermsAndConditionsScreen';
 import './preAuth/LoginScreen';

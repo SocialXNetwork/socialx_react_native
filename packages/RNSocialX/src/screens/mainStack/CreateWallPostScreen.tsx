@@ -35,7 +35,6 @@ interface ICreateWallPostScreenProps extends ITranslatedProps, IResizeProps {
 
 interface ICreateWallPostScreenState {
 	mediaObjects: WallPostPhotoOptimized[];
-	uploadProgress: number;
 	shareText: string;
 }
 
@@ -48,19 +47,17 @@ export class CreateWallPostScreen extends React.Component<ICreateWallPostScreenP
 
 	public state = {
 		mediaObjects: [],
-		uploadProgress: 0,
 		shareText: '',
 	};
 
 	public render() {
 		const {getText, marginBottom, currentUser} = this.props;
-		const {shareText, mediaObjects, uploadProgress} = this.state;
+		const {shareText, mediaObjects} = this.state;
 		return (
 			<CreateWallPostScreenView
 				avatarImage={currentUser.avatarURL}
 				shareText={shareText}
 				mediaObjects={mediaObjects.map((mediaObject: WallPostPhotoOptimized) => mediaObject.path)}
-				uploadProgress={uploadProgress}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onPostSend={this.onSendPostHandler}

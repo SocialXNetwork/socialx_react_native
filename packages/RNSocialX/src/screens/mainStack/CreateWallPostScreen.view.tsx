@@ -11,7 +11,6 @@ interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps 
 	avatarImage: string | null;
 	shareText: string;
 	mediaObjects: string[];
-	uploadProgress: number;
 	onShareTextUpdate: (value: string) => void;
 	onAddMedia: () => void;
 	onPostSend: () => void;
@@ -24,7 +23,6 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	onAddMedia,
 	onPostSend,
 	mediaObjects,
-	uploadProgress,
 	getText,
 	marginBottom,
 }) => (
@@ -45,14 +43,16 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 					<MediaHorizontalScroller mediaURIs={mediaObjects} />
 				</View>
 			)}
-			// @ts-ignore
-			<PrimaryButton
-				label={getText('new.wall.post.screen.send.button')}
-				size={ButtonSizes.Small}
-				width={Sizes.smartHorizontalScale(100)}
-				onPress={onPostSend}
-				borderColor={Colors.transparent}
-			/>
+			{
+				// @ts-ignore
+				<PrimaryButton
+					label={getText('new.wall.post.screen.send.button')}
+					size={ButtonSizes.Small}
+					autoWidth={true}
+					onPress={onPostSend}
+					borderColor={Colors.transparent}
+				/>
+			}
 		</ScrollView>
 	</SafeAreaView>
 );
