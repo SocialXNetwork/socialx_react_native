@@ -10,7 +10,6 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('CommentCard', () => {
 		const isReply = boolean('isReply', false);
-		const requestingLike = boolean('requestingLike', false);
 		const likedByMe = boolean('likedByMe', false);
 		const commentText = text('commentText', 'Sample comment text here.\nGoing on the second line');
 		const replyText = text('replyText', 'One line text reply.');
@@ -55,7 +54,6 @@ storiesOf('Components/displayers', module)
 				onViewUserProfile={(userId) => console.log('onViewUserProfile', userId)}
 				onShowOptionsMenu={() => console.log('onShowOptionsMenu')}
 				onCommentContainerWidthChange={(value) => console.log('onCommentContainerWidthChange', value)}
-				requestingLike={requestingLike}
 				commentLikesPosition={{
 					bottom: -18,
 					right: 0,

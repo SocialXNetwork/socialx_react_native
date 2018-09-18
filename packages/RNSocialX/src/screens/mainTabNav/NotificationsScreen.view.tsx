@@ -9,10 +9,10 @@ import {
 } from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {NOTIFICATION_TYPES} from '../../environment/consts';
-import {ITranslatedProps} from '../../types';
+import {IConfirmActions, ITranslatedProps} from '../../types';
 import styles, {emptyListIcon} from './NotificationsScreen.style';
 
-interface INotificationsScreenViewProps extends IWithLoaderProps, ITranslatedProps {
+interface INotificationsScreenViewProps extends IWithLoaderProps, ITranslatedProps, IConfirmActions {
 	notifications: any[];
 	refreshing: boolean;
 	onRefresh: () => void;
@@ -26,9 +26,8 @@ interface INotificationsScreenViewProps extends IWithLoaderProps, ITranslatedPro
 	onViewUserProfile: (userId: string) => void;
 }
 
-interface IActivityCardsProps {
+interface IActivityCardsProps extends ITranslatedProps, IConfirmActions {
 	data: any;
-	isLoading: boolean;
 	onPostThumbPressed: (postId: string) => void;
 	onSuperLikedPhotoPressed: (postId: string) => void;
 	onFriendRequestApproved: (requestId: string) => void;
@@ -48,20 +47,22 @@ const EmptyListComponent: React.SFC<ITranslatedProps> = ({getText}) => (
 
 const ActivityCard: React.SFC<IActivityCardsProps> = ({
 	data,
-	isLoading,
 	onPostThumbPressed,
 	onFriendRequestApproved,
 	onFriendRequestDeclined,
 	onViewUserProfile,
 	onCheckNotification,
 	onSuperLikedPhotoPressed,
+	showConfirm,
+	hideConfirm,
+	getText,
 	// onGroupRequestConfirmed,
 	// onGroupRequestDeclined,
 }) => {
 	const {requestId} = data;
 
 	if (data.type === NOTIFICATION_TYPES.RECENT_COMMENT) {
-		return <ActivityRecentCommentCard {...data} onThumbPress={onPostThumbPressed} />;
+		return <ActivityRecentCommentCard {...data} onThumbPress={onPostThumbPressed} getText={getText} />;
 	} else if (data.type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
 		return (
 			<ActivityFriendRequestCard
@@ -69,6 +70,7 @@ const ActivityCard: React.SFC<IActivityCardsProps> = ({
 				onRequestConfirmed={() => onFriendRequestApproved(requestId)}
 				onRequestDeclined={() => onFriendRequestDeclined(requestId)}
 				onViewUserProfile={onViewUserProfile}
+				getText={getText}
 			/>
 		);
 	} else if (data.type === NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE) {
@@ -77,7 +79,9 @@ const ActivityCard: React.SFC<IActivityCardsProps> = ({
 				{...data}
 				onCheckNotification={onCheckNotification}
 				onViewUserProfile={onViewUserProfile}
-				loading={isLoading}
+				getText={getText}
+				showConfirm={showConfirm}
+				hideConfirm={hideConfirm}
 			/>
 		);
 		/*} else if (data.type === NOTIFICATION_TYPES.GROUP_REQUEST) {
@@ -89,7 +93,7 @@ const ActivityCard: React.SFC<IActivityCardsProps> = ({
 				/>
 			);*/
 	} else if (data.type === NOTIFICATION_TYPES.SUPER_LIKED) {
-		return <ActivitySuperLikedCard {...data} onThumbPress={onSuperLikedPhotoPressed} />;
+		return <ActivitySuperLikedCard {...data} onThumbPress={onSuperLikedPhotoPressed} getText={getText} />;
 	}
 	return null;
 };
@@ -106,6 +110,8 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 	// onGroupRequestDeclined,
 	onCheckNotification,
 	onViewUserProfile,
+	showConfirm,
+	hideConfirm,
 	isLoading,
 	getText,
 }) => (
@@ -116,14 +122,16 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 				keyExtractor={(item: any) => item.requestId}
 				renderItem={(data) => (
 					<ActivityCard
+						getText={getText}
 						data={data.item}
-						isLoading={isLoading}
 						onPostThumbPressed={onPostThumbPressed}
 						onFriendRequestApproved={onFriendRequestApproved}
 						onFriendRequestDeclined={onFriendRequestDeclined}
 						onViewUserProfile={onViewUserProfile}
 						onCheckNotification={onCheckNotification}
 						onSuperLikedPhotoPressed={onSuperLikedPhotoPressed}
+						hideConfirm={hideConfirm}
+						showConfirm={showConfirm}
 						// onGroupRequestConfirmed={onGroupRequestConfirmed}
 						// onGroupRequestDeclined={onGroupRequestDeclined}
 					/>

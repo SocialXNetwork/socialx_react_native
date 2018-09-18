@@ -4,6 +4,7 @@ import './mainStack/PhotoScreen';
 import './myProfile/ReferralScreen';
 import './preAuth/ResetPasswordScreen';
 import './mainTabNav/MyProfileScreen';
+import './mainTabNav/NotificationsScreen';
 import './mainStack/CreateWallPostScreen';
 import './myProfile/SettingsScreen';
 import './preAuth/RegisterScreen';

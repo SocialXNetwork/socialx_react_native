@@ -77,13 +77,13 @@ storiesOf('Components/displayers', module)
 					{
 						id: 'comm1',
 						text: 'Sample comment no. 1',
-						likes: [{userId: 'user2'}],
+						likes: [{userId: 'user2', userName: 'userName2'}],
 						owner: {userName: 'ionut_socx_0', userId: 'user1'},
 					},
 					{
 						id: 'comm2',
 						text: 'Some very long comment that should span on multiple lines',
-						likes: [{userId: 'user3'}],
+						likes: [{userId: 'user3', userName: 'userName3'}],
 						owner: {userName: 'ionut_socx_2', userId: 'user4'},
 					},
 				]}
