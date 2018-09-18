@@ -24,7 +24,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
 
 interface INavigationProps {
-	navigation: NavigationScreenProp<{}>;
+	navigation: NavigationScreenProp<any>;
 }
 
 interface IUserProfileScreenState {
@@ -71,7 +71,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const {currentUser, visitedUser, loadingPosts} = this.props;
+		const {currentUser, visitedUser, refreshingProfile, loadingProfile} = this.props;
 		const {activeTab, listTranslate, gridTranslate, containerHeight, gridMediaProvider} = this.state;
 		const {
 			recentPosts,
@@ -84,13 +84,13 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			userName,
 			aboutMeText,
 			relationship,
-			loading,
 		} = visitedUser;
 
 		return (
 			<UserProfileScreenView
-				isLoading={loading}
-				refreshing={loadingPosts}
+				isLoading={loadingProfile}
+				refreshing={refreshingProfile}
+				onRefresh={this.onRefreshHandler}
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
@@ -107,7 +107,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onAddFriend={this.onAddFriendHandler}
 				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				relationship={relationship}
-				onRefresh={this.onRefreshHandler}
 				onViewProfilePhoto={this.onViewProfilePhotoHandler}
 				onViewMediaFullscreen={this.onViewMediaFullscreenHandler}
 				gridMediaProvider={gridMediaProvider}
