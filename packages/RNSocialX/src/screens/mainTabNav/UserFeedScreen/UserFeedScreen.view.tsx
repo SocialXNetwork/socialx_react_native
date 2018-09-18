@@ -29,7 +29,7 @@ interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	onLikePress: (likedByMe: boolean, postId: string) => boolean;
 	onPostDeletePress: (post: IWallPostCardProps) => void;
 	onUserPress: (userId: string) => void;
-	loadingMore: boolean;
+	loadingMorePosts: boolean;
 	hasMorePosts: boolean;
 	onAddCommentPress: (scrollYOffset: number, cardHeight: number) => void;
 	shareSectionOpacityInterpolation: number;
@@ -113,7 +113,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					{...data.item}
 					canDelete={canDelete}
 					likedByMe={likedByMe}
-					listLoading={this.props.loadingMore}
+					listLoading={this.props.loadingMorePosts}
 					currentUser={this.props.currentUser}
 					onCommentPress={(startComment: boolean) =>
 						this.props.onCommentPress(data.item.id, data.item.owner.userId, startComment, data.item)

@@ -139,7 +139,6 @@ export interface ICurrentUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfViews: number;
-	loading: boolean;
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardProps[];
 }
@@ -154,7 +153,6 @@ export interface IVisitedUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfViews: number;
-	loading: boolean;
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardProps[];
 	relationship: SearchResultKind;

@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: currentUser, visitedUser, loadingPosts
+ * 1. Props data: currentUser, visitedUser, refreshingProfile, loadingProfile
  * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos
  */
 
@@ -12,7 +12,8 @@ const mock = {
 	data: {
 		currentUser,
 		visitedUser,
-		loadingPosts: false,
+		refreshingProfile: false,
+		loadingProfile: false,
 	},
 	actions: {
 		addFriend: (userId: string) => {
@@ -37,7 +38,8 @@ const mock = {
 export interface IWithUserProfileEnhancedData {
 	currentUser: ICurrentUser;
 	visitedUser: IVisitedUser;
-	loadingPosts: boolean;
+	refreshingProfile: boolean;
+	loadingProfile: boolean;
 }
 
 export interface IWithUserProfileEnhancedActions extends ITranslatedProps {

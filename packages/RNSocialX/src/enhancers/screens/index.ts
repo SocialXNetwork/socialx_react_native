@@ -5,3 +5,5 @@ export {
 	IWithUserProfileEnhancedActions,
 	IWithUserProfileEnhancedData,
 } from './mainStack/WithUserProfile';
+
+export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';

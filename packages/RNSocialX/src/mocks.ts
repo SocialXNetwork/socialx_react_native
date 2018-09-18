@@ -35,7 +35,7 @@ const bestComments: ISimpleComment[] = [
 	},
 ];
 
-const posts: IWallPostCardProps[] = [
+export const posts: IWallPostCardProps[] = [
 	{
 		id: '1',
 		postText: 'Lorem ipsum dolor sit amet.',
@@ -89,7 +89,7 @@ const posts: IWallPostCardProps[] = [
 		suggested: undefined,
 		noInput: false,
 		getText: (value) => value,
-		marginBottom: 20,
+		marginBottom: 0,
 		currentUser: {
 			userId: '999',
 			avatarURL: avatar,
@@ -100,7 +100,6 @@ const posts: IWallPostCardProps[] = [
 			numberOfPhotos: 1,
 			numberOfFriends: 2,
 			numberOfViews: 87,
-			loading: false,
 			mediaObjects: [
 				{
 					url:
@@ -128,7 +127,6 @@ export const currentUser: ICurrentUser = {
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
 	numberOfViews: 87,
-	loading: false,
 	mediaObjects: [
 		{
 			url:
@@ -154,7 +152,6 @@ export const visitedUser: IVisitedUser = {
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
 	numberOfViews: 87,
-	loading: false,
 	mediaObjects: [
 		{
 			url:
@@ -170,3 +167,48 @@ export const visitedUser: IVisitedUser = {
 	recentPosts: posts,
 	relationship: SearchResultKind.NotFriend,
 };
+
+export const suggestedItems = [
+	{
+		userId: '101',
+		name: 'test user 1',
+		userName: 'testname',
+		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
+		friend: true,
+	},
+	{
+		userId: '102',
+		name: 'test user 2',
+		userName: 'testname',
+		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
+		friend: false,
+	},
+	{
+		userId: '103',
+		name: 'test user 3',
+		userName: 'testname',
+		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
+		friend: true,
+	},
+	{
+		userId: '104',
+		name: 'test user 4',
+		userName: 'testname',
+		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
+		friend: true,
+	},
+	{
+		userId: '105',
+		name: 'test user 5',
+		userName: 'testname',
+		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
+		friend: false,
+	},
+	{
+		userId: '106',
+		name: 'test user 6',
+		userName: 'testname',
+		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
+		friend: false,
+	},
+];

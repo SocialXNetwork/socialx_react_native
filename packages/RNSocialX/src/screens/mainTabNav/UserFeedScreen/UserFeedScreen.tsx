@@ -1,68 +1,24 @@
 /**
  * TODO list:
- * 1. Props data: currentUser
- * 2. Props actions: loadPosts, likePost, unlikePost, deletePost, showActivityIndicator, hideActivityIndicator
- * 3. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
- * 3.1 we can do this at the top level, without navigation
- * 4. Refactor the commented part into the header component
- * 5. Implement getAvatarImage (check IPFS)
+ * 1. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
+ * 1.1 we can do this at the top level, without navigation
+ * 2. Refactor the commented part into the header component
+ * 3. Implement getAvatarImage (check IPFS)
  */
 
 import * as React from 'react';
 import {Animated, Dimensions, FlatList, Platform} from 'react-native';
 import {AnimatedValue, NavigationScreenProp} from 'react-navigation';
 
+import {IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from '../../../enhancers/screens';
+
 import {IWallPostCardProps} from '../../../components';
 // import {ipfsConfig as base} from 'configuration';
-import {OS_TYPES} from '../../../environment/consts';
-import {IMediaProps, ITranslatedProps} from '../../../types';
+import {FEED_TYPES, OS_TYPES} from '../../../environment/consts';
+import {suggestedItems} from '../../../mocks';
+import {IMediaProps} from '../../../types';
 import {SHARE_SECTION_HEIGHT, USER_PLACEHOLDER_AVATAR} from './UserFeedScreen.style';
 import {UserFeedScreenView} from './UserFeedScreen.view';
-
-const MOCK_SUGGESTED = [
-	{
-		userId: '101',
-		name: 'test user 1',
-		userName: 'testname',
-		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		friend: true,
-	},
-	{
-		userId: '102',
-		name: 'test user 2',
-		userName: 'testname',
-		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		friend: false,
-	},
-	{
-		userId: '103',
-		name: 'test user 3',
-		userName: 'testname',
-		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		friend: true,
-	},
-	{
-		userId: '104',
-		name: 'test user 4',
-		userName: 'testname',
-		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		friend: true,
-	},
-	{
-		userId: '105',
-		name: 'test user 5',
-		userName: 'testname',
-		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		friend: false,
-	},
-	{
-		userId: '106',
-		name: 'test user 6',
-		userName: 'testname',
-		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		friend: false,
-	},
-];
 
 const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
@@ -71,43 +27,38 @@ let SUGGESTIONS_MULTIPLIER = 1;
 
 export interface IFeedProps {
 	shareSectionPlaceholder: string | null;
+	feedType: FEED_TYPES;
 }
 
-interface IUserFeedScreenProps extends IFeedProps, ITranslatedProps {
-	currentUser: any;
-	posts: any;
-	hasMorePosts: boolean;
-	loadPosts: () => void;
-	likePost: (postId: string) => void;
-	unlikePost: (postId: string) => void;
-	deletePost: (postId: string) => void;
-	showActivityIndicator: (message: string) => void;
-	hideActivityIndicator: () => void;
+export interface INavigationProps {
 	navigation: NavigationScreenProp<any>;
 }
 
-interface IUserFeedScreenState {
-	refreshing: boolean;
-	loadingMore: boolean;
-}
+interface IUserFeedScreenState {}
 
-export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
-	public state = {
-		refreshing: false,
-		loadingMore: false,
-	};
+type IUserFeedScreenProps = INavigationProps & IFeedProps & IWithUserFeedEnhancedData & IWithUserFeedEnhancedActions;
 
+export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
 	private readonly scrollRef: React.RefObject<FlatList<IWallPostCardProps>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public render() {
-		const {currentUser, posts, shareSectionPlaceholder, hasMorePosts, getText} = this.props;
+		const {
+			currentUser,
+			posts,
+			shareSectionPlaceholder,
+			hasMorePosts,
+			refreshingFeed,
+			loadingMorePosts,
+			loadingFeed,
+			getText,
+		} = this.props;
 
 		// Temporary, the backend should send all the data
 		if (posts && posts.length > SUGGESTIONS_MULTIPLIER * SUGGESTIONS_POSTS_INTERVAL) {
 			posts.map((item: IWallPostCardProps, index: number) => {
 				if (index === SUGGESTIONS_MULTIPLIER * SUGGESTIONS_POSTS_INTERVAL && !item.suggested) {
-					item.suggested = MOCK_SUGGESTED;
+					item.suggested = suggestedItems;
 					return item;
 				}
 				return item;
@@ -125,8 +76,10 @@ export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserF
 			<UserFeedScreenView
 				avatarImage={this.getAvatarImage()}
 				wallPosts={posts}
-				refreshing={this.state.refreshing}
+				refreshing={refreshingFeed}
 				onRefresh={this.onRefreshHandler}
+				hasMorePosts={hasMorePosts}
+				loadingMorePosts={loadingMorePosts}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onShowNewWallPostPress={this.showNewWallPostPage}
 				onMediaPress={this.onMediaObjectPressHandler}
@@ -137,13 +90,11 @@ export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserF
 				onLikePress={this.onLikePressHandler}
 				onPostDeletePress={this.onPostDeletePressHandler}
 				onUserPress={this.gotoUserProfile}
-				loadingMore={this.state.loadingMore}
-				hasMorePosts={hasMorePosts}
 				onAddCommentPress={this.onAddCommentPressHandler}
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
-				isLoading={this.state.refreshing && this.state.loadingMore}
+				isLoading={loadingFeed}
 				getText={getText}
 			/>
 		);
@@ -162,15 +113,10 @@ export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserF
 	};
 
 	private onLoadMorePostsHandler = async () => {
-		if (!this.state.loadingMore) {
-			this.setState(
-				{
-					loadingMore: true,
-				},
-				() => {
-					this.props.loadPosts();
-				},
-			);
+		const {loadPosts, feedType} = this.props;
+
+		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
+			loadPosts(feedType);
 		}
 	};
 
@@ -184,10 +130,10 @@ export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserF
 	};
 
 	private onRefreshHandler = async () => {
-		if (!this.state.refreshing) {
-			this.setState({refreshing: true}, () => {
-				this.props.loadPosts();
-			});
+		const {refreshFeed, feedType} = this.props;
+
+		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
+			refreshFeed(feedType);
 		}
 	};
 
@@ -231,7 +177,7 @@ export class UserFeedScreen extends React.Component<IUserFeedScreenProps, IUserF
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		if (!this.state.refreshing && !this.state.loadingMore && this.scrollRef.current) {
+		if (!this.props.refreshingFeed && !this.props.loadingMorePosts && this.scrollRef.current) {
 			this.scrollRef.current.scrollToIndex({
 				animated: true,
 				index,

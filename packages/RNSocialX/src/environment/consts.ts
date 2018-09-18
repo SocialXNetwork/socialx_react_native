@@ -69,3 +69,8 @@ export const KeyboardContext: React.Context<IKeyboardContextProps> = React.creat
 		/**/
 	},
 });
+
+export enum FEED_TYPES {
+	GLOBAL = 'global',
+	FRIENDS = 'friends',
+}
