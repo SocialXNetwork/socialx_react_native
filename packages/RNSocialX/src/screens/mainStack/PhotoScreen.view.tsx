@@ -31,7 +31,7 @@ interface IPhotoScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	onShareTextUpdate: (value: string) => void;
 	onAddMedia: () => void;
 	sendPost: () => void;
-	navigation: any;
+	onClose: () => void;
 }
 
 interface ILocationSectionProps {
@@ -119,14 +119,14 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 	getText,
 	isLoading,
 	sendPost,
-	navigation,
+	onClose,
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
 		{
 			// @ts-ignore
 			<Header
 				title={getText('photo.screen.title')}
-				left={<CloseButton onClose={() => navigation.goBack(null)} />}
+				left={<CloseButton onClose={onClose} />}
 				right={
 					// @ts-ignore
 					<ScreenHeaderButton iconName={'md-checkmark'} onPress={sendPost} />
