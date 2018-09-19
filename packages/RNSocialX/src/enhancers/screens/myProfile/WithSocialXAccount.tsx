@@ -8,7 +8,7 @@ import * as React from 'react';
 import {cryptoStats} from '../../../mocks';
 import {ICryptoStats, ITranslatedProps} from '../../../types';
 
-const mock = {
+const mock: IWithSocialXAccountEnhancedProps = {
 	data: {
 		stats: cryptoStats,
 	},
@@ -23,18 +23,18 @@ export interface IWithSocialXAccountEnhancedData {
 
 export interface IWithSocialXAccountEnhancedActions extends ITranslatedProps {}
 
-interface ISocialXAccountEnhancedProps {
+interface IWithSocialXAccountEnhancedProps {
 	data: IWithSocialXAccountEnhancedData;
 	actions: IWithSocialXAccountEnhancedActions;
 }
 
-interface ISocialXAccountProps {
-	children(props: ISocialXAccountEnhancedProps): JSX.Element;
+interface IWithSocialXAccountProps {
+	children(props: IWithSocialXAccountEnhancedProps): JSX.Element;
 }
 
-interface ISocialXAccountState {}
+interface IWithSocialXAccountState {}
 
-export class WithSocialXAccount extends React.Component<ISocialXAccountProps, ISocialXAccountState> {
+export class WithSocialXAccount extends React.Component<IWithSocialXAccountProps, IWithSocialXAccountState> {
 	render() {
 		return this.props.children({data: mock.data, actions: mock.actions});
 	}

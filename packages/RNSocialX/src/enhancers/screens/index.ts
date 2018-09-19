@@ -26,6 +26,8 @@ export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from '.
 
 export {WithLogin, IWithLoginEnhancedActions, IWithLoginEnhancedData} from './preAuth/WithLogin';
 
+export {WithRegister, IWithRegisterEnhancedActions, IWithRegisterEnhancedData} from './preAuth/WithRegister';
+
 export {
 	WithMaintenance,
 	IWithMaintenanceEnhancedData,

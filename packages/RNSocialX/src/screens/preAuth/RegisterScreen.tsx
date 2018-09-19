@@ -1,35 +1,20 @@
 /**
  * old screen -> screens/SignUpScreen/index.tsx
  * TODO list:
- * 1. Props data: showModalForSMSCode, resendingCode, smsCodeErrorMessage,
- * 2. Props actions: doRegister, resendSMSCode, validateSMSCode
- * 3. @Serkan: might be that we need to make some flow logic changes here.
+ * 1. @Serkan: might be that we need to make some flow logic changes here.
  */
 
 import * as React from 'react';
 import {Keyboard, View} from 'react-native';
-import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
-import {ITranslatedProps} from '../../types';
-import {RegisterData, RegisterScreenView} from './RegisterScreen.view';
+import {INavigationProps} from '../../types';
+import {RegisterScreenView} from './RegisterScreen.view';
 
-interface IRegisterScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
-	navigationOptions: NavigationScreenConfig<any>;
-	showModalForSMSCode: boolean;
-	resendingCode: boolean;
-	smsCodeErrorMessage: string | null;
-	validateSMSCode: (code: string) => void;
-	resendSMSCode: () => void;
-	doRegister: (registerData: RegisterData) => void;
-}
+import {IWithRegisterEnhancedActions, IWithRegisterEnhancedData, WithRegister} from '../../enhancers/screens';
 
-export class RegisterScreen extends React.Component<IRegisterScreenProps> {
-	private static navigationOptions = ({navigationOptions}: IRegisterScreenProps) => ({
-		title: navigationOptions.getText('register.screen.title'),
-		headerRight: <View />,
-	});
+type IRegisterScreenProps = IWithRegisterEnhancedActions & IWithRegisterEnhancedData & INavigationProps;
 
+class Screen extends React.Component<IRegisterScreenProps> {
 	public render() {
 		const {
 			getText,
@@ -67,3 +52,17 @@ export class RegisterScreen extends React.Component<IRegisterScreenProps> {
 		});
 	};
 }
+
+export const RegisterScreen = ({navigation, navigationOptions}: INavigationProps<any, any>) => (
+	<WithRegister>
+		{({data, actions}) => (
+			<Screen navigation={navigation} navigationOptions={navigationOptions} {...data} {...actions} />
+		)}
+	</WithRegister>
+);
+
+// @ts-ignore
+RegisterScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
+	title: navigationOptions.getText('register.screen.title'),
+	headerRight: <View />,
+});

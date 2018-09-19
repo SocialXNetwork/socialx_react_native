@@ -9,7 +9,7 @@ import {FEED_TYPES} from '../../../environment/consts';
 import {currentUser, posts} from '../../../mocks';
 import {ICurrentUser, ITranslatedProps, IWallPostCardProps} from '../../../types';
 
-const mock = {
+const mock: IWithUserFeedEnhancedProps = {
 	data: {
 		currentUser,
 		posts,
@@ -63,18 +63,18 @@ export interface IWithUserFeedEnhancedActions extends ITranslatedProps {
 	hideActivityIndicator: () => void;
 }
 
-interface IUserFeedEnhancedProps {
+interface IWithUserFeedEnhancedProps {
 	data: IWithUserFeedEnhancedData;
 	actions: IWithUserFeedEnhancedActions;
 }
 
-interface IUserFeedProps {
-	children(props: IUserFeedEnhancedProps): JSX.Element;
+interface IWithUserFeedProps {
+	children(props: IWithUserFeedEnhancedProps): JSX.Element;
 }
 
-interface IUserFeedState {}
+interface IWithUserFeedState {}
 
-export class WithUserFeed extends React.Component<IUserFeedProps, IUserFeedState> {
+export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserFeedState> {
 	render() {
 		return this.props.children({data: mock.data, actions: mock.actions});
 	}
