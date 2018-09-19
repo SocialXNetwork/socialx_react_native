@@ -171,6 +171,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 export interface ICurrentUser {
 	userId: string;
 	avatarURL: string;
+	email: string;
 	fullName: string;
 	userName: string;
 	aboutMeText: string;
@@ -180,6 +181,7 @@ export interface ICurrentUser {
 	numberOfViews: number;
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardProps[];
+	miningEnabled: boolean;
 }
 
 export interface IVisitedUser {
