@@ -57,3 +57,5 @@ export {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 } from './mainTabNav/WithNotifications';
+
+export {WithPhoto, IWithPhotoEnhancedActions, IWithPhotoEnhancedData} from './mainStack/WithPhoto';
