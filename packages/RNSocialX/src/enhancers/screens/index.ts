@@ -23,3 +23,5 @@ export {
 export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './intro/WithIntro';
 
 export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from './preAuth/WithLaunch';
+
+export {WithLogin, IWithLoginEnhancedActions, IWithLoginEnhancedData} from './preAuth/WithLogin';

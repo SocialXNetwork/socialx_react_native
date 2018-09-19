@@ -29,7 +29,7 @@ export const ForgotPasswordScreen = (navProps: INavigationProps<any, any>) => (
 );
 
 // @ts-ignore
-ForgotPasswordScreen.navigationOptions = ({navigationOptions}: IForgotPasswordScreenProps) => ({
+ForgotPasswordScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
 	title: navigationOptions.getText('forgot.password.screen.title'),
 	headerRight: <View />,
 });
