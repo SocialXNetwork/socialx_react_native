@@ -6,11 +6,12 @@
 import * as React from 'react';
 import {Dimensions, Platform, View} from 'react-native';
 import Orientation, {orientation} from 'react-native-orientation';
-import {NavigationScreenProp, NavigationStackScreenOptions} from 'react-navigation';
+import {NavigationStackScreenOptions} from 'react-navigation';
 
 import {CloseButton} from '../../components';
+import {IWithMediaViewerEnhancedActions, IWithMediaViewerEnhancedData, WithMediaViewer} from '../../enhancers/screens';
 import {DeviceOrientations, OS_TYPES} from '../../environment/consts';
-import {IMediaProps, ITranslatedProps} from '../../types';
+import {IMediaProps, INavigationProps} from '../../types';
 import {MediaViewerScreenView} from './MediaViewerScreen.view';
 
 interface IMediaViewerScreenNavParams {
@@ -30,30 +31,11 @@ interface IMediaViewerScreenState {
 	isInfoOverlayVisible: boolean;
 }
 
-export interface IMediaViewerScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<IMediaViewerScreenNavParams>;
-}
+type IMediaViewerScreenProps = INavigationProps<IMediaViewerScreenNavParams> &
+	IWithMediaViewerEnhancedData &
+	IWithMediaViewerEnhancedActions;
 
-export class MediaViewerScreen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
-	public static navigationOptions = (props: IMediaViewerScreenProps) => {
-		const ret: Partial<NavigationStackScreenOptions> = {
-			title: 'MEDIA',
-			headerRight: (
-				<CloseButton
-					onClose={() => {
-						/**/
-					}}
-				/>
-			),
-			headerLeft: <View />,
-		};
-		const params = props.navigation.state.params || {};
-		if (params.hideHeader) {
-			ret.header = null;
-		}
-		return ret;
-	};
-
+class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
 	public state = {
 		orientation: DeviceOrientations.Portrait,
 		activeSlide: this.props.navigation.state.params.startIndex,
@@ -136,3 +118,24 @@ export class MediaViewerScreen extends React.Component<IMediaViewerScreenProps, 
 		});
 	};
 }
+
+export const MediaViewerScreen = (navProps: INavigationProps<IMediaViewerScreenNavParams>) => (
+	<WithMediaViewer>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithMediaViewer>
+);
+
+// @ts-ignore
+MediaViewerScreen.navigationOptions = ({
+	navigation,
+	navigationOptions,
+}: INavigationProps<IMediaViewerScreenNavParams>) => {
+	const ret: Partial<NavigationStackScreenOptions> = {
+		title: navigationOptions.getText('media.viewer.screen.title'),
+		headerRight: <CloseButton onClose={() => navigation.goBack(null)} />,
+		headerLeft: <View />,
+	};
+	const params = navigation.state.params || {};
+	if (params.hideHeader) {
+		ret.header = null;
+	}
+	return ret;
+};

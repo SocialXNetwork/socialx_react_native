@@ -31,3 +31,9 @@ export {
 	IWithMaintenanceEnhancedData,
 	IWithMaintenanceEnhancedActions,
 } from './primaryNav/WithMaintenance';
+
+export {
+	WithMediaViewer,
+	IWithMediaViewerEnhancedData,
+	IWithMediaViewerEnhancedActions,
+} from './mainStack/WithMediaViewer';
