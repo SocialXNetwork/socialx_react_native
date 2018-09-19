@@ -1,5 +1,6 @@
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
+import {AccountCurrencyData} from './components';
 
 export interface FriendsSearchResult {
 	id: string;
@@ -197,9 +198,16 @@ export interface IVisitedUser {
 	relationship: SearchResultKind;
 }
 
+export interface ICryptoStats {
+	coins: number;
+	contribution: number;
+	returnPercentage: number;
+	digitalCoins: AccountCurrencyData[];
+}
+
 export interface INavigationProps<SP, SC> {
 	navigation: NavigationScreenProp<SP>;
-	navigationOptions: NavigationScreenConfig<SC>;
+	navigationOptions?: NavigationScreenConfig<SC>;
 }
 
 /**
