@@ -1,5 +1,4 @@
 /**
- * old screen -> screens/SettingsScreen/index.tsx
  * TODO list:
  * 1. Data props: currentUser, settingsLoading
  * 2. Action props: updateUserProfile, doLogout

@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {Clipboard, Platform, Share, ShareOptions} from 'react-native';
-import {NavigationScreenProp} from 'react-navigation';
 
 import {OS_TYPES} from '../../environment/consts';
+import {INavigationProps} from '../../types';
 import {ReferralScreenView} from './ReferralScreen.view';
 
-interface IReferralScreenProps {
-	navigation: NavigationScreenProp<any>;
-}
+import {IWithReferralEnhancedActions, IWithReferralEnhancedData, WithReferral} from '../../enhancers/screens';
 
-export class ReferralScreen extends Component<IReferralScreenProps> {
+type IReferralScreenProps = INavigationProps & IWithReferralEnhancedActions & IWithReferralEnhancedData;
+
+class Screen extends Component<IReferralScreenProps> {
 	static navigationOptions = {
 		title: 'REFERRAL SYSTEM',
 	};
@@ -19,20 +19,7 @@ export class ReferralScreen extends Component<IReferralScreenProps> {
 	}
 
 	private onShareHandler = () => {
-		const iOSContent = {
-			title: 'Shared message from SocialX',
-			url: 'http://www.lorem.ipsum.com',
-		};
-		const androidContent = {
-			title: 'Shared message from SocialX',
-			message: 'http://www.lorem.ipsum.com',
-		};
-		const iOSOptions = {
-			subject: 'Shared message from SocialX',
-		};
-		const androidOptions = {
-			dialogTitle: 'Shared message from SocialX',
-		};
+		const {iOSContent, iOSOptions, androidContent, androidOptions} = this.props;
 
 		const content = Platform.OS === OS_TYPES.IOS ? iOSContent : androidContent;
 		const options = Platform.OS === OS_TYPES.IOS ? iOSOptions : androidOptions;
@@ -50,3 +37,7 @@ export class ReferralScreen extends Component<IReferralScreenProps> {
 		Clipboard.setString(value);
 	};
 }
+
+export const ReferralScreen = ({navigation}: INavigationProps) => (
+	<WithReferral>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithReferral>
+);
