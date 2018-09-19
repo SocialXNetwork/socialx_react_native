@@ -205,7 +205,7 @@ export interface ICryptoStats {
 	digitalCoins: AccountCurrencyData[];
 }
 
-export interface INavigationProps<SP, SC> {
+export interface INavigationProps<SP = any, SC = any> {
 	navigation: NavigationScreenProp<SP>;
 	navigationOptions?: NavigationScreenConfig<SC>;
 }

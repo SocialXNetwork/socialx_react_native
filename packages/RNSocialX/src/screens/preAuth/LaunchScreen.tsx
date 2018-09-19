@@ -1,33 +1,19 @@
 /**
  * TODO list:
- * 1. currentUser
- * 2. applicationInMaintenanceMode
- * 3. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
- * 3.1 we can do this at the top level, without navigation
+ * 1. @Serkan, refactor logic in componentDidMount to select correct screen after app launch
  */
 
 import * as React from 'react';
 import {LaunchScreenView} from './LaunchScreen.view';
 
 import SplashScreen from 'react-native-smart-splash-screen';
-import {NavigationScreenProp} from 'react-navigation';
-import {ITranslatedProps} from '../../types';
+import {IWithLaunchEnhancedActions, IWithLaunchEnhancedData, WithLaunch} from '../../enhancers/screens';
+import {INavigationProps} from '../../types';
 
-export interface ILaunchScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
-	currentUser: any;
-	applicationInMaintenanceMode: boolean;
-	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
-}
+type ILaunchScreenProps = INavigationProps & IWithLaunchEnhancedData & IWithLaunchEnhancedActions;
 
-export class LaunchScreen extends React.Component<ILaunchScreenProps, any> {
-	private static navigationOptions = {
-		header: null,
-	};
-
+class Screen extends React.Component<ILaunchScreenProps, any> {
 	public componentDidMount() {
-		// TODO: @Serkan, refactor and don't use navigation, put at the top level
-
 		const {currentUser, applicationInMaintenanceMode, resetNavigationToRoute} = this.props;
 		if (currentUser) {
 			if (__DEV__) {
@@ -71,3 +57,12 @@ export class LaunchScreen extends React.Component<ILaunchScreenProps, any> {
 		});
 	};
 }
+
+export const LaunchScreen = (navProps: INavigationProps) => (
+	<WithLaunch>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithLaunch>
+);
+
+// @ts-ignore
+LaunchScreen.navigationOptions = {
+	header: null,
+};
