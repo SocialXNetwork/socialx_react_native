@@ -24,10 +24,13 @@ export {
 } from './preAuth/WithForgotPassword';
 
 export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from './preAuth/WithLaunch';
-
 export {WithLogin, IWithLoginEnhancedActions, IWithLoginEnhancedData} from './preAuth/WithLogin';
-
 export {WithRegister, IWithRegisterEnhancedActions, IWithRegisterEnhancedData} from './preAuth/WithRegister';
+export {
+	WithResetPassword,
+	IWithResetPasswordEnhancedActions,
+	IWithResetPasswordEnhancedData,
+} from './preAuth/WithResetPassword';
 
 export {
 	WithMaintenance,
