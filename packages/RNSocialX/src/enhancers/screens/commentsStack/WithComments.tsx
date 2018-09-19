@@ -7,11 +7,47 @@
 import * as React from 'react';
 import {CommentsSortingOptions, ITranslatedProps, IWallPostComment} from '../../../types';
 
-const mock = {
+const mock: IWithCommentsEnhancedProps = {
 	data: {
-		postUser: {}, // TODO: Ionut/Alex Please provide correctly shaped data to this
-		currentUser: {}, // TODO: Ionut/Alex Please provide correctly shaped data to this
-		postComments: [], // TODO: Ionut/Alex Please provide correctly shaped data to this
+		postUser: {
+			userId: 'userId_0',
+			avatarURL: 'https://placeimg.com/200/200/people',
+			fullName: 'Willetta Winsor',
+		},
+		currentUser: {
+			userId: 'userId_1',
+		},
+		postComments: [
+			{
+				id: 'comm_1',
+				text: 'Sample comment text here.\nGoing on the second line',
+				user: {
+					fullName: 'Sharell Watchman',
+					avatarURL: 'https://avatars2.githubusercontent.com/u/212',
+					id: 'user_11',
+				},
+				timestamp: new Date('February 23, 2018 09:45:00'),
+				numberOfLikes: 10,
+				likes: [], // not used by component
+				likedByMe: false,
+				replies: [
+					{
+						id: 'comm_2',
+						text: 'One line text reply.',
+						user: {
+							fullName: 'Rosaline Finger',
+							avatarURL: undefined,
+							id: 'user_22',
+						},
+						timestamp: new Date('April 25, 2018 19:25:00'),
+						numberOfLikes: 2,
+						likes: [], // not used by component
+						likedByMe: false,
+						replies: [],
+					},
+				],
+			},
+		],
 		loadingComments: false,
 	},
 	actions: {
@@ -41,8 +77,14 @@ const mock = {
 };
 
 export interface IWithCommentsEnhancedData {
-	postUser: any;
-	currentUser: any;
+	postUser: {
+		userId: string;
+		avatarURL: string | null;
+		fullName: string;
+	};
+	currentUser: {
+		userId: string;
+	};
 	postComments: IWallPostComment[];
 	loadingComments: boolean;
 }
