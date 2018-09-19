@@ -71,8 +71,3 @@ class Screen extends React.Component<INotificationsScreenProps> {
 export const NotificationsScreen = (navProps: INavigationProps) => (
 	<WithNotifications>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithNotifications>
 );
-
-// @ts-ignore
-NotificationsScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
-	title: navigationOptions.getText('notifications.screen.title'),
-});

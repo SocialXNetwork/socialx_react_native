@@ -76,6 +76,7 @@ storiesOf('Screens/mainStack', module)
 				containerHeight={containerHeight}
 				onLayoutChange={action('onLayoutChange')}
 				isLoading={isLoading}
+				onClose={action('onClose')}
 			/>
 		);
 	});

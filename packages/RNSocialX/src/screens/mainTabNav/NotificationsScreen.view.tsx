@@ -1,3 +1,5 @@
+// TODO: @Alex fix any typings
+
 import * as React from 'react';
 import {FlatList, Image, Text, View} from 'react-native';
 
@@ -6,6 +8,7 @@ import {
 	ActivityGenericCard,
 	ActivityRecentCommentCard,
 	ActivitySuperLikedCard,
+	Header,
 } from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {NOTIFICATION_TYPES} from '../../environment/consts';
@@ -117,6 +120,10 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
 		<View style={styles.container}>
+			{
+				// @ts-ignore
+				<Header title={getText('notifications.screen.title')} />
+			}
 			<FlatList
 				data={notifications}
 				keyExtractor={(item: any) => item.requestId}

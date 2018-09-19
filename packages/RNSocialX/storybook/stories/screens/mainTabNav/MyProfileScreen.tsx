@@ -49,6 +49,8 @@ class MyProfileScreenViewStory extends React.Component {
 				onRefresh={action('onRefresh')}
 				onViewMediaFullScreen={action('onViewMediaFullScreen')}
 				onEditProfile={action('onEditProfile')}
+				onSharePress={action('onSharePress')}
+				onShowDotsModal={action('onShowDotsModal')}
 				hasPhotos={hasPhotos}
 				isLoading={isLoading}
 			/>

@@ -65,7 +65,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 							shareText={shareText}
 							onAddMedia={this.onAddMediaHandler}
 							sendPost={this.sendPostHandler}
-							navigation={navigation}
+							onClose={this.onCloseHandler}
 							getText={getText}
 						/>
 					);
@@ -137,6 +137,10 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 			taggedFriends: tagFriends && this.addedFriends.length > 0 ? this.addedFriends : undefined,
 			title: shareText ? shareText : undefined,
 		});
+	};
+
+	private onCloseHandler = () => {
+		this.props.navigation.goBack(null);
 	};
 }
 

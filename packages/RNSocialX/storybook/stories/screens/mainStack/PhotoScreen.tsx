@@ -56,6 +56,8 @@ storiesOf('Screens/mainStack', module)
 				shareText={shareText}
 				onShareTextUpdate={action('onShareTextUpdate')}
 				onAddMedia={action('onAddMedia')}
+				sendPost={action('sendPost')}
+				onClose={action('onClose')}
 				isLoading={isLoading}
 			/>
 		);
