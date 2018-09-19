@@ -5,10 +5,9 @@
  */
 
 import * as React from 'react';
-import {IWallPostCardProps} from '../../../components';
 import {FEED_TYPES} from '../../../environment/consts';
 import {currentUser, posts} from '../../../mocks';
-import {ICurrentUser, ITranslatedProps} from '../../../types';
+import {ICurrentUser, ITranslatedProps, IWallPostCardProps} from '../../../types';
 
 const mock = {
 	data: {

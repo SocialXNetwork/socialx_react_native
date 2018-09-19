@@ -12,25 +12,13 @@ import {ActionSheet} from 'native-base';
 import React, {Component} from 'react';
 import {Clipboard, Platform, StatusBar} from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import {NavigationScreenProp} from 'react-navigation';
 
 import {IWithCommentsEnhancedActions, IWithCommentsEnhancedData, WithComments} from '../../enhancers/screens';
 
 import {OS_TYPES} from '../../environment/consts';
-import {CommentsSortingOptions, IMediaProps, IWallPostComment} from '../../types';
+import {CommentsSortingOptions, IMediaProps, INavigationProps, IWallPostComment} from '../../types';
 import {customStyleProps} from './CommentsScreen.style';
 import {CommentsScreenView} from './CommentsScreen.view';
-
-interface INavigationProps {
-	navigation: NavigationScreenProp<{
-		params: {
-			commentId?: string; // only available for replies
-			postId?: string; // only for main comments screen
-			startComment: boolean;
-			postData: object;
-		};
-	}>;
-}
 
 interface ICommentsScreenState {
 	sortOption: CommentsSortingOptions;
@@ -39,7 +27,18 @@ interface ICommentsScreenState {
 	commentLikesPosition: object;
 }
 
-type ICommentsScreenProps = INavigationProps & IWithCommentsEnhancedData & IWithCommentsEnhancedActions;
+interface INavigationScreenProps {
+	params: {
+		commentId?: string; // only available for replies
+		postId?: string; // only for main comments screen
+		startComment: boolean;
+		postData: object;
+	};
+}
+
+type ICommentsScreenProps = INavigationProps<INavigationScreenProps, any> &
+	IWithCommentsEnhancedData &
+	IWithCommentsEnhancedActions;
 
 // Go to the end of the file for the actual export, the Screen component is
 // for providing screen-level local state to the view. This is again for
@@ -215,6 +214,6 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 }
 
 // We do it explicitly here instead of a generic wrapper for flexibility
-export const CommentsScreen = ({navigation}: INavigationProps) => (
-	<WithComments>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithComments>
+export const CommentsScreen = (navProps: INavigationProps<INavigationScreenProps, any>) => (
+	<WithComments>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithComments>
 );

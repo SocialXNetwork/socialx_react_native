@@ -1,30 +1,35 @@
 /**
  * old screen -> screens/ForgotPasswordScreen/index.tsx
  * TODO list:
- * 1. Action props: sendResetCode
- * 2. get rid of workaround for navigationOptions.getText
- * 3. check TS issue with .navigationOptions
+ * 1. get rid of workaround for navigationOptions.getText
+ * 2. check TS issue with .navigationOptions
  */
 
 import * as React from 'react';
 import {View} from 'react-native';
-import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
-import {ITranslatedProps} from '../../types';
+import {
+	IWithForgotPasswordEnhancedActions,
+	IWithForgotPasswordEnhancedData,
+	WithForgotPassword,
+} from '../../enhancers/screens';
+import {INavigationProps} from '../../types';
 import {ForgotPasswordScreenView} from './ForgotPasswordScreen.view';
 
-interface IForgotPasswordScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
-	navigationOptions: NavigationScreenConfig<any>;
-	sendResetCode: (userName: string) => void;
-}
+type IForgotPasswordScreenProps = INavigationProps<any, any> &
+	IWithForgotPasswordEnhancedData &
+	IWithForgotPasswordEnhancedActions;
 
-export const ForgotPasswordScreen: React.SFC<IForgotPasswordScreenProps> = ({getText, sendResetCode}) => (
+const Screen: React.SFC<IForgotPasswordScreenProps> = ({getText, sendResetCode}) => (
 	<ForgotPasswordScreenView getText={getText} onSendResetCode={sendResetCode} />
 );
 
 // @ts-ignore
-ForgotPasswordScreen.navigationOptions = ({navigationOptions}: IForgotPasswordScreenProps) => ({
+Screen.navigationOptions = ({navigationOptions}: IForgotPasswordScreenProps) => ({
 	title: navigationOptions.getText('forgot.password.screen.title'),
 	headerRight: <View />,
 });
+
+export const ForgotPasswordScreen = (navProps: INavigationProps<any, any>) => (
+	<WithForgotPassword>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithForgotPassword>
+);

@@ -12,11 +12,10 @@ import {AnimatedValue, NavigationScreenProp} from 'react-navigation';
 
 import {IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from '../../../enhancers/screens';
 
-import {IWallPostCardProps} from '../../../components';
 // import {ipfsConfig as base} from 'configuration';
 import {FEED_TYPES, OS_TYPES} from '../../../environment/consts';
 import {suggestedItems} from '../../../mocks';
-import {IMediaProps} from '../../../types';
+import {IMediaProps, IWallPostCardProps} from '../../../types';
 import {SHARE_SECTION_HEIGHT, USER_PLACEHOLDER_AVATAR} from './UserFeedScreen.style';
 import {UserFeedScreenView} from './UserFeedScreen.view';
 

@@ -8,17 +8,9 @@ import * as React from 'react';
 import {Alert, Animated, Keyboard, Linking, Platform, Text, View} from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
-import {HeartAnimation, ISuggestionCardItem, ReportProblemModal} from '../../';
+import {HeartAnimation, ReportProblemModal} from '../../';
 import {OS_TYPES} from '../../../environment/consts';
-import {
-	ICurrentUser,
-	ILike,
-	IMediaProps,
-	IPostOwner,
-	IResizeProps,
-	ISimpleComment,
-	ITranslatedProps,
-} from '../../../types';
+import {IWallPostCardProps} from '../../../types';
 import {
 	BestComments,
 	CommentInput,
@@ -31,37 +23,6 @@ import {
 } from './';
 // import {TooltipDots, TooltipItem} from '../DotsWithTooltips';
 import styles from './WallPostCard.style';
-
-export interface ISimpleWallPostCardProps {
-	id: string;
-	postText: false | string;
-	location: false | string;
-	taggedFriends: Array<{fullName: string}>;
-	timestamp: Date;
-	owner: IPostOwner;
-	currentUser: ICurrentUser;
-}
-
-export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslatedProps, IResizeProps {
-	governanceVersion: boolean;
-	numberOfSuperLikes: number;
-	numberOfComments: number;
-	numberOfWalletCoins: number;
-	onImagePress: (index: number) => void;
-	onLikeButtonPress: () => void;
-	onDeletePress: (postId: string) => void;
-	onUserPress: (userId: string) => void;
-	onCommentPress: (startComment: boolean) => void;
-	onAddComment: (height: number) => void;
-	likedByMe: boolean;
-	canDelete: boolean;
-	media: IMediaProps[];
-	likes: ILike[];
-	bestComments: ISimpleComment[];
-	listLoading: boolean;
-	suggested: undefined | ISuggestionCardItem[];
-	noInput: boolean;
-}
 
 export interface IWallPostCardState {
 	fullTextVisible: boolean;

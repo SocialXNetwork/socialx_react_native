@@ -4,9 +4,8 @@ import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 import {Animated} from 'react-native';
 
-import {IWallPostCardProps} from '../../../../src/components';
 import {UserFeedScreenView} from '../../../../src/screens/mainTabNav/UserFeedScreen/UserFeedScreen.view';
-import {ILike, ISimpleComment, MediaTypeImage} from '../../../../src/types';
+import {ILike, ISimpleComment, IWallPostCardProps, MediaTypeImage} from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Screens/mainTabNav', module)
