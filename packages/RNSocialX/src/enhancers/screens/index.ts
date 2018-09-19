@@ -13,3 +13,5 @@ export {
 	IWithForgotPasswordEnhancedData,
 	IWithForgotPasswordEnhancedActions,
 } from './preAuth/WithForgotPassword';
+
+export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './intro/WithIntro';

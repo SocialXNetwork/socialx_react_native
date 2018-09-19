@@ -24,12 +24,12 @@ const Screen: React.SFC<IForgotPasswordScreenProps> = ({getText, sendResetCode})
 	<ForgotPasswordScreenView getText={getText} onSendResetCode={sendResetCode} />
 );
 
-// @ts-ignore
-Screen.navigationOptions = ({navigationOptions}: IForgotPasswordScreenProps) => ({
-	title: navigationOptions.getText('forgot.password.screen.title'),
-	headerRight: <View />,
-});
-
 export const ForgotPasswordScreen = (navProps: INavigationProps<any, any>) => (
 	<WithForgotPassword>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithForgotPassword>
 );
+
+// @ts-ignore
+ForgotPasswordScreen.navigationOptions = ({navigationOptions}: IForgotPasswordScreenProps) => ({
+	title: navigationOptions.getText('forgot.password.screen.title'),
+	headerRight: <View />,
+});

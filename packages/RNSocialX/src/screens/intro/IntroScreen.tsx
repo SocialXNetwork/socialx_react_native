@@ -1,25 +1,23 @@
 /**
  * old screen -> screens/IntroScreen/index.tsx
- * TODO list:
- * 1. Props actions: navigateToMainScreen
  */
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../types';
+import {IWithIntroEnhancedActions, IWithIntroEnhancedData, WithIntro} from '../../enhancers/screens';
 import {IntroScreenView} from './IntroScreen.view';
 
-interface IIntroScreenProps extends ITranslatedProps {
-	navigateToMainScreen: () => void;
-}
+type IIntroScreenProps = IWithIntroEnhancedData & IWithIntroEnhancedActions;
 
-export const IntroScreen: React.SFC<IIntroScreenProps> = ({navigateToMainScreen, getText}) => (
+const Screen: React.SFC<IIntroScreenProps> = ({navigateToMainScreen, getText}) => (
 	<IntroScreenView
 		doneButtonHandler={navigateToMainScreen}
 		skipButtonHandler={navigateToMainScreen}
 		getText={getText}
 	/>
 );
+
+export const IntroScreen = () => <WithIntro>{({data, actions}) => <Screen {...data} {...actions} />}</WithIntro>;
 
 // @ts-ignore
 IntroScreen.navigationOptions = {
