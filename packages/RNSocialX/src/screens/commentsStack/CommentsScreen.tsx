@@ -44,10 +44,6 @@ type ICommentsScreenProps = INavigationProps<INavigationScreenProps, any> &
 // for providing screen-level local state to the view. This is again for
 // explicit separation of levels of concerns
 class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
-	private static navigationOptions = {
-		header: null,
-	};
-
 	public state = {
 		sortOption: CommentsSortingOptions.Likes,
 		commentText: '',
@@ -217,3 +213,8 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 export const CommentsScreen = (navProps: INavigationProps<INavigationScreenProps, any>) => (
 	<WithComments>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithComments>
 );
+
+// @ts-ignore
+CommentsScreen.navigationOptions = {
+	header: null,
+};

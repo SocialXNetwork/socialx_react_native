@@ -1,3 +1,8 @@
+/**
+ * TODO list:
+ * 1. Props actions: sendResetCode, getText
+ */
+
 import * as React from 'react';
 
 import {ITranslatedProps} from '../../../types';

@@ -79,7 +79,7 @@ const mock: IWithCommentsEnhancedProps = {
 export interface IWithCommentsEnhancedData {
 	postUser: {
 		userId: string;
-		avatarURL: string | null;
+		avatarURL?: string;
 		fullName: string;
 	};
 	currentUser: {
