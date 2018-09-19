@@ -38,7 +38,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	public render() {
-		const {getText, marginBottom, navigation, currentUserAvatarURL} = this.props;
+		const {getText, marginBottom, currentUserAvatarURL} = this.props;
 		const {shareText, mediaObjects} = this.state;
 		return (
 			<CreateWallPostScreenView
@@ -50,7 +50,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				onPostSend={this.onSendPostHandler}
 				getText={getText}
 				marginBottom={marginBottom}
-				navigation={navigation}
+				onClose={this.onCloseHandler}
 			/>
 		);
 	}
@@ -105,6 +105,10 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				text: shareText,
 			});
 		}
+	};
+
+	private onCloseHandler = () => {
+		this.props.navigation.goBack(null);
 	};
 }
 

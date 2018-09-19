@@ -20,7 +20,6 @@ const styles: any = {
 	icon: {
 		width: ICON_DEFAULT_SIZE,
 		height: ICON_DEFAULT_SIZE,
-		fontSize: ICON_DEFAULT_SIZE,
 	},
 };
 

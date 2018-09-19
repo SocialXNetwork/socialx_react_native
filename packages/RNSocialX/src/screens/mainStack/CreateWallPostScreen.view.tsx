@@ -21,7 +21,7 @@ interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps 
 	onShareTextUpdate: (value: string) => void;
 	onAddMedia: () => void;
 	onPostSend: () => void;
-	navigation: any;
+	onClose: () => void;
 }
 
 export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps> = ({
@@ -33,15 +33,12 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	mediaObjects,
 	getText,
 	marginBottom,
-	navigation,
+	onClose,
 }) => (
 	<SafeAreaView style={[style.safeView, Platform.OS === OS_TYPES.IOS ? {paddingBottom: marginBottom} : {}]}>
 		{
 			// @ts-ignore
-			<Header
-				title={getText('new.wall.post.screen.title')}
-				right={<CloseButton onClose={() => navigation.goBack(null)} />}
-			/>
+			<Header title={getText('new.wall.post.screen.title')} right={<CloseButton onClose={onClose} />} />
 		}
 		<ScrollView contentContainerStyle={style.container} keyboardShouldPersistTaps={'handled'}>
 			<SharePostInput

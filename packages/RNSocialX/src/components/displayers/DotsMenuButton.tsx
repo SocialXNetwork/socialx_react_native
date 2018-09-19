@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {Colors, Sizes} from '../../environment/theme';
@@ -11,22 +11,20 @@ interface IDotsMenuButtonProps {
 }
 
 export const DotsMenuButton: React.SFC<IDotsMenuButtonProps> = ({
-	iconColor = Colors.postFullName,
+	iconColor = Colors.white,
 	iconName = 'ios-more',
 	onPress = () => {
 		/**/
 	},
 }) => (
-	<TouchableWithoutFeedback onPress={onPress} style={styles.container}>
+	<TouchableOpacity onPress={onPress}>
 		<Icon name={iconName} color={iconColor} style={styles.icon} />
-	</TouchableWithoutFeedback>
+	</TouchableOpacity>
 );
 
 const styles: any = StyleSheet.create({
-	container: {
-		padding: Sizes.smartHorizontalScale(7),
-	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(25),
+		marginRight: Sizes.smartHorizontalScale(10),
 	},
 });

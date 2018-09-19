@@ -13,12 +13,9 @@ import uuidv4 from 'uuid/v4';
 
 import {IWithUserProfileEnhancedActions, IWithUserProfileEnhancedData, WithUserProfile} from '../../enhancers/screens';
 
-import {CloseButton} from '../../components';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
 import {IMediaProps} from '../../types';
 import {UserProfileScreenView} from './UserProfileScreen.view';
-
-import {headerDefaultStyles} from './UserProfileScreen.style';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
@@ -104,6 +101,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				containerHeight={containerHeight}
 				onLayoutChange={this.onLayoutChangeHandler}
 				getText={this.props.getText}
+				onClose={this.onCloseHandler}
 			/>
 		);
 	}
@@ -249,23 +247,12 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		Alert.alert('onRemoveFriendshipHandler: TBD');
 		// TODO: API call to remove + refresh user query so relationship is updated!
 	};
+
+	private onCloseHandler = () => {
+		this.props.navigation.goBack(null);
+	};
 }
 
 export const UserProfileScreen = ({navigation}: INavigationProps) => (
 	<WithUserProfile>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithUserProfile>
 );
-
-// @ts-ignore
-UserProfileScreen.navigationOptions = (options: INavigationProps) => ({
-	title: 'PROFILE',
-	headerLeft: <View />,
-	headerRight: (
-		<View style={{flexDirection: 'row'}}>
-			{
-				// @ts-ignore
-				<CloseButton navigation={options.navigation} />
-			}
-		</View>
-	),
-	headerStyle: headerDefaultStyles,
-});
