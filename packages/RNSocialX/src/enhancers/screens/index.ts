@@ -1,5 +1,7 @@
 export {WithComments, IWithCommentsEnhancedData, IWithCommentsEnhancedActions} from './commentsStack/WithComments';
 
+export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './intro/WithIntro';
+
 export {
 	WithUserProfile,
 	IWithUserProfileEnhancedActions,
@@ -8,6 +10,7 @@ export {
 
 export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';
 
+export {WithSettings, IWithSettingsEnhancedActions, IWithSettingsEnhancedData} from './myProfile/WithSettings';
 export {
 	WithSocialXAccount,
 	IWithSocialXAccountEnhancedActions,
@@ -19,8 +22,6 @@ export {
 	IWithForgotPasswordEnhancedData,
 	IWithForgotPasswordEnhancedActions,
 } from './preAuth/WithForgotPassword';
-
-export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './intro/WithIntro';
 
 export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from './preAuth/WithLaunch';
 

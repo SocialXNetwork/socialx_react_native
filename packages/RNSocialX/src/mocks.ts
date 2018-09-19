@@ -105,6 +105,7 @@ export const posts: IWallPostCardProps[] = [
 			avatarURL: avatar,
 			fullName: 'Alex Sirbu',
 			userName: 'alexsirbu',
+			email: 'alex.sirbu@test.com',
 			aboutMeText: 'Lorem ipsum dolor sit amet',
 			numberOfLikes: 25,
 			numberOfPhotos: 1,
@@ -123,6 +124,7 @@ export const posts: IWallPostCardProps[] = [
 				},
 			],
 			recentPosts: [],
+			miningEnabled: false,
 		},
 	},
 ];
@@ -132,6 +134,7 @@ export const currentUser: ICurrentUser = {
 	avatarURL: avatar,
 	fullName: 'Alex Sirbu',
 	userName: 'alexsirbu',
+	email: 'alex.sirbu@test.com',
 	aboutMeText: 'Lorem ipsum dolor sit amet',
 	numberOfLikes: 25,
 	numberOfPhotos: 1,
@@ -150,6 +153,7 @@ export const currentUser: ICurrentUser = {
 		},
 	],
 	recentPosts: posts,
+	miningEnabled: false,
 };
 
 export const visitedUser: IVisitedUser = {
