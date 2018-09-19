@@ -14,7 +14,7 @@ import {FriendsSearchResult, ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './PhotoScreen.style';
 
 interface IPhotoScreenViewProps extends IWithLoaderProps, ITranslatedProps {
-	avatarURL: string;
+	avatarURL?: string;
 	mediaObjects: string[];
 	showTagFriendsModal: () => void;
 	taggedFriends: FriendsSearchResult[];

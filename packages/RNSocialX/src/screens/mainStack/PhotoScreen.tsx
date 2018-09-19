@@ -1,20 +1,18 @@
 /**
  * old screen -> screens/PhotoScreen/index.tsx
  * TODO list:
- * 1. Props data: currentUser, loading
- * 2. Props actions: createPost
- * 3. Refactor props.navigation.state.params.mediaObjects, that is sent from NavigationTabBar component with navigate action
- * 4. @Serkan: check pattern for this.addedFriends
- * 5. (Later) Get rid of navigation workaround for passing onSendPress
- * 6. (Later) Consider using Formik to manage all user input data.
+ * 1. Refactor props.navigation.state.params.mediaObjects, that is sent from NavigationTabBar component with navigate action
+ * 2. @Serkan: check pattern for this.addedFriends
+ * 3. (Later) Get rid of navigation workaround for passing onSendPress
+ * 4. (Later) Consider using Formik to manage all user input data.
  */
 
 import {ActionSheet} from 'native-base';
 import * as React from 'react';
-import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
 import {CloseButton, ScreenHeaderButton, WithModalForAddFriends} from '../../components';
-import {FriendsSearchResult, IResizeProps, ITranslatedProps, WallPostPhotoOptimized} from '../../types';
+import {IWithPhotoEnhancedActions, IWithPhotoEnhancedData, WithPhoto} from '../../enhancers/screens';
+import {FriendsSearchResult, INavigationProps, WallPostPhotoOptimized} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -23,13 +21,6 @@ import {
 } from '../../utilities';
 import {PhotoScreenView} from './PhotoScreen.view';
 
-interface WallPostPhotoData {
-	mediaObjects: WallPostPhotoOptimized[];
-	title?: string;
-	location?: string;
-	taggedFriends?: FriendsSearchResult[];
-}
-
 interface IPhotoScreenNavParams {
 	params: {
 		mediaObjects: WallPostPhotoOptimized[];
@@ -37,13 +28,7 @@ interface IPhotoScreenNavParams {
 	};
 }
 
-interface IPhotoScreenProps extends ITranslatedProps, IResizeProps {
-	navigation: NavigationScreenProp<IPhotoScreenNavParams>;
-	navigationOptions: NavigationScreenConfig<any>;
-	currentUser: any;
-	loading: boolean;
-	createPost: (wallPostData: WallPostPhotoData) => void;
-}
+type IPhotoScreenProps = INavigationProps<IPhotoScreenNavParams> & IWithPhotoEnhancedActions & IWithPhotoEnhancedData;
 
 interface IPhotoScreenState {
 	locationEnabled: boolean;
@@ -53,14 +38,7 @@ interface IPhotoScreenState {
 	mediaObjects: WallPostPhotoOptimized[];
 }
 
-export class PhotoScreen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
-	private static navigationOptions = ({navigationOptions, navigation}: IPhotoScreenProps) => ({
-		title: navigationOptions.getText('photo.screen.title'),
-		headerLeft: <CloseButton onClose={() => navigation.goBack(null)} />,
-		// @ts-ignore
-		headerRight: <ScreenHeaderButton iconName={'md-checkmark'} onPress={navigation.state.params.onSendPress} />,
-	});
-
+class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	private addedFriends: FriendsSearchResult[] = [];
 
 	public componentDidMount() {
@@ -68,7 +46,7 @@ export class PhotoScreen extends React.Component<IPhotoScreenProps, IPhotoScreen
 	}
 
 	public render() {
-		const {currentUser, loading, marginBottom, getText} = this.props;
+		const {currentUserAvatarURL, loading, marginBottom, getText} = this.props;
 		const {locationEnabled, location, tagFriends, shareText, mediaObjects} = this.state;
 
 		return (
@@ -79,7 +57,7 @@ export class PhotoScreen extends React.Component<IPhotoScreenProps, IPhotoScreen
 						<PhotoScreenView
 							isLoading={loading}
 							showTagFriendsModal={showAddFriendsModal}
-							avatarURL={currentUser.avatarURL}
+							avatarURL={currentUserAvatarURL}
 							mediaObjects={mediaObjects.map((mediaObject) => mediaObject.path)}
 							taggedFriends={addedFriends}
 							locationEnabled={locationEnabled}
@@ -156,13 +134,23 @@ export class PhotoScreen extends React.Component<IPhotoScreenProps, IPhotoScreen
 		const {mediaObjects, tagFriends, shareText, locationEnabled, location} = this.state;
 		const {createPost} = this.props;
 
-		const wallPostData: WallPostPhotoData = {
+		createPost({
 			mediaObjects,
 			location: locationEnabled && location !== '' ? location : undefined,
 			taggedFriends: tagFriends && this.addedFriends.length > 0 ? this.addedFriends : undefined,
 			title: shareText ? shareText : undefined,
-		};
-
-		createPost(wallPostData);
+		});
 	};
 }
+
+export const PhotoScreen = (navProps: INavigationProps<IPhotoScreenNavParams>) => (
+	<WithPhoto>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
+);
+
+// @ts-ignore
+PhotoScreen.navigationOptions = ({navigationOptions, navigation}: IPhotoScreenProps) => ({
+	title: navigationOptions.getText('photo.screen.title'),
+	headerLeft: <CloseButton onClose={() => navigation.goBack(null)} />,
+	// @ts-ignore
+	headerRight: <ScreenHeaderButton iconName={'md-checkmark'} onPress={navigation.state.params.onSendPress} />,
+});
