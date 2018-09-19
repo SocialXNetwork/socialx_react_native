@@ -6,10 +6,7 @@ const styles: any = {
 		backgroundColor: Colors.pink,
 		height: Sizes.smartVerticalScale(45),
 		justifyContent: 'center',
-	},
-	row: {
 		flexDirection: 'row',
-		height: '100%',
 	},
 	left: {
 		flex: 1,

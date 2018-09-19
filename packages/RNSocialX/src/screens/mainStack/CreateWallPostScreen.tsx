@@ -6,9 +6,8 @@
 
 import {ActionSheet} from 'native-base';
 import * as React from 'react';
-import {Alert, View} from 'react-native';
+import {Alert} from 'react-native';
 
-import {CloseButton} from '../../components';
 import {
 	IWithCreateWallPostEnhancedActions,
 	IWithCreateWallPostEnhancedData,
@@ -39,7 +38,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	public render() {
-		const {getText, marginBottom, currentUserAvatarURL} = this.props;
+		const {getText, marginBottom, navigation, currentUserAvatarURL} = this.props;
 		const {shareText, mediaObjects} = this.state;
 		return (
 			<CreateWallPostScreenView
@@ -51,6 +50,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				onPostSend={this.onSendPostHandler}
 				getText={getText}
 				marginBottom={marginBottom}
+				navigation={navigation}
 			/>
 		);
 	}
@@ -111,10 +111,3 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 export const CreateWallPostScreen = (navProps: INavigationProps) => (
 	<WithCreateWallPost>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithCreateWallPost>
 );
-
-// @ts-ignore
-CreateWallPostScreen.navigationOptions = ({navigation, navigationOptions}: INavigationProps) => ({
-	title: navigationOptions.getText('new.wall.post.screen.title'),
-	headerRight: <CloseButton onClose={() => navigation.goBack(null)} />,
-	headerLeft: <View />,
-});

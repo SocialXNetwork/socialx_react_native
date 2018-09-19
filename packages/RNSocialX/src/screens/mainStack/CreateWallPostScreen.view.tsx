@@ -1,9 +1,16 @@
 import * as React from 'react';
 import {Image, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
-import {ButtonSizes, MediaHorizontalScroller, PrimaryButton, SharePostInput} from '../../components';
+import {
+	ButtonSizes,
+	CloseButton,
+	Header,
+	MediaHorizontalScroller,
+	PrimaryButton,
+	SharePostInput,
+} from '../../components';
 import {OS_TYPES} from '../../environment/consts';
-import {Colors, Icons, Sizes} from '../../environment/theme';
+import {Colors, Icons} from '../../environment/theme';
 import {IResizeProps, ITranslatedProps} from '../../types';
 import style from './CreateWallPostScreen.style';
 
@@ -14,6 +21,7 @@ interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps 
 	onShareTextUpdate: (value: string) => void;
 	onAddMedia: () => void;
 	onPostSend: () => void;
+	navigation: any;
 }
 
 export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps> = ({
@@ -25,8 +33,16 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	mediaObjects,
 	getText,
 	marginBottom,
+	navigation,
 }) => (
 	<SafeAreaView style={[style.safeView, Platform.OS === OS_TYPES.IOS ? {paddingBottom: marginBottom} : {}]}>
+		{
+			// @ts-ignore
+			<Header
+				title={getText('new.wall.post.screen.title')}
+				right={<CloseButton onClose={() => navigation.goBack(null)} />}
+			/>
+		}
 		<ScrollView contentContainerStyle={style.container} keyboardShouldPersistTaps={'handled'}>
 			<SharePostInput
 				avatarSource={avatarImage}

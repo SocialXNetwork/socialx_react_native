@@ -26,23 +26,21 @@ export const Header: React.SFC<IHeaderProps> = ({
 	const displayNone = !center && title.length === 0 && !logo;
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<View style={styles.row}>
-				{left ? <View style={styles.left}>{left}</View> : <View style={styles.placeholder} />}
-				{displayCenter && <View style={styles.center}>{center}</View>}
-				{displayTitle && (
-					<View style={styles.center}>
-						<Text style={styles.text}>{title.toUpperCase()}</Text>
-					</View>
-				)}
-				{displayLogo && (
-					<View style={styles.center}>
-						<HeaderLogo />
-					</View>
-				)}
-				{displayNone && <View style={styles.placeholder} />}
-				{right ? <View style={styles.right}>{right}</View> : <View style={styles.placeholder} />}
-			</View>
-		</SafeAreaView>
+		<View style={styles.container}>
+			{left ? <View style={styles.left}>{left}</View> : <View style={styles.placeholder} />}
+			{displayCenter && <View style={styles.center}>{center}</View>}
+			{displayTitle && (
+				<View style={styles.center}>
+					<Text style={styles.text}>{title.toUpperCase()}</Text>
+				</View>
+			)}
+			{displayLogo && (
+				<View style={styles.center}>
+					<HeaderLogo />
+				</View>
+			)}
+			{displayNone && <View style={styles.placeholder} />}
+			{right ? <View style={styles.right}>{right}</View> : <View style={styles.placeholder} />}
+		</View>
 	);
 };
