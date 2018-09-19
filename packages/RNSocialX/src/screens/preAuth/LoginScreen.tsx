@@ -1,32 +1,20 @@
 /**
  * old screen -> screens/LoginScreen/index.tsx
  * TODO list:
- * 1. Props data: none :)
- * 2. Props actions: doLogin
- * 3. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
- * 4. Decide if we will have a verification step: code sent via SMS or email.
- * 5. (later) Get rid of navigation hacks!
+ * 1. Decide if we will have a verification step: code sent via SMS or email.
+ * 2. (later) Get rid of navigation hacks!
  */
 
 import * as React from 'react';
 import {Keyboard, View} from 'react-native';
-import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
-import {ITranslatedProps} from '../../types';
+import {IWithLoginEnhancedActions, IWithLoginEnhancedData, WithLogin} from '../../enhancers/screens';
+import {INavigationProps} from '../../types';
 import {LoginScreenView} from './LoginScreen.view';
 
-interface ILoginScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
-	navigationOptions: NavigationScreenConfig<any>;
-	doLogin: (userName: string, password: string) => void;
-}
+type ILoginScreenProps = INavigationProps & IWithLoginEnhancedData & IWithLoginEnhancedActions;
 
-export class LoginScreen extends React.Component<ILoginScreenProps> {
-	private static navigationOptions = ({navigationOptions}: ILoginScreenProps) => ({
-		title: navigationOptions.getText('login.screen.title'),
-		headerRight: <View />,
-	});
-
+class Screen extends React.Component<ILoginScreenProps> {
 	public render() {
 		const {getText, doLogin} = this.props;
 		return (
@@ -45,3 +33,13 @@ export class LoginScreen extends React.Component<ILoginScreenProps> {
 		this.props.navigation.navigate(screenName);
 	};
 }
+
+export const LoginScreen = (navProps: INavigationProps) => (
+	<WithLogin>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithLogin>
+);
+
+// @ts-ignore
+LoginScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
+	title: navigationOptions.getText('login.screen.title'),
+	headerRight: <View />,
+});
