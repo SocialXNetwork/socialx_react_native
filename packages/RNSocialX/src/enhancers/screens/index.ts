@@ -50,6 +50,11 @@ export {
 	IWithResetPasswordEnhancedActions,
 	IWithResetPasswordEnhancedData,
 } from './preAuth/WithResetPassword';
+export {
+	WithTermsAndConditions,
+	IWithTermsAndConditionsEnhancedActions,
+	IWithTermsAndConditionsEnhancedData,
+} from './preAuth/WithTermsAndConditions';
 
 export {
 	WithMaintenance,

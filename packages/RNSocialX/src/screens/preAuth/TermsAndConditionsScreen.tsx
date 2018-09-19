@@ -1,24 +1,40 @@
 import * as React from 'react';
 import {Platform, View} from 'react-native';
 
+import {
+	IWithTermsAndConditionsEnhancedActions,
+	IWithTermsAndConditionsEnhancedData,
+	WithTermsAndConditions,
+} from '../../enhancers/screens';
 import {OS_TYPES} from '../../environment/consts';
-import {ITranslatedProps} from '../../types';
+import {INavigationProps} from '../../types';
 // @ts-ignore
 import TermsAndConditionsHTML from './terms-and-conditions.html';
 import {TermsAndConditionsScreenView} from './TermsAndConditionsScreen.view';
 
-export class TermsAndConditionsScreen extends React.Component<ITranslatedProps> {
-	public static navigationOptions = (props: any) => ({
-		title: props.navigationOptions.getText('terms.and.conditions.screen.title'),
-		headerRight: <View />,
-	});
+type ITermsAndConditionsScreenProps = INavigationProps &
+	IWithTermsAndConditionsEnhancedActions &
+	IWithTermsAndConditionsEnhancedData;
 
-	public render() {
-		const webViewLocalSource =
-			Platform.OS === OS_TYPES.IOS
-				? TermsAndConditionsHTML
-				: {uri: 'file:///android_asset/html/terms_and_conditions.html'};
+const Screen: React.SFC<ITermsAndConditionsScreenProps> = () => {
+	const webViewLocalSource =
+		Platform.OS === OS_TYPES.IOS
+			? TermsAndConditionsHTML
+			: {uri: 'file:///android_asset/html/terms_and_conditions.html'};
 
-		return <TermsAndConditionsScreenView localSource={webViewLocalSource} />;
-	}
-}
+	return <TermsAndConditionsScreenView localSource={webViewLocalSource} />;
+};
+
+export const TermsAndConditionsScreen = ({navigation, navigationOptions}: INavigationProps) => (
+	<WithTermsAndConditions>
+		{({data, actions}) => (
+			<Screen navigation={navigation} navigationOptions={navigationOptions} {...data} {...actions} />
+		)}
+	</WithTermsAndConditions>
+);
+
+// @ts-ignore
+TermsAndConditionsScreen.navigationOptions = ({options}: INavigationProps) => ({
+	title: options.getText('terms.and.conditions.screen.title'),
+	headerRight: <View />,
+});
