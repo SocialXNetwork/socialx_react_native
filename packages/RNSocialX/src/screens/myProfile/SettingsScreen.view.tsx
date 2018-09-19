@@ -8,8 +8,10 @@ import {string} from 'yup';
 import {
 	AvatarName,
 	AvatarPicker,
+	Header,
 	InputSizes,
 	PrimaryTextInput,
+	ScreenHeaderButton,
 	SettingCheckbox,
 	TKeyboardKeys,
 	TRKeyboardKeys,
@@ -33,6 +35,7 @@ export interface SettingsData {
 
 interface ISettingsScreenViewProps extends SettingsData, ITranslatedProps, IWithLoaderProps {
 	onSaveChanges: (values: SettingsData) => void;
+	onLogout: () => void;
 }
 
 export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
@@ -46,6 +49,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	getText,
 	onSaveChanges,
 	isLoading,
+	onLogout,
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
 		<Formik
@@ -91,6 +95,16 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				setFieldValue,
 			}: FormikProps<SettingsData>) => (
 				<View style={{flex: 1}}>
+					{
+						// @ts-ignore
+						<Header
+							title={getText('settings.screen.title')}
+							right={
+								// @ts-ignore
+								<ScreenHeaderButton iconName={'ios-log-out'} onPress={onLogout} />
+							}
+						/>
+					}
 					<KeyboardAwareScrollView
 						style={style.keyboardView}
 						contentContainerStyle={style.container}

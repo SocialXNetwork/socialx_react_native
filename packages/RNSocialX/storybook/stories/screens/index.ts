@@ -1,3 +1,5 @@
+// tslint:disable
+import './myProfile/SettingsScreen';
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';
@@ -12,7 +14,7 @@ import './mainTabNav/NotificationsScreen';
 import './mainTabNav/UserFeedScreen';
 
 import './myProfile/ReferralScreen';
-import './myProfile/SettingsScreen';
+
 import './myProfile/SocialXAccountScreen';
 
 import './preAuth/ForgotPasswordScreen';
