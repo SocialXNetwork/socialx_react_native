@@ -1,18 +1,20 @@
 /**
  * old screen -> screens/NewWallPostScreen/index.tsx
  * TODO list:
- * 1. Props data: currentUser
- * 2. Props actions: createPost
- * 3. (Later) Consider using Formik and get rid of state in here
+ * 1. (Later) Consider using Formik and get rid of state in here
  */
 
 import {ActionSheet} from 'native-base';
 import * as React from 'react';
 import {Alert, View} from 'react-native';
-import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
 import {CloseButton} from '../../components';
-import {IResizeProps, ITranslatedProps, WallPostPhotoOptimized} from '../../types';
+import {
+	IWithCreateWallPostEnhancedActions,
+	IWithCreateWallPostEnhancedData,
+	WithCreateWallPost,
+} from '../../enhancers/screens';
+import {INavigationProps, WallPostPhotoOptimized} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -21,41 +23,27 @@ import {
 } from '../../utilities';
 import {CreateWallPostScreenView} from './CreateWallPostScreen.view';
 
-interface WallPostData {
-	mediaObjects: WallPostPhotoOptimized[];
-	text: string;
-}
-
-interface ICreateWallPostScreenProps extends ITranslatedProps, IResizeProps {
-	navigation: NavigationScreenProp<any>;
-	navigationOptions: NavigationScreenConfig<any>;
-	currentUser: any;
-	createPost: (wallPostData: WallPostData) => void;
-}
+type ICreateWallPostScreenProps = INavigationProps &
+	IWithCreateWallPostEnhancedData &
+	IWithCreateWallPostEnhancedActions;
 
 interface ICreateWallPostScreenState {
 	mediaObjects: WallPostPhotoOptimized[];
 	shareText: string;
 }
 
-export class CreateWallPostScreen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
-	private static navigationOptions = ({navigation, navigationOptions}: ICreateWallPostScreenProps) => ({
-		title: navigationOptions.getText('new.wall.post.screen.title'),
-		headerRight: <CloseButton onClose={() => navigation.goBack(null)} />,
-		headerLeft: <View />,
-	});
-
+class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
 	public state = {
 		mediaObjects: [],
 		shareText: '',
 	};
 
 	public render() {
-		const {getText, marginBottom, currentUser} = this.props;
+		const {getText, marginBottom, currentUserAvatarURL} = this.props;
 		const {shareText, mediaObjects} = this.state;
 		return (
 			<CreateWallPostScreenView
-				avatarImage={currentUser.avatarURL}
+				avatarImage={currentUserAvatarURL}
 				shareText={shareText}
 				mediaObjects={mediaObjects.map((mediaObject: WallPostPhotoOptimized) => mediaObject.path)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
@@ -119,3 +107,14 @@ export class CreateWallPostScreen extends React.Component<ICreateWallPostScreenP
 		}
 	};
 }
+
+export const CreateWallPostScreen = (navProps: INavigationProps) => (
+	<WithCreateWallPost>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithCreateWallPost>
+);
+
+// @ts-ignore
+CreateWallPostScreen.navigationOptions = ({navigation, navigationOptions}: INavigationProps) => ({
+	title: navigationOptions.getText('new.wall.post.screen.title'),
+	headerRight: <CloseButton onClose={() => navigation.goBack(null)} />,
+	headerLeft: <View />,
+});

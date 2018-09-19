@@ -24,7 +24,6 @@ export interface ITranslatedProps {
 
 export interface IResizeProps {
 	marginBottom: number;
-	// safeRunAfterKeyboardHide: (handler: () => void) => void;
 }
 
 export interface IConfirmationModalProps {
@@ -213,5 +212,4 @@ export interface INavigationProps<SP = any, SC = any> {
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.
- * 2. safeRunAfterKeyboardHide should be handled different way!
  */
