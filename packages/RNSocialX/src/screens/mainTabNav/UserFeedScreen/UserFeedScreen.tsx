@@ -2,8 +2,7 @@
  * TODO list:
  * 1. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
  * 1.1 we can do this at the top level, without navigation
- * 2. Refactor the commented part into the header component
- * 3. Implement getAvatarImage (check IPFS)
+ * 2. Implement getAvatarImage (check IPFS)
  */
 
 import * as React from 'react';

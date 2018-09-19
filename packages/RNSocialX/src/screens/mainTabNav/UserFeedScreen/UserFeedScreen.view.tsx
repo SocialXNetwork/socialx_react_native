@@ -2,7 +2,14 @@ import * as React from 'react';
 import {Animated, FlatList, View} from 'react-native';
 import {AnimatedValue} from 'react-navigation';
 
-import {FeedWithNoPosts, LoadingFooter, ShareSection, SuggestionsCarousel, WallPostCard} from '../../../components';
+import {
+	FeedWithNoPosts,
+	Header,
+	LoadingFooter,
+	ShareSection,
+	SuggestionsCarousel,
+	WallPostCard,
+} from '../../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../../components/inlineLoader';
 import {ICurrentUser, IMediaProps, ITranslatedProps, IWallPostCardProps} from '../../../types';
 import styles from './UserFeedScreen.style';
@@ -51,6 +58,10 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		return (
 			<WithInlineLoader isLoading={isLoading}>
 				<View style={styles.container}>
+					{
+						// @ts-ignore
+						<Header title={'feed'} />
+					}
 					{noPosts ? (
 						<FeedWithNoPosts />
 					) : (

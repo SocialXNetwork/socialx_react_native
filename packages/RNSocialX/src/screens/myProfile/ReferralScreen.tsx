@@ -10,12 +10,18 @@ import {IWithReferralEnhancedActions, IWithReferralEnhancedData, WithReferral} f
 type IReferralScreenProps = INavigationProps & IWithReferralEnhancedActions & IWithReferralEnhancedData;
 
 class Screen extends Component<IReferralScreenProps> {
-	static navigationOptions = {
-		title: 'REFERRAL SYSTEM',
-	};
-
 	public render() {
-		return <ReferralScreenView copyToClipboard={this.copyToClipboardHandler} onShare={this.onShareHandler} />;
+		return (
+			<ReferralScreenView
+				referrals={this.props.referrals}
+				socx={this.props.socx}
+				code={this.props.code}
+				url={this.props.url}
+				copyToClipboard={this.copyToClipboardHandler}
+				onShare={this.onShareHandler}
+				onGoBack={this.onGoBackHandler}
+			/>
+		);
 	}
 
 	private onShareHandler = () => {
@@ -35,6 +41,10 @@ class Screen extends Component<IReferralScreenProps> {
 
 	private copyToClipboardHandler = (value: string) => {
 		Clipboard.setString(value);
+	};
+
+	private onGoBackHandler = () => {
+		this.props.navigation.goBack(null);
 	};
 }
 

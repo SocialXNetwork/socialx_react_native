@@ -5,5 +5,13 @@ import * as React from 'react';
 import {ReferralScreenView} from '../../../../src/screens/myProfile/ReferralScreen.view';
 
 storiesOf('Screens/myProfile', module).add('ReferralScreen', () => (
-	<ReferralScreenView onShare={action('onShare')} copyToClipboard={action('copyToClipboard')} />
+	<ReferralScreenView
+		referrals={'18'}
+		socx={'13,048'}
+		code={'5H91BGD34'}
+		url={'http://www.lorem.ipsum.com'}
+		onShare={action('onShare')}
+		copyToClipboard={action('copyToClipboard')}
+		onGoBack={action('onGoBack')}
+	/>
 ));
