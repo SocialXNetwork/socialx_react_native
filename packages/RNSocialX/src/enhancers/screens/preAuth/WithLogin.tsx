@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Props data: none :)
- * 2. Props actions: doLogin
+ * 2. Props actions: doLogin, getText
  * 3. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
  */
 

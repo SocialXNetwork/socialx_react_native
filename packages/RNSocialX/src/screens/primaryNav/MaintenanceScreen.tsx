@@ -1,10 +1,12 @@
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../types';
+import {IWithMaintenanceEnhancedActions, IWithMaintenanceEnhancedData, WithMaintenance} from '../../enhancers/screens';
 import {MaintenanceScreenView} from './MaintenanceScreen.view';
 
-interface IMaintenanceScreenProps extends ITranslatedProps {}
+type IMaintenanceScreenProps = IWithMaintenanceEnhancedData & IWithMaintenanceEnhancedActions;
 
-export const MaintenanceScreen: React.SFC<IMaintenanceScreenProps> = ({getText}) => (
-	<MaintenanceScreenView getText={getText} />
+const Screen: React.SFC<IMaintenanceScreenProps> = ({getText}) => <MaintenanceScreenView getText={getText} />;
+
+export const MaintenanceScreen = () => (
+	<WithMaintenance>{({data, actions}) => <Screen {...data} {...actions} />}</WithMaintenance>
 );

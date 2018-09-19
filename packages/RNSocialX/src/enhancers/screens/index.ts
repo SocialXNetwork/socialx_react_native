@@ -25,3 +25,9 @@ export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './in
 export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from './preAuth/WithLaunch';
 
 export {WithLogin, IWithLoginEnhancedActions, IWithLoginEnhancedData} from './preAuth/WithLogin';
+
+export {
+	WithMaintenance,
+	IWithMaintenanceEnhancedData,
+	IWithMaintenanceEnhancedActions,
+} from './primaryNav/WithMaintenance';
