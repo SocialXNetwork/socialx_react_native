@@ -48,3 +48,9 @@ export {
 	IWithCreateWallPostEnhancedActions,
 	IWithCreateWallPostEnhancedData,
 } from './mainStack/WithCreateWallPost';
+
+export {
+	WithNotifications,
+	IWithNotificationsEnhancedActions,
+	IWithNotificationsEnhancedData,
+} from './mainTabNav/WithNotifications';
