@@ -39,3 +39,9 @@ export {
 } from './mainStack/WithMediaViewer';
 
 export {WithMyProfile, IWithMyProfileEnhancedActions, IWithMyProfileEnhancedData} from './mainTabNav/WithMyProfile';
+
+export {
+	WithCreateWallPost,
+	IWithCreateWallPostEnhancedActions,
+	IWithCreateWallPostEnhancedData,
+} from './mainStack/WithCreateWallPost';

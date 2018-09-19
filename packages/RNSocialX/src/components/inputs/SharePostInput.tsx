@@ -7,7 +7,7 @@ import style, {customStyleProps} from './SharePostInput.style';
 const MAX_POST_LENGTH = 500;
 
 interface ISharePostInputProps {
-	avatarSource: string | null;
+	avatarSource?: string;
 	placeholder: string;
 	text: string;
 	onTextUpdate: (value: string) => void;

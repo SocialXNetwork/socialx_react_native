@@ -8,7 +8,7 @@ import {IResizeProps, ITranslatedProps} from '../../types';
 import style from './CreateWallPostScreen.style';
 
 interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps {
-	avatarImage: string | null;
+	avatarImage?: string;
 	shareText: string;
 	mediaObjects: string[];
 	onShareTextUpdate: (value: string) => void;
