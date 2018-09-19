@@ -1,11 +1,7 @@
 /**
  * TODO list:
- * 1. Props data: currentUser
- * 2. Props actions: showDotsMenuModal, refreshUser
- * 3. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
- * 3.1 we can do this at the top level, without navigation
- * 4. Refactor the commented part into the header component
- * 5. Implement onViewProfilePhoto (check IPFS)
+ * 1. Refactor the commented part into the header component
+ * 2. Implement onViewProfilePhoto (check IPFS)
  */
 
 import * as React from 'react';
@@ -15,26 +11,21 @@ import {DataProvider} from 'recyclerlistview';
 import uuidv4 from 'uuid/v4';
 
 import {DotsMenuButton, DotsMenuItem, IconButton} from '../../components';
-import {IMediaProps, ITranslatedProps} from '../../types';
+import {IWithMyProfileEnhancedActions, IWithMyProfileEnhancedData, WithMyProfile} from '../../enhancers/screens';
+import {INavigationProps} from '../../types';
 import styles, {icons} from './MyProfileScreen.style';
 import {MyProfileScreenView} from './MyProfileScreen.view';
 
 const GRID_PAGE_SIZE = 20;
 
-interface IMyProfileScreenProps extends ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
-	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
-	showDotsMenuModal: (items: DotsMenuItem[]) => void;
-	refreshUser: (userId: string) => void;
-	currentUser: any;
-}
+type IMyProfileScreenProps = INavigationProps & IWithMyProfileEnhancedData & IWithMyProfileEnhancedActions;
 
 interface IMyProfileScreenState {
 	refreshing: boolean;
 	gridMediaProvider: DataProvider;
 }
 
-export class MyProfileScreen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
+class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
 	// public static navigationOptions = (options: {navigation: any}) => ({
 	// 	title: 'PROFILE',
 	// 	headerLeft: (
@@ -184,13 +175,11 @@ export class MyProfileScreen extends React.Component<IMyProfileScreenProps, IMyP
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
-			const newMedia = mediaObjects
-				.slice(this.lastLoadedPhotoIndex, endIndex)
-				.map((mediaObject: IMediaProps, index: number) => ({
-					url: mediaObject.url,
-					type: mediaObject.type,
-					index: this.lastLoadedPhotoIndex + index,
-				}));
+			const newMedia = mediaObjects.slice(this.lastLoadedPhotoIndex, endIndex).map((mediaObject, index: number) => ({
+				url: mediaObject.url,
+				type: mediaObject.type,
+				index: this.lastLoadedPhotoIndex + index,
+			}));
 
 			const allMedia = [...loadedMedia, ...newMedia];
 
@@ -228,3 +217,7 @@ export class MyProfileScreen extends React.Component<IMyProfileScreenProps, IMyP
 		navigation.navigate('SettingsScreen');
 	};
 }
+
+export const MyProfileScreen = (navProps: INavigationProps) => (
+	<WithMyProfile>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithMyProfile>
+);

@@ -37,3 +37,5 @@ export {
 	IWithMediaViewerEnhancedData,
 	IWithMediaViewerEnhancedActions,
 } from './mainStack/WithMediaViewer';
+
+export {WithMyProfile, IWithMyProfileEnhancedActions, IWithMyProfileEnhancedData} from './mainTabNav/WithMyProfile';
