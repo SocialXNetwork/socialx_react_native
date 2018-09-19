@@ -34,7 +34,7 @@ export {RichText} from './displayers/RichText/RichText';
 export {SearchHeader} from './displayers/SearchHeader';
 export {SuggestedUserCard} from './displayers/SuggestedUserCard';
 export {TextGradient} from './displayers/TextGradient';
-export {WallPostCard, IWallPostCardProps} from './displayers/WallPostCard';
+export {WallPostCard} from './displayers/WallPostCard';
 
 export {FeedWithNoPosts} from './feed/FeedWithNoPosts';
 export {LoadingFooter} from './feed/LoadingFooter';
@@ -54,7 +54,7 @@ export {GradientButton} from './interaction/GradientButton';
 export {IconButton} from './interaction/IconButton';
 export {LikeAnimatingButton} from './interaction/LikeAnimatingButton';
 export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/PrimaryButton';
-export {ISuggestionCardItem, SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
+export {SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
 export {IVideoOptions, VideoPlayer} from './interaction/video';

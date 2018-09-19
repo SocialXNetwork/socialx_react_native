@@ -1,5 +1,12 @@
-import {IWallPostCardProps} from './components';
-import {ICurrentUser, ILike, ISimpleComment, IVisitedUser, MediaTypeImage, SearchResultKind} from './types';
+import {
+	ICurrentUser,
+	ILike,
+	ISimpleComment,
+	IVisitedUser,
+	IWallPostCardProps,
+	MediaTypeImage,
+	SearchResultKind,
+} from './types';
 
 const avatar = 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
 

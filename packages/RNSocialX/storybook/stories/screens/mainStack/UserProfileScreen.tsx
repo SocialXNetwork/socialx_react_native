@@ -5,10 +5,9 @@ import * as React from 'react';
 import {Animated} from 'react-native';
 import {DataProvider} from 'recyclerlistview';
 
-import {IWallPostCardProps} from '../../../../src/components';
 import {PROFILE_TAB_ICON_TYPES} from '../../../../src/environment/consts';
 import {UserProfileScreenView} from '../../../../src/screens/mainStack/UserProfileScreen.view';
-import {ILike, ISimpleComment, MediaTypeImage, SearchResultKind} from '../../../../src/types';
+import {ILike, ISimpleComment, IWallPostCardProps, MediaTypeImage, SearchResultKind} from '../../../../src/types';
 
 storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)

@@ -7,3 +7,9 @@ export {
 } from './mainStack/WithUserProfile';
 
 export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';
+
+export {
+	WithForgotPassword,
+	IWithForgotPasswordEnhancedData,
+	IWithForgotPasswordEnhancedActions,
+} from './preAuth/WithForgotPassword';

@@ -2,8 +2,7 @@ import * as React from 'react';
 import {Text, View} from 'react-native';
 
 import {AvatarImage, ButtonSizes, IconButton, PrimaryButton} from '../../';
-import {ITranslatedProps} from '../../../types';
-import {ISuggestionCardItem} from './';
+import {ISuggestionCardItem, ITranslatedProps} from '../../../types';
 import styles, {colors} from './SuggestionCard.style';
 
 interface ISuggestionCardProps extends ITranslatedProps {

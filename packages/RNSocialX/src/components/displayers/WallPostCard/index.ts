@@ -8,4 +8,4 @@ export {CommentInput} from './CommentInput';
 export {ViewAllComments} from './ViewAllComments';
 export {BestComments} from './BestComments';
 export {WallPostMedia} from './WallPostMedia';
-export {WallPostCard, IWallPostCardProps} from './WallPostCard';
+export {WallPostCard} from './WallPostCard';

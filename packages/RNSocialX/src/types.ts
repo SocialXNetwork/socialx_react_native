@@ -1,5 +1,5 @@
 import {Image as PickerImage} from 'react-native-image-crop-picker';
-import {IWallPostCardProps} from './components';
+import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
 
 export interface FriendsSearchResult {
 	id: string;
@@ -125,6 +125,45 @@ export interface ILike {
 	userName: string;
 }
 
+export interface ISuggestionCardItem {
+	userId: string;
+	name: string;
+	userName: string;
+	avatarURL: string;
+	friend: boolean;
+}
+
+interface ISimpleWallPostCardProps {
+	id: string;
+	postText: false | string;
+	location: false | string;
+	taggedFriends: Array<{fullName: string}>;
+	timestamp: Date;
+	owner: IPostOwner;
+	currentUser: ICurrentUser;
+}
+
+export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslatedProps, IResizeProps {
+	governanceVersion: boolean;
+	numberOfSuperLikes: number;
+	numberOfComments: number;
+	numberOfWalletCoins: number;
+	onImagePress: (index: number) => void;
+	onLikeButtonPress: () => void;
+	onDeletePress: (postId: string) => void;
+	onUserPress: (userId: string) => void;
+	onCommentPress: (startComment: boolean) => void;
+	onAddComment: (height: number) => void;
+	likedByMe: boolean;
+	canDelete: boolean;
+	media: IMediaProps[];
+	likes: ILike[];
+	bestComments: ISimpleComment[];
+	listLoading: boolean;
+	suggested: undefined | ISuggestionCardItem[];
+	noInput: boolean;
+}
+
 // =====================================================
 // ENHANCER DATA TYPES
 // =====================================================
@@ -156,6 +195,11 @@ export interface IVisitedUser {
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardProps[];
 	relationship: SearchResultKind;
+}
+
+export interface INavigationProps<SP, SC> {
+	navigation: NavigationScreenProp<SP>;
+	navigationOptions: NavigationScreenConfig<SC>;
 }
 
 /**

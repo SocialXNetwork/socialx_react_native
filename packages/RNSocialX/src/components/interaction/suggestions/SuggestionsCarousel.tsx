@@ -2,20 +2,12 @@ import * as React from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
-import {ITranslatedProps} from '../../../types';
+import {ISuggestionCardItem, ITranslatedProps} from '../../../types';
 import {SuggestionCard} from './SuggestionCard';
 import styles from './SuggestionsCarousel.style';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (45 / 100) * SCREEN_WIDTH;
-
-export interface ISuggestionCardItem {
-	userId: string;
-	name: string;
-	userName: string;
-	avatarURL: string;
-	friend: boolean;
-}
 
 interface ISuggestionsCarouselProps extends ITranslatedProps {
 	items: ISuggestionCardItem[];

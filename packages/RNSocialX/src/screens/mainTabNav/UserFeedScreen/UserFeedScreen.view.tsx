@@ -2,16 +2,9 @@ import * as React from 'react';
 import {Animated, FlatList, View} from 'react-native';
 import {AnimatedValue} from 'react-navigation';
 
-import {
-	FeedWithNoPosts,
-	IWallPostCardProps,
-	LoadingFooter,
-	ShareSection,
-	SuggestionsCarousel,
-	WallPostCard,
-} from '../../../components';
+import {FeedWithNoPosts, LoadingFooter, ShareSection, SuggestionsCarousel, WallPostCard} from '../../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../../components/inlineLoader';
-import {IMediaProps, ITranslatedProps} from '../../../types';
+import {IMediaProps, ITranslatedProps, IWallPostCardProps} from '../../../types';
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {

@@ -3,10 +3,10 @@ import {Animated, Dimensions, RefreshControl, ScrollView, View} from 'react-nati
 import {AnimatedValue} from 'react-navigation';
 import {DataProvider} from 'recyclerlistview';
 
-import {IWallPostCardProps, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
+import {NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {ICurrentUser, ILike, ITranslatedProps, SearchResultKind} from '../../types';
+import {ICurrentUser, ILike, ITranslatedProps, IWallPostCardProps, SearchResultKind} from '../../types';
 
 import styles, {colors} from './UserProfileScreen.style';
 
