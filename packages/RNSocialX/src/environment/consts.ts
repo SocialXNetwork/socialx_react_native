@@ -36,9 +36,6 @@ export enum CoinFullName {
 	ETH = 'Ethereum',
 }
 
-export const AvatarImagePlaceholder =
-	'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
-
 export const LOCAL_VIDEO_STREAM = {
 	width: 1280,
 	height: 960,

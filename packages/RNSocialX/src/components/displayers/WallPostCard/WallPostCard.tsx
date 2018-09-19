@@ -184,7 +184,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 					noInput={this.props.noInput}
 					comment={this.state.comment}
 					disabled={this.props.listLoading}
-					avatarURL={this.props.currentUser.avatarURL}
+					avatarURL={this.props.currentUserAvatarURL}
 					animationValues={animationValues}
 					onCommentInputChange={this.onCommentInputChange}
 					onCommentInputPress={this.onCommentInputPress}

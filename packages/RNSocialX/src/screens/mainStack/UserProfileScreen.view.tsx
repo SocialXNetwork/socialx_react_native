@@ -140,7 +140,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												onImagePress={(index: number) => onImagePress(index, post.media)}
 												onLikeButtonPress={() => onLikePress(likedByMe, post.id)}
 												noInput={true}
-												currentUser={currentUser}
+												currentUserAvatarURL={currentUser.avatarURL}
 											/>
 										</View>
 									);

@@ -18,7 +18,7 @@ storiesOf('Components/displayers', module)
 		const timestamp = date('timestamp', new Date('December 17, 2017 04:55:00'));
 		const ownerName = text('owner.name', 'Michael Foucault');
 		const ownerAvatarURL = text('owner.avatarURL', 'https://avatars2.githubusercontent.com/u/2531');
-		const currentUserAvatarURL = text('currentUser.avatarURL', 'https://avatars2.githubusercontent.com/u/239');
+		const currentUserAvatarURL = text('currentUserAvatarURL', 'https://avatars2.githubusercontent.com/u/239');
 		const governanceVersion = boolean('governanceVersion', false);
 		const numberOfComments = number('numberOfComments', 2);
 		const numberOfSuperLikes = number('numberOfSuperLikes', 2);
@@ -38,12 +38,10 @@ storiesOf('Components/displayers', module)
 				timestamp={timestamp}
 				owner={{
 					userId: 'user_id_test',
-					name: ownerName,
+					fullName: ownerName,
 					avatarURL: ownerAvatarURL,
 				}}
-				currentUser={{
-					avatarURL: currentUserAvatarURL,
-				}}
+				currentUserAvatarURL={currentUserAvatarURL}
 				governanceVersion={governanceVersion}
 				numberOfComments={numberOfComments}
 				numberOfSuperLikes={numberOfSuperLikes}

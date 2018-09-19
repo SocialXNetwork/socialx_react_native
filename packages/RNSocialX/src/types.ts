@@ -140,7 +140,7 @@ interface ISimpleWallPostCardProps {
 	taggedFriends: Array<{fullName: string}>;
 	timestamp: Date;
 	owner: IPostOwner;
-	currentUser: ICurrentUser;
+	currentUserAvatarURL?: string;
 }
 
 export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslatedProps, IResizeProps {
@@ -170,7 +170,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 
 export interface ICurrentUser {
 	userId: string;
-	avatarURL: string;
+	avatarURL?: string;
 	email: string;
 	fullName: string;
 	userName: string;
