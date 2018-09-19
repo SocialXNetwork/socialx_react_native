@@ -13,7 +13,7 @@ const styles: any = {
 		justifyContent: 'center',
 	},
 	center: {
-		flex: 1,
+		flex: 2,
 		justifyContent: 'center',
 	},
 	right: {

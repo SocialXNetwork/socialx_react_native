@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Data props: iOSContent, iOSOptions, androidContent, androidOptions
+ * 1. Data props: iOSContent, iOSOptions, androidContent, androidOptions, socx, referrals, code, url
  */
 
 import * as React from 'react';
@@ -21,6 +21,10 @@ const mock: IWithReferralEnhancedProps = {
 		androidOptions: {
 			dialogTitle: 'Shared message from SocialX',
 		},
+		referrals: '18',
+		socx: '13,048',
+		url: 'http://www.lorem.ipsum.com',
+		code: '5H91BGD34',
 	},
 	actions: {},
 };
@@ -40,6 +44,10 @@ export interface IWithReferralEnhancedData {
 	androidOptions: {
 		dialogTitle: string;
 	};
+	referrals: string;
+	socx: string;
+	code: string;
+	url: string;
 }
 
 export interface IWithReferralEnhancedActions {}

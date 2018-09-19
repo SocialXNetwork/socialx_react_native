@@ -4,7 +4,7 @@ import {Colors, Fonts, Icons, Sizes} from '../../environment/theme';
 const styles: any = {
 	container: {
 		flex: 1,
-		backgroundColor: Colors.white,
+		backgroundColor: Colors.pink,
 	},
 	footer: {
 		flex: 1,

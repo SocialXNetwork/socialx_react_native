@@ -3,6 +3,7 @@ import {Colors, Fonts, Sizes} from '../../environment/theme';
 
 const styles: any = {
 	container: {
+		backgroundColor: Colors.white,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
