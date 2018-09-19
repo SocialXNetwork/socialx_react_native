@@ -11,6 +11,7 @@ import './displayers/AddFriendsList';
 import './displayers/CheckboxButtonWithIcon';
 import './displayers/CommentCard';
 import './displayers/DotsMenuButton';
+import './displayers/Header';
 import './displayers/HeartAnimation';
 import './displayers/MediaHorizontalScroller';
 import './displayers/MediaObjectViewer';

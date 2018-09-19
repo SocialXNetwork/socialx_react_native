@@ -16,6 +16,7 @@ export {CommentsPostOwner} from './displayers/CommentsPostOwner';
 export {CommentsPostText} from './displayers/CommentsPostText';
 export {CommentCard} from './displayers/CommentCard';
 export {DotsMenuButton} from './displayers/DotsMenuButton';
+export {Header} from './displayers/Header';
 export {HeartAnimation} from './displayers/HeartAnimation';
 export {IntroFirstSlide} from './displayers/IntroFirstSlide';
 export {IntroGenericSlide} from './displayers/IntroGenericSlide';
