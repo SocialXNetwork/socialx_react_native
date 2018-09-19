@@ -21,3 +21,5 @@ export {
 } from './preAuth/WithForgotPassword';
 
 export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './intro/WithIntro';
+
+export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from './preAuth/WithLaunch';
