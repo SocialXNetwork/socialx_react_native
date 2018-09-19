@@ -11,10 +11,10 @@ import {ITranslatedProps} from '../../types';
 import styles, {borderColor} from './SocialXAccountScreen.style';
 
 export interface ISocialXAccountScreenViewProps extends ITranslatedProps {
-	myCoins: number;
-	myContribution: number;
+	coins: number;
+	contribution: number;
 	returnPercentage: number;
-	myDigitalCoins: AccountCurrencyData[];
+	digitalCoins: AccountCurrencyData[];
 	sendHandler: () => void;
 	receiveHandler: () => void;
 }
@@ -26,13 +26,13 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 		return (
 			<ScrollView style={styles.container} alwaysBounceVertical={false}>
 				<SocialXAccountTitleCard
-					myCoins={this.props.myCoins}
-					myContribution={this.props.myContribution}
+					myCoins={this.props.coins}
+					myContribution={this.props.contribution}
 					returnPercentage={this.props.returnPercentage}
 					getText={this.props.getText}
 				/>
 				<Text style={styles.accountTitle}>{getText('socialx.account.screen.account')}</Text>
-				{this.props.myDigitalCoins.map((coin, index) => (
+				{this.props.digitalCoins.map((coin, index) => (
 					<SocialXAccountCurrencyItem key={index} {...coin} />
 				))}
 				<View style={styles.bottomContainer}>

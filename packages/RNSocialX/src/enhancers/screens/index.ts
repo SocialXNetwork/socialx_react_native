@@ -9,6 +9,12 @@ export {
 export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';
 
 export {
+	WithSocialXAccount,
+	IWithSocialXAccountEnhancedActions,
+	IWithSocialXAccountEnhancedData,
+} from './myProfile/WithSocialXAccount';
+
+export {
 	WithForgotPassword,
 	IWithForgotPasswordEnhancedData,
 	IWithForgotPasswordEnhancedActions,
