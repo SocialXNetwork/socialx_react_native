@@ -38,20 +38,6 @@ interface IUserProfileScreenState {
 type IUserProfileScreenProps = INavigationProps & IWithUserProfileEnhancedData & IWithUserProfileEnhancedActions;
 
 class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
-	public static navigationOptions = (options: any) => ({
-		title: 'PROFILE',
-		headerLeft: <View />,
-		headerRight: (
-			<View style={{flexDirection: 'row'}}>
-				{
-					// @ts-ignore
-					<CloseButton navigation={options.navigation} />
-				}
-			</View>
-		),
-		headerStyle: headerDefaultStyles,
-	});
-
 	private lastLoadedPhotoIndex = 0;
 	private readonly gridPhotosProvider: DataProvider;
 
@@ -268,3 +254,18 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 export const UserProfileScreen = ({navigation}: INavigationProps) => (
 	<WithUserProfile>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithUserProfile>
 );
+
+// @ts-ignore
+UserProfileScreen.navigationOptions = (options: INavigationProps) => ({
+	title: 'PROFILE',
+	headerLeft: <View />,
+	headerRight: (
+		<View style={{flexDirection: 'row'}}>
+			{
+				// @ts-ignore
+				<CloseButton navigation={options.navigation} />
+			}
+		</View>
+	),
+	headerStyle: headerDefaultStyles,
+});

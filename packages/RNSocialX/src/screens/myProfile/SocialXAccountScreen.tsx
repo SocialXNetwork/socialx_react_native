@@ -16,10 +16,6 @@ type ISocialXAccountScreenProps = IWithSocialXAccountEnhancedActions &
 interface ISocialXAccountScreenState {}
 
 class Screen extends React.Component<ISocialXAccountScreenProps, ISocialXAccountScreenState> {
-	public static navigationOptions = {
-		title: 'SOCIALX ACCOUNT',
-	};
-
 	public render() {
 		return (
 			<SocialXAccountScreenView
@@ -45,3 +41,8 @@ export const SocialXAccountScreen = ({navigation}: INavigationProps<any, any>) =
 		{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithSocialXAccount>
 );
+
+// @ts-ignore
+SocialXAccountScreen.navigationOptions = {
+	title: 'SOCIALX ACCOUNT',
+};
