@@ -24,7 +24,7 @@ class Screen extends Component<IReferralScreenProps> {
 		);
 	}
 
-	private onShareHandler = () => {
+	private onShareHandler = async () => {
 		const {iOSContent, iOSOptions, androidContent, androidOptions} = this.props;
 
 		const content = Platform.OS === OS_TYPES.IOS ? iOSContent : androidContent;

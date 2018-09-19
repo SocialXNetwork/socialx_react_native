@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Data props: currentUser, settingsLoading
- * 2. Action props: updateUserProfile, doLogout
+ * 2. Action props: updateUserProfile, logout
  */
 
 import * as React from 'react';
@@ -18,12 +18,17 @@ const mock: IWithSettingsEnhancedProps = {
 		updateUserProfile: (saveData: SettingsData, avatarHasChanged: boolean) => {
 			/**/
 		},
-		doLogout: () => {
+		logout: () => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
+
+export interface ISaveChangesParams {
+	currentUser: ICurrentUser;
+	updateUserProfile: (saveData: SettingsData, avatarHasChanged: boolean) => void;
+}
 
 export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;
@@ -32,7 +37,7 @@ export interface IWithSettingsEnhancedData {
 
 export interface IWithSettingsEnhancedActions extends ITranslatedProps {
 	updateUserProfile: (saveData: SettingsData, avatarHasChanged: boolean) => void;
-	doLogout: () => void;
+	logout: () => void;
 }
 
 interface IWithSettingsEnhancedProps {

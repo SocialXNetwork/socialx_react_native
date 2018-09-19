@@ -30,7 +30,12 @@ export {
 export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';
 
 export {WithReferral, IWithReferralEnhancedActions, IWithReferralEnhancedData} from './myProfile/WithReferral';
-export {WithSettings, IWithSettingsEnhancedActions, IWithSettingsEnhancedData} from './myProfile/WithSettings';
+export {
+	WithSettings,
+	IWithSettingsEnhancedActions,
+	IWithSettingsEnhancedData,
+	ISaveChangesParams,
+} from './myProfile/WithSettings';
 export {
 	WithSocialXAccount,
 	IWithSocialXAccountEnhancedActions,

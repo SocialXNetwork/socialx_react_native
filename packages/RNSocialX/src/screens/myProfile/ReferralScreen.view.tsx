@@ -13,7 +13,7 @@ interface IReferralScreenViewProps {
 	code: string;
 	url: string;
 	copyToClipboard: (value: string) => void;
-	onShare: () => void;
+	onShare: () => Promise<any>;
 	onGoBack: () => void;
 }
 
