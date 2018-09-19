@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Animated, Dimensions, Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
+import {Animated, Dimensions, ImageRequireSource, Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {InputSizes, PrimaryTextInput, TRKeyboardKeys} from '../../';
-import {AnimatedFastImage, Colors, Sizes} from '../../../environment/theme';
+import {AnimatedImage, Colors, Images, Sizes} from '../../../environment/theme';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -16,7 +16,7 @@ interface ICommentInputProps {
 	noInput: boolean;
 	comment: string;
 	disabled: boolean;
-	avatarURL: string;
+	avatarURL?: string | ImageRequireSource;
 	animationValues: IAnimationValues;
 	onCommentInputChange: (comment: string) => void;
 	onCommentInputPress: () => void;
@@ -26,7 +26,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	noInput,
 	comment,
 	disabled,
-	avatarURL,
+	avatarURL = Images.user_avatar_placeholder,
 	animationValues,
 	onCommentInputChange,
 	onCommentInputPress,
@@ -36,8 +36,8 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	} else {
 		return (
 			<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.commentInputContainer}>
-				<AnimatedFastImage
-					source={{uri: avatarURL}}
+				<AnimatedImage
+					source={typeof avatarURL === 'string' ? {uri: avatarURL} : avatarURL}
 					style={[styles.commentInputAvatar, {width: animationValues.width, height: animationValues.height}]}
 				/>
 				<Animated.View style={[styles.commentInputView, {borderWidth: animationValues.border}]}>

@@ -4,7 +4,7 @@ import {AnimatedValue} from 'react-navigation';
 
 import {FeedWithNoPosts, LoadingFooter, ShareSection, SuggestionsCarousel, WallPostCard} from '../../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../../components/inlineLoader';
-import {IMediaProps, ITranslatedProps, IWallPostCardProps} from '../../../types';
+import {ICurrentUser, IMediaProps, ITranslatedProps, IWallPostCardProps} from '../../../types';
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {
@@ -16,7 +16,7 @@ interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	onShowNewWallPostPress: () => void;
 	onMediaPress: (index: any, medias: IMediaProps[]) => void;
 	onCommentPress: (postId: any, owner: any, startComment: boolean, postData: object) => void;
-	currentUser: any;
+	currentUser: ICurrentUser;
 	noPosts: boolean;
 	shareSectionPlaceholder: string | null;
 	onLikePress: (likedByMe: boolean, postId: string) => boolean;
@@ -107,7 +107,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					canDelete={canDelete}
 					likedByMe={likedByMe}
 					listLoading={this.props.loadingMorePosts}
-					currentUser={this.props.currentUser}
+					currentUserAvatarURL={this.props.currentUser.avatarURL}
 					onCommentPress={(startComment: boolean) =>
 						this.props.onCommentPress(data.item.id, data.item.owner.userId, startComment, data.item)
 					}

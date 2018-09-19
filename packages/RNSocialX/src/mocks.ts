@@ -100,32 +100,7 @@ export const posts: IWallPostCardProps[] = [
 		noInput: false,
 		getText: (value) => value,
 		marginBottom: 0,
-		currentUser: {
-			userId: '999',
-			avatarURL: avatar,
-			fullName: 'Alex Sirbu',
-			userName: 'alexsirbu',
-			email: 'alex.sirbu@test.com',
-			aboutMeText: 'Lorem ipsum dolor sit amet',
-			numberOfLikes: 25,
-			numberOfPhotos: 1,
-			numberOfFriends: 2,
-			numberOfViews: 87,
-			mediaObjects: [
-				{
-					url:
-						'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-					hash: '131289fsdf03yr9hehdiwb32',
-					type: MediaTypeImage,
-					extension: 'jpg',
-					size: 512,
-					numberOfLikes: 0,
-					numberOfComments: 0,
-				},
-			],
-			recentPosts: [],
-			miningEnabled: false,
-		},
+		currentUserAvatarURL: avatar,
 	},
 ];
 
