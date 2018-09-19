@@ -1,19 +1,16 @@
 /**
  * TODO list:
- * 1. Refactor the commented part into the header component
+ * 1. Refactor the commented part into the header component - Done
  * 2. Implement onViewProfilePhoto (check IPFS)
  */
 
 import * as React from 'react';
-import {AsyncStorage, View} from 'react-native';
-import {NavigationScreenProp} from 'react-navigation';
 import {DataProvider} from 'recyclerlistview';
 import uuidv4 from 'uuid/v4';
 
-import {DotsMenuButton, DotsMenuItem, IconButton} from '../../components';
 import {IWithMyProfileEnhancedActions, IWithMyProfileEnhancedData, WithMyProfile} from '../../enhancers/screens';
 import {INavigationProps} from '../../types';
-import styles, {icons} from './MyProfileScreen.style';
+import {icons} from './MyProfileScreen.style';
 import {MyProfileScreenView} from './MyProfileScreen.view';
 
 const GRID_PAGE_SIZE = 20;
@@ -21,87 +18,10 @@ const GRID_PAGE_SIZE = 20;
 type IMyProfileScreenProps = INavigationProps & IWithMyProfileEnhancedData & IWithMyProfileEnhancedActions;
 
 interface IMyProfileScreenState {
-	refreshing: boolean;
 	gridMediaProvider: DataProvider;
 }
 
 class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
-	// public static navigationOptions = (options: {navigation: any}) => ({
-	// 	title: 'PROFILE',
-	// 	headerLeft: (
-	// 		<View style={styles.titleBarLeftButton}>
-	// 			// @ts-ignore
-	// 			<IconButton
-	// 				iconSource={icons.shareIconWhite}
-	// 				iconType={'image'}
-	// 				iconStyle={styles.icon}
-	// 				onPress={() => MyProfileScreen.goToReferralPage(options.navigation)}
-	// 			/>
-	// 		</View>
-	// 	),
-	// 	headerRight: (
-	// 		<View style={styles.titleBarRightButton}>
-	// 			<DotsMenuButton items={MyProfileScreen.getTooltipItems(navigation, navigationOptions.getText)} />
-	// 		</View>
-	// 	),
-	// 	headerStyle: {
-	// 		borderBottomWidth: 0,
-	// 		backgroundColor: Colors.pink,
-	// 		elevation: 0,
-	// 	},
-	// });
-
-	// private static getTooltipItems = (navigation: NavigationScreenProp<any>, getText: any) => {
-	// 	return [
-	// 		// {
-	// 		// 	label: getText('my.profile.screen.menu.profile.analytics'),
-	// 		// 	icon: Icons.iconProfileAnalytics,
-	// 		// 	actionHandler: () => MyProfileScreen.goToProfileAnalyticsPage(navigation),
-	// 		// },
-	// 		// {
-	// 		// 	label: getText('my.profile.screen.menu.wallet'),
-	// 		// 	icon: Icons.iconWallet2,
-	// 		// 	actionHandler: () => MyProfileScreen.goToWalletActivityPage(navigation),
-	// 		// },
-	// 		{
-	// 			label: getText('my.profile.screen.menu.settings'),
-	// 			icon: 'ios-settings-outline',
-	// 			actionHandler: () => MyProfileScreen.goToSettingsPage(navigation),
-	// 		},
-	// 		{
-	// 			label: getText('my.profile.screen.menu.logout'),
-	// 			icon: 'ios-log-out',
-	// 			actionHandler: () => MyProfileScreen.logoutHandler(navigation),
-	// 		},
-	// 	];
-	// };
-
-	// private static goToProfileAnalyticsPage = (navigation: NavigationScreenProp<any>) => {
-	// 	navigation.navigate('ProfileAnalyticsScreen');
-	// };
-
-	// private static goToWalletActivityPage = (navigation: NavigationScreenProp<any>) => {
-	// 	navigation.navigate('WalletActivityScreen');
-	// };
-
-	// private static goToSettingsPage = (navigation: NavigationScreenProp<any>) => {
-	// 	navigation.navigate('SettingsScreen');
-	// };
-
-	// private static goToReferralPage = (navigation: NavigationScreenProp<any>) => {
-	// 	navigation.navigate('ReferralScreen');
-	// };
-
-	// private static logoutHandler = async (navigation: NavigationScreenProp<any>) => {
-	// 	try {
-	// 		await Signout();
-	// 		await AsyncStorage.clear();
-	// 		resetNavigationToRoute('PreAuthScreen', navigation);
-	// 	} catch (ex) {
-	// 		console.log(ex);
-	// 	}
-	// };
-
 	// todo @serkan @jake why?
 	private lastLoadedPhotoIndex = 0;
 
@@ -115,13 +35,12 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 
 		this.state = {
 			gridMediaProvider: this.gridPhotosProvider,
-			refreshing: false,
 		};
 	}
 
 	public render() {
-		const {currentUser} = this.props;
-		const {refreshing, gridMediaProvider} = this.state;
+		const {currentUser, refreshingUser, loadingUser, getText} = this.props;
+		const {gridMediaProvider} = this.state;
 		const {
 			numberOfLikes,
 			numberOfPhotos,
@@ -131,14 +50,12 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			fullName,
 			userName,
 			aboutMeText,
-			loading,
 			mediaObjects,
 		} = currentUser;
 
 		return (
-			// @ts-ignore
 			<MyProfileScreenView
-				isLoading={loading}
+				isLoading={loadingUser}
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
@@ -149,21 +66,56 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				aboutMeText={aboutMeText}
 				loadMorePhotosHandler={this.loadMorePhotosHandler}
 				onRefresh={this.onRefresHandler}
-				refreshing={refreshing}
+				refreshing={refreshingUser}
 				gridMediaProvider={gridMediaProvider}
 				hasPhotos={mediaObjects.length > 0}
 				onViewMediaFullScreen={this.onPhotoPressHandler}
 				onEditProfile={this.onEditProfilePressHandler}
+				onSharePress={this.onSharePressHandler}
 				onViewProfilePhoto={() => {
 					/**/
 				}}
-				getText={this.props.getText}
+				onShowDotsModal={this.onShowDotsModalHandler}
+				getText={getText}
 			/>
 		);
 	}
 
+	private getDotsModalItems = () => {
+		const {navigation, getText, logout} = this.props;
+		return [
+			{
+				label: getText('my.profile.screen.menu.profile.analytics'),
+				icon: icons.iconProfileAnalytics,
+				actionHandler: () => navigation.navigate('ProfileAnalyticsScreen'),
+			},
+			{
+				label: getText('my.profile.screen.menu.wallet'),
+				icon: icons.iconWallet2,
+				actionHandler: () => navigation.navigate('WalletActivityScreen'),
+			},
+			{
+				label: getText('my.profile.screen.menu.settings'),
+				icon: 'ios-settings-outline',
+				actionHandler: () => navigation.navigate('SettingsScreen'),
+			},
+			{
+				label: getText('my.profile.screen.menu.logout'),
+				icon: 'ios-log-out',
+				actionHandler: () => logout(),
+			},
+		];
+	};
+
+	private onShowDotsModalHandler = () => {
+		const {showDotsMenuModal} = this.props;
+
+		const menuItems = this.getDotsModalItems();
+		showDotsMenuModal(menuItems);
+	};
+
 	private loadMorePhotosHandler = () => {
-		const {gridMediaProvider, refreshing} = this.state;
+		const {gridMediaProvider} = this.state;
 		const {mediaObjects} = this.props.currentUser;
 		const headerElement = [{index: uuidv4()}];
 
@@ -171,7 +123,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			this.setState({
 				gridMediaProvider: gridMediaProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < mediaObjects.length && !refreshing) {
+		} else if (this.lastLoadedPhotoIndex < mediaObjects.length && !this.props.refreshingUser) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
@@ -191,11 +143,8 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	private onRefresHandler = () => {
-		const {currentUser, refreshUser} = this.props;
-		if (!this.state.refreshing) {
-			this.setState({
-				refreshing: true,
-			});
+		const {currentUser, refreshUser, refreshingUser} = this.props;
+		if (!refreshingUser) {
 			refreshUser(currentUser.userId);
 		}
 	};
@@ -215,6 +164,11 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	private onEditProfilePressHandler = () => {
 		const {navigation} = this.props;
 		navigation.navigate('SettingsScreen');
+	};
+
+	private onSharePressHandler = () => {
+		const {navigation} = this.props;
+		navigation.navigate('ReferralScreen');
 	};
 }
 

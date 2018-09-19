@@ -70,8 +70,3 @@ export default StyleSheet.create(styles);
 export const colors = {
 	white: Colors.white,
 };
-export const headerDefaultStyles = {
-	borderBottomWidth: 0,
-	backgroundColor: Colors.pink,
-	elevation: 0,
-};

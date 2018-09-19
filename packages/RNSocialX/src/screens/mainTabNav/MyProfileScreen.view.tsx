@@ -2,10 +2,10 @@ import * as React from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import {DataProvider} from 'recyclerlistview';
 
-import {NoPhotos, ProfilePhotoGrid, ProfileTopContainer} from '../../components';
+import {DotsMenuButton, Header, IconButton, NoPhotos, ProfilePhotoGrid, ProfileTopContainer} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {ITranslatedProps} from '../../types';
-import styles, {colors} from './MyProfileScreen.style';
+import styles, {colors, icons} from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	avatarURL: any;
@@ -23,6 +23,8 @@ interface IMyProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	onRefresh: () => void;
 	onViewMediaFullScreen: (index: number) => void;
 	onEditProfile: () => void;
+	onSharePress: () => void;
+	onShowDotsModal: () => void;
 	hasPhotos: boolean;
 }
 
@@ -42,8 +44,10 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	onViewMediaFullScreen,
 	onViewProfilePhoto,
 	hasPhotos,
-	onEditProfile,
 	isLoading,
+	onEditProfile,
+	onSharePress,
+	onShowDotsModal,
 	getText,
 }) => {
 	const scrollContainerStyles = hasPhotos ? styles.scrollContainer : [styles.scrollContainer, {flex: 1}];
@@ -51,6 +55,25 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	return (
 		<WithInlineLoader isLoading={isLoading}>
 			<View style={styles.container}>
+				{
+					// @ts-ignore
+					<Header
+						title={'profile'}
+						left={
+							// @ts-ignore
+							<IconButton
+								iconSource={icons.shareIconWhite}
+								iconType={'image'}
+								iconStyle={styles.icon}
+								onPress={onSharePress}
+							/>
+						}
+						right={
+							// @ts-ignore
+							<DotsMenuButton onPress={onShowDotsModal} />
+						}
+					/>
+				}
 				<View style={styles.whiteBottomView} />
 				<ScrollView
 					contentContainerStyle={scrollContainerStyles}

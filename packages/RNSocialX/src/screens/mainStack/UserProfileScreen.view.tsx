@@ -3,7 +3,7 @@ import {Animated, Dimensions, RefreshControl, ScrollView, View} from 'react-nati
 import {AnimatedValue} from 'react-navigation';
 import {DataProvider} from 'recyclerlistview';
 
-import {NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
+import {CloseButton, Header, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
 import {ICurrentUser, ILike, ITranslatedProps, IWallPostCardProps, SearchResultKind} from '../../types';
@@ -41,6 +41,7 @@ interface IUserProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps
 	activeTab: string;
 	containerHeight: number;
 	onLayoutChange: (height: number) => void;
+	onClose: () => void;
 }
 
 export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
@@ -74,6 +75,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onLayoutChange,
 	isLoading,
 	getText,
+	onClose,
 }) => {
 	const hasPhotos = numberOfPhotos !== 0;
 
@@ -92,6 +94,10 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	return (
 		<WithInlineLoader isLoading={isLoading}>
 			<View style={styles.container}>
+				{
+					// @ts-ignore
+					<Header title={'profile'} right={<CloseButton onClose={onClose} />} />
+				}
 				<View style={styles.whiteBottomView} />
 				<ScrollView
 					contentContainerStyle={scrollContainerStyles}
