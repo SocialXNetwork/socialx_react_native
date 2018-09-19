@@ -14,6 +14,7 @@ storiesOf('Screens/mainStack', module).add('CreateWallPostScreen', () => {
 			onShareTextUpdate={(...args: any[]) => console.log('onShareTextUpdate', args)}
 			onAddMedia={(...args: any[]) => console.log('onAddMedia', args)}
 			onPostSend={(...args: any[]) => console.log('onPostSend', args)}
+			navigation={null}
 		/>
 	);
 });

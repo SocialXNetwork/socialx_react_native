@@ -10,7 +10,7 @@
 import {ActionSheet} from 'native-base';
 import * as React from 'react';
 
-import {CloseButton, ScreenHeaderButton, WithModalForAddFriends} from '../../components';
+import {WithModalForAddFriends} from '../../components';
 import {IWithPhotoEnhancedActions, IWithPhotoEnhancedData, WithPhoto} from '../../enhancers/screens';
 import {FriendsSearchResult, INavigationProps, WallPostPhotoOptimized} from '../../types';
 import {
@@ -24,7 +24,6 @@ import {PhotoScreenView} from './PhotoScreen.view';
 interface IPhotoScreenNavParams {
 	params: {
 		mediaObjects: WallPostPhotoOptimized[];
-		onSendPress: () => void;
 	};
 }
 
@@ -41,12 +40,8 @@ interface IPhotoScreenState {
 class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	private addedFriends: FriendsSearchResult[] = [];
 
-	public componentDidMount() {
-		this.props.navigation.setParams({onSendPress: this.sendPostHandler});
-	}
-
 	public render() {
-		const {currentUserAvatarURL, loading, marginBottom, getText} = this.props;
+		const {currentUserAvatarURL, loading, marginBottom, navigation, getText} = this.props;
 		const {locationEnabled, location, tagFriends, shareText, mediaObjects} = this.state;
 
 		return (
@@ -69,6 +64,8 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 							onShareTextUpdate={this.onShareTextUpdateHandler}
 							shareText={shareText}
 							onAddMedia={this.onAddMediaHandler}
+							sendPost={this.sendPostHandler}
+							navigation={navigation}
 							getText={getText}
 						/>
 					);
@@ -146,11 +143,3 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 export const PhotoScreen = (navProps: INavigationProps<IPhotoScreenNavParams>) => (
 	<WithPhoto>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
 );
-
-// @ts-ignore
-PhotoScreen.navigationOptions = ({navigationOptions, navigation}: IPhotoScreenProps) => ({
-	title: navigationOptions.getText('photo.screen.title'),
-	headerLeft: <CloseButton onClose={() => navigation.goBack(null)} />,
-	// @ts-ignore
-	headerRight: <ScreenHeaderButton iconName={'md-checkmark'} onPress={navigation.state.params.onSendPress} />,
-});

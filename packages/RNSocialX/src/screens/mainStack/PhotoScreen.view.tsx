@@ -5,7 +5,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
 	AddFriendsList,
 	CheckboxButtonWithIcon,
+	CloseButton,
+	Header,
 	MediaHorizontalScroller,
+	ScreenHeaderButton,
 	SharePostInput,
 	WithInlineLoader,
 } from '../../components';
@@ -27,6 +30,8 @@ interface IPhotoScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	shareText: string;
 	onShareTextUpdate: (value: string) => void;
 	onAddMedia: () => void;
+	sendPost: () => void;
+	navigation: any;
 }
 
 interface ILocationSectionProps {
@@ -113,8 +118,21 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 	onAddMedia,
 	getText,
 	isLoading,
+	sendPost,
+	navigation,
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
+		{
+			// @ts-ignore
+			<Header
+				title={getText('photo.screen.title')}
+				left={<CloseButton onClose={() => navigation.goBack(null)} />}
+				right={
+					// @ts-ignore
+					<ScreenHeaderButton iconName={'md-checkmark'} onPress={sendPost} />
+				}
+			/>
+		}
 		<KeyboardAwareScrollView style={style.scrollView} alwaysBounceVertical={true} keyboardShouldPersistTaps={'handled'}>
 			<SharePostInput
 				avatarSource={avatarURL}

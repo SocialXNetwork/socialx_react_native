@@ -1,11 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {Colors, Sizes} from '../../environment/theme';
 
-export const HEADER_BUTTON_SIZE = Sizes.smartHorizontalScale(25);
+export const HEADER_BUTTON_SIZE = Sizes.smartHorizontalScale(30);
 
 const style: any = {
 	iconContainer: {
-		paddingHorizontal: Sizes.smartHorizontalScale(8),
 		marginHorizontal: Sizes.smartHorizontalScale(15),
 	},
 	headerButtonIcon: {
