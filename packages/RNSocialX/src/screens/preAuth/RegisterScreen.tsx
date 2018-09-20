@@ -37,6 +37,7 @@ class Screen extends React.Component<IRegisterScreenProps> {
 				onStartRegister={doRegister}
 				onAlreadyHaveCode={this.toggleVisibleModalSMS}
 				onNavigateToTermsAndConditions={this.onNavigateToTermsAndConditionsHandler}
+				onGoBack={this.onGoBackHandler}
 			/>
 		);
 	}
@@ -51,6 +52,11 @@ class Screen extends React.Component<IRegisterScreenProps> {
 			showModalForSMSCode: visible,
 		});
 	};
+
+	private onGoBackHandler = () => {
+		Keyboard.dismiss();
+		this.props.navigation.goBack(null);
+	};
 }
 
 export const RegisterScreen = ({navigation, navigationOptions}: INavigationProps<any, any>) => (
@@ -60,9 +66,3 @@ export const RegisterScreen = ({navigation, navigationOptions}: INavigationProps
 		)}
 	</WithRegister>
 );
-
-// @ts-ignore
-RegisterScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
-	title: navigationOptions.getText('register.screen.title'),
-	headerRight: <View />,
-});

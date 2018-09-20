@@ -6,8 +6,11 @@ const style: any = {
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white,
-		paddingHorizontal: Sizes.smartHorizontalScale(26),
 		alignItems: 'center',
+	},
+	contentContainer: {
+		width: '100%',
+		paddingHorizontal: Sizes.smartHorizontalScale(20),
 	},
 	descriptionText: {
 		...Fonts.centuryGothic,

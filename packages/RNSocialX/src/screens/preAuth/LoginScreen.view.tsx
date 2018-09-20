@@ -3,7 +3,14 @@ import * as React from 'react';
 import {Keyboard, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {PrimaryButton, PrimaryTextInput, TKeyboardKeys, TRKeyboardKeys} from '../../components';
+import {
+	Header,
+	PrimaryButton,
+	PrimaryTextInput,
+	ScreenHeaderButton,
+	TKeyboardKeys,
+	TRKeyboardKeys,
+} from '../../components';
 import {KeyboardContext} from '../../environment/consts';
 import {ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './LoginScreen.style';
@@ -109,6 +116,7 @@ interface ILoginScreenViewProps extends ITranslatedProps {
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onNavigateToUploadKey: () => void;
+	onGoBack: () => void;
 }
 
 export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
@@ -116,9 +124,18 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
 	onNavigateToUploadKey,
+	onGoBack,
 	getText,
 }) => (
 	<SafeAreaView style={style.safeAreaContainer}>
+		{
+			// @ts-ignore
+			<Header
+				title={getText('login.screen.title')}
+				// @ts-ignore
+				left={<ScreenHeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+			/>
+		}
 		<KeyboardAwareScrollView
 			style={style.keyboardView}
 			contentContainerStyle={style.container}

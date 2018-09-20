@@ -36,6 +36,7 @@ export interface SettingsData {
 interface ISettingsScreenViewProps extends SettingsData, ITranslatedProps, IWithLoaderProps {
 	onSaveChanges: (values: SettingsData) => void;
 	onLogout: () => void;
+	onGoBack: () => void;
 }
 
 export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
@@ -50,6 +51,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	onSaveChanges,
 	isLoading,
 	onLogout,
+	onGoBack,
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
 		<Formik
@@ -99,6 +101,8 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						// @ts-ignore
 						<Header
 							title={getText('settings.screen.title')}
+							// @ts-ignore
+							left={<ScreenHeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
 							right={
 								// @ts-ignore
 								<ScreenHeaderButton iconName={'ios-log-out'} onPress={onLogout} />

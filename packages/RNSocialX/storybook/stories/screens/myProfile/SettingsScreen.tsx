@@ -22,6 +22,8 @@ storiesOf('Screens/myProfile', module)
 		return (
 			<SettingsScreenView
 				onSaveChanges={action('onSaveChanges')}
+				onLogout={action('onLogout')}
+				onGoBack={action('onGoBack')}
 				getText={(value) => value}
 				aboutMeText={aboutMeText}
 				firstName={firstName}

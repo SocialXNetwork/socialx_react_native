@@ -10,7 +10,7 @@ storiesOf('Screens/myProfile', module).add('ReferralScreen', () => (
 		socx={'13,048'}
 		code={'5H91BGD34'}
 		url={'http://www.lorem.ipsum.com'}
-		onShare={action('onShare')}
+		onShare={async () => action('onShare')}
 		copyToClipboard={action('copyToClipboard')}
 		onGoBack={action('onGoBack')}
 	/>

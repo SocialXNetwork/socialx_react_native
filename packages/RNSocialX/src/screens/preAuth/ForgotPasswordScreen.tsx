@@ -6,7 +6,6 @@
  */
 
 import * as React from 'react';
-import {View} from 'react-native';
 
 import {
 	IWithForgotPasswordEnhancedActions,
@@ -20,16 +19,18 @@ type IForgotPasswordScreenProps = INavigationProps<any, any> &
 	IWithForgotPasswordEnhancedData &
 	IWithForgotPasswordEnhancedActions;
 
-const Screen: React.SFC<IForgotPasswordScreenProps> = ({getText, sendResetCode}) => (
-	<ForgotPasswordScreenView getText={getText} onSendResetCode={sendResetCode} />
+const onGoBackHandler = (navigation: any) => {
+	navigation.goBack(null);
+};
+
+const Screen: React.SFC<IForgotPasswordScreenProps> = ({getText, navigation, sendResetCode}) => (
+	<ForgotPasswordScreenView
+		getText={getText}
+		onSendResetCode={sendResetCode}
+		onGoBack={() => onGoBackHandler(navigation)}
+	/>
 );
 
 export const ForgotPasswordScreen = (navProps: INavigationProps<any, any>) => (
 	<WithForgotPassword>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithForgotPassword>
 );
-
-// @ts-ignore
-ForgotPasswordScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
-	title: navigationOptions.getText('forgot.password.screen.title'),
-	headerRight: <View />,
-});
