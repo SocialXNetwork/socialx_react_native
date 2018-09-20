@@ -20,8 +20,9 @@ class Screen extends React.Component<ISocialXAccountScreenProps, ISocialXAccount
 		return (
 			<SocialXAccountScreenView
 				{...this.props.stats}
-				sendHandler={this.onSendHandler}
-				receiveHandler={this.onReceiveHandler}
+				onSend={this.onSendHandler}
+				onReceive={this.onReceiveHandler}
+				onGoBack={this.onGoBackHandler}
 				getText={this.props.getText}
 			/>
 		);
@@ -34,6 +35,10 @@ class Screen extends React.Component<ISocialXAccountScreenProps, ISocialXAccount
 	private onReceiveHandler = () => {
 		Alert.alert('onReceiveHandler');
 	};
+
+	private onGoBackHandler = () => {
+		this.props.navigation.goBack(null);
+	};
 }
 
 export const SocialXAccountScreen = ({navigation}: INavigationProps<any, any>) => (
@@ -41,8 +46,3 @@ export const SocialXAccountScreen = ({navigation}: INavigationProps<any, any>) =
 		{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithSocialXAccount>
 );
-
-// @ts-ignore
-SocialXAccountScreen.navigationOptions = {
-	title: 'SOCIALX ACCOUNT',
-};

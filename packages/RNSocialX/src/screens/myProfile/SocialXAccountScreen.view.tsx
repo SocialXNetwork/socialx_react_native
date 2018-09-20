@@ -3,7 +3,9 @@ import {ScrollView, Text, View} from 'react-native';
 
 import {
 	AccountCurrencyData,
+	Header,
 	PrimaryButton,
+	ScreenHeaderButton,
 	SocialXAccountCurrencyItem,
 	SocialXAccountTitleCard,
 } from '../../components';
@@ -15,49 +17,56 @@ export interface ISocialXAccountScreenViewProps extends ITranslatedProps {
 	contribution: number;
 	returnPercentage: number;
 	digitalCoins: AccountCurrencyData[];
-	sendHandler: () => void;
-	receiveHandler: () => void;
+	onSend: () => void;
+	onReceive: () => void;
+	onGoBack: () => void;
 }
 
 export class SocialXAccountScreenView extends Component<ISocialXAccountScreenViewProps, any> {
 	public render() {
-		const {getText} = this.props;
+		const {coins, contribution, returnPercentage, digitalCoins, onGoBack, onReceive, onSend, getText} = this.props;
 
 		return (
-			<ScrollView style={styles.container} alwaysBounceVertical={false}>
-				<SocialXAccountTitleCard
-					myCoins={this.props.coins}
-					myContribution={this.props.contribution}
-					returnPercentage={this.props.returnPercentage}
-					getText={this.props.getText}
-				/>
-				<Text style={styles.accountTitle}>{getText('socialx.account.screen.account')}</Text>
-				{this.props.digitalCoins.map((coin, index) => (
-					<SocialXAccountCurrencyItem key={index} {...coin} />
-				))}
-				<View style={styles.bottomContainer}>
-					<View style={styles.buttonContainer}>
-						{
-							// @ts-ignore
-							<PrimaryButton
-								label={getText('button.SEND')}
-								borderColor={borderColor}
-								onPress={this.props.sendHandler}
-							/>
-						}
+			<View style={styles.container}>
+				{
+					// @ts-ignore
+					<Header
+						title={'socialx account'}
+						// @ts-ignore
+						left={<ScreenHeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+					/>
+				}
+				<ScrollView
+					contentContainerStyle={styles.contentContainer}
+					alwaysBounceVertical={false}
+					showsVerticalScrollIndicator={false}
+				>
+					<SocialXAccountTitleCard
+						myCoins={coins}
+						myContribution={contribution}
+						returnPercentage={returnPercentage}
+						getText={getText}
+					/>
+					<Text style={styles.accountTitle}>{getText('socialx.account.screen.account')}</Text>
+					{digitalCoins.map((coin, index) => (
+						<SocialXAccountCurrencyItem key={index} {...coin} />
+					))}
+					<View style={styles.bottomContainer}>
+						<View style={styles.buttonContainer}>
+							{
+								// @ts-ignore
+								<PrimaryButton label={getText('button.SEND')} borderColor={borderColor} onPress={onSend} />
+							}
+						</View>
+						<View style={styles.buttonContainer}>
+							{
+								// @ts-ignore
+								<PrimaryButton label={getText('button.RECEIVE')} borderColor={borderColor} onPress={onReceive} />
+							}
+						</View>
 					</View>
-					<View style={styles.buttonContainer}>
-						{
-							// @ts-ignore
-							<PrimaryButton
-								label={getText('button.RECEIVE')}
-								borderColor={borderColor}
-								onPress={this.props.receiveHandler}
-							/>
-						}
-					</View>
-				</View>
-			</ScrollView>
+				</ScrollView>
+			</View>
 		);
 	}
 }
