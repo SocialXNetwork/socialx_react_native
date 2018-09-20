@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>0.0.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -35,8 +35,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a profile photo with camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>Location access is required if you want to share it with your friends</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We are using microphone for the video calls</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow application to save media object to your photo library</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pick a profile photo from image gallery</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>century_gothic_bold_italic.ttf</string>
