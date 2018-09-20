@@ -96,7 +96,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 			<View style={styles.container}>
 				{
 					// @ts-ignore
-					<Header title={'profile'} right={<CloseButton onClose={onClose} />} />
+					<Header title={'profile'} left={<CloseButton onClose={onClose} />} />
 				}
 				<View style={styles.whiteBottomView} />
 				<ScrollView
