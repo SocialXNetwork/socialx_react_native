@@ -70,3 +70,5 @@ lerna-*.log
 *.bundle
 *.map
 *.bundle.meta
+/packages/RNSocialX/fastlane/README.md
+/packages/RNSocialX/fastlane/report.xml

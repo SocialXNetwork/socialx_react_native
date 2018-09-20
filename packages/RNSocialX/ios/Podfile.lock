@@ -4,6 +4,7 @@ PODS:
     - React
   - BugsnagReactNative/Core (2.10.3):
     - React
+  - QBImagePickerController (3.4.0)
   - React (0.56.1):
     - React/Core (= 0.56.1)
   - react-native-orientation (3.1.3):
@@ -36,6 +37,11 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNImageCropPicker (0.21.2):
+    - QBImagePickerController
+    - React/Core
+    - RSKImageCropper
+  - RSKImageCropper (2.1.0)
   - yoga (0.56.1.React)
 
 DEPENDENCIES:
@@ -52,7 +58,13 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - QBImagePickerController
+    - RSKImageCropper
 
 EXTERNAL SOURCES:
   BugsnagReactNative:
@@ -61,15 +73,20 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   react-native-orientation:
     :path: "../node_modules/react-native-orientation"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
   BugsnagReactNative: 0b7626917d3612281d07aea84e5041f123290fee
+  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-orientation: 3d9a0a8273d18260f7528414093a6a36491382b6
+  RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
+  RSKImageCropper: 0d0c6d8525a2381f03fde32a47c6703817a2feed
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 42a66a0a25cdcc05c3039f31087fbcfdd20f3a90
+PODFILE CHECKSUM: a0e7be3eeed7f5328b5f236799cd59aedccb0b03
 
 COCOAPODS: 1.5.3

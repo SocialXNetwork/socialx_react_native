@@ -43,7 +43,7 @@ The following RN packages are linked:
 2. react-native-fast-image
 3. react-native-vector-icons
 4. react-native-fs
-5. react-native-image-crop-picker
+5. react-native-image-crop-picker (Podfile)
 6. react-native-image-resizer
 7. lottie-react-native
 8. lottie-ios (iOS only)
