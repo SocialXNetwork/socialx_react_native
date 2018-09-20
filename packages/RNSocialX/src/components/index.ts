@@ -72,7 +72,7 @@ export {ReportProblemModal, IReportData} from './modals/ReportProblemModal';
 export {TagFriendsModal} from './modals/TagFriendsModal';
 
 export {HeaderLogo} from './navigation/HeaderLogo';
-export {ScreenHeaderButton} from './navigation/ScreenHeaderButton';
+export {HeaderButton} from './navigation/HeaderButton';
 
 export {Container} from './referral/Container';
 export {Row} from './referral/Row';

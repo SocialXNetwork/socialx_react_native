@@ -21,7 +21,13 @@ type IResetPasswordScreenProps = INavigationProps & IWithResetPasswordEnhancedDa
 
 class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	public render() {
-		return <ResetPasswordScreenView onSetNewPassword={this.setNewPasswordHandler} getText={this.props.getText} />;
+		return (
+			<ResetPasswordScreenView
+				onSetNewPassword={this.setNewPasswordHandler}
+				onGoBack={this.onGoBackHandler}
+				getText={this.props.getText}
+			/>
+		);
 	}
 
 	private setNewPasswordHandler = async (resetCode: string, password: string) => {
@@ -46,6 +52,10 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 		}
 		hideActivityIndicator();
 	};
+
+	private onGoBackHandler = () => {
+		this.props.navigation.goBack(null);
+	};
 }
 
 export const ResetPasswordScreen = ({navigation, navigationOptions}: INavigationProps) => (
@@ -55,9 +65,3 @@ export const ResetPasswordScreen = ({navigation, navigationOptions}: INavigation
 		)}
 	</WithResetPassword>
 );
-
-// @ts-ignore
-ResetPasswordScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
-	title: navigationOptions.getText('reset.password.screen.title'),
-	headerRight: <View />,
-});

@@ -2,9 +2,9 @@ import * as React from 'react';
 import {Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {defaultColor, HEADER_BUTTON_SIZE, styles} from './ScreenHeaderButton.style';
+import {defaultColor, HEADER_BUTTON_SIZE, styles} from './HeaderButton.style';
 
-interface IScreenHeaderButtonProps {
+interface IHeaderButtonProps {
 	onPress: () => void;
 	iconName: false | string;
 	iconSource: false | number;
@@ -12,7 +12,7 @@ interface IScreenHeaderButtonProps {
 	iconSize: number;
 }
 
-export const ScreenHeaderButton: React.SFC<IScreenHeaderButtonProps> = ({
+export const HeaderButton: React.SFC<IHeaderButtonProps> = ({
 	onPress,
 	iconName = false,
 	iconSource = false,

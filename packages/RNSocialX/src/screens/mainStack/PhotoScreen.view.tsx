@@ -7,8 +7,8 @@ import {
 	CheckboxButtonWithIcon,
 	CloseButton,
 	Header,
+	HeaderButton,
 	MediaHorizontalScroller,
-	ScreenHeaderButton,
 	SharePostInput,
 	WithInlineLoader,
 } from '../../components';
@@ -129,7 +129,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 				left={<CloseButton onClose={onClose} />}
 				right={
 					// @ts-ignore
-					<ScreenHeaderButton iconName={'md-checkmark'} onPress={sendPost} />
+					<HeaderButton iconName={'md-checkmark'} onPress={sendPost} />
 				}
 			/>
 		}

@@ -57,5 +57,5 @@ import './modals/OfflineOverlayModal';
 import './modals/ReportProblemModal';
 import './modals/TagFriendsModal';
 
+import './navigation/HeaderButton';
 import './navigation/HeaderLogo';
-import './navigation/ScreenHeaderButton';

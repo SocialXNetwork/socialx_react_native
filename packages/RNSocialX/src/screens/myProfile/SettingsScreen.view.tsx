@@ -9,9 +9,9 @@ import {
 	AvatarName,
 	AvatarPicker,
 	Header,
+	HeaderButton,
 	InputSizes,
 	PrimaryTextInput,
-	ScreenHeaderButton,
 	SettingCheckbox,
 	TKeyboardKeys,
 	TRKeyboardKeys,
@@ -102,10 +102,10 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						<Header
 							title={getText('settings.screen.title')}
 							// @ts-ignore
-							left={<ScreenHeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+							left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
 							right={
 								// @ts-ignore
-								<ScreenHeaderButton iconName={'ios-log-out'} onPress={onLogout} />
+								<HeaderButton iconName={'ios-log-out'} onPress={onLogout} />
 							}
 						/>
 					}
