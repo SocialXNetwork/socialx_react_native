@@ -28,7 +28,7 @@ export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={onBackPress}>
-				<Icon name={'ios-arrow-down'} style={styles.arrow} />
+				<Icon name={'md-close'} style={styles.arrow} />
 			</TouchableOpacity>
 			<TouchableOpacity onPress={() => showUserProfile(owner.userId)}>
 				<AvatarImage image={{uri: owner.avatarURL}} style={styles.avatar} />

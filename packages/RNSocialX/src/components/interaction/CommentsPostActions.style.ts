@@ -15,7 +15,7 @@ const styles: any = {
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(24),
-		paddingBottom: Sizes.smartHorizontalScale(4),
+		marginBottom: Sizes.smartVerticalScale(4),
 		color: Colors.black,
 	},
 };
