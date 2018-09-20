@@ -4,9 +4,12 @@ import {Colors, Fonts, Sizes} from '../../environment/theme';
 const styles: any = {
 	container: {
 		flex: 1,
+		backgroundColor: Colors.white,
+	},
+	contentContainer: {
 		width: '100%',
 		paddingHorizontal: Sizes.smartHorizontalScale(26),
-		backgroundColor: Colors.white,
+		paddingTop: Sizes.smartVerticalScale(20),
 	},
 	buttonContainer: {
 		paddingBottom: Sizes.smartVerticalScale(28),
