@@ -22,6 +22,7 @@ storiesOf('Screens/preAuth', module)
 				onStartRegister={action('onStartRegister')}
 				onAlreadyHaveCode={action('onAlreadyHaveCode')}
 				onNavigateToTermsAndConditions={action('onNavigateToTermsAndCond')}
+				onGoBack={action('onGoBack')}
 				getText={(value) => value}
 			/>
 		);

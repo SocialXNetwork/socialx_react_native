@@ -1,5 +1,5 @@
 // tslint:disable
-import './myProfile/SocialXAccountScreen';
+import './preAuth/RegisterScreen';
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';
@@ -15,12 +15,12 @@ import './mainTabNav/UserFeedScreen';
 
 import './myProfile/ReferralScreen';
 import './myProfile/SettingsScreen';
-
+import './myProfile/SocialXAccountScreen';
 
 import './preAuth/ForgotPasswordScreen';
 import './preAuth/LaunchScreen';
 import './preAuth/LoginScreen';
-import './preAuth/RegisterScreen';
+
 import './preAuth/ResetPasswordScreen';
 import './preAuth/TermsAndConditionsScreen';
 

@@ -23,6 +23,7 @@ class Screen extends React.Component<ILoginScreenProps> {
 				onNavigateToPasswordForgot={() => this.safeNavigateToScreen('ForgotPasswordScreen')}
 				onNavigateToRegister={() => this.safeNavigateToScreen('SignUpScreen')}
 				onNavigateToUploadKey={() => this.safeNavigateToScreen('UploadKeyScreen')}
+				onGoBack={this.onGoBackHandler}
 				getText={getText}
 			/>
 		);
@@ -32,14 +33,13 @@ class Screen extends React.Component<ILoginScreenProps> {
 		Keyboard.dismiss();
 		this.props.navigation.navigate(screenName);
 	};
+
+	private onGoBackHandler = () => {
+		Keyboard.dismiss();
+		this.props.navigation.goBack(null);
+	};
 }
 
 export const LoginScreen = (navProps: INavigationProps) => (
 	<WithLogin>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithLogin>
 );
-
-// @ts-ignore
-LoginScreen.navigationOptions = ({navigationOptions}: INavigationProps) => ({
-	title: navigationOptions.getText('login.screen.title'),
-	headerRight: <View />,
-});

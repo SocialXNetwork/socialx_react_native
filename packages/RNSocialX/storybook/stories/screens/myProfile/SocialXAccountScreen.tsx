@@ -32,8 +32,9 @@ storiesOf('Screens/myProfile', module).add('SocialXAccountScreen', () => {
 			coins={myCoins}
 			returnPercentage={returnPercentage}
 			digitalCoins={myDigitalCoins}
-			sendHandler={action('Send')}
-			receiveHandler={action('Receive')}
+			onSend={action('Send')}
+			onReceive={action('Receive')}
+			onGoBack={action('onGoBack')}
 			getText={(value) => value}
 		/>
 	);

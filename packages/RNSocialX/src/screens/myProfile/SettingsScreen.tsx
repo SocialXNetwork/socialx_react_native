@@ -28,11 +28,16 @@ const onLogoutHandler = (logout: () => void) => {
 	logout();
 };
 
+const onGoBackHandler = (navigation: any) => {
+	navigation.goBack(null);
+};
+
 const Screen: React.SFC<ISettingsScreenProps> = ({
 	currentUser,
 	updateUserProfile,
 	settingsLoading,
 	logout,
+	navigation,
 	getText,
 }) => (
 	<SettingsScreenView
@@ -46,6 +51,7 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 		userName={currentUser.userName}
 		onSaveChanges={(saveData: SettingsData) => saveChanges(saveData, {currentUser, updateUserProfile})}
 		onLogout={() => onLogoutHandler(logout)}
+		onGoBack={() => onGoBackHandler(navigation)}
 		getText={getText}
 	/>
 );

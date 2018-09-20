@@ -1,3 +1,4 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 
@@ -7,10 +8,11 @@ storiesOf('Screens/preAuth', module).add('LoginScreen', () => {
 	return (
 		<LoginScreenView
 			getText={(text) => text}
-			onStartLogin={(...args: any[]) => console.log('onStartLogin', args)}
-			onNavigateToPasswordForgot={(...args: any[]) => console.log('onNavigateToPasswordForgot', args)}
-			onNavigateToRegister={(...args: any[]) => console.log('onNavigateToRegister', args)}
-			onNavigateToUploadKey={(...args: any[]) => console.log('onNavigateToUploadKey', args)}
+			onStartLogin={action('onStartLogin')}
+			onNavigateToPasswordForgot={action('onNavigateToPasswordForgot')}
+			onNavigateToRegister={action('onNavigateToRegister')}
+			onNavigateToUploadKey={action('onNavigateToUploadKey')}
+			onGoBack={action('onGoBack')}
 		/>
 	);
 });
