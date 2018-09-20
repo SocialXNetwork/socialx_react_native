@@ -55,6 +55,9 @@ interface IPrimaryTextInputProps {
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
 	onPressCancel: () => void;
+	canPost: boolean;
+	onPressPost: () => void;
+	postButtonTextColor: string;
 }
 
 interface IPrimaryTextInputState {
@@ -92,6 +95,22 @@ const CancelButton: React.SFC<{
 		return (
 			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
 				<Text style={[style.cancelButtonText, {color: cancelButtonTextColor}]}>Cancel</Text>
+			</TouchableOpacity>
+		);
+	}
+	return null;
+};
+
+const PostButton: React.SFC<{
+	canPost: boolean;
+	hasFocus: boolean;
+	onPressPost: () => void;
+	postButtonTextColor: string;
+}> = ({canPost, hasFocus, onPressPost, postButtonTextColor}) => {
+	if (hasFocus && canPost) {
+		return (
+			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
+				<Text style={[style.cancelButtonText, {color: postButtonTextColor}]}>Post</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -167,6 +186,9 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 			value,
 			borderColor,
 			borderWidth,
+			canPost,
+			postButtonTextColor,
+			onPressPost,
 		} = this.props;
 		const {hasFocus} = this.state;
 
@@ -213,6 +235,12 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 					cancelButtonTextColor={cancelButtonTextColor}
 					onPressCancel={onPressCancel}
 					persistCancel={persistCancel}
+				/>
+				<PostButton
+					canPost={canPost}
+					hasFocus={hasFocus}
+					postButtonTextColor={postButtonTextColor}
+					onPressPost={onPressPost}
 				/>
 			</View>
 		);

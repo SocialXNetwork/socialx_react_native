@@ -20,6 +20,7 @@ interface ICommentInputProps {
 	animationValues: IAnimationValues;
 	onCommentInputChange: (comment: string) => void;
 	onCommentInputPress: () => void;
+	onSubmitComment: () => void;
 }
 
 export const CommentInput: React.SFC<ICommentInputProps> = ({
@@ -30,6 +31,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	animationValues,
 	onCommentInputChange,
 	onCommentInputPress,
+	onSubmitComment,
 }) => {
 	if (noInput) {
 		return null;
@@ -53,6 +55,9 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						onSubmitPressed={Keyboard.dismiss}
 						blurOnSubmit={true}
 						disabled={disabled}
+						canPost={true}
+						postButtonTextColor={Colors.pink}
+						onPressPost={onSubmitComment}
 					/>
 				</Animated.View>
 			</TouchableOpacity>

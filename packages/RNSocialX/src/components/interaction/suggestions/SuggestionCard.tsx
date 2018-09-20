@@ -13,8 +13,8 @@ interface ISuggestionCardProps extends ITranslatedProps {
 export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({item, deleteCard, getText}) => (
 	<View style={styles.container}>
 		<AvatarImage image={item.avatarURL} style={styles.avatar} />
-		<Text style={styles.name}>{item.name}</Text>
-		<Text style={styles.reason}>Followed by placeholder</Text>
+		<Text style={styles.name}>{item.fullName}</Text>
+		<Text style={styles.reason}>Friends with placeholder</Text>
 		{
 			// @ts-ignore
 			<PrimaryButton
