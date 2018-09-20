@@ -2,7 +2,7 @@ import {Formik, FormikErrors, FormikProps} from 'formik';
 import * as React from 'react';
 import {ScrollView, Text, View} from 'react-native';
 
-import {Header, PrimaryButton, PrimaryTextInput, ScreenHeaderButton, TRKeyboardKeys} from '../../components';
+import {Header, HeaderButton, PrimaryButton, PrimaryTextInput, TRKeyboardKeys} from '../../components';
 import {ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './ForgotPasswordScreen.style';
 
@@ -46,7 +46,7 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 					<Header
 						title={getText('forgot.password.screen.title')}
 						// @ts-ignore
-						left={<ScreenHeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+						left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
 					/>
 				}
 				<ScrollView

@@ -18,10 +18,10 @@ import {string} from 'yup';
 import {
 	AvatarPicker,
 	Header,
+	HeaderButton,
 	InputSMSCodeModal,
 	PrimaryButton,
 	PrimaryTextInput,
-	ScreenHeaderButton,
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
@@ -113,7 +113,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					<Header
 						title={getText('login.screen.title')}
 						// @ts-ignore
-						left={<ScreenHeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+						left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
 					/>
 				}
 				<KeyboardAwareScrollView

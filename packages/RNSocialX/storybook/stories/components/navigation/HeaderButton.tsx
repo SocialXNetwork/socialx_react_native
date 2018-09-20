@@ -2,15 +2,15 @@ import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 import {Alert} from 'react-native';
 
-import {ScreenHeaderButton} from '../../../../src/components';
+import {HeaderButton} from '../../../../src/components';
 import {Colors} from '../../../../src/environment/theme';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/navigation', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	.add('ScreenHeaderButton', () => (
+	.add('HeaderButton', () => (
 		// @ts-ignore
-		<ScreenHeaderButton
+		<HeaderButton
 			onPress={() => Alert.alert('Pressed!')}
 			iconName={'ios-add-circle'}
 			iconSize={50}
