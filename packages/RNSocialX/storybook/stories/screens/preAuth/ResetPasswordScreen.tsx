@@ -5,5 +5,11 @@ import * as React from 'react';
 import {ResetPasswordScreenView} from '../../../../src/screens/preAuth/ResetPasswordScreen.view';
 
 storiesOf('Screens/preAuth', module).add('ResetPasswordScreen', () => {
-	return <ResetPasswordScreenView onSetNewPassword={action('onSetNewPassword')} getText={(value) => value} />;
+	return (
+		<ResetPasswordScreenView
+			onSetNewPassword={action('onSetNewPassword')}
+			onGoBack={action('onGoBack')}
+			getText={(value) => value}
+		/>
+	);
 });

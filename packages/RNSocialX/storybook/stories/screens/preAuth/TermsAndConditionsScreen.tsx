@@ -1,3 +1,4 @@
+import {action} from '@storybook/addon-actions';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 import {Platform} from 'react-native';
@@ -14,5 +15,7 @@ storiesOf('Screens/preAuth', module).add('TermsAndConditionsScreen', () => {
 			? TermsAndConditionsHTML
 			: {uri: 'file:///android_asset/html/terms_and_conditions.html'};
 
-	return <TermsAndConditionsScreenView localSource={localSource} />;
+	return (
+		<TermsAndConditionsScreenView localSource={localSource} getText={(text) => text} onGoBack={action('onGoBack')} />
+	);
 });

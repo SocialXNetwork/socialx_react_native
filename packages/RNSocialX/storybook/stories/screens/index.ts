@@ -1,5 +1,3 @@
-// tslint:disable
-import './preAuth/ResetPasswordScreen';
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';
@@ -21,7 +19,7 @@ import './preAuth/ForgotPasswordScreen';
 import './preAuth/LaunchScreen';
 import './preAuth/LoginScreen';
 import './preAuth/RegisterScreen';
-
+import './preAuth/ResetPasswordScreen';
 import './preAuth/TermsAndConditionsScreen';
 
 import './primaryNav/MaintenanceScreen';
