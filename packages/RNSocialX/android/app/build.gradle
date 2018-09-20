@@ -73,7 +73,11 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.js",
+    bundleAssetName: "index.android.bundle",
+    extraPackagerArgs: [
+        "--sourcemap-output", file("index.android.bundle.map")
+    ]
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -101,8 +105,8 @@ android {
         applicationId "socialx.network"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode project.hasProperty('versionCode') ? project.property('versionCode') as int : 1
+        versionName project.hasProperty('versionName') ? project.property('versionName') : "0.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

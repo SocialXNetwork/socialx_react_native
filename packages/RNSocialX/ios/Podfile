@@ -28,6 +28,8 @@ target 'RNSocialX' do
 
   pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
 
+  pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
+
   target 'RNSocialXTests' do
     inherit! :search_paths
     # Pods for testing
