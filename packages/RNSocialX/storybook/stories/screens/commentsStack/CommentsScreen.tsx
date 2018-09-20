@@ -46,7 +46,7 @@ storiesOf('Screens/commentsStack', module)
 		const postOwner = {
 			userId: 'userId_0',
 			avatarURL: 'https://placeimg.com/200/200/people',
-			fullName: '',
+			fullName: 'Lorem Ipsum',
 		};
 		const currentUser = {
 			userId: 'userId_1',
