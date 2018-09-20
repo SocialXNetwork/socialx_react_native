@@ -39,8 +39,8 @@ const styles: any = {
 	},
 	iconContainer: {
 		position: 'absolute',
-		top: -5,
-		right: 0,
+		top: Sizes.smartVerticalScale(-6),
+		right: Sizes.smartHorizontalScale(-10),
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(35),

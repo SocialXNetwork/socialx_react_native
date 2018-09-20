@@ -188,6 +188,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 					animationValues={animationValues}
 					onCommentInputChange={this.onCommentInputChange}
 					onCommentInputPress={this.onCommentInputPress}
+					onSubmitComment={this.onSubmitCommentHandler}
 				/>
 				<View style={styles.postedTimeContainer}>
 					<Text style={styles.postedTime}>{formatedTimestamp}</Text>
@@ -276,6 +277,12 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		if (!this.props.listLoading) {
 			this.setState({comment});
 		}
+	};
+
+	private onSubmitCommentHandler = () => {
+		const {id, onSubmitComment} = this.props;
+		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
+		onSubmitComment(escapedComment, id);
 	};
 
 	private onCommentInputPress = () => {

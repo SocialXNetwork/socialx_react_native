@@ -13,15 +13,12 @@ import {IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from '../../../
 
 // import {ipfsConfig as base} from 'configuration';
 import {FEED_TYPES, OS_TYPES} from '../../../environment/consts';
-import {suggestedItems} from '../../../mocks';
 import {IMediaProps, IWallPostCardProps} from '../../../types';
 import {SHARE_SECTION_HEIGHT, USER_PLACEHOLDER_AVATAR} from './UserFeedScreen.style';
 import {UserFeedScreenView} from './UserFeedScreen.view';
 
 const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
-const SUGGESTIONS_POSTS_INTERVAL = 20;
-let SUGGESTIONS_MULTIPLIER = 1;
 
 export interface IFeedProps {
 	shareSectionPlaceholder: string | null;
@@ -52,18 +49,6 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			getText,
 		} = this.props;
 
-		// Temporary, the backend should send all the data
-		if (posts && posts.length > SUGGESTIONS_MULTIPLIER * SUGGESTIONS_POSTS_INTERVAL) {
-			posts.map((item: IWallPostCardProps, index: number) => {
-				if (index === SUGGESTIONS_MULTIPLIER * SUGGESTIONS_POSTS_INTERVAL && !item.suggested) {
-					item.suggested = suggestedItems;
-					return item;
-				}
-				return item;
-			});
-			SUGGESTIONS_MULTIPLIER++;
-		}
-
 		const shareSectionOpacityInterpolation = this.scrollY.interpolate({
 			inputRange: [0, SHARE_SECTION_HEIGHT / 2, SHARE_SECTION_HEIGHT],
 			outputRange: [1, 0.3, 0],
@@ -89,6 +74,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				onPostDeletePress={this.onPostDeletePressHandler}
 				onUserPress={this.gotoUserProfile}
 				onAddCommentPress={this.onAddCommentPressHandler}
+				onSubmitComment={this.onSubmitCommentHandler}
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
@@ -183,6 +169,10 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				viewPosition: 0,
 			});
 		}
+	};
+
+	private onSubmitCommentHandler = (escapedComment: string, postId: string) => {
+		this.props.postComment(escapedComment, postId);
 	};
 
 	private calculateScrollOffset = (cardHeight: number, index: number) => {

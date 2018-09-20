@@ -127,10 +127,10 @@ export interface ILike {
 
 export interface ISuggestionCardItem {
 	userId: string;
-	name: string;
+	fullName: string;
 	userName: string;
 	avatarURL: string;
-	friend: boolean;
+	relationship: SearchResultKind;
 }
 
 interface ISimpleWallPostCardProps {
@@ -154,6 +154,7 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	onUserPress: (userId: string) => void;
 	onCommentPress: (startComment: boolean) => void;
 	onAddComment: (height: number) => void;
+	onSubmitComment: (escapedComment: string, postId: string) => void;
 	likedByMe: boolean;
 	canDelete: boolean;
 	media: IMediaProps[];

@@ -32,6 +32,7 @@ interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	loadingMorePosts: boolean;
 	hasMorePosts: boolean;
 	onAddCommentPress: (scrollYOffset: number, cardHeight: number) => void;
+	onSubmitComment: (escapedComment: string, postId: string) => void;
 	shareSectionOpacityInterpolation: number;
 	scrollRef: React.RefObject<FlatList<IWallPostCardProps>>;
 	scrollY: AnimatedValue;
@@ -127,6 +128,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					onLikeButtonPress={() => this.props.onLikePress(likedByMe, data.item.id)}
 					onUserPress={(userId: string) => this.props.onUserPress(userId)}
 					onAddComment={(cardHeight: number) => this.props.onAddCommentPress(data.index, cardHeight)}
+					onSubmitComment={this.props.onSubmitComment}
 				/>
 			</View>
 		);

@@ -40,6 +40,7 @@ storiesOf('Screens/mainTabNav', module)
 				loadingMorePosts={loadingMorePosts}
 				hasMorePosts={hasMorePosts}
 				onAddCommentPress={action('onAddCommentPress')}
+				onSubmitComment={action('onSubmitComment')}
 				shareSectionOpacityInterpolation={1}
 				scrollRef={React.createRef()}
 				scrollY={new Animated.Value(0)}
