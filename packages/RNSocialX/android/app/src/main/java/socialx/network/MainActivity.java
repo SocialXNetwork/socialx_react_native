@@ -1,6 +1,9 @@
-package com.rnsocialx;
+package socialx.network;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle;
+
+import com.reactnativecomponent.splashscreen.RCTSplashScreen;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +14,11 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "RNSocialX";
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        RCTSplashScreen.openSplashScreen(this);
+        super.onCreate(savedInstanceState);
     }
 }

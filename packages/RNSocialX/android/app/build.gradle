@@ -98,7 +98,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.rnsocialx"
+        applicationId "socialx.network"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -106,6 +106,10 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        // TODO: below two settings are required by https://github.com/react-native-community/react-native-blur
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -115,10 +119,21 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+            if (project.hasProperty('SOCIALX_RELEASE_STORE_FILE')) {
+                storeFile file(SOCIALX_RELEASE_STORE_FILE)
+                storePassword SOCIALX_RELEASE_STORE_PASSWORD
+                keyAlias SOCIALX_RELEASE_KEY_ALIAS
+                keyPassword SOCIALX_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -147,6 +162,8 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-smart-splash-screen')
+    compile project(':bugsnag-react-native')
     compile project(':react-native-photo-view')
     compile project(':react-native-svg')
     compile project(':react-native-video')
