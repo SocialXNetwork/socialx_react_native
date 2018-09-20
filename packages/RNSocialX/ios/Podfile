@@ -26,6 +26,8 @@ target 'RNSocialX' do
 
   pod 'BugsnagReactNative', :path => '../node_modules/bugsnag-react-native'
 
+  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
+
   target 'RNSocialXTests' do
     inherit! :search_paths
     # Pods for testing

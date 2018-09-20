@@ -57,6 +57,7 @@ The following RN packages are linked:
 16. react-native-svg
 17. bugsnag-react-native (Podfile)
 18. react-native-smart-splash-screen
+19. react-native-orientation (Podfile)
 
 Before you begin, make sure you have installed the following tooling
 
