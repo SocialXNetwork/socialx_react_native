@@ -1,8 +1,10 @@
-package com.rnsocialx;
+package socialx.network;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
+import com.bugsnag.BugsnagReactNative;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.horcrux.svg.SvgPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -38,6 +40,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RCTSplashScreenPackage(),
+            BugsnagReactNative.getPackage(),
             new PhotoViewPackage(),
             new SvgPackage(),
             new ReactVideoPackage(),
