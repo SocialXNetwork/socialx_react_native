@@ -10,6 +10,9 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+// react-native-smart-splash-screen
+#import "RCTSplashScreen.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -22,6 +25,9 @@
                                                       moduleName:@"RNSocialX"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
+  
+  [RCTSplashScreen open:rootView withImageNamed:@"SplashIcon"];
+  
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
