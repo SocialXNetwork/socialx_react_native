@@ -3,6 +3,7 @@ package socialx.network;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.reactnative.photoview.PhotoViewPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new OrientationPackage(),
             new RCTSplashScreenPackage(),
             BugsnagReactNative.getPackage(),
             new PhotoViewPackage(),

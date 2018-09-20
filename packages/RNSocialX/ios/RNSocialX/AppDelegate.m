@@ -10,6 +10,9 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+// react-native-orientation
+#import "Orientation.h"
+
 // react-native-smart-splash-screen
 #import "RCTSplashScreen.h"
 
@@ -36,6 +39,10 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end
