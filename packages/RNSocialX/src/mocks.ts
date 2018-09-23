@@ -1,12 +1,10 @@
-import {AccountCurrencyData} from './components';
-import {CoinSymbol} from './environment/consts';
+// TODO: @serkan remove this mock, or at least it should probably be only used in stories
+// also ask @alex @ionut about suggestedItems
 import {
-	ICryptoStats,
 	ICurrentUser,
 	ILike,
 	ISimpleComment,
 	ISuggestionCardItem,
-	IVisitedUser,
 	IWallPostCardProps,
 	MediaTypeImage,
 	SearchResultKind,
@@ -91,6 +89,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 	},
 ];
 
+// TODO: @alex @ionut why do we have actions and data props mixed together like this?
 export const posts: IWallPostCardProps[] = [
 	{
 		id: '1',
@@ -287,54 +286,4 @@ export const currentUser: ICurrentUser = {
 	],
 	recentPosts: posts,
 	miningEnabled: false,
-};
-
-export const visitedUser: IVisitedUser = {
-	userId: '999',
-	avatarURL: avatar,
-	fullName: 'Alex Sirbu',
-	userName: 'alexsirbu',
-	aboutMeText: 'Lorem ipsum dolor sit amet',
-	numberOfLikes: 25,
-	numberOfPhotos: 1,
-	numberOfFriends: 2,
-	numberOfViews: 87,
-	mediaObjects: [
-		{
-			url:
-				'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-			hash: '131289fsdf03yr9hehdiwb32',
-			type: MediaTypeImage,
-			extension: 'jpg',
-			size: 512,
-			numberOfLikes: 0,
-			numberOfComments: 0,
-		},
-	],
-	recentPosts: posts,
-	relationship: SearchResultKind.NotFriend,
-};
-
-const digitalCoins: AccountCurrencyData[] = [
-	{
-		coinSymbol: CoinSymbol.SOCX,
-		coinAmount: 799151.311,
-		usdValue: 34621,
-		trendPercentage: 4.5,
-		graphData: [0.2, 0.22, 0.19, 0.15, 0.18, 0.25, 0.23, 0.26, 0.2, 0.22, 0.19, 0.15, 0.18, 0.25, 0.23, 0.26],
-	},
-	{
-		coinSymbol: CoinSymbol.ETH,
-		coinAmount: 10.578,
-		usdValue: 1341415,
-		trendPercentage: -2.6,
-		graphData: [800, 850, 820, 840, 780, 810, 750, 720, 800, 850, 820, 840, 780, 810, 750, 720],
-	},
-];
-
-export const cryptoStats: ICryptoStats = {
-	coins: 53680,
-	contribution: 42205,
-	returnPercentage: 27.21,
-	digitalCoins,
 };

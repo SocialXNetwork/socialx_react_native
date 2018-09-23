@@ -11,7 +11,7 @@ interface IForgotPasswordScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-interface ForgotPasswordData {
+interface IForgotPasswordData {
 	userName: string;
 }
 
@@ -24,14 +24,14 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 		initialValues={{
 			userName: '',
 		}}
-		validate={({userName}: ForgotPasswordData) => {
-			const errors: FormikErrors<ForgotPasswordData> = {};
+		validate={({userName}: IForgotPasswordData) => {
+			const errors: FormikErrors<IForgotPasswordData> = {};
 			if (!userName) {
 				errors.userName = getText('forgot.password.userName.required');
 			}
 			return errors;
 		}}
-		onSubmit={(values: ForgotPasswordData) => onSendResetCode(values.userName)}
+		onSubmit={(values: IForgotPasswordData) => onSendResetCode(values.userName)}
 		render={({
 			values: {userName},
 			errors,
@@ -39,7 +39,7 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 			handleSubmit,
 			isValid,
 			setFieldValue,
-		}: FormikProps<ForgotPasswordData>) => (
+		}: FormikProps<IForgotPasswordData>) => (
 			<View style={style.container}>
 				{
 					// @ts-ignore

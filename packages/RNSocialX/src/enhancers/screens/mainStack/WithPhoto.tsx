@@ -6,13 +6,13 @@
 
 import * as React from 'react';
 
-import {FriendsSearchResult, IResizeProps, ITranslatedProps, WallPostPhotoOptimized} from '../../../types';
+import {IFriendsSearchResult, IResizeProps, ITranslatedProps, IWallPostPhotoOptimized} from '../../../types';
 
-interface WallPostPhotoData {
-	mediaObjects: WallPostPhotoOptimized[];
+interface IWallPostPhotoData {
+	mediaObjects: IWallPostPhotoOptimized[];
 	title?: string;
 	location?: string;
-	taggedFriends?: FriendsSearchResult[];
+	taggedFriends?: IFriendsSearchResult[];
 }
 
 const mock: IWithPhotoEnhancedProps = {
@@ -23,7 +23,7 @@ const mock: IWithPhotoEnhancedProps = {
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
-		createPost: (wallPostData: WallPostPhotoData) => {
+		createPost: (wallPostData: IWallPostPhotoData) => {
 			/**/
 		},
 	},
@@ -35,7 +35,7 @@ export interface IWithPhotoEnhancedData extends IResizeProps {
 }
 
 export interface IWithPhotoEnhancedActions extends ITranslatedProps {
-	createPost: (wallPostData: WallPostPhotoData) => void;
+	createPost: (wallPostData: IWallPostPhotoData) => void;
 }
 
 interface IWithPhotoEnhancedProps {

@@ -7,7 +7,7 @@ import {SafeAreaView} from 'react-navigation';
 import {WithManagedTransitions} from '../managedTransitions';
 import styles from './DotsMenuModal.style';
 
-export interface DotsMenuItem {
+export interface IDotsMenuItem {
 	label: string;
 	icon: string;
 	actionHandler: () => void;
@@ -15,7 +15,7 @@ export interface DotsMenuItem {
 
 interface IDotsMenuModalProps {
 	visible: boolean;
-	items: DotsMenuItem[];
+	items: IDotsMenuItem[];
 	onBackdropPress: () => void;
 }
 
@@ -34,7 +34,7 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({visible, items, o
 				style={styles.container}
 			>
 				<SafeAreaView style={styles.innerContainer}>
-					{items.map((item: DotsMenuItem, index: number) => {
+					{items.map((item: IDotsMenuItem, index: number) => {
 						if (index === 0) {
 							return (
 								<View style={[styles.row, styles.first, styles.separator]} key={index}>

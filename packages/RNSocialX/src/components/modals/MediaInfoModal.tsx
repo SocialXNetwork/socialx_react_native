@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Alert, Linking, Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 
-import {ITranslatedProps, MediaTypes} from '../../types';
+import {IMediaTypes, ITranslatedProps} from '../../types';
 import {WithManagedTransitions} from '../managedTransitions';
 import styles from './MediaInfoModal.style';
 
@@ -12,7 +12,7 @@ interface IMediaInfoOverlayProps extends ITranslatedProps {
 	mediaHash: string;
 	mediaSize: number;
 	mediaName: string | null;
-	mediaType: MediaTypes;
+	mediaType: IMediaTypes;
 	mediaURL: string;
 	closeHandler: () => void;
 }

@@ -32,7 +32,7 @@ import style, {customStyleProps} from './RegisterScreen.style';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
-export interface RegisterData {
+export interface IRegisterData {
 	email: string;
 	name: string;
 	userName: string;
@@ -41,7 +41,7 @@ export interface RegisterData {
 	avatarImage: ImageSourcePropType;
 }
 
-interface RegisterFormData extends RegisterData {
+interface IRegisterFormData extends IRegisterData {
 	confirmPassword: string;
 	termsAccepted: boolean;
 	countryCCA2: string;
@@ -55,7 +55,7 @@ interface IRegisterScreenViewProps extends ITranslatedProps {
 	onSmsCodeConfirmed: (code: string) => void;
 	onSmsCodeDeclined: () => void;
 	onSmsCodeResend: () => void;
-	onStartRegister: (userData: RegisterData) => void;
+	onStartRegister: (userData: IRegisterData) => void;
 	onAlreadyHaveCode: () => void;
 	onNavigateToTermsAndConditions: () => void;
 	onGoBack: () => void;
@@ -145,8 +145,8 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							confirmPassword,
 							countryCallingCode,
 							countryCCA2,
-						}: RegisterFormData) => {
-							const errors: FormikErrors<RegisterFormData> = {};
+						}: IRegisterFormData) => {
+							const errors: FormikErrors<IRegisterFormData> = {};
 							if (!email) {
 								errors.email = getText('register.screen.email.required');
 							} else if (!EMAIL_SCHEMA.isValidSync(email)) {
@@ -201,7 +201,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							password,
 							avatarImage,
 							countryCCA2,
-						}: RegisterFormData) => {
+						}: IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
 								const rawPhoneNumber = phoneUtil.parse(`+${countryCallingCode}${phoneNumber}`, countryCCA2);
 								onStartRegister({
@@ -235,7 +235,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							touched,
 							setFieldValue,
 							setFieldTouched,
-						}: FormikProps<RegisterFormData>) => (
+						}: FormikProps<IRegisterFormData>) => (
 							<React.Fragment>
 								<InputSMSCodeModal
 									errorMessage={smsCodeErrorMessage}

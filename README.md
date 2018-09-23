@@ -1,4 +1,5 @@
 ### Todo
+- [ ] Fix RN postinstall scripts
 - [ ] Add fastlane
 - [ ] Add bugsnag
 - [ ] Add storybook

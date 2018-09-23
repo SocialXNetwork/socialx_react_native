@@ -9,6 +9,7 @@ import {FEED_TYPES} from '../../../environment/consts';
 import {currentUser, posts} from '../../../mocks';
 import {ICurrentUser, ITranslatedProps, IWallPostCardProps} from '../../../types';
 
+// TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 const mock: IWithUserFeedEnhancedProps = {
 	data: {
 		currentUser,

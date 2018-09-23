@@ -13,14 +13,14 @@ import {
 	WithInlineLoader,
 } from '../../components';
 import {IWithLoaderProps} from '../../components/inlineLoader';
-import {FriendsSearchResult, ITranslatedProps} from '../../types';
+import {IFriendsSearchResult, ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './PhotoScreen.style';
 
 interface IPhotoScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	avatarURL?: string;
 	mediaObjects: string[];
 	showTagFriendsModal: () => void;
-	taggedFriends: FriendsSearchResult[];
+	taggedFriends: IFriendsSearchResult[];
 	locationEnabled: boolean;
 	tagFriends: boolean;
 	location: string;
@@ -78,7 +78,7 @@ const LocationSection: React.SFC<ILocationSectionProps> = ({
 interface ITagFriendsSectionProps {
 	tagFriends: boolean;
 	onTagFriendsToggle: () => void;
-	taggedFriends: FriendsSearchResult[];
+	taggedFriends: IFriendsSearchResult[];
 	showTagFriendsModal: () => void;
 	checkboxLabel: string;
 }

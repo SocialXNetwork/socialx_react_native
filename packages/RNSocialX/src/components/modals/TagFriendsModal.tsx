@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 
 import {IManagedModal, InputSizes, PeopleSearchResultEntry, PrimaryTextInput, TRKeyboardKeys} from '..';
 import {OS_TYPES} from '../../environment/consts';
-import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../../types';
+import {IFriendsSearchResult, IResizeProps, ITranslatedProps} from '../../types';
 import style, {customStyleProps} from './TagFriendsModal.style';
 
 interface ITagFriendsModalProps extends ITranslatedProps, IManagedModal, IResizeProps {
@@ -13,10 +13,10 @@ interface ITagFriendsModalProps extends ITranslatedProps, IManagedModal, IResize
 	doneHandler: () => void;
 	cancelHandler: () => void;
 	blurViewRef: any;
-	searchResults: FriendsSearchResult[];
-	selectedUsers: FriendsSearchResult[];
+	searchResults: IFriendsSearchResult[];
+	selectedUsers: IFriendsSearchResult[];
 	onSearchUpdated: (term: string) => void;
-	selectTagUserInModal: (friend: FriendsSearchResult) => void;
+	selectTagUserInModal: (friend: IFriendsSearchResult) => void;
 }
 
 export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
@@ -70,7 +70,7 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 						alwaysBounceVertical={false}
 						keyboardShouldPersistTaps={'handled'}
 					>
-						{searchResults.map((searchResult: FriendsSearchResult, index: number) => (
+						{searchResults.map((searchResult: IFriendsSearchResult, index: number) => (
 							<PeopleSearchResultEntry
 								key={index}
 								avatarURL={searchResult.avatarURL}
