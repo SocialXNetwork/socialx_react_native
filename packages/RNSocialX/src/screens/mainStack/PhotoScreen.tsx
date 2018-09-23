@@ -12,18 +12,18 @@ import * as React from 'react';
 
 import {WithModalForAddFriends} from '../../components';
 import {IWithPhotoEnhancedActions, IWithPhotoEnhancedData, WithPhoto} from '../../enhancers/screens';
-import {FriendsSearchResult, INavigationProps, WallPostPhotoOptimized} from '../../types';
+import {IFriendsSearchResult, INavigationProps, IWallPostPhotoOptimized} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
-	PickerImageMultiple,
+	IPickerImageMultiple,
 } from '../../utilities';
 import {PhotoScreenView} from './PhotoScreen.view';
 
 interface IPhotoScreenNavParams {
 	params: {
-		mediaObjects: WallPostPhotoOptimized[];
+		mediaObjects: IWallPostPhotoOptimized[];
 	};
 }
 
@@ -34,11 +34,11 @@ interface IPhotoScreenState {
 	tagFriends: boolean;
 	location: string;
 	shareText: string;
-	mediaObjects: WallPostPhotoOptimized[];
+	mediaObjects: IWallPostPhotoOptimized[];
 }
 
 class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
-	private addedFriends: FriendsSearchResult[] = [];
+	private addedFriends: IFriendsSearchResult[] = [];
 
 	public render() {
 		const {currentUserAvatarURL, loading, marginBottom, navigation, getText} = this.props;
@@ -111,7 +111,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				title: getText('new.wall.post.screen.menu.title'),
 			},
 			async (buttonIndex: number) => {
-				let selectedMediaObjects: PickerImageMultiple = [];
+				let selectedMediaObjects: IPickerImageMultiple = [];
 				if (buttonIndex === 0) {
 					selectedMediaObjects = await getGalleryMediaObjectMultiple();
 				} else if (buttonIndex === 1) {

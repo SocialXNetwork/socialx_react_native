@@ -7,7 +7,7 @@
 import * as React from 'react';
 import {NavigationScreenProp} from 'react-navigation';
 
-import {DotsMenuItem} from '../../../components';
+import {IDotsMenuItem} from '../../../components';
 import {currentUser} from '../../../mocks';
 import {ICurrentUser, ITranslatedProps} from '../../../types';
 
@@ -22,7 +22,7 @@ const mock: IWithMyProfileEnhancedProps = {
 		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => {
 			/**/
 		},
-		showDotsMenuModal: (items: DotsMenuItem[]) => {
+		showDotsMenuModal: (items: IDotsMenuItem[]) => {
 			/**/
 		},
 		refreshUser: (userId: string) => {
@@ -42,7 +42,7 @@ export interface IWithMyProfileEnhancedData {
 
 export interface IWithMyProfileEnhancedActions extends ITranslatedProps {
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
-	showDotsMenuModal: (items: DotsMenuItem[]) => void;
+	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
 	refreshUser: (userId: string) => void;
 	logout: () => void;
 }

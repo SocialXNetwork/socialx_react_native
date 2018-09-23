@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import {currentUser} from '../../../mocks';
-import {SettingsData} from '../../../screens/myProfile/SettingsScreen.view';
+import {ISettingsData} from '../../../screens/myProfile/SettingsScreen.view';
 import {ICurrentUser, ITranslatedProps} from '../../../types';
 
 const mock: IWithSettingsEnhancedProps = {
@@ -15,7 +15,7 @@ const mock: IWithSettingsEnhancedProps = {
 		settingsLoading: false,
 	},
 	actions: {
-		updateUserProfile: (saveData: SettingsData, avatarHasChanged: boolean) => {
+		updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => {
 			/**/
 		},
 		logout: () => {
@@ -27,7 +27,7 @@ const mock: IWithSettingsEnhancedProps = {
 
 export interface ISaveChangesParams {
 	currentUser: ICurrentUser;
-	updateUserProfile: (saveData: SettingsData, avatarHasChanged: boolean) => void;
+	updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => void;
 }
 
 export interface IWithSettingsEnhancedData {
@@ -36,7 +36,7 @@ export interface IWithSettingsEnhancedData {
 }
 
 export interface IWithSettingsEnhancedActions extends ITranslatedProps {
-	updateUserProfile: (saveData: SettingsData, avatarHasChanged: boolean) => void;
+	updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => void;
 	logout: () => void;
 }
 

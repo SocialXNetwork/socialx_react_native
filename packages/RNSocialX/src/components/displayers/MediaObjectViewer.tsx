@@ -7,20 +7,20 @@ import PhotoView from 'react-native-photo-view';
 
 import {IVideoOptions, TouchableWithDoublePress, VideoPlayer} from '../';
 import {OS_TYPES} from '../../environment/consts';
-import {ITranslatedProps, MediaTypeImage, MediaTypes, MediaTypeVideo} from '../../types';
+import {IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo} from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	uri: string;
 	style: StyleProp<ViewStyle>;
 	resizeMode: 'cover' | 'contain';
 	extension: string;
-	type: MediaTypes;
+	type: IMediaTypes;
 	onPress: () => void;
 	onDoublePress: () => void;
 	canZoom: boolean;
 }
 
-const getMimeType = (uri: string, type: MediaTypes | undefined, extension: string | undefined) => {
+const getMimeType = (uri: string, type: IMediaTypes | undefined, extension: string | undefined) => {
 	if (type) {
 		return type.key;
 	} else if (mime.extensions[extension]) {

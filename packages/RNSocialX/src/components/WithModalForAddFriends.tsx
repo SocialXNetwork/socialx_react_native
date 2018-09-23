@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {findNodeHandle, View} from 'react-native';
 
-import {FriendsSearchResult, IResizeProps, ITranslatedProps} from '../types';
+import {IFriendsSearchResult, IResizeProps, ITranslatedProps} from '../types';
 import {TagFriendsModal, WithManagedTransitions} from './';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
@@ -44,16 +44,16 @@ const SEARCH_RESULTS_TAG_FRIENDS = [
 ];
 
 interface IModalForAddFriendsProps {
-	addedFriends: FriendsSearchResult[];
+	addedFriends: IFriendsSearchResult[];
 	showAddFriendsModal: () => void;
 }
 
 interface IWithModalForAddFriendsState {
 	modalVisible: boolean;
 	blurViewRef: any;
-	friendsSearchResults: FriendsSearchResult[];
-	taggedFriendsInModal: FriendsSearchResult[];
-	taggedFriends: FriendsSearchResult[];
+	friendsSearchResults: IFriendsSearchResult[];
+	taggedFriendsInModal: IFriendsSearchResult[];
+	taggedFriends: IFriendsSearchResult[];
 }
 
 interface IWithModalForAddFriendsProps extends IResizeProps, ITranslatedProps {
@@ -132,13 +132,13 @@ export class WithModalForAddFriends extends React.Component<
 		});
 	};
 
-	private tagFriendHandler = (friend: FriendsSearchResult) => {
+	private tagFriendHandler = (friend: IFriendsSearchResult) => {
 		this.setState({taggedFriendsInModal: [...this.state.taggedFriendsInModal, friend]});
 	};
 
 	private friendsSearchUpdatedHandler = (term: string) => {
 		// TODO: make real search here
-		let friendsSearchResults: FriendsSearchResult[] = [];
+		let friendsSearchResults: IFriendsSearchResult[] = [];
 		if (term.length > 3 && term.length < 8) {
 			friendsSearchResults = SEARCH_RESULTS_TAG_FRIENDS;
 		}

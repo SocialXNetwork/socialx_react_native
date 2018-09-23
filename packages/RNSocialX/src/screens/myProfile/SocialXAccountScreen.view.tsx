@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 
 import {
-	AccountCurrencyData,
 	Header,
 	HeaderButton,
+	IAccountCurrencyData,
 	PrimaryButton,
 	SocialXAccountCurrencyItem,
 	SocialXAccountTitleCard,
@@ -16,7 +16,7 @@ export interface ISocialXAccountScreenViewProps extends ITranslatedProps {
 	coins: number;
 	contribution: number;
 	returnPercentage: number;
-	digitalCoins: AccountCurrencyData[];
+	digitalCoins: IAccountCurrencyData[];
 	onSend: () => void;
 	onReceive: () => void;
 	onGoBack: () => void;

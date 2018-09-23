@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import {IResizeProps, ITranslatedProps, WallPostPhotoOptimized} from '../../../types';
+import {IResizeProps, ITranslatedProps, IWallPostPhotoOptimized} from '../../../types';
 
 const mock: IWithCreateWallPostEnhancedProps = {
 	data: {
@@ -14,15 +14,15 @@ const mock: IWithCreateWallPostEnhancedProps = {
 		currentUserAvatarURL: 'https://placeimg.com/200/200/people',
 	},
 	actions: {
-		createPost: (wallPostData: WallPostData) => {
+		createPost: (wallPostData: IWallPostData) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
-interface WallPostData {
-	mediaObjects: WallPostPhotoOptimized[];
+interface IWallPostData {
+	mediaObjects: IWallPostPhotoOptimized[];
 	text: string;
 }
 
@@ -31,7 +31,7 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps {
-	createPost: (wallPostData: WallPostData) => void;
+	createPost: (wallPostData: IWallPostData) => void;
 }
 
 interface IWithCreateWallPostEnhancedProps {

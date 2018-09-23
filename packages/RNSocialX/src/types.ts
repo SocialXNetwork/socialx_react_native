@@ -1,8 +1,8 @@
 import {Image as PickerImage} from 'react-native-image-crop-picker';
 import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
-import {AccountCurrencyData} from './components';
+import {IAccountCurrencyData} from './components';
 
-export interface FriendsSearchResult {
+export interface IFriendsSearchResult {
 	id: string;
 	fullName: string;
 	location: string;
@@ -42,27 +42,27 @@ export interface IConfirmActions {
 
 // Media types
 
-export interface MediaTypes {
+export interface IMediaTypes {
 	key: string;
 	name: string;
 	category: string;
 }
 
-export const MediaTypeImage: MediaTypes = {
+export const MediaTypeImage: IMediaTypes = {
 	key: 'image',
 	name: 'Photo',
 	category: 'Photography',
 };
 
-export const MediaTypeVideo: MediaTypes = {
+export const MediaTypeVideo: IMediaTypes = {
 	key: 'video',
 	name: 'Video',
 	category: 'Videos',
 };
 
-export interface GridMediaObject {
+export interface IGridMediaObject {
 	url: string;
-	type: MediaTypes;
+	type: IMediaTypes;
 	index: number;
 }
 
@@ -71,7 +71,7 @@ export interface GridMediaObject {
 export interface IMediaProps {
 	url: string;
 	hash: string;
-	type: MediaTypes;
+	type: IMediaTypes;
 	extension: string;
 	size: number;
 	numberOfLikes: number;
@@ -114,7 +114,7 @@ export enum CommentsSortingOptions {
 	Recent = 'Recent',
 }
 
-export interface WallPostPhotoOptimized extends PickerImage {
+export interface IWallPostPhotoOptimized extends PickerImage {
 	contentOptimizedPath?: string;
 	type: string;
 	pathx: string;
@@ -204,7 +204,7 @@ export interface ICryptoStats {
 	coins: number;
 	contribution: number;
 	returnPercentage: number;
-	digitalCoins: AccountCurrencyData[];
+	digitalCoins: IAccountCurrencyData[];
 }
 
 export interface INavigationProps<SP = any, SC = any> {

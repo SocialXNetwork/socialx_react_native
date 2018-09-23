@@ -8,8 +8,8 @@ import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
-	PickerImage,
-	PickerImageMultiple,
+	IPickerImage,
+	IPickerImageMultiple,
 } from '../../../utilities';
 import {NavigationItems} from './';
 
@@ -83,7 +83,7 @@ export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBa
 				title: getText('tab.bar.bottom.photo.picker.title'),
 			},
 			async (buttonIndex: number) => {
-				let selectedMediaObjects: PickerImageMultiple = [];
+				let selectedMediaObjects: IPickerImageMultiple = [];
 				if (buttonIndex === 0) {
 					selectedMediaObjects = await getGalleryMediaObjectMultiple();
 				} else if (buttonIndex === 1) {
@@ -92,7 +92,7 @@ export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBa
 
 				if (selectedMediaObjects.length > 0) {
 					const optimizedMediaObjects = await Promise.all(
-						selectedMediaObjects.map(async (mediaObject: PickerImage) => getOptimizedMediaObject(mediaObject)),
+						selectedMediaObjects.map(async (mediaObject: IPickerImage) => getOptimizedMediaObject(mediaObject)),
 					);
 					navigation.navigate('PhotoScreen', {mediaObjects: optimizedMediaObjects});
 				}

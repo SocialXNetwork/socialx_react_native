@@ -15,25 +15,25 @@ const DEFAULT_PICKER_OPTIONS: Partial<Options> = {
 	compressImageQuality: 0.8,
 };
 
-export type PickerImage = Image;
-export type PickerImageMultiple = Image[];
-type PickerImageOrMultiple = Image | Image[];
+export type IPickerImage = Image;
+export type IPickerImageMultiple = Image[];
+type IPickerImageOrMultiple = Image | Image[];
 
-export const getCameraMediaObject = async (options: Partial<Options> = {}): Promise<PickerImage | undefined> => {
+export const getCameraMediaObject = async (options: Partial<Options> = {}): Promise<IPickerImage | undefined> => {
 	try {
-		const mediaObject: PickerImage | PickerImage[] = await ImagePicker.openCamera({
+		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openCamera({
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});
-		return mediaObject as PickerImage;
+		return mediaObject as IPickerImage;
 	} catch (ex) {
 		console.log('getCameraMediaObject error', ex);
 	}
 };
 
-export const getGalleryMediaObjectMultiple = async (options = {}): Promise<PickerImageMultiple> => {
+export const getGalleryMediaObjectMultiple = async (options = {}): Promise<IPickerImageMultiple> => {
 	try {
-		const mediaObject: PickerImageOrMultiple = await ImagePicker.openPicker({
+		const mediaObject: IPickerImageOrMultiple = await ImagePicker.openPicker({
 			...DEFAULT_PICKER_OPTIONS,
 			multiple: true,
 			...options,
@@ -48,33 +48,33 @@ export const getGalleryMediaObjectMultiple = async (options = {}): Promise<Picke
 	}
 };
 
-export const getGalleryMediaObject = async (options: Partial<Options> = {}): Promise<PickerImage | undefined> => {
+export const getGalleryMediaObject = async (options: Partial<Options> = {}): Promise<IPickerImage | undefined> => {
 	try {
-		const mediaObject: PickerImage | PickerImage[] = await ImagePicker.openPicker({
+		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openPicker({
 			...DEFAULT_PICKER_OPTIONS,
 			...options,
 		});
-		return mediaObject as PickerImage;
+		return mediaObject as IPickerImage;
 	} catch (ex) {
 		console.log('getGalleryMediaObject error', ex);
 	}
 };
 
-export const getCameraMediaObjectMultiple = async (options = {}): Promise<PickerImageMultiple> => {
+export const getCameraMediaObjectMultiple = async (options = {}): Promise<IPickerImageMultiple> => {
 	try {
-		const mediaObject: PickerImage | PickerImage[] = await ImagePicker.openCamera({
+		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openCamera({
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});
-		return [mediaObject as PickerImage];
-		// return mediaObject as PickerImageMultiple;
+		return [mediaObject as IPickerImage];
+		// return mediaObject as IPickerImageMultiple;
 	} catch (ex) {
 		console.log('getCameraMediaObjectMultiple error', ex);
 		return [];
 	}
 };
 
-export const getOptimizedMediaObject = async (originalMedia: PickerImage) => {
+export const getOptimizedMediaObject = async (originalMedia: IPickerImage) => {
 	let contentOptimizedPath;
 	if (originalMedia.mime.startsWith(MediaTypeImage.key)) {
 		const optimized = await ImageResizer.createResizedImage(

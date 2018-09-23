@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {RegisterData} from '../../../screens/preAuth/RegisterScreen.view';
+import {IRegisterData} from '../../../screens/preAuth/RegisterScreen.view';
 import {ITranslatedProps} from '../../../types';
 
 const mock: IWithRegisterEnhancedProps = {
@@ -21,7 +21,7 @@ const mock: IWithRegisterEnhancedProps = {
 		resendSMSCode: () => {
 			/**/
 		},
-		doRegister: (registerData: RegisterData) => {
+		doRegister: (registerData: IRegisterData) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -37,7 +37,7 @@ export interface IWithRegisterEnhancedData {
 export interface IWithRegisterEnhancedActions extends ITranslatedProps {
 	validateSMSCode: (code: string) => void;
 	resendSMSCode: () => void;
-	doRegister: (registerData: RegisterData) => void;
+	doRegister: (registerData: IRegisterData) => void;
 }
 
 interface IWithRegisterEnhancedProps {

@@ -5,13 +5,38 @@
  */
 
 import * as React from 'react';
-import {currentUser, visitedUser} from '../../../mocks';
-import {ICurrentUser, ITranslatedProps, IVisitedUser} from '../../../types';
+import {currentUser, posts} from '../../../mocks';
+import {ICurrentUser, ITranslatedProps, IVisitedUser, MediaTypeImage, SearchResultKind} from '../../../types';
 
 const mock = {
 	data: {
 		currentUser,
-		visitedUser,
+		visitedUser: {
+			userId: '999',
+			avatarURL: 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
+			fullName: 'Alex Sirbu',
+			userName: 'alexsirbu',
+			aboutMeText: 'Lorem ipsum dolor sit amet',
+			numberOfLikes: 25,
+			numberOfPhotos: 1,
+			numberOfFriends: 2,
+			numberOfViews: 87,
+			mediaObjects: [
+				{
+					url:
+						'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
+					hash: '131289fsdf03yr9hehdiwb32',
+					type: MediaTypeImage,
+					extension: 'jpg',
+					size: 512,
+					numberOfLikes: 0,
+					numberOfComments: 0,
+				},
+			],
+			// TODO: @alex @ionut the posts mock is mixed with actions, what is this?
+			recentPosts: posts,
+			relationship: SearchResultKind.NotFriend,
+		},
 		refreshingProfile: false,
 		loadingProfile: false,
 	},

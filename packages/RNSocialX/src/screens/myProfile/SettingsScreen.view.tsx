@@ -23,7 +23,7 @@ import style, {customStyleProps} from './SettingsScreen.style';
 
 const EMAIL_SCHEMA = string().email();
 
-export interface SettingsData {
+export interface ISettingsData {
 	aboutMeText: string;
 	firstName: string;
 	lastName: string;
@@ -33,8 +33,8 @@ export interface SettingsData {
 	userName: string;
 }
 
-interface ISettingsScreenViewProps extends SettingsData, ITranslatedProps, IWithLoaderProps {
-	onSaveChanges: (values: SettingsData) => void;
+interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IWithLoaderProps {
+	onSaveChanges: (values: ISettingsData) => void;
 	onLogout: () => void;
 	onGoBack: () => void;
 }
@@ -64,8 +64,8 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				userName,
 				miningEnabled,
 			}}
-			validate={({firstName: firstNameValue, lastName: lastNameValue, email: emailValue}: SettingsData) => {
-				const errors: FormikErrors<SettingsData> = {};
+			validate={({firstName: firstNameValue, lastName: lastNameValue, email: emailValue}: ISettingsData) => {
+				const errors: FormikErrors<ISettingsData> = {};
 				if (!emailValue) {
 					errors.email = getText('settings.screen.email.required');
 				} else if (!EMAIL_SCHEMA.isValidSync(email)) {
@@ -79,7 +79,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				}
 				return errors;
 			}}
-			onSubmit={(values: SettingsData) => onSaveChanges(values)}
+			onSubmit={(values: ISettingsData) => onSaveChanges(values)}
 			render={({
 				values: {
 					aboutMeText: aboutMeTextValue,
@@ -95,7 +95,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				handleSubmit,
 				isValid,
 				setFieldValue,
-			}: FormikProps<SettingsData>) => (
+			}: FormikProps<ISettingsData>) => (
 				<View style={{flex: 1}}>
 					{
 						// @ts-ignore

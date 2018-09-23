@@ -29,7 +29,7 @@ export {PeopleSearchResultEntry} from './displayers/PeopleSearchResultEntry';
 export {PhotoGrid} from './displayers/PhotoGrid';
 export {ProfilePhotoGrid} from './displayers/ProfilePhotoGrid';
 export {ProfileTopContainer} from './displayers/ProfileTopContainer';
-export {SocialXAccountCurrencyItem, AccountCurrencyData} from './displayers/SocialXAccountCurrencyItem';
+export {SocialXAccountCurrencyItem, IAccountCurrencyData} from './displayers/SocialXAccountCurrencyItem';
 export {SocialXAccountTitleCard} from './displayers/SocialXAccountTitleCard';
 export {RichText} from './displayers/RichText/RichText';
 export {SearchHeader} from './displayers/SearchHeader';
@@ -64,7 +64,7 @@ export {WithManagedTransitions, ModalManager, IManagedModal, ManagedKeyboard} fr
 
 export {ActivityIndicatorModal} from './modals/ActivityIndicatorModal';
 export {ConfirmationModal} from './modals/ConfirmationModal';
-export {DotsMenuModal, DotsMenuItem} from './modals/DotsMenuModal';
+export {DotsMenuModal, IDotsMenuItem} from './modals/DotsMenuModal';
 export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
 export {MediaInfoModal} from './modals/MediaInfoModal';
 export {OfflineOverlayModal} from './modals/OfflineOverlayModal';

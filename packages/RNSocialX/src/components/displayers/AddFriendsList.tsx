@@ -2,12 +2,12 @@ import * as React from 'react';
 import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
 
 import {Icons} from '../../environment/theme';
-import {FriendsSearchResult} from '../../types';
+import {IFriendsSearchResult} from '../../types';
 import styles from './AddFriendsList.style';
 
 interface IAddFriendsListProps {
 	showTagFriendsModal: () => void;
-	taggedFriends: FriendsSearchResult[];
+	taggedFriends: IFriendsSearchResult[];
 }
 
 export const AddFriendsList: React.SFC<IAddFriendsListProps> = ({taggedFriends, showTagFriendsModal}) => (
