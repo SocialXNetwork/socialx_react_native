@@ -10,7 +10,8 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@socialx/commons": "^0.0.1",
-    "gun": "^0.9.99991"
+    "gun": "^0.9.99991",
+    "utility-types": "^2.1.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",

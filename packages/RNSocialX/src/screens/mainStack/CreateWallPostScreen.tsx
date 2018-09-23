@@ -13,12 +13,12 @@ import {
 	IWithCreateWallPostEnhancedData,
 	WithCreateWallPost,
 } from '../../enhancers/screens';
-import {INavigationProps, WallPostPhotoOptimized} from '../../types';
+import {INavigationProps, IWallPostPhotoOptimized} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
-	PickerImageMultiple,
+	IPickerImageMultiple,
 } from '../../utilities';
 import {CreateWallPostScreenView} from './CreateWallPostScreen.view';
 
@@ -27,7 +27,7 @@ type ICreateWallPostScreenProps = INavigationProps &
 	IWithCreateWallPostEnhancedActions;
 
 interface ICreateWallPostScreenState {
-	mediaObjects: WallPostPhotoOptimized[];
+	mediaObjects: IWallPostPhotoOptimized[];
 	shareText: string;
 }
 
@@ -44,7 +44,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 			<CreateWallPostScreenView
 				avatarImage={currentUserAvatarURL}
 				shareText={shareText}
-				mediaObjects={mediaObjects.map((mediaObject: WallPostPhotoOptimized) => mediaObject.path)}
+				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onPostSend={this.onSendPostHandler}
@@ -74,7 +74,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				title: getText('new.wall.post.screen.menu.title'),
 			},
 			async (buttonIndex: number) => {
-				let selectedMediaObjects: PickerImageMultiple = [];
+				let selectedMediaObjects: IPickerImageMultiple = [];
 				if (buttonIndex === 0) {
 					selectedMediaObjects = await getGalleryMediaObjectMultiple();
 				} else if (buttonIndex === 1) {

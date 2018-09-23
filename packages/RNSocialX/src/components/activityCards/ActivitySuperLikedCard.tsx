@@ -6,7 +6,7 @@ import {AvatarImage} from '../';
 import {ITranslatedProps} from '../../types';
 import style from './ActivityRecentCommentCard.style';
 
-interface ActivitySuperLikedCardPosts {
+interface IActivitySuperLikedCardPosts {
 	postThumbURL: string;
 	postId: string;
 }
@@ -15,12 +15,12 @@ interface IActivitySuperLikedCardProps extends ITranslatedProps {
 	avatarURL: string;
 	fullName: string;
 	timestamp: Date;
-	wallPosts: ActivitySuperLikedCardPosts[];
+	wallPosts: IActivitySuperLikedCardPosts[];
 	onThumbPress: (postId: string) => void;
 }
 
 interface IWallPostsProps {
-	wallPosts: ActivitySuperLikedCardPosts[];
+	wallPosts: IActivitySuperLikedCardPosts[];
 	onThumbPress: (postId: string) => void;
 }
 
@@ -35,7 +35,7 @@ const WallPostThumbs: React.SFC<IWallPostsProps> = ({wallPosts, onThumbPress}) =
 		showsHorizontalScrollIndicator={false}
 		contentContainerStyle={style.wallPostsThumbsContainer}
 	>
-		{wallPosts.map((wallPost: ActivitySuperLikedCardPosts, index: number) => (
+		{wallPosts.map((wallPost: IActivitySuperLikedCardPosts, index: number) => (
 			<TouchableOpacity key={index} style={style.postThumbTouchContainer} onPress={() => onThumbPress(wallPost.postId)}>
 				<Image source={{uri: wallPost.postThumbURL}} resizeMode={'contain'} style={style.postThumbImage} />
 			</TouchableOpacity>

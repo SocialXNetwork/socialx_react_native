@@ -6,7 +6,7 @@ import {AvatarImage} from '../';
 import {ITranslatedProps} from '../../types';
 import style from './ActivityRecentCommentCard.style';
 
-interface ActivityRecentCommentCardPosts {
+interface IActivityRecentCommentCardPosts {
 	postThumbURL: string;
 	postId: string;
 }
@@ -15,12 +15,12 @@ interface IActivityRecentCommentCardProps extends ITranslatedProps {
 	avatarURL: string;
 	fullName: string;
 	timestamp: Date;
-	wallPosts: ActivityRecentCommentCardPosts[];
+	wallPosts: IActivityRecentCommentCardPosts[];
 	onThumbPress: (postId: string) => void;
 }
 
 interface IWallPostsProps {
-	wallPosts: ActivityRecentCommentCardPosts[];
+	wallPosts: IActivityRecentCommentCardPosts[];
 	onThumbPress: (postId: string) => void;
 }
 
@@ -31,7 +31,7 @@ const WallPostThumbs: React.SFC<IWallPostsProps> = ({wallPosts, onThumbPress}) =
 		showsHorizontalScrollIndicator={false}
 		contentContainerStyle={style.wallPostsThumbsContainer}
 	>
-		{wallPosts.map((wallPost: ActivityRecentCommentCardPosts, index: number) => (
+		{wallPosts.map((wallPost: IActivityRecentCommentCardPosts, index: number) => (
 			<TouchableOpacity key={index} style={style.postThumbTouchContainer} onPress={() => onThumbPress(wallPost.postId)}>
 				<Image source={{uri: wallPost.postThumbURL}} resizeMode={'contain'} style={style.postThumbImage} />
 			</TouchableOpacity>

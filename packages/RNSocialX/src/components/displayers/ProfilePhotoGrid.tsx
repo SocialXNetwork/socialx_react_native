@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {DataProvider} from 'recyclerlistview';
 
-import {GridMediaObject} from '../../types';
+import {IGridMediaObject} from '../../types';
 import {MediaObjectViewer} from './MediaObjectViewer';
 import {PhotoGrid} from './PhotoGrid';
 import style, {USER_MEDIA_THUMB_SIZE} from './ProfilePhotoGrid.style';
@@ -17,7 +17,7 @@ interface IProfilePhotoGridProps {
 
 const GridItem: React.SFC<{
 	type: React.ReactText;
-	mediaData: GridMediaObject;
+	mediaData: IGridMediaObject;
 	onViewMediaFullScreen: (index: number) => void;
 }> = ({mediaData, onViewMediaFullScreen}) => {
 	const styles = (mediaData.index! - 1) % 3 === 0 ? [style.gridMediaThumb, style.centerGridItem] : style.gridMediaThumb;
@@ -43,7 +43,7 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 	<PhotoGrid
 		thumbWidth={USER_MEDIA_THUMB_SIZE}
 		thumbHeight={USER_MEDIA_THUMB_SIZE}
-		renderGridItem={(type: React.ReactText, data: GridMediaObject) => (
+		renderGridItem={(type: React.ReactText, data: IGridMediaObject) => (
 			<GridItem type={type} mediaData={data} onViewMediaFullScreen={onViewMediaFullScreen} />
 		)}
 		onLoadMore={loadMorePhotosHandler}

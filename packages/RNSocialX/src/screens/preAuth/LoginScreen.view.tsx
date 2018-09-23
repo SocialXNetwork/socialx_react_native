@@ -15,7 +15,7 @@ interface ILoginFormProps extends ITranslatedProps {
 	onStartLogin: (userName: string, password: string) => void;
 }
 
-interface LoginScreenData {
+interface ILoginScreenData {
 	userName: string;
 	password: string;
 }
@@ -28,8 +28,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 					userName: '',
 					password: '',
 				}}
-				validate={({userName, password}: LoginScreenData) => {
-					const errors: FormikErrors<LoginScreenData> = {};
+				validate={({userName, password}: ILoginScreenData) => {
+					const errors: FormikErrors<ILoginScreenData> = {};
 					if (!userName) {
 						errors.userName = getText('login.userName.required');
 					}
@@ -38,7 +38,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 					}
 					return errors;
 				}}
-				onSubmit={(values: LoginScreenData) => {
+				onSubmit={(values: ILoginScreenData) => {
 					safeRunAfterKeyboardHide(() => onStartLogin(values.userName, values.password));
 					Keyboard.dismiss();
 				}}
@@ -51,7 +51,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 					touched,
 					setFieldValue,
 					setFieldTouched,
-				}: FormikProps<LoginScreenData>) => (
+				}: FormikProps<ILoginScreenData>) => (
 					<React.Fragment>
 						<PrimaryTextInput
 							placeholder={getText('login.userName.input')}

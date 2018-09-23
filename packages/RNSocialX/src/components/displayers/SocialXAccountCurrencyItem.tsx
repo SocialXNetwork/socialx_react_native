@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {CoinFullName, CoinIcons, CoinSymbol} from '../../environment/consts';
 import styles, {customStyles} from './SocialXAccountCurrencyItem.style';
 
-export interface AccountCurrencyData {
+export interface IAccountCurrencyData {
 	coinSymbol: CoinSymbol;
 	coinAmount: number;
 	usdValue: number;
@@ -16,7 +16,7 @@ export interface AccountCurrencyData {
 	graphData: any[];
 }
 
-export const SocialXAccountCurrencyItem: React.SFC<AccountCurrencyData> = (props) => {
+export const SocialXAccountCurrencyItem: React.SFC<IAccountCurrencyData> = (props) => {
 	const usdValueWithFormat = numeral(props.usdValue).format('($0.00a)');
 	const coinAmountWithFormat = numeral(props.coinAmount).format('0.00a');
 	const trendIconColor = props.trendPercentage < 0 ? customStyles.negPercentage : customStyles.pozPercentage;

@@ -6,6 +6,6 @@ export {
 	getGalleryMediaObject,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
-	PickerImage,
-	PickerImageMultiple,
+	IPickerImage,
+	IPickerImageMultiple,
 } from './mediaPicker';
