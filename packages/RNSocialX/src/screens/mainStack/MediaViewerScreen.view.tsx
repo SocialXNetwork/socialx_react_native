@@ -110,7 +110,7 @@ const CloseButton: React.SFC<{isPortrait: boolean; onExitFullScreen: () => void}
 	isPortrait,
 	onExitFullScreen,
 }) => {
-	if (isPortrait) {
+	if (!isPortrait) {
 		return (
 			<TouchableOpacity onPress={onExitFullScreen} style={styles.closeButton}>
 				<Icon name={'md-close'} style={styles.infoIcon} />

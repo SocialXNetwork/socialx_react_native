@@ -1,11 +1,11 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
+import {ITrendingCategoriesItem} from '../../../types';
 import styles from './CategoryCard.style';
-import {ICategoryItem} from './TrendingCategoriesCarousel';
 
 interface ICategoryCardProps {
-	item: ICategoryItem;
+	item: ITrendingCategoriesItem;
 	onCategoryPress: () => void;
 	active?: boolean;
 }
