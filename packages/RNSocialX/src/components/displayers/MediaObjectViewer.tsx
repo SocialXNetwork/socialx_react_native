@@ -39,10 +39,10 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	type = MediaTypeImage,
 	getText,
 	canZoom = false,
-	muted,
+	muted = false,
 	thumbOnly,
-	paused,
-	resizeToChangeAspectRatio,
+	paused = true,
+	resizeToChangeAspectRatio = false,
 	onPress = () => {
 		/**/
 	},

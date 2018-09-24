@@ -6,13 +6,13 @@ import {DataProvider} from 'recyclerlistview';
 import {CloseButton, Header, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
 import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {ICurrentUser, ILike, ITranslatedProps, IWallPostCardProps, SearchResultKind} from '../../types';
+import {ICurrentUser, ILike, IWallPostCardActions, IWallPostCardData, SearchResultKind} from '../../types';
 
 import styles, {colors} from './UserProfileScreen.style';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-interface IUserProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps {
+interface IUserProfileScreenViewProps extends IWithLoaderProps, IWallPostCardActions {
 	avatarURL: any;
 	fullName: string;
 	userName: false | string;
@@ -20,28 +20,25 @@ interface IUserProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps
 	numberOfLikes: number;
 	numberOfFriends: number;
 	numberOfViews: number;
-	onAddFriend: () => void;
-	onShowFriendshipOptions: () => void;
 	relationship: SearchResultKind;
-	onViewProfilePhoto: () => void;
 	aboutMeText: string;
-	recentPosts: IWallPostCardProps[];
-	loadMorePhotosHandler: () => void;
-	onCommentPress: any;
-	onImagePress: (index: number, media: any) => void;
-	onLikePress: (likedByMe: boolean, postId: string) => boolean;
-	onRefresh: () => void;
+	recentPosts: IWallPostCardData[];
 	refreshing: boolean;
 	gridMediaProvider: DataProvider;
-	onViewMediaFullscreen: (index: number) => void;
 	currentUser: ICurrentUser;
-	onIconPress: (tab: string) => void;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
-	onLayoutChange: (height: number) => void;
+	onRefresh: () => void;
 	onClose: () => void;
+	onAddFriend: () => void;
+	onShowFriendshipOptions: () => void;
+	onViewProfilePhoto: () => void;
+	loadMorePhotosHandler: () => void;
+	onViewMediaFullscreen: (index: number) => void;
+	onIconPress: (tab: string) => void;
+	onLayoutChange: (height: number) => void;
 }
 
 export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
@@ -63,7 +60,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	recentPosts,
 	onCommentPress,
 	onImagePress,
-	onLikePress,
+	onLikeButtonPress,
 	aboutMeText,
 	numberOfViews,
 	currentUser,
@@ -76,6 +73,9 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	isLoading,
 	getText,
 	onClose,
+	onUserPress,
+	onAddComment,
+	onSubmitComment,
 }) => {
 	const hasPhotos = numberOfPhotos !== 0;
 
@@ -130,7 +130,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					{hasPhotos && (
 						<View style={contentContainerStyle}>
 							<Animated.View style={[styles.postsContainer, {transform: [{translateX: listTranslate}]}]}>
-								{recentPosts.map((post: IWallPostCardProps, i) => {
+								{recentPosts.map((post: IWallPostCardData) => {
 									let likedByMe = false;
 									if (post.likes.length > 0) {
 										likedByMe = !!post.likes.find((like: ILike) => like.userId === currentUser.userId);
@@ -142,9 +142,13 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												{...post}
 												likedByMe={likedByMe}
 												canDelete={false}
-												onCommentPress={() => onCommentPress(post.id, null)}
-												onImagePress={(index: number) => onImagePress(index, post.media)}
-												onLikeButtonPress={() => onLikePress(likedByMe, post.id)}
+												getText={getText}
+												onCommentPress={onCommentPress}
+												onImagePress={onImagePress}
+												onUserPress={onUserPress}
+												onAddComment={onAddComment}
+												onSubmitComment={onSubmitComment}
+												onLikeButtonPress={onLikeButtonPress}
 												noInput={true}
 												currentUserAvatarURL={currentUser.avatarURL}
 											/>
@@ -169,6 +173,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 										height: hasPhotos ? 1 : SCREEN_HEIGHT,
 									}}
 									disabled={hasPhotos}
+									getText={getText}
 								/>
 							</Animated.View>
 						</View>

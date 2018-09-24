@@ -33,7 +33,6 @@ const mock = {
 					numberOfComments: 0,
 				},
 			],
-			// TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 			recentPosts: posts,
 			relationship: SearchResultKind.NotFriend,
 		},
@@ -57,6 +56,9 @@ const mock = {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
+		createComment: (commentText: string, postId: string) => {
+			/**/
+		},
 	},
 };
 
@@ -73,6 +75,7 @@ export interface IWithUserProfileEnhancedActions extends ITranslatedProps {
 	unlikePost: (postId: string) => void;
 	loadMorePosts: (userId: string) => void;
 	loadMorePhotos: (userId: string) => void;
+	createComment: (postId: string, commentText: string) => void;
 }
 
 interface IUserProfileEnhancedProps {

@@ -7,7 +7,7 @@ import {ISimpleComment} from '../../../types';
 interface IBestCommentsProps {
 	bestComments: ISimpleComment[];
 	onUserPress: (userId: string) => void;
-	onCommentPress: (start: boolean) => void;
+	onCommentPress: () => void;
 }
 
 export const BestComments: React.SFC<IBestCommentsProps> = ({bestComments, onUserPress, onCommentPress}) => (
@@ -23,7 +23,7 @@ export const BestComments: React.SFC<IBestCommentsProps> = ({bestComments, onUse
 						>
 							{comment.owner.userName + '  '}
 						</Text>
-						<Text onPress={() => onCommentPress(false)}>{comment.text}</Text>
+						<Text onPress={onCommentPress}>{comment.text}</Text>
 					</Text>
 				))}
 			</View>
