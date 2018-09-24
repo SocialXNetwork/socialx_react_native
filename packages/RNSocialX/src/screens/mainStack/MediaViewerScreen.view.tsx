@@ -64,7 +64,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					// activeSlide={activeSlide}
 					data={mediaObjects}
 					renderItem={({item, index}: {item: IMediaProps; index: number}) => (
-						// @ts-ignore
 						<MediaObjectViewer
 							type={item.type}
 							paused={index !== activeSlide}
@@ -74,6 +73,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							resizeToChangeAspectRatio={true}
 							canZoom={false}
 							getText={getText}
+							thumbOnly={false}
 						/>
 					)}
 					sliderWidth={viewport.width}
