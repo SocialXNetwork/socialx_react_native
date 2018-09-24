@@ -61,8 +61,3 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 export const LaunchScreen = (navProps: INavigationProps) => (
 	<WithLaunch>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithLaunch>
 );
-
-// @ts-ignore
-LaunchScreen.navigationOptions = {
-	header: null,
-};

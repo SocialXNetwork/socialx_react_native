@@ -98,15 +98,10 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 			}: FormikProps<ISettingsData>) => (
 				<View style={{flex: 1}}>
 					{
-						// @ts-ignore
 						<Header
 							title={getText('settings.screen.title')}
-							// @ts-ignore
 							left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-							right={
-								// @ts-ignore
-								<HeaderButton iconName={'ios-log-out'} onPress={onLogout} />
-							}
+							right={<HeaderButton iconName={'ios-log-out'} onPress={onLogout} />}
 						/>
 					}
 					<KeyboardAwareScrollView

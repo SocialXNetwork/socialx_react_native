@@ -18,8 +18,3 @@ const Screen: React.SFC<IIntroScreenProps> = ({navigateToMainScreen, getText}) =
 );
 
 export const IntroScreen = () => <WithIntro>{({data, actions}) => <Screen {...data} {...actions} />}</WithIntro>;
-
-// @ts-ignore
-IntroScreen.navigationOptions = {
-	header: null,
-};

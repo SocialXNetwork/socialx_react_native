@@ -41,14 +41,10 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 			setFieldValue,
 		}: FormikProps<IForgotPasswordData>) => (
 			<View style={style.container}>
-				{
-					// @ts-ignore
-					<Header
-						title={getText('forgot.password.screen.title')}
-						// @ts-ignore
-						left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-					/>
-				}
+				<Header
+					title={getText('forgot.password.screen.title')}
+					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+				/>
 				<ScrollView
 					contentContainerStyle={style.contentContainer}
 					alwaysBounceVertical={false}
@@ -70,16 +66,13 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 						/>
 						{errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
 					</View>
-					{
-						// @ts-ignore
-						<PrimaryButton
-							disabled={!isValid}
-							label={getText('forgot.password.send.button')}
-							autoWidth={true}
-							borderColor={customStyleProps.transparentBorder}
-							onPress={handleSubmit}
-						/>
-					}
+					<PrimaryButton
+						disabled={!isValid}
+						label={getText('forgot.password.send.button')}
+						autoWidth={true}
+						borderColor={customStyleProps.transparentBorder}
+						onPress={handleSubmit}
+					/>
 				</ScrollView>
 			</View>
 		)}

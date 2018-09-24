@@ -28,7 +28,7 @@ const AVATAR_CAMERA_OPTIONS = {
 interface IAvatarPickerProps extends ITranslatedProps {
 	avatarImage: ImageSourcePropType | string;
 	afterImagePick: (image: string) => void;
-	avatarSize: number;
+	avatarSize?: number;
 }
 
 const showGalleryPhotoPicker = async (afterImagePick: (image: string) => void) => {

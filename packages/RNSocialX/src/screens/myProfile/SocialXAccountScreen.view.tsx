@@ -28,14 +28,7 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 
 		return (
 			<View style={styles.container}>
-				{
-					// @ts-ignore
-					<Header
-						title={'socialx account'}
-						// @ts-ignore
-						left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-					/>
-				}
+				<Header title={'socialx account'} left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />} />
 				<ScrollView
 					contentContainerStyle={styles.contentContainer}
 					alwaysBounceVertical={false}
@@ -53,16 +46,10 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 					))}
 					<View style={styles.bottomContainer}>
 						<View style={styles.buttonContainer}>
-							{
-								// @ts-ignore
-								<PrimaryButton label={getText('button.SEND')} borderColor={borderColor} onPress={onSend} />
-							}
+							<PrimaryButton label={getText('button.SEND')} borderColor={borderColor} onPress={onSend} />
 						</View>
 						<View style={styles.buttonContainer}>
-							{
-								// @ts-ignore
-								<PrimaryButton label={getText('button.RECEIVE')} borderColor={borderColor} onPress={onReceive} />
-							}
+							<PrimaryButton label={getText('button.RECEIVE')} borderColor={borderColor} onPress={onReceive} />
 						</View>
 					</View>
 				</ScrollView>

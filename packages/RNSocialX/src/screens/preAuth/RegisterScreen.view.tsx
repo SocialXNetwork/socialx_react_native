@@ -108,14 +108,10 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	<KeyboardContext.Consumer>
 		{({safeRunAfterKeyboardHide}) => (
 			<View style={{flex: 1}}>
-				{
-					// @ts-ignore
-					<Header
-						title={getText('login.screen.title')}
-						// @ts-ignore
-						left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-					/>
-				}
+				<Header
+					title={getText('login.screen.title')}
+					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+				/>
 				<KeyboardAwareScrollView
 					style={style.keyboardView}
 					contentContainerStyle={style.container}
@@ -176,7 +172,6 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							} else {
 								// const passwordErrors = PASSWORD_VALIDATOR_SCHEMA.validate(password, {list: true});
 								// if (passwordErrors.length > 0) {
-								// 	// @ts-ignore
 								// 	errors.password = (
 								// 		<React.Fragment>
 								// 			<Text style={style.boldText}>{`${getText('register.password.invalid.policy')}: `}</Text>
@@ -249,16 +244,13 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									marginBottom={0}
 								/>
 								<View style={style.avatarPickerContainer}>
-									{
-										// @ts-ignore
-										<AvatarPicker
-											getText={getText}
-											avatarImage={avatarImage}
-											afterImagePick={(localPhotoPath: string) =>
-												setFieldValue('avatarImage', {uri: localPhotoPath}, false)
-											}
-										/>
-									}
+									<AvatarPicker
+										getText={getText}
+										avatarImage={avatarImage}
+										afterImagePick={(localPhotoPath: string) =>
+											setFieldValue('avatarImage', {uri: localPhotoPath}, false)
+										}
+									/>
 								</View>
 								<View style={[style.textInputContainer, style.textInputContainerFirst]}>
 									<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
@@ -412,26 +404,20 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 								</View>
 								<View style={style.buttonContainer}>
-									{
-										// @ts-ignore
-										<PrimaryButton
-											label={getText('register.button.label')}
-											onPress={handleSubmit}
-											disabled={!(isValid && termsAccepted)}
-											borderColor={Colors.transparent}
-										/>
-									}
+									<PrimaryButton
+										label={getText('register.button.label')}
+										onPress={handleSubmit}
+										disabled={!(isValid && termsAccepted)}
+										borderColor={Colors.transparent}
+									/>
 								</View>
 								<View style={style.buttonContainer}>
-									{
-										// @ts-ignore
-										<PrimaryButton
-											label={getText('register.button.have.code')}
-											onPress={onAlreadyHaveCode}
-											disabled={userName === '' || !!errors.userName}
-											borderColor={Colors.transparent}
-										/>
-									}
+									<PrimaryButton
+										label={getText('register.button.have.code')}
+										onPress={onAlreadyHaveCode}
+										disabled={userName === '' || !!errors.userName}
+										borderColor={Colors.transparent}
+									/>
 								</View>
 							</React.Fragment>
 						)}

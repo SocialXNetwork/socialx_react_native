@@ -13,37 +13,30 @@ import {WithNavigation} from '../enhancers/navigation/WithNavigation';
 import {INavigationProps, IStackDefaultConfig} from '../types';
 import {tabStyles} from './Navigation.style';
 
-import {CommentsScreen} from '../screens/commentsStack/CommentsScreen';
+import {
+	CommentsScreen,
+	CreateWallPostScreen,
+	ForgotPasswordScreen,
+	FriendsUserFeed,
+	GlobalUserFeed,
+	IntroScreen,
+	LaunchScreen,
+	LoginScreen,
+	MaintenanceScreen,
+	MediaViewerScreen,
+	MyProfileScreen,
+	NotificationsScreen,
+	PhotoScreen,
+	ReferralScreen,
+	RegisterScreen,
+	ResetPasswordScreen,
+	SettingsScreen,
+	SocialXAccountScreen,
+	TermsAndConditionsScreen,
+	UserProfileScreen,
+} from '../screens';
 
-import {IntroScreen} from '../screens/intro/IntroScreen';
-
-import {CreateWallPostScreen} from '../screens/mainStack/CreateWallPostScreen';
-import {MediaViewerScreen} from '../screens/mainStack/MediaViewerScreen';
-import {PhotoScreen} from '../screens/mainStack/PhotoScreen';
-import {UserProfileScreen} from '../screens/mainStack/UserProfileScreen';
-
-import {MyProfileScreen} from '../screens/mainTabNav/MyProfileScreen';
-import {NotificationsScreen} from '../screens/mainTabNav/NotificationsScreen';
-import {PeopleTab} from '../screens/mainTabNav/SearchScreen/PeopleTab';
-import {PlacesTab} from '../screens/mainTabNav/SearchScreen/PlacesTab';
-import {TagsTab} from '../screens/mainTabNav/SearchScreen/TagsTab';
-import {TopTab} from '../screens/mainTabNav/SearchScreen/TopTab';
-import {TrendingScreen} from '../screens/mainTabNav/SearchScreen/TrendingScreen';
-import {FriendsUserFeed} from '../screens/mainTabNav/UserFeedScreen/FriendsUserFeed';
-import {GlobalUserFeed} from '../screens/mainTabNav/UserFeedScreen/GlobalUserFeed';
-
-import {ReferralScreen} from '../screens/myProfile/ReferralScreen';
-import {SettingsScreen} from '../screens/myProfile/SettingsScreen';
-import {SocialXAccountScreen} from '../screens/myProfile/SocialXAccountScreen';
-
-import {ForgotPasswordScreen} from '../screens/preAuth/ForgotPasswordScreen';
-import {LaunchScreen} from '../screens/preAuth/LaunchScreen';
-import {LoginScreen} from '../screens/preAuth/LoginScreen';
-import {RegisterScreen} from '../screens/preAuth/RegisterScreen';
-import {ResetPasswordScreen} from '../screens/preAuth/ResetPasswordScreen';
-import {TermsAndConditionsScreen} from '../screens/preAuth/TermsAndConditionsScreen';
-
-import {MaintenanceScreen} from '../screens/primaryNav/MaintenanceScreen';
+import {PeopleTab, PlacesTab, TagsTab, TopTab, TrendingScreen} from '../screens/mainTabNav/SearchScreen';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',

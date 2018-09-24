@@ -123,14 +123,10 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
 		{
-			// @ts-ignore
 			<Header
 				title={getText('photo.screen.title')}
 				left={<CloseButton onClose={onClose} />}
-				right={
-					// @ts-ignore
-					<HeaderButton iconName={'md-checkmark'} onPress={sendPost} />
-				}
+				right={<HeaderButton iconName={'md-checkmark'} onPress={sendPost} />}
 			/>
 		}
 		<KeyboardAwareScrollView style={style.scrollView} alwaysBounceVertical={true} keyboardShouldPersistTaps={'handled'}>

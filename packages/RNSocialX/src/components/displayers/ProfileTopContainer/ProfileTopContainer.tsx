@@ -1,3 +1,8 @@
+/**
+ * TODO list:
+ * 1. handle sendMessageToUser prop
+ */
+
 import * as React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
@@ -16,14 +21,15 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	numberOfFriends: number;
 	numberOfViews: number;
 	onAddFriend: () => void;
-	onShowFriendshipOptions: () => void;
-	relationship: SearchResultKind;
+	onShowFriendshipOptions?: () => void;
+	relationship?: SearchResultKind;
 	onViewProfilePhoto: () => void;
 	isCurrentUser: boolean;
-	onEditProfile: () => void;
-	tabs: boolean;
-	activeTab: string;
-	onIconPress: (tab: string) => void;
+	onEditProfile?: () => void;
+	sendMessageToUser?: () => void;
+	tabs?: boolean;
+	activeTab?: string;
+	onIconPress?: (tab: string) => void;
 	aboutMeText: false | string;
 }
 
@@ -45,7 +51,12 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	onEditProfile = () => {
 		/**/
 	},
-	onIconPress,
+	sendMessageToUser = () => {
+		console.log('sendMessageToUser');
+	},
+	onIconPress = () => {
+		/**/
+	},
 	aboutMeText = false,
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
@@ -76,7 +87,6 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 			</View>
 			<View style={styles.buttonsContainer}>
 				{!isCurrentUser && (
-					// @ts-ignore
 					<PrimaryButton
 						width={buttonWidth}
 						label={
@@ -91,22 +101,19 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 						onPress={relationshipButtonHandler}
 					/>
 				)}
-				{
-					// @ts-ignore
-					<PrimaryButton
-						width={buttonWidth}
-						label={
-							isCurrentUser
-								? getText('profile.top.container.button.edit.profile')
-								: getText('profile.top.container.button.send.message')
-						}
-						size={ButtonSizes.Small}
-						borderColor={colors.pink}
-						textColor={colors.pink}
-						containerStyle={styles.ghostButton}
-						onPress={isCurrentUser ? onEditProfile : () => console.log('Message')}
-					/>
-				}
+				<PrimaryButton
+					width={buttonWidth}
+					label={
+						isCurrentUser
+							? getText('profile.top.container.button.edit.profile')
+							: getText('profile.top.container.button.send.message')
+					}
+					size={ButtonSizes.Small}
+					borderColor={colors.pink}
+					textColor={colors.pink}
+					containerStyle={styles.ghostButton}
+					onPress={isCurrentUser ? onEditProfile : sendMessageToUser}
+				/>
 			</View>
 			{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
 		</View>

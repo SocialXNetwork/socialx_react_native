@@ -16,14 +16,10 @@ export const TermsAndConditionsScreenView: React.SFC<ITermsAndConditionsScreenVi
 	getText,
 }) => (
 	<SafeAreaView style={styles.container}>
-		{
-			// @ts-ignore
-			<Header
-				title={getText('terms.and.conditions.screen.title')}
-				// @ts-ignore
-				left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-			/>
-		}
+		<Header
+			title={getText('terms.and.conditions.screen.title')}
+			left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+		/>
 		<WebView source={localSource} />
 	</SafeAreaView>
 );

@@ -43,7 +43,7 @@ export const MediaInfoModal: React.SFC<IMediaInfoOverlayProps> = ({
 	<WithManagedTransitions modalVisible={visible}>
 		{({onModalHide, onDismiss}) => (
 			<Modal
-				// @ts-ignore // lib. TS issue, onDismiss prop is inherited from Modal in 'react-native'
+				// @ts-ignore
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={visible}

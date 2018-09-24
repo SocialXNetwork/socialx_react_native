@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
-import {Container, Header, HeaderButton, Row} from '../../components';
+import {Header, HeaderButton, ReferralContainer, ReferralRow} from '../../components';
 import styles, {shareIcon} from './ReferralScreen.style';
 
 const HEADING = 'Lorem ipsum dolor';
@@ -27,31 +27,19 @@ export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({
 	onGoBack,
 }) => (
 	<View style={styles.container}>
-		{
-			// @ts-ignore
-			<Header title={'referral system'} left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />} />
-		}
-		{
-			// @ts-ignore
-			<Container heading={HEADING} text={TEXT} />
-		}
-		{
-			// @ts-ignore
-			<Row title={'Total referrals'} value={referrals} />
-		}
-		{
-			// @ts-ignore
-			<Row title={'SOCX earned through referrals'} value={socx} last={true} />
-		}
-		{
-			// @ts-ignore
-			<Container heading={'Share'} text={TEXT} />
-		}
-		{
-			// @ts-ignore
-			<Row title={'Invite URL'} value={url} border={true} onCopyText={() => copyToClipboard(url)} />
-		}
-		<Row title={'Invite Code'} value={code} border={true} onCopyText={() => copyToClipboard(code)} last={true} />
+		<Header title={'referral system'} left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />} />
+		<ReferralContainer heading={HEADING} text={TEXT} />
+		<ReferralRow title={'Total referrals'} value={referrals} />
+		<ReferralRow title={'SOCX earned through referrals'} value={socx} last={true} />
+		<ReferralContainer heading={'Share'} text={TEXT} />
+		<ReferralRow title={'Invite URL'} value={url} border={true} onCopyText={() => copyToClipboard(url)} />
+		<ReferralRow
+			title={'Invite Code'}
+			value={code}
+			border={true}
+			onCopyText={() => copyToClipboard(code)}
+			last={true}
+		/>
 		<View style={styles.footer}>
 			<Text style={styles.text}>INVITE FRIENDS VIA SOCIAL</Text>
 			<TouchableOpacity onPress={onShare} style={styles.iconContainer}>

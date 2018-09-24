@@ -22,6 +22,6 @@ declare module 'react-native-country-picker-modal';
 
 // declare module 'react-native-image-resizer';
 
-// declare module 'react-native-mime-types';
+declare module 'react-native-mime-types';
 
 // declare module 'native-base';

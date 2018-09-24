@@ -24,8 +24,8 @@ interface IPhotoGridProps {
 	dataProvider: DataProvider;
 	scrollViewProps: object;
 	header: IHeaderType;
-	extendedState: object;
-	onScroll: (rawEvent: any, offsetX: number, offsetY: number) => void;
+	extendedState?: object;
+	onScroll?: (rawEvent: any, offsetX: number, offsetY: number) => void;
 }
 
 let lastKnownGridHeight: number = 0;

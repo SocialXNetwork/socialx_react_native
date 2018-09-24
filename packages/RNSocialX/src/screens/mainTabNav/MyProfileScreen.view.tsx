@@ -55,25 +55,18 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	return (
 		<WithInlineLoader isLoading={isLoading}>
 			<View style={styles.container}>
-				{
-					// @ts-ignore
-					<Header
-						title={'profile'}
-						left={
-							// @ts-ignore
-							<IconButton
-								iconSource={icons.shareIconWhite}
-								iconType={'image'}
-								iconStyle={styles.icon}
-								onPress={onSharePress}
-							/>
-						}
-						right={
-							// @ts-ignore
-							<DotsMenuButton onPress={onShowDotsModal} />
-						}
-					/>
-				}
+				<Header
+					title={'profile'}
+					left={
+						<IconButton
+							iconSource={icons.shareIconWhite}
+							iconType={'image'}
+							iconStyle={styles.icon}
+							onPress={onSharePress}
+						/>
+					}
+					right={<DotsMenuButton onPress={onShowDotsModal} />}
+				/>
 				<View style={styles.whiteBottomView} />
 				<ScrollView
 					contentContainerStyle={scrollContainerStyles}
@@ -81,23 +74,21 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
 					scrollEnabled={hasPhotos}
 				>
-					{
-						// @ts-ignore
-						<ProfileTopContainer
-							avatarURL={avatarURL}
-							fullName={fullName}
-							userName={userName}
-							numberOfFriends={numberOfFriends}
-							numberOfLikes={numberOfLikes}
-							numberOfPhotos={numberOfPhotos}
-							numberOfViews={numberOfViews}
-							onViewProfilePhoto={onViewProfilePhoto}
-							isCurrentUser={true}
-							aboutMeText={aboutMeText}
-							onEditProfile={onEditProfile}
-							getText={getText}
-						/>
-					}
+					<ProfileTopContainer
+						avatarURL={avatarURL}
+						fullName={fullName}
+						userName={userName}
+						numberOfFriends={numberOfFriends}
+						numberOfLikes={numberOfLikes}
+						numberOfPhotos={numberOfPhotos}
+						numberOfViews={numberOfViews}
+						onViewProfilePhoto={onViewProfilePhoto}
+						isCurrentUser={true}
+						aboutMeText={aboutMeText}
+						onEditProfile={onEditProfile}
+						getText={getText}
+						onAddFriend={() => console.log('Add friend on my profile page does nothing')}
+					/>
 					{hasPhotos && (
 						<View style={styles.gridContainer}>
 							<ProfilePhotoGrid
