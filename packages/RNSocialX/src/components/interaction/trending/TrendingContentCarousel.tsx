@@ -1,30 +1,24 @@
 import React, {Component} from 'react';
-import {Animated, Dimensions, View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
+import {ITrendingContentItem} from '../../../types';
 import {ContentView} from './ContentView';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-export interface IContentItem {
-	name: string;
-	content: any;
-}
-
 interface ITrendingContentCarouselProps {
-	items: IContentItem[];
-	passContentRef: (ref: any) => void;
+	items: ITrendingContentItem[];
+	passContentRef: (ref: React.RefObject<any>) => void;
 }
 
 export class TrendingContentCarousel extends Component<ITrendingContentCarouselProps> {
-	public state = {
-		scrollX: new Animated.Value(0),
-	};
-
 	private contentRef: React.RefObject<any> = React.createRef();
 
 	public componentDidMount() {
-		this.props.passContentRef(this.contentRef);
+		if (this.props.passContentRef) {
+			this.props.passContentRef(this.contentRef);
+		}
 	}
 
 	public render() {
@@ -39,13 +33,12 @@ export class TrendingContentCarousel extends Component<ITrendingContentCarouselP
 					enableSnap={true}
 					inactiveSlideScale={0.9}
 					inactiveSlideOpacity={0.9}
-					scrollEventThrottle={16}
 				/>
 			</View>
 		);
 	}
 
-	private renderItem = (data: {item: IContentItem; index: number}) => {
+	private renderItem = (data: {item: ITrendingContentItem; index: number}) => {
 		return <ContentView item={data.item} />;
 	};
 }

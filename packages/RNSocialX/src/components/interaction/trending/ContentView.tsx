@@ -2,8 +2,8 @@ import React, {Component, ReactText} from 'react';
 import {Animated, Text, View} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview';
 
+import {ITrendingContentItem} from '../../../types';
 import styles, {THUMBNAIL_SIZE} from './ContentView.style';
-import {IContentItem} from './TrendingContentCarousel';
 
 const ViewTypes = {
 	IMAGE: 0,
@@ -12,7 +12,7 @@ const ViewTypes = {
 };
 
 interface IContentViewProps {
-	item: IContentItem;
+	item: ITrendingContentItem;
 }
 
 interface IContentViewState {

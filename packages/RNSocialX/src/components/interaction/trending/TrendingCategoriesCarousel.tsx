@@ -2,19 +2,15 @@ import * as React from 'react';
 import {Dimensions, View} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
+import {ITrendingCategoriesItem} from '../../../types';
 import {CategoryCard} from './CategoryCard';
 import styles from './TrendingCategoriesCarousel.style';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (32 / 100) * SCREEN_WIDTH;
 
-export interface ICategoryItem {
-	id: string;
-	name: string;
-}
-
 interface ITrendingCategoriesCarouselProps {
-	items: ICategoryItem[];
+	items: ITrendingCategoriesItem[];
 	contentRef: any;
 }
 
@@ -53,7 +49,7 @@ export class TrendingCategoriesCarousel extends React.Component<
 		);
 	}
 
-	private renderItem = (data: {item: ICategoryItem; index: number}) => {
+	private renderItem = (data: {item: ITrendingCategoriesItem; index: number}) => {
 		if (data.index === this.state.activeIndex) {
 			return (
 				<CategoryCard item={data.item} onCategoryPress={() => this.onCategoryPressHandler(data.index)} active={true} />
