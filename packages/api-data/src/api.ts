@@ -1,3 +1,5 @@
+import {promisify} from 'es6-promisify';
+
 import * as Gun from 'gun/gun';
 
 // temp and should be removed (just for offline testing on node)
@@ -59,51 +61,75 @@ export const dataApi = ({peers}: IApiOptions) => {
 
 	return {
 		accounts: {
-			isAccountLoggedIn: (callback: IGunCallback<{loggedIn: boolean}>) =>
+			isAccountLoggedIn: promisify<{loggedIn: boolean}>((callback: IGunCallback<{loggedIn: boolean}>) =>
 				accountGetters.isAccountLoggedIn(context, callback),
-			createAccount: (createAccountInput: ICreateAccountInput, callback: IGunCallback<null>) =>
+			),
+			createAccount: promisify<null>((createAccountInput: ICreateAccountInput, callback: IGunCallback<null>) =>
 				accountSetters.createAccount(context, createAccountInput, callback),
-			login: (credentials: ICredentials, callback: IGunCallback<null>) =>
+			),
+			login: promisify<null>((credentials: ICredentials, callback: IGunCallback<null>) =>
 				accountSetters.login(context, credentials, callback),
-			logout: (callback: IGunCallback<null>) => accountSetters.logout(context, callback),
-			changePassword: (changePassword: IChangePassword, callback: IGunCallback<null>) =>
+			),
+			logout: promisify<null>((callback: IGunCallback<null>) => accountSetters.logout(context, callback)),
+			changePassword: promisify<null>((changePassword: IChangePassword, callback: IGunCallback<null>) =>
 				accountSetters.changePassword(context, changePassword, callback),
-			recoverAccount: (recoverAccount: IRecoverAccountInput, callback: IGunCallback<{hint: string}>) =>
-				accountSetters.recoverAccount(context, recoverAccount, callback),
-			trustAccount: (callback: IGunCallback<null>) => accountSetters.trustAccount(context, callback),
+			),
+			recoverAccount: promisify<{hint: string}>(
+				(recoverAccount: IRecoverAccountInput, callback: IGunCallback<{hint: string}>) =>
+					accountSetters.recoverAccount(context, recoverAccount, callback),
+			),
+			trustAccount: promisify<null>((callback: IGunCallback<null>) => accountSetters.trustAccount(context, callback)),
 		},
 		comments: {
-			getPostComments: ({postId}: {postId: string}, callback: IGunCallback<IMetasCallback[]>) =>
-				commentGetters.getPostComments(context, {postId}, callback),
-			getPostLikes: ({commentId}: {commentId: string}, callback: IGunCallback<ILikesMetasCallback[]>) =>
-				commentGetters.getPostLikes(context, {commentId}, callback),
-			createComment: ({text, postId}: {text: string; postId: string}, callback: IGunCallback<null>) =>
+			getPostComments: promisify<IMetasCallback[]>(
+				({postId}: {postId: string}, callback: IGunCallback<IMetasCallback[]>) =>
+					commentGetters.getPostComments(context, {postId}, callback),
+			),
+			getPostLikes: promisify<ILikesMetasCallback[]>(
+				({commentId}: {commentId: string}, callback: IGunCallback<ILikesMetasCallback[]>) =>
+					commentGetters.getPostLikes(context, {commentId}, callback),
+			),
+			createComment: promisify<null>(({text, postId}: {text: string; postId: string}, callback: IGunCallback<null>) =>
 				commentSetters.createComment(context, {text, postId}, callback),
-			likeComment: ({commentId}: {commentId: string}, callback: IGunCallback<null>) =>
+			),
+			likeComment: promisify<null>(({commentId}: {commentId: string}, callback: IGunCallback<null>) =>
 				commentSetters.likeComment(context, {commentId}, callback),
+			),
 		},
 		posts: {
-			getPostPathsByUser: ({username}: {username: string}, callback: IGunCallback<string[]>) =>
+			getPostPathsByUser: promisify<string[]>(({username}: {username: string}, callback: IGunCallback<string[]>) =>
 				postGetters.getPostPathsByUser(context, {username}, callback),
-			getPostByPath: ({postPath}: {postPath: string}, callback: IGunCallback<IPostData>) =>
+			),
+			getPostByPath: promisify<IPostData>(({postPath}: {postPath: string}, callback: IGunCallback<IPostData>) =>
 				postGetters.getPostByPath(context, {postPath}, callback),
-			getPublicPostsByDate: ({date}: {date: Date}, callback: IGunCallback<IPostData>) =>
+			),
+			getPublicPostsByDate: promisify<IPostData>(({date}: {date: Date}, callback: IGunCallback<IPostData>) =>
 				postGetters.getPublicPostsByDate(context, {date}, callback),
-			getPostLikes: ({postId}: {postId: string}, callback: IGunCallback<ILikesMetasCallback>) =>
-				postGetters.getPostLikes(context, {postId}, callback),
-			createPost: (createPostInput: IPostData, callback: IGunCallback<null>) =>
+			),
+			getPostLikes: promisify<ILikesMetasCallback>(
+				({postId}: {postId: string}, callback: IGunCallback<ILikesMetasCallback>) =>
+					postGetters.getPostLikes(context, {postId}, callback),
+			),
+			createPost: promisify<null>((createPostInput: IPostData, callback: IGunCallback<null>) =>
 				postSetters.createPost(context, createPostInput, callback),
-			likePost: ({postId}: {postId: string}, callback: IGunCallback<null>) =>
+			),
+			likePost: promisify<null>(({postId}: {postId: string}, callback: IGunCallback<null>) =>
 				postSetters.likePost(context, {postId}, callback),
+			),
 		},
 		profiles: {
-			getPublicKeyByUsername: ({username}: IGetPublicKeyInput, callback: IGunCallback<string>) =>
+			getPublicKeyByUsername: promisify<string>(({username}: IGetPublicKeyInput, callback: IGunCallback<string>) =>
 				profileGetters.getPublicKeyByUsername(context, {username}, callback),
-			getCurrentProfile: (callback: IGunCallback<IProfile>) => profileGetters.getCurrentProfile(context, callback),
-			getProfileByUsername: ({username}: {username: string}, callback: IGunCallback<IProfile>) =>
+			),
+			getCurrentProfile: promisify<IProfile>((callback: IGunCallback<IProfile>) =>
+				profileGetters.getCurrentProfile(context, callback),
+			),
+			getProfileByUsername: promisify<IProfile>(({username}: {username: string}, callback: IGunCallback<IProfile>) =>
 				profileGetters.getProfileByUsername(context, {username}, callback),
-			createProfile: (createProfileInput: ICreateProfileInput, callback: IGunCallback<null>) =>
+			),
+			createProfile: promisify<null>((createProfileInput: ICreateProfileInput, callback: IGunCallback<null>) =>
 				profileSetters.createProfile(context, createProfileInput, callback),
+			),
 		},
 	};
 };
