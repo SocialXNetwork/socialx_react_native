@@ -214,6 +214,13 @@ export interface INavigationProps<SP = any, SC = any> {
 	navigationOptions?: NavigationScreenConfig<SC>;
 }
 
+export interface IStackDefaultConfig {
+	headerMode: 'none' | 'float' | 'screen' | undefined;
+	navigationOptions: {
+		gesturesEnabled: boolean;
+	};
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.

@@ -59,10 +59,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		return (
 			<WithInlineLoader isLoading={isLoading}>
 				<View style={styles.container}>
-					{
-						// @ts-ignore
-						<Header title={'feed'} />
-					}
+					<Header logo={true} />
 					{noPosts ? (
 						<FeedWithNoPosts />
 					) : (

@@ -18,6 +18,10 @@ interface ISearchHeaderState {
 }
 
 export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderState> {
+	public static defaultProps = {
+		cancel: false,
+	};
+
 	public state = {
 		searchTerm: '',
 		navigatedFromTrending: false,
@@ -64,6 +68,7 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 							persistCancel={this.props.cancel}
 							onPressCancel={this.onBackHandler}
 						/>
+
 						{!this.props.cancel ? (
 							<TouchableOpacity activeOpacity={1} onPress={this.onPressInput} style={styles.inputOverlay} />
 						) : null}
