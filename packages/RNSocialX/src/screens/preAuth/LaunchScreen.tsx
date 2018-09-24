@@ -36,7 +36,7 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 			<LaunchScreenView
 				getText={getText}
 				navigateToLoginScreen={this.navigateToLoginScreen}
-				navigateToSignUpScreen={this.navigateToSignUpScreen}
+				navigateToRegisterScreen={this.navigateToRegisterScreen}
 			/>
 		);
 	}
@@ -45,8 +45,8 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 		this.props.navigation.navigate('LoginScreen');
 	};
 
-	private navigateToSignUpScreen = () => {
-		this.props.navigation.navigate('SignUpScreen');
+	private navigateToRegisterScreen = () => {
+		this.props.navigation.navigate('RegisterScreen');
 	};
 
 	private closeSplashScreen = () => {

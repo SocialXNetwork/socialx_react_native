@@ -23,11 +23,17 @@ interface ITabBarBottomState {
 interface ITabBarBottomProps extends ITranslatedProps {
 	navigation: NavigationScreenProp<any>;
 	updateTabBarHeight: (value: number) => void;
-	tabHeight: number;
-	notifications: any; // TODO: this can be just a number?
+	notifications: number;
 }
 
 export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBarBottomState> {
+	public static defaultProps = {
+		updateTabBarHeight: () => {
+			/**/
+		},
+		notifications: 0,
+	};
+
 	public state = {
 		selectedTab: INITIAL_SCREEN,
 		changeInProgress: false,

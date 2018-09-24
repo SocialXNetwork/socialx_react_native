@@ -3,8 +3,8 @@ import {View} from 'react-native';
 
 import {SearchHeader} from '../../../components';
 
-export const TrendingScreen: React.SFC<{navigation: any}> = ({navigation}) => (
+export const SearchScreenView: React.SFC<{navigation: any}> = ({navigation}) => (
 	<View>
-		<SearchHeader navigation={navigation} />
+		<SearchHeader navigation={navigation} cancel={true} />
 	</View>
 );

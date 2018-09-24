@@ -76,7 +76,7 @@ const MENU_ITEMS: ITabMenuItem[] = [
 ];
 
 interface INavigationItemsProps {
-	notifications: any;
+	notifications: number;
 	selectedTab: string;
 	showPhotoOptionsMenu: () => void;
 	tabChange: (tab: string) => void;
