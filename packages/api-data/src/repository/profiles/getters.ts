@@ -1,3 +1,4 @@
+import {IContext, IGunCallback} from '../../types';
 import * as profileHandles from './handles';
 
 interface IGetPublicKeyInput {

@@ -1,3 +1,5 @@
+import {IContext, ILikesMetasCallback, IMetasCallback} from '../types';
+
 export const datePathFromDate = (date: Date) =>
 	date.getUTCFullYear() + '/' + (date.getUTCMonth() + 1) + '/' + date.getUTCDate();
 
