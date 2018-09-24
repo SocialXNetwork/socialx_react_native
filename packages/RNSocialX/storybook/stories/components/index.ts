@@ -47,6 +47,8 @@ import './interaction/PrimaryButton';
 import './interaction/SuggestionsCarousel';
 import './interaction/ToggleIconButton';
 import './interaction/TouchableWithDoublePress';
+import './interaction/TrendingCategoryCarousel';
+import './interaction/TrendingContentCarousel';
 import './interaction/VideoPlayer';
 
 import './modals/ActivityIndicatorModal';

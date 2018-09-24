@@ -58,6 +58,8 @@ export {PrimaryButton, IPrimaryButtonProps, ButtonSizes} from './interaction/Pri
 export {SuggestionCard, SuggestionsCarousel} from './interaction/suggestions';
 export {ToggleIconButton} from './interaction/ToggleIconButton';
 export {TouchableWithDoublePress} from './interaction/TouchableWithDoublePress';
+export {TrendingCategoriesCarousel} from './interaction/trending/TrendingCategoriesCarousel';
+export {TrendingContentCarousel} from './interaction/trending/TrendingContentCarousel';
 export {IVideoOptions, VideoPlayer} from './interaction/video';
 
 export {WithManagedTransitions, ModalManager, IManagedModal, ManagedKeyboard} from './managedTransitions';
