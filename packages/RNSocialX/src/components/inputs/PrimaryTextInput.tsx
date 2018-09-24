@@ -129,7 +129,7 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 		isPassword: false,
 		keyboardType: TKeyboardKeys.default,
 		returnKeyType: TRKeyboardKeys.default,
-		cancelButtonTextColor: customStyleProps.defaultCancelButtonTextColor,
+		cancelButtonTextColor: customStyleProps.defaultButtonTextColor,
 		canCancel: false,
 		hasFocus: false,
 		blurOnSubmit: false,
@@ -149,6 +149,11 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 			/**/
 		},
 		onSubmitPressed: (event: any) => {
+			/**/
+		},
+		canPost: false,
+		postButtonTextColor: customStyleProps.defaultButtonTextColor,
+		onPressPost: () => {
 			/**/
 		},
 	};
