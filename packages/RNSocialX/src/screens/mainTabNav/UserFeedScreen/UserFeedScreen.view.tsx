@@ -11,30 +11,23 @@ import {
 	WallPostCard,
 } from '../../../components';
 import {IWithLoaderProps, WithInlineLoader} from '../../../components/inlineLoader';
-import {ICurrentUser, IMediaProps, ITranslatedProps, IWallPostCardProps} from '../../../types';
+import {getTextSignature, ICurrentUser, IWallPostCardActions, IWallPostCardData} from '../../../types';
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps extends IWithLoaderProps, ITranslatedProps {
+interface IUserFeedScreenViewProps extends IWithLoaderProps, IWallPostCardActions {
 	avatarImage: any;
-	wallPosts: IWallPostCardProps[];
+	wallPosts: IWallPostCardData[];
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onShowNewWallPostPress: () => void;
-	onMediaPress: (index: any, medias: IMediaProps[]) => void;
-	onCommentPress: (postId: any, owner: any, startComment: boolean, postData: object) => void;
 	currentUser: ICurrentUser;
 	noPosts: boolean;
 	shareSectionPlaceholder: string | null;
-	onLikePress: (likedByMe: boolean, postId: string) => boolean;
-	onPostDeletePress: (post: IWallPostCardProps) => void;
-	onUserPress: (userId: string) => void;
 	loadingMorePosts: boolean;
 	hasMorePosts: boolean;
-	onAddCommentPress: (scrollYOffset: number, cardHeight: number) => void;
-	onSubmitComment: (escapedComment: string, postId: string) => void;
 	shareSectionOpacityInterpolation: number;
-	scrollRef: React.RefObject<FlatList<IWallPostCardProps>>;
+	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
 	scrollY: AnimatedValue;
 }
 
@@ -54,6 +47,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 			shareSectionOpacityInterpolation,
 			scrollRef,
 			scrollY,
+			getText,
 		} = this.props;
 
 		return (
@@ -80,7 +74,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 							onRefresh={onRefresh}
 							data={wallPosts}
 							keyExtractor={this.keyExtractor}
-							renderItem={this.renderWallPosts}
+							renderItem={(data) => this.renderWallPosts(data, getText)}
 							onEndReached={onLoadMorePosts}
 							onEndReachedThreshold={0.5}
 							alwaysBounceVertical={false}
@@ -99,33 +93,34 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		);
 	}
 
-	private keyExtractor = (item: IWallPostCardProps) => item.id;
+	private keyExtractor = (item: IWallPostCardData) => item.id;
 
-	private renderWallPosts = (data: {item: IWallPostCardProps; index: number}) => {
-		if (data.item.suggested) {
-			return <SuggestionsCarousel items={data.item.suggested} getText={this.props.getText} />;
+	private renderWallPosts = (data: {item: IWallPostCardData; index: number}, getText: getTextSignature) => {
+		const postData = data.item;
+		if (postData.suggested) {
+			return <SuggestionsCarousel items={postData.suggested} getText={this.props.getText} />;
 		}
 
-		const canDelete = this.props.currentUser.userId === data.item.owner.userId;
-		const likedByMe = !!data.item.likes.find((like: any) => like.userId === this.props.currentUser.userId);
+		const canDelete = this.props.currentUser.userId === postData.owner.userId;
+		const likedByMe = !!postData.likes.find((like: any) => like.userId === this.props.currentUser.userId);
 
 		return (
 			<View style={styles.wallPostContainer}>
 				<WallPostCard
-					{...data.item}
+					{...postData}
 					canDelete={canDelete}
 					likedByMe={likedByMe}
 					listLoading={this.props.loadingMorePosts}
 					currentUserAvatarURL={this.props.currentUser.avatarURL}
-					onCommentPress={(startComment: boolean) =>
-						this.props.onCommentPress(data.item.id, data.item.owner.userId, startComment, data.item)
-					}
-					onImagePress={(index: number) => this.props.onMediaPress(index, data.item.media)}
-					onDeletePress={() => this.props.onPostDeletePress(data.item)}
-					onLikeButtonPress={() => this.props.onLikePress(likedByMe, data.item.id)}
+					onCommentPress={this.props.onCommentPress}
+					onImagePress={this.props.onImagePress}
+					onDeletePress={this.props.onDeletePress}
+					onLikeButtonPress={this.props.onLikeButtonPress}
 					onUserPress={(userId: string) => this.props.onUserPress(userId)}
-					onAddComment={(cardHeight: number) => this.props.onAddCommentPress(data.index, cardHeight)}
+					/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as data.index */
+					onAddComment={(dummyIndex: number, cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
 					onSubmitComment={this.props.onSubmitComment}
+					getText={getText}
 				/>
 			</View>
 		);

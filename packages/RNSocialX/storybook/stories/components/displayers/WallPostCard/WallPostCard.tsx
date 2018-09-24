@@ -47,7 +47,10 @@ storiesOf('Components/displayers', module)
 				numberOfSuperLikes={numberOfSuperLikes}
 				numberOfWalletCoins={numberOfWalletCoins}
 				onImagePress={() => console.log('onImagePress')}
-				onLikeButtonPress={() => console.log('onLikeButtonPress')}
+				onLikeButtonPress={(isLikedByMe, postId) => {
+					console.log('onLikeButtonPress', isLikedByMe, postId);
+					return false;
+				}}
 				onDeletePress={() => console.log('onDeletePress')}
 				onUserPress={() => console.log('onUserPress')}
 				onCommentPress={() => console.log('onCommentPress')}
@@ -88,6 +91,7 @@ storiesOf('Components/displayers', module)
 				listLoading={listLoading}
 				suggested={undefined}
 				noInput={false}
+				onSubmitComment={(commentText, postId) => console.log('onSubmitComment', commentText, postId)}
 			/>
 		);
 	});

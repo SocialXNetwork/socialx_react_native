@@ -30,16 +30,16 @@ storiesOf('Screens/mainTabNav', module)
 				onRefresh={action('onRefresh')}
 				onLoadMorePosts={action('onLoadMorePosts')}
 				onShowNewWallPostPress={action('onShowNewWallPostPress')}
-				onMediaPress={action('onMediaPress')}
+				onImagePress={action('onImagePress')}
 				onCommentPress={action('onCommentPress')}
 				noPosts={noPosts}
 				shareSectionPlaceholder={shareSectionPlaceholder}
-				onLikePress={(likedByMe: boolean) => !likedByMe}
-				onPostDeletePress={action('onPostDeletePress')}
+				onLikeButtonPress={(likedByMe: boolean) => !likedByMe}
+				onDeletePress={action('onDeletePress')}
 				onUserPress={action('onUserPress')}
 				loadingMorePosts={loadingMorePosts}
 				hasMorePosts={hasMorePosts}
-				onAddCommentPress={action('onAddCommentPress')}
+				onAddComment={action('onAddComment')}
 				onSubmitComment={action('onSubmitComment')}
 				shareSectionOpacityInterpolation={1}
 				scrollRef={React.createRef()}

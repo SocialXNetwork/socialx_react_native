@@ -1,13 +1,13 @@
 /**
  * TODO list:
  * 1. Props data: currentUser, posts, hasMorePosts, refreshingFeed, loadingMorePosts, loadingFeed
- * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, showActivityIndicator, hideActivityIndicator, postComment
+ * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment
  */
 
 import * as React from 'react';
 import {FEED_TYPES} from '../../../environment/consts';
 import {currentUser, posts} from '../../../mocks';
-import {ICurrentUser, ITranslatedProps, IWallPostCardProps} from '../../../types';
+import {ICurrentUser, ITranslatedProps, IWallPostCardData} from '../../../types';
 
 // TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 const mock: IWithUserFeedEnhancedProps = {
@@ -35,12 +35,6 @@ const mock: IWithUserFeedEnhancedProps = {
 		deletePost: (postId: string) => {
 			/**/
 		},
-		showActivityIndicator: (message: string) => {
-			/**/
-		},
-		hideActivityIndicator: () => {
-			/**/
-		},
 		postComment: (escapedComment: string, postId: string) => {
 			/**/
 		},
@@ -50,7 +44,7 @@ const mock: IWithUserFeedEnhancedProps = {
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	posts: IWallPostCardProps[];
+	posts: IWallPostCardData[];
 	hasMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
@@ -63,8 +57,6 @@ export interface IWithUserFeedEnhancedActions extends ITranslatedProps {
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
 	deletePost: (postId: string) => void;
-	showActivityIndicator: (message: string) => void;
-	hideActivityIndicator: () => void;
 	postComment: (escapedComment: string, postId: string) => void;
 }
 

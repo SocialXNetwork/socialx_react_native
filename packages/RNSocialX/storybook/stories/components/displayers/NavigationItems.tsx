@@ -9,7 +9,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('NavigationItems', () => (
 		<NavigationItems
-			notifications={new Array(5)}
+			notifications={5}
 			selectedTab={'UserFeedTab'}
 			showPhotoOptionsMenu={action('showPhotoOptionsMenu')}
 			tabChange={action('tabChange')}
