@@ -106,7 +106,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 	private showNewWallPostPage = () => {
 		const {currentUser, navigation} = this.props;
-		navigation.navigate('NewWallPostScreen', {
+		navigation.navigate('CreateWallPostScreen', {
 			fullName: currentUser.fullName,
 			avatarImage: this.getAvatarImage(),
 			afterPostCreate: this.onRefreshHandler,
@@ -157,7 +157,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private onCommentsButtonPressHandler = (postId: any, userId: any, startComment: boolean, postData: object) => {
-		this.props.navigation.navigate('CommentsStack', {postId, userId, startComment, postData});
+		this.props.navigation.navigate('CommentsScreen', {postId, userId, startComment, postData});
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {

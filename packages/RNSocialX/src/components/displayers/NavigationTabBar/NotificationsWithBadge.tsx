@@ -6,27 +6,26 @@ import styles from './NotificationsWithBadge.style';
 
 interface INotificationsWithBadgeProps {
 	item: ITabMenuItem;
-	notifications: any;
+	notifications: number;
 	selectedTab: string;
 	tabChange: (tab: string) => void;
 }
 
 export const NotificationsWithBadge: React.SFC<INotificationsWithBadgeProps> = ({
 	item,
-	notifications: {loading, myNotifications},
+	notifications,
 	selectedTab,
 	tabChange,
 }) => (
 	<View style={styles.container}>
 		<TabButton item={item} selectedTab={selectedTab} tabChange={tabChange} />
 
-		{!loading &&
-			(myNotifications && myNotifications.length > 0 ? (
-				<View style={styles.background}>
-					<Text style={styles.badge}>{myNotifications.length.toString()}</Text>
-				</View>
-			) : (
-				<View />
-			))}
+		{notifications > 0 ? (
+			<View style={styles.background}>
+				<Text style={styles.badge}>{notifications}</Text>
+			</View>
+		) : (
+			<View />
+		)}
 	</View>
 );

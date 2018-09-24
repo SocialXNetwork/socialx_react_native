@@ -6,20 +6,14 @@ import {HeaderLogo} from '../';
 import styles from './Header.style';
 
 interface IHeaderProps {
-	title: string;
-	center: JSX.Element | false;
-	left: JSX.Element | false;
-	right: JSX.Element | false;
-	logo: boolean | null;
+	title?: string;
+	center?: JSX.Element | undefined;
+	left?: JSX.Element | undefined;
+	right?: JSX.Element | undefined;
+	logo?: boolean;
 }
 
-export const Header: React.SFC<IHeaderProps> = ({
-	center = false,
-	left = false,
-	right = false,
-	title = '',
-	logo = null,
-}) => {
+export const Header: React.SFC<IHeaderProps> = ({center, left, right, title = '', logo}) => {
 	const displayCenter = center;
 	const displayTitle = title.length > 0 && !center;
 	const displayLogo = !center && title.length === 0 && logo;
