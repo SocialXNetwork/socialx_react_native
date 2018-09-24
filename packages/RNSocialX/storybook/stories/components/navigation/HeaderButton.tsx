@@ -9,7 +9,6 @@ import CenterView from '../../../helpers/CenterView';
 storiesOf('Components/navigation', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('HeaderButton', () => (
-		// @ts-ignore
 		<HeaderButton
 			onPress={() => Alert.alert('Pressed!')}
 			iconName={'ios-add-circle'}

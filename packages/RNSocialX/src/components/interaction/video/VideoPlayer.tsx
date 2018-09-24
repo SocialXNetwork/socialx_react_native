@@ -8,7 +8,7 @@ import styles from './VideoPlayer.style';
 export interface IVideoOptions {
 	containerStyle?: StyleProp<ViewStyle>;
 	muted?: boolean;
-	thumbOnly: boolean;
+	thumbOnly?: boolean;
 	resizeMode?: 'cover' | 'contain';
 	resizeToChangeAspectRatio?: boolean;
 	paused?: boolean;
@@ -94,7 +94,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 						muteIcon={muteIcon}
 						resizeToChangeAspectRatio={resizeToChangeAspectRatio}
 						playReady={playReady}
-						thumbOnly={thumbOnly}
+						thumbOnly={!thumbOnly}
 						onVideoPlayStart={this.onVideoPlayStart}
 						onVideoMuteToggle={onMuteVideo}
 						onVideoEnterFullScreen={this.onVideoEnterFullScreen}
