@@ -1,6 +1,7 @@
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';
 
+import {ICommentMetasCallback, IContext, IGunCallback, ILikesMetasCallback, IMetasCallback, TABLES} from '../../types';
 import {setToArray} from '../../utils/helpers';
 
 export const getPostComments = (

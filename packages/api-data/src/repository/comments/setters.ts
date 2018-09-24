@@ -1,3 +1,4 @@
+import {ICommentMetasCallback, IContext, IGunCallback, IPostMetasCallback, TABLES} from '../../types';
 import {getContextMeta} from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';

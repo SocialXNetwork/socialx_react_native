@@ -1,4 +1,5 @@
 import * as Gun from 'gun/gun';
+import {GunInstance} from './types';
 
 // temp and should be removed (just for offline testing on node)
 // import 'gun/lib/store';

@@ -24,6 +24,7 @@
  * so next time the user forgets his password, we ask these questions and they get back their reminder (notice here we are not going to return the actual password because of sec reasons / will change in the future)
  */
 
+import {IContext, IGunCallback} from '../../types';
 import {getPublicKeyByUsername} from '../profiles/getters';
 import {createProfile} from '../profiles/setters';
 import * as accountHandles from './handles';

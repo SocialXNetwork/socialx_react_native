@@ -1,3 +1,4 @@
+import {IContext, TABLES} from '../../types';
 import * as postHandles from '../posts/handles';
 
 export const commentsByPostPath = (context: IContext, postPath: string) =>

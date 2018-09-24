@@ -1,3 +1,4 @@
+import {IContext, IGunCallback, IGunSetterCallback, IPostMetasCallback, TABLE_ENUMS, TABLES} from '../../types';
 import {datePathFromDate, getContextMeta} from '../../utils/helpers';
 import * as postHandles from './handles';
 

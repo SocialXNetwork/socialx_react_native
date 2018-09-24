@@ -1,3 +1,5 @@
+import {IContext, TABLE_ENUMS, TABLES} from '../../types';
+
 export const postMetaById = (context: IContext, postId: string) => {
 	const {gun} = context;
 	return gun.get(TABLES.POST_META_BY_ID).get(postId);
