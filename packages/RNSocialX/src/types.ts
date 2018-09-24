@@ -226,6 +226,7 @@ export interface ITrendingCategoriesItem {
 	name: string;
 }
 
+// TODO: @Alex, fix typing for content
 export interface ITrendingContentItem {
 	name: string;
 	content: any;

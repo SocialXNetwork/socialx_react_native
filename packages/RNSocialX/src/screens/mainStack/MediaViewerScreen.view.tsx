@@ -61,7 +61,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 			/>
 			<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
 				<Carousel
-					// activeSlide={activeSlide}
 					data={mediaObjects}
 					renderItem={({item, index}: {item: IMediaProps; index: number}) => (
 						<MediaObjectViewer

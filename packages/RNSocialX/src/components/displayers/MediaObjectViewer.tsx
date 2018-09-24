@@ -18,10 +18,9 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	canZoom?: boolean;
 }
 
-const getMimeType = (uri: string, type: IMediaTypes | undefined, extension: string | undefined) => {
+const getMimeType = (uri: string, type: IMediaTypes | undefined, extension: string) => {
 	if (type) {
 		return type.key;
-		// @ts-ignore
 	} else if (mime.extensions[extension]) {
 		return extension;
 	} else if (extension) {
