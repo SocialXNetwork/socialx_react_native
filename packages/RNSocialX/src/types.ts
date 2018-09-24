@@ -133,7 +133,7 @@ export interface ISuggestionCardItem {
 	relationship: SearchResultKind;
 }
 
-interface ISimpleWallPostCardProps {
+export interface IWallPostCardData extends IResizeProps {
 	id: string;
 	postText: false | string;
 	location: false | string;
@@ -141,20 +141,10 @@ interface ISimpleWallPostCardProps {
 	timestamp: Date;
 	owner: IPostOwner;
 	currentUserAvatarURL?: string;
-}
-
-export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslatedProps, IResizeProps {
 	governanceVersion: boolean;
 	numberOfSuperLikes: number;
 	numberOfComments: number;
 	numberOfWalletCoins: number;
-	onImagePress: (index: number) => void;
-	onLikeButtonPress: () => void;
-	onDeletePress: (postId: string) => void;
-	onUserPress: (userId: string) => void;
-	onCommentPress: (startComment: boolean) => void;
-	onAddComment: (height: number) => void;
-	onSubmitComment: (escapedComment: string, postId: string) => void;
 	likedByMe: boolean;
 	canDelete: boolean;
 	media: IMediaProps[];
@@ -164,6 +154,18 @@ export interface IWallPostCardProps extends ISimpleWallPostCardProps, ITranslate
 	suggested: undefined | ISuggestionCardItem[];
 	noInput: boolean;
 }
+
+export interface IWallPostCardActions extends ITranslatedProps {
+	onImagePress: (index: number, media: any) => void;
+	onLikeButtonPress: (likedByMe: boolean, postId: string) => boolean;
+	// onDeletePress: (postId: string) => void; // TODO: this is not implemented in WallPostCard!
+	onUserPress: (userId: string) => void;
+	onCommentPress: (postId: string) => void; // this actually navigates to comments screen!
+	onAddComment: (height: number) => void;
+	onSubmitComment: (commentText: string, postId: string) => void;
+}
+
+export type IWallPostCardProps = IWallPostCardData & IWallPostCardActions;
 
 // =====================================================
 // ENHANCER DATA TYPES
@@ -181,7 +183,7 @@ export interface ICurrentUser {
 	numberOfFriends: number;
 	numberOfViews: number;
 	mediaObjects: IMediaProps[];
-	recentPosts: IWallPostCardProps[];
+	recentPosts: IWallPostCardData[];
 	miningEnabled: boolean;
 }
 
@@ -196,7 +198,7 @@ export interface IVisitedUser {
 	numberOfFriends: number;
 	numberOfViews: number;
 	mediaObjects: IMediaProps[];
-	recentPosts: IWallPostCardProps[];
+	recentPosts: IWallPostCardData[];
 	relationship: SearchResultKind;
 }
 

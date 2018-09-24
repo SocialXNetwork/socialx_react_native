@@ -73,6 +73,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							resizeMode={'contain'}
 							resizeToChangeAspectRatio={true}
 							canZoom={false}
+							getText={getText}
 						/>
 					)}
 					sliderWidth={viewport.width}

@@ -5,7 +5,7 @@ import {
 	ILike,
 	ISimpleComment,
 	ISuggestionCardItem,
-	IWallPostCardProps,
+	IWallPostCardData,
 	MediaTypeImage,
 	SearchResultKind,
 } from './types';
@@ -89,8 +89,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 	},
 ];
 
-// TODO: @alex @ionut why do we have actions and data props mixed together like this?
-export const posts: IWallPostCardProps[] = [
+export const posts: IWallPostCardData[] = [
 	{
 		id: '1',
 		postText: 'Lorem ipsum dolor sit amet.',
@@ -106,24 +105,6 @@ export const posts: IWallPostCardProps[] = [
 		numberOfSuperLikes: 0,
 		numberOfComments: 1,
 		numberOfWalletCoins: 0,
-		onImagePress: () => {
-			/**/
-		},
-		onLikeButtonPress: () => {
-			/**/
-		},
-		onDeletePress: () => {
-			/**/
-		},
-		onUserPress: () => {
-			/**/
-		},
-		onCommentPress: () => {
-			/**/
-		},
-		onAddComment: () => {
-			/**/
-		},
 		likedByMe: false,
 		canDelete: false,
 		media: [
@@ -143,7 +124,6 @@ export const posts: IWallPostCardProps[] = [
 		listLoading: false,
 		suggested: undefined,
 		noInput: false,
-		getText: (value) => value,
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 	},
@@ -162,24 +142,6 @@ export const posts: IWallPostCardProps[] = [
 		numberOfSuperLikes: 0,
 		numberOfComments: 1,
 		numberOfWalletCoins: 0,
-		onImagePress: () => {
-			/**/
-		},
-		onLikeButtonPress: () => {
-			/**/
-		},
-		onDeletePress: () => {
-			/**/
-		},
-		onUserPress: () => {
-			/**/
-		},
-		onCommentPress: () => {
-			/**/
-		},
-		onAddComment: () => {
-			/**/
-		},
 		likedByMe: false,
 		canDelete: false,
 		media: [
@@ -199,7 +161,6 @@ export const posts: IWallPostCardProps[] = [
 		listLoading: false,
 		suggested: suggestedItems,
 		noInput: false,
-		getText: (value) => value,
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 	},
@@ -218,24 +179,6 @@ export const posts: IWallPostCardProps[] = [
 		numberOfSuperLikes: 0,
 		numberOfComments: 1,
 		numberOfWalletCoins: 0,
-		onImagePress: () => {
-			/**/
-		},
-		onLikeButtonPress: () => {
-			/**/
-		},
-		onDeletePress: () => {
-			/**/
-		},
-		onUserPress: () => {
-			/**/
-		},
-		onCommentPress: () => {
-			/**/
-		},
-		onAddComment: () => {
-			/**/
-		},
 		likedByMe: false,
 		canDelete: false,
 		media: [
@@ -255,7 +198,6 @@ export const posts: IWallPostCardProps[] = [
 		listLoading: false,
 		suggested: undefined,
 		noInput: false,
-		getText: (value) => value,
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 	},

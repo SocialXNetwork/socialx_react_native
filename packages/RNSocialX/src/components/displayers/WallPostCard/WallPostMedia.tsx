@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import {IMediaProps} from '../../../types';
+import {IMediaProps, ITranslatedProps} from '../../../types';
 import {MediaObjectViewer} from '../MediaObjectViewer';
 import style from './WallPostMedia.style';
 
-interface ISingleMediaPostProps {
+interface ISingleMediaPostProps extends ITranslatedProps {
 	mediaObject: IMediaProps;
 	noInteraction: boolean;
 	onMediaObjectView: (index: number) => void;
@@ -17,6 +17,7 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	noInteraction,
 	onMediaObjectView,
 	onLikeButtonPressed,
+	getText,
 }) => (
 	// @ts-ignore
 	<MediaObjectViewer
@@ -26,15 +27,16 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 		uri={mediaObject.url}
 		style={style.postMediaContainerFullWidth}
 		extension={mediaObject.extension}
+		getText={getText}
 	/>
 );
 
-interface IDualMediaPostProps {
+interface IDualMediaPostProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
 	onMediaObjectView: (index: number) => void;
 }
 
-const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObjectView}) => (
+const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObjectView, getText}) => (
 	<View style={style.postMediaContainerFullWidth}>
 		<View style={style.fullHeightHalfWidth}>
 			{
@@ -45,6 +47,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObj
 					uri={mediaObjects[0].url}
 					style={style.fullWidthHeight}
 					extension={mediaObjects[0].extension}
+					getText={getText}
 				/>
 			}
 		</View>
@@ -57,18 +60,19 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObj
 					uri={mediaObjects[1].url}
 					style={style.fullWidthHeight}
 					extension={mediaObjects[1].extension}
+					getText={getText}
 				/>
 			}
 		</View>
 	</View>
 );
 
-interface IMultiMediaPostProps {
+interface IMultiMediaPostProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
 	onMediaObjectView: (index: number) => void;
 }
 
-const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaObjectView}) => {
+const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaObjectView, getText}) => {
 	const numberOfMoreMediaObjects = mediaObjects.length - 3;
 	return (
 		<View style={style.postMediaContainerFullWidth}>
@@ -81,6 +85,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 						uri={mediaObjects[0].url}
 						style={style.fullWidthHeight}
 						extension={mediaObjects[0].extension}
+						getText={getText}
 					/>
 				}
 			</View>
@@ -93,6 +98,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 							thumbOnly={true}
 							uri={mediaObjects[1].url}
 							extension={mediaObjects[1].extension}
+							getText={getText}
 						/>
 					}
 				</View>
@@ -104,6 +110,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 							uri={mediaObjects[2].url}
 							style={style.fullWidthHeight}
 							extension={mediaObjects[2].extension}
+							getText={getText}
 						/>
 					}
 					{numberOfMoreMediaObjects > 0 && (
@@ -117,7 +124,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 	);
 };
 
-interface IWallPostMediaProps {
+interface IWallPostMediaProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
 	onMediaObjectView: (index: number) => void;
 	onLikeButtonPressed: () => void;
@@ -127,6 +134,7 @@ interface IWallPostMediaProps {
 export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 	mediaObjects,
 	noInteraction = false,
+	getText,
 	onMediaObjectView = () => {
 		/**/
 	},
@@ -136,14 +144,19 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 }) => {
 	return (
 		<React.Fragment>
-			{mediaObjects.length > 2 && <MultiMediaPost mediaObjects={mediaObjects} onMediaObjectView={onMediaObjectView} />}
-			{mediaObjects.length === 2 && <DualMediaPost mediaObjects={mediaObjects} onMediaObjectView={onMediaObjectView} />}
+			{mediaObjects.length > 2 && (
+				<MultiMediaPost mediaObjects={mediaObjects} onMediaObjectView={onMediaObjectView} getText={getText} />
+			)}
+			{mediaObjects.length === 2 && (
+				<DualMediaPost mediaObjects={mediaObjects} onMediaObjectView={onMediaObjectView} getText={getText} />
+			)}
 			{mediaObjects.length === 1 && (
 				<SingleMediaPost
 					mediaObject={mediaObjects[0]}
 					noInteraction={noInteraction}
 					onMediaObjectView={onMediaObjectView}
 					onLikeButtonPressed={onLikeButtonPressed}
+					getText={getText}
 				/>
 			)}
 		</React.Fragment>

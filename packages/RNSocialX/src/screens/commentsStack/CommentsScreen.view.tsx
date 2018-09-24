@@ -114,6 +114,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 							}}
 							// onLikeButtonPressed={this.onDoubleTapLikeHandler}
 							noInteraction={false}
+							getText={getText}
 						/>
 					)}
 					<CommentsPostLikes getText={getText} likes={likes} showUserProfile={onViewUserProfile} />

@@ -1,6 +1,7 @@
 /**
  * TODO list:
  * 1. @Serkan: Take a look over onViewProfilePhotoHandler function, it uses ipfs
+ * 2. @Alex: check and implemented onAddComment, similar with what is on UserFeed?
  */
 
 import {ActionSheet} from 'native-base';
@@ -54,7 +55,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const {currentUser, visitedUser, refreshingProfile, loadingProfile} = this.props;
+		const {currentUser, visitedUser, refreshingProfile, loadingProfile, createComment} = this.props;
 		const {activeTab, listTranslate, gridTranslate, containerHeight, gridMediaProvider} = this.state;
 		const {
 			recentPosts,
@@ -84,9 +85,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				aboutMeText={aboutMeText}
 				recentPosts={recentPosts}
 				loadMorePhotosHandler={this.loadMorePhotosHandler}
-				onCommentPress={this.onCommentsButtonPressHandler}
-				onImagePress={this.onMediaObjectPressHandler}
-				onLikePress={this.onLikePressHandler}
 				onAddFriend={this.onAddFriendHandler}
 				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				relationship={relationship}
@@ -100,8 +98,14 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				activeTab={activeTab}
 				containerHeight={containerHeight}
 				onLayoutChange={this.onLayoutChangeHandler}
-				getText={this.props.getText}
 				onClose={this.onCloseHandler}
+				getText={this.props.getText}
+				onImagePress={this.onMediaObjectPressHandler}
+				onLikeButtonPress={this.onLikePressHandler}
+				onUserPress={this.onViewUserProfile}
+				onSubmitComment={createComment}
+				onCommentPress={this.onViewCommentsForPost}
+				onAddComment={(height: number) => console.log('addComment from user profile screen', height)}
 			/>
 		);
 	}
@@ -150,8 +154,8 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		});
 	};
 
-	private onCommentsButtonPressHandler = (postId: any, userId: any) => {
-		this.props.navigation.navigate('CommentsStack', {postId, userId});
+	private onViewCommentsForPost = (postId: string) => {
+		this.props.navigation.navigate('CommentsStack', {postId});
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
@@ -250,6 +254,10 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onCloseHandler = () => {
 		this.props.navigation.goBack(null);
+	};
+
+	private onViewUserProfile = (userId: string) => {
+		this.props.navigation.navigate('UserProfileScreen', {userId});
 	};
 }
 
