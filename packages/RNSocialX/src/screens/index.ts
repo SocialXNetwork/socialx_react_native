@@ -2,6 +2,8 @@ export {HelloFoo} from './HelloFoo';
 
 export {CommentsScreen} from './commentsStack/CommentsScreen';
 
+export {IntroScreen} from './intro/IntroScreen';
+
 export {CreateWallPostScreen} from './mainStack/CreateWallPostScreen';
 export {MediaViewerScreen} from './mainStack/MediaViewerScreen';
 export {PhotoScreen} from './mainStack/PhotoScreen';
@@ -11,6 +13,7 @@ export {MyProfileScreen} from './mainTabNav/MyProfileScreen';
 export {TrendingScreen, PeopleTab, TagsTab, TopTab, PlacesTab} from './mainTabNav/SearchScreen';
 export {FriendsUserFeed} from './mainTabNav/UserFeedScreen/FriendsUserFeed';
 export {GlobalUserFeed} from './mainTabNav/UserFeedScreen/GlobalUserFeed';
+export {NotificationsScreen} from './mainTabNav/NotificationsScreen';
 
 export {ReferralScreen} from './myProfile/ReferralScreen';
 export {SettingsScreen} from './myProfile/SettingsScreen';

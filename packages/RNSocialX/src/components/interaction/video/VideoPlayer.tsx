@@ -6,12 +6,12 @@ import {VideoControls} from './';
 import styles from './VideoPlayer.style';
 
 export interface IVideoOptions {
-	containerStyle: StyleProp<ViewStyle>;
-	muted: boolean;
+	containerStyle?: StyleProp<ViewStyle>;
+	muted?: boolean;
 	thumbOnly: boolean;
-	resizeMode: 'cover' | 'contain';
-	resizeToChangeAspectRatio: boolean;
-	paused: boolean;
+	resizeMode?: 'cover' | 'contain';
+	resizeToChangeAspectRatio?: boolean;
+	paused?: boolean;
 }
 
 interface IVideoPlayerProps extends IVideoOptions {
@@ -34,6 +34,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 		thumbOnly: false,
 		resizeMode: 'cover',
 		resizeToChangeAspectRatio: false,
+		paused: true,
 		onMuteVideo: () => {
 			/**/
 		},

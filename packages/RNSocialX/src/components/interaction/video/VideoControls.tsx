@@ -12,7 +12,7 @@ import styles, {defaultColor} from './VideoControls.style';
 interface IVideoControlsProps {
 	showPlayButton: boolean;
 	muteIcon: string;
-	resizeToChangeAspectRatio: boolean;
+	resizeToChangeAspectRatio?: boolean;
 	playReady: boolean;
 	thumbOnly: boolean;
 	onVideoPlayStart: () => void;
@@ -23,7 +23,7 @@ interface IVideoControlsProps {
 export const VideoControls: React.SFC<IVideoControlsProps> = ({
 	showPlayButton,
 	muteIcon,
-	resizeToChangeAspectRatio,
+	resizeToChangeAspectRatio = false,
 	playReady,
 	thumbOnly,
 	onVideoPlayStart,

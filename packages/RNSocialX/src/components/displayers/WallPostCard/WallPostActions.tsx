@@ -42,10 +42,7 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 						onPress={onSuperLikePress}
 						label={umberOfSuperLikes.toString()}
                     /> */}
-				{
-					// @ts-ignore
-					<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onCommentPress} iconStyle={styles.icon} />
-				}
+				<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onCommentPress} iconStyle={styles.icon} />
 			</View>
 		</View>
 	);

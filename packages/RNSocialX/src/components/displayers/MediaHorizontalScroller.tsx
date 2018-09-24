@@ -30,7 +30,6 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 			onContentSizeChange={onScrollContentSizeChange}
 		>
 			{mediaURIs.map((mediaURI) => (
-				// @ts-ignore
 				<MediaObjectViewer
 					key={mediaURI}
 					uri={mediaURI}

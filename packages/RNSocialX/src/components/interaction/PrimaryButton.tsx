@@ -11,15 +11,15 @@ export enum ButtonSizes {
 
 export interface IPrimaryButtonProps {
 	label: string;
-	width: number;
-	disabled: boolean;
+	width?: number;
+	disabled?: boolean;
 	onPress: () => void;
-	size: ButtonSizes;
-	autoWidth: boolean;
-	borderColor: string;
-	textColor: string;
-	loading: boolean;
-	containerStyle: StyleProp<ViewStyle>;
+	size?: ButtonSizes;
+	autoWidth?: boolean;
+	borderColor?: string;
+	textColor?: string;
+	loading?: boolean;
+	containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({

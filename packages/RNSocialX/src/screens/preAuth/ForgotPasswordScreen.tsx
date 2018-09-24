@@ -1,8 +1,5 @@
 /**
  * old screen -> screens/ForgotPasswordScreen/index.tsx
- * TODO list:
- * 1. get rid of workaround for navigationOptions.getText
- * 2. check TS issue with .navigationOptions
  */
 
 import * as React from 'react';

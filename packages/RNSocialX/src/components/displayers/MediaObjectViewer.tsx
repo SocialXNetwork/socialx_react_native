@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Image, Platform, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import FastImage from 'react-native-fast-image';
-// @ts-ignore
 import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
 
@@ -11,18 +10,18 @@ import {IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo} from '../
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	uri: string;
-	style: StyleProp<ViewStyle>;
-	resizeMode: 'cover' | 'contain';
-	extension: string;
-	type: IMediaTypes;
-	onPress: () => void;
-	onDoublePress: () => void;
-	canZoom: boolean;
+	style?: StyleProp<ViewStyle>;
+	extension?: string;
+	type?: IMediaTypes;
+	onPress?: () => void;
+	onDoublePress?: () => void;
+	canZoom?: boolean;
 }
 
 const getMimeType = (uri: string, type: IMediaTypes | undefined, extension: string | undefined) => {
 	if (type) {
 		return type.key;
+		// @ts-ignore
 	} else if (mime.extensions[extension]) {
 		return extension;
 	} else if (extension) {

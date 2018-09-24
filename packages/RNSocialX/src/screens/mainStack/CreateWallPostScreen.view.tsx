@@ -36,10 +36,7 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	onClose,
 }) => (
 	<SafeAreaView style={[style.safeView, Platform.OS === OS_TYPES.IOS ? {paddingBottom: marginBottom} : {}]}>
-		{
-			// @ts-ignore
-			<Header title={getText('new.wall.post.screen.title')} right={<CloseButton onClose={onClose} />} />
-		}
+		<Header title={getText('new.wall.post.screen.title')} right={<CloseButton onClose={onClose} />} />
 		<ScrollView contentContainerStyle={style.container} keyboardShouldPersistTaps={'handled'}>
 			<SharePostInput
 				avatarSource={avatarImage}
@@ -56,16 +53,13 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 					<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
 				</View>
 			)}
-			{
-				// @ts-ignore
-				<PrimaryButton
-					label={getText('new.wall.post.screen.send.button')}
-					size={ButtonSizes.Small}
-					autoWidth={true}
-					onPress={onPostSend}
-					borderColor={Colors.transparent}
-				/>
-			}
+			<PrimaryButton
+				label={getText('new.wall.post.screen.send.button')}
+				size={ButtonSizes.Small}
+				autoWidth={true}
+				onPress={onPostSend}
+				borderColor={Colors.transparent}
+			/>
 		</ScrollView>
 	</SafeAreaView>
 );

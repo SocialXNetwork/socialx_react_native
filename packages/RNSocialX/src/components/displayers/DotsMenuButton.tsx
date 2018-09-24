@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Colors, Sizes} from '../../environment/theme';
 
 interface IDotsMenuButtonProps {
-	iconColor: string;
-	iconName: string;
+	iconColor?: string;
+	iconName?: string;
 	onPress: () => void;
 }
 
