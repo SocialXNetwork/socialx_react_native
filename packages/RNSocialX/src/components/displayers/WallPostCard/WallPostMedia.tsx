@@ -19,7 +19,6 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	onLikeButtonPressed,
 	getText,
 }) => (
-	// @ts-ignore
 	<MediaObjectViewer
 		onPress={() => onMediaObjectView(0)}
 		onDoublePress={onLikeButtonPressed}
@@ -39,30 +38,24 @@ interface IDualMediaPostProps extends ITranslatedProps {
 const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObjectView, getText}) => (
 	<View style={style.postMediaContainerFullWidth}>
 		<View style={style.fullHeightHalfWidth}>
-			{
-				// @ts-ignore
-				<MediaObjectViewer
-					onPress={() => onMediaObjectView(0)}
-					thumbOnly={true}
-					uri={mediaObjects[0].url}
-					style={style.fullWidthHeight}
-					extension={mediaObjects[0].extension}
-					getText={getText}
-				/>
-			}
+			<MediaObjectViewer
+				onPress={() => onMediaObjectView(0)}
+				thumbOnly={true}
+				uri={mediaObjects[0].url}
+				style={style.fullWidthHeight}
+				extension={mediaObjects[0].extension}
+				getText={getText}
+			/>
 		</View>
 		<View style={style.fullHeightHalfWidth}>
-			{
-				// @ts-ignore
-				<MediaObjectViewer
-					onPress={() => onMediaObjectView(1)}
-					thumbOnly={true}
-					uri={mediaObjects[1].url}
-					style={style.fullWidthHeight}
-					extension={mediaObjects[1].extension}
-					getText={getText}
-				/>
-			}
+			<MediaObjectViewer
+				onPress={() => onMediaObjectView(1)}
+				thumbOnly={true}
+				uri={mediaObjects[1].url}
+				style={style.fullWidthHeight}
+				extension={mediaObjects[1].extension}
+				getText={getText}
+			/>
 		</View>
 	</View>
 );
@@ -77,42 +70,33 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 	return (
 		<View style={style.postMediaContainerFullWidth}>
 			<View style={style.fullHeightHalfWidth}>
-				{
-					// @ts-ignore
-					<MediaObjectViewer
-						onPress={() => onMediaObjectView(0)}
-						thumbOnly={true}
-						uri={mediaObjects[0].url}
-						style={style.fullWidthHeight}
-						extension={mediaObjects[0].extension}
-						getText={getText}
-					/>
-				}
+				<MediaObjectViewer
+					onPress={() => onMediaObjectView(0)}
+					thumbOnly={true}
+					uri={mediaObjects[0].url}
+					style={style.fullWidthHeight}
+					extension={mediaObjects[0].extension}
+					getText={getText}
+				/>
 			</View>
 			<View style={style.fullHeightHalfWidth}>
 				<View style={style.fullWidthHalfHeight}>
-					{
-						// @ts-ignore
-						<MediaObjectViewer
-							onPress={() => onMediaObjectView(1)}
-							thumbOnly={true}
-							uri={mediaObjects[1].url}
-							extension={mediaObjects[1].extension}
-							getText={getText}
-						/>
-					}
+					<MediaObjectViewer
+						onPress={() => onMediaObjectView(1)}
+						thumbOnly={true}
+						uri={mediaObjects[1].url}
+						extension={mediaObjects[1].extension}
+						getText={getText}
+					/>
 				</View>
 				<TouchableOpacity style={style.fullWidthHalfHeight} onPress={() => onMediaObjectView(2)}>
-					{
-						// @ts-ignore
-						<MediaObjectViewer
-							thumbOnly={true}
-							uri={mediaObjects[2].url}
-							style={style.fullWidthHeight}
-							extension={mediaObjects[2].extension}
-							getText={getText}
-						/>
-					}
+					<MediaObjectViewer
+						thumbOnly={true}
+						uri={mediaObjects[2].url}
+						style={style.fullWidthHeight}
+						extension={mediaObjects[2].extension}
+						getText={getText}
+					/>
 					{numberOfMoreMediaObjects > 0 && (
 						<View style={style.moreOverlay}>
 							<Text style={style.moreText}>{`+${numberOfMoreMediaObjects} more`}</Text>

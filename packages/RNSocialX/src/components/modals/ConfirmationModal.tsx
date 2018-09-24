@@ -39,7 +39,7 @@ export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
 				animationOut={'zoomOut'}
 				onBackdropPress={declineHandler}
 				style={style.container}
-				// @ts-ignore // lib. TS issue!
+				// @ts-ignore
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 			>

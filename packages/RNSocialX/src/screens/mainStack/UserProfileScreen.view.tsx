@@ -95,10 +95,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	return (
 		<WithInlineLoader isLoading={isLoading}>
 			<View style={styles.container}>
-				{
-					// @ts-ignore
-					<Header title={'profile'} left={<CloseButton onClose={onClose} />} />
-				}
+				<Header title={'profile'} left={<CloseButton onClose={onClose} />} />
 				<View style={styles.whiteBottomView} />
 				<ScrollView
 					contentContainerStyle={scrollContainerStyles}
@@ -106,28 +103,25 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
 					scrollEnabled={hasPhotos}
 				>
-					{
-						// @ts-ignore
-						<ProfileTopContainer
-							avatarURL={avatarURL}
-							fullName={fullName}
-							userName={userName}
-							numberOfFriends={numberOfFriends}
-							numberOfLikes={numberOfLikes}
-							numberOfPhotos={numberOfPhotos}
-							numberOfViews={numberOfViews}
-							onViewProfilePhoto={onViewProfilePhoto}
-							onAddFriend={onAddFriend}
-							onShowFriendshipOptions={onShowFriendshipOptions}
-							relationship={relationship}
-							isCurrentUser={false}
-							onIconPress={onIconPress}
-							aboutMeText={aboutMeText}
-							tabs={true}
-							activeTab={activeTab}
-							getText={getText}
-						/>
-					}
+					<ProfileTopContainer
+						avatarURL={avatarURL}
+						fullName={fullName}
+						userName={userName}
+						numberOfFriends={numberOfFriends}
+						numberOfLikes={numberOfLikes}
+						numberOfPhotos={numberOfPhotos}
+						numberOfViews={numberOfViews}
+						onViewProfilePhoto={onViewProfilePhoto}
+						onAddFriend={onAddFriend}
+						onShowFriendshipOptions={onShowFriendshipOptions}
+						relationship={relationship}
+						isCurrentUser={false}
+						onIconPress={onIconPress}
+						aboutMeText={aboutMeText}
+						tabs={true}
+						activeTab={activeTab}
+						getText={getText}
+					/>
 					{hasPhotos && (
 						<View style={contentContainerStyle}>
 							<Animated.View style={[styles.postsContainer, {transform: [{translateX: listTranslate}]}]}>

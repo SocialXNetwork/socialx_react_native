@@ -211,8 +211,3 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 export const CommentsScreen = (navProps: INavigationProps<INavigationScreenProps, any>) => (
 	<WithComments>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithComments>
 );
-
-// @ts-ignore
-CommentsScreen.navigationOptions = {
-	header: null,
-};

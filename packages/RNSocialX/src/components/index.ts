@@ -76,7 +76,7 @@ export {TagFriendsModal} from './modals/TagFriendsModal';
 export {HeaderLogo} from './navigation/HeaderLogo';
 export {HeaderButton} from './navigation/HeaderButton';
 
-export {Container} from './referral/Container';
-export {Row} from './referral/Row';
+export {Container as ReferralContainer} from './referral/Container';
+export {Row as ReferralRow} from './referral/Row';
 
 export {WithModalForAddFriends} from './WithModalForAddFriends';

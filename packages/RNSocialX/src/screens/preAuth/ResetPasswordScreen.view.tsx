@@ -52,7 +52,6 @@ export const ResetPasswordScreenView: React.SFC<IResetPasswordScreenViewProps> =
 			} else {
 				// const passwordErrors = PASSWORD_VALIDATOR_SCHEMA.validate(password, {list: true});
 				// if (passwordErrors.length > 0) {
-				// 	// @ts-ignore
 				// 	errors.password = (
 				// 		<React.Fragment>
 				// 			<Text style={styles.boldText}>{`${getText('register.password.invalid.policy')}: `}</Text>
@@ -80,14 +79,10 @@ export const ResetPasswordScreenView: React.SFC<IResetPasswordScreenViewProps> =
 			setFieldTouched,
 		}: FormikProps<IResetPasswordForm>) => (
 			<View style={styles.container}>
-				{
-					// @ts-ignore
-					<Header
-						title={getText('reset.password.screen.title')}
-						// @ts-ignore
-						left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-					/>
-				}
+				<Header
+					title={getText('reset.password.screen.title')}
+					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+				/>
 
 				<KeyboardAwareScrollView
 					style={styles.scrollView}
@@ -153,16 +148,13 @@ export const ResetPasswordScreenView: React.SFC<IResetPasswordScreenViewProps> =
 							visible={!!errors.confirmPassword && !!touched.confirmPassword}
 						/>
 					</View>
-					{
-						// @ts-ignore
-						<PrimaryButton
-							disabled={!isValid}
-							label={getText('reset.password.set.button')}
-							autoWidth={true}
-							borderColor={defaultColors.transparent}
-							onPress={handleSubmit}
-						/>
-					}
+					<PrimaryButton
+						disabled={!isValid}
+						label={getText('reset.password.set.button')}
+						autoWidth={true}
+						borderColor={defaultColors.transparent}
+						onPress={handleSubmit}
+					/>
 				</KeyboardAwareScrollView>
 			</View>
 		)}

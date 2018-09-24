@@ -26,16 +26,7 @@ const GridItem: React.SFC<IGridItemProps> = ({mediaData, onViewMediaFullScreen, 
 
 	return (
 		<TouchableOpacity onPress={() => onViewMediaFullScreen(mediaData.index!)}>
-			{
-				// @ts-ignore
-				<MediaObjectViewer
-					type={mediaData.type}
-					uri={mediaData.url}
-					style={styles}
-					thumbOnly={true}
-					getText={getText}
-				/>
-			}
+			<MediaObjectViewer type={mediaData.type} uri={mediaData.url} style={styles} thumbOnly={true} getText={getText} />
 		</TouchableOpacity>
 	);
 };
@@ -48,7 +39,6 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 	header,
 	getText,
 }) => (
-	// @ts-ignore
 	<PhotoGrid
 		thumbWidth={USER_MEDIA_THUMB_SIZE}
 		thumbHeight={USER_MEDIA_THUMB_SIZE}

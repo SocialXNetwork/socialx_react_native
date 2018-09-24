@@ -7,15 +7,15 @@ import {defaultColor, HEADER_BUTTON_SIZE, styles} from './HeaderButton.style';
 interface IHeaderButtonProps {
 	onPress: () => void;
 	iconName: false | string;
-	iconSource: false | number;
-	iconColor: string;
-	iconSize: number;
+	iconSource?: number;
+	iconColor?: string;
+	iconSize?: number;
 }
 
 export const HeaderButton: React.SFC<IHeaderButtonProps> = ({
 	onPress,
 	iconName = false,
-	iconSource = false,
+	iconSource,
 	iconColor = defaultColor,
 	iconSize = HEADER_BUTTON_SIZE,
 }) => {

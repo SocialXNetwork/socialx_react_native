@@ -24,9 +24,6 @@ export const CommentsPostActions: React.SFC<IPostActionsProps> = ({
 }) => (
 	<View style={styles.container}>
 		<LikeAnimatingButton onPress={onLikePress} likedByMe={likedByMe} getText={getText} />
-		{
-			// @ts-ignore
-			<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onStartComment} iconStyle={styles.icon} />
-		}
+		<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onStartComment} iconStyle={styles.icon} />
 	</View>
 );

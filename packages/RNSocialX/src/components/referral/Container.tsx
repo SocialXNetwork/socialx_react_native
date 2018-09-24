@@ -6,7 +6,7 @@ import styles, {defaultColor} from './Container.style';
 interface IContainerProps {
 	heading: string;
 	text: string;
-	color: string;
+	color?: string;
 }
 
 export const Container: React.SFC<IContainerProps> = ({heading, text, color = defaultColor}) => (

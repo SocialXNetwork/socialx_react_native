@@ -120,10 +120,7 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 }) => (
 	<WithInlineLoader isLoading={isLoading}>
 		<View style={styles.container}>
-			{
-				// @ts-ignore
-				<Header title={getText('notifications.screen.title')} />
-			}
+			<Header title={getText('notifications.screen.title')} />
 			<FlatList
 				data={notifications}
 				keyExtractor={(item: any) => item.requestId}
