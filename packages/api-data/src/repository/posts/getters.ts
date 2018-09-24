@@ -1,6 +1,7 @@
 import * as postHandles from './handles';
 import {IPostData} from './setters';
 
+import {IContext, IGunCallback, ILikesMetasCallback, IMetasCallback} from '../../types';
 import {datePathFromDate, setToArray} from '../../utils/helpers';
 
 export const getPostPathsByUser = (

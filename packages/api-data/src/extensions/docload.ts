@@ -1,4 +1,5 @@
 import * as Gun from 'gun/gun';
+import {GunInstance} from '../types';
 
 Gun.chain.docLoad = function(cb: (data: object | undefined, key: string) => GunInstance) {
 	const gun = this; // tslint:disable-line no-this-assignment

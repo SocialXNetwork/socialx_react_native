@@ -1,3 +1,5 @@
+import {IContext, TABLE_ENUMS} from '../../types';
+
 export const currentAccountRecover = (context: IContext) => {
 	const {account} = context;
 	return account.get(TABLE_ENUMS.RECOVER);

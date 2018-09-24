@@ -1,6 +1,6 @@
-type GunDataNode = object | string | boolean | number | null;
+export type GunDataNode = object | string | boolean | number | null;
 
-declare enum TABLES {
+export enum TABLES {
 	POSTS = 'posts',
 	POST_META_BY_ID = 'postMetaById',
 	POST_METAS_BY_USER = 'postMetasByUser',
@@ -10,36 +10,36 @@ declare enum TABLES {
 	PROFILES = 'profiles',
 }
 
-declare enum TABLE_ENUMS {
+export enum TABLE_ENUMS {
 	PRIVATE = 'private',
 	PUBLIC = 'public',
 	RECOVER = 'recover',
 }
 
-interface IPostMetasCallback {
+export interface IPostMetasCallback {
 	postPath: string;
 	privatePost: boolean;
 	owner: string;
 }
 
-interface ICommentMetasCallback {
+export interface ICommentMetasCallback {
 	owner: string;
 	timestamp: number;
 	postPath: string;
 }
 
-interface ILikesMetasCallback {
+export interface ILikesMetasCallback {
 	[key: string]: {
 		owner: string;
 		timestamp: number;
 	};
 }
 
-interface IMetasCallback {
+export interface IMetasCallback {
 	[key: string]: IPostMetasCallback | ICommentMetasCallback | ILikesMetasCallback;
 }
 
-interface IContext {
+export interface IContext {
 	account: GunAccountInstance;
 	gun: GunInstance;
 	time: () => Date;
@@ -48,7 +48,7 @@ interface IContext {
 	decrypt: (target: string, salt: string) => Promise<string>;
 }
 
-interface IGunSetterCallback {
+export interface IGunSetterCallback {
 	'#': string;
 	ok: boolean;
 	err?: string;
@@ -56,9 +56,9 @@ interface IGunSetterCallback {
 	user?: GunAccountInstance;
 }
 
-type IGunCallback<T> = (err: string | null, result?: T) => void;
+export type IGunCallback<T> = (err: string | null, result?: T) => void;
 
-interface GunInstance {
+export interface GunInstance {
 	// core api
 	put: (data: GunDataNode, callback?: (data: IGunSetterCallback) => void) => GunInstance;
 	get: (path: string) => GunInstance;
@@ -80,7 +80,7 @@ interface GunInstance {
 	user: (pub?: string) => GunAccountInstance;
 }
 
-interface GunAccountInstance extends GunInstance {
+export interface GunAccountInstance extends GunInstance {
 	// core api
 
 	/**
@@ -167,9 +167,4 @@ interface GunAccountInstance extends GunInstance {
 		alias: string;
 		pub: string;
 	};
-}
-
-declare module 'gun/gun' {
-	const Gun: any;
-	export = Gun;
 }
