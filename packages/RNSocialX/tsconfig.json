@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react-native",
-    "lib": ["es6"],
+    "lib": ["esnext"],
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,

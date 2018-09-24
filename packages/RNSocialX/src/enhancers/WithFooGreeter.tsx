@@ -1,4 +1,3 @@
-import {foo} from '@socialx/api-data';
 import * as React from 'react';
 import {View} from 'react-native';
 
@@ -18,7 +17,7 @@ interface IWithFooGreeterProps {
 // foo is imported here directly just as an example. Normally, there should
 // be a WithFoo component for this purpose, too!
 export const WithFooGreeter: React.SFC<IWithFooGreeterProps> = ({children}) => (
-	<View>{children({salute: 'Hello ', from: foo()})}</View>
+	<View>{children({salute: 'Hello ', from: 'foo'})}</View>
 );
 
 // =====================================================
@@ -63,6 +62,6 @@ export class WithFooGreeterAndCounter extends React.Component<
 
 		// foo is imported here directly just as an example. Normally, there should
 		// be a WithFoo component for this purpose, too!
-		return <View>{children({salute: `Hello ${counter} times `, from: foo()})}</View>;
+		return <View>{children({salute: `Hello ${counter} times `, from: 'foo'})}</View>;
 	}
 }
