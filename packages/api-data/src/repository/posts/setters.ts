@@ -73,3 +73,5 @@ export const likePost = (context: IContext, {postId}: {postId: string}, callback
 		});
 	});
 };
+
+export default {createPost, likePost};

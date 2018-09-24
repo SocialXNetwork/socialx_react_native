@@ -89,7 +89,7 @@
     "@types/numeral": "^0.0.25",
     "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.7",
-    "@types/react-native": "^0.56.12",
+    "@types/react-native": "^0.56.24",
     "@types/react-native-fs": "^2.8.2",
     "@types/react-native-orientation": "^5.0.1",
     "@types/react-native-photo-view": "^1.5.2",

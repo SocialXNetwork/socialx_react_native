@@ -55,3 +55,10 @@ export const getPostLikes = (
 		});
 	});
 };
+
+export default {
+	getPostPathsByUser,
+	getPostByPath,
+	getPublicPostsByDate,
+	getPostLikes,
+};

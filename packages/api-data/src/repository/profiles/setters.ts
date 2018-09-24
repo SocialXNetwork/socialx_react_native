@@ -1,7 +1,7 @@
 import {IContext, IGunCallback} from '../../types';
 import * as profileHandles from './handles';
 
-interface ICreateProfileInput {
+export interface ICreateProfileInput {
 	username: string;
 	email: string;
 	avatar: string;
@@ -21,4 +21,8 @@ export const createProfile = (
 
 		callback(null);
 	});
+};
+
+export default {
+	createProfile,
 };

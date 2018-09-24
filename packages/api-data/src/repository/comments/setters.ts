@@ -3,7 +3,11 @@ import {getContextMeta} from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';
 
-export const createComment = (context: IContext, {text, postId}: any, callback: IGunCallback<null>) => {
+export const createComment = (
+	context: IContext,
+	{text, postId}: {text: string; postId: string},
+	callback: IGunCallback<null>,
+) => {
 	const {account} = context;
 
 	if (!account.is) {
@@ -42,7 +46,7 @@ export const createComment = (context: IContext, {text, postId}: any, callback: 
 	});
 };
 
-export const likeComment = (context: IContext, {commentId}: any, callback: IGunCallback<null>) => {
+export const likeComment = (context: IContext, {commentId}: {commentId: string}, callback: IGunCallback<null>) => {
 	const {account} = context;
 
 	if (!account.is) {
@@ -65,4 +69,9 @@ export const likeComment = (context: IContext, {commentId}: any, callback: IGunC
 			return callback(null);
 		});
 	});
+};
+
+export default {
+	createComment,
+	likeComment,
 };

@@ -29,6 +29,11 @@ import {getPublicKeyByUsername} from '../profiles/getters';
 import {createProfile} from '../profiles/setters';
 import * as accountHandles from './handles';
 
+export interface ICredentials {
+	username: string;
+	password: string;
+}
+
 interface IRecoverData<T> {
 	recover: {
 		question1: T;
@@ -38,20 +43,18 @@ interface IRecoverData<T> {
 	};
 }
 
-interface IRecoverAccountInput {
+export interface IRecoverAccountInput {
 	username: string;
 	question1: string;
 	question2: string;
 }
 
-interface IChangePassword {
+export interface IChangePassword {
 	oldPassword: string;
 	newPassword: string;
 }
 
-interface ICreateAccountInput extends IRecoverData<string> {
-	username: string;
-	password: string;
+export interface ICreateAccountInput extends IRecoverData<string>, ICredentials {
 	email: string;
 	avatar: string;
 }
@@ -113,7 +116,7 @@ export const createAccount = (
 	});
 };
 
-export const login = (context: IContext, {username, password}: any, callback: IGunCallback<null>) => {
+export const login = (context: IContext, {username, password}: ICredentials, callback: IGunCallback<null>) => {
 	const {account} = context;
 	account.auth(username, password, (authCallback) => {
 		if (authCallback.err) {
@@ -198,4 +201,13 @@ export const trustAccount = async (context: IContext, callback: IGunCallback<nul
 	// TODO: what to trust
 
 	return callback(null);
+};
+
+export default {
+	createAccount,
+	login,
+	logout,
+	changePassword,
+	recoverAccount,
+	trustAccount,
 };
