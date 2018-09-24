@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["es6", "dom"],
+    "lib": ["esnext", "dom"],
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -12,6 +12,6 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
