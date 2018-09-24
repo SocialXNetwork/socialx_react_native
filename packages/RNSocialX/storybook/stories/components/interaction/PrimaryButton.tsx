@@ -9,7 +9,6 @@ import CenterView from '../../../helpers/CenterView';
 storiesOf('Components/interaction', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('PrimaryButton', () => (
-		// @ts-ignore
 		<PrimaryButton
 			label={'Button (Surprising, I know)'}
 			disabled={false}

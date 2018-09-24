@@ -11,6 +11,5 @@ storiesOf('Components/displayers', module)
 		const title = text('title', '');
 		const logo = boolean('logo', true);
 
-		// @ts-ignore
 		return <Header logo={logo} title={title} />;
 	});
