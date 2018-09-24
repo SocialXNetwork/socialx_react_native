@@ -1,7 +1,7 @@
 import {IContext, IGunCallback} from '../../types';
 import * as profileHandles from './handles';
 
-interface IGetPublicKeyInput {
+export interface IGetPublicKeyInput {
 	username: string;
 }
 
@@ -48,4 +48,10 @@ export const getProfileByUsername = (
 
 		return callback(null, profile);
 	});
+};
+
+export default {
+	getPublicKeyByUsername,
+	getCurrentProfile,
+	getProfileByUsername,
 };

@@ -4,3 +4,7 @@ export const isAccountLoggedIn = (context: IContext, callback: IGunCallback<{log
 	const {account} = context;
 	return callback(null, {loggedIn: !!account.is});
 };
+
+export default {
+	isAccountLoggedIn,
+};
