@@ -28,7 +28,11 @@ export const getPostComments = (
 	});
 };
 
-export const getPostLikes = (context: IContext, {commentId}: any, callback: IGunCallback<ILikesMetasCallback[]>) => {
+export const getPostLikes = (
+	context: IContext,
+	{commentId}: {commentId: string},
+	callback: IGunCallback<ILikesMetasCallback[]>,
+) => {
 	commentHandles.commentMetaById(context, commentId).docLoad((commentMeta: ICommentMetasCallback) => {
 		if (!commentMeta) {
 			return callback('no comment by this id was found');
@@ -44,4 +48,9 @@ export const getPostLikes = (context: IContext, {commentId}: any, callback: IGun
 			return callback(null, likes);
 		});
 	});
+};
+
+export default {
+	getPostComments,
+	getPostLikes,
 };

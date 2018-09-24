@@ -8,6 +8,9 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "react-native": "^0.56.0"
+  },
   "dependencies": {
     "@socialx/commons": "^0.0.1",
     "gun": "^0.9.99994",
@@ -15,7 +18,9 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",
+    "@types/react-native": "^0.56.24",
     "jest": "^23.5.0",
+    "react-native": "^0.56.0",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
   },
