@@ -1,6 +1,7 @@
 /**
  * TODO List:
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
+ * 2. Implement delete option, available for own posts only!
  */
 
 import moment from 'moment';
@@ -152,7 +153,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 						numberOfSuperLikes={this.props.numberOfSuperLikes}
 						numberOfWalletCoins={this.props.numberOfWalletCoins}
 						onLikePress={() => this.props.onLikeButtonPress(this.props.likedByMe, this.props.id)}
-						onCommentPress={() => this.props.onCommentPress(this.props.id)}
+						onCommentPress={() => this.props.onCommentPress(this.props.id, true)}
 						onSuperLikePress={this.superLikeButtonPressedHandler}
 						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
 						getText={this.props.getText}
@@ -173,13 +174,13 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 				<RecentLikes likes={this.props.likes} onUserPress={this.props.onUserPress} getText={this.props.getText} />
 				<ViewAllComments
 					numberOfComments={this.props.numberOfComments}
-					onCommentPress={() => this.props.onCommentPress(this.props.id)}
+					onCommentPress={() => this.props.onCommentPress(this.props.id, false)}
 					getText={this.props.getText}
 				/>
 				<BestComments
 					bestComments={this.props.bestComments}
 					onUserPress={this.props.onUserPress}
-					onCommentPress={() => this.props.onCommentPress(this.props.id)}
+					onCommentPress={() => this.props.onCommentPress(this.props.id, false)}
 				/>
 				<CommentInput
 					noInput={this.props.noInput}
@@ -289,7 +290,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 	private onCommentInputPress = () => {
 		if (!this.props.listLoading && this.containerViewRef.current) {
 			this.containerViewRef.current.measure((x: number, y: number, width: number, height: number) => {
-				this.props.onAddComment(height);
+				this.props.onAddComment(0, height);
 			});
 			if (!this.state.inputFocused) {
 				Animated.parallel([

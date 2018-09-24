@@ -38,6 +38,7 @@ class CommentInputStory extends React.Component {
 				}}
 				onCommentInputPress={this.onCommentInputPressHandler}
 				onCommentInputChange={(comment: string) => console.log('onCommentInputChange', comment)}
+				onSubmitComment={() => console.log('onSubmitComment')}
 			/>
 		);
 	}

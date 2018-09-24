@@ -5,9 +5,8 @@
  */
 
 import * as React from 'react';
-import {Alert, View} from 'react-native';
+import {Alert} from 'react-native';
 
-import {ModalManager} from '../../components';
 import {INavigationProps} from '../../types';
 import {ResetPasswordScreenView} from './ResetPasswordScreen.view';
 
@@ -31,26 +30,15 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	}
 
 	private setNewPasswordHandler = async (resetCode: string, password: string) => {
-		const {showActivityIndicator, hideActivityIndicator, resetPassword, navigation, getText} = this.props;
+		const {resetPassword, navigation, getText} = this.props;
 
 		const {params} = navigation.state;
 
-		showActivityIndicator(getText('reset.password.resetting'));
 		if (!params.userName) {
-			ModalManager.safeRunAfterModalClosed(() => {
-				Alert.alert(getText('general.error.message'));
-			});
+			Alert.alert(getText('general.error.message'));
 		} else {
 			resetPassword(params.userName, resetCode, password);
-
-			ModalManager.safeRunAfterModalClosed(() => {
-				Alert.alert(getText('reset.password.success'));
-			});
-			// TODO: this is not enough to go to MainScreen!
-			// later implement logic for login here!
-			// resetNavigationToRoute('MainScreen', navigation);
 		}
-		hideActivityIndicator();
 	};
 
 	private onGoBackHandler = () => {

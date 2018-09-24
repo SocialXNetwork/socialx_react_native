@@ -29,6 +29,7 @@ class GithubUsersPhotoGrid extends React.Component<any, {gridMediaProvider: Data
 						height: 1,
 					}}
 					disabled={false}
+					getText={(value) => value}
 				/>
 			</View>
 		);

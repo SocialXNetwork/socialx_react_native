@@ -32,7 +32,6 @@ interface INavigationScreenProps {
 		commentId?: string; // only available for replies
 		postId?: string; // only for main comments screen
 		startComment: boolean;
-		postData: object;
 	};
 }
 
@@ -69,8 +68,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const {getText, navigation, postUser, currentUser, postComments, loadingComments} = this.props;
-		const {postData} = navigation.state.params;
+		const {getText, navigation, postUser, currentUser, postComments, loadingComments, postData} = this.props;
 		const optionsProps = {sortOption: this.state.sortOption, onSelectionChange: this.updateSortingHandler};
 		const {commentText, showSendButton} = this.state;
 

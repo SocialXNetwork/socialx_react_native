@@ -5,7 +5,14 @@
  */
 
 import * as React from 'react';
-import {CommentsSortingOptions, ITranslatedProps, IWallPostComment} from '../../../types';
+import {
+	CommentsSortingOptions,
+	ILike,
+	IMediaProps,
+	ITranslatedProps,
+	IWallPostComment,
+	MediaTypeImage,
+} from '../../../types';
 
 const mock: IWithCommentsEnhancedProps = {
 	data: {
@@ -13,6 +20,28 @@ const mock: IWithCommentsEnhancedProps = {
 			userId: 'userId_0',
 			avatarURL: 'https://placeimg.com/200/200/people',
 			fullName: 'Willetta Winsor',
+		},
+		postData: {
+			id: 'post_id_1',
+			media: [
+				{
+					url: 'https://placeimg.com/1000/800/any',
+					hash: '218y357u09k920q3ut',
+					type: MediaTypeImage,
+					extension: 'jpg',
+					size: 993377,
+					numberOfComments: 2,
+					numberOfLikes: 11,
+				},
+			],
+			likes: [
+				{
+					userId: 'user_id_1',
+					userName: 'im.12',
+				},
+			],
+			text: 'Sample post text.\nCan go on multiple lines.',
+			timestamp: new Date('February 12, 2018 11:49:00'),
 		},
 		currentUser: {
 			userId: 'userId_1',
@@ -81,6 +110,13 @@ export interface IWithCommentsEnhancedData {
 		userId: string;
 		avatarURL?: string;
 		fullName: string;
+	};
+	postData: {
+		id: string;
+		likes: ILike[];
+		media: IMediaProps[];
+		text: string;
+		timestamp: Date;
 	};
 	currentUser: {
 		userId: string;

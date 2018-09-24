@@ -109,6 +109,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 									height: 1,
 								}}
 								disabled={hasPhotos}
+								getText={getText}
 							/>
 						</View>
 					)}

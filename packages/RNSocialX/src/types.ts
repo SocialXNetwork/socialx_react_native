@@ -156,12 +156,12 @@ export interface IWallPostCardData extends IResizeProps {
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {
-	onImagePress: (index: number, media: any) => void;
+	onImagePress: (index: number, mediaObjects: IMediaProps[]) => void;
 	onLikeButtonPress: (likedByMe: boolean, postId: string) => boolean;
-	// onDeletePress: (postId: string) => void; // TODO: this is not implemented in WallPostCard!
+	onDeletePress: (postId: string) => void;
 	onUserPress: (userId: string) => void;
-	onCommentPress: (postId: string) => void; // this actually navigates to comments screen!
-	onAddComment: (height: number) => void;
+	onCommentPress: (postId: string, startComment: boolean) => void; // this actually navigates to comments screen!
+	onAddComment: (index: number, cardHeight: number) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
 }
 
