@@ -151,8 +151,8 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 						likedByMe={this.props.likedByMe}
 						numberOfSuperLikes={this.props.numberOfSuperLikes}
 						numberOfWalletCoins={this.props.numberOfWalletCoins}
-						onLikePress={this.props.onLikeButtonPress}
-						onCommentsPress={() => this.props.onCommentPress(false)}
+						onLikePress={() => this.props.onLikeButtonPress(this.props.likedByMe, this.props.id)}
+						onCommentPress={() => this.props.onCommentPress(this.props.id)}
 						onSuperLikePress={this.superLikeButtonPressedHandler}
 						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
 						getText={this.props.getText}
@@ -163,22 +163,23 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 					{this.props.media && (
 						<WallPostMedia
 							mediaObjects={this.props.media}
-							onMediaObjectView={this.props.onImagePress}
+							onMediaObjectView={(index: number) => this.props.onImagePress(index, this.props.media)}
 							onLikeButtonPressed={this.onDoubleTapLikeHandler}
 							noInteraction={this.state.disableMediaFullScreen}
+							getText={this.props.getText}
 						/>
 					)}
 				</View>
 				<RecentLikes likes={this.props.likes} onUserPress={this.props.onUserPress} getText={this.props.getText} />
 				<ViewAllComments
 					numberOfComments={this.props.numberOfComments}
-					onCommentPress={this.props.onCommentPress}
+					onCommentPress={() => this.props.onCommentPress(this.props.id)}
 					getText={this.props.getText}
 				/>
 				<BestComments
 					bestComments={this.props.bestComments}
 					onUserPress={this.props.onUserPress}
-					onCommentPress={this.props.onCommentPress}
+					onCommentPress={() => this.props.onCommentPress(this.props.id)}
 				/>
 				<CommentInput
 					noInput={this.props.noInput}
@@ -269,7 +270,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 			this.setState({heartAnimation: true});
 		} else {
 			this.setState({heartAnimation: true});
-			this.props.onLikeButtonPress();
+			this.props.onLikeButtonPress(this.props.likedByMe, this.props.id);
 		}
 	};
 

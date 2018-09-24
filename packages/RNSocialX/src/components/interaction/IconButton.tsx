@@ -17,8 +17,8 @@ interface IIconButtonProps {
 
 export const IconButton: React.SFC<IIconButtonProps> = ({
 	iconStyle,
-	textStyle,
-	containerStyle,
+	textStyle = {},
+	containerStyle = {},
 	label = false,
 	iconSource,
 	onPress,

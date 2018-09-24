@@ -12,7 +12,7 @@ export interface IWallPostActions extends ITranslatedProps {
 	numberOfWalletCoins: number;
 	onLikePress: () => void;
 	onSuperLikePress: () => void;
-	onCommentsPress: () => void;
+	onCommentPress: () => void;
 	onWalletCoinsButtonPress: () => void;
 }
 
@@ -21,7 +21,7 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 	onLikePress = () => {
 		/**/
 	},
-	onCommentsPress,
+	onCommentPress,
 	getText,
 }) => {
 	return (
@@ -44,7 +44,7 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
                     /> */}
 				{
 					// @ts-ignore
-					<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onCommentsPress} iconStyle={styles.icon} />
+					<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onCommentPress} iconStyle={styles.icon} />
 				}
 			</View>
 		</View>
