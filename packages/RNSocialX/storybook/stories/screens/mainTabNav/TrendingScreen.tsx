@@ -1,0 +1,30 @@
+import {storiesOf} from '@storybook/react-native';
+import * as React from 'react';
+
+import {TrendingScreenView} from '../../../../src/screens/mainTabNav/SearchScreen/TrendingScreen.view';
+import CenterView from '../../../helpers/CenterView';
+
+class TrendingScreenStory extends React.Component {
+	public state = {
+		contentRef: React.createRef(),
+	};
+
+	public render() {
+		return (
+			<TrendingScreenView
+				// @ts-ignore
+				navigation={null}
+				contentRef={this.state.contentRef}
+				passContentRef={this.passContentRef}
+			/>
+		);
+	}
+
+	private passContentRef = (ref: React.RefObject<any>) => {
+		this.setState({contentRef: ref});
+	};
+}
+
+storiesOf('Screens/mainTabNav', module)
+	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
+	.add('TrendingScreen', () => <TrendingScreenStory />);

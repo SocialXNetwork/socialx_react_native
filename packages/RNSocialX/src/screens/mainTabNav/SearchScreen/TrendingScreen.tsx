@@ -1,10 +1,26 @@
 import * as React from 'react';
-import {View} from 'react-native';
 
-import {SearchHeader} from '../../../components';
+import {INavigationProps} from '../../../types';
+import {TrendingScreenView} from './TrendingScreen.view';
 
-export const TrendingScreen: React.SFC<{navigation: any}> = ({navigation}) => (
-	<View>
-		<SearchHeader navigation={navigation} />
-	</View>
-);
+type ITrendingScreenProps = INavigationProps;
+
+interface ITrendingScreenState {
+	contentRef: React.RefObject<any>;
+}
+
+export class TrendingScreen extends React.Component<ITrendingScreenProps, ITrendingScreenState> {
+	public state = {
+		contentRef: React.createRef(),
+	};
+
+	public render() {
+		return (
+			<TrendingScreenView
+				navigation={this.props.navigation}
+				contentRef={this.state.contentRef}
+				passContentRef={(ref: React.RefObject<any>) => this.setState({contentRef: ref})}
+			/>
+		);
+	}
+}

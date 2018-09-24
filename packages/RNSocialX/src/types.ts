@@ -221,6 +221,16 @@ export interface IStackDefaultConfig {
 	};
 }
 
+export interface ITrendingCategoriesItem {
+	id: string;
+	name: string;
+}
+
+export interface ITrendingContentItem {
+	name: string;
+	content: any;
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.

@@ -1,5 +1,4 @@
 import './commentsStack/CommentsScreen';
-import './myProfile/ReferralScreen';
 
 import './intro/IntroScreen';
 
@@ -10,8 +9,10 @@ import './mainStack/UserProfileScreen';
 
 import './mainTabNav/MyProfileScreen';
 import './mainTabNav/NotificationsScreen';
+import './mainTabNav/TrendingScreen';
 import './mainTabNav/UserFeedScreen';
 
+import './myProfile/ReferralScreen';
 import './myProfile/SettingsScreen';
 import './myProfile/SocialXAccountScreen';
 
