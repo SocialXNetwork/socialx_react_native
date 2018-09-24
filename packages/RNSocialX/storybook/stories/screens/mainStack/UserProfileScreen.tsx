@@ -63,7 +63,7 @@ storiesOf('Screens/mainStack', module)
 				loadMorePhotosHandler={action('loadMorePhotos')}
 				onCommentPress={action('onCommentPress')}
 				onImagePress={action('onImagePress')}
-				onLikePress={onLikePress}
+				onLikeButtonPress={onLikePress}
 				onRefresh={action('onRefresh')}
 				refreshing={refreshing}
 				gridMediaProvider={gridMediaProvider}
@@ -77,6 +77,10 @@ storiesOf('Screens/mainStack', module)
 				onLayoutChange={action('onLayoutChange')}
 				isLoading={isLoading}
 				onClose={action('onClose')}
+				onDeletePress={(postId) => console.log('onDeletePress', postId)}
+				onUserPress={(userId) => console.log('onUserPress', userId)}
+				onSubmitComment={(commentText, postId) => console.log('onSubmitComment', commentText, postId)}
+				onAddComment={(index, cardHeight) => console.log('onAddComment', index, cardHeight)}
 			/>
 		);
 	});

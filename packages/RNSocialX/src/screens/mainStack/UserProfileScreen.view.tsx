@@ -76,6 +76,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onUserPress,
 	onAddComment,
 	onSubmitComment,
+	onDeletePress,
 }) => {
 	const hasPhotos = numberOfPhotos !== 0;
 
@@ -130,7 +131,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					{hasPhotos && (
 						<View style={contentContainerStyle}>
 							<Animated.View style={[styles.postsContainer, {transform: [{translateX: listTranslate}]}]}>
-								{recentPosts.map((post: IWallPostCardData) => {
+								{recentPosts.map((post: IWallPostCardData, index: number) => {
 									let likedByMe = false;
 									if (post.likes.length > 0) {
 										likedByMe = !!post.likes.find((like: ILike) => like.userId === currentUser.userId);
@@ -146,11 +147,13 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												onCommentPress={onCommentPress}
 												onImagePress={onImagePress}
 												onUserPress={onUserPress}
-												onAddComment={onAddComment}
+												/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
+												onAddComment={(dummyIndex: number, cardHeight: number) => onAddComment(index, cardHeight)}
 												onSubmitComment={onSubmitComment}
 												onLikeButtonPress={onLikeButtonPress}
 												noInput={true}
 												currentUserAvatarURL={currentUser.avatarURL}
+												onDeletePress={onDeletePress}
 											/>
 										</View>
 									);

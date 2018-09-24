@@ -106,6 +106,9 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onSubmitComment={createComment}
 				onCommentPress={this.onViewCommentsForPost}
 				onAddComment={(height: number) => console.log('addComment from user profile screen', height)}
+				onDeletePress={() => {
+					/* When viewing a user profile page there is no option to delete a post. This should remain empty. */
+				}}
 			/>
 		);
 	}
@@ -154,8 +157,8 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		});
 	};
 
-	private onViewCommentsForPost = (postId: string) => {
-		this.props.navigation.navigate('CommentsStack', {postId});
+	private onViewCommentsForPost = (postId: string, startComment: boolean) => {
+		this.props.navigation.navigate('CommentsScreen', {postId, startComment});
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {

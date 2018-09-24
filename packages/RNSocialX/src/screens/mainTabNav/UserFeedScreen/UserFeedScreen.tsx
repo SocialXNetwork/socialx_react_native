@@ -13,7 +13,7 @@ import {IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from '../../../
 
 // import {ipfsConfig as base} from 'configuration';
 import {FEED_TYPES, OS_TYPES} from '../../../environment/consts';
-import {IMediaProps, IWallPostCardProps} from '../../../types';
+import {IMediaProps, IWallPostCardData} from '../../../types';
 import {SHARE_SECTION_HEIGHT, USER_PLACEHOLDER_AVATAR} from './UserFeedScreen.style';
 import {UserFeedScreenView} from './UserFeedScreen.view';
 
@@ -34,7 +34,7 @@ interface IUserFeedScreenState {}
 type IUserFeedScreenProps = INavigationProps & IFeedProps & IWithUserFeedEnhancedData & IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
-	private readonly scrollRef: React.RefObject<FlatList<IWallPostCardProps>> = React.createRef();
+	private readonly scrollRef: React.RefObject<FlatList<IWallPostCardData>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public render() {
@@ -47,6 +47,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			loadingMorePosts,
 			loadingFeed,
 			getText,
+			deletePost,
 		} = this.props;
 
 		const shareSectionOpacityInterpolation = this.scrollY.interpolate({
@@ -65,21 +66,21 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				loadingMorePosts={loadingMorePosts}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onShowNewWallPostPress={this.showNewWallPostPage}
-				onMediaPress={this.onMediaObjectPressHandler}
-				onCommentPress={this.onCommentsButtonPressHandler}
 				currentUser={currentUser}
 				noPosts={posts.length === 0}
 				shareSectionPlaceholder={shareSectionPlaceholder}
-				onLikePress={this.onLikePressHandler}
-				onPostDeletePress={this.onPostDeletePressHandler}
-				onUserPress={this.gotoUserProfile}
-				onAddCommentPress={this.onAddCommentPressHandler}
-				onSubmitComment={this.onSubmitCommentHandler}
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
 				isLoading={loadingFeed}
 				getText={getText}
+				onImagePress={this.onMediaObjectPressHandler}
+				onLikeButtonPress={this.onLikePressHandler}
+				onUserPress={this.gotoUserProfile}
+				onSubmitComment={this.onSubmitCommentHandler}
+				onCommentPress={this.onCommentsButtonPressHandler}
+				onAddComment={this.onAddCommentPressHandler}
+				onDeletePress={deletePost}
 			/>
 		);
 	}
@@ -133,18 +134,6 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		return !likedByMe;
 	};
 
-	private onPostDeletePressHandler = (post: IWallPostCardProps) => {
-		const {deletePost, showActivityIndicator, currentUser} = this.props;
-		const userOwnsPost = post.owner.userId === currentUser.userId;
-
-		if (userOwnsPost) {
-			showActivityIndicator('Removing your post...');
-			deletePost(post.id);
-		} else {
-			// user doesnt own the post, thus cant delete, or server issues
-		}
-	};
-
 	private gotoUserProfile = (userId: string) => {
 		this.props.navigation.navigate('UserProfileScreen', {userId});
 	};
@@ -156,8 +145,8 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		});
 	};
 
-	private onCommentsButtonPressHandler = (postId: any, userId: any, startComment: boolean, postData: object) => {
-		this.props.navigation.navigate('CommentsScreen', {postId, userId, startComment, postData});
+	private onCommentsButtonPressHandler = (postId: string, startComment: boolean) => {
+		this.props.navigation.navigate('CommentsScreen', {postId, startComment});
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {

@@ -23,6 +23,6 @@ storiesOf('Components/displayers', module)
 				},
 			]}
 			onUserPress={(userId: string) => console.log('onUserPress: ' + userId)}
-			onCommentPress={(start: boolean) => console.log('onCommentPress: ' + start)}
+			onCommentPress={() => console.log('onCommentPress')}
 		/>
 	));

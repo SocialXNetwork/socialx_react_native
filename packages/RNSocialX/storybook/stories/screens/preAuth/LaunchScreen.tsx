@@ -7,7 +7,7 @@ storiesOf('Screens/preAuth', module).add('LaunchScreen', () => {
 	return (
 		<LaunchScreenView
 			getText={(text) => text}
-			navigateToSignUpScreen={(...args: any[]) => console.log('navigateToSignUpScreen', args)}
+			navigateToRegisterScreen={(...args: any[]) => console.log('navigateToRegisterScreen', args)}
 			navigateToLoginScreen={(...args: any[]) => console.log('navigateToLoginScreen', args)}
 		/>
 	);

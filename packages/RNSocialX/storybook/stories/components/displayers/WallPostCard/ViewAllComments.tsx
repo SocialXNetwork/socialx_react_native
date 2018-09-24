@@ -13,7 +13,7 @@ storiesOf('Components/displayers', module)
 		return (
 			<ViewAllComments
 				numberOfComments={numberOfComments}
-				onCommentPress={(start: boolean) => console.log('onCommentPress', start)}
+				onCommentPress={() => console.log('onCommentPress')}
 				getText={(text) => text}
 			/>
 		);

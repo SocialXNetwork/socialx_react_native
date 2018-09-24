@@ -13,7 +13,7 @@ storiesOf('Components/displayers', module)
 			numberOfWalletCoins={15679}
 			onLikePress={() => console.log('onLikePress')}
 			onSuperLikePress={() => console.log('onSuperLikePress')}
-			onCommentsPress={() => console.log('onCommentsPress')}
+			onCommentPress={() => console.log('onCommentsPress')}
 			onWalletCoinsButtonPress={() => console.log('onWalletCoinsButtonPress')}
 			getText={(text) => text}
 		/>

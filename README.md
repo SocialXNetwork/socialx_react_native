@@ -1,5 +1,5 @@
 ### Todo
-- [ ] Fix RN postinstall scripts
+- [ ] Fix RN postinstall scripts (check if postinstall:compat:react-native-vector-icons is needed!)
 - [ ] Add fastlane
 - [ ] Add bugsnag
 - [ ] Add storybook
