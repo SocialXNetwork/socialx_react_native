@@ -73,7 +73,7 @@ export default StyleSheet.create(style);
 export const customStyleProps = {
 	defaultIconColor: Colors.shuttleGray,
 	defaultPlaceholderColor: Colors.grayText,
-	defaultCancelButtonTextColor: Colors.white,
+	defaultButtonTextColor: Colors.white,
 	defaultBorderColor: Colors.pink,
 	defaultBorderWidth: Sizes.smartHorizontalScale(2),
 	defaultUnderlineColorAndroid: Colors.transparent,
