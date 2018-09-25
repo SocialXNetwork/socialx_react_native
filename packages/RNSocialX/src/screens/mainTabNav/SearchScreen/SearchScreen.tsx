@@ -1,5 +1,5 @@
-import debounce from 'lodash/debounce';
 import * as React from 'react';
+import {debounce} from 'throttle-debounce';
 
 import {IWithSearchEnhancedActions, IWithSearchEnhancedData} from '../../../enhancers/screens';
 import {INavigationProps, ISearchResultData, SearchResultKind, SearchTabs} from '../../../types';
@@ -22,9 +22,9 @@ export class Screen extends React.Component<ISearchScreenProps, ISearchScreenSta
 		term: '',
 	};
 
-	private debounceSearch = debounce((term: string) => {
+	private debounceSearch = debounce(SEARCH_DEBOUNCE_TIME_MS, (term: string) => {
 		this.props.search(term, this.props.tab);
-	}, SEARCH_DEBOUNCE_TIME_MS);
+	});
 
 	public render() {
 		return (

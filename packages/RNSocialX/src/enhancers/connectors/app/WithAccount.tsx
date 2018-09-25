@@ -61,7 +61,6 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	trustAccount: () => dispatch(trustAccount()),
 });
 
-// InferableComponentEnhancerWithProps<{}, TOwnProps>
 export const WithAccount: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
