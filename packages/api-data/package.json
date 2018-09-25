@@ -15,11 +15,13 @@
     "@socialx/commons": "^0.0.1",
     "es6-promisify": "^6.0.0",
     "gun": "^0.9.99994",
-    "utility-types": "^2.1.0"
+    "utility-types": "^2.1.0",
+    "yup": "^0.26.6"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",
     "@types/react-native": "^0.56.24",
+    "@types/yup": "^0.24.9",
     "jest": "^23.5.0",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
