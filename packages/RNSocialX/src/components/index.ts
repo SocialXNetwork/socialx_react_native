@@ -33,7 +33,10 @@ export {SocialXAccountCurrencyItem, IAccountCurrencyData} from './displayers/Soc
 export {SocialXAccountTitleCard} from './displayers/SocialXAccountTitleCard';
 export {RichText} from './displayers/RichText/RichText';
 export {SearchHeader} from './displayers/SearchHeader';
-export {SuggestedUserCard} from './displayers/SuggestedUserCard';
+export {SearchResults} from './displayers/SearchResults';
+export {SearchResultsItem} from './displayers/SearchResultsItem';
+export {SearchResultsList} from './displayers/SearchResultsList';
+export {SuggestedSearches} from './displayers/SuggestedSearches';
 export {TextGradient} from './displayers/TextGradient';
 export {WallPostCard} from './displayers/WallPostCard';
 

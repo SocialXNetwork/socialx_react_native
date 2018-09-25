@@ -1,9 +1,8 @@
-// TODO: @ionut @alex why is this getting mocks directly? and where is it being used anyway?
 import React from 'react';
 
-import {SuggestedUserCard} from '../../../components';
+import {SuggestedSearches} from '../../../components';
 import {suggestedItems} from '../../../mocks';
-import {ISuggestionCardItem} from '../../../types';
+import {ISearchResultData} from '../../../types';
 
 const mock = {
 	data: {
@@ -12,7 +11,7 @@ const mock = {
 };
 
 interface ITopTabProps {
-	items: ISuggestionCardItem[];
+	items: ISearchResultData[];
 }
 
-export const TopTab: React.SFC<ITopTabProps> = () => <SuggestedUserCard items={mock.data.suggestedItems} />;
+export const TopTab: React.SFC<ITopTabProps> = () => <SuggestedSearches items={mock.data.suggestedItems} />;
