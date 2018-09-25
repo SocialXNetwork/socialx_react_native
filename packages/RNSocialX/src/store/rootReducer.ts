@@ -1,13 +1,12 @@
 import {combineReducers} from 'redux';
 
-import {IState as IAuth, reducer as auth} from './app/auth';
+import {IState as IAccounts, reducer as accounts} from './app/accounts';
 import {IState as IConfig, reducer as config} from './app/config';
 import {IState as II18n, reducer as i18n} from './app/i18n';
 import {IState as INavigation, reducer as navigation} from './app/navigation';
-import {IState as IAggregates, reducer as aggregates} from './data/aggregates';
 import {IState as IComments, reducer as comments} from './data/comments';
 import {IState as IPosts, reducer as posts} from './data/posts';
-import {IState as IUsers, reducer as users} from './data/users';
+import {IState as IProfiles, reducer as profiles} from './data/profiles';
 import {IState as IFiles, reducer as files} from './storage/files';
 import {IState as IOverlays, reducer as overlays} from './ui/overlays';
 
@@ -15,14 +14,13 @@ export interface IApplicationState {
 	app: {
 		config: IConfig;
 		i18n: II18n;
-		auth: IAuth;
+		accounts: IAccounts;
 		navigation: INavigation;
 	};
 	data: {
-		users: IUsers;
+		profiles: IProfiles;
 		posts: IPosts;
 		comments: IComments;
-		aggregates: IAggregates;
 	};
 	ui: {
 		overlays: IOverlays;
@@ -36,14 +34,13 @@ export default combineReducers<IApplicationState>({
 	app: combineReducers({
 		config,
 		i18n,
-		auth,
+		accounts,
 		navigation,
 	}),
 	data: combineReducers({
-		users,
+		profiles,
 		posts,
 		comments,
-		aggregates,
 	}),
 	ui: combineReducers({
 		overlays,

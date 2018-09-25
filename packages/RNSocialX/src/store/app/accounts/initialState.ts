@@ -1,5 +1,5 @@
 import {IState} from './Types';
 
 export default {
-	currentUser: null,
+	currentAccount: null,
 } as IState;
