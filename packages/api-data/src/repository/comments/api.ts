@@ -7,8 +7,13 @@ export default (context: IContext) => ({
 	getPostComments: ({postId}: {postId: string}): Promise<IMetasCallback[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {postId};
-				getters.getPostComments(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getPostComments.validate(
+					{postId},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getPostComments(context, validatedArgs as {postId: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -18,12 +23,16 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	// NOTE: shouldnt this be renamed to getCommenLikes, naming is misleading and functionality aswell
-	getPostLikes: ({commentId}: {commentId: string}): Promise<ILikesMetasCallback[]> =>
+	getCommentLikes: ({commentId}: {commentId: string}): Promise<ILikesMetasCallback[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {commentId};
-				getters.getPostLikes(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getCommentLikes.validate(
+					{commentId},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getCommentLikes(context, validatedArgs as {commentId: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -36,8 +45,13 @@ export default (context: IContext) => ({
 	createComment: ({text, postId}: {text: string; postId: string}): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {text, postId};
-				setters.createComment(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.createComment.validate(
+					{text, postId},
+					{
+						stripUnknown: true,
+					},
+				);
+				setters.createComment(context, validatedArgs as {text: string; postId: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -50,8 +64,13 @@ export default (context: IContext) => ({
 	likeComment: ({commentId}: {commentId: string}): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {commentId};
-				setters.likeComment(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.likeComment.validate(
+					{commentId},
+					{
+						stripUnknown: true,
+					},
+				);
+				setters.likeComment(context, validatedArgs as {commentId: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
