@@ -2,16 +2,21 @@ import React from 'react';
 import {Text, View} from 'react-native';
 
 import {SearchResultsItem} from '../';
-import {ISearchResultData} from '../../types';
+import {ISearchResultData, ITranslatedProps} from '../../types';
 import styles from './SuggestedSearches.style';
 
-interface ISuggestedProps {
+interface ISuggestedProps extends ITranslatedProps {
 	items: ISearchResultData[];
+	onAddFriend: (userId: string) => void;
+	onResultPress: (result: ISearchResultData) => void;
 }
 
-export const SuggestedSearches: React.SFC<ISuggestedProps> = ({items}) => {
+// Add 'Suggested' to dictionary
+export const SuggestedSearches: React.SFC<ISuggestedProps> = ({items, onAddFriend, onResultPress, getText}) => {
 	if (items && items.length > 0) {
-		const rows = items.map((item: any) => <SearchResultsItem item={item} key={item.userId} />);
+		const rows = items.map((item: any) => (
+			<SearchResultsItem item={item} key={item.userId} onAddFriend={onAddFriend} onResultPress={onResultPress} />
+		));
 
 		return (
 			<View style={styles.container}>

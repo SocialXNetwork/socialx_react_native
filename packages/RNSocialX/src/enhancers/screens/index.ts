@@ -27,6 +27,7 @@ export {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 } from './mainTabNav/WithNotifications';
+export {WithSearch, IWithSearchEnhancedActions, IWithSearchEnhancedData} from './mainTabNav/WithSearch';
 export {WithTrending, IWithTrendingEnhancedData} from './mainTabNav/WithTrending';
 export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';
 
