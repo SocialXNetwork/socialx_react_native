@@ -31,6 +31,15 @@ export const createProfileInput = yup
 	.object()
 	.shape({
 		username: usernameOrPasswordType,
+		aboutMeText: yup
+			.string()
+			.trim()
+			.min(10)
+			.max(200),
+		miningEnabled: yup
+			.bool()
+			.default(false)
+			.required(),
 		name: yup
 			.string()
 			.trim()
