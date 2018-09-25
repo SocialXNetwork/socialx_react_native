@@ -13,8 +13,28 @@ export enum SearchResultKind {
 	Friend = 'FRIEND',
 	NotFriend = 'NOT_FRIEND',
 	FriendRequestSent = 'FRIEND_REQUEST_SENT',
-	Group = 'group',
+	Group = 'GROUP',
 }
+
+export interface ISearchResultPeople {
+	userId: string;
+	relationship: SearchResultKind;
+	fullName: string;
+	userName: string;
+	location: string;
+	avatarURL: string;
+}
+
+export interface ISearchResultGroups {
+	userId: string;
+	relationship: SearchResultKind;
+	fullName: string;
+	userName: string;
+	location: string;
+	avatarURL: string;
+}
+
+export type ISearchResultData = ISearchResultPeople | ISearchResultGroups;
 
 export type getTextSignature = (value: string, ...args: any[]) => string;
 
@@ -125,14 +145,6 @@ export interface ILike {
 	userName: string;
 }
 
-export interface ISuggestionCardItem {
-	userId: string;
-	fullName: string;
-	userName: string;
-	avatarURL: string;
-	relationship: SearchResultKind;
-}
-
 export interface IWallPostCardData extends IResizeProps {
 	id: string;
 	postText: false | string;
@@ -151,7 +163,7 @@ export interface IWallPostCardData extends IResizeProps {
 	likes: ILike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
-	suggested: undefined | ISuggestionCardItem[];
+	suggested: undefined | ISearchResultData[];
 	noInput: boolean;
 }
 

@@ -3,8 +3,8 @@
 import {
 	ICurrentUser,
 	ILike,
+	ISearchResultData,
 	ISimpleComment,
-	ISuggestionCardItem,
 	ITrendingCategoriesItem,
 	ITrendingContentItem,
 	IWallPostCardData,
@@ -46,11 +46,12 @@ const bestComments: ISimpleComment[] = [
 	},
 ];
 
-export const suggestedItems: ISuggestionCardItem[] = [
+export const suggestedItems: ISearchResultData[] = [
 	{
 		userId: '101',
 		fullName: 'test user 1',
 		userName: 'testname',
+		location: 'Timisoara',
 		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
 		relationship: SearchResultKind.NotFriend,
 	},
@@ -58,6 +59,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 		userId: '102',
 		fullName: 'test user 2',
 		userName: 'testname',
+		location: 'Timisoara',
 		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
 		relationship: SearchResultKind.NotFriend,
 	},
@@ -65,6 +67,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 		userId: '103',
 		fullName: 'test user 3',
 		userName: 'testname',
+		location: 'Timisoara',
 		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
 		relationship: SearchResultKind.Friend,
 	},
@@ -72,6 +75,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 		userId: '104',
 		fullName: 'test user 4',
 		userName: 'testname',
+		location: 'Timisoara',
 		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
 		relationship: SearchResultKind.Friend,
 	},
@@ -79,6 +83,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 		userId: '105',
 		fullName: 'test user 5',
 		userName: 'testname',
+		location: 'Timisoara',
 		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
 		relationship: SearchResultKind.NotFriend,
 	},
@@ -86,6 +91,7 @@ export const suggestedItems: ISuggestionCardItem[] = [
 		userId: '106',
 		fullName: 'test user 6',
 		userName: 'testname',
+		location: 'Timisoara',
 		avatarURL: 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
 		relationship: SearchResultKind.NotFriend,
 	},

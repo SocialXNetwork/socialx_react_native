@@ -2,11 +2,11 @@ import * as React from 'react';
 import {Text, View} from 'react-native';
 
 import {AvatarImage, ButtonSizes, IconButton, PrimaryButton} from '../../';
-import {ISuggestionCardItem, ITranslatedProps} from '../../../types';
+import {ISearchResultData, ITranslatedProps} from '../../../types';
 import styles, {colors} from './SuggestionCard.style';
 
 interface ISuggestionCardProps extends ITranslatedProps {
-	item: ISuggestionCardItem;
+	item: ISearchResultData;
 	deleteCard: () => void;
 }
 
