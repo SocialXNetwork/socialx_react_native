@@ -1,6 +1,7 @@
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 
+import {trendingCategoriesItems, trendingContentItems} from '../../../../src/mocks';
 import {TrendingScreenView} from '../../../../src/screens/mainTabNav/SearchScreen/TrendingScreen.view';
 import CenterView from '../../../helpers/CenterView';
 
@@ -14,6 +15,8 @@ class TrendingScreenStory extends React.Component {
 			<TrendingScreenView
 				// @ts-ignore
 				navigation={null}
+				trendingCategoriesItems={trendingCategoriesItems}
+				trendingContentItems={trendingContentItems}
 				contentRef={this.state.contentRef}
 				passContentRef={this.passContentRef}
 			/>

@@ -16,6 +16,13 @@ export enum SearchResultKind {
 	Group = 'GROUP',
 }
 
+export enum SearchTabs {
+	Top = 'TOP',
+	People = 'PEOPLE',
+	Tags = 'TAGS',
+	Places = 'PLACES',
+}
+
 export interface ISearchResultPeople {
 	userId: string;
 	relationship: SearchResultKind;

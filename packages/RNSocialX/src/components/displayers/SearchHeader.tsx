@@ -10,6 +10,8 @@ import styles, {colors} from './SearchHeader.style';
 interface ISearchHeaderProps {
 	navigation: NavigationScreenProp<any>;
 	cancel: boolean;
+	onSearchTermChange?: (term: string) => void;
+	searchTermValue?: string;
 }
 
 interface ISearchHeaderState {
@@ -53,7 +55,7 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 					<View style={{flex: 1}}>
 						<PrimaryTextInput
 							ref={this.inputRef}
-							value={this.state.searchTerm}
+							value={this.props.searchTermValue ? this.props.searchTermValue : this.state.searchTerm}
 							onChangeText={this.searchInputUpdated}
 							onSubmitPressed={Keyboard.dismiss}
 							placeholder={'Search'}
@@ -78,10 +80,14 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 		);
 	}
 
-	private searchInputUpdated = async (term: string) => {
-		this.setState({
-			searchTerm: term,
-		});
+	private searchInputUpdated = (term: string) => {
+		if (this.props.onSearchTermChange) {
+			this.props.onSearchTermChange(term);
+		} else {
+			this.setState({
+				searchTerm: term,
+			});
+		}
 	};
 
 	private onPressInput = () => {
