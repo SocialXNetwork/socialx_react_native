@@ -36,7 +36,7 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	onClose,
 }) => (
 	<SafeAreaView style={[style.safeView, Platform.OS === OS_TYPES.IOS ? {paddingBottom: marginBottom} : {}]}>
-		<Header title={getText('new.wall.post.screen.title')} right={<CloseButton onClose={onClose} />} />
+		<Header title={getText('new.wall.post.screen.title')} left={<CloseButton onClose={onClose} />} />
 		<ScrollView contentContainerStyle={style.container} keyboardShouldPersistTaps={'handled'}>
 			<SharePostInput
 				avatarSource={avatarImage}
