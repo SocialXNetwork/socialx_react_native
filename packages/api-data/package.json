@@ -21,7 +21,6 @@
     "@types/jest": "^23.3.1",
     "@types/react-native": "^0.56.24",
     "jest": "^23.5.0",
-    "react-native": "^0.56.0",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
   },
