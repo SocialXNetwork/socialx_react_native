@@ -53,6 +53,7 @@ import './interaction/VideoPlayer';
 
 import './modals/ActivityIndicatorModal';
 import './modals/ConfirmationModal';
+import './modals/DotsMenuModal';
 import './modals/InputSMSCodeModal';
 import './modals/MediaInfoModal';
 import './modals/OfflineOverlayModal';

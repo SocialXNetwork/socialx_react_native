@@ -2,6 +2,8 @@
  * TODO List:
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
  * 2. Implement delete option, available for own posts only!
+ * 3. Decide if we can make an enhancer to deal with actions for this component. (for the sake of DRY)
+ * 4. Take care of activating <ReportProblemModal/> with proper menu items.
  */
 
 import moment from 'moment';
@@ -22,7 +24,6 @@ import {
 	WallPostActions,
 	WallPostMedia,
 } from './';
-// import {TooltipDots, TooltipItem} from '../DotsWithTooltips';
 import styles from './WallPostCard.style';
 
 export interface IWallPostCardState {
@@ -224,11 +225,9 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 	};
 
 	private toggleDeclineReportModal = () => {
-		this.setState((prevState) => {
-			return {
-				reportProblemModalVisible: !prevState.reportProblemModalVisible,
-			};
-		});
+		this.setState((prevState) => ({
+			reportProblemModalVisible: !prevState.reportProblemModalVisible,
+		}));
 	};
 
 	private toggleShowFullText = () => {

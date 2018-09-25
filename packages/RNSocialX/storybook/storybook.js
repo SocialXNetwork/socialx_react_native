@@ -26,6 +26,7 @@ class StorybookUIHMRRoot extends Component {
 			duration: 1000,
 			delay: 100,
 		});
+    console.disableYellowBox = true; // we should get this warning in debugger and not over the screen in the app.
 	}
 
 
