@@ -165,6 +165,7 @@ export interface IWallPostCardData extends IResizeProps {
 	listLoading: boolean;
 	suggested: undefined | ISearchResultData[];
 	noInput: boolean;
+	contentOffensive: boolean;
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {
@@ -175,6 +176,8 @@ export interface IWallPostCardActions extends ITranslatedProps {
 	onCommentPress: (postId: string, startComment: boolean) => void; // this actually navigates to comments screen!
 	onAddComment: (index: number, cardHeight: number) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
+	onBlockUser: (userId: string) => void;
+	onReportProblem: (reason: string, description: string) => void;
 }
 
 export type IWallPostCardProps = IWallPostCardData & IWallPostCardActions;

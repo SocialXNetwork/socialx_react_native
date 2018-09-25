@@ -134,6 +134,7 @@ export const posts: IWallPostCardData[] = [
 		noInput: false,
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
+		contentOffensive: false,
 	},
 	{
 		id: '2',
@@ -171,6 +172,7 @@ export const posts: IWallPostCardData[] = [
 		noInput: false,
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
+		contentOffensive: true,
 	},
 	{
 		id: '3',
@@ -208,6 +210,7 @@ export const posts: IWallPostCardData[] = [
 		noInput: false,
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
+		contentOffensive: false,
 	},
 ];
 

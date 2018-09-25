@@ -48,6 +48,8 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			loadingFeed,
 			getText,
 			deletePost,
+			blockUser,
+			reportProblem,
 		} = this.props;
 
 		const shareSectionOpacityInterpolation = this.scrollY.interpolate({
@@ -81,6 +83,8 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				onCommentPress={this.onCommentsButtonPressHandler}
 				onAddComment={this.onAddCommentPressHandler}
 				onDeletePress={deletePost}
+				onBlockUser={blockUser}
+				onReportProblem={reportProblem}
 			/>
 		);
 	}

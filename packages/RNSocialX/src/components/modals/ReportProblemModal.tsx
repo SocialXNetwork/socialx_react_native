@@ -12,18 +12,16 @@ import {IResizeProps, ITranslatedProps} from '../../types';
 import {WithManagedTransitions} from '../managedTransitions';
 import style from './ReportProblemModal.style';
 
-export interface IReportData {
-	reason: string;
-	description: string;
-}
-
 interface IReportProblemModalProps extends IResizeProps, ITranslatedProps {
 	visible: boolean;
-	confirmHandler: (data: IReportData) => void;
+	confirmHandler: (reason: string, description: string) => void;
 	declineHandler: () => void;
 }
 
-interface IReportProblemModalComponentProps extends IReportData, IReportProblemModalProps {}
+interface IReportProblemModalComponentProps extends IReportProblemModalProps {
+	reason: string;
+	description: string;
+}
 
 const REPORT_REASONS = [
 	'modal.report.problem.reason.sample1',
@@ -135,7 +133,7 @@ const formikSettings = {
 	handleSubmit: (
 		{reason, description}: IReportProblemModalComponentProps,
 		{props}: FormikBag<IReportProblemModalProps, IReportProblemModalComponentProps>,
-	) => props.confirmHandler({reason, description}),
+	) => props.confirmHandler(reason, description),
 	enableReinitialize: true,
 };
 

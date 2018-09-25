@@ -26,9 +26,11 @@ storiesOf('Components/displayers', module)
 		const likedByMe = boolean('likedByMe', false);
 		const canDelete = boolean('canDelete', false);
 		const listLoading = boolean('listLoading', false);
+		const contentOffensive = boolean('listLoading', true);
 
 		return (
 			<WallPostCard
+				contentOffensive={contentOffensive}
 				getText={(value) => value}
 				marginBottom={0}
 				id={'test_post_id'}
@@ -92,6 +94,8 @@ storiesOf('Components/displayers', module)
 				suggested={undefined}
 				noInput={false}
 				onSubmitComment={(commentText, postId) => console.log('onSubmitComment', commentText, postId)}
+				onBlockUser={(userId) => console.log('onBlockUser', userId)}
+				onReportProblem={(reason, message) => console.log('onReportProblem', reason, message)}
 			/>
 		);
 	});

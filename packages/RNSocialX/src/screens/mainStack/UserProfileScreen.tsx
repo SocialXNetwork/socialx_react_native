@@ -55,7 +55,15 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const {currentUser, visitedUser, refreshingProfile, loadingProfile, postComment} = this.props;
+		const {
+			currentUser,
+			visitedUser,
+			refreshingProfile,
+			loadingProfile,
+			postComment,
+			blockUser,
+			reportProblem,
+		} = this.props;
 		const {activeTab, listTranslate, gridTranslate, containerHeight, gridMediaProvider} = this.state;
 		const {
 			recentPosts,
@@ -109,6 +117,8 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onDeletePress={() => {
 					/* When viewing a user profile page there is no option to delete a post. This should remain empty. */
 				}}
+				onBlockUser={blockUser}
+				onReportProblem={reportProblem}
 			/>
 		);
 	}

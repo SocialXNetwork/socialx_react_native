@@ -77,6 +77,8 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onAddComment,
 	onSubmitComment,
 	onDeletePress,
+	onBlockUser,
+	onReportProblem,
 }) => {
 	const hasPhotos = numberOfPhotos !== 0;
 
@@ -148,6 +150,8 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												noInput={true}
 												currentUserAvatarURL={currentUser.avatarURL}
 												onDeletePress={onDeletePress}
+												onBlockUser={onBlockUser}
+												onReportProblem={onReportProblem}
 											/>
 										</View>
 									);
