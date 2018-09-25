@@ -73,7 +73,7 @@ export {DotsMenuModal, IDotsMenuItem} from './modals/DotsMenuModal';
 export {InputSMSCodeModal} from './modals/InputSMSCodeModal';
 export {MediaInfoModal} from './modals/MediaInfoModal';
 export {OfflineOverlayModal} from './modals/OfflineOverlayModal';
-export {ReportProblemModal, IReportData} from './modals/ReportProblemModal';
+export {ReportProblemModal} from './modals/ReportProblemModal';
 export {TagFriendsModal} from './modals/TagFriendsModal';
 
 export {HeaderLogo} from './navigation/HeaderLogo';

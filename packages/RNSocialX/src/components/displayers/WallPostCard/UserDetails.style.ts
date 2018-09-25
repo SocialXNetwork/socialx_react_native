@@ -1,22 +1,22 @@
 import {StyleSheet} from 'react-native';
 import {Colors, Fonts, Sizes} from '../../../environment/theme';
 
-const SIDE_PADDING = 16;
+const SIDE_PADDING = Sizes.smartHorizontalScale(16);
 
 const styles: any = {
 	topContainer: {
 		flexDirection: 'row',
 		paddingHorizontal: Sizes.smartHorizontalScale(SIDE_PADDING),
 		paddingBottom: Sizes.smartHorizontalScale(14),
+		justifyContent: 'space-between',
 	},
 	smallAvatarImage: {
-		// flex: 1,
 		width: Sizes.smartHorizontalScale(40),
 		height: Sizes.smartHorizontalScale(40),
 		borderRadius: Sizes.smartHorizontalScale(40) / 2,
 	},
 	topRightContainer: {
-		flex: 11,
+		flex: 1,
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		justifyContent: 'center',
 	},
@@ -36,3 +36,7 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
+
+export const customStyleProps = {
+	advancedMenuButtonColor: Colors.postFullName,
+};

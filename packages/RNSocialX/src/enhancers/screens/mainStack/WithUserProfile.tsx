@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Props data: currentUser, visitedUser, refreshingProfile, loadingProfile
- * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos. getText, postComment
+ * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos, getText, postComment, blockUser, reportProblem
  */
 
 import * as React from 'react';
@@ -58,6 +58,12 @@ const mock = {
 		postComment: (commentText: string, postId: string) => {
 			/**/
 		},
+		blockUser: (userId: string) => {
+			/**/
+		},
+		reportProblem: (reason: string, description: string) => {
+			/**/
+		},
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -76,6 +82,8 @@ export interface IWithUserProfileEnhancedActions extends ITranslatedProps {
 	loadMorePosts: (userId: string) => void;
 	loadMorePhotos: (userId: string) => void;
 	postComment: (postId: string, commentText: string) => void;
+	blockUser: (userId: string) => void;
+	reportProblem: (reason: string, description: string) => void;
 }
 
 interface IUserProfileEnhancedProps {

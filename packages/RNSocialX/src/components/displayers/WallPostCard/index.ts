@@ -9,3 +9,4 @@ export {ViewAllComments} from './ViewAllComments';
 export {BestComments} from './BestComments';
 export {WallPostMedia} from './WallPostMedia';
 export {WallPostCard} from './WallPostCard';
+export {WarnOffensiveContent} from './WarnOffensiveContent';

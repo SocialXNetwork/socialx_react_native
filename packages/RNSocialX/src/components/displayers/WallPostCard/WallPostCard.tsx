@@ -3,7 +3,7 @@
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
  * 2. Implement delete option, available for own posts only!
  * 3. Decide if we can make an enhancer to deal with actions for this component. (for the sake of DRY)
- * 4. Take care of activating <ReportProblemModal/> with proper menu items.
+ * 4. Take care of activating <ReportProblemModal/> with proper menu items, see method showAdvancedMenu
  */
 
 import moment from 'moment';
@@ -23,6 +23,7 @@ import {
 	ViewAllComments,
 	WallPostActions,
 	WallPostMedia,
+	WarnOffensiveContent,
 } from './';
 import styles from './WallPostCard.style';
 
@@ -39,6 +40,7 @@ export interface IWallPostCardState {
 	inputBorderWidth: Animated.Value;
 	inputAvatarWidth: Animated.Value;
 	inputAvatarHeight: Animated.Value;
+	viewOffensiveContent: boolean;
 }
 
 export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
@@ -69,6 +71,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		inputBorderWidth: new Animated.Value(0),
 		inputAvatarWidth: new Animated.Value(25),
 		inputAvatarHeight: new Animated.Value(25),
+		viewOffensiveContent: false,
 	};
 
 	private readonly containerViewRef: React.RefObject<View> = React.createRef();
@@ -94,9 +97,10 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 			this.state.comment !== nextState.comment ||
 			this.state.inputFocused !== nextState.inputFocused ||
 			this.state.inputBorderWidth !== nextState.inputBorderWidth ||
-			this.state.inputAvatarWidth !== nextState.inputAvatarHeight ||
+			this.state.inputAvatarWidth !== nextState.inputAvatarWidth ||
 			this.state.inputAvatarHeight !== nextState.inputAvatarHeight ||
-			this.props.listLoading !== nextProps.listLoading
+			this.props.listLoading !== nextProps.listLoading ||
+			this.state.viewOffensiveContent !== nextState.viewOffensiveContent
 		);
 	}
 
@@ -108,86 +112,134 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 	}
 
 	public render() {
-		const timeStampDate = moment(this.props.timestamp).format('MMM DD');
-		const timeStampHour = moment(this.props.timestamp).format('hh:mma');
-		const formatedTimestamp = this.getFormattedPostTime(this.props.timestamp);
+		const {
+			getText,
+			timestamp,
+			marginBottom,
+			owner,
+			taggedFriends,
+			location,
+			onUserPress,
+			postText,
+			likedByMe,
+			numberOfComments,
+			numberOfSuperLikes,
+			numberOfWalletCoins,
+			onLikeButtonPress,
+			id,
+			onCommentPress,
+			media,
+			onImagePress,
+			likes,
+			bestComments,
+			noInput,
+			contentOffensive,
+			listLoading,
+			currentUserAvatarURL,
+		} = this.props;
+
+		const {
+			viewOffensiveContent,
+			inputAvatarHeight,
+			inputAvatarWidth,
+			inputBorderWidth,
+			hideAdvancedMenu,
+			reportProblemModalVisible,
+			hideGoToUserProfile,
+			fullTextVisible,
+			hidePostActionsAndComments,
+			heartAnimation,
+			disableMediaFullScreen,
+			comment,
+		} = this.state;
+
+		const timeStampDate = moment(timestamp).format('MMM DD');
+		const timeStampHour = moment(timestamp).format('hh:mma');
+		const formatedTimestamp = this.getFormattedPostTime(timestamp);
 		const animationValues = {
-			border: this.state.inputBorderWidth,
-			width: this.state.inputAvatarWidth,
-			height: this.state.inputAvatarHeight,
+			border: inputBorderWidth,
+			width: inputAvatarWidth,
+			height: inputAvatarHeight,
 		};
 
 		return (
 			<View style={styles.container} ref={this.containerViewRef}>
-				{!this.state.hideAdvancedMenu && (
+				{!hideAdvancedMenu && (
 					<ReportProblemModal
-						visible={this.state.reportProblemModalVisible}
+						visible={reportProblemModalVisible}
 						confirmHandler={this.reportProblemHandler}
 						declineHandler={this.toggleDeclineReportModal}
-						marginBottom={this.props.marginBottom}
-						getText={this.props.getText}
+						marginBottom={marginBottom}
+						getText={getText}
 					/>
 				)}
 				<UserDetails
-					user={this.props.owner}
+					user={owner}
 					timeStampDate={timeStampDate}
 					timeStampHour={timeStampHour}
-					hideAdvancedMenu={this.state.hideAdvancedMenu}
-					hideGoToUserProfile={this.state.hideGoToUserProfile}
-					taggedFriends={this.props.taggedFriends}
-					location={this.props.location}
-					onUserPress={this.props.onUserPress}
-					getText={this.props.getText}
+					hideAdvancedMenu={hideAdvancedMenu}
+					hideGoToUserProfile={hideGoToUserProfile}
+					taggedFriends={taggedFriends}
+					location={location}
+					onUserPress={onUserPress}
+					getText={getText}
+					onShowAdvancedMenu={this.showAdvancedMenu}
 				/>
 				<PostText
-					text={this.props.postText}
-					fullTextVisible={this.state.fullTextVisible}
-					getText={this.props.getText}
+					text={postText}
+					fullTextVisible={fullTextVisible}
+					getText={getText}
 					toggleShowFullText={this.toggleShowFullText}
 					handleHashTag={this.handleHashTag}
 					handleUserTag={this.handleUserTag}
 					launchExternalUrl={this.launchExternalURL}
 				/>
-				{!this.state.hidePostActionsAndComments && (
+				{!hidePostActionsAndComments && (
 					<WallPostActions
-						likedByMe={this.props.likedByMe}
-						numberOfSuperLikes={this.props.numberOfSuperLikes}
-						numberOfWalletCoins={this.props.numberOfWalletCoins}
-						onLikePress={() => this.props.onLikeButtonPress(this.props.likedByMe, this.props.id)}
-						onCommentPress={() => this.props.onCommentPress(this.props.id, true)}
+						likedByMe={likedByMe}
+						numberOfSuperLikes={numberOfSuperLikes}
+						numberOfWalletCoins={numberOfWalletCoins}
+						onLikePress={() => onLikeButtonPress(likedByMe, id)}
+						onCommentPress={() => onCommentPress(id, true)}
 						onSuperLikePress={this.superLikeButtonPressedHandler}
 						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
-						getText={this.props.getText}
+						getText={getText}
 					/>
 				)}
 				<View>
-					{this.state.heartAnimation && <HeartAnimation ended={(status) => this.setState({heartAnimation: !status})} />}
-					{this.props.media && (
-						<WallPostMedia
-							mediaObjects={this.props.media}
-							onMediaObjectView={(index: number) => this.props.onImagePress(index, this.props.media)}
-							onLikeButtonPressed={this.onDoubleTapLikeHandler}
-							noInteraction={this.state.disableMediaFullScreen}
-							getText={this.props.getText}
-						/>
-					)}
+					{heartAnimation && <HeartAnimation ended={(status) => this.setState({heartAnimation: !status})} />}
+					{media &&
+						(!contentOffensive || viewOffensiveContent) && (
+							<WallPostMedia
+								mediaObjects={media}
+								onMediaObjectView={(index: number) => onImagePress(index, media)}
+								onLikeButtonPressed={this.onDoubleTapLikeHandler}
+								noInteraction={disableMediaFullScreen}
+								getText={getText}
+							/>
+						)}
+					<WarnOffensiveContent
+						getText={getText}
+						onShowOffensiveContent={this.showOffensiveContent}
+						visible={contentOffensive && !viewOffensiveContent}
+					/>
 				</View>
-				<RecentLikes likes={this.props.likes} onUserPress={this.props.onUserPress} getText={this.props.getText} />
+				<RecentLikes likes={likes} onUserPress={onUserPress} getText={getText} />
 				<ViewAllComments
-					numberOfComments={this.props.numberOfComments}
-					onCommentPress={() => this.props.onCommentPress(this.props.id, false)}
-					getText={this.props.getText}
+					numberOfComments={numberOfComments}
+					onCommentPress={() => onCommentPress(id, false)}
+					getText={getText}
 				/>
 				<BestComments
-					bestComments={this.props.bestComments}
-					onUserPress={this.props.onUserPress}
-					onCommentPress={() => this.props.onCommentPress(this.props.id, false)}
+					bestComments={bestComments}
+					onUserPress={onUserPress}
+					onCommentPress={() => onCommentPress(id, false)}
 				/>
 				<CommentInput
-					noInput={this.props.noInput}
-					comment={this.state.comment}
-					disabled={this.props.listLoading}
-					avatarURL={this.props.currentUserAvatarURL}
+					noInput={noInput}
+					comment={comment}
+					disabled={listLoading}
+					avatarURL={currentUserAvatarURL}
 					animationValues={animationValues}
 					onCommentInputChange={this.onCommentInputChange}
 					onCommentInputPress={this.onCommentInputPress}
@@ -220,7 +272,8 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		}
 	};
 
-	private reportProblemHandler = () => {
+	private reportProblemHandler = (reason: string, description: string) => {
+		this.props.onReportProblem(reason, description);
 		this.toggleDeclineReportModal();
 	};
 
@@ -345,5 +398,41 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		split[0] = value;
 		split[1] = type;
 		return split.join(' ').toUpperCase();
+	};
+
+	private showOffensiveContent = () => {
+		this.setState({
+			viewOffensiveContent: true,
+		});
+	};
+
+	private getAdvancedMenuItems = () => {
+		const {getText, canDelete} = this.props;
+		const baseItems = [
+			{
+				label: getText('wall.post.menu.block.user'),
+				icon: 'ios-close-circle-outline',
+				actionHandler: () => this.props.onBlockUser(this.props.owner.userId),
+			},
+			{
+				label: getText('wall.post.menu.report.problem'),
+				icon: 'ios-warning',
+				actionHandler: () => {
+					this.setState({
+						reportProblemModalVisible: true,
+					});
+				},
+			},
+		];
+		const deleteItem = {
+			label: getText('wall.post.menu.delete.post'),
+			icon: 'ios-trash',
+			actionHandler: () => this.props.onDeletePress(this.props.id),
+		};
+		return canDelete ? [...baseItems, deleteItem] : baseItems;
+	};
+
+	private showAdvancedMenu = () => {
+		const menuItems = this.getAdvancedMenuItems();
 	};
 }
