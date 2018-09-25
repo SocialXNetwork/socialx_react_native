@@ -35,11 +35,11 @@ import {
 
 import {GunInstance, IContext, IGunCallback, ILikesMetasCallback, IMetasCallback} from './types';
 
-interface IApiOptions {
+export interface IApiOptions {
 	peers: string[];
 }
 
-export const dataApi = ({peers}: IApiOptions) => {
+export const dataApiFactory = ({peers}: IApiOptions) => {
 	const time = () => new Date(Gun.state());
 
 	const gun: GunInstance = new Gun({
@@ -64,8 +64,9 @@ export const dataApi = ({peers}: IApiOptions) => {
 			isAccountLoggedIn: promisify<{loggedIn: boolean}>((callback: IGunCallback<{loggedIn: boolean}>) =>
 				accountGetters.isAccountLoggedIn(context, callback),
 			),
-			createAccount: promisify<null>((createAccountInput: ICreateAccountInput, callback: IGunCallback<null>) =>
-				accountSetters.createAccount(context, createAccountInput, callback),
+			createAccount: promisify<ICreateAccountInput, null>(
+				(createAccountInput: ICreateAccountInput, callback: IGunCallback<null>) =>
+					accountSetters.createAccount(context, createAccountInput, callback),
 			),
 			login: promisify<null>((credentials: ICredentials, callback: IGunCallback<null>) =>
 				accountSetters.login(context, credentials, callback),
@@ -133,3 +134,5 @@ export const dataApi = ({peers}: IApiOptions) => {
 		},
 	};
 };
+
+export type IDataApiFactory = ReturnType<typeof dataApiFactory>;

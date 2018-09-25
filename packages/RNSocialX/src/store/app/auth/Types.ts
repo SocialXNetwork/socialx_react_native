@@ -1,3 +1,4 @@
+import {ICreateAccountInput} from '@socialx/api-data';
 import {Action} from 'redux';
 import {DeepReadonly} from 'utility-types';
 
@@ -13,18 +14,15 @@ export type IState = DeepReadonly<{
 }>;
 
 export const enum ActionTypes {
-	REGISTER = 'auth/REGISTER',
-	RESET_PASSWORD = 'auth/RESET_PASSWORD',
-	LOGIN = 'auth/LOGIN',
-	LOGOUT = 'auth/LOGOUT',
+	CREATE_ACCOUNT = 'app/auth/CREATE_ACCOUNT',
+	RESET_PASSWORD = 'app/auth/RESET_PASSWORD',
+	LOGIN = 'app/auth/LOGIN',
+	LOGOUT = 'app/auth/LOGOUT',
 }
 
-export interface IRegisterAction extends Action {
-	type: ActionTypes.REGISTER;
-	payload: {
-		username: string;
-		password: string;
-	};
+export interface ICreateAccountAction extends Action {
+	type: ActionTypes.CREATE_ACCOUNT;
+	payload: ICreateAccountInput;
 }
 
 export interface ILoginAction extends Action {
@@ -39,4 +37,4 @@ export interface IResetPasswordAction extends Action {
 	type: ActionTypes.RESET_PASSWORD;
 }
 
-export type IAction = IRegisterAction | ILoginAction | ILogoutAction | IResetPasswordAction;
+export type IAction = ICreateAccountAction | ILoginAction | ILogoutAction | IResetPasswordAction;

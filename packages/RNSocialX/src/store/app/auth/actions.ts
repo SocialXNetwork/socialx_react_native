@@ -1,36 +1,20 @@
-import {ActionCreator, Dispatch} from 'redux';
-import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import {IApplicationState} from '../../';
-import {ActionTypes, ILoginAction, ILogoutAction, IRegisterAction, IResetPasswordAction} from './Types';
+import {ICreateAccountInput} from '@socialx/api-data';
+import {ThunkAction} from 'redux-thunk';
+import {IApplicationState} from '../../rootReducer';
+import {IContext} from '../../types';
+import {ActionTypes, IAction} from './Types';
 
-export const register: ActionCreator<IRegisterAction> = (username: string, password: string) => ({
-	type: ActionTypes.REGISTER,
-	payload: {
-		username,
-		password,
-	},
-});
+type IThunk<R> = ThunkAction<R, IApplicationState, IContext, IAction>;
 
-export const login: ActionCreator<ILoginAction> = (username: string, password: string) => ({
-	type: ActionTypes.LOGIN,
-	payload: {
-		username,
-		password,
-	},
-});
-
-export const logout: ActionCreator<ILogoutAction> = (username: string, password: string) => ({
-	type: ActionTypes.LOGOUT,
-	payload: {
-		username,
-		password,
-	},
-});
-
-export const resetPassword: ActionCreator<IResetPasswordAction> = (username: string, password: string) => ({
-	type: ActionTypes.RESET_PASSWORD,
-	payload: {
-		username,
-		password,
-	},
-});
+export const createAccount = (createAccountInput: ICreateAccountInput): IThunk<void> => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		// @ts-ignore
+		await context.dataApi.accounts.createAccount();
+	} catch (e) {
+		/**/
+	}
+};
