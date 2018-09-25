@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-navigation';
@@ -34,40 +34,22 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({visible, items, o
 				style={styles.container}
 			>
 				<SafeAreaView style={styles.innerContainer}>
-					{items.map((item: IDotsMenuItem, index: number) => {
-						if (index === 0) {
-							return (
-								<View style={[styles.row, styles.first, styles.separator]} key={index}>
-									<View style={styles.iconContainer}>
-										<Icon name={item.icon} style={styles.icon} />
-									</View>
-									<View style={styles.textContainer}>
-										<Text>{item.label}</Text>
-									</View>
-								</View>
-							);
-						} else if (index !== items.length - 1) {
-							return (
-								<View style={[styles.row, styles.separator]} key={index}>
-									<View style={styles.iconContainer}>
-										<Icon name={item.icon} style={styles.icon} />
-									</View>
-									<View style={styles.textContainer}>
-										<Text>{item.label}</Text>
-									</View>
-								</View>
-							);
-						}
+					{items.map(({icon, label, actionHandler}: IDotsMenuItem, index: number) => {
+						const itemStyles = [
+							styles.row,
+							index === 0 ? [styles.first] : {},
+							index !== items.length - 1 ? styles.separator : {},
+						];
 
 						return (
-							<View style={styles.row} key={index}>
+							<TouchableOpacity style={itemStyles} key={index} onPress={actionHandler}>
 								<View style={styles.iconContainer}>
-									<Icon name={item.icon} style={styles.icon} />
+									<Icon name={icon} style={styles.icon} />
 								</View>
 								<View style={styles.textContainer}>
-									<Text>{item.label}</Text>
+									<Text>{label}</Text>
 								</View>
-							</View>
+							</TouchableOpacity>
 						);
 					})}
 				</SafeAreaView>

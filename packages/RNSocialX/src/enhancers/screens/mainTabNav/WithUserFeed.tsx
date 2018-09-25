@@ -32,10 +32,10 @@ const mock: IWithUserFeedEnhancedProps = {
 		unlikePost: (postId: string) => {
 			/**/
 		},
-		deletePost: (postId: string) => {
+		postComment: (escapedComment: string, postId: string) => {
 			/**/
 		},
-		postComment: (escapedComment: string, postId: string) => {
+		deletePost: (postId: string) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,

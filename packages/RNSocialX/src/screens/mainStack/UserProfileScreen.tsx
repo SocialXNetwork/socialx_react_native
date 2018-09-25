@@ -55,7 +55,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const {currentUser, visitedUser, refreshingProfile, loadingProfile, createComment} = this.props;
+		const {currentUser, visitedUser, refreshingProfile, loadingProfile, postComment} = this.props;
 		const {activeTab, listTranslate, gridTranslate, containerHeight, gridMediaProvider} = this.state;
 		const {
 			recentPosts,
@@ -103,7 +103,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onImagePress={this.onMediaObjectPressHandler}
 				onLikeButtonPress={this.onLikePressHandler}
 				onUserPress={this.onViewUserProfile}
-				onSubmitComment={createComment}
+				onSubmitComment={postComment}
 				onCommentPress={this.onViewCommentsForPost}
 				onAddComment={(height: number) => console.log('addComment from user profile screen', height)}
 				onDeletePress={() => {

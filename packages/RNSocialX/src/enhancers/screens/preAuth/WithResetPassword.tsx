@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Action props: resetPassword, showActivityIndicator, hideActivityIndicator
+ * 1. Action props: resetPassword
  */
 
 import * as React from 'react';
@@ -12,12 +12,6 @@ const mock: IWithResetPasswordEnhancedProps = {
 		resetPassword: (userName: string, resetCode: string, password: string) => {
 			/**/
 		},
-		showActivityIndicator: (message: string) => {
-			/**/
-		},
-		hideActivityIndicator: () => {
-			/**/
-		},
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -26,8 +20,6 @@ export interface IWithResetPasswordEnhancedData {}
 
 export interface IWithResetPasswordEnhancedActions extends ITranslatedProps {
 	resetPassword: (userName: string, resetCode: string, password: string) => void;
-	showActivityIndicator: (message: string) => void;
-	hideActivityIndicator: () => void;
 }
 
 interface IWithResetPasswordEnhancedProps {
