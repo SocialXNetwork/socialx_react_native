@@ -26,9 +26,8 @@ import {
 	TRKeyboardKeys,
 } from '../../components';
 import {KeyboardContext} from '../../environment/consts';
-import {Colors} from '../../environment/theme'; // TODO: remove here
 import {ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './RegisterScreen.style';
+import style, {colors, defaultStyles} from './RegisterScreen.style';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -109,7 +108,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 		{({safeRunAfterKeyboardHide}) => (
 			<View style={{flex: 1}}>
 				<Header
-					title={getText('login.screen.title')}
+					title={getText('register.screen.title')}
 					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
 				/>
 				<KeyboardAwareScrollView
@@ -127,7 +126,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							phoneNumber: '',
 							password: '',
 							confirmPassword: '',
-							avatarImage: customStyleProps.defaultAvatarImage,
+							avatarImage: defaultStyles.defaultAvatarImage,
 							termsAccepted: false,
 							countryCCA2: DEVICE_COUNTRY,
 							countryCallingCode: DEVICE_COUNTRY_CALLING_CODE,
@@ -255,11 +254,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<View style={[style.textInputContainer, style.textInputContainerFirst]}>
 									<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
 									<PrimaryTextInput
-										iconColor={Colors.iron}
+										iconColor={colors.iron}
 										icon={'envelope'}
 										placeholder={getText('register.email')}
-										placeholderColor={Colors.postText}
-										borderColor={Colors.transparent}
+										placeholderColor={colors.postText}
+										borderColor={colors.transparent}
 										returnKeyType={TRKeyboardKeys.next}
 										value={email}
 										onChangeText={(value: string) => {
@@ -275,11 +274,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<PrimaryTextInput
 										autoCapitalize={'words'}
 										autoCorrect={true}
-										iconColor={Colors.iron}
+										iconColor={colors.iron}
 										icon={'user'}
 										placeholder={getText('register.name')}
-										placeholderColor={Colors.postText}
-										borderColor={Colors.transparent}
+										placeholderColor={colors.postText}
+										borderColor={colors.transparent}
 										returnKeyType={TRKeyboardKeys.next}
 										value={name}
 										ref={nameRef}
@@ -293,11 +292,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<View style={style.textInputContainer}>
 									<ErrorMessage text={errors.userName} visible={!!touched.userName && !!errors.userName} />
 									<PrimaryTextInput
-										iconColor={Colors.iron}
+										iconColor={colors.iron}
 										icon={'user'}
 										placeholder={getText('register.userName')}
-										placeholderColor={Colors.postText}
-										borderColor={Colors.transparent}
+										placeholderColor={colors.postText}
+										borderColor={colors.transparent}
 										returnKeyType={TRKeyboardKeys.next}
 										value={userName}
 										ref={usernameRef}
@@ -331,12 +330,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										</View>
 										<TextInput
 											placeholder={getText('register.phone.number')}
-											placeholderTextColor={Colors.postText}
+											placeholderTextColor={colors.postText}
 											style={style.phoneNumberInput}
 											returnKeyType={TRKeyboardKeys.next}
 											keyboardType={TKeyboardKeys.phonePad}
 											autoCorrect={false}
-											underlineColorAndroid={Colors.transparent}
+											underlineColorAndroid={colors.transparent}
 											autoCapitalize={'none'}
 											clearButtonMode={'while-editing'}
 											value={phoneNumber}
@@ -353,11 +352,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<ErrorMessage text={errors.password} visible={!!touched.password && !!errors.password} />
 									<PrimaryTextInput
 										isPassword={true}
-										iconColor={Colors.iron}
+										iconColor={colors.iron}
 										icon={'lock'}
 										placeholder={getText('register.password')}
-										placeholderColor={Colors.postText}
-										borderColor={Colors.transparent}
+										placeholderColor={colors.postText}
+										borderColor={colors.transparent}
 										returnKeyType={TRKeyboardKeys.next}
 										value={password}
 										ref={passwordRef}
@@ -375,11 +374,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 									<PrimaryTextInput
 										isPassword={true}
-										iconColor={Colors.iron}
+										iconColor={colors.iron}
 										icon={'lock'}
 										placeholder={getText('register.confirm.password')}
-										placeholderColor={Colors.postText}
-										borderColor={Colors.transparent}
+										placeholderColor={colors.postText}
+										borderColor={colors.transparent}
 										returnKeyType={TRKeyboardKeys.go}
 										value={confirmPassword}
 										ref={confirmPasswordRef}
@@ -399,7 +398,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<CheckBox
 										checked={termsAccepted}
 										onPress={() => setFieldValue('termsAccepted', !termsAccepted)}
-										color={Colors.pink}
+										color={colors.pink}
 										style={style.acceptCheckbox}
 									/>
 								</View>
@@ -408,7 +407,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										label={getText('register.button.label')}
 										onPress={handleSubmit}
 										disabled={!(isValid && termsAccepted)}
-										borderColor={Colors.transparent}
+										borderColor={colors.transparent}
 									/>
 								</View>
 								<View style={style.buttonContainer}>
@@ -416,7 +415,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										label={getText('register.button.have.code')}
 										onPress={onAlreadyHaveCode}
 										disabled={userName === '' || !!errors.userName}
-										borderColor={Colors.transparent}
+										borderColor={colors.transparent}
 									/>
 								</View>
 							</React.Fragment>

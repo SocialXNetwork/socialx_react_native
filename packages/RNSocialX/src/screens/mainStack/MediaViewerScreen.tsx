@@ -1,14 +1,7 @@
-/**
- * TODO list:
- * 1. Refactor navigationOptions into header component
- */
-
 import * as React from 'react';
-import {Dimensions, Platform, View} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import Orientation, {orientation} from 'react-native-orientation';
-import {NavigationStackScreenOptions} from 'react-navigation';
 
-import {CloseButton} from '../../components';
 import {IWithMediaViewerEnhancedActions, IWithMediaViewerEnhancedData, WithMediaViewer} from '../../enhancers/screens';
 import {DeviceOrientations, OS_TYPES} from '../../environment/consts';
 import {IMediaProps, INavigationProps} from '../../types';
@@ -76,13 +69,13 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				closeMediaInfoOverlay={this.closeMediaInfoOverlayHandler}
 				carouselContainerOnLayout={this.carouselContainerOnLayoutHandler}
 				onExitFullScreen={this.onExitFullScreenHandler}
+				onClose={this.onCloseHandler}
 				getText={this.props.getText}
 			/>
 		);
 	}
 
 	private orientationDidChange = (orient: orientation) => {
-		this.props.navigation.setParams({hideHeader: orient === DeviceOrientations.Landscape});
 		this.setState({orientation: orient});
 	};
 
@@ -117,25 +110,12 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 			isInfoOverlayVisible: false,
 		});
 	};
+
+	private onCloseHandler = () => {
+		this.props.navigation.goBack(null);
+	};
 }
 
 export const MediaViewerScreen = (navProps: INavigationProps<IMediaViewerScreenNavParams>) => (
 	<WithMediaViewer>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithMediaViewer>
 );
-
-// @ts-ignore
-MediaViewerScreen.navigationOptions = ({
-	navigation,
-	navigationOptions,
-}: INavigationProps<IMediaViewerScreenNavParams>) => {
-	const ret: Partial<NavigationStackScreenOptions> = {
-		title: navigationOptions.getText('media.viewer.screen.title'),
-		headerRight: <CloseButton onClose={() => navigation.goBack(null)} />,
-		headerLeft: <View />,
-	};
-	const params = navigation.state.params || {};
-	if (params.hideHeader) {
-		ret.header = null;
-	}
-	return ret;
-};

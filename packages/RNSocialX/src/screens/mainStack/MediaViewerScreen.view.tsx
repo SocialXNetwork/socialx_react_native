@@ -10,7 +10,7 @@ import {Platform, SafeAreaView, Text, TouchableOpacity, View} from 'react-native
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {MediaInfoModal, MediaObjectViewer} from '../../components';
+import {CloseButton as CloseModal, Header, MediaInfoModal, MediaObjectViewer} from '../../components';
 import {DeviceOrientations} from '../../environment/consts';
 import {IMediaProps, ITranslatedProps} from '../../types';
 import styles from './MediaViewerScreen.style';
@@ -29,6 +29,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	closeMediaInfoOverlay: () => void;
 	carouselContainerOnLayout: (event: any) => void;
 	onExitFullScreen: () => void;
+	onClose: () => void;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
@@ -44,11 +45,14 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	showMediaInfoOverlay,
 	closeMediaInfoOverlay,
 	onExitFullScreen,
+	onClose,
 }) => {
 	const currentMediaObject = mediaObjects[activeSlide];
+	const isPortrait = orientation === DeviceOrientations.Portrait;
 
 	return (
 		<SafeAreaView style={styles.safeView}>
+			{isPortrait && <Header left={<CloseModal onClose={onClose} />} />}
 			<MediaInfoModal
 				visible={isInfoOverlayVisible}
 				closeHandler={closeMediaInfoOverlay}
@@ -92,7 +96,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 						},
 					})}
 				/>
-				<CloseButton isPortrait={orientation === DeviceOrientations.Portrait} onExitFullScreen={onExitFullScreen} />
+				<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
 				<View style={styles.screenFooter} pointerEvents={'none'}>
 					<MediaInfoSection mediaObjects={mediaObjects} activeSlide={activeSlide} />
 					<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />

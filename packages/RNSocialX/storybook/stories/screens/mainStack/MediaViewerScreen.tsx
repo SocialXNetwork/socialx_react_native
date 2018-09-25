@@ -1,3 +1,4 @@
+import {action} from '@storybook/addon-actions';
 import {boolean, number, withKnobs} from '@storybook/addon-knobs';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
@@ -21,7 +22,7 @@ const generateMediaObjects = (limit: number) =>
 storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
 	.add('MediaViewerScreen', () => {
-		const activeSlide = number('activeSlide', 0);
+		const activeSlide = number('activeSlide', 5);
 		const isInfoOverlayVisible = boolean('isInfoOverlayVisible', false);
 		return (
 			<MediaViewerScreenView
@@ -33,12 +34,13 @@ storiesOf('Screens/mainStack', module)
 				viewport={{
 					width: Dimensions.get('window').width,
 				}}
-				slideChanged={(...args: any[]) => console.log('slideChanged', args)}
+				slideChanged={action('slideChanged')}
 				isInfoOverlayVisible={isInfoOverlayVisible}
-				showMediaInfoOverlay={(...args: any[]) => console.log('showMediaInfoOverlay', args)}
-				closeMediaInfoOverlay={(...args: any[]) => console.log('closeMediaInfoOverlay', args)}
-				carouselContainerOnLayout={(...args: any[]) => console.log('carouselContainerOnLayout', args)}
-				onExitFullScreen={(...args: any[]) => console.log('onExitFullScreen', args)}
+				showMediaInfoOverlay={action('showMediaInfoOverlay')}
+				closeMediaInfoOverlay={action('closeMediaInfoOverlay')}
+				carouselContainerOnLayout={action('carouselContainerOnLayout')}
+				onExitFullScreen={action('onExitFullScreen')}
+				onClose={action('onClose')}
 			/>
 		);
 	});

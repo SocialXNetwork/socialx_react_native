@@ -111,6 +111,12 @@ const style: any = {
 
 export default StyleSheet.create(style);
 
-export const customStyleProps = {
+export const defaultStyles = {
 	defaultAvatarImage: Images.user_avatar_placeholder,
+};
+export const colors = {
+	iron: Colors.iron,
+	postText: Colors.postText,
+	transparent: Colors.transparent,
+	pink: Colors.pink,
 };
