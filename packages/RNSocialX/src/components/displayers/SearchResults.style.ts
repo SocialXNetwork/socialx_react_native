@@ -4,7 +4,6 @@ import {Colors, Fonts, Sizes} from '../../environment/theme';
 const styles: any = {
 	container: {
 		flex: 1,
-		width: '50%',
 	},
 	searchContainer: {
 		flexDirection: 'row',

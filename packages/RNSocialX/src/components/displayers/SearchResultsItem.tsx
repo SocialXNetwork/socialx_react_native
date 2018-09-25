@@ -8,8 +8,8 @@ import styles from './SearchResultsItem.style';
 
 interface ISearchResultsItemProps {
 	item: ISearchResultData;
-	onAddFriend: () => void;
-	onResultPress: () => void;
+	onAddFriend: (userId: string) => void;
+	onResultPress: (result: ISearchResultData) => void;
 }
 
 export const SearchResultsItem: React.SFC<ISearchResultsItemProps> = ({
@@ -22,18 +22,18 @@ export const SearchResultsItem: React.SFC<ISearchResultsItemProps> = ({
 	},
 }) => {
 	let icon = 'account-plus';
-	if (item.kind === SearchResultKind.Friend) {
+	if (item.relationship === SearchResultKind.Friend) {
 		icon = 'account-check';
 	}
 
 	return (
-		<TouchableOpacity onPress={onResultPress} activeOpacity={1} style={styles.card}>
+		<TouchableOpacity onPress={() => onResultPress(item)} activeOpacity={1} style={styles.card}>
 			<AvatarImage image={{uri: item.avatarURL}} style={styles.avatar} />
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{item.fullName}</Text>
 				<Text style={styles.text}>{item.location}</Text>
 			</View>
-			<TouchableOpacity onPress={onAddFriend} style={styles.iconContainer}>
+			<TouchableOpacity onPress={() => onAddFriend(item.userId)} style={styles.iconContainer}>
 				<Icon name={icon} style={styles.icon} />
 			</TouchableOpacity>
 		</TouchableOpacity>

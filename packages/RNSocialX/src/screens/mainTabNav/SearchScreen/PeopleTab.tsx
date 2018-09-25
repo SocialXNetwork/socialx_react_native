@@ -1,17 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 
-import {SuggestedSearches} from '../../../components';
-import {suggestedItems} from '../../../mocks';
-import {ISearchResultData} from '../../../types';
+import {WithSearch} from '../../../enhancers/screens';
+import {INavigationProps, SearchTabs} from '../../../types';
+import {Screen} from './SearchScreen';
 
-const mock = {
-	data: {
-		suggestedItems,
-	},
-};
-
-interface IPeopleTabProps {
-	items: ISearchResultData[];
-}
-
-export const PeopleTab: React.SFC<IPeopleTabProps> = () => <SuggestedSearches items={mock.data.suggestedItems} />;
+export const PeopleTab = (navProps: INavigationProps) => (
+	<WithSearch>
+		{({data, actions}) => <Screen tab={SearchTabs.People} {...navProps} {...data} {...actions} />}
+	</WithSearch>
+);

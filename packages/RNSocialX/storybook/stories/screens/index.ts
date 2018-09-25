@@ -9,6 +9,7 @@ import './mainStack/UserProfileScreen';
 
 import './mainTabNav/MyProfileScreen';
 import './mainTabNav/NotificationsScreen';
+import './mainTabNav/SearchScreen';
 import './mainTabNav/TrendingScreen';
 import './mainTabNav/UserFeedScreen';
 

@@ -1,4 +1,11 @@
-import * as React from 'react';
-import {View} from 'react-native';
+import React from 'react';
 
-export const PlacesTab: React.SFC = () => <View />;
+import {WithSearch} from '../../../enhancers/screens';
+import {INavigationProps, SearchTabs} from '../../../types';
+import {Screen} from './SearchScreen';
+
+export const PlacesTab = (navProps: INavigationProps) => (
+	<WithSearch>
+		{({data, actions}) => <Screen tab={SearchTabs.Places} {...navProps} {...data} {...actions} />}
+	</WithSearch>
+);
