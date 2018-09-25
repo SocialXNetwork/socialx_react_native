@@ -58,6 +58,8 @@ export interface ICreateAccountInput extends IRecoverData<string>, ICredentials 
 	name: string;
 	email: string;
 	avatar: string;
+	aboutMeText: string;
+	miningEnabled: boolean;
 }
 
 // TODO: rollback
@@ -74,6 +76,8 @@ export const createAccount = (
 		password,
 		email,
 		avatar,
+		aboutMeText,
+		miningEnabled,
 		recover: {reminder, question1, question2},
 	} = createAccountInput;
 
@@ -104,13 +108,17 @@ export const createAccount = (
 							return callback('failed, error => ' + flags.err);
 						}
 
-						createProfile(context, {username, name, email, avatar, pub: account.is.pub}, (err) => {
-							if (err) {
-								return callback(err);
-							}
+						createProfile(
+							context,
+							{username, name, email, avatar, pub: account.is.pub, miningEnabled, aboutMeText},
+							(err) => {
+								if (err) {
+									return callback(err);
+								}
 
-							return callback(null);
-						});
+								return callback(null);
+							},
+						);
 					},
 				);
 			});

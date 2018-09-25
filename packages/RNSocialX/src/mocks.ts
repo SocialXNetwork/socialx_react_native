@@ -221,6 +221,7 @@ export const currentUser: ICurrentUser = {
 	userName: 'alexsirbu',
 	email: 'alex.sirbu@test.com',
 	aboutMeText: 'Lorem ipsum dolor sit amet',
+	miningEnabled: false,
 	numberOfLikes: 25,
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
@@ -238,7 +239,6 @@ export const currentUser: ICurrentUser = {
 		},
 	],
 	recentPosts: posts,
-	miningEnabled: false,
 };
 
 export const trendingCategoriesItems: ITrendingCategoriesItem[] = [
