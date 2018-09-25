@@ -28,7 +28,7 @@ export const getPostComments = (
 	});
 };
 
-export const getPostLikes = (
+export const getCommentLikes = (
 	context: IContext,
 	{commentId}: {commentId: string},
 	callback: IGunCallback<ILikesMetasCallback[]>,
@@ -52,5 +52,5 @@ export const getPostLikes = (
 
 export default {
 	getPostComments,
-	getPostLikes,
+	getCommentLikes,
 };

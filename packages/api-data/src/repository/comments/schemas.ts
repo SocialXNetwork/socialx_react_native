@@ -20,7 +20,7 @@ export const getPostComments = yup
 	})
 	.required();
 
-export const getPostLikes = yup
+export const getCommentLikes = yup
 	.object()
 	.shape({
 		commentId: idType,
@@ -44,7 +44,7 @@ export const createComment = yup
 
 export default {
 	getPostComments,
-	getPostLikes,
+	getCommentLikes,
 	likeComment,
 	createComment,
 };
