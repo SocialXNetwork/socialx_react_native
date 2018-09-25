@@ -1,8 +1,8 @@
 import {ICreateAccountInput} from '@socialx/api-data';
 import {IThunk} from '../../types';
-import {ActionTypes, IAction, ICreateAccountAction} from './Types';
+import {ActionTypes} from './Types';
 
-export const createAccount = (createAccountInput: ICreateAccountInput): IThunk<void, ICreateAccountAction> => async (
+export const createAccount = (createAccountInput: ICreateAccountInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
