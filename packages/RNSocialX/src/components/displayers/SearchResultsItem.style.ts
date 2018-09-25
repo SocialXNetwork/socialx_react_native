@@ -7,7 +7,8 @@ const styles: any = {
 	card: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: Sizes.smartVerticalScale(10),
+		paddingHorizontal: Sizes.smartHorizontalScale(15),
+		paddingTop: Sizes.smartVerticalScale(10),
 	},
 	avatar: {
 		width: AVATAR_SIZE,

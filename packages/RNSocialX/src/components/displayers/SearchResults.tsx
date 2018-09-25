@@ -2,10 +2,10 @@ import * as React from 'react';
 import {ActivityIndicator, Text, View} from 'react-native';
 
 import {SearchResultsList} from '../../components';
-import {ISearchResultData} from '../../types';
+import {ISearchResultData, ITranslatedProps} from '../../types';
 import styles from './SearchResults.style';
 
-interface ISearchResultsProps {
+interface ISearchResultsProps extends ITranslatedProps {
 	searching: boolean;
 	searchResults: ISearchResultData[];
 	onAddFriend: (value: string) => void;
@@ -14,14 +14,16 @@ interface ISearchResultsProps {
 	hasMore: boolean;
 }
 
-const SearchingLoader: React.SFC = () => (
+// TODO: Add 'Searching' to the dictionary
+const SearchingLoader: React.SFC<ITranslatedProps> = ({getText}) => (
 	<View style={styles.searchContainer}>
 		<ActivityIndicator size={'small'} style={styles.spinner} />
 		<Text style={styles.shortMessage}>Searching</Text>
 	</View>
 );
 
-const SearchNoResults: React.SFC = () => (
+// TODO: Add 'No results found' to the dictionary
+const SearchNoResults: React.SFC<ITranslatedProps> = ({getText}) => (
 	<View style={styles.messageContainer}>
 		<Text style={styles.shortMessage}>No results found</Text>
 	</View>
@@ -34,10 +36,11 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 	onResultPress,
 	onLoadMore,
 	hasMore,
+	getText,
 }) => (
 	<View style={styles.container}>
-		{searching && <SearchingLoader />}
-		{!searching && searchResults.length === 0 && <SearchNoResults />}
+		{searching && <SearchingLoader getText={getText} />}
+		{!searching && searchResults.length === 0 && <SearchNoResults getText={getText} />}
 		{!searching &&
 			searchResults.length > 0 && (
 				<SearchResultsList
