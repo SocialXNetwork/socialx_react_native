@@ -3,6 +3,8 @@ import * as profileHandles from './handles';
 
 export interface ICreateProfileInput {
 	username: string;
+	aboutMeText: string;
+	miningEnabled: boolean;
 	name: string;
 	email: string;
 	avatar: string;
