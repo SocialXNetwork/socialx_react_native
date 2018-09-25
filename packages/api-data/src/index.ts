@@ -1,1 +1,3 @@
-export {dataApi} from './api';
+export {ICreateAccountInput} from './repository/accounts/setters';
+
+export {dataApiFactory, IApiOptions, IDataApiFactory} from './api';

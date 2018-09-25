@@ -55,6 +55,7 @@ export interface IChangePassword {
 }
 
 export interface ICreateAccountInput extends IRecoverData<string>, ICredentials {
+	name: string;
 	email: string;
 	avatar: string;
 }
@@ -69,6 +70,7 @@ export const createAccount = (
 
 	const {
 		username,
+		name,
 		password,
 		email,
 		avatar,
@@ -102,7 +104,7 @@ export const createAccount = (
 							return callback('failed, error => ' + flags.err);
 						}
 
-						createProfile(context, {username, email, avatar, pub: account.is.pub}, (err) => {
+						createProfile(context, {username, name, email, avatar, pub: account.is.pub}, (err) => {
 							if (err) {
 								return callback(err);
 							}
