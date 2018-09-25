@@ -30,6 +30,7 @@ storiesOf('Components/displayers', module)
 				taggedFriends={[]}
 				location={'Timisoara'}
 				onUserPress={() => console.log('onUserPress')}
+				onShowAdvancedMenu={() => console.log('onShowAdvancedMenu')}
 			/>
 		);
 	});

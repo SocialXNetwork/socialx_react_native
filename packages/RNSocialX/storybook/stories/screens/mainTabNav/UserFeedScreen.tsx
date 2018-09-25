@@ -46,6 +46,8 @@ storiesOf('Screens/mainTabNav', module)
 				scrollY={new Animated.Value(0)}
 				isLoading={isLoading}
 				getText={(value) => value}
+				onBlockUser={(userId) => console.log('onBlockUser', userId)}
+				onReportProblem={(reason, message) => console.log('onReportProblem', reason, message)}
 			/>
 		);
 	});

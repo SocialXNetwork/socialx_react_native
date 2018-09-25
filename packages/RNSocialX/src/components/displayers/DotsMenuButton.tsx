@@ -26,5 +26,7 @@ const styles: any = StyleSheet.create({
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(25),
 		marginRight: Sizes.smartHorizontalScale(10),
+		width: '100%',
+		textAlign: 'right',
 	},
 });

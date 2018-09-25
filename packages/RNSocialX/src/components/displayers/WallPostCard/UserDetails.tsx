@@ -3,8 +3,9 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {ITranslatedProps} from '../../../types';
+import {DotsMenuButton} from '../DotsMenuButton';
 import {Location, TaggedFriends} from './';
-import styles from './UserDetails.style';
+import styles, {customStyleProps} from './UserDetails.style';
 
 interface IUserDetailsProps extends ITranslatedProps {
 	user: any; // IUserQuery; // TODO: @Alex fix typing after backend is ready
@@ -15,6 +16,7 @@ interface IUserDetailsProps extends ITranslatedProps {
 	taggedFriends: Array<{fullName: string}>;
 	location: false | string;
 	onUserPress: (userId: string) => void;
+	onShowAdvancedMenu: () => void;
 }
 
 export const UserDetails: React.SFC<IUserDetailsProps> = ({
@@ -26,6 +28,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 	taggedFriends,
 	location,
 	onUserPress,
+	onShowAdvancedMenu,
 	getText,
 }) => (
 	<TouchableOpacity onPress={() => onUserPress(user.userId)} style={styles.topContainer} disabled={hideGoToUserProfile}>
@@ -38,7 +41,8 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 			</Text>
 			<Text style={styles.timestamp}>{`${timeStampDate} at ${timeStampHour}`}</Text>
 		</View>
-		{/* TODO: @Alex Rebuild the TooltipDots component */}
-		{/* {!hideAdvancedMenu && <TooltipDots items={this.getTooltipItems()} />} */}
+		{!hideAdvancedMenu && (
+			<DotsMenuButton iconColor={customStyleProps.advancedMenuButtonColor} onPress={onShowAdvancedMenu} />
+		)}
 	</TouchableOpacity>
 );

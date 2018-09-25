@@ -81,6 +81,8 @@ storiesOf('Screens/mainStack', module)
 				onUserPress={(userId) => console.log('onUserPress', userId)}
 				onSubmitComment={(commentText, postId) => console.log('onSubmitComment', commentText, postId)}
 				onAddComment={(index, cardHeight) => console.log('onAddComment', index, cardHeight)}
+				onBlockUser={(userId) => console.log('onBlockUser', userId)}
+				onReportProblem={(reason, message) => console.log('onReportProblem', reason, message)}
 			/>
 		);
 	});

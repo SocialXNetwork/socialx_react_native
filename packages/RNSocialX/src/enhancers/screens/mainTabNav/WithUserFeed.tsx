@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Props data: currentUser, posts, hasMorePosts, refreshingFeed, loadingMorePosts, loadingFeed
- * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment
+ * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
  */
 
 import * as React from 'react';
@@ -35,6 +35,12 @@ const mock: IWithUserFeedEnhancedProps = {
 		postComment: (escapedComment: string, postId: string) => {
 			/**/
 		},
+		blockUser: (userId: string) => {
+			/**/
+		},
+		reportProblem: (reason: string, description: string) => {
+			/**/
+		},
 		deletePost: (postId: string) => {
 			/**/
 		},
@@ -58,6 +64,8 @@ export interface IWithUserFeedEnhancedActions extends ITranslatedProps {
 	unlikePost: (postId: string) => void;
 	deletePost: (postId: string) => void;
 	postComment: (escapedComment: string, postId: string) => void;
+	blockUser: (userId: string) => void;
+	reportProblem: (reason: string, description: string) => void;
 }
 
 interface IWithUserFeedEnhancedProps {

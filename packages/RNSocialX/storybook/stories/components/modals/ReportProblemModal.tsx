@@ -10,7 +10,7 @@ storiesOf('Components/modals', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('ReportProblemModal', () => {
-		const visible = boolean('visible', false);
+		const visible = boolean('visible', true);
 
 		return (
 			<ReportProblemModal

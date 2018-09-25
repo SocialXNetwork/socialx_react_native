@@ -121,6 +121,8 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					onAddComment={(dummyIndex: number, cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
 					onSubmitComment={this.props.onSubmitComment}
 					getText={getText}
+					onBlockUser={this.props.onBlockUser}
+					onReportProblem={this.props.onReportProblem}
 				/>
 			</View>
 		);
