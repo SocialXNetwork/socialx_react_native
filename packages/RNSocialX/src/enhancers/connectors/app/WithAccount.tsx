@@ -1,6 +1,6 @@
 import {IChangePasswordInput, ICreateAccountInput, ICredentials, IRecoverAccountInput} from '@socialx/api-data';
 import * as React from 'react';
-import {connect} from 'react-redux';
+import {connect, ConnectedComponentClass} from 'react-redux';
 import {createSelector} from 'reselect';
 import {IApplicationState} from '../../../store';
 import {
@@ -61,7 +61,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	trustAccount: () => dispatch(trustAccount()),
 });
 
-export const WithAccount = connect(
+// InferableComponentEnhancerWithProps<{}, TOwnProps>
+export const WithAccount: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
-)(Enhancer);
+)(Enhancer) as any;
