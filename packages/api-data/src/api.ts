@@ -12,14 +12,7 @@ import './extensions/asyncStorageAdapter';
 import './extensions/docload';
 import './extensions/encrypt';
 
-import {
-	getters as accountGetters,
-	IChangePassword,
-	ICreateAccountInput,
-	ICredentials,
-	IRecoverAccountInput,
-	setters as accountSetters,
-} from './repository/accounts';
+import {api as accountsApi} from './repository/accounts';
 
 import {getters as commentGetters, setters as commentSetters} from './repository/comments';
 
@@ -59,28 +52,10 @@ export const dataApiFactory = ({peers}: IApiOptions) => {
 		work,
 	};
 
+	const accounts = accountsApi(context);
+
 	return {
-		accounts: {
-			isAccountLoggedIn: promisify<{loggedIn: boolean}>((callback: IGunCallback<{loggedIn: boolean}>) =>
-				accountGetters.isAccountLoggedIn(context, callback),
-			),
-			createAccount: promisify<null, ICreateAccountInput>(
-				(createAccountInput: ICreateAccountInput, callback: IGunCallback<null>) =>
-					accountSetters.createAccount(context, createAccountInput, callback),
-			),
-			login: promisify<null, ICredentials>((credentials: ICredentials, callback: IGunCallback<null>) =>
-				accountSetters.login(context, credentials, callback),
-			),
-			logout: promisify<null>((callback: IGunCallback<null>) => accountSetters.logout(context, callback)),
-			changePassword: promisify<null>((changePassword: IChangePassword, callback: IGunCallback<null>) =>
-				accountSetters.changePassword(context, changePassword, callback),
-			),
-			recoverAccount: promisify<{hint: string}, IRecoverAccountInput>(
-				(recoverAccount: IRecoverAccountInput, callback: IGunCallback<{hint: string}>) =>
-					accountSetters.recoverAccount(context, recoverAccount, callback),
-			),
-			trustAccount: promisify<null>((callback: IGunCallback<null>) => accountSetters.trustAccount(context, callback)),
-		},
+		accounts,
 		comments: {
 			getPostComments: promisify<IMetasCallback[], {postId: string}>(
 				({postId}: {postId: string}, callback: IGunCallback<IMetasCallback[]>) =>

@@ -1,2 +1,1 @@
-export {default as getters} from './getters';
-export {default as setters, ICreateAccountInput, ICredentials, IChangePassword, IRecoverAccountInput} from './setters';
+export {default as api} from './api';

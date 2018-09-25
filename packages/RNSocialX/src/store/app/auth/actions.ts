@@ -11,10 +11,10 @@ export const createAccount = (createAccountInput: ICreateAccountInput): IThunk<v
 		await context.dataApi.accounts.createAccount(createAccountInput);
 		const currentUserProfile = await context.dataApi.profiles.getCurrentProfile();
 		// TODO: dispatch payload needs to be of type IProfile as on the line above, action types needs reviewing
-		// dispatch({
-		// 	type: ActionTypes.CREATE_ACCOUNT,
-		// 	payload: currentUserProfile,
-		// });
+		dispatch({
+			type: ActionTypes.CREATE_ACCOUNT,
+			payload: createAccountInput,
+		});
 	} catch (e) {
 		/**/
 	}
