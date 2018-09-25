@@ -1,19 +1,20 @@
 import {ICreateAccountInput} from '@socialx/api-data';
-import {ThunkAction} from 'redux-thunk';
-import {IApplicationState} from '../../rootReducer';
-import {IContext} from '../../types';
-import {ActionTypes, IAction} from './Types';
+import {IThunk} from '../../types';
+import {ActionTypes, IAction, ICreateAccountAction} from './Types';
 
-type IThunk<R> = ThunkAction<R, IApplicationState, IContext, IAction>;
-
-export const createAccount = (createAccountInput: ICreateAccountInput): IThunk<void> => async (
+export const createAccount = (createAccountInput: ICreateAccountInput): IThunk<void, ICreateAccountAction> => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		// @ts-ignore
-		await context.dataApi.accounts.createAccount();
+		await context.dataApi.accounts.createAccount(createAccountInput);
+		const currentUserProfile = await context.dataApi.profiles.getCurrentProfile();
+		// TODO: dispatch payload needs to be of type IProfile as on the line above, action types needs reviewing
+		// dispatch({
+		// 	type: ActionTypes.CREATE_ACCOUNT,
+		// 	payload: currentUserProfile,
+		// });
 	} catch (e) {
 		/**/
 	}
