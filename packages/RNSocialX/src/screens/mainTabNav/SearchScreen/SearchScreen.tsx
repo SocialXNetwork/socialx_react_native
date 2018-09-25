@@ -1,0 +1,71 @@
+import debounce from 'lodash/debounce';
+import * as React from 'react';
+
+import {IWithSearchEnhancedActions, IWithSearchEnhancedData} from '../../../enhancers/screens';
+import {INavigationProps, ISearchResultData, SearchResultKind, SearchTabs} from '../../../types';
+import {SearchScreenView} from './SearchScreen.view';
+
+const SEARCH_DEBOUNCE_TIME_MS = 300;
+
+export interface ISearchProps {
+	tab: SearchTabs;
+}
+
+type ISearchScreenProps = INavigationProps & ISearchProps & IWithSearchEnhancedActions & IWithSearchEnhancedData;
+
+interface ISearchScreenState {
+	term: string;
+}
+
+export class Screen extends React.Component<ISearchScreenProps, ISearchScreenState> {
+	public state = {
+		term: '',
+	};
+
+	private debounceSearch = debounce((term: string) => {
+		this.props.search(term, this.props.tab);
+	}, SEARCH_DEBOUNCE_TIME_MS);
+
+	public render() {
+		return (
+			<SearchScreenView
+				onAddFriend={this.onAddFriendHandler}
+				searchResults={this.props.searchResults}
+				suggestions={this.props.suggestions}
+				onResultPress={this.onResultPressHandler}
+				searching={this.props.searching}
+				hasMoreResults={this.props.hasMoreResults}
+				onLoadMoreResults={this.onLoadMoreResultsHandler}
+				onSearchTermChange={this.onSearchTermChangeHandler}
+				searchTermValue={this.state.term}
+				navigation={this.props.navigation}
+				getText={this.props.getText}
+			/>
+		);
+	}
+
+	private onSearchTermChangeHandler = (term: string) => {
+		this.debounceSearch(term);
+		this.setState({term});
+	};
+
+	private onAddFriendHandler = (userId: string) => {
+		this.props.addFriend(userId);
+	};
+
+	private onResultPressHandler = (result: ISearchResultData) => {
+		if (
+			result.relationship === SearchResultKind.Friend ||
+			result.relationship === SearchResultKind.NotFriend ||
+			result.relationship === SearchResultKind.FriendRequestSent
+		) {
+			this.props.navigation.navigate('UserProfileScreen', {userId: result.userId});
+		}
+	};
+
+	private onLoadMoreResultsHandler = () => {
+		if (!this.props.searching && this.props.hasMoreResults) {
+			this.props.searchForMoreResults();
+		}
+	};
+}
