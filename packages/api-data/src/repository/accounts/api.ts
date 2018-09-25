@@ -1,7 +1,7 @@
 import {IContext} from '../../types';
 import getters from './getters';
 import schemas from './schemas';
-import setters, {IChangePassword, ICreateAccountInput, ICredentials, IRecoverAccountInput} from './setters';
+import setters, {IChangePasswordInput, ICreateAccountInput, ICredentials, IRecoverAccountInput} from './setters';
 
 export default (context: IContext) => ({
 	isAccountLoggedIn: (): Promise<{loggedIn: boolean}> =>
@@ -47,13 +47,13 @@ export default (context: IContext) => ({
 				resolve(r);
 			});
 		}),
-	changePassword: (changePassword: IChangePassword): Promise<null> =>
+	changePassword: (changePasswordInput: IChangePasswordInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.changePassword.validate(changePassword, {
+				const validatedArgs = await schemas.changePassword.validate(changePasswordInput, {
 					stripUnknown: true,
 				});
-				setters.changePassword(context, validatedArgs as IChangePassword, (e, r) => {
+				setters.changePassword(context, validatedArgs as IChangePasswordInput, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -63,10 +63,10 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	recoverAccount: (recoverAccount: IRecoverAccountInput): Promise<{hint: string}> =>
+	recoverAccount: (recoverAccountInput: IRecoverAccountInput): Promise<{hint: string}> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.changePassword.validate(recoverAccount, {
+				const validatedArgs = await schemas.changePassword.validate(recoverAccountInput, {
 					stripUnknown: true,
 				});
 				setters.recoverAccount(context, validatedArgs as IRecoverAccountInput, (e, r) => {

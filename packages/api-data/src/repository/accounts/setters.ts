@@ -49,7 +49,7 @@ export interface IRecoverAccountInput {
 	question2: string;
 }
 
-export interface IChangePassword {
+export interface IChangePasswordInput {
 	oldPassword: string;
 	newPassword: string;
 }
@@ -141,7 +141,7 @@ export const logout = async (context: IContext, callback: IGunCallback<null>) =>
 
 export const changePassword = (
 	context: IContext,
-	{oldPassword, newPassword}: IChangePassword,
+	{oldPassword, newPassword}: IChangePasswordInput,
 	callback: IGunCallback<null>,
 ) => {
 	const {account} = context;
