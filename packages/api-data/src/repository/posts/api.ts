@@ -7,8 +7,13 @@ export default (context: IContext) => ({
 	getPostPathsByUser: ({username}: {username: string}): Promise<string[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {username};
-				getters.getPostPathsByUser(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getPostPathsByUser.validate(
+					{username},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getPostPathsByUser(context, validatedArgs as {username: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -21,8 +26,13 @@ export default (context: IContext) => ({
 	getPostByPath: ({postPath}: {postPath: string}): Promise<IPostData> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {postPath};
-				getters.getPostByPath(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getPostByPath.validate(
+					{postPath},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getPostByPath(context, validatedArgs as {postPath: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -35,8 +45,13 @@ export default (context: IContext) => ({
 	getPublicPostsByDate: ({date}: {date: Date}): Promise<IPostData> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {date};
-				getters.getPublicPostsByDate(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getPublicPostsByDate.validate(
+					{date},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getPublicPostsByDate(context, validatedArgs as {date: Date}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -49,8 +64,13 @@ export default (context: IContext) => ({
 	getPostLikes: ({postId}: {postId: string}): Promise<ILikesMetasCallback> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {postId};
-				getters.getPostLikes(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getPostLikes.validate(
+					{postId},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getPostLikes(context, validatedArgs as {postId: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -63,8 +83,10 @@ export default (context: IContext) => ({
 	createPost: (createPostInput: IPostData): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = createPostInput;
-				setters.createPost(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.postData.validate(createPostInput, {
+					stripUnknown: true,
+				});
+				setters.createPost(context, validatedArgs as IPostData, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -77,8 +99,13 @@ export default (context: IContext) => ({
 	likePost: ({postId}: {postId: string}): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {postId};
-				setters.likePost(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.likePost.validate(
+					{postId},
+					{
+						stripUnknown: true,
+					},
+				);
+				setters.likePost(context, validatedArgs as {postId: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}

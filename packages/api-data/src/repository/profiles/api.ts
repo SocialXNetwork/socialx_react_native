@@ -7,8 +7,13 @@ export default (context: IContext) => ({
 	getPublicKeyByUsername: ({username}: IGetPublicKeyInput): Promise<string> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {username};
-				getters.getPublicKeyByUsername(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.publicKeyInput.validate(
+					{username},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getPublicKeyByUsername(context, validatedArgs as IGetPublicKeyInput, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -30,8 +35,13 @@ export default (context: IContext) => ({
 	getProfileByUsername: ({username}: {username: string}): Promise<IProfile> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = {username};
-				getters.getProfileByUsername(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.getProfileByUsername.validate(
+					{username},
+					{
+						stripUnknown: true,
+					},
+				);
+				getters.getProfileByUsername(context, validatedArgs as {username: string}, (e, r) => {
 					if (e) {
 						reject(e);
 					}
@@ -44,8 +54,10 @@ export default (context: IContext) => ({
 	createProfile: (createProfileInput: ICreateProfileInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = createProfileInput;
-				setters.createProfile(context, validatedArgs, (e, r) => {
+				const validatedArgs = await schemas.createProfileInput.validate(createProfileInput, {
+					stripUnknown: true,
+				});
+				setters.createProfile(context, validatedArgs as ICreateProfileInput, (e, r) => {
 					if (e) {
 						reject(e);
 					}
