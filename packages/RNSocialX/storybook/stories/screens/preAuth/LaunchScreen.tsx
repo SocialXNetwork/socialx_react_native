@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -7,12 +8,8 @@ storiesOf('Screens/preAuth', module).add('LaunchScreen', () => {
 	return (
 		<LaunchScreenView
 			getText={(text) => text}
-			navigateToRegisterScreen={(...args: any[]) =>
-				console.log('navigateToRegisterScreen', args)
-			}
-			navigateToLoginScreen={(...args: any[]) =>
-				console.log('navigateToLoginScreen', args)
-			}
+			navigateToRegisterScreen={action('navigateToRegisterScreen')}
+			navigateToLoginScreen={action('navigateToLoginScreen')}
 		/>
 	);
 });

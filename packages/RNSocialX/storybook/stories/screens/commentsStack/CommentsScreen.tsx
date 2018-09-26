@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { boolean, date, number, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -63,8 +64,7 @@ storiesOf('Screens/commentsStack', module)
 		};
 		const optionsProps = {
 			sortOption: CommentsSortingOptions.Likes,
-			onSelectionChange: (...args: any[]) =>
-				console.log('onSelectionChange', args),
+			onSelectionChange: action('onSelectionChange'),
 		};
 
 		return (
@@ -103,32 +103,22 @@ storiesOf('Screens/commentsStack', module)
 						],
 					},
 				]}
-				onCommentLike={(...args: any[]) => console.log('onCommentLike', args)}
-				onCommentReply={(...args: any[]) => console.log('onCommentReply', args)}
-				onCommentSend={(...args: any[]) => console.log('onCommentSend', args)}
-				onCommentTextChange={(...args: any[]) =>
-					console.log('onCommentTextChange', args)
-				}
+				onCommentLike={action('onCommentLike')}
+				onCommentReply={action('onCommentReply')}
+				onCommentSend={action('onCommentSend')}
+				onCommentTextChange={action('onCommentTextChange')}
 				startComment={startComment}
-				onViewUserProfile={(...args: any[]) =>
-					console.log('onViewUserProfile', args)
-				}
+				onViewUserProfile={action('onViewUserProfile')}
 				commentText={commentText}
 				showSendButton={showSendButton}
-				onShowOptionsMenu={(...args: any[]) =>
-					console.log('onShowOptionsMenu', args)
-				}
+				onShowOptionsMenu={action('onShowOptionsMenu')}
 				postData={postData}
 				postOwner={postOwner}
-				onCommentsBackPress={(...args: any[]) =>
-					console.log('onCommentsBackPress', args)
-				}
-				onImagePress={(...args: any[]) => console.log('onImagePress', args)}
-				onLikePress={(...args: any[]) => console.log('onLikePress', args)}
+				onCommentsBackPress={action('onCommentsBackPress')}
+				onImagePress={action('onImagePress')}
+				onLikePress={action('onLikePress')}
 				currentUser={currentUser}
-				onCommentContainerWidthChange={(...args: any[]) =>
-					console.log('onCommentContainerWidthChange', args)
-				}
+				onCommentContainerWidthChange={action('onCommentContainerWidthChange')}
 				commentLikesPosition={commentLikesPosition}
 				optionsProps={optionsProps}
 				isReplyScreen={isReplyScreen}

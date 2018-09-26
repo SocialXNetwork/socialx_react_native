@@ -1,7 +1,6 @@
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import { Text } from 'react-native';
 
 import { Header } from '../../../../src/components';
 

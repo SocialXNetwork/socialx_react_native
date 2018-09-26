@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -24,9 +25,7 @@ class GithubUsersPhotoGrid extends React.Component<
 				<ProfilePhotoGrid
 					loadMorePhotosHandler={this.loadMorePhotosHandler}
 					gridMediaProvider={this.state.gridMediaProvider}
-					onViewMediaFullScreen={() => {
-						/**/
-					}}
+					onViewMediaFullScreen={action('onViewMediaFullScreen')}
 					header={{
 						element: <View style={{ width: 1, height: 1 }} />,
 						height: 1,
