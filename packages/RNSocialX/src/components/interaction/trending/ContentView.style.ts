@@ -7,10 +7,9 @@ const styles: any = {
 	image: {
 		width: THUMBNAIL_SIZE,
 		height: THUMBNAIL_SIZE,
-		backgroundColor: 'black',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderBottomWidth: 2,
+		borderBottomWidth: 1,
 		borderColor: Colors.white,
 	},
 	videoContainer: {
@@ -18,40 +17,31 @@ const styles: any = {
 		height: THUMBNAIL_SIZE * 2,
 		flexDirection: 'row',
 	},
-	imageWithVideo: {
-		width: THUMBNAIL_SIZE,
-		height: THUMBNAIL_SIZE,
-		backgroundColor: 'black',
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderBottomWidth: 2,
-		borderColor: Colors.white,
-	},
 	video: {
 		width: THUMBNAIL_SIZE * 2,
 		height: THUMBNAIL_SIZE * 2,
-		backgroundColor: 'black',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderBottomWidth: 2,
+		borderBottomWidth: 1,
 		borderColor: Colors.white,
 	},
 	leftVideo: {
-		borderRightWidth: 2,
+		borderRightWidth: 1,
 		borderColor: Colors.white,
 	},
 	rightVideo: {
-		borderLeftWidth: 2,
+		borderLeftWidth: 1,
 		borderColor: Colors.white,
 	},
 	middle: {
-		borderLeftWidth: 2,
-		borderRightWidth: 2,
+		borderLeftWidth: 1,
+		borderRightWidth: 1,
 		borderColor: Colors.white,
 	},
 	text: {
 		color: 'white',
 		fontSize: 25,
+		position: 'absolute',
 	},
 };
 
