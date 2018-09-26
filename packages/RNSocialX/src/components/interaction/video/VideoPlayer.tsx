@@ -3,13 +3,20 @@
  * 1. @Ionut & @Serkan: Figure out a better strategy and get rid of UNSAFE_componentWillReceiveProps.
  * What we want to do is allow user to pause/mute the video and also let player be paused/muted from the outside.
  * Control from the outside should take over user control.
+ * 2. Support full screen on Android: request made with https://github.com/react-native-community/react-native-video/issues/1251
+ * 3. Local videos don't fire onLoad: request made with https://github.com/react-native-community/react-native-video/issues/1195
  */
 
 import * as React from 'react';
-import {StyleProp, TouchableWithoutFeedback, View, ViewStyle} from 'react-native';
+import {
+	StyleProp,
+	TouchableWithoutFeedback,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Video from 'react-native-video';
 
-import {VideoControls} from './VideoControls';
+import { VideoControls } from './VideoControls';
 import styles from './VideoPlayer.style';
 
 export interface IVideoOptions {
@@ -37,7 +44,10 @@ interface IVideoPlayerState {
 	resizeMode: 'cover' | 'contain';
 }
 
-export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayerState> {
+export class VideoPlayer extends React.Component<
+	IVideoPlayerProps,
+	IVideoPlayerState
+> {
 	public static defaultProps = {
 		containerStyle: styles.container,
 		muted: false,
@@ -72,8 +82,21 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	}
 
 	public render() {
-		const {containerStyle, thumbOnly, resizeToChangeAspectRatio, videoURL, onPressVideo} = this.props;
-		const {ended, playReady, fullScreen, muted, paused, resizeMode} = this.state;
+		const {
+			containerStyle,
+			thumbOnly,
+			resizeToChangeAspectRatio,
+			videoURL,
+			onPressVideo,
+		} = this.props;
+		const {
+			ended,
+			playReady,
+			fullScreen,
+			muted,
+			paused,
+			resizeMode,
+		} = this.state;
 
 		const showPlayButton = paused || ended;
 
@@ -86,7 +109,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 					<Video
 						onReadyForDisplay={this.videoReadyHandler}
 						// poster='https://baconmockup.com/300/200/'
-						source={{uri: videoURL}}
+						source={{ uri: videoURL }}
 						resizeMode={resizeMode}
 						paused={paused}
 						muted={muted}
@@ -127,8 +150,6 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	};
 
 	private videoReadyHandler = () => {
-		// TODO: issue with local video files, see bug report:
-		// https://github.com/react-native-community/react-native-video/issues/1195
 		if (!this.state.playReady) {
 			this.setState({
 				playReady: true,
@@ -137,7 +158,6 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	};
 
 	private onVideoPlayStart = () => {
-		console.log('onVideoPlayStart');
 		if (this.state.ended && this.playerRef.current) {
 			this.playerRef.current.seek(0);
 		}
