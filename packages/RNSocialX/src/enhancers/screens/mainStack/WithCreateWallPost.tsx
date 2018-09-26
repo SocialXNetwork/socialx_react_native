@@ -6,7 +6,11 @@
 
 import * as React from 'react';
 
-import {IResizeProps, ITranslatedProps, IWallPostPhotoOptimized} from '../../../types';
+import {
+	IResizeProps,
+	ITranslatedProps,
+	IWallPostPhotoOptimized,
+} from '../../../types';
 
 const mock: IWithCreateWallPostEnhancedProps = {
 	data: {
@@ -45,9 +49,12 @@ interface IWithCreateWallPostProps {
 
 interface IWithCreateWallPostState {}
 
-export class WithCreateWallPost extends React.Component<IWithCreateWallPostProps, IWithCreateWallPostState> {
+export class WithCreateWallPost extends React.Component<
+	IWithCreateWallPostProps,
+	IWithCreateWallPostState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

@@ -1,7 +1,7 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {LikeAnimatingButton} from '../../../../src/components';
+import { LikeAnimatingButton } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 class LikeAnimatingButtonStory extends React.Component {
@@ -14,7 +14,7 @@ class LikeAnimatingButtonStory extends React.Component {
 			<LikeAnimatingButton
 				label={'Like'}
 				onPress={() =>
-					this.setState((prevState: {likedByMe: boolean}) => {
+					this.setState((prevState: { likedByMe: boolean }) => {
 						return {
 							likedByMe: !prevState.likedByMe,
 						};

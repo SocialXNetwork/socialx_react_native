@@ -4,11 +4,17 @@
  */
 
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import {AnimatedFaIcon, Animations, Colors, Fonts, Sizes} from '../../environment/theme';
-import {ITranslatedProps} from '../../types';
-import {showToastMessage} from '../../utilities';
+import {
+	AnimatedFaIcon,
+	Animations,
+	Colors,
+	Fonts,
+	Sizes,
+} from '../../environment/theme';
+import { ITranslatedProps } from '../../types';
+import { showToastMessage } from '../../utilities';
 
 const PULSATE_PERIOD = 700;
 
@@ -23,7 +29,10 @@ interface ILikeAnimatingButtonState {
 	optimisticLikedByMe: boolean;
 }
 
-export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonProps, ILikeAnimatingButtonState> {
+export class LikeAnimatingButton extends React.Component<
+	ILikeAnimatingButtonProps,
+	ILikeAnimatingButtonState
+> {
 	public static defaultProps = {
 		label: false,
 	};
@@ -49,9 +58,12 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 	private animatedIconRef: any = React.createRef();
 
 	public render() {
-		const {label, onPress} = this.props;
-		const {optimisticLikedByMe} = this.state;
-		const likeStyles = [styles.likeButton, {color: optimisticLikedByMe ? Colors.pink : Colors.black}];
+		const { label, onPress } = this.props;
+		const { optimisticLikedByMe } = this.state;
+		const likeStyles = [
+			styles.likeButton,
+			{ color: optimisticLikedByMe ? Colors.pink : Colors.black },
+		];
 
 		return (
 			<TouchableOpacity
@@ -70,7 +82,7 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 	}
 
 	private buttonPressedHandler = async () => {
-		const {onPress} = this.props;
+		const { onPress } = this.props;
 
 		this.setState({
 			touchDisabled: true,
@@ -78,7 +90,10 @@ export class LikeAnimatingButton extends React.Component<ILikeAnimatingButtonPro
 		});
 
 		onPress();
-		await this.animatedIconRef.current.animate(Animations.pulsate, PULSATE_PERIOD);
+		await this.animatedIconRef.current.animate(
+			Animations.pulsate,
+			PULSATE_PERIOD,
+		);
 
 		this.setState({
 			touchDisabled: false,

@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Sizes} from '../../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Sizes } from '../../../environment/theme';
 
 export const THUMBNAIL_SIZE = Sizes.getThumbSize();
 

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {SafeAreaView} from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 
-import {WithManagedTransitions} from '../managedTransitions';
+import { WithManagedTransitions } from '../managedTransitions';
 import styles from './DotsMenuModal.style';
 
 export interface IDotsMenuItem {
@@ -19,9 +19,13 @@ interface IDotsMenuModalProps {
 	onBackdropPress: () => void;
 }
 
-export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({visible, items, onBackdropPress}) => (
+export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
+	visible,
+	items,
+	onBackdropPress,
+}) => (
 	<WithManagedTransitions modalVisible={visible}>
-		{({onDismiss, onModalHide}) => (
+		{({ onDismiss, onModalHide }) => (
 			<Modal
 				// @ts-ignore
 				onDismiss={onDismiss}
@@ -34,24 +38,30 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({visible, items, o
 				style={styles.container}
 			>
 				<SafeAreaView style={styles.innerContainer}>
-					{items.map(({icon, label, actionHandler}: IDotsMenuItem, index: number) => {
-						const itemStyles = [
-							styles.row,
-							index === 0 ? [styles.first] : {},
-							index !== items.length - 1 ? styles.separator : {},
-						];
+					{items.map(
+						({ icon, label, actionHandler }: IDotsMenuItem, index: number) => {
+							const itemStyles = [
+								styles.row,
+								index === 0 ? [styles.first] : {},
+								index !== items.length - 1 ? styles.separator : {},
+							];
 
-						return (
-							<TouchableOpacity style={itemStyles} key={index} onPress={actionHandler}>
-								<View style={styles.iconContainer}>
-									<Icon name={icon} style={styles.icon} />
-								</View>
-								<View style={styles.textContainer}>
-									<Text>{label}</Text>
-								</View>
-							</TouchableOpacity>
-						);
-					})}
+							return (
+								<TouchableOpacity
+									style={itemStyles}
+									key={index}
+									onPress={actionHandler}
+								>
+									<View style={styles.iconContainer}>
+										<Icon name={icon} style={styles.icon} />
+									</View>
+									<View style={styles.textContainer}>
+										<Text>{label}</Text>
+									</View>
+								</TouchableOpacity>
+							);
+						},
+					)}
 				</SafeAreaView>
 			</Modal>
 		)}

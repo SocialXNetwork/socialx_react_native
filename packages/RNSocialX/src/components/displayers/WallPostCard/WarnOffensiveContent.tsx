@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
-import {ITranslatedProps} from '../../../types';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import { ITranslatedProps } from '../../../types';
 
 interface IWarnOffensiveContentProps extends ITranslatedProps {
 	visible: boolean;
@@ -17,9 +17,16 @@ export const WarnOffensiveContent: React.SFC<IWarnOffensiveContentProps> = ({
 	<React.Fragment>
 		{visible && (
 			<View style={styles.offensiveContent}>
-				<Text style={styles.offensiveWarningText}>{getText('wall.post.card.offensive.content.warning.text')}</Text>
-				<TouchableOpacity onPress={onShowOffensiveContent} style={styles.viewOffensiveText}>
-					<Text style={styles.viewOffensiveText}>{getText('wall.post.card.offensive.content.button.view')}</Text>
+				<Text style={styles.offensiveWarningText}>
+					{getText('wall.post.card.offensive.content.warning.text')}
+				</Text>
+				<TouchableOpacity
+					onPress={onShowOffensiveContent}
+					style={styles.viewOffensiveText}
+				>
+					<Text style={styles.viewOffensiveText}>
+						{getText('wall.post.card.offensive.content.button.view')}
+					</Text>
 				</TouchableOpacity>
 			</View>
 		)}

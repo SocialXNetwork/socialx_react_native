@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const ICON_DEFAULT_SIZE = Sizes.smartHorizontalScale(24);
 

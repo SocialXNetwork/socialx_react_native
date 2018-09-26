@@ -1,10 +1,18 @@
 import React from 'react';
-import {ActivityIndicator, ConnectionInfo, ConnectionType, NetInfo, SafeAreaView, Text, View} from 'react-native';
+import {
+	ActivityIndicator,
+	ConnectionInfo,
+	ConnectionType,
+	NetInfo,
+	SafeAreaView,
+	Text,
+	View,
+} from 'react-native';
 import Modal from 'react-native-modal';
 
-import {WithManagedTransitions} from '..';
-import {ITranslatedProps} from '../../types';
-import styles, {defaultColor} from './OfflineOverlayModal.style';
+import { WithManagedTransitions } from '..';
+import { ITranslatedProps } from '../../types';
+import styles, { defaultColor } from './OfflineOverlayModal.style';
 
 const CONNECTION_EVENT_NAME = 'connectionChange';
 
@@ -16,18 +24,27 @@ interface IOfflineOverlayModalState {
 	offline: boolean;
 }
 
-export class OfflineOverlayModal extends React.Component<IOfflineOverlayModalProps, IOfflineOverlayModalState> {
+export class OfflineOverlayModal extends React.Component<
+	IOfflineOverlayModalProps,
+	IOfflineOverlayModalState
+> {
 	public state = {
 		offline: false,
 	};
 
 	public componentDidMount() {
 		NetInfo.getConnectionInfo().then(this.connectionStatusUpdated);
-		NetInfo.addEventListener(CONNECTION_EVENT_NAME, this.connectionStatusUpdated);
+		NetInfo.addEventListener(
+			CONNECTION_EVENT_NAME,
+			this.connectionStatusUpdated,
+		);
 	}
 
 	public componentWillUnmount() {
-		NetInfo.removeEventListener(CONNECTION_EVENT_NAME, this.connectionStatusUpdated);
+		NetInfo.removeEventListener(
+			CONNECTION_EVENT_NAME,
+			this.connectionStatusUpdated,
+		);
 	}
 
 	public render() {
@@ -35,7 +52,7 @@ export class OfflineOverlayModal extends React.Component<IOfflineOverlayModalPro
 
 		return (
 			<WithManagedTransitions modalVisible={visible}>
-				{({onDismiss, onModalHide}) => (
+				{({ onDismiss, onModalHide }) => (
 					<Modal
 						// @ts-ignore
 						onDismiss={onDismiss}
@@ -49,7 +66,9 @@ export class OfflineOverlayModal extends React.Component<IOfflineOverlayModalPro
 						<SafeAreaView>
 							<View style={styles.boxContainer}>
 								<ActivityIndicator size={'small'} color={defaultColor} />
-								<Text style={styles.message}>{this.props.getText('offline.overlay.message')}</Text>
+								<Text style={styles.message}>
+									{this.props.getText('offline.overlay.message')}
+								</Text>
 							</View>
 						</SafeAreaView>
 					</Modal>
@@ -58,9 +77,12 @@ export class OfflineOverlayModal extends React.Component<IOfflineOverlayModalPro
 		);
 	}
 
-	private connectionStatusUpdated = (connectionInfo: ConnectionInfo | ConnectionType) => {
+	private connectionStatusUpdated = (
+		connectionInfo: ConnectionInfo | ConnectionType,
+	) => {
 		connectionInfo = connectionInfo as ConnectionInfo;
-		const isOffline = connectionInfo.type === 'none' || connectionInfo.type === 'unknown';
+		const isOffline =
+			connectionInfo.type === 'none' || connectionInfo.type === 'unknown';
 		this.setState({
 			offline: isOffline,
 		});

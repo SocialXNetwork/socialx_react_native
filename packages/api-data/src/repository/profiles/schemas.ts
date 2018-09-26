@@ -30,12 +30,21 @@ export const getProfileByUsername = yup
 export const createProfileInput = yup
 	.object()
 	.shape({
-		username: usernameOrPasswordType,
 		aboutMeText: yup
 			.string()
 			.trim()
 			.min(10)
 			.max(200),
+		avatar: yup
+			.string()
+			.trim()
+			.required(),
+		email: yup
+			.string()
+			.trim()
+			.lowercase()
+			.email()
+			.required(),
 		miningEnabled: yup
 			.bool()
 			.default(false)
@@ -46,22 +55,13 @@ export const createProfileInput = yup
 			.min(4)
 			.max(128)
 			.required(),
-		email: yup
-			.string()
-			.trim()
-			.lowercase()
-			.email()
-			.required(),
-		avatar: yup
-			.string()
-			.trim()
-			.required(),
 		pub: longTextType.required(),
+		username: usernameOrPasswordType,
 	})
 	.required();
 
 export default {
-	publicKeyInput,
-	getProfileByUsername,
 	createProfileInput,
+	getProfileByUsername,
+	publicKeyInput,
 };

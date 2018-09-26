@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import {WithManagedTransitions} from '../managedTransitions';
-import style, {customStyleProps} from './ActivityIndicatorModal.style';
+import { WithManagedTransitions } from '../managedTransitions';
+import style, { customStyleProps } from './ActivityIndicatorModal.style';
 
 interface IActivityIndicatorModalProps {
 	activityIndicatorTitle: string | null;
@@ -11,13 +11,15 @@ interface IActivityIndicatorModalProps {
 	showActivityIndicator: boolean;
 }
 
-export const ActivityIndicatorModal: React.SFC<IActivityIndicatorModalProps> = ({
+export const ActivityIndicatorModal: React.SFC<
+	IActivityIndicatorModalProps
+> = ({
 	activityIndicatorTitle = null,
 	activityIndicatorMessage = null,
 	showActivityIndicator,
 }) => (
 	<WithManagedTransitions modalVisible={showActivityIndicator}>
-		{({onDismiss, onModalHide}) => (
+		{({ onDismiss, onModalHide }) => (
 			<Modal
 				// @ts-ignore // lib. TS issue, onDismiss prop is inherited from Modal in 'react-native'
 				// created issue with the lib. https://github.com/react-native-community/react-native-modal/issues/212
@@ -31,9 +33,16 @@ export const ActivityIndicatorModal: React.SFC<IActivityIndicatorModalProps> = (
 				style={style.container}
 			>
 				<View style={style.boxContainer}>
-					<Text style={style.title}>{activityIndicatorTitle || 'Please wait'}</Text>
-					{activityIndicatorMessage && <Text style={style.message}>{activityIndicatorMessage}</Text>}
-					<ActivityIndicator size={'large'} color={customStyleProps.activityIndicatorColor} />
+					<Text style={style.title}>
+						{activityIndicatorTitle || 'Please wait'}
+					</Text>
+					{activityIndicatorMessage && (
+						<Text style={style.message}>{activityIndicatorMessage}</Text>
+					)}
+					<ActivityIndicator
+						size={'large'}
+						color={customStyleProps.activityIndicatorColor}
+					/>
 				</View>
 			</Modal>
 		)}

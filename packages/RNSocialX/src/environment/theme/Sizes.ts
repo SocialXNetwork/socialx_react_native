@@ -1,6 +1,6 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 // Guideline sizes are based on iPhone 4.7" screen sizes
 const guidelineBaseWidth = 375;
@@ -46,7 +46,8 @@ const SizesInt = {
 		return Math.floor(ret);
 	},
 	getMediaLicenceThumbSize: (minThumbsInARow = 2) => {
-		const adjustedBaseWidth = guidelineBaseWidth - 2 * SIMILAR_MEDIA_CONTAINER_PADDING;
+		const adjustedBaseWidth =
+			guidelineBaseWidth - 2 * SIMILAR_MEDIA_CONTAINER_PADDING;
 		const adjustedScreenWidth = width - 2 * SIMILAR_MEDIA_CONTAINER_PADDING;
 		const baseThumbSize = adjustedBaseWidth / minThumbsInARow;
 		let thumbsInARow = minThumbsInARow;
@@ -65,6 +66,8 @@ const SizesInt = {
 	},
 };
 
-export const SIMILAR_MEDIA_CONTAINER_PADDING = SizesInt.smartHorizontalScale(12);
+export const SIMILAR_MEDIA_CONTAINER_PADDING = SizesInt.smartHorizontalScale(
+	12,
+);
 
 export const Sizes = SizesInt;

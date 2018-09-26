@@ -5,9 +5,9 @@
  */
 
 import * as React from 'react';
-import {currentUser} from '../../../mocks';
-import {ISettingsData} from '../../../screens/myProfile/SettingsScreen.view';
-import {ICurrentUser, ITranslatedProps} from '../../../types';
+import { currentUser } from '../../../mocks';
+import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
+import { ICurrentUser, ITranslatedProps } from '../../../types';
 
 const mock: IWithSettingsEnhancedProps = {
 	data: {
@@ -27,7 +27,10 @@ const mock: IWithSettingsEnhancedProps = {
 
 export interface ISaveChangesParams {
 	currentUser: ICurrentUser;
-	updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => void;
+	updateUserProfile: (
+		saveData: ISettingsData,
+		avatarHasChanged: boolean,
+	) => void;
 }
 
 export interface IWithSettingsEnhancedData {
@@ -36,7 +39,10 @@ export interface IWithSettingsEnhancedData {
 }
 
 export interface IWithSettingsEnhancedActions extends ITranslatedProps {
-	updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => void;
+	updateUserProfile: (
+		saveData: ISettingsData,
+		avatarHasChanged: boolean,
+	) => void;
 	logout: () => void;
 }
 
@@ -51,8 +57,11 @@ interface IWithSettingsProps {
 
 interface IWithSettingsState {}
 
-export class WithSettings extends React.Component<IWithSettingsProps, IWithSettingsState> {
+export class WithSettings extends React.Component<
+	IWithSettingsProps,
+	IWithSettingsState
+> {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

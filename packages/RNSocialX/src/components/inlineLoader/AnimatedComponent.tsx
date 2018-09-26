@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Animated, Easing, StyleProp, ViewStyle} from 'react-native';
+import { Animated, Easing, StyleProp, ViewStyle } from 'react-native';
 
 const FADE_ANIMATION_DURATION = 700;
 
@@ -11,7 +11,10 @@ interface IAnimatedComponentState {
 	fadeAnimation: Animated.Value;
 }
 
-export class AnimatedComponent extends React.Component<IAnimatedComponentProps, IAnimatedComponentState> {
+export class AnimatedComponent extends React.Component<
+	IAnimatedComponentProps,
+	IAnimatedComponentState
+> {
 	public state = {
 		fadeAnimation: new Animated.Value(0), // Initial value for opacity: 0
 	};
@@ -25,9 +28,13 @@ export class AnimatedComponent extends React.Component<IAnimatedComponentProps, 
 	}
 
 	public render() {
-		const {fadeAnimation} = this.state;
-		const {animatedStyle} = this.props;
+		const { fadeAnimation } = this.state;
+		const { animatedStyle } = this.props;
 
-		return <Animated.View style={[animatedStyle, {opacity: fadeAnimation}]}>{this.props.children}</Animated.View>;
+		return (
+			<Animated.View style={[animatedStyle, { opacity: fadeAnimation }]}>
+				{this.props.children}
+			</Animated.View>
+		);
 	}
 }

@@ -1,12 +1,15 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {View} from 'react-native';
-import {DataProvider} from 'recyclerlistview';
+import { View } from 'react-native';
+import { DataProvider } from 'recyclerlistview';
 
-import {ProfilePhotoGrid} from '../../../../src/components';
+import { ProfilePhotoGrid } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
-class GithubUsersPhotoGrid extends React.Component<any, {gridMediaProvider: DataProvider}> {
+class GithubUsersPhotoGrid extends React.Component<
+	any,
+	{ gridMediaProvider: DataProvider }
+> {
 	public state = {
 		gridMediaProvider: new DataProvider((row1: any, row2: any) => {
 			return row1.index !== row2.index;
@@ -17,7 +20,7 @@ class GithubUsersPhotoGrid extends React.Component<any, {gridMediaProvider: Data
 
 	public render() {
 		return (
-			<View style={{flex: 1, width: '100%'}}>
+			<View style={{ flex: 1, width: '100%' }}>
 				<ProfilePhotoGrid
 					loadMorePhotosHandler={this.loadMorePhotosHandler}
 					gridMediaProvider={this.state.gridMediaProvider}
@@ -25,7 +28,7 @@ class GithubUsersPhotoGrid extends React.Component<any, {gridMediaProvider: Data
 						/**/
 					}}
 					header={{
-						element: <View style={{width: 1, height: 1}} />,
+						element: <View style={{ width: 1, height: 1 }} />,
 						height: 1,
 					}}
 					disabled={false}
@@ -36,14 +39,17 @@ class GithubUsersPhotoGrid extends React.Component<any, {gridMediaProvider: Data
 	}
 
 	private loadMorePhotosHandler = () => {
-		const {gridMediaProvider} = this.state;
-		const headerElement = [{index: '1da431da-fad41dasg5125'}];
+		const { gridMediaProvider } = this.state;
+		const headerElement = [{ index: '1da431da-fad41dasg5125' }];
 
 		const loadedSize = gridMediaProvider.getSize();
-		const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+		const loadedMedia =
+			loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
 
 		const newMedia = new Array(20).fill(0).map((val, index) => ({
-			url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedPhotoIndex + index),
+			url:
+				'https://avatars2.githubusercontent.com/u/' +
+				(this.lastLoadedPhotoIndex + index),
 			index: this.lastLoadedPhotoIndex + index,
 		}));
 		const allMedia = [...loadedMedia, ...newMedia];

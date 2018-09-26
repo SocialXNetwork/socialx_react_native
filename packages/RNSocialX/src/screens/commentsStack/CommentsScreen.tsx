@@ -8,17 +8,26 @@
  * 5. Check navigation usage! Relevant use case.
  */
 
-import {ActionSheet} from 'native-base';
-import React, {Component} from 'react';
-import {Clipboard, Platform, StatusBar} from 'react-native';
+import { ActionSheet } from 'native-base';
+import React, { Component } from 'react';
+import { Clipboard, Platform, StatusBar } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
-import {IWithCommentsEnhancedActions, IWithCommentsEnhancedData, WithComments} from '../../enhancers/screens';
+import {
+	IWithCommentsEnhancedActions,
+	IWithCommentsEnhancedData,
+	WithComments,
+} from '../../enhancers/screens';
 
-import {OS_TYPES} from '../../environment/consts';
-import {CommentsSortingOptions, IMediaProps, INavigationProps, IWallPostComment} from '../../types';
-import {customStyleProps} from './CommentsScreen.style';
-import {CommentsScreenView} from './CommentsScreen.view';
+import { OS_TYPES } from '../../environment/consts';
+import {
+	CommentsSortingOptions,
+	IMediaProps,
+	INavigationProps,
+	IWallPostComment,
+} from '../../types';
+import { customStyleProps } from './CommentsScreen.style';
+import { CommentsScreenView } from './CommentsScreen.view';
 
 interface ICommentsScreenState {
 	sortOption: CommentsSortingOptions;
@@ -68,9 +77,20 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const {getText, navigation, postUser, currentUser, postComments, loadingComments, postData} = this.props;
-		const optionsProps = {sortOption: this.state.sortOption, onSelectionChange: this.updateSortingHandler};
-		const {commentText, showSendButton} = this.state;
+		const {
+			getText,
+			navigation,
+			postUser,
+			currentUser,
+			postComments,
+			loadingComments,
+			postData,
+		} = this.props;
+		const optionsProps = {
+			sortOption: this.state.sortOption,
+			onSelectionChange: this.updateSortingHandler,
+		};
+		const { commentText, showSendButton } = this.state;
 
 		return (
 			<CommentsScreenView
@@ -101,7 +121,10 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		);
 	}
 
-	private onCommentReplyHandler = (comment: IWallPostComment, startComment: boolean) => {
+	private onCommentReplyHandler = (
+		comment: IWallPostComment,
+		startComment: boolean,
+	) => {
 		this.props.navigation.navigate({
 			routeName: 'CommentsScreen',
 			key: comment.id,
@@ -113,7 +136,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentLikeHandler = (comment: IWallPostComment) => {
-		const {removeCommentLike, likeComment} = this.props;
+		const { removeCommentLike, likeComment } = this.props;
 		if (comment.likedByMe) {
 			removeCommentLike(comment.id);
 		} else {
@@ -122,8 +145,8 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentSendHandler = () => {
-		const {sendComment, navigation} = this.props;
-		const {postId, commentId} = navigation.state.params;
+		const { sendComment, navigation } = this.props;
+		const { postId, commentId } = navigation.state.params;
 		const escapedComment = this.state.commentText.replace(/\n/g, '\\n');
 		sendComment(escapedComment, postId, commentId);
 		this.setState({
@@ -133,7 +156,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private navigateToUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', {userId});
+		this.props.navigation.navigate('UserProfileScreen', { userId });
 	};
 
 	private updateSortingHandler = (value: CommentsSortingOptions) => {
@@ -150,7 +173,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onShowOptionsMenuHandler = (comment: IWallPostComment) => {
-		const {getText, deleteComment} = this.props;
+		const { getText, deleteComment } = this.props;
 		const menuOptions = [
 			getText('comments.screen.advanced.menu.copy'),
 			getText('comments.screen.advanced.menu.delete'),
@@ -184,7 +207,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
-		const {likePost, unlikePost} = this.props;
+		const { likePost, unlikePost } = this.props;
 
 		if (likedByMe) {
 			unlikePost(postId);
@@ -208,6 +231,10 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 }
 
 // We do it explicitly here instead of a generic wrapper for flexibility
-export const CommentsScreen = (navProps: INavigationProps<INavigationScreenProps, any>) => (
-	<WithComments>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithComments>
+export const CommentsScreen = (
+	navProps: INavigationProps<INavigationScreenProps, any>,
+) => (
+	<WithComments>
+		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+	</WithComments>
 );

@@ -1,5 +1,5 @@
-import {Action} from 'redux';
-import {DeepReadonly} from 'utility-types';
+import { Action } from 'redux';
+import { DeepReadonly } from 'utility-types';
 
 export interface IPostData {
 	title: string;

@@ -5,15 +5,22 @@
  */
 
 import * as React from 'react';
-import {currentUser, posts} from '../../../mocks';
-import {ICurrentUser, ITranslatedProps, IVisitedUser, MediaTypeImage, SearchResultKind} from '../../../types';
+import { currentUser, posts } from '../../../mocks';
+import {
+	ICurrentUser,
+	ITranslatedProps,
+	IVisitedUser,
+	MediaTypeImage,
+	SearchResultKind,
+} from '../../../types';
 
 const mock = {
 	data: {
 		currentUser,
 		visitedUser: {
 			userId: '999',
-			avatarURL: 'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
+			avatarURL:
+				'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
 			fullName: 'Alex Sirbu',
 			userName: 'alexsirbu',
 			aboutMeText: 'Lorem ipsum dolor sit amet',
@@ -97,8 +104,11 @@ interface IWithUserProfileProps {
 
 interface IWithUserProfileState {}
 
-export class WithUserProfile extends React.Component<IWithUserProfileProps, IWithUserProfileState> {
+export class WithUserProfile extends React.Component<
+	IWithUserProfileProps,
+	IWithUserProfileState
+> {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

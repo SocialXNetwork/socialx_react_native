@@ -1,6 +1,11 @@
-import {IChangePasswordInput, ICreateAccountInput, ICredentials, IRecoverAccountInput} from '@socialx/api-data';
-import {Action} from 'redux';
-import {DeepReadonly} from 'utility-types';
+import {
+	IChangePasswordInput,
+	ICreateAccountInput,
+	ICredentials,
+	IRecoverAccountInput,
+} from '@socialx/api-data';
+import { Action } from 'redux';
+import { DeepReadonly } from 'utility-types';
 
 export interface IAccount {
 	alias?: string;

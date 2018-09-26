@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {StyleProp, Text, TextProps, TextStyle} from 'react-native';
+import { StyleProp, Text, TextProps, TextStyle } from 'react-native';
 
-import {TextParser} from './TextParser';
+import { TextParser } from './TextParser';
 
 const PATTERNS = {
 	url: /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,10}\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/i,
@@ -24,7 +24,7 @@ interface ITextParserProps extends TextProps {
 
 const getParsePatterns = (parse: IParseProps[]): any => {
 	return parse.map((option: IParseProps) => {
-		const {type, ...patternOption} = option;
+		const { type, ...patternOption } = option;
 		if (type) {
 			if (!PATTERNS[type]) {
 				throw new Error(`${option.type} is not a supported type`);
@@ -43,9 +43,11 @@ export class RichText extends React.Component<ITextParserProps> {
 	private root: React.RefObject<Text> = React.createRef();
 
 	render() {
-		const {children, parse, childrenProps} = this.props;
+		const { children, parse, childrenProps } = this.props;
 		const canParse = typeof children === 'string';
-		const textExtraction = canParse ? new TextParser(children as string, getParsePatterns(parse)) : null;
+		const textExtraction = canParse
+			? new TextParser(children as string, getParsePatterns(parse))
+			: null;
 		return (
 			<Text {...this.props} ref={this.root}>
 				{!canParse && children}
@@ -62,7 +64,9 @@ export class RichText extends React.Component<ITextParserProps> {
 								/>
 							);
 						}
-						return <Text key={`pText-${index}`} {...childrenProps} {...props} />;
+						return (
+							<Text key={`pText-${index}`} {...childrenProps} {...props} />
+						);
 					})}
 			</Text>
 		);

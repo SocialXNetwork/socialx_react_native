@@ -24,9 +24,9 @@
  * so next time the user forgets his password, we ask these questions and they get back their reminder (notice here we are not going to return the actual password because of sec reasons / will change in the future)
  */
 
-import {IContext, IGunCallback} from '../../types';
-import {getPublicKeyByUsername} from '../profiles/getters';
-import {createProfile} from '../profiles/setters';
+import { IContext, IGunCallback } from '../../types';
+import { getPublicKeyByUsername } from '../profiles/getters';
+import { createProfile } from '../profiles/setters';
 import * as accountHandles from './handles';
 
 export interface ICredentials {
@@ -54,7 +54,9 @@ export interface IChangePasswordInput {
 	newPassword: string;
 }
 
-export interface ICreateAccountInput extends IRecoverData<string>, ICredentials {
+export interface ICreateAccountInput
+	extends IRecoverData<string>,
+		ICredentials {
 	name: string;
 	email: string;
 	avatar: string;
@@ -68,7 +70,7 @@ export const createAccount = (
 	createAccountInput: ICreateAccountInput,
 	callback: IGunCallback<null>,
 ) => {
-	const {account, encrypt, work} = context;
+	const { account, encrypt, work } = context;
 
 	const {
 		username,
@@ -78,7 +80,7 @@ export const createAccount = (
 		avatar,
 		aboutMeText,
 		miningEnabled,
-		recover: {reminder, question1, question2},
+		recover: { reminder, question1, question2 },
 	} = createAccountInput;
 
 	// start the creation process here
@@ -86,7 +88,9 @@ export const createAccount = (
 		if (createAccountCallback.wait) {
 			// we wait? what do we do here
 		} else if (createAccountCallback.err) {
-			return callback(`could'nt create a new user => ` + createAccountCallback.err);
+			return callback(
+				`could'nt create a new user => ` + createAccountCallback.err,
+			);
 		} else {
 			// we authenticate the user
 			account.auth(username, password, async (authAck) => {
@@ -94,7 +98,10 @@ export const createAccount = (
 					return callback('failed, error => ' + authAck.err);
 				}
 				// after the user is authenticate we create their recovery setting
-				const encryptedReminder = await encrypt(reminder, await work(question1, question2));
+				const encryptedReminder = await encrypt(
+					reminder,
+					await work(question1, question2),
+				);
 
 				accountHandles.currentAccountRecover(context).put(
 					{
@@ -110,7 +117,15 @@ export const createAccount = (
 
 						createProfile(
 							context,
-							{username, name, email, avatar, pub: account.is.pub, miningEnabled, aboutMeText},
+							{
+								aboutMeText,
+								avatar,
+								email,
+								miningEnabled,
+								name,
+								username,
+								pub: account.is.pub,
+							},
 							(err) => {
 								if (err) {
 									return callback(err);
@@ -126,8 +141,12 @@ export const createAccount = (
 	});
 };
 
-export const login = (context: IContext, {username, password}: ICredentials, callback: IGunCallback<null>) => {
-	const {account} = context;
+export const login = (
+	context: IContext,
+	{ username, password }: ICredentials,
+	callback: IGunCallback<null>,
+) => {
+	const { account } = context;
 	account.auth(username, password, (authCallback) => {
 		if (authCallback.err) {
 			return callback('failed, error => ' + authCallback.err);
@@ -137,8 +156,11 @@ export const login = (context: IContext, {username, password}: ICredentials, cal
 	});
 };
 
-export const logout = async (context: IContext, callback: IGunCallback<null>) => {
-	const {account} = context;
+export const logout = async (
+	context: IContext,
+	callback: IGunCallback<null>,
+) => {
+	const { account } = context;
 	try {
 		await account.leave();
 		return callback(null);
@@ -149,10 +171,10 @@ export const logout = async (context: IContext, callback: IGunCallback<null>) =>
 
 export const changePassword = (
 	context: IContext,
-	{oldPassword, newPassword}: IChangePasswordInput,
+	{ oldPassword, newPassword }: IChangePasswordInput,
 	callback: IGunCallback<null>,
 ) => {
-	const {account} = context;
+	const { account } = context;
 
 	if (!account.is) {
 		return callback('a user needs to be logged in in-order to proceed');
@@ -164,45 +186,55 @@ export const changePassword = (
 		() => {
 			return callback(null);
 		},
-		{change: newPassword},
+		{ change: newPassword },
 	);
 };
 
 export const recoverAccount = (
 	context: IContext,
-	{username, question1, question2}: IRecoverAccountInput,
-	callback: IGunCallback<{hint: string}>,
+	{ username, question1, question2 }: IRecoverAccountInput,
+	callback: IGunCallback<{ hint: string }>,
 ) => {
-	const {decrypt, work} = context;
+	const { decrypt, work } = context;
 
-	getPublicKeyByUsername(context, {username}, (err, pub) => {
+	getPublicKeyByUsername(context, { username }, (err, pub) => {
 		if (!pub) {
 			return callback('failed, no public key found');
 		}
-		accountHandles.accountByPub(context, pub).docLoad(async (recoverData: IRecoverData<string>) => {
-			if (!recoverData) {
-				return callback('user does not exist');
-			}
-			try {
-				const {
-					recover: {encryptedReminder},
-				} = recoverData;
-				if (!encryptedReminder) {
-					return callback('failed, no encrypted reminder found');
+		accountHandles
+			.accountByPub(context, pub)
+			.docLoad(async (recoverData: IRecoverData<string>) => {
+				if (!recoverData) {
+					return callback('user does not exist');
 				}
-				const hint = await decrypt(encryptedReminder, await work(question1, question2));
-				return callback(null, {hint});
-			} catch (e) {
-				return callback(`could'nt capture the user's recovery key => ` + e.message);
-			}
-		});
+				try {
+					const {
+						recover: { encryptedReminder },
+					} = recoverData;
+					if (!encryptedReminder) {
+						return callback('failed, no encrypted reminder found');
+					}
+					const hint = await decrypt(
+						encryptedReminder,
+						await work(question1, question2),
+					);
+					return callback(null, { hint });
+				} catch (e) {
+					return callback(
+						`could'nt capture the user's recovery key => ` + e.message,
+					);
+				}
+			});
 	});
 };
 
 // this function allows the 'governance' to function properly (if something is
 // created privately the trusted user is able to see that)
-export const trustAccount = async (context: IContext, callback: IGunCallback<null>) => {
-	const {account} = context;
+export const trustAccount = async (
+	context: IContext,
+	callback: IGunCallback<null>,
+) => {
+	const { account } = context;
 
 	if (!account.is) {
 		return callback('a user needs to be logged in in-order to proceed');
@@ -214,10 +246,10 @@ export const trustAccount = async (context: IContext, callback: IGunCallback<nul
 };
 
 export default {
+	changePassword,
 	createAccount,
 	login,
 	logout,
-	changePassword,
 	recoverAccount,
 	trustAccount,
 };

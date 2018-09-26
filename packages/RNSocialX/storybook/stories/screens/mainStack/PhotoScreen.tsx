@@ -1,9 +1,9 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {PhotoScreenView} from '../../../../src/screens/mainStack/PhotoScreen.view';
+import { PhotoScreenView } from '../../../../src/screens/mainStack/PhotoScreen.view';
 
 storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
@@ -19,19 +19,22 @@ storiesOf('Screens/mainStack', module)
 				id: '1',
 				fullName: 'Lorem Ipsum',
 				location: 'Nowhere',
-				avatarURL: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
+				avatarURL:
+					'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
 			},
 			{
 				id: '2',
 				fullName: 'Lorem Ipsum',
 				location: 'Nowhere',
-				avatarURL: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
+				avatarURL:
+					'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
 			},
 			{
 				id: '3',
 				fullName: 'Lorem Ipsum',
 				location: 'Nowhere',
-				avatarURL: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
+				avatarURL:
+					'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
 			},
 		];
 		const locationEnabled = boolean('locationEnabled', false);

@@ -1,12 +1,17 @@
-import {ActionSheet} from 'native-base';
+import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import {ImageSourcePropType, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+	ImageSourcePropType,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {Colors, Sizes} from '../../environment/theme';
-import {getTextSignature, ITranslatedProps} from '../../types';
-import {getCameraMediaObject, getGalleryMediaObject} from '../../utilities';
-import {AvatarImage} from './AvatarImage';
+import { Colors, Sizes } from '../../environment/theme';
+import { getTextSignature, ITranslatedProps } from '../../types';
+import { getCameraMediaObject, getGalleryMediaObject } from '../../utilities';
+import { AvatarImage } from './AvatarImage';
 
 const IMAGE_CROP_SIZE = 300;
 
@@ -31,7 +36,9 @@ interface IAvatarPickerProps extends ITranslatedProps {
 	avatarSize?: number;
 }
 
-const showGalleryPhotoPicker = async (afterImagePick: (image: string) => void) => {
+const showGalleryPhotoPicker = async (
+	afterImagePick: (image: string) => void,
+) => {
 	const galleryMediaObject = await getGalleryMediaObject(AVATAR_PICKER_OPTIONS);
 	if (galleryMediaObject) {
 		afterImagePick(galleryMediaObject.path);
@@ -45,10 +52,16 @@ const takeCameraPhoto = async (afterImagePick: (image: string) => void) => {
 	}
 };
 
-const pickUserAvatar = (afterImagePick: (image: string) => void, getText: getTextSignature) => {
+const pickUserAvatar = (
+	afterImagePick: (image: string) => void,
+	getText: getTextSignature,
+) => {
 	ActionSheet.show(
 		{
-			options: [getText('avatar.picker.pick.from.gallery'), getText('avatar.picker.take.photo')],
+			options: [
+				getText('avatar.picker.pick.from.gallery'),
+				getText('avatar.picker.take.photo'),
+			],
 			cancelButtonIndex: 2,
 			title: getText('avatar.picker.title'),
 		},
@@ -78,7 +91,10 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 	return (
 		<View>
 			<AvatarImage image={avatarImage} style={avatarSizeStyle} />
-			<TouchableOpacity onPress={() => pickUserAvatar(afterImagePick, getText)} style={style.editIcon}>
+			<TouchableOpacity
+				onPress={() => pickUserAvatar(afterImagePick, getText)}
+				style={style.editIcon}
+			>
 				<Icon name={'camera'} size={iconSize} color={Colors.postFullName} />
 			</TouchableOpacity>
 		</View>

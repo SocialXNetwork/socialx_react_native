@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export interface ICenterViewProps {
 	children?: object;

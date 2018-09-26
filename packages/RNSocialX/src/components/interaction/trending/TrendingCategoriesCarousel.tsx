@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Dimensions, View} from 'react-native';
+import { Dimensions, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
-import {ITrendingCategoriesItem} from '../../../types';
-import {CategoryCard} from './CategoryCard';
+import { ITrendingCategoriesItem } from '../../../types';
+import { CategoryCard } from './CategoryCard';
 import styles from './TrendingCategoriesCarousel.style';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -43,27 +43,41 @@ export class TrendingCategoriesCarousel extends React.Component<
 					inactiveSlideScale={1}
 					inactiveSlideOpacity={1}
 					containerCustomStyle={styles.categoryContainer}
-					contentContainerCustomStyle={{width: ITEM_WIDTH * this.props.items.length + 10}}
+					contentContainerCustomStyle={{
+						width: ITEM_WIDTH * this.props.items.length + 10,
+					}}
 				/>
 			</View>
 		);
 	}
 
-	private renderItem = (data: {item: ITrendingCategoriesItem; index: number}) => {
+	private renderItem = (data: {
+		item: ITrendingCategoriesItem;
+		index: number;
+	}) => {
 		if (data.index === this.state.activeIndex) {
 			return (
-				<CategoryCard item={data.item} onCategoryPress={() => this.onCategoryPressHandler(data.index)} active={true} />
+				<CategoryCard
+					item={data.item}
+					onCategoryPress={() => this.onCategoryPressHandler(data.index)}
+					active={true}
+				/>
 			);
 		}
 
-		return <CategoryCard item={data.item} onCategoryPress={() => this.onCategoryPressHandler(data.index)} />;
+		return (
+			<CategoryCard
+				item={data.item}
+				onCategoryPress={() => this.onCategoryPressHandler(data.index)}
+			/>
+		);
 	};
 
 	private onCategoryPressHandler = (index: number) => {
-		const {items, contentRef} = this.props;
+		const { items, contentRef } = this.props;
 
 		if (this.state.activeIndex !== index) {
-			this.setState({activeIndex: index});
+			this.setState({ activeIndex: index });
 		}
 
 		if (contentRef.current) {

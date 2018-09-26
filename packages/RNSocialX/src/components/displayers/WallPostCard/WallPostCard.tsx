@@ -8,12 +8,20 @@
 
 import moment from 'moment';
 import * as React from 'react';
-import {Alert, Animated, Keyboard, Linking, Platform, Text, View} from 'react-native';
+import {
+	Alert,
+	Animated,
+	Keyboard,
+	Linking,
+	Platform,
+	Text,
+	View,
+} from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
-import {HeartAnimation, ReportProblemModal} from '../../';
-import {OS_TYPES} from '../../../environment/consts';
-import {IWallPostCardProps} from '../../../types';
+import { HeartAnimation, ReportProblemModal } from '../../';
+import { OS_TYPES } from '../../../environment/consts';
+import { IWallPostCardProps } from '../../../types';
 import {
 	BestComments,
 	CommentInput,
@@ -43,7 +51,10 @@ export interface IWallPostCardState {
 	viewOffensiveContent: boolean;
 }
 
-export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
+export class WallPostCard extends React.Component<
+	IWallPostCardProps,
+	IWallPostCardState
+> {
 	public static defaultProps = {
 		governanceVersion: false,
 		numberOfSuperLikes: 0,
@@ -81,7 +92,10 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustNothing();
 		}
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+		this.keyboardDidHideListener = Keyboard.addListener(
+			'keyboardDidHide',
+			this.keyboardDidHide,
+		);
 	}
 
 	public shouldComponentUpdate(
@@ -91,7 +105,8 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 		return (
 			this.props.id !== nextProps.id ||
 			this.props.numberOfComments !== nextProps.numberOfComments ||
-			this.state.reportProblemModalVisible !== nextState.reportProblemModalVisible ||
+			this.state.reportProblemModalVisible !==
+				nextState.reportProblemModalVisible ||
 			this.state.fullTextVisible !== nextState.fullTextVisible ||
 			this.state.heartAnimation !== nextState.heartAnimation ||
 			this.state.comment !== nextState.comment ||
@@ -207,12 +222,18 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 					/>
 				)}
 				<View>
-					{heartAnimation && <HeartAnimation ended={(status) => this.setState({heartAnimation: !status})} />}
+					{heartAnimation && (
+						<HeartAnimation
+							ended={(status) => this.setState({ heartAnimation: !status })}
+						/>
+					)}
 					{media &&
 						(!contentOffensive || viewOffensiveContent) && (
 							<WallPostMedia
 								mediaObjects={media}
-								onMediaObjectView={(index: number) => onImagePress(index, media)}
+								onMediaObjectView={(index: number) =>
+									onImagePress(index, media)
+								}
 								onLikeButtonPressed={this.onDoubleTapLikeHandler}
 								noInteraction={disableMediaFullScreen}
 								getText={getText}
@@ -224,7 +245,11 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 						visible={contentOffensive && !viewOffensiveContent}
 					/>
 				</View>
-				<RecentLikes likes={likes} onUserPress={onUserPress} getText={getText} />
+				<RecentLikes
+					likes={likes}
+					onUserPress={onUserPress}
+					getText={getText}
+				/>
 				<ViewAllComments
 					numberOfComments={numberOfComments}
 					onCommentPress={() => onCommentPress(id, false)}
@@ -268,7 +293,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 					duration: 250,
 				}),
 			]).start();
-			this.setState({inputFocused: false});
+			this.setState({ inputFocused: false });
 		}
 	};
 
@@ -320,30 +345,32 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 
 	private onDoubleTapLikeHandler = async () => {
 		if (this.props.likedByMe) {
-			this.setState({heartAnimation: true});
+			this.setState({ heartAnimation: true });
 		} else {
-			this.setState({heartAnimation: true});
+			this.setState({ heartAnimation: true });
 			this.props.onLikeButtonPress(this.props.likedByMe, this.props.id);
 		}
 	};
 
 	private onCommentInputChange = (comment: string) => {
 		if (!this.props.listLoading) {
-			this.setState({comment});
+			this.setState({ comment });
 		}
 	};
 
 	private onSubmitCommentHandler = () => {
-		const {id, onSubmitComment} = this.props;
+		const { id, onSubmitComment } = this.props;
 		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
 		onSubmitComment(escapedComment, id);
 	};
 
 	private onCommentInputPress = () => {
 		if (!this.props.listLoading && this.containerViewRef.current) {
-			this.containerViewRef.current.measure((x: number, y: number, width: number, height: number) => {
-				this.props.onAddComment(0, height);
-			});
+			this.containerViewRef.current.measure(
+				(x: number, y: number, width: number, height: number) => {
+					this.props.onAddComment(0, height);
+				},
+			);
 			if (!this.state.inputFocused) {
 				Animated.parallel([
 					Animated.timing(this.state.inputBorderWidth, {
@@ -359,7 +386,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 						duration: 350,
 					}),
 				]).start();
-				this.setState({inputFocused: true});
+				this.setState({ inputFocused: true });
 			}
 		}
 	};
@@ -407,7 +434,7 @@ export class WallPostCard extends React.Component<IWallPostCardProps, IWallPostC
 	};
 
 	private getAdvancedMenuItems = () => {
-		const {getText, canDelete} = this.props;
+		const { getText, canDelete } = this.props;
 		const baseItems = [
 			{
 				label: getText('wall.post.menu.block.user'),

@@ -4,19 +4,23 @@
  * 2. @Alex: check and implemented onAddComment, similar with what is on UserFeed?
  */
 
-import {ActionSheet} from 'native-base';
+import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import {Alert, Animated, Dimensions, View} from 'react-native';
-import {AnimatedValue, NavigationScreenProp} from 'react-navigation';
-import {DataProvider} from 'recyclerlistview';
+import { Alert, Animated, Dimensions, View } from 'react-native';
+import { AnimatedValue, NavigationScreenProp } from 'react-navigation';
+import { DataProvider } from 'recyclerlistview';
 // import {ipfsConfig as base} from 'configuration';
 import uuidv4 from 'uuid/v4';
 
-import {IWithUserProfileEnhancedActions, IWithUserProfileEnhancedData, WithUserProfile} from '../../enhancers/screens';
+import {
+	IWithUserProfileEnhancedActions,
+	IWithUserProfileEnhancedData,
+	WithUserProfile,
+} from '../../enhancers/screens';
 
-import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {IMediaProps} from '../../types';
-import {UserProfileScreenView} from './UserProfileScreen.view';
+import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
+import { IMediaProps } from '../../types';
+import { UserProfileScreenView } from './UserProfileScreen.view';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
@@ -33,9 +37,14 @@ interface IUserProfileScreenState {
 	containerHeight: number;
 }
 
-type IUserProfileScreenProps = INavigationProps & IWithUserProfileEnhancedData & IWithUserProfileEnhancedActions;
+type IUserProfileScreenProps = INavigationProps &
+	IWithUserProfileEnhancedData &
+	IWithUserProfileEnhancedActions;
 
-class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
+class Screen extends React.Component<
+	IUserProfileScreenProps,
+	IUserProfileScreenState
+> {
 	private lastLoadedPhotoIndex = 0;
 	private readonly gridPhotosProvider: DataProvider;
 
@@ -64,7 +73,13 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			blockUser,
 			reportProblem,
 		} = this.props;
-		const {activeTab, listTranslate, gridTranslate, containerHeight, gridMediaProvider} = this.state;
+		const {
+			activeTab,
+			listTranslate,
+			gridTranslate,
+			containerHeight,
+			gridMediaProvider,
+		} = this.state;
 		const {
 			recentPosts,
 			numberOfLikes,
@@ -113,7 +128,9 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onUserPress={this.onViewUserProfile}
 				onSubmitComment={postComment}
 				onCommentPress={this.onViewCommentsForPost}
-				onAddComment={(height: number) => console.log('addComment from user profile screen', height)}
+				onAddComment={(height: number) =>
+					console.log('addComment from user profile screen', height)
+				}
 				onDeletePress={() => {
 					/* When viewing a user profile page there is no option to delete a post. This should remain empty. */
 				}}
@@ -124,11 +141,11 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	private loadMorePhotosHandler = () => {
-		const {gridMediaProvider} = this.state;
-		const {visitedUser} = this.props;
-		const {mediaObjects} = visitedUser;
+		const { gridMediaProvider } = this.state;
+		const { visitedUser } = this.props;
+		const { mediaObjects } = visitedUser;
 
-		const headerElement = [{index: uuidv4()}];
+		const headerElement = [{ index: uuidv4() }];
 
 		if (mediaObjects.length === 0) {
 			this.setState({
@@ -137,7 +154,8 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+			const loadedMedia =
+				loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
 			const newMedia = mediaObjects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject: IMediaProps, index: number) => ({
@@ -156,7 +174,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onAddFriendHandler = () => {
-		const {visitedUser, addFriend} = this.props;
+		const { visitedUser, addFriend } = this.props;
 		addFriend(visitedUser.userId);
 	};
 
@@ -168,18 +186,18 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onViewCommentsForPost = (postId: string, startComment: boolean) => {
-		this.props.navigation.navigate('CommentsScreen', {postId, startComment});
+		this.props.navigation.navigate('CommentsScreen', { postId, startComment });
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
-		const {likePost, unlikePost} = this.props;
+		const { likePost, unlikePost } = this.props;
 
 		likedByMe ? unlikePost(postId) : likePost(postId);
 		return !likedByMe;
 	};
 
 	private onRefreshHandler = () => {
-		const {loadMorePosts, loadMorePhotos, visitedUser} = this.props;
+		const { loadMorePosts, loadMorePhotos, visitedUser } = this.props;
 
 		if (this.state.activeTab === PROFILE_TAB_ICON_TYPES.LIST) {
 			loadMorePosts(visitedUser.userId);
@@ -197,7 +215,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onViewMediaFullscreenHandler = (index: number) => {
-		const {mediaObjects} = this.props.visitedUser;
+		const { mediaObjects } = this.props.visitedUser;
 		this.props.navigation.navigate('MediaViewerScreen', {
 			mediaObjects,
 			startIndex: index,
@@ -206,7 +224,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onIconPressHandler = (tab: string) => {
 		if (this.state.activeTab !== tab) {
-			this.setState({activeTab: tab});
+			this.setState({ activeTab: tab });
 		}
 
 		if (tab === PROFILE_TAB_ICON_TYPES.GRID) {
@@ -240,13 +258,16 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onLayoutChangeHandler = (height: number) => {
 		if (this.state.containerHeight !== height) {
-			this.setState({containerHeight: height});
+			this.setState({ containerHeight: height });
 		}
 	};
 
 	private onShowFriendshipOptionsHandler = () => {
-		const {getText} = this.props;
-		const menuOptions = [getText('friendship.menu.option.remove'), getText('button.CANCEL')];
+		const { getText } = this.props;
+		const menuOptions = [
+			getText('friendship.menu.option.remove'),
+			getText('button.CANCEL'),
+		];
 		ActionSheet.show(
 			{
 				options: menuOptions,
@@ -270,10 +291,14 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onViewUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', {userId});
+		this.props.navigation.navigate('UserProfileScreen', { userId });
 	};
 }
 
-export const UserProfileScreen = ({navigation}: INavigationProps) => (
-	<WithUserProfile>{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}</WithUserProfile>
+export const UserProfileScreen = ({ navigation }: INavigationProps) => (
+	<WithUserProfile>
+		{({ data, actions }) => (
+			<Screen navigation={navigation} {...data} {...actions} />
+		)}
+	</WithUserProfile>
 );

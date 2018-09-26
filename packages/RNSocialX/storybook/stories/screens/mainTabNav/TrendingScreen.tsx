@@ -1,8 +1,11 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {trendingCategoriesItems, trendingContentItems} from '../../../../src/mocks';
-import {TrendingScreenView} from '../../../../src/screens/mainTabNav/SearchScreen/TrendingScreen.view';
+import {
+	trendingCategoriesItems,
+	trendingContentItems,
+} from '../../../../src/mocks';
+import { TrendingScreenView } from '../../../../src/screens/mainTabNav/SearchScreen/TrendingScreen.view';
 import CenterView from '../../../helpers/CenterView';
 
 class TrendingScreenStory extends React.Component {
@@ -24,7 +27,7 @@ class TrendingScreenStory extends React.Component {
 	}
 
 	private passContentRef = (ref: React.RefObject<any>) => {
-		this.setState({contentRef: ref});
+		this.setState({ contentRef: ref });
 	};
 }
 

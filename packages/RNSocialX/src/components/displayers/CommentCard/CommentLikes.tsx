@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleProp, Text, View, ViewStyle} from 'react-native';
+import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './CommentLikes.style';
@@ -9,7 +9,10 @@ interface ICommentLikesProps {
 	commentLikesPosition: StyleProp<ViewStyle>;
 }
 
-export const CommentLikes: React.SFC<ICommentLikesProps> = ({numberOfLikes, commentLikesPosition}) => (
+export const CommentLikes: React.SFC<ICommentLikesProps> = ({
+	numberOfLikes,
+	commentLikesPosition,
+}) => (
 	<View style={[styles.likesContainer, commentLikesPosition]}>
 		<View style={styles.likesBorder}>
 			<View style={styles.iconContainer}>

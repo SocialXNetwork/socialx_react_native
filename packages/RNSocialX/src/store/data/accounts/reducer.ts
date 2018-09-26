@@ -1,35 +1,35 @@
-import {assertNever} from '../../helpers';
+import { assertNever } from '../../helpers';
 import initialState from './initialState';
-import {ActionTypes, IAction, IState} from './Types';
+import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.CREATE_ACCOUNT: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.RECOVER_ACCOUNT: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.CHANGE_PASSWORD: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.TRUST_ACCOUNT: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.LOGIN: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.LOGOUT: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.IS_ACCOUNT_LOGGED_IN: {
-			return {...state};
+			return { ...state };
 		}
 
 		default: {

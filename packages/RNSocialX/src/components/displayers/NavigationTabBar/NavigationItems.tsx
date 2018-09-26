@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 
-import {Icons, Sizes} from '../../../environment/theme';
-import {NotificationsWithBadge, TabButton} from './';
+import { Icons, Sizes } from '../../../environment/theme';
+import { NotificationsWithBadge, TabButton } from './';
 import styles from './NavigationItems.style';
 
 export enum MENU_BUTTON_TYPE {
@@ -95,7 +95,11 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 					<View style={styles.menuItemContainer} key={index}>
 						<TouchableOpacity onPress={showPhotoOptionsMenu}>
 							<View style={styles.imageContainer}>
-								<Image source={item.image} resizeMode={'contain'} style={item.style} />
+								<Image
+									source={item.image}
+									resizeMode={'contain'}
+									style={item.style}
+								/>
 							</View>
 						</TouchableOpacity>
 					</View>
@@ -114,7 +118,11 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 			} else {
 				return (
 					<View style={styles.menuItemContainer} key={index}>
-						<TabButton item={item} selectedTab={selectedTab} tabChange={tabChange} />
+						<TabButton
+							item={item}
+							selectedTab={selectedTab}
+							tabChange={tabChange}
+						/>
 					</View>
 				);
 			}

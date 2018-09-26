@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 
-import {IconButton, LikeAnimatingButton} from '../../';
-import {ITranslatedProps} from '../../../types';
+import { IconButton, LikeAnimatingButton } from '../../';
+import { ITranslatedProps } from '../../../types';
 // import {Icons} from '../../../environment/theme';
 import styles from './WallPostActions.style';
 
@@ -35,14 +35,23 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 					label={numberOfWalletCoins + ' SOCX'}
 				/> */}
 			<View style={styles.rightContainer}>
-				<LikeAnimatingButton onPress={onLikePress} likedByMe={likedByMe} getText={getText} />
+				<LikeAnimatingButton
+					onPress={onLikePress}
+					likedByMe={likedByMe}
+					getText={getText}
+				/>
 				{/* TODO: add when implemented: SuperLikes
 					 <IconButton
 						iconSource={Icons.iconPostSuperLike}
 						onPress={onSuperLikePress}
 						label={umberOfSuperLikes.toString()}
                     /> */}
-				<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onCommentPress} iconStyle={styles.icon} />
+				<IconButton
+					iconSource={'comment-o'}
+					iconType={'fa'}
+					onPress={onCommentPress}
+					iconStyle={styles.icon}
+				/>
 			</View>
 		</View>
 	);

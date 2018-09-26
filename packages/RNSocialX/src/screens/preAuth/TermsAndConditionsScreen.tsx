@@ -1,16 +1,16 @@
 import * as React from 'react';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 import {
 	IWithTermsAndConditionsEnhancedActions,
 	IWithTermsAndConditionsEnhancedData,
 	WithTermsAndConditions,
 } from '../../enhancers/screens';
-import {OS_TYPES} from '../../environment/consts';
-import {INavigationProps} from '../../types';
+import { OS_TYPES } from '../../environment/consts';
+import { INavigationProps } from '../../types';
 // @ts-ignore
 import TermsAndConditionsHTML from './terms-and-conditions.html';
-import {TermsAndConditionsScreenView} from './TermsAndConditionsScreen.view';
+import { TermsAndConditionsScreenView } from './TermsAndConditionsScreen.view';
 
 type ITermsAndConditionsScreenProps = INavigationProps &
 	IWithTermsAndConditionsEnhancedActions &
@@ -20,11 +20,14 @@ const onGoBackHandler = (navigation: any) => {
 	navigation.goBack(null);
 };
 
-const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({navigation, getText}) => {
+const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({
+	navigation,
+	getText,
+}) => {
 	const webViewLocalSource =
 		Platform.OS === OS_TYPES.IOS
 			? TermsAndConditionsHTML
-			: {uri: 'file:///android_asset/html/terms_and_conditions.html'};
+			: { uri: 'file:///android_asset/html/terms_and_conditions.html' };
 
 	return (
 		<TermsAndConditionsScreenView
@@ -35,10 +38,18 @@ const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({navigation, getText}
 	);
 };
 
-export const TermsAndConditionsScreen = ({navigation, navigationOptions}: INavigationProps) => (
+export const TermsAndConditionsScreen = ({
+	navigation,
+	navigationOptions,
+}: INavigationProps) => (
 	<WithTermsAndConditions>
-		{({data, actions}) => (
-			<Screen navigation={navigation} navigationOptions={navigationOptions} {...data} {...actions} />
+		{({ data, actions }) => (
+			<Screen
+				navigation={navigation}
+				navigationOptions={navigationOptions}
+				{...data}
+				{...actions}
+			/>
 		)}
 	</WithTermsAndConditions>
 );

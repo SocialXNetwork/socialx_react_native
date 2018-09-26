@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
-import {SearchResultsList} from '../../components';
-import {ISearchResultData, ITranslatedProps} from '../../types';
+import { SearchResultsList } from '../../components';
+import { ISearchResultData, ITranslatedProps } from '../../types';
 import styles from './SearchResults.style';
 
 interface ISearchResultsProps extends ITranslatedProps {
@@ -15,7 +15,7 @@ interface ISearchResultsProps extends ITranslatedProps {
 }
 
 // TODO: Add 'Searching' to the dictionary
-const SearchingLoader: React.SFC<ITranslatedProps> = ({getText}) => (
+const SearchingLoader: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.searchContainer}>
 		<ActivityIndicator size={'small'} style={styles.spinner} />
 		<Text style={styles.shortMessage}>Searching</Text>
@@ -23,7 +23,7 @@ const SearchingLoader: React.SFC<ITranslatedProps> = ({getText}) => (
 );
 
 // TODO: Add 'No results found' to the dictionary
-const SearchNoResults: React.SFC<ITranslatedProps> = ({getText}) => (
+const SearchNoResults: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.messageContainer}>
 		<Text style={styles.shortMessage}>No results found</Text>
 	</View>
@@ -40,7 +40,8 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 }) => (
 	<View style={styles.container}>
 		{searching && <SearchingLoader getText={getText} />}
-		{!searching && searchResults.length === 0 && <SearchNoResults getText={getText} />}
+		{!searching &&
+			searchResults.length === 0 && <SearchNoResults getText={getText} />}
 		{!searching &&
 			searchResults.length > 0 && (
 				<SearchResultsList

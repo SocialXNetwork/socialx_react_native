@@ -1,7 +1,13 @@
 import * as React from 'react';
-import {Image, ImageStyle, StyleProp, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {
+	Image,
+	ImageStyle,
+	StyleProp,
+	StyleSheet,
+	TouchableWithoutFeedback,
+} from 'react-native';
 
-import {Sizes} from '../../environment/theme';
+import { Sizes } from '../../environment/theme';
 
 interface IToggleIconButtonProps {
 	selectedSource: number;
@@ -19,7 +25,11 @@ export const ToggleIconButton: React.SFC<IToggleIconButtonProps> = ({
 	iconStyle = styles.icon,
 }) => (
 	<TouchableWithoutFeedback onPress={onPress}>
-		<Image source={selected ? selectedSource : unselectedSource} style={iconStyle} resizeMode={'contain'} />
+		<Image
+			source={selected ? selectedSource : unselectedSource}
+			style={iconStyle}
+			resizeMode={'contain'}
+		/>
 	</TouchableWithoutFeedback>
 );
 

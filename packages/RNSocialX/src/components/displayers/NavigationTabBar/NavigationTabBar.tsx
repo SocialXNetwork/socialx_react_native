@@ -1,9 +1,9 @@
-import {ActionSheet} from 'native-base';
+import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import {SafeAreaView} from 'react-native';
-import {LayoutEvent, NavigationScreenProp} from 'react-navigation';
+import { SafeAreaView } from 'react-native';
+import { LayoutEvent, NavigationScreenProp } from 'react-navigation';
 
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -11,7 +11,7 @@ import {
 	IPickerImage,
 	IPickerImageMultiple,
 } from '../../../utilities';
-import {NavigationItems} from './';
+import { NavigationItems } from './';
 
 const INITIAL_SCREEN = 'UserFeedTab';
 
@@ -26,7 +26,10 @@ interface ITabBarBottomProps extends ITranslatedProps {
 	notifications: number;
 }
 
-export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBarBottomState> {
+export class NavigationTabBar extends React.Component<
+	ITabBarBottomProps,
+	ITabBarBottomState
+> {
 	public static defaultProps = {
 		updateTabBarHeight: () => {
 			/**/
@@ -77,7 +80,7 @@ export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBa
 	};
 
 	private showPhotoOptionsMenu = () => {
-		const {getText, navigation} = this.props;
+		const { getText, navigation } = this.props;
 		ActionSheet.show(
 			{
 				options: [
@@ -98,9 +101,13 @@ export class NavigationTabBar extends React.Component<ITabBarBottomProps, ITabBa
 
 				if (selectedMediaObjects.length > 0) {
 					const optimizedMediaObjects = await Promise.all(
-						selectedMediaObjects.map(async (mediaObject: IPickerImage) => getOptimizedMediaObject(mediaObject)),
+						selectedMediaObjects.map(async (mediaObject: IPickerImage) =>
+							getOptimizedMediaObject(mediaObject),
+						),
 					);
-					navigation.navigate('PhotoScreen', {mediaObjects: optimizedMediaObjects});
+					navigation.navigate('PhotoScreen', {
+						mediaObjects: optimizedMediaObjects,
+					});
 				}
 			},
 		);

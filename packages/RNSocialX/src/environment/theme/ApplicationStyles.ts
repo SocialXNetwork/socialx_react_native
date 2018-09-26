@@ -1,8 +1,8 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Colors} from './Colors';
-import {Fonts} from './Fonts';
-import {Sizes} from './Sizes';
+import { Colors } from './Colors';
+import { Fonts } from './Fonts';
+import { Sizes } from './Sizes';
 
 const ApplicationStylesTi: any = {
 	screenHeader: {

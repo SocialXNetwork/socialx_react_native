@@ -1,9 +1,9 @@
-import {boolean, date, number, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, date, number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {CommentsScreenView} from '../../../../src/screens/commentsStack/CommentsScreen.view';
-import {CommentsSortingOptions} from '../../../../src/types';
+import { CommentsScreenView } from '../../../../src/screens/commentsStack/CommentsScreen.view';
+import { CommentsSortingOptions } from '../../../../src/types';
 
 storiesOf('Screens/commentsStack', module)
 	.addDecorator(withKnobs)
@@ -12,10 +12,16 @@ storiesOf('Screens/commentsStack', module)
 		const marginBottom = number('marginBottom', 0);
 
 		const likedByMe = boolean('likedByMe', false);
-		const commentText = text('commentText', 'Sample comment text here.\nGoing on the second line');
+		const commentText = text(
+			'commentText',
+			'Sample comment text here.\nGoing on the second line',
+		);
 		const replyText = text('replyText', 'One line text reply.');
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
-		const userAvatarURL = text('user.avatarURL', 'https://avatars2.githubusercontent.com/u/212');
+		const userAvatarURL = text(
+			'user.avatarURL',
+			'https://avatars2.githubusercontent.com/u/212',
+		);
 		const userFullName = text('user.fullName', 'Sharell Watchman');
 		const numberOfLikes = number('numberOfLikes', 10);
 		const startComment = boolean('startComment', false);
@@ -57,7 +63,8 @@ storiesOf('Screens/commentsStack', module)
 		};
 		const optionsProps = {
 			sortOption: CommentsSortingOptions.Likes,
-			onSelectionChange: (...args: any[]) => console.log('onSelectionChange', args),
+			onSelectionChange: (...args: any[]) =>
+				console.log('onSelectionChange', args),
 		};
 
 		return (
@@ -99,19 +106,29 @@ storiesOf('Screens/commentsStack', module)
 				onCommentLike={(...args: any[]) => console.log('onCommentLike', args)}
 				onCommentReply={(...args: any[]) => console.log('onCommentReply', args)}
 				onCommentSend={(...args: any[]) => console.log('onCommentSend', args)}
-				onCommentTextChange={(...args: any[]) => console.log('onCommentTextChange', args)}
+				onCommentTextChange={(...args: any[]) =>
+					console.log('onCommentTextChange', args)
+				}
 				startComment={startComment}
-				onViewUserProfile={(...args: any[]) => console.log('onViewUserProfile', args)}
+				onViewUserProfile={(...args: any[]) =>
+					console.log('onViewUserProfile', args)
+				}
 				commentText={commentText}
 				showSendButton={showSendButton}
-				onShowOptionsMenu={(...args: any[]) => console.log('onShowOptionsMenu', args)}
+				onShowOptionsMenu={(...args: any[]) =>
+					console.log('onShowOptionsMenu', args)
+				}
 				postData={postData}
 				postOwner={postOwner}
-				onCommentsBackPress={(...args: any[]) => console.log('onCommentsBackPress', args)}
+				onCommentsBackPress={(...args: any[]) =>
+					console.log('onCommentsBackPress', args)
+				}
 				onImagePress={(...args: any[]) => console.log('onImagePress', args)}
 				onLikePress={(...args: any[]) => console.log('onLikePress', args)}
 				currentUser={currentUser}
-				onCommentContainerWidthChange={(...args: any[]) => console.log('onCommentContainerWidthChange', args)}
+				onCommentContainerWidthChange={(...args: any[]) =>
+					console.log('onCommentContainerWidthChange', args)
+				}
 				commentLikesPosition={commentLikesPosition}
 				optionsProps={optionsProps}
 				isReplyScreen={isReplyScreen}

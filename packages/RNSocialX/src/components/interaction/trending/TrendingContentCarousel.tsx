@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Dimensions, View} from 'react-native';
+import { Dimensions, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
-import {INavigationProps, ITrendingContentItem} from '../../../types';
-import {ContentView} from './ContentView';
+import { INavigationProps, ITrendingContentItem } from '../../../types';
+import { ContentView } from './ContentView';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -12,7 +12,9 @@ interface ITrendingContentCarouselProps extends INavigationProps {
 	passContentRef: (ref: React.RefObject<any>) => void;
 }
 
-export class TrendingContentCarousel extends React.Component<ITrendingContentCarouselProps> {
+export class TrendingContentCarousel extends React.Component<
+	ITrendingContentCarouselProps
+> {
 	private contentRef: React.RefObject<any> = React.createRef();
 
 	public componentDidMount() {
@@ -23,7 +25,7 @@ export class TrendingContentCarousel extends React.Component<ITrendingContentCar
 
 	public render() {
 		return (
-			<View style={{flex: 1}}>
+			<View style={{ flex: 1 }}>
 				<Carousel
 					ref={this.contentRef}
 					data={this.props.items}
@@ -38,11 +40,17 @@ export class TrendingContentCarousel extends React.Component<ITrendingContentCar
 		);
 	}
 
-	private renderItem = (data: {item: ITrendingContentItem; index: number}) => {
+	private renderItem = (data: {
+		item: ITrendingContentItem;
+		index: number;
+	}) => {
 		return <ContentView item={data.item} onItemPress={this.onItemPress} />;
 	};
 
 	private onItemPress = (postId: string) => {
-		this.props.navigation.navigate('CommentsScreen', {postId, startComment: false});
+		this.props.navigation.navigate('CommentsScreen', {
+			postId,
+			startComment: false,
+		});
 	};
 }

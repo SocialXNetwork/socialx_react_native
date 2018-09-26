@@ -1,9 +1,16 @@
 import * as React from 'react';
-import {Keyboard, Platform, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+	Keyboard,
+	Platform,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {OS_TYPES} from '../../environment/consts';
-import style, {customStyleProps} from './PrimaryTextInput.style';
+import { OS_TYPES } from '../../environment/consts';
+import style, { customStyleProps } from './PrimaryTextInput.style';
 
 export enum TKeyboardKeys {
 	default = 'default',
@@ -64,7 +71,11 @@ interface IPrimaryTextInputState {
 	hasFocus: boolean;
 }
 
-const InputIcon: React.SFC<{size: InputSizes; icon: string; iconColor: string}> = ({size, icon, iconColor}) => {
+const InputIcon: React.SFC<{
+	size: InputSizes;
+	icon: string;
+	iconColor: string;
+}> = ({ size, icon, iconColor }) => {
 	let iconHeight = customStyleProps.iconHeightNormal;
 	if (size === InputSizes.Small) {
 		iconHeight = customStyleProps.iconHeightSmall;
@@ -84,17 +95,34 @@ const CancelButton: React.SFC<{
 	hasFocus: boolean;
 	onPressCancel: () => void;
 	cancelButtonTextColor: string;
-}> = ({persistCancel, canCancel, hasFocus, onPressCancel, cancelButtonTextColor}) => {
+}> = ({
+	persistCancel,
+	canCancel,
+	hasFocus,
+	onPressCancel,
+	cancelButtonTextColor,
+}) => {
 	if (persistCancel && canCancel && Platform.OS === OS_TYPES.IOS) {
 		return (
 			<TouchableOpacity style={style.cancelButton} onPress={onPressCancel}>
-				<Text style={[style.cancelButtonText, {color: cancelButtonTextColor}]}>Cancel</Text>
+				<Text
+					style={[style.cancelButtonText, { color: cancelButtonTextColor }]}
+				>
+					Cancel
+				</Text>
 			</TouchableOpacity>
 		);
 	} else if (hasFocus && canCancel && Platform.OS === OS_TYPES.IOS) {
 		return (
-			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
-				<Text style={[style.cancelButtonText, {color: cancelButtonTextColor}]}>Cancel</Text>
+			<TouchableOpacity
+				style={style.cancelButton}
+				onPress={() => Keyboard.dismiss()}
+			>
+				<Text
+					style={[style.cancelButtonText, { color: cancelButtonTextColor }]}
+				>
+					Cancel
+				</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -106,18 +134,26 @@ const PostButton: React.SFC<{
 	hasFocus: boolean;
 	onPressPost: () => void;
 	postButtonTextColor: string;
-}> = ({canPost, hasFocus, onPressPost, postButtonTextColor}) => {
+}> = ({ canPost, hasFocus, onPressPost, postButtonTextColor }) => {
 	if (hasFocus && canPost) {
 		return (
-			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
-				<Text style={[style.cancelButtonText, {color: postButtonTextColor}]}>Post</Text>
+			<TouchableOpacity
+				style={style.cancelButton}
+				onPress={() => Keyboard.dismiss()}
+			>
+				<Text style={[style.cancelButtonText, { color: postButtonTextColor }]}>
+					Post
+				</Text>
 			</TouchableOpacity>
 		);
 	}
 	return null;
 };
 
-export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IPrimaryTextInputState> {
+export class PrimaryTextInput extends React.Component<
+	IPrimaryTextInputProps,
+	IPrimaryTextInputState
+> {
 	public static defaultProps = {
 		width: 0,
 		icon: '',
@@ -195,10 +231,13 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 			postButtonTextColor,
 			onPressPost,
 		} = this.props;
-		const {hasFocus} = this.state;
+		const { hasFocus } = this.state;
 
 		const isMultiLine = numberOfLines > 1 || multiline;
-		const inputContainerStyles = [style.inputContainer, {borderColor, borderWidth}];
+		const inputContainerStyles = [
+			style.inputContainer,
+			{ borderColor, borderWidth },
+		];
 		const textInputStyles = [
 			style.textInput,
 			style['textInput' + size],
@@ -206,9 +245,17 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 		];
 
 		return (
-			<View style={[style.container, width ? {width} : {}, disabled ? style.disabledInput : {}]}>
+			<View
+				style={[
+					style.container,
+					width ? { width } : {},
+					disabled ? style.disabledInput : {},
+				]}
+			>
 				<View style={inputContainerStyles}>
-					{icon !== '' && <InputIcon icon={icon} iconColor={iconColor} size={size} />}
+					{icon !== '' && (
+						<InputIcon icon={icon} iconColor={iconColor} size={size} />
+					)}
 					<TextInput
 						allowFontScaling={false}
 						autoFocus={autoFocus}
@@ -226,7 +273,9 @@ export class PrimaryTextInput extends React.Component<IPrimaryTextInputProps, IP
 						placeholder={placeholder}
 						placeholderTextColor={placeholderColor}
 						autoCorrect={autoCorrect}
-						underlineColorAndroid={customStyleProps.defaultUnderlineColorAndroid}
+						underlineColorAndroid={
+							customStyleProps.defaultUnderlineColorAndroid
+						}
 						autoCapitalize={autoCapitalize}
 						clearButtonMode={'while-editing'} // only works on iOS
 						blurOnSubmit={blurOnSubmit}

@@ -1,7 +1,7 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {Colors, Sizes} from '../../environment/theme';
+import { Dimensions, StyleSheet } from 'react-native';
+import { Colors, Sizes } from '../../environment/theme';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles: any = {
 	container: {

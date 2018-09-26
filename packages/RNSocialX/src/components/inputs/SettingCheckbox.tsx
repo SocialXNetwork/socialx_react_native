@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Platform, Switch, Text, View} from 'react-native';
+import { Platform, Switch, Text, View } from 'react-native';
 
-import style, {customStyleProps} from './SettingCheckbox.style';
+import style, { customStyleProps } from './SettingCheckbox.style';
 
 interface ISettingCheckboxProps {
 	title: string;

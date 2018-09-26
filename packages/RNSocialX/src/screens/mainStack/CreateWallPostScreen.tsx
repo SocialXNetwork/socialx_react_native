@@ -4,23 +4,23 @@
  * 1. (Later) Consider using Formik and get rid of state in here
  */
 
-import {ActionSheet} from 'native-base';
+import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 import {
 	IWithCreateWallPostEnhancedActions,
 	IWithCreateWallPostEnhancedData,
 	WithCreateWallPost,
 } from '../../enhancers/screens';
-import {INavigationProps, IWallPostPhotoOptimized} from '../../types';
+import { INavigationProps, IWallPostPhotoOptimized } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
 	IPickerImageMultiple,
 } from '../../utilities';
-import {CreateWallPostScreenView} from './CreateWallPostScreen.view';
+import { CreateWallPostScreenView } from './CreateWallPostScreen.view';
 
 type ICreateWallPostScreenProps = INavigationProps &
 	IWithCreateWallPostEnhancedData &
@@ -31,20 +31,25 @@ interface ICreateWallPostScreenState {
 	shareText: string;
 }
 
-class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
+class Screen extends React.Component<
+	ICreateWallPostScreenProps,
+	ICreateWallPostScreenState
+> {
 	public state = {
 		mediaObjects: [],
 		shareText: '',
 	};
 
 	public render() {
-		const {getText, marginBottom, currentUserAvatarURL} = this.props;
-		const {shareText, mediaObjects} = this.state;
+		const { getText, marginBottom, currentUserAvatarURL } = this.props;
+		const { shareText, mediaObjects } = this.state;
 		return (
 			<CreateWallPostScreenView
 				avatarImage={currentUserAvatarURL}
 				shareText={shareText}
-				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
+				mediaObjects={mediaObjects.map(
+					(mediaObject: IWallPostPhotoOptimized) => mediaObject.path,
+				)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onPostSend={this.onSendPostHandler}
@@ -62,7 +67,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	private onAddMediaHandler = () => {
-		const {getText} = this.props;
+		const { getText } = this.props;
 		ActionSheet.show(
 			{
 				options: [
@@ -82,17 +87,24 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				}
 				if (selectedMediaObjects.length > 0) {
 					const optimizedMediaObjects = await Promise.all(
-						selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
+						selectedMediaObjects.map(async (mObject) =>
+							getOptimizedMediaObject(mObject),
+						),
 					);
-					this.setState({mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects]});
+					this.setState({
+						mediaObjects: [
+							...this.state.mediaObjects,
+							...optimizedMediaObjects,
+						],
+					});
 				}
 			},
 		);
 	};
 
 	private onSendPostHandler = () => {
-		const {mediaObjects, shareText} = this.state;
-		const {createPost, getText} = this.props;
+		const { mediaObjects, shareText } = this.state;
+		const { createPost, getText } = this.props;
 
 		if (mediaObjects.length < 1 && !shareText) {
 			Alert.alert(
@@ -113,5 +125,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 }
 
 export const CreateWallPostScreen = (navProps: INavigationProps) => (
-	<WithCreateWallPost>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithCreateWallPost>
+	<WithCreateWallPost>
+		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+	</WithCreateWallPost>
 );

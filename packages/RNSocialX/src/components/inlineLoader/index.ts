@@ -1,2 +1,2 @@
-export {WithInlineLoader, IWithLoaderProps} from './WithInlineLoader';
-export {SpinnerTypes} from './SpinKitLoader';
+export { WithInlineLoader, IWithLoaderProps } from './WithInlineLoader';
+export { SpinnerTypes } from './SpinKitLoader';

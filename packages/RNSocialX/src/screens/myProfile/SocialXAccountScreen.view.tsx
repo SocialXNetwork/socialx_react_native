@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { ScrollView, Text, View } from 'react-native';
 
 import {
 	Header,
@@ -9,8 +9,8 @@ import {
 	SocialXAccountCurrencyItem,
 	SocialXAccountTitleCard,
 } from '../../components';
-import {ITranslatedProps} from '../../types';
-import styles, {borderColor} from './SocialXAccountScreen.style';
+import { ITranslatedProps } from '../../types';
+import styles, { borderColor } from './SocialXAccountScreen.style';
 
 export interface ISocialXAccountScreenViewProps extends ITranslatedProps {
 	coins: number;
@@ -22,13 +22,28 @@ export interface ISocialXAccountScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-export class SocialXAccountScreenView extends Component<ISocialXAccountScreenViewProps, any> {
+export class SocialXAccountScreenView extends Component<
+	ISocialXAccountScreenViewProps,
+	any
+> {
 	public render() {
-		const {coins, contribution, returnPercentage, digitalCoins, onGoBack, onReceive, onSend, getText} = this.props;
+		const {
+			coins,
+			contribution,
+			returnPercentage,
+			digitalCoins,
+			onGoBack,
+			onReceive,
+			onSend,
+			getText,
+		} = this.props;
 
 		return (
 			<View style={styles.container}>
-				<Header title={'socialx account'} left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />} />
+				<Header
+					title={'socialx account'}
+					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+				/>
 				<ScrollView
 					contentContainerStyle={styles.contentContainer}
 					alwaysBounceVertical={false}
@@ -40,16 +55,26 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 						returnPercentage={returnPercentage}
 						getText={getText}
 					/>
-					<Text style={styles.accountTitle}>{getText('socialx.account.screen.account')}</Text>
+					<Text style={styles.accountTitle}>
+						{getText('socialx.account.screen.account')}
+					</Text>
 					{digitalCoins.map((coin, index) => (
 						<SocialXAccountCurrencyItem key={index} {...coin} />
 					))}
 					<View style={styles.bottomContainer}>
 						<View style={styles.buttonContainer}>
-							<PrimaryButton label={getText('button.SEND')} borderColor={borderColor} onPress={onSend} />
+							<PrimaryButton
+								label={getText('button.SEND')}
+								borderColor={borderColor}
+								onPress={onSend}
+							/>
 						</View>
 						<View style={styles.buttonContainer}>
-							<PrimaryButton label={getText('button.RECEIVE')} borderColor={borderColor} onPress={onReceive} />
+							<PrimaryButton
+								label={getText('button.RECEIVE')}
+								borderColor={borderColor}
+								onPress={onReceive}
+							/>
 						</View>
 					</View>
 				</ScrollView>

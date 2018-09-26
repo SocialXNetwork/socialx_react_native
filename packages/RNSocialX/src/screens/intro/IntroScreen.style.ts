@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Images, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
 
 const CIRCLE_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 

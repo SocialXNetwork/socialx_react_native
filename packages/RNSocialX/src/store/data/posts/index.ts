@@ -1,6 +1,6 @@
-import {IPostData, IPostIdArgument, IPostPathArgument} from './Types';
+import { IPostData, IPostIdArgument, IPostPathArgument } from './Types';
 
-export {default as reducer} from './reducer';
+export { default as reducer } from './reducer';
 export {
 	IState,
 	IAction,
@@ -11,4 +11,11 @@ export {
 	IUsernameArgument,
 	IDateArgument,
 } from './Types';
-export {postByPath, postLikes, postPathsByUser, publicPostsByDate, createPost, likePost} from './actions';
+export {
+	postByPath,
+	postLikes,
+	postPathsByUser,
+	publicPostsByDate,
+	createPost,
+	likePost,
+} from './actions';

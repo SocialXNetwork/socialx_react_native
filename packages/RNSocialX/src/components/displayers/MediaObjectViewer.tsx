@@ -1,12 +1,25 @@
 import * as React from 'react';
-import {Image, Platform, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {
+	Image,
+	Platform,
+	StyleProp,
+	StyleSheet,
+	Text,
+	View,
+	ViewStyle,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
 
-import {IVideoOptions, TouchableWithDoublePress, VideoPlayer} from '../';
-import {OS_TYPES} from '../../environment/consts';
-import {IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo} from '../../types';
+import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
+import { OS_TYPES } from '../../environment/consts';
+import {
+	IMediaTypes,
+	ITranslatedProps,
+	MediaTypeImage,
+	MediaTypeVideo,
+} from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	uri: string;
@@ -18,7 +31,11 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	canZoom?: boolean;
 }
 
-const getMimeType = (uri: string, type: IMediaTypes | undefined, extension: string) => {
+const getMimeType = (
+	uri: string,
+	type: IMediaTypes | undefined,
+	extension: string,
+) => {
 	if (type) {
 		return type.key;
 	} else if (mime.extensions[extension]) {
@@ -48,7 +65,10 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 		/**/
 	},
 }) => {
-	const ImageComponent = Platform.OS === OS_TYPES.Android && uri.startsWith('https://') ? FastImage : Image;
+	const ImageComponent =
+		Platform.OS === OS_TYPES.Android && uri.startsWith('https://')
+			? FastImage
+			: Image;
 	const mediaMimeType = getMimeType(uri, type, extension);
 
 	return (
@@ -64,7 +84,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 					>
 						{canZoom && (
 							<PhotoView
-								source={{uri}}
+								source={{ uri }}
 								style={styles.photoStyle}
 								minimumZoomScale={1}
 								maximumZoomScale={3}
@@ -76,7 +96,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 						)}
 						{!canZoom && (
 							<ImageComponent
-								source={{uri}}
+								source={{ uri }}
 								resizeMode={resizeMode}
 								style={styles.photoStyle}
 								resizeMethod={'resize'}

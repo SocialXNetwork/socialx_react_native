@@ -1,8 +1,8 @@
-import {number, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { number, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {ViewAllComments} from '../../../../../src/components/displayers/WallPostCard';
+import { ViewAllComments } from '../../../../../src/components/displayers/WallPostCard';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)

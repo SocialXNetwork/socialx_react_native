@@ -1,7 +1,7 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {WallPostActions} from '../../../../../src/components/displayers/WallPostCard/';
+import { WallPostActions } from '../../../../../src/components/displayers/WallPostCard/';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)

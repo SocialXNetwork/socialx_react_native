@@ -1,6 +1,8 @@
-import {IState} from './Types';
+import { IState } from './Types';
 
-export default {
+const initialState: IState = {
 	comments: [],
 	commentMetaById: [],
-} as IState;
+};
+
+export default initialState;

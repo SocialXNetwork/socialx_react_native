@@ -1,5 +1,5 @@
-import {ActionCreator} from 'redux';
-import {IThunk} from '../../types';
+import { ActionCreator } from 'redux';
+import { IThunk } from '../../types';
 import {
 	ActionTypes,
 	ICreatePostAction,
@@ -15,16 +15,16 @@ import {
 	IUsernameArgument,
 } from './Types';
 
-const postPathsByUserAction: ActionCreator<IPostPathsByUserAction> = (postPathsByUsernameInput: IUsernameArgument) => ({
+const postPathsByUserAction: ActionCreator<IPostPathsByUserAction> = (
+	postPathsByUsernameInput: IUsernameArgument,
+) => ({
 	type: ActionTypes.POST_PATHS_BY_USER,
 	payload: postPathsByUsernameInput,
 });
 
-export const postPathsByUser = (postPathsByUsernameInput: IUsernameArgument): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const postPathsByUser = (
+	postPathsByUsernameInput: IUsernameArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(postPathsByUserAction(postPathsByUsernameInput));
 	} catch (e) {
@@ -32,12 +32,16 @@ export const postPathsByUser = (postPathsByUsernameInput: IUsernameArgument): IT
 	}
 };
 
-const postByPathAction: ActionCreator<IPostByPathAction> = (postPathArgument: IPostPathArgument) => ({
+const postByPathAction: ActionCreator<IPostByPathAction> = (
+	postPathArgument: IPostPathArgument,
+) => ({
 	type: ActionTypes.POST_BY_PATH,
 	payload: postPathArgument,
 });
 
-export const postByPath = (postPathArgument: IPostPathArgument): IThunk => async (dispatch, getState, context) => {
+export const postByPath = (
+	postPathArgument: IPostPathArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(postByPathAction(postPathArgument));
 	} catch (e) {
@@ -45,12 +49,16 @@ export const postByPath = (postPathArgument: IPostPathArgument): IThunk => async
 	}
 };
 
-const publicPostsByDateAction: ActionCreator<IPublicPostsByDateAction> = (postByDateArgument: IDateArgument) => ({
+const publicPostsByDateAction: ActionCreator<IPublicPostsByDateAction> = (
+	postByDateArgument: IDateArgument,
+) => ({
 	type: ActionTypes.PUBLIC_POSTS_BY_DATE,
 	payload: postByDateArgument,
 });
 
-export const publicPostsByDate = (postByDateArgument: IDateArgument): IThunk => async (dispatch, getState, context) => {
+export const publicPostsByDate = (
+	postByDateArgument: IDateArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(publicPostsByDateAction(postByDateArgument));
 	} catch (e) {
@@ -58,12 +66,18 @@ export const publicPostsByDate = (postByDateArgument: IDateArgument): IThunk => 
 	}
 };
 
-const postLikesAction: ActionCreator<IPostLikesAction> = (postLikesArgument: IPostIdArgument) => ({
+const postLikesAction: ActionCreator<IPostLikesAction> = (
+	postLikesArgument: IPostIdArgument,
+) => ({
 	type: ActionTypes.POST_LIKES,
 	payload: postLikesArgument,
 });
 
-export const postLikes = (postLikesArgument: IPostIdArgument): IThunk => async (dispatch, getState, context) => {
+export const postLikes = (postLikesArgument: IPostIdArgument): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
 		dispatch(postLikesAction(postLikesArgument));
 	} catch (e) {
@@ -71,12 +85,18 @@ export const postLikes = (postLikesArgument: IPostIdArgument): IThunk => async (
 	}
 };
 
-const createPostAction: ActionCreator<ICreatePostAction> = (createPostArgument: IPostData) => ({
+const createPostAction: ActionCreator<ICreatePostAction> = (
+	createPostArgument: IPostData,
+) => ({
 	type: ActionTypes.CREATE_POST,
 	payload: createPostArgument,
 });
 
-export const createPost = (createPostArgument: IPostData): IThunk => async (dispatch, getState, context) => {
+export const createPost = (createPostArgument: IPostData): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
 		dispatch(createPostAction(createPostArgument));
 	} catch (e) {
@@ -84,12 +104,18 @@ export const createPost = (createPostArgument: IPostData): IThunk => async (disp
 	}
 };
 
-const likePostAction: ActionCreator<ILikePostAction> = (likePostArgument: IPostIdArgument) => ({
+const likePostAction: ActionCreator<ILikePostAction> = (
+	likePostArgument: IPostIdArgument,
+) => ({
 	type: ActionTypes.LIKE_POST,
 	payload: likePostArgument,
 });
 
-export const likePost = (likePostArgument: IPostIdArgument): IThunk => async (dispatch, getState, context) => {
+export const likePost = (likePostArgument: IPostIdArgument): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
 		dispatch(likePostAction(likePostArgument));
 	} catch (e) {

@@ -1,11 +1,21 @@
 import * as React from 'react';
-import {RefreshControl, ScrollView, View} from 'react-native';
-import {DataProvider} from 'recyclerlistview';
+import { RefreshControl, ScrollView, View } from 'react-native';
+import { DataProvider } from 'recyclerlistview';
 
-import {DotsMenuButton, Header, IconButton, NoPhotos, ProfilePhotoGrid, ProfileTopContainer} from '../../components';
-import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
-import {ITranslatedProps} from '../../types';
-import styles, {colors, icons} from './MyProfileScreen.style';
+import {
+	DotsMenuButton,
+	Header,
+	IconButton,
+	NoPhotos,
+	ProfilePhotoGrid,
+	ProfileTopContainer,
+} from '../../components';
+import {
+	IWithLoaderProps,
+	WithInlineLoader,
+} from '../../components/inlineLoader';
+import { ITranslatedProps } from '../../types';
+import styles, { colors, icons } from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	avatarURL: any;
@@ -50,7 +60,9 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	onShowDotsModal,
 	getText,
 }) => {
-	const scrollContainerStyles = hasPhotos ? styles.scrollContainer : [styles.scrollContainer, {flex: 1}];
+	const scrollContainerStyles = hasPhotos
+		? styles.scrollContainer
+		: [styles.scrollContainer, { flex: 1 }];
 
 	return (
 		<WithInlineLoader isLoading={isLoading}>
@@ -71,7 +83,13 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 				<ScrollView
 					contentContainerStyle={scrollContainerStyles}
 					showsVerticalScrollIndicator={false}
-					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							tintColor={colors.white}
+						/>
+					}
 					scrollEnabled={hasPhotos}
 				>
 					<ProfileTopContainer
@@ -87,7 +105,9 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						aboutMeText={aboutMeText}
 						onEditProfile={onEditProfile}
 						getText={getText}
-						onAddFriend={() => console.log('Add friend on my profile page does nothing')}
+						onAddFriend={() =>
+							console.log('Add friend on my profile page does nothing')
+						}
 					/>
 					{hasPhotos && (
 						<View style={styles.gridContainer}>
@@ -96,7 +116,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 								gridMediaProvider={gridMediaProvider}
 								onViewMediaFullScreen={onViewMediaFullScreen}
 								header={{
-									element: <View style={{width: 1, height: 1}} />,
+									element: <View style={{ width: 1, height: 1 }} />,
 									height: 1,
 								}}
 								disabled={hasPhotos}

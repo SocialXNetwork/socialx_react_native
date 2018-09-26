@@ -1,25 +1,28 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {Animated} from 'react-native';
+import { Animated } from 'react-native';
 
-import {currentUser, posts} from '../../../../src/mocks';
-import {UserFeedScreenView} from '../../../../src/screens/mainTabNav/UserFeedScreen/UserFeedScreen.view';
+import { currentUser, posts } from '../../../../src/mocks';
+import { UserFeedScreenView } from '../../../../src/screens/mainTabNav/UserFeedScreen/UserFeedScreen.view';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('UserFeedScreen', () => {
-		const avatar = {uri: 'https://www.w3schools.com/w3css/img_lights.jpg'};
+		const avatar = { uri: 'https://www.w3schools.com/w3css/img_lights.jpg' };
 
 		const refreshing = boolean('refreshing', false);
 		const noPosts = boolean('noPosts', false);
 		const loadingMorePosts = boolean('loadingMorePosts', false);
 		const hasMorePosts = boolean('hasMorePosts', false);
 		const isLoading = boolean('isLoading', false);
-		const shareSectionPlaceholder = text('shareSectionPlaceholder', 'Lorem ipsum dolor sit amet.');
+		const shareSectionPlaceholder = text(
+			'shareSectionPlaceholder',
+			'Lorem ipsum dolor sit amet.',
+		);
 
 		return (
 			<UserFeedScreenView
@@ -47,7 +50,9 @@ storiesOf('Screens/mainTabNav', module)
 				isLoading={isLoading}
 				getText={(value) => value}
 				onBlockUser={(userId) => console.log('onBlockUser', userId)}
-				onReportProblem={(reason, message) => console.log('onReportProblem', reason, message)}
+				onReportProblem={(reason, message) =>
+					console.log('onReportProblem', reason, message)
+				}
 			/>
 		);
 	});

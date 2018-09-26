@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {findNodeHandle, View} from 'react-native';
+import { findNodeHandle, View } from 'react-native';
 
-import {IFriendsSearchResult, IResizeProps, ITranslatedProps} from '../types';
-import {TagFriendsModal, WithManagedTransitions} from './';
+import { IFriendsSearchResult, IResizeProps, ITranslatedProps } from '../types';
+import { TagFriendsModal, WithManagedTransitions } from './';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
 	{
@@ -76,16 +76,22 @@ export class WithModalForAddFriends extends React.Component<
 
 	public componentDidMount() {
 		const blurViewHandle = findNodeHandle(this.baseScreen.current);
-		this.setState({blurViewRef: blurViewHandle});
+		this.setState({ blurViewRef: blurViewHandle });
 	}
 
 	public render() {
-		const {children, marginBottom, getText} = this.props;
-		const {modalVisible, blurViewRef, friendsSearchResults, taggedFriends, taggedFriendsInModal} = this.state;
+		const { children, marginBottom, getText } = this.props;
+		const {
+			modalVisible,
+			blurViewRef,
+			friendsSearchResults,
+			taggedFriends,
+			taggedFriendsInModal,
+		} = this.state;
 		return (
-			<View style={{flex: 1}}>
+			<View style={{ flex: 1 }}>
 				<WithManagedTransitions modalVisible={modalVisible}>
-					{({onDismiss, onModalHide}) => (
+					{({ onDismiss, onModalHide }) => (
 						<TagFriendsModal
 							visible={modalVisible}
 							doneHandler={this.handleTagFriendsEditFinished}
@@ -102,7 +108,7 @@ export class WithModalForAddFriends extends React.Component<
 						/>
 					)}
 				</WithManagedTransitions>
-				<View ref={this.baseScreen} style={{flex: 1}}>
+				<View ref={this.baseScreen} style={{ flex: 1 }}>
 					{children({
 						addedFriends: taggedFriends,
 						showAddFriendsModal: this.showTagFriendsModal,
@@ -133,7 +139,9 @@ export class WithModalForAddFriends extends React.Component<
 	};
 
 	private tagFriendHandler = (friend: IFriendsSearchResult) => {
-		this.setState({taggedFriendsInModal: [...this.state.taggedFriendsInModal, friend]});
+		this.setState({
+			taggedFriendsInModal: [...this.state.taggedFriendsInModal, friend],
+		});
 	};
 
 	private friendsSearchUpdatedHandler = (term: string) => {
@@ -142,6 +150,6 @@ export class WithModalForAddFriends extends React.Component<
 		if (term.length > 3 && term.length < 8) {
 			friendsSearchResults = SEARCH_RESULTS_TAG_FRIENDS;
 		}
-		this.setState({friendsSearchResults});
+		this.setState({ friendsSearchResults });
 	};
 }

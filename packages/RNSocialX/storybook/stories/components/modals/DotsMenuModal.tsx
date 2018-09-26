@@ -1,8 +1,8 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {DotsMenuModal} from '../../../../src/components';
+import { DotsMenuModal } from '../../../../src/components';
 
 storiesOf('Components/modals', module)
 	.addDecorator(withKnobs)
@@ -25,5 +25,11 @@ storiesOf('Components/modals', module)
 				actionHandler: () => console.log('Test item 3'),
 			},
 		];
-		return <DotsMenuModal visible={visible} items={menuItems} onBackdropPress={() => console.log('onBackdropPress')} />;
+		return (
+			<DotsMenuModal
+				visible={visible}
+				items={menuItems}
+				onBackdropPress={() => console.log('onBackdropPress')}
+			/>
+		);
 	});

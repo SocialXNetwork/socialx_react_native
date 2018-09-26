@@ -1,9 +1,9 @@
 // TODO: @Alex, check this component later, something's wrong with it
 
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {ActivityGenericCard} from '../../../../src/components';
+import { ActivityGenericCard } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const image = 'https://www.w3schools.com/w3css/img_lights.jpg';

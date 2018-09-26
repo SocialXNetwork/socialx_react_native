@@ -4,13 +4,13 @@
  */
 
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import {AvatarImage, ButtonSizes, PrimaryButton} from '../../';
-import {PROFILE_TAB_ICON_TYPES} from '../../../environment/consts';
-import {ITranslatedProps, SearchResultKind} from '../../../types';
-import {Statistics, Tabs} from './';
-import styles, {buttonWidth, colors} from './ProfileTopContainer.style';
+import { AvatarImage, ButtonSizes, PrimaryButton } from '../../';
+import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
+import { ITranslatedProps, SearchResultKind } from '../../../types';
+import { Statistics, Tabs } from './';
+import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 
 interface IProfileTopContainerProps extends ITranslatedProps {
 	avatarURL: any;
@@ -62,22 +62,41 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
 	getText,
 }) => {
-	const relationshipButtonHandler = relationship === SearchResultKind.Friend ? onShowFriendshipOptions : onAddFriend;
+	const relationshipButtonHandler =
+		relationship === SearchResultKind.Friend
+			? onShowFriendshipOptions
+			: onAddFriend;
 
 	return (
 		<View style={styles.topContainer}>
 			<View style={styles.background} />
-			<TouchableOpacity activeOpacity={1} onPress={onViewProfilePhoto} style={styles.avatarContainer}>
+			<TouchableOpacity
+				activeOpacity={1}
+				onPress={onViewProfilePhoto}
+				style={styles.avatarContainer}
+			>
 				<AvatarImage image={avatarURL} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.statisticsContainer}>
 				<View style={styles.leftStatistics}>
-					<Statistics text={getText('profile.statistics.photos')} value={numberOfPhotos} />
-					<Statistics text={getText('profile.statistics.likes')} value={numberOfLikes} />
+					<Statistics
+						text={getText('profile.statistics.photos')}
+						value={numberOfPhotos}
+					/>
+					<Statistics
+						text={getText('profile.statistics.likes')}
+						value={numberOfLikes}
+					/>
 				</View>
 				<View style={styles.rightStatistics}>
-					<Statistics text={getText('profile.statistics.friends')} value={numberOfFriends} />
-					<Statistics text={getText('profile.statistics.view.count')} value={numberOfViews} />
+					<Statistics
+						text={getText('profile.statistics.friends')}
+						value={numberOfFriends}
+					/>
+					<Statistics
+						text={getText('profile.statistics.view.count')}
+						value={numberOfViews}
+					/>
 				</View>
 			</View>
 			<View style={styles.textContainer}>

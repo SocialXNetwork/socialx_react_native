@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
-import {ISimpleComment} from '../../../types';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import { ISimpleComment } from '../../../types';
 
 interface IBestCommentsProps {
 	bestComments: ISimpleComment[];
@@ -10,7 +10,11 @@ interface IBestCommentsProps {
 	onCommentPress: () => void;
 }
 
-export const BestComments: React.SFC<IBestCommentsProps> = ({bestComments, onUserPress, onCommentPress}) => (
+export const BestComments: React.SFC<IBestCommentsProps> = ({
+	bestComments,
+	onUserPress,
+	onCommentPress,
+}) => (
 	<React.Fragment>
 		{bestComments.length > 0 && (
 			<View style={styles.bestCommentsContainer}>

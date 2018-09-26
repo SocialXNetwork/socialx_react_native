@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Sizes } from '../../environment/theme';
 
 const FRIEND_AVATAR_SIZE = Sizes.smartHorizontalScale(22);
 

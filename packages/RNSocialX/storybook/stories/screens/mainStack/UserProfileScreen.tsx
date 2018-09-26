@@ -1,14 +1,20 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, number, select, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import {
+	boolean,
+	number,
+	select,
+	text,
+	withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {Animated} from 'react-native';
-import {DataProvider} from 'recyclerlistview';
+import { Animated } from 'react-native';
+import { DataProvider } from 'recyclerlistview';
 
-import {PROFILE_TAB_ICON_TYPES} from '../../../../src/environment/consts';
-import {currentUser, posts} from '../../../../src/mocks';
-import {UserProfileScreenView} from '../../../../src/screens/mainStack/UserProfileScreen.view';
-import {SearchResultKind} from '../../../../src/types';
+import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
+import { currentUser, posts } from '../../../../src/mocks';
+import { UserProfileScreenView } from '../../../../src/screens/mainStack/UserProfileScreen.view';
+import { SearchResultKind } from '../../../../src/types';
 
 storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
@@ -79,10 +85,16 @@ storiesOf('Screens/mainStack', module)
 				onClose={action('onClose')}
 				onDeletePress={(postId) => console.log('onDeletePress', postId)}
 				onUserPress={(userId) => console.log('onUserPress', userId)}
-				onSubmitComment={(commentText, postId) => console.log('onSubmitComment', commentText, postId)}
-				onAddComment={(index, cardHeight) => console.log('onAddComment', index, cardHeight)}
+				onSubmitComment={(commentText, postId) =>
+					console.log('onSubmitComment', commentText, postId)
+				}
+				onAddComment={(index, cardHeight) =>
+					console.log('onAddComment', index, cardHeight)
+				}
 				onBlockUser={(userId) => console.log('onBlockUser', userId)}
-				onReportProblem={(reason, message) => console.log('onReportProblem', reason, message)}
+				onReportProblem={(reason, message) =>
+					console.log('onReportProblem', reason, message)
+				}
 			/>
 		);
 	});

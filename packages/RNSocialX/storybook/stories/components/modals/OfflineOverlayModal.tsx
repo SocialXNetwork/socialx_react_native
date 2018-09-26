@@ -1,8 +1,8 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {OfflineOverlayModal} from '../../../../src/components';
+import { OfflineOverlayModal } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)

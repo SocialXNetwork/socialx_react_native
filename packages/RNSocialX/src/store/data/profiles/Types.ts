@@ -1,6 +1,6 @@
-import {ICreateProfileInput} from '@socialx/api-data';
-import {Action} from 'redux';
-import {DeepReadonly} from 'utility-types';
+import { ICreateProfileInput } from '@socialx/api-data';
+import { Action } from 'redux';
+import { DeepReadonly } from 'utility-types';
 
 export interface IUsernameArgument {
 	username: string;

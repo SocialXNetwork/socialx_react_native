@@ -5,10 +5,10 @@
  */
 
 import * as React from 'react';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
-import {INavigationProps} from '../../types';
-import {ResetPasswordScreenView} from './ResetPasswordScreen.view';
+import { INavigationProps } from '../../types';
+import { ResetPasswordScreenView } from './ResetPasswordScreen.view';
 
 import {
 	IWithResetPasswordEnhancedActions,
@@ -16,7 +16,9 @@ import {
 	WithResetPassword,
 } from '../../enhancers/screens';
 
-type IResetPasswordScreenProps = INavigationProps & IWithResetPasswordEnhancedData & IWithResetPasswordEnhancedActions;
+type IResetPasswordScreenProps = INavigationProps &
+	IWithResetPasswordEnhancedData &
+	IWithResetPasswordEnhancedActions;
 
 class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	public render() {
@@ -29,10 +31,13 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 		);
 	}
 
-	private setNewPasswordHandler = async (resetCode: string, password: string) => {
-		const {resetPassword, navigation, getText} = this.props;
+	private setNewPasswordHandler = async (
+		resetCode: string,
+		password: string,
+	) => {
+		const { resetPassword, navigation, getText } = this.props;
 
-		const {params} = navigation.state;
+		const { params } = navigation.state;
 
 		if (!params.userName) {
 			Alert.alert(getText('general.error.message'));
@@ -46,10 +51,18 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	};
 }
 
-export const ResetPasswordScreen = ({navigation, navigationOptions}: INavigationProps) => (
+export const ResetPasswordScreen = ({
+	navigation,
+	navigationOptions,
+}: INavigationProps) => (
 	<WithResetPassword>
-		{({data, actions}) => (
-			<Screen navigation={navigation} navigationOptions={navigationOptions} {...data} {...actions} />
+		{({ data, actions }) => (
+			<Screen
+				navigation={navigation}
+				navigationOptions={navigationOptions}
+				{...data}
+				{...actions}
+			/>
 		)}
 	</WithResetPassword>
 );

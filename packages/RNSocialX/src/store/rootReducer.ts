@@ -1,14 +1,14 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
-import {IState as IConfig, reducer as config} from './app/config';
-import {IState as II18n, reducer as i18n} from './app/i18n';
-import {IState as INavigation, reducer as navigation} from './app/navigation';
-import {IState as IAccounts, reducer as accounts} from './data/accounts';
-import {IState as IComments, reducer as comments} from './data/comments';
-import {IState as IPosts, reducer as posts} from './data/posts';
-import {IState as IProfiles, reducer as profiles} from './data/profiles';
-import {IState as IFiles, reducer as files} from './storage/files';
-import {IState as IOverlays, reducer as overlays} from './ui/overlays';
+import { IState as IConfig, reducer as config } from './app/config';
+import { IState as II18n, reducer as i18n } from './app/i18n';
+import { IState as INavigation, reducer as navigation } from './app/navigation';
+import { IState as IAccounts, reducer as accounts } from './data/accounts';
+import { IState as IComments, reducer as comments } from './data/comments';
+import { IState as IPosts, reducer as posts } from './data/posts';
+import { IState as IProfiles, reducer as profiles } from './data/profiles';
+import { IState as IFiles, reducer as files } from './storage/files';
+import { IState as IOverlays, reducer as overlays } from './ui/overlays';
 
 export interface IApplicationState {
 	data: {

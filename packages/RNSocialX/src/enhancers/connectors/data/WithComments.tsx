@@ -1,8 +1,8 @@
-import {ICommentMetasCallback} from '@socialx/api-data';
+import { ICommentMetasCallback } from '@socialx/api-data';
 import * as React from 'react';
-import {connect, ConnectedComponentClass} from 'react-redux';
-import {createSelector} from 'reselect';
-import {IApplicationState} from '../../../store';
+import { connect, ConnectedComponentClass } from 'react-redux';
+import { createSelector } from 'reselect';
+import { IApplicationState } from '../../../store';
 import {
 	commentLikes,
 	createComment,
@@ -13,7 +13,7 @@ import {
 	likeComment,
 	postComments,
 } from '../../../store/data/comments';
-import {IThunkDispatch} from '../../../store/types';
+import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	comments: ICommentData[];
@@ -35,7 +35,7 @@ interface IChildren {
 
 class Enhancer extends React.Component<IProps & IChildren> {
 	render() {
-		const {children, ...props} = this.props;
+		const { children, ...props } = this.props;
 		return children(props);
 	}
 }
@@ -55,13 +55,20 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	commentLikes: (commentLikesArgument: ICommentIdArgument) => dispatch(commentLikes(commentLikesArgument)),
-	createComment: (createCommentArgument: ICreateCommentInput) => dispatch(createComment(createCommentArgument)),
-	likeComment: (likeCommentArgument: ICommentIdArgument) => dispatch(likeComment(likeCommentArgument)),
-	postComments: (postCommentsArguments: IPostIdArgument) => dispatch(postComments(postCommentsArguments)),
+	commentLikes: (commentLikesArgument: ICommentIdArgument) =>
+		dispatch(commentLikes(commentLikesArgument)),
+	createComment: (createCommentArgument: ICreateCommentInput) =>
+		dispatch(createComment(createCommentArgument)),
+	likeComment: (likeCommentArgument: ICommentIdArgument) =>
+		dispatch(likeComment(likeCommentArgument)),
+	postComments: (postCommentsArguments: IPostIdArgument) =>
+		dispatch(postComments(postCommentsArguments)),
 });
 
-export const WithAccounts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
+export const WithAccounts: ConnectedComponentClass<
+	JSX.Element,
+	IChildren
+> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer) as any;

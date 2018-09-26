@@ -1,5 +1,13 @@
 import * as React from 'react';
-import {Image, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+	Image,
+	Platform,
+	SafeAreaView,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 
 import {
 	ButtonSizes,
@@ -9,12 +17,14 @@ import {
 	PrimaryButton,
 	SharePostInput,
 } from '../../components';
-import {OS_TYPES} from '../../environment/consts';
-import {Colors, Icons} from '../../environment/theme';
-import {IResizeProps, ITranslatedProps} from '../../types';
+import { OS_TYPES } from '../../environment/consts';
+import { Colors, Icons } from '../../environment/theme';
+import { IResizeProps, ITranslatedProps } from '../../types';
 import style from './CreateWallPostScreen.style';
 
-interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps {
+interface ICreateWallPostScreenViewProps
+	extends ITranslatedProps,
+		IResizeProps {
 	avatarImage?: string;
 	shareText: string;
 	mediaObjects: string[];
@@ -24,7 +34,9 @@ interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps 
 	onClose: () => void;
 }
 
-export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps> = ({
+export const CreateWallPostScreenView: React.SFC<
+	ICreateWallPostScreenViewProps
+> = ({
 	avatarImage,
 	shareText,
 	onShareTextUpdate,
@@ -35,9 +47,20 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	marginBottom,
 	onClose,
 }) => (
-	<SafeAreaView style={[style.safeView, Platform.OS === OS_TYPES.IOS ? {paddingBottom: marginBottom} : {}]}>
-		<Header title={getText('new.wall.post.screen.title')} left={<CloseButton onClose={onClose} />} />
-		<ScrollView contentContainerStyle={style.container} keyboardShouldPersistTaps={'handled'}>
+	<SafeAreaView
+		style={[
+			style.safeView,
+			Platform.OS === OS_TYPES.IOS ? { paddingBottom: marginBottom } : {},
+		]}
+	>
+		<Header
+			title={getText('new.wall.post.screen.title')}
+			left={<CloseButton onClose={onClose} />}
+		/>
+		<ScrollView
+			contentContainerStyle={style.container}
+			keyboardShouldPersistTaps={'handled'}
+		>
 			<SharePostInput
 				avatarSource={avatarImage}
 				placeholder={getText('new.wall.post.screen.input.placeholder')}
@@ -45,8 +68,14 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 				onTextUpdate={onShareTextUpdate}
 			/>
 			<TouchableOpacity style={style.addMediaButton} onPress={onAddMedia}>
-				<Image source={Icons.iconNewPostAddMedia} style={style.photoIcon} resizeMode={'contain'} />
-				<Text style={style.addMediaText}>{getText('new.wall.post.screen.attach.media.button')}</Text>
+				<Image
+					source={Icons.iconNewPostAddMedia}
+					style={style.photoIcon}
+					resizeMode={'contain'}
+				/>
+				<Text style={style.addMediaText}>
+					{getText('new.wall.post.screen.attach.media.button')}
+				</Text>
 			</TouchableOpacity>
 			{mediaObjects.length > 0 && (
 				<View style={style.mediaContainer}>

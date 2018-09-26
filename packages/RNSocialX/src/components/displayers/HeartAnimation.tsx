@@ -1,8 +1,8 @@
 import LottieView from 'lottie-react-native';
 import * as React from 'react';
-import {Animated, Easing, StyleSheet, View} from 'react-native';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
 
-import {Animations, Sizes} from '../../environment/theme';
+import { Animations, Sizes } from '../../environment/theme';
 
 interface IHeartAnimationProps {
 	ended: (status: boolean) => void;
@@ -32,7 +32,11 @@ export class HeartAnimation extends React.Component<IHeartAnimationProps> {
 		return (
 			<View style={style.container}>
 				<View style={style.animation}>
-					<LottieView source={Animations.heart} progress={this.animationProgress} style={style.animation} />
+					<LottieView
+						source={Animations.heart}
+						progress={this.animationProgress}
+						style={style.animation}
+					/>
 				</View>
 			</View>
 		);

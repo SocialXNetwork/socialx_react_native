@@ -1,7 +1,7 @@
-import {Platform, StyleSheet} from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
-import {OS_TYPES} from '../../environment/consts';
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { OS_TYPES } from '../../environment/consts';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const INPUT_MIN_HEIGHT = Sizes.smartHorizontalScale(35);
 const INPUT_CONTAINER_VERTICAL_PADDING = Sizes.smartVerticalScale(5);
@@ -27,7 +27,10 @@ const style: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
 		minHeight: INPUT_MIN_HEIGHT,
 		paddingVertical: Sizes.smartVerticalScale(5),
-		paddingTop: Platform.OS === OS_TYPES.IOS ? Sizes.smartVerticalScale(7) : Sizes.smartVerticalScale(5),
+		paddingTop:
+			Platform.OS === OS_TYPES.IOS
+				? Sizes.smartVerticalScale(7)
+				: Sizes.smartVerticalScale(5),
 		textAlignVertical: 'center',
 	},
 	sendButtonContainer: {
@@ -35,7 +38,8 @@ const style: any = {
 		justifyContent: 'flex-end',
 	},
 	sendButton: {
-		paddingVertical: Platform.OS === OS_TYPES.Android ? Sizes.smartVerticalScale(5) : 0,
+		paddingVertical:
+			Platform.OS === OS_TYPES.Android ? Sizes.smartVerticalScale(5) : 0,
 		paddingLeft: Sizes.smartHorizontalScale(10),
 	},
 	sendIcon: {

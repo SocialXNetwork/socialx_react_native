@@ -1,7 +1,10 @@
+// tslint:disable-next-line no-submodule-imports
 import * as Gun from 'gun/gun';
-import {GunInstance} from '../types';
+import { IGunInstance } from '../types';
 
-Gun.chain.docLoad = function(cb: (data: object | undefined, key: string) => GunInstance) {
+Gun.chain.docLoad = function(
+	cb: (data: object | undefined, key: string) => IGunInstance,
+) {
 	const gun = this; // tslint:disable-line no-this-assignment
 	const root = gun.back(-1);
 	// return an instance of gun with once (used to be .val), best option here.

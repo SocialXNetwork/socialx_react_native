@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Image, Text, View} from 'react-native';
+import { Image, Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import {AvatarImage, ButtonSizes, PrimaryButton} from '../';
-import {Colors, Icons} from '../../environment/theme';
-import {ITranslatedProps} from '../../types';
+import { AvatarImage, ButtonSizes, PrimaryButton } from '../';
+import { Colors, Icons } from '../../environment/theme';
+import { ITranslatedProps } from '../../types';
 import style from './PeopleSearchResultEntry.style';
 
 const IN_ANIMATION_NAME = 'rotate';
@@ -27,7 +27,11 @@ const IsFriend: React.SFC = () => (
 		iterationCount={1}
 		duration={IN_ANIMATION_DURATION}
 	>
-		<Image source={Icons.peopleSearchResultIsFriend} resizeMode={'contain'} style={style.isFiendIcon} />
+		<Image
+			source={Icons.peopleSearchResultIsFriend}
+			resizeMode={'contain'}
+			style={style.isFiendIcon}
+		/>
 	</Animatable.View>
 );
 
@@ -36,32 +40,38 @@ interface IAddFriendProps extends ITranslatedProps {
 	animatedButton: React.RefObject<any>;
 }
 
-const AddFriend: React.SFC<IAddFriendProps> = ({afterAnimationHandler, animatedButton, getText}) => (
+const AddFriend: React.SFC<IAddFriendProps> = ({
+	afterAnimationHandler,
+	animatedButton,
+	getText,
+}) => (
 	<Animatable.View ref={animatedButton}>
 		<PrimaryButton
 			label={getText('button.add')}
 			size={ButtonSizes.Small}
 			autoWidth={true}
 			borderColor={Colors.transparent}
-			onPress={() => addButtonPressedHandler(afterAnimationHandler, animatedButton)}
+			onPress={() =>
+				addButtonPressedHandler(afterAnimationHandler, animatedButton)
+			}
 		/>
 	</Animatable.View>
 );
 
-const addButtonPressedHandler = (afterAnimationHandler: () => void, animatedButton: React.RefObject<any>) => {
-	animatedButton.current.animate(OUT_ANIMATION_NAME, OUT_ANIMATION_DURATION).then(() => {
-		afterAnimationHandler();
-	});
+const addButtonPressedHandler = (
+	afterAnimationHandler: () => void,
+	animatedButton: React.RefObject<any>,
+) => {
+	animatedButton.current
+		.animate(OUT_ANIMATION_NAME, OUT_ANIMATION_DURATION)
+		.then(() => {
+			afterAnimationHandler();
+		});
 };
 
-export const PeopleSearchResultEntry: React.SFC<IPeopleSearchResultEntryProps> = ({
-	addHandler,
-	selected,
-	avatarURL,
-	fullName,
-	location,
-	getText,
-}) => {
+export const PeopleSearchResultEntry: React.SFC<
+	IPeopleSearchResultEntryProps
+> = ({ addHandler, selected, avatarURL, fullName, location, getText }) => {
 	const animatedButton: React.RefObject<any> = React.createRef();
 
 	return (
@@ -74,7 +84,13 @@ export const PeopleSearchResultEntry: React.SFC<IPeopleSearchResultEntryProps> =
 				</View>
 			</View>
 			{selected && <IsFriend />}
-			{!selected && <AddFriend afterAnimationHandler={addHandler} animatedButton={animatedButton} getText={getText} />}
+			{!selected && (
+				<AddFriend
+					afterAnimationHandler={addHandler}
+					animatedButton={animatedButton}
+					getText={getText}
+				/>
+			)}
 		</View>
 	);
 };

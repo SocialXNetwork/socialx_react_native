@@ -1,9 +1,9 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {TagFriendsModal} from '../../../../src/components';
+import { TagFriendsModal } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const MOCK_SEARCH_RESULTS = [

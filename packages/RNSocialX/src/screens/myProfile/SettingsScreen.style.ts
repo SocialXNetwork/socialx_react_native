@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Colors, Fonts, Images, Sizes} from '../../environment/theme';
+import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
 
 const style: any = {
 	container: {

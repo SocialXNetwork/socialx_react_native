@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(100);
 const AVATAR_CONTAINER_SIZE = Sizes.smartHorizontalScale(106);
@@ -37,7 +37,7 @@ const styles: any = {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		transform: [{translateY: -Sizes.smartHorizontalScale(55)}],
+		transform: [{ translateY: -Sizes.smartHorizontalScale(55) }],
 	},
 	leftStatistics: {
 		flexDirection: 'row',
@@ -46,7 +46,7 @@ const styles: any = {
 		flexDirection: 'row',
 	},
 	textContainer: {
-		transform: [{translateY: -Sizes.smartVerticalScale(10)}],
+		transform: [{ translateY: -Sizes.smartVerticalScale(10) }],
 		marginBottom: Sizes.smartVerticalScale(5),
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},

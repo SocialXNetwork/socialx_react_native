@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import {ITranslatedProps} from '../../types';
-import {WithManagedTransitions} from '../managedTransitions';
+import { ITranslatedProps } from '../../types';
+import { WithManagedTransitions } from '../managedTransitions';
 import style from './ConfirmationModal.style';
 
 interface IConfirmationModalPropsExtended extends ITranslatedProps {
@@ -31,7 +31,7 @@ export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
 	getText,
 }) => (
 	<WithManagedTransitions modalVisible={confirmActive}>
-		{({onDismiss, onModalHide}) => (
+		{({ onDismiss, onModalHide }) => (
 			<Modal
 				isVisible={confirmActive}
 				backdropOpacity={0.2}
@@ -55,11 +55,18 @@ export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
 						</View>
 					)}
 					<View style={style.buttonsContainer}>
-						<TouchableOpacity style={[style.button, style.leftButton]} onPress={declineHandler}>
-							<Text style={[style.buttonText, style.buttonTextCancel]}>{getText(cancelButton)}</Text>
+						<TouchableOpacity
+							style={[style.button, style.leftButton]}
+							onPress={declineHandler}
+						>
+							<Text style={[style.buttonText, style.buttonTextCancel]}>
+								{getText(cancelButton)}
+							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={style.button} onPress={confirmHandler}>
-							<Text style={[style.buttonText, style.buttonTextConfirm]}>{getText(confirmButton)}</Text>
+							<Text style={[style.buttonText, style.buttonTextConfirm]}>
+								{getText(confirmButton)}
+							</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
