@@ -27,51 +27,51 @@ export const createProfile = (
 	}
 };
 
-const profileByUsernameAction: ActionCreator<IProfileByUsernameAction> = (
-	profileByUsernameInput: IUsernameArgument,
+const getProfileByUsernameAction: ActionCreator<IProfileByUsernameAction> = (
+	getProfileByUsernameInput: IUsernameArgument,
 ) => ({
 	type: ActionTypes.PROFILE_BY_USERNAME,
-	payload: profileByUsernameInput,
+	payload: getProfileByUsernameInput,
 });
 
-export const profileByUsername = (
-	profileByUsernameInput: IUsernameArgument,
+export const getProfileByUsername = (
+	getProfileByUsernameInput: IUsernameArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(profileByUsernameAction(profileByUsernameInput));
+		dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
 	} catch (e) {
 		/**/
 	}
 };
 
-const currentProfileAction: ActionCreator<ICurrentProfileAction> = () => ({
+const getCurrentProfileAction: ActionCreator<ICurrentProfileAction> = () => ({
 	type: ActionTypes.CURRENT_PROFILE,
 });
 
-export const currentProfile = (): IThunk => async (
+export const getCurrentProfile = (): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(currentProfileAction());
+		dispatch(getCurrentProfileAction());
 	} catch (e) {
 		/**/
 	}
 };
 
-const publicKeyByUsernameAction: ActionCreator<IPublicKeyByUsernameAction> = (
-	profileUsernameInput: IUsernameArgument,
-) => ({
+const getPublicKeyByUsernameAction: ActionCreator<
+	IPublicKeyByUsernameAction
+> = (getProfileUsernameInput: IUsernameArgument) => ({
 	type: ActionTypes.PUBLIC_KEY_BY_USERNAME,
-	payload: profileUsernameInput,
+	payload: getProfileUsernameInput,
 });
 
-export const publicKeyByUsername = (
-	profileUsernameInput: IUsernameArgument,
+export const getPublicKeyByUsername = (
+	getProfileUsernameInput: IUsernameArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(publicKeyByUsernameAction(profileUsernameInput));
+		dispatch(getPublicKeyByUsernameAction(getProfileUsernameInput));
 	} catch (e) {
 		/**/
 	}
