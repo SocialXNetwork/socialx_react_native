@@ -2,7 +2,7 @@ import { IState } from './Types';
 
 const initialState: IState = {
 	comments: [],
-	commentMetaById: [],
+	commentMetaById: {},
 };
 
 export default initialState;

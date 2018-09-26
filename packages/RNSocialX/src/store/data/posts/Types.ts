@@ -12,8 +12,12 @@ export interface IPostData {
 
 export type IState = DeepReadonly<{
 	posts: IPostData[];
-	postMetaById: IPostData[];
-	postMetasByUser: IPostData[];
+	postMetaById: {
+		[postId: string]: IPostData;
+	};
+	postMetasByUser: {
+		[username: string]: IPostData;
+	};
 }>;
 
 export interface IUsernameArgument {
