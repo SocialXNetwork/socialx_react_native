@@ -20,13 +20,13 @@ const postPathsByUserAction: ActionCreator<IPostPathsByUserAction> = (postPathsB
 	payload: postPathsByUsernameInput,
 });
 
-export const postPathsByUser = (postPathsByUsernameInpit: IUsernameArgument): IThunk => async (
+export const postPathsByUser = (postPathsByUsernameInput: IUsernameArgument): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(postPathsByUserAction(postPathsByUsernameInpit));
+		dispatch(postPathsByUserAction(postPathsByUsernameInput));
 	} catch (e) {
 		/**/
 	}
