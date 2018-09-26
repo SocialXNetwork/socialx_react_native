@@ -34,6 +34,7 @@ import {
 	SocialXAccountScreen,
 	TermsAndConditionsScreen,
 	UserProfileScreen,
+	WalletActivityScreen,
 } from '../screens';
 
 import {
@@ -101,6 +102,7 @@ const MyProfileStackNavigator = createStackNavigator(
 		SettingsScreen: { screen: SettingsScreen },
 		SocialXAccountScreen: { screen: SocialXAccountScreen },
 		ReferralScreen: { screen: ReferralScreen },
+		WalletActivityScreen: { screen: WalletActivityScreen },
 	},
 	defaultConfig,
 );

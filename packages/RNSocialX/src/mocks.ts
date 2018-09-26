@@ -5,13 +5,17 @@ import {
 	ILike,
 	ISearchResultData,
 	ISimpleComment,
+	ITransactionData,
 	ITrendingCategoriesItem,
 	ITrendingContentItem,
 	IWallPostCardData,
 	MediaTypeImage,
 	MediaTypeVideo,
 	SearchResultKind,
+	TransactionType,
 } from './types';
+
+import { CoinSymbol } from './environment/consts';
 
 const avatar =
 	'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
@@ -448,5 +452,53 @@ export const trendingContentItems: ITrendingContentItem[] = [
 			{ type: 'Image', url: CONTENT_IMAGE_URL, postId: '1875', middle: true },
 			{ type: 'Image', url: CONTENT_IMAGE_URL, postId: '1875' },
 		],
+	},
+];
+
+export const transactions: ITransactionData[] = [
+	{
+		id: '1',
+		type: TransactionType.Bought,
+		firstAmount: 23,
+		firstCoin: CoinSymbol.SOCX,
+		secondAmount: 0.2,
+		secondCoin: CoinSymbol.ETH,
+		date: new Date(2018, 2, 13),
+	},
+	{
+		id: '2',
+		type: TransactionType.Sold,
+		firstAmount: 0.2,
+		firstCoin: CoinSymbol.ETH,
+		secondAmount: 23,
+		secondCoin: CoinSymbol.SOCX,
+		date: new Date(2018, 1, 17),
+	},
+	{
+		id: '3',
+		type: TransactionType.Sold,
+		firstAmount: 23,
+		firstCoin: CoinSymbol.SOCX,
+		secondAmount: 0.2,
+		secondCoin: CoinSymbol.ETH,
+		date: new Date(2018, 4, 8),
+	},
+	{
+		id: '4',
+		type: TransactionType.Bought,
+		firstAmount: 0.2,
+		firstCoin: CoinSymbol.ETH,
+		secondAmount: 23,
+		secondCoin: CoinSymbol.SOCX,
+		date: new Date(2018, 5, 1),
+	},
+	{
+		id: '5',
+		type: TransactionType.Sold,
+		firstAmount: 0.2,
+		firstCoin: CoinSymbol.ETH,
+		secondAmount: 23,
+		secondCoin: CoinSymbol.SOCX,
+		date: new Date(2018, 11, 12),
 	},
 ];
