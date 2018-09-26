@@ -1,5 +1,5 @@
 import React, {Component, ReactText} from 'react';
-import {Animated, Text, View} from 'react-native';
+import {Animated, Image, Text, TouchableOpacity, View} from 'react-native';
 import {DataProvider, LayoutProvider, RecyclerListView} from 'recyclerlistview';
 
 import {ITrendingContentItem} from '../../../types';
@@ -13,6 +13,7 @@ const ViewTypes = {
 
 interface IContentViewProps {
 	item: ITrendingContentItem;
+	onItemPress: (postId: string) => void;
 }
 
 interface IContentViewState {
@@ -51,46 +52,70 @@ class ContentView extends Component<IContentViewProps, IContentViewState> {
 		switch (type) {
 			case ViewTypes.IMAGE:
 				return (
-					<View style={imageStyle}>
+					<TouchableOpacity activeOpacity={1} onPress={() => this.props.onItemPress(data.postId)} style={imageStyle}>
+						<Image source={{uri: data.url}} style={{width: '100%', height: '100%'}} />
 						<Text style={styles.text}>{item.name}</Text>
-						<Text style={styles.text}>{data.type}</Text>
-					</View>
+					</TouchableOpacity>
 				);
 			case ViewTypes.RIGHT_VIDEO:
 				return (
 					<View style={styles.videoContainer}>
-						<View style={styles.imageContainer}>
-							<View style={styles.imageWithVideo}>
+						<View>
+							<TouchableOpacity
+								activeOpacity={1}
+								onPress={() => this.props.onItemPress(data.postId)}
+								style={styles.image}
+							>
+								<Image source={{uri: data[0].url}} style={{width: '100%', height: '100%'}} />
 								<Text style={styles.text}>{item.name}</Text>
-								<Text style={styles.text}>{data[0].type}</Text>
-							</View>
-							<View style={styles.imageWithVideo}>
+							</TouchableOpacity>
+							<TouchableOpacity
+								activeOpacity={1}
+								onPress={() => this.props.onItemPress(data.postId)}
+								style={styles.image}
+							>
+								<Image source={{uri: data[1].url}} style={{width: '100%', height: '100%'}} />
 								<Text style={styles.text}>{item.name}</Text>
-								<Text style={styles.text}>{data[1].type}</Text>
-							</View>
+							</TouchableOpacity>
 						</View>
-						<View style={[styles.video, styles.rightVideo]}>
+						<TouchableOpacity
+							activeOpacity={1}
+							onPress={() => this.props.onItemPress(data.postId)}
+							style={[styles.video, styles.rightVideo]}
+						>
+							<Image source={{uri: data[2].url}} style={{width: '100%', height: '100%'}} />
 							<Text style={styles.text}>{item.name}</Text>
-							<Text style={styles.text}>{data[2].type}</Text>
-						</View>
+						</TouchableOpacity>
 					</View>
 				);
 			case ViewTypes.LEFT_VIDEO:
 				return (
 					<View style={styles.videoContainer}>
-						<View style={[styles.video, styles.leftVideo]}>
+						<TouchableOpacity
+							activeOpacity={1}
+							onPress={() => this.props.onItemPress(data.postId)}
+							style={[styles.video, styles.leftVideo]}
+						>
+							<Image source={{uri: data[2].url}} style={{width: '100%', height: '100%'}} />
 							<Text style={styles.text}>{item.name}</Text>
-							<Text style={styles.text}>{data[0].type}</Text>
-						</View>
-						<View style={styles.imageContainer}>
-							<View style={styles.imageWithVideo}>
+						</TouchableOpacity>
+						<View>
+							<TouchableOpacity
+								activeOpacity={1}
+								onPress={() => this.props.onItemPress(data.postId)}
+								style={styles.image}
+							>
+								<Image source={{uri: data[0].url}} style={{width: '100%', height: '100%'}} />
 								<Text style={styles.text}>{item.name}</Text>
-								<Text style={styles.text}>{data[1].type}</Text>
-							</View>
-							<View style={styles.imageWithVideo}>
+							</TouchableOpacity>
+							<TouchableOpacity
+								activeOpacity={1}
+								onPress={() => this.props.onItemPress(data.postId)}
+								style={styles.image}
+							>
+								<Image source={{uri: data[1].url}} style={{width: '100%', height: '100%'}} />
 								<Text style={styles.text}>{item.name}</Text>
-								<Text style={styles.text}>{data[2].type}</Text>
-							</View>
+							</TouchableOpacity>
 						</View>
 					</View>
 				);
