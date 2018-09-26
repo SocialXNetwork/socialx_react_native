@@ -12,11 +12,11 @@ import {
 	logout,
 	recoverAccount,
 	trustAccount,
-} from '../../../store/app/accounts';
+} from '../../../store/data/accounts';
 import {IThunkDispatch} from '../../../store/types';
 
 interface IDataProps {
-	currentAccount: IAccount | null;
+	accounts: IAccount[];
 }
 
 interface IActionProps {
@@ -42,13 +42,10 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectCurrentAccount = createSelector(
-	(state: IApplicationState) => state.app.accounts.currentAccount,
-	(currentAccount) => currentAccount,
-);
+const selectAccounts = createSelector((state: IApplicationState) => state.data.accounts, (accounts) => accounts);
 
 const mapStateToProps = (state: IApplicationState) => ({
-	currentAccount: selectCurrentAccount(state),
+	accounts: selectAccounts(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -61,7 +58,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	trustAccount: () => dispatch(trustAccount()),
 });
 
-export const WithAccount: ConnectedComponentClass<JSX.Element, IChildren> = connect(
+export const WithAccounts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer) as any;
