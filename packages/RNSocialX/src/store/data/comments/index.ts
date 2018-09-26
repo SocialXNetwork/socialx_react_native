@@ -10,8 +10,8 @@ export {
 	IPostIdArgument,
 } from './Types';
 export {
-	commentLikes,
 	createComment,
-	postComments,
+	getCommentLikes,
+	getPostComments,
 	likeComment,
 } from './actions';

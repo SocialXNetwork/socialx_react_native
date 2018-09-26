@@ -109,19 +109,19 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 	}
 };
 
-const isAccountLoggedInAction: ActionCreator<
+const getIsAccountLoggedInAction: ActionCreator<
 	IIsAccountLoggedInAction
 > = () => ({
 	type: ActionTypes.IS_ACCOUNT_LOGGED_IN,
 });
 
-export const isAccountLoggedIn = (): IThunk => async (
+export const getIsAccountLoggedIn = (): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(isAccountLoggedInAction());
+		dispatch(getIsAccountLoggedInAction());
 	} catch (e) {
 		/**/
 	}

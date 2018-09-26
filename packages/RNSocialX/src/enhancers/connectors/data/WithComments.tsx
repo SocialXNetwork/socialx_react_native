@@ -4,14 +4,14 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
-	commentLikes,
 	createComment,
+	getCommentLikes,
+	getPostComments,
 	ICommentData,
 	ICommentIdArgument,
 	ICreateCommentInput,
 	IPostIdArgument,
 	likeComment,
-	postComments,
 } from '../../../store/data/comments';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -21,10 +21,10 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	commentLikes: (commentLikesArgument: ICommentIdArgument) => void;
 	createComment: (createCommentArgument: ICreateCommentInput) => void;
 	likeComment: (likeCommentArgument: ICommentIdArgument) => void;
-	postComments: (postCommentsArguments: IPostIdArgument) => void;
+	getCommentLikes: (getCommentLikesArgument: ICommentIdArgument) => void;
+	getPostComments: (postCommentsArguments: IPostIdArgument) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -55,14 +55,14 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	commentLikes: (commentLikesArgument: ICommentIdArgument) =>
-		dispatch(commentLikes(commentLikesArgument)),
 	createComment: (createCommentArgument: ICreateCommentInput) =>
 		dispatch(createComment(createCommentArgument)),
+	getCommentLikes: (getCommentLikesArgument: ICommentIdArgument) =>
+		dispatch(getCommentLikes(getCommentLikesArgument)),
+	getPostComments: (getPostCommentsArguments: IPostIdArgument) =>
+		dispatch(getPostComments(getPostCommentsArguments)),
 	likeComment: (likeCommentArgument: ICommentIdArgument) =>
 		dispatch(likeComment(likeCommentArgument)),
-	postComments: (postCommentsArguments: IPostIdArgument) =>
-		dispatch(postComments(postCommentsArguments)),
 });
 
 export const WithAccounts: ConnectedComponentClass<
