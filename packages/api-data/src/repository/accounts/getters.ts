@@ -1,6 +1,6 @@
 import { IContext, IGunCallback } from '../../types';
 
-export const isAccountLoggedIn = (
+export const getIsAccountLoggedIn = (
 	context: IContext,
 	callback: IGunCallback<{ loggedIn: boolean }>,
 ) => {
@@ -9,5 +9,5 @@ export const isAccountLoggedIn = (
 };
 
 export default {
-	isAccountLoggedIn,
+	getIsAccountLoggedIn,
 };
