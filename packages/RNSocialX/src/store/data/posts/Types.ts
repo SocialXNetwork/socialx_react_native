@@ -1,14 +1,6 @@
+import { ICreatePostInput, IPostData } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
-
-export interface IPostData {
-	title: string;
-	text?: string;
-	location?: string;
-	image_hash?: string;
-	optimized_image_hash?: string;
-	privatePost: boolean;
-}
 
 export type IState = DeepReadonly<{
 	posts: IPostData[];
@@ -73,7 +65,7 @@ export interface IGetPostLikesAction extends Action {
 
 export interface ICreatePostAction extends Action {
 	type: ActionTypes.CREATE_POST;
-	payload: IPostData;
+	payload: ICreatePostInput;
 }
 
 export interface ILikePostAction extends Action {

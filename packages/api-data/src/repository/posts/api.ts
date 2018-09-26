@@ -1,21 +1,30 @@
-import { IContext, ILikesMetasCallback } from '../../types';
+import {
+	IContext,
+	ICreatePostInput,
+	ILikesMetasCallback,
+	IPostData,
+} from '../../types';
 import getters from './getters';
 import schemas from './schemas';
-import setters, { IPostData } from './setters';
+import setters from './setters';
 
 export default (context: IContext) => ({
-	createPost: (createPostInput: IPostData): Promise<null> =>
+	createPost: (createPostInput: ICreatePostInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedArgs = await schemas.postData.validate(createPostInput, {
 					stripUnknown: true,
 				});
-				setters.createPost(context, validatedArgs as IPostData, (e, r) => {
-					if (e) {
-						reject(e);
-					}
-					resolve(r);
-				});
+				setters.createPost(
+					context,
+					validatedArgs as ICreatePostInput,
+					(e, r) => {
+						if (e) {
+							reject(e);
+						}
+						resolve(r);
+					},
+				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}

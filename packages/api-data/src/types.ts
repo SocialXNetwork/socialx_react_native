@@ -17,20 +17,31 @@ export enum TABLE_ENUMS {
 }
 
 export interface IPostMetasCallback {
+	owner: {
+		alias: string;
+		pub: string;
+	};
 	postPath: string;
+	timestamp: number;
 	privatePost: boolean;
-	owner: string;
 }
 
 export interface ICommentMetasCallback {
-	owner: string;
+	owner: {
+		alias: string;
+		pub: string;
+	};
 	timestamp: number;
 	postPath: string;
+	commentId: string;
 }
 
 export interface ILikesMetasCallback {
 	[key: string]: {
-		owner: string;
+		owner: {
+			alias: string;
+			pub: string;
+		};
 		timestamp: number;
 	};
 }
@@ -40,6 +51,61 @@ export interface IMetasCallback {
 		| IPostMetasCallback
 		| ICommentMetasCallback
 		| ILikesMetasCallback;
+}
+
+export interface ICreateCommentInput {
+	text: string;
+	postId: string;
+}
+
+interface IMediaTypes {
+	key: string;
+	name: 'Video' | 'Photo';
+	category: string;
+}
+
+interface IMedia {
+	hash: string;
+	optimized_hash: string;
+	type: IMediaTypes;
+	extension: string;
+	size: number;
+}
+export interface ICreatePostInput {
+	postText: string;
+	location?: string;
+	taggedFriends?: Array<{ fullName: string }>;
+	media?: IMedia;
+	governanceVersion: boolean;
+	privatePost: boolean;
+}
+
+export interface IPostData extends ICreatePostInput {
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	timestamp: number;
+}
+
+export interface IAccountData {
+	alias: string;
+	auth: {
+		ek: string;
+		s: string;
+	};
+	epub: string;
+	pub: string;
+	trust?: {
+		[key: string]: {
+			[key: string]: string;
+		};
+	};
+	recover?: {
+		encryptedReminder: string;
+		question1: number;
+		question2: number;
+	};
 }
 
 export interface IContext {

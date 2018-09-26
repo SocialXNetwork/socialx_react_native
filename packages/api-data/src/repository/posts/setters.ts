@@ -1,5 +1,6 @@
 import {
 	IContext,
+	ICreatePostInput,
 	IGunCallback,
 	IGunSetterCallback,
 	IPostMetasCallback,
@@ -9,18 +10,9 @@ import {
 import { datePathFromDate, getContextMeta } from '../../utils/helpers';
 import * as postHandles from './handles';
 
-export interface IPostData {
-	title: string;
-	text?: string;
-	location?: string;
-	image_hash?: string;
-	optimized_image_hash?: string;
-	privatePost: boolean;
-}
-
 export const createPost = (
 	context: IContext,
-	createPostInput: IPostData,
+	createPostInput: ICreatePostInput,
 	callback: IGunCallback<null>,
 ) => {
 	const { account, gun } = context;
@@ -28,7 +20,7 @@ export const createPost = (
 		return callback('a user needs to be logged in to proceed');
 	}
 
-	const { owner, timestamp } = getContextMeta(context);
+	const { owner, ownerPub, timestamp } = getContextMeta(context);
 
 	const datePath = datePathFromDate(new Date(timestamp));
 
@@ -46,7 +38,14 @@ export const createPost = (
 		.get(TABLES.POSTS)
 		.get(path)
 		[method](
-			{ ...createPostInput, owner, timestamp },
+			{
+				...createPostInput,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+				timestamp,
+			},
 			(setPostCallback: IGunSetterCallback) => {
 				if (setPostCallback.err) {
 					return callback('failed, error => ' + setPostCallback.err);
@@ -54,9 +53,16 @@ export const createPost = (
 				const postId = setPostCallback['#'];
 				const postPath = `${path}/${postId}`;
 
-				postHandles
-					.postMetasByCurrentUser(context)
-					.set({ postPath }, (setPostMetaCallback) => {
+				postHandles.postMetasByCurrentUser(context).set(
+					{
+						postPath,
+						timestamp,
+						owner: {
+							alias: owner,
+							pub: ownerPub,
+						},
+					},
+					(setPostMetaCallback) => {
 						if (setPostMetaCallback.err) {
 							return callback('failed, error => ' + setPostMetaCallback.err);
 						}
@@ -71,7 +77,8 @@ export const createPost = (
 								}
 								return callback(null);
 							});
-					});
+					},
+				);
 			},
 		);
 };
@@ -81,7 +88,7 @@ export const likePost = (
 	{ postId }: { postId: string },
 	callback: IGunCallback<null>,
 ) => {
-	const { owner, timestamp } = getContextMeta(context);
+	const { owner, ownerPub, timestamp } = getContextMeta(context);
 
 	postHandles
 		.postMetaById(context, postId)
@@ -90,15 +97,22 @@ export const likePost = (
 				return callback('no post found by this id');
 			}
 
-			postHandles
-				.postLikesByCurrentUser(context, postMeta.postPath)
-				.put({ timestamp, owner }, (putPostLikeCallback) => {
+			postHandles.postLikesByCurrentUser(context, postMeta.postPath).put(
+				{
+					timestamp,
+					owner: {
+						alias: owner,
+						pub: ownerPub,
+					},
+				},
+				(putPostLikeCallback) => {
 					if (putPostLikeCallback.err) {
 						return callback('failed, error => ' + putPostLikeCallback.err);
 					}
 
 					return callback(null);
-				});
+				},
+			);
 		});
 };
 

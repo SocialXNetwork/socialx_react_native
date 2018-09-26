@@ -20,4 +20,5 @@ export const setToArray = ({
 export const getContextMeta = (context: IContext) => ({
 	owner: context.account.is.alias,
 	timestamp: context.time().getTime(),
+	ownerPub: context.account.is.pub,
 });

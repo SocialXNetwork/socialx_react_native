@@ -1,3 +1,4 @@
+import { ICreatePostInput } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
@@ -9,12 +10,10 @@ import {
 	IGetPostPathsByUserAction,
 	IGetPublicPostsByDateAction,
 	ILikePostAction,
-	IPostData,
 	IPostIdArgument,
 	IPostPathArgument,
 	IUsernameArgument,
 } from './Types';
-
 const getPostPathsByUsernameAction: ActionCreator<IGetPostPathsByUserAction> = (
 	getPostPathsByUsernameInput: IUsernameArgument,
 ) => ({
@@ -84,17 +83,15 @@ export const getPostLikes = (
 };
 
 const createPostAction: ActionCreator<ICreatePostAction> = (
-	createPostArgument: IPostData,
+	createPostArgument: ICreatePostInput,
 ) => ({
 	type: ActionTypes.CREATE_POST,
 	payload: createPostArgument,
 });
 
-export const createPost = (createPostArgument: IPostData): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const createPost = (
+	createPostArgument: ICreatePostInput,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(createPostAction(createPostArgument));
 	} catch (e) {
