@@ -19,8 +19,12 @@ import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	posts: IPostData[];
-	postMetaById: IPostData[];
-	postMetasByUser: IPostData[];
+	postMetaById: {
+		[postId: string]: IPostData;
+	};
+	postMetasByUser: {
+		[username: string]: IPostData;
+	};
 }
 
 interface IActionProps {
