@@ -1,5 +1,6 @@
 // TODO: @Alex, check this component later, something's wrong with it
 
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -12,24 +13,16 @@ storiesOf('Components/activityCards', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('ActivityGenericCard', () => (
 		<ActivityGenericCard
-			onViewUserProfile={() => {
-				/**/
-			}}
+			onViewUserProfile={action('onViewUserProfile')}
 			avatarURL={image}
 			fullName={'Alex Sirbu'}
 			userName={'alexsirbu'}
 			userId={'85-f3r1-5ad'}
 			requestId={'87-ga2d-1d'}
 			text={'Hello, my name is Alex.'}
-			onCheckNotification={() => {
-				/**/
-			}}
-			showConfirm={() => {
-				/**/
-			}}
-			hideConfirm={() => {
-				/**/
-			}}
+			onCheckNotification={action('onCheckNotification')}
+			showConfirm={action('showConfirm')}
+			hideConfirm={action('hideConfirm')}
 			getText={(text) => text}
 		/>
 	));

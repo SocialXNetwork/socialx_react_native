@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -14,9 +15,7 @@ storiesOf('Components/activityCards', module)
 			fullName={'Alex Sirbu'}
 			timestamp={new Date(Date.now())}
 			wallPosts={[]}
-			onThumbPress={() => {
-				/**/
-			}}
+			onThumbPress={action('onThumbPress')}
 			getText={(text) => text}
 		/>
 	));

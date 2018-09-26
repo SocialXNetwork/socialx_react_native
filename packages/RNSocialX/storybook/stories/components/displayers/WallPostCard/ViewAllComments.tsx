@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { number, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -13,7 +14,7 @@ storiesOf('Components/displayers', module)
 		return (
 			<ViewAllComments
 				numberOfComments={numberOfComments}
-				onCommentPress={() => console.log('onCommentPress')}
+				onCommentPress={action('onCommentPress')}
 				getText={(text) => text}
 			/>
 		);
