@@ -1,8 +1,16 @@
-import {FormikProvider} from 'formik';
+import { FormikProvider } from 'formik';
 
-export {WithComments, IWithCommentsEnhancedData, IWithCommentsEnhancedActions} from './commentsStack/WithComments';
+export {
+	WithComments,
+	IWithCommentsEnhancedData,
+	IWithCommentsEnhancedActions,
+} from './commentsStack/WithComments';
 
-export {WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData} from './intro/WithIntro';
+export {
+	WithIntro,
+	IWithIntroEnhancedActions,
+	IWithIntroEnhancedData,
+} from './intro/WithIntro';
 
 export {
 	WithCreateWallPost,
@@ -14,24 +22,47 @@ export {
 	IWithMediaViewerEnhancedData,
 	IWithMediaViewerEnhancedActions,
 } from './mainStack/WithMediaViewer';
-export {WithPhoto, IWithPhotoEnhancedActions, IWithPhotoEnhancedData} from './mainStack/WithPhoto';
+export {
+	WithPhoto,
+	IWithPhotoEnhancedActions,
+	IWithPhotoEnhancedData,
+} from './mainStack/WithPhoto';
 export {
 	WithUserProfile,
 	IWithUserProfileEnhancedActions,
 	IWithUserProfileEnhancedData,
 } from './mainStack/WithUserProfile';
 
-export {WithMyProfile, IWithMyProfileEnhancedActions, IWithMyProfileEnhancedData} from './mainTabNav/WithMyProfile';
+export {
+	WithMyProfile,
+	IWithMyProfileEnhancedActions,
+	IWithMyProfileEnhancedData,
+} from './mainTabNav/WithMyProfile';
 export {
 	WithNotifications,
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 } from './mainTabNav/WithNotifications';
-export {WithSearch, IWithSearchEnhancedActions, IWithSearchEnhancedData} from './mainTabNav/WithSearch';
-export {WithTrending, IWithTrendingEnhancedData} from './mainTabNav/WithTrending';
-export {WithUserFeed, IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from './mainTabNav/WithUserFeed';
+export {
+	WithSearch,
+	IWithSearchEnhancedActions,
+	IWithSearchEnhancedData,
+} from './mainTabNav/WithSearch';
+export {
+	WithTrending,
+	IWithTrendingEnhancedData,
+} from './mainTabNav/WithTrending';
+export {
+	WithUserFeed,
+	IWithUserFeedEnhancedActions,
+	IWithUserFeedEnhancedData,
+} from './mainTabNav/WithUserFeed';
 
-export {WithReferral, IWithReferralEnhancedActions, IWithReferralEnhancedData} from './myProfile/WithReferral';
+export {
+	WithReferral,
+	IWithReferralEnhancedActions,
+	IWithReferralEnhancedData,
+} from './myProfile/WithReferral';
 export {
 	WithSettings,
 	IWithSettingsEnhancedActions,
@@ -49,9 +80,21 @@ export {
 	IWithForgotPasswordEnhancedData,
 	IWithForgotPasswordEnhancedActions,
 } from './preAuth/WithForgotPassword';
-export {WithLaunch, IWithLaunchEnhancedActions, IWithLaunchEnhancedData} from './preAuth/WithLaunch';
-export {WithLogin, IWithLoginEnhancedActions, IWithLoginEnhancedData} from './preAuth/WithLogin';
-export {WithRegister, IWithRegisterEnhancedActions, IWithRegisterEnhancedData} from './preAuth/WithRegister';
+export {
+	WithLaunch,
+	IWithLaunchEnhancedActions,
+	IWithLaunchEnhancedData,
+} from './preAuth/WithLaunch';
+export {
+	WithLogin,
+	IWithLoginEnhancedActions,
+	IWithLoginEnhancedData,
+} from './preAuth/WithLogin';
+export {
+	WithRegister,
+	IWithRegisterEnhancedActions,
+	IWithRegisterEnhancedData,
+} from './preAuth/WithRegister';
 export {
 	WithResetPassword,
 	IWithResetPasswordEnhancedActions,

@@ -1,9 +1,9 @@
-import {withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {Animated, Keyboard} from 'react-native';
+import { Animated, Keyboard } from 'react-native';
 
-import {CommentInput} from '../../../../../src/components/displayers/WallPostCard';
+import { CommentInput } from '../../../../../src/components/displayers/WallPostCard';
 import CenterView from '../../../../helpers/CenterView';
 
 class CommentInputStory extends React.Component {
@@ -17,7 +17,10 @@ class CommentInputStory extends React.Component {
 	private keyboardDidHideListener: any;
 
 	public componentDidMount() {
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+		this.keyboardDidHideListener = Keyboard.addListener(
+			'keyboardDidHide',
+			this.keyboardDidHide,
+		);
 	}
 
 	public componentWillUnmount() {
@@ -37,7 +40,9 @@ class CommentInputStory extends React.Component {
 					border: this.state.inputBorderWidth,
 				}}
 				onCommentInputPress={this.onCommentInputPressHandler}
-				onCommentInputChange={(comment: string) => console.log('onCommentInputChange', comment)}
+				onCommentInputChange={(comment: string) =>
+					console.log('onCommentInputChange', comment)
+				}
 				onSubmitComment={() => console.log('onSubmitComment')}
 			/>
 		);
@@ -59,7 +64,7 @@ class CommentInputStory extends React.Component {
 					duration: 250,
 				}),
 			]).start();
-			this.setState({inputFocused: false});
+			this.setState({ inputFocused: false });
 		}
 	};
 
@@ -79,7 +84,7 @@ class CommentInputStory extends React.Component {
 					duration: 350,
 				}),
 			]).start();
-			this.setState({inputFocused: true});
+			this.setState({ inputFocused: true });
 		}
 	};
 }

@@ -1,7 +1,7 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {HeartAnimation} from '../../../../src/components';
+import { HeartAnimation } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)

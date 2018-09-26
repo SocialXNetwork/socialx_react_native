@@ -6,8 +6,12 @@
 
 import * as React from 'react';
 
-import {suggestedItems} from '../../../mocks';
-import {ISearchResultData, ITranslatedProps, SearchTabs} from '../../../types';
+import { suggestedItems } from '../../../mocks';
+import {
+	ISearchResultData,
+	ITranslatedProps,
+	SearchTabs,
+} from '../../../types';
 
 const mock: IWithSearchEnhancedProps = {
 	data: {
@@ -54,8 +58,11 @@ interface IWithSearchProps {
 
 interface IWithSearchState {}
 
-export class WithSearch extends React.Component<IWithSearchProps, IWithSearchState> {
+export class WithSearch extends React.Component<
+	IWithSearchProps,
+	IWithSearchState
+> {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

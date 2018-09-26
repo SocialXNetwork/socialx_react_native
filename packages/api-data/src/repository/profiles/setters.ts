@@ -1,4 +1,4 @@
-import {IContext, IGunCallback} from '../../types';
+import { IContext, IGunCallback } from '../../types';
 import * as profileHandles from './handles';
 
 export interface ICreateProfileInput {
@@ -16,14 +16,16 @@ export const createProfile = (
 	createProfileInput: ICreateProfileInput,
 	callback: IGunCallback<null>,
 ) => {
-	const {username, ...rest} = createProfileInput;
-	profileHandles.profileByUsername(context, username).put({...rest}, (flags) => {
-		if (flags.err) {
-			return callback('failed, error => ' + flags.err);
-		}
+	const { username, ...rest } = createProfileInput;
+	profileHandles
+		.profileByUsername(context, username)
+		.put({ ...rest }, (flags) => {
+			if (flags.err) {
+				return callback('failed, error => ' + flags.err);
+			}
 
-		callback(null);
-	});
+			callback(null);
+		});
 };
 
 export default {

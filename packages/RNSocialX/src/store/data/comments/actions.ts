@@ -1,5 +1,5 @@
-import {ActionCreator} from 'redux';
-import {IThunk} from '../../types';
+import { ActionCreator } from 'redux';
+import { IThunk } from '../../types';
 import {
 	ActionTypes,
 	ICommentIdArgument,
@@ -11,12 +11,16 @@ import {
 	IPostIdArgument,
 } from './Types';
 
-const postCommentsAction: ActionCreator<IPostCommentsAction> = (postCommentsArguments: IPostIdArgument) => ({
+const postCommentsAction: ActionCreator<IPostCommentsAction> = (
+	postCommentsArguments: IPostIdArgument,
+) => ({
 	type: ActionTypes.POST_COMMENTS,
 	payload: postCommentsArguments,
 });
 
-export const postComments = (postCommentsArguments: IPostIdArgument): IThunk => async (dispatch, getState, context) => {
+export const postComments = (
+	postCommentsArguments: IPostIdArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(postCommentsAction(postCommentsArguments));
 	} catch (e) {
@@ -24,16 +28,16 @@ export const postComments = (postCommentsArguments: IPostIdArgument): IThunk => 
 	}
 };
 
-const commentLikesAction: ActionCreator<ICommentLikesAction> = (commentLikesArgument: ICommentIdArgument) => ({
+const commentLikesAction: ActionCreator<ICommentLikesAction> = (
+	commentLikesArgument: ICommentIdArgument,
+) => ({
 	type: ActionTypes.COMMENT_LIKES,
 	payload: commentLikesArgument,
 });
 
-export const commentLikes = (commentLikesArgument: ICommentIdArgument): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const commentLikes = (
+	commentLikesArgument: ICommentIdArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(commentLikesAction(commentLikesArgument));
 	} catch (e) {
@@ -41,16 +45,16 @@ export const commentLikes = (commentLikesArgument: ICommentIdArgument): IThunk =
 	}
 };
 
-const createCommentAction: ActionCreator<ICreateCommentAction> = (createCommentArgument: ICreateCommentInput) => ({
+const createCommentAction: ActionCreator<ICreateCommentAction> = (
+	createCommentArgument: ICreateCommentInput,
+) => ({
 	type: ActionTypes.CREATE_COMMENT,
 	payload: createCommentArgument,
 });
 
-export const createComment = (createCommentArgument: ICreateCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const createComment = (
+	createCommentArgument: ICreateCommentInput,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(createCommentAction(createCommentArgument));
 	} catch (e) {
@@ -58,12 +62,16 @@ export const createComment = (createCommentArgument: ICreateCommentInput): IThun
 	}
 };
 
-const likeCommentAction: ActionCreator<ILikeCommentAction> = (likeCommentArgument: ICommentIdArgument) => ({
+const likeCommentAction: ActionCreator<ILikeCommentAction> = (
+	likeCommentArgument: ICommentIdArgument,
+) => ({
 	type: ActionTypes.LIKE_COMMENT,
 	payload: likeCommentArgument,
 });
 
-export const likeComment = (likeCommentArgument: ICommentIdArgument): IThunk => async (dispatch, getState, context) => {
+export const likeComment = (
+	likeCommentArgument: ICommentIdArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(likeCommentAction(likeCommentArgument));
 	} catch (e) {

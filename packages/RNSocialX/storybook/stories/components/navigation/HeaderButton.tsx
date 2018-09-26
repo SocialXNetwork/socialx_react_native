@@ -1,9 +1,9 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
-import {HeaderButton} from '../../../../src/components';
-import {Colors} from '../../../../src/environment/theme';
+import { HeaderButton } from '../../../../src/components';
+import { Colors } from '../../../../src/environment/theme';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/navigation', module)

@@ -22,7 +22,7 @@ export class TextParser {
 	 * @return {Object[]} - props for all the parts of the text
 	 */
 	public parse = () => {
-		let parsedTexts = [{children: this.text}];
+		let parsedTexts = [{ children: this.text }];
 		this.patterns.forEach((pattern) => {
 			const newParts: any = [];
 
@@ -46,14 +46,14 @@ export class TextParser {
 
 					const previousText = textLeft.substr(0, matches.index);
 
-					parts.push({children: previousText});
+					parts.push({ children: previousText });
 
 					parts.push(this.getMatchedPart(pattern, matches[0], matches));
 
 					textLeft = textLeft.substr(matches.index + matches[0].length);
 				}
 
-				parts.push({children: textLeft});
+				parts.push({ children: textLeft });
 
 				newParts.push(...parts);
 			});
@@ -74,7 +74,11 @@ export class TextParser {
 	 * @param {String[]} matches - Result of the RegExp.exec
 	 * @return {Object} props for the matched text
 	 */
-	private getMatchedPart = (matchedPattern: any, text: string, matches: string[]) => {
+	private getMatchedPart = (
+		matchedPattern: any,
+		text: string,
+		matches: string[],
+	) => {
 		const props: any = {};
 
 		Object.keys(matchedPattern).forEach((key) => {
@@ -82,11 +86,17 @@ export class TextParser {
 				return;
 			}
 
-			props[key] = typeof matchedPattern[key] === 'function' ? () => matchedPattern[key](text) : matchedPattern[key];
+			props[key] =
+				typeof matchedPattern[key] === 'function'
+					? () => matchedPattern[key](text)
+					: matchedPattern[key];
 		});
 
 		let children = text;
-		if (matchedPattern.renderText && typeof matchedPattern.renderText === 'function') {
+		if (
+			matchedPattern.renderText &&
+			typeof matchedPattern.renderText === 'function'
+		) {
 			children = matchedPattern.renderText(text, matches);
 		}
 

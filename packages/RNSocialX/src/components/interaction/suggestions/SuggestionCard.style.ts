@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(90);
 
@@ -49,4 +49,4 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
-export const colors = {pink: Colors.pink, white: Colors.white};
+export const colors = { pink: Colors.pink, white: Colors.white };

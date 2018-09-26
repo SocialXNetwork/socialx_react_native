@@ -1,4 +1,4 @@
-import {IContext, IGunCallback} from '../../types';
+import { IContext, IGunCallback } from '../../types';
 import * as profileHandles from './handles';
 
 export interface IGetPublicKeyInput {
@@ -13,16 +13,21 @@ export interface IProfile {
 
 export const getPublicKeyByUsername = (
 	context: IContext,
-	{username}: IGetPublicKeyInput,
+	{ username }: IGetPublicKeyInput,
 	callback: IGunCallback<string>,
 ) => {
-	profileHandles.profileByUsername(context, username).docLoad(({pub}: IProfile) => {
-		return callback(null, pub);
-	});
+	profileHandles
+		.profileByUsername(context, username)
+		.docLoad(({ pub }: IProfile) => {
+			return callback(null, pub);
+		});
 };
 
-export const getCurrentProfile = (context: IContext, callback: IGunCallback<IProfile>) => {
-	const {account} = context;
+export const getCurrentProfile = (
+	context: IContext,
+	callback: IGunCallback<IProfile>,
+) => {
+	const { account } = context;
 	if (!account.is) {
 		return callback('a user needs to be logged in to proceed');
 	}
@@ -38,20 +43,22 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 
 export const getProfileByUsername = (
 	context: IContext,
-	{username}: {username: string},
+	{ username }: { username: string },
 	callback: IGunCallback<IProfile>,
 ) => {
-	profileHandles.profileByUsername(context, username).docLoad((profile: IProfile) => {
-		if (!profile) {
-			return callback('no user profile found');
-		}
+	profileHandles
+		.profileByUsername(context, username)
+		.docLoad((profile: IProfile) => {
+			if (!profile) {
+				return callback('no user profile found');
+			}
 
-		return callback(null, profile);
-	});
+			return callback(null, profile);
+		});
 };
 
 export default {
-	getPublicKeyByUsername,
 	getCurrentProfile,
 	getProfileByUsername,
+	getPublicKeyByUsername,
 };

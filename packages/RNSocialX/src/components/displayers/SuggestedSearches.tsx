@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 
-import {SearchResultsItem} from '../';
-import {ISearchResultData, ITranslatedProps} from '../../types';
+import { SearchResultsItem } from '../';
+import { ISearchResultData, ITranslatedProps } from '../../types';
 import styles from './SuggestedSearches.style';
 
 interface ISuggestedProps extends ITranslatedProps {
@@ -12,10 +12,20 @@ interface ISuggestedProps extends ITranslatedProps {
 }
 
 // Add 'Suggested' to dictionary
-export const SuggestedSearches: React.SFC<ISuggestedProps> = ({items, onAddFriend, onResultPress, getText}) => {
+export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
+	items,
+	onAddFriend,
+	onResultPress,
+	getText,
+}) => {
 	if (items && items.length > 0) {
 		const rows = items.map((item: any) => (
-			<SearchResultsItem item={item} key={item.userId} onAddFriend={onAddFriend} onResultPress={onResultPress} />
+			<SearchResultsItem
+				item={item}
+				key={item.userId}
+				onAddFriend={onAddFriend}
+				onResultPress={onResultPress}
+			/>
 		));
 
 		return (

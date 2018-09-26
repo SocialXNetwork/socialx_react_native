@@ -1,9 +1,9 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {SettingsScreenView} from '../../../../src/screens/myProfile/SettingsScreen.view';
+import { SettingsScreenView } from '../../../../src/screens/myProfile/SettingsScreen.view';
 
 storiesOf('Screens/myProfile', module)
 	.addDecorator(withKnobs)

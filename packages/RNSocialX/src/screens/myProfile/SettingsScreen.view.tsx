@@ -1,9 +1,9 @@
-import {Formik, FormikErrors, FormikProps} from 'formik';
+import { Formik, FormikErrors, FormikProps } from 'formik';
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {string} from 'yup';
+import { string } from 'yup';
 
 import {
 	AvatarName,
@@ -17,9 +17,9 @@ import {
 	TRKeyboardKeys,
 	WithInlineLoader,
 } from '../../components';
-import {IWithLoaderProps} from '../../components/inlineLoader';
-import {ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './SettingsScreen.style';
+import { IWithLoaderProps } from '../../components/inlineLoader';
+import { ITranslatedProps } from '../../types';
+import style, { customStyleProps } from './SettingsScreen.style';
 
 const EMAIL_SCHEMA = string().email();
 
@@ -33,7 +33,10 @@ export interface ISettingsData {
 	userName: string;
 }
 
-interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IWithLoaderProps {
+interface ISettingsScreenViewProps
+	extends ISettingsData,
+		ITranslatedProps,
+		IWithLoaderProps {
 	onSaveChanges: (values: ISettingsData) => void;
 	onLogout: () => void;
 	onGoBack: () => void;
@@ -64,7 +67,11 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				userName,
 				miningEnabled,
 			}}
-			validate={({firstName: firstNameValue, lastName: lastNameValue, email: emailValue}: ISettingsData) => {
+			validate={({
+				firstName: firstNameValue,
+				lastName: lastNameValue,
+				email: emailValue,
+			}: ISettingsData) => {
 				const errors: FormikErrors<ISettingsData> = {};
 				if (!emailValue) {
 					errors.email = getText('settings.screen.email.required');
@@ -96,12 +103,16 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				isValid,
 				setFieldValue,
 			}: FormikProps<ISettingsData>) => (
-				<View style={{flex: 1}}>
+				<View style={{ flex: 1 }}>
 					{
 						<Header
 							title={getText('settings.screen.title')}
-							left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
-							right={<HeaderButton iconName={'ios-log-out'} onPress={onLogout} />}
+							left={
+								<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />
+							}
+							right={
+								<HeaderButton iconName={'ios-log-out'} onPress={onLogout} />
+							}
 						/>
 					}
 					<KeyboardAwareScrollView
@@ -113,8 +124,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					>
 						<View style={style.pickerContainer}>
 							<AvatarPicker
-								avatarImage={avatarURLValue !== null ? {uri: avatarURLValue} : customStyleProps.avatarPlaceholderImg}
-								afterImagePick={(localPhotoPath: string) => setFieldValue('avatarURL', localPhotoPath, false)}
+								avatarImage={
+									avatarURLValue !== null
+										? { uri: avatarURLValue }
+										: customStyleProps.avatarPlaceholderImg
+								}
+								afterImagePick={(localPhotoPath: string) =>
+									setFieldValue('avatarURL', localPhotoPath, false)
+								}
 								avatarSize={customStyleProps.avatarPickerSize}
 								getText={getText}
 							/>
@@ -133,27 +150,43 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 								placeholder={getText('settings.screen.about.text.placeholder')}
 								borderColor={customStyleProps.aboutMeTextBorderColor}
 								multiline={true}
-								onChangeText={(value: string) => setFieldValue('aboutMeText', value)}
-								focusUpdateHandler={(value) => !value && handleBlur('aboutMeText')}
+								onChangeText={(value: string) =>
+									setFieldValue('aboutMeText', value)
+								}
+								focusUpdateHandler={(value) =>
+									!value && handleBlur('aboutMeText')
+								}
 							/>
 						</View>
-						<Text style={style.personalDetails}>{getText('settings.screen.personal.details')}</Text>
-						<View style={[style.textInputContainer, style.textInputContainerFirst]}>
+						<Text style={style.personalDetails}>
+							{getText('settings.screen.personal.details')}
+						</Text>
+						<View
+							style={[style.textInputContainer, style.textInputContainerFirst]}
+						>
 							<PrimaryTextInput
 								autoCapitalize={'words'}
 								autoCorrect={true}
 								value={firstNameValue}
 								iconColor={customStyleProps.userDataInputIconColor}
 								placeholder={getText('settings.screen.first.name.placeholder')}
-								placeholderColor={customStyleProps.userDataInputPlaceholderColor}
+								placeholderColor={
+									customStyleProps.userDataInputPlaceholderColor
+								}
 								size={InputSizes.Small}
 								borderColor={customStyleProps.userDataInputBorderColor}
 								blurOnSubmit={true}
 								returnKeyType={TRKeyboardKeys.done}
-								onChangeText={(value: string) => setFieldValue('firstName', value)}
-								focusUpdateHandler={(value) => !value && handleBlur('firstName')}
+								onChangeText={(value: string) =>
+									setFieldValue('firstName', value)
+								}
+								focusUpdateHandler={(value) =>
+									!value && handleBlur('firstName')
+								}
 							/>
-							{errors.firstName && <Text style={style.errorText}>{errors.firstName}</Text>}
+							{errors.firstName && (
+								<Text style={style.errorText}>{errors.firstName}</Text>
+							)}
 						</View>
 						<View style={[style.textInputContainer]}>
 							<PrimaryTextInput
@@ -162,15 +195,21 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 								value={lastNameValue}
 								iconColor={customStyleProps.userDataInputIconColor}
 								placeholder={getText('settings.screen.last.name.placeholder')}
-								placeholderColor={customStyleProps.userDataInputPlaceholderColor}
+								placeholderColor={
+									customStyleProps.userDataInputPlaceholderColor
+								}
 								borderColor={customStyleProps.userDataInputBorderColor}
 								size={InputSizes.Small}
 								blurOnSubmit={true}
 								returnKeyType={TRKeyboardKeys.done}
-								onChangeText={(value: string) => setFieldValue('lastName', value)}
+								onChangeText={(value: string) =>
+									setFieldValue('lastName', value)
+								}
 								focusUpdateHandler={(value) => !value && handleBlur('lastName')}
 							/>
-							{errors.lastName && <Text style={style.errorText}>{errors.lastName}</Text>}
+							{errors.lastName && (
+								<Text style={style.errorText}>{errors.lastName}</Text>
+							)}
 						</View>
 						<View style={[style.textInputContainer]}>
 							<PrimaryTextInput
@@ -178,7 +217,9 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 								value={emailValue}
 								iconColor={customStyleProps.userDataInputIconColor}
 								placeholder={getText('settings.screen.email.placeholder')}
-								placeholderColor={customStyleProps.userDataInputPlaceholderColor}
+								placeholderColor={
+									customStyleProps.userDataInputPlaceholderColor
+								}
 								borderColor={customStyleProps.userDataInputBorderColor}
 								size={InputSizes.Small}
 								keyboardType={TKeyboardKeys.emailAddress}
@@ -187,21 +228,27 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 								onChangeText={(value: string) => setFieldValue('email', value)}
 								focusUpdateHandler={(value) => !value && handleBlur('email')}
 							/>
-							{errors.email && <Text style={style.errorText}>{errors.email}</Text>}
+							{errors.email && (
+								<Text style={style.errorText}>{errors.email}</Text>
+							)}
 						</View>
 						<View style={style.miningContainer}>
 							<SettingCheckbox
 								title={getText('settings.screen.mining.title')}
 								description={getText('settings.screen.mining.description')}
 								value={miningEnabledValue}
-								onValueUpdated={() => setFieldValue('miningEnabled', !miningEnabledValue, false)}
+								onValueUpdated={() =>
+									setFieldValue('miningEnabled', !miningEnabledValue, false)
+								}
 							/>
 						</View>
 					</KeyboardAwareScrollView>
 					{isValid && (
 						<View style={style.bottomContainer}>
 							<TouchableOpacity style={style.saveButton} onPress={handleSubmit}>
-								<Text style={style.saveButtonText}>{getText('settings.screen.save.button')}</Text>
+								<Text style={style.saveButtonText}>
+									{getText('settings.screen.save.button')}
+								</Text>
 								<Icon name={'check'} style={style.checkIcon} />
 							</TouchableOpacity>
 						</View>

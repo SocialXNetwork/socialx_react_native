@@ -1,6 +1,6 @@
-import {Image as PickerImage} from 'react-native-image-crop-picker';
-import {NavigationScreenConfig, NavigationScreenProp} from 'react-navigation';
-import {IAccountCurrencyData} from './components';
+import { Image as PickerImage } from 'react-native-image-crop-picker';
+import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
+import { IAccountCurrencyData } from './components';
 
 export interface IFriendsSearchResult {
 	id: string;
@@ -156,7 +156,7 @@ export interface IWallPostCardData extends IResizeProps {
 	id: string;
 	postText: false | string;
 	location: false | string;
-	taggedFriends: Array<{fullName: string}>;
+	taggedFriends: Array<{ fullName: string }>;
 	timestamp: Date;
 	owner: IPostOwner;
 	currentUserAvatarURL?: string;

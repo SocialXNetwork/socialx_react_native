@@ -1,10 +1,11 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {WallPostMedia} from '../../../../../src/components/displayers/WallPostCard';
+import { WallPostMedia } from '../../../../../src/components/displayers/WallPostCard';
 import CenterView from '../../../../helpers/CenterView';
 
-const onMediaObjectViewHandler = (index: number) => console.log('View media at index: ' + index);
+const onMediaObjectViewHandler = (index: number) =>
+	console.log('View media at index: ' + index);
 
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)

@@ -1,8 +1,13 @@
 import * as React from 'react';
-import {StyleProp, TouchableWithoutFeedback, View, ViewStyle} from 'react-native';
+import {
+	StyleProp,
+	TouchableWithoutFeedback,
+	View,
+	ViewStyle,
+} from 'react-native';
 
 import Video from 'react-native-video';
-import {VideoControls} from './';
+import { VideoControls } from './';
 import styles from './VideoPlayer.style';
 
 export interface IVideoOptions {
@@ -27,7 +32,10 @@ interface IVideoPlayerState {
 	fullscreen: boolean;
 }
 
-export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayerState> {
+export class VideoPlayer extends React.Component<
+	IVideoPlayerProps,
+	IVideoPlayerState
+> {
 	public static defaultProps = {
 		containerStyle: styles.container,
 		muted: false,
@@ -67,7 +75,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 			onPressVideo,
 			onMuteVideo,
 		} = this.props;
-		const {ended, playReady, fullscreen} = this.state;
+		const { ended, playReady, fullscreen } = this.state;
 
 		const showPlayButton = paused || ended;
 		const muteIcon = muted ? 'md-volume-off' : 'md-volume-high';
@@ -78,7 +86,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 					<Video
 						onReadyForDisplay={this.videoReadyHandler}
 						// poster='https://baconmockup.com/300/200/'
-						source={{uri: videoURL}}
+						source={{ uri: videoURL }}
 						resizeMode={resizeMode}
 						paused={paused}
 						muted={muted}
@@ -130,7 +138,11 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	};
 
 	private onVideoEnterFullScreen = () => {
-		const {resizeToChangeAspectRatio, onUpdateResizeMode, resizeMode} = this.props;
+		const {
+			resizeToChangeAspectRatio,
+			onUpdateResizeMode,
+			resizeMode,
+		} = this.props;
 		if (resizeToChangeAspectRatio) {
 			onUpdateResizeMode(resizeMode === 'cover' ? 'contain' : 'cover');
 		} else {

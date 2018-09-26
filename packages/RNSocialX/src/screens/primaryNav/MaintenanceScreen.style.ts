@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Animations, Colors, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Animations, Colors, Sizes } from '../../environment/theme';
 
 export default StyleSheet.create({
 	container: {

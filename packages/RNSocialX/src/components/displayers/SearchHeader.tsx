@@ -1,11 +1,11 @@
-import React, {Component, RefObject} from 'react';
-import {Keyboard, Platform, TouchableOpacity, View} from 'react-native';
+import React, { Component, RefObject } from 'react';
+import { Keyboard, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationScreenProp, SafeAreaView} from 'react-navigation';
+import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 
-import {InputSizes, PrimaryTextInput, TRKeyboardKeys} from '../';
-import {OS_TYPES} from '../../environment/consts';
-import styles, {colors} from './SearchHeader.style';
+import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
+import { OS_TYPES } from '../../environment/consts';
+import styles, { colors } from './SearchHeader.style';
 
 interface ISearchHeaderProps {
 	navigation: NavigationScreenProp<any>;
@@ -19,7 +19,10 @@ interface ISearchHeaderState {
 	navigatedFromTrending: boolean;
 }
 
-export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderState> {
+export class SearchHeader extends Component<
+	ISearchHeaderProps,
+	ISearchHeaderState
+> {
 	public static defaultProps = {
 		cancel: false,
 	};
@@ -32,13 +35,17 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 	private inputRef: RefObject<PrimaryTextInput> = React.createRef();
 
 	public componentDidUpdate() {
-		if (this.inputRef.current && this.props.cancel && !this.state.navigatedFromTrending) {
+		if (
+			this.inputRef.current &&
+			this.props.cancel &&
+			!this.state.navigatedFromTrending
+		) {
 			this.inputRef.current.focusInput();
-			this.setState({navigatedFromTrending: true});
+			this.setState({ navigatedFromTrending: true });
 		}
 
 		if (!this.props.cancel && this.state.navigatedFromTrending) {
-			this.setState({navigatedFromTrending: false});
+			this.setState({ navigatedFromTrending: false });
 		}
 	}
 
@@ -52,10 +59,14 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 								<Icon name={'md-arrow-back'} style={styles.backIcon} />
 							</TouchableOpacity>
 						)}
-					<View style={{flex: 1}}>
+					<View style={{ flex: 1 }}>
 						<PrimaryTextInput
 							ref={this.inputRef}
-							value={this.props.searchTermValue ? this.props.searchTermValue : this.state.searchTerm}
+							value={
+								this.props.searchTermValue
+									? this.props.searchTermValue
+									: this.state.searchTerm
+							}
 							onChangeText={this.searchInputUpdated}
 							onSubmitPressed={Keyboard.dismiss}
 							placeholder={'Search'}
@@ -72,7 +83,11 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 						/>
 
 						{!this.props.cancel ? (
-							<TouchableOpacity activeOpacity={1} onPress={this.onPressInput} style={styles.inputOverlay} />
+							<TouchableOpacity
+								activeOpacity={1}
+								onPress={this.onPressInput}
+								style={styles.inputOverlay}
+							/>
 						) : null}
 					</View>
 				</View>
@@ -91,15 +106,15 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 	};
 
 	private onPressInput = () => {
-		const {navigation} = this.props;
+		const { navigation } = this.props;
 		if (navigation.state.routeName === 'Trending') {
 			navigation.navigate('TabbedSearchScreen');
 		}
 	};
 
 	private onBackHandler = () => {
-		const {navigation} = this.props;
-		this.setState({searchTerm: ''}, () => {
+		const { navigation } = this.props;
+		this.setState({ searchTerm: '' }, () => {
 			Keyboard.dismiss();
 			navigation.goBack();
 		});

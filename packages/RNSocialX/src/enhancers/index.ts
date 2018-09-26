@@ -1,1 +1,1 @@
-export {WithFooGreeter, WithFooGreeterAndCounter} from './WithFooGreeter';
+export { WithFooGreeter, WithFooGreeterAndCounter } from './WithFooGreeter';

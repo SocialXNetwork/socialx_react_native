@@ -1,2 +1,2 @@
-export {SuggestionCard} from './SuggestionCard';
-export {SuggestionsCarousel} from './SuggestionsCarousel';
+export { SuggestionCard } from './SuggestionCard';
+export { SuggestionsCarousel } from './SuggestionsCarousel';

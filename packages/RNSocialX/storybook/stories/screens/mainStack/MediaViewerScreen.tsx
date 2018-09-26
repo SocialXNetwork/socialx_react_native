@@ -1,16 +1,18 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, number, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
-import {DeviceOrientations} from '../../../../src/environment/consts';
-import {MediaViewerScreenView} from '../../../../src/screens/mainStack/MediaViewerScreen.view';
-import {MediaTypeImage} from '../../../../src/types';
+import { DeviceOrientations } from '../../../../src/environment/consts';
+import { MediaViewerScreenView } from '../../../../src/screens/mainStack/MediaViewerScreen.view';
+import { MediaTypeImage } from '../../../../src/types';
 
 const generateMediaObjects = (limit: number) =>
 	new Array(limit).fill(0).map(() => ({
-		url: `https://placeimg.com/${Math.round(Math.random() * 200 + 200)}/${Math.round(Math.random() * 150 + 200)}/any`,
+		url: `https://placeimg.com/${Math.round(
+			Math.random() * 200 + 200,
+		)}/${Math.round(Math.random() * 150 + 200)}/any`,
 		hash: 'q89235y7jfa' + Math.random(),
 		type: MediaTypeImage,
 		extension: 'jpg',

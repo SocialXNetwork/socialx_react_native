@@ -1,3 +1,4 @@
+// tslint:disable-next-line no-submodule-imports
 import * as Gun from 'gun/gun';
 
 Gun.chain.encrypt = function(data: any, cb?: any) {

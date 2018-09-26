@@ -8,18 +8,33 @@
  */
 
 import * as React from 'react';
-import {Image, ImageSourcePropType, ImageStyle, StyleProp, StyleSheet} from 'react-native';
+import {
+	Image,
+	ImageSourcePropType,
+	ImageStyle,
+	StyleProp,
+	StyleSheet,
+} from 'react-native';
 
-import {Images, Sizes} from '../../environment/theme';
+import { Images, Sizes } from '../../environment/theme';
 
 interface IAvatarImageProps {
 	image: ImageSourcePropType | string | null | undefined;
 	style: StyleProp<ImageStyle>;
 }
 
-export const AvatarImage: React.SFC<IAvatarImageProps> = ({image, style = styles.avatarImage}) => (
+export const AvatarImage: React.SFC<IAvatarImageProps> = ({
+	image,
+	style = styles.avatarImage,
+}) => (
 	<Image
-		source={image ? (typeof image === 'string' ? {uri: image} : image) : Images.user_avatar_placeholder}
+		source={
+			image
+				? typeof image === 'string'
+					? { uri: image }
+					: image
+				: Images.user_avatar_placeholder
+		}
 		resizeMode={'cover'}
 		style={style}
 	/>

@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithLoginEnhancedProps = {
 	data: {},
@@ -36,9 +36,12 @@ interface IWithLoginProps {
 
 interface IWithLoginState {}
 
-export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState> {
+export class WithLogin extends React.Component<
+	IWithLoginProps,
+	IWithLoginState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

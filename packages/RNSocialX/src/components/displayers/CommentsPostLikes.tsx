@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 
-import {ILike, ITranslatedProps} from '../../types';
+import { ILike, ITranslatedProps } from '../../types';
 import styles from './CommentsPostLikes.style';
 
 interface ICommentPostLikesProps extends ITranslatedProps {
@@ -9,7 +9,11 @@ interface ICommentPostLikesProps extends ITranslatedProps {
 	showUserProfile: (userId: string) => void;
 }
 
-export const CommentsPostLikes: React.SFC<ICommentPostLikesProps> = ({likes, showUserProfile, getText}) => {
+export const CommentsPostLikes: React.SFC<ICommentPostLikesProps> = ({
+	likes,
+	showUserProfile,
+	getText,
+}) => {
 	if (likes.length > 0) {
 		const lastLikeUser = likes[likes.length - 1];
 		const secondLastLike = likes.length >= 2 ? likes[likes.length - 2] : null;
@@ -20,14 +24,20 @@ export const CommentsPostLikes: React.SFC<ICommentPostLikesProps> = ({likes, sho
 			<View style={styles.container}>
 				<Text style={styles.text}>
 					{getText('post.card.liked.by') + ' '}
-					<Text style={styles.bold} onPress={() => showUserProfile(lastLikeUser.userId)}>
+					<Text
+						style={styles.bold}
+						onPress={() => showUserProfile(lastLikeUser.userId)}
+					>
 						{lastLikeUser.userName}
 					</Text>
 				</Text>
 				{secondLastLike && (
 					<Text style={styles.text}>
 						{andText}
-						<Text style={styles.bold} onPress={() => showUserProfile(secondLastLike.userId)}>
+						<Text
+							style={styles.bold}
+							onPress={() => showUserProfile(secondLastLike.userId)}
+						>
 							{secondLastLike.userName}
 						</Text>
 					</Text>
@@ -35,7 +45,9 @@ export const CommentsPostLikes: React.SFC<ICommentPostLikesProps> = ({likes, sho
 				{numberOfOtherLikes > 1 && (
 					<Text style={styles.text}>
 						{andText}
-						<Text style={styles.bold}>{`${numberOfOtherLikes} ${getText('text.others')}`}</Text>
+						<Text style={styles.bold}>{`${numberOfOtherLikes} ${getText(
+							'text.others',
+						)}`}</Text>
 					</Text>
 				)}
 			</View>

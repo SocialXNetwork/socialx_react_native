@@ -1,14 +1,17 @@
 import * as React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
-import {Colors} from '../../../environment/theme';
-import {ITranslatedProps} from '../../../types';
+import { Colors } from '../../../environment/theme';
+import { ITranslatedProps } from '../../../types';
 
 interface ITaggedFriendsProps extends ITranslatedProps {
-	friends: Array<{fullName: string}>;
+	friends: Array<{ fullName: string }>;
 }
 
-export const TaggedFriends: React.SFC<ITaggedFriendsProps> = ({friends, getText}) => {
+export const TaggedFriends: React.SFC<ITaggedFriendsProps> = ({
+	friends,
+	getText,
+}) => {
 	const hasFriends = friends.length > 0;
 	const hasMoreThanOneFriend = friends.length > 1;
 

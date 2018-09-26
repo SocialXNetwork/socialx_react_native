@@ -1,9 +1,9 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {InputSMSCodeModal} from '../../../../src/components';
+import { InputSMSCodeModal } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)

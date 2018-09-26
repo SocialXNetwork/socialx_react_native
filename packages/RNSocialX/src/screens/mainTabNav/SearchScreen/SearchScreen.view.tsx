@@ -1,9 +1,13 @@
 import * as React from 'react';
-import {View} from 'react-native';
-import {NavigationScreenProp} from 'react-navigation';
+import { View } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 
-import {SearchHeader, SearchResults, SuggestedSearches} from '../../../components';
-import {ISearchResultData, ITranslatedProps} from '../../../types';
+import {
+	SearchHeader,
+	SearchResults,
+	SuggestedSearches,
+} from '../../../components';
+import { ISearchResultData, ITranslatedProps } from '../../../types';
 import styles from './SearchScreen.style';
 
 interface ISearchScreenViewProps extends ITranslatedProps {

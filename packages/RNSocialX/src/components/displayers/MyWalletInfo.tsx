@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {ButtonSizes, PrimaryButton} from '../../components';
-import {ITranslatedProps} from '../../types';
-import styles, {defaultStyles} from './MyWalletInfo.style';
+import { ButtonSizes, PrimaryButton } from '../../components';
+import { ITranslatedProps } from '../../types';
+import styles, { defaultStyles } from './MyWalletInfo.style';
 
 export enum TrendOptions {
 	Up = 'UP',

@@ -37,14 +37,14 @@ export const likeComment = yup
 export const createComment = yup
 	.object()
 	.shape({
-		text: longTextType.required(),
 		postId: idType,
+		text: longTextType.required(),
 	})
 	.required();
 
 export default {
-	getPostComments,
-	getCommentLikes,
-	likeComment,
 	createComment,
+	getCommentLikes,
+	getPostComments,
+	likeComment,
 };

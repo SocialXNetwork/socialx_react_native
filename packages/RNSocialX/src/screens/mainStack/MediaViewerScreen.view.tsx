@@ -6,13 +6,24 @@
  */
 
 import * as React from 'react';
-import {Platform, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {
+	Platform,
+	SafeAreaView,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {CloseButton as CloseModal, Header, MediaInfoModal, MediaObjectViewer} from '../../components';
-import {DeviceOrientations} from '../../environment/consts';
-import {IMediaProps, ITranslatedProps} from '../../types';
+import {
+	CloseButton as CloseModal,
+	Header,
+	MediaInfoModal,
+	MediaObjectViewer,
+} from '../../components';
+import { DeviceOrientations } from '../../environment/consts';
+import { IMediaProps, ITranslatedProps } from '../../types';
 import styles from './MediaViewerScreen.style';
 
 interface IMediaViewerScreenViewProps extends ITranslatedProps {
@@ -63,15 +74,24 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				mediaURL={currentMediaObject.url}
 				getText={getText}
 			/>
-			<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
+			<View
+				style={styles.carouselContainer}
+				onLayout={carouselContainerOnLayout}
+			>
 				<Carousel
 					data={mediaObjects}
-					renderItem={({item, index}: {item: IMediaProps; index: number}) => (
+					renderItem={({
+						item,
+						index,
+					}: {
+						item: IMediaProps;
+						index: number;
+					}) => (
 						<MediaObjectViewer
 							type={item.type}
 							paused={index !== activeSlide}
 							uri={item.url}
-							style={[styles.carouselMediaObject, {width: viewport.width}]}
+							style={[styles.carouselMediaObject, { width: viewport.width }]}
 							resizeMode={'contain'}
 							resizeToChangeAspectRatio={true}
 							canZoom={false}
@@ -96,23 +116,35 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 						},
 					})}
 				/>
-				<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
+				<CloseButton
+					isPortrait={isPortrait}
+					onExitFullScreen={onExitFullScreen}
+				/>
 				<View style={styles.screenFooter} pointerEvents={'none'}>
-					<MediaInfoSection mediaObjects={mediaObjects} activeSlide={activeSlide} />
+					<MediaInfoSection
+						mediaObjects={mediaObjects}
+						activeSlide={activeSlide}
+					/>
 					<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
 				</View>
-				<TouchableOpacity style={styles.infoButton} onPress={showMediaInfoOverlay}>
-					<Icon name={'ios-information-circle-outline'} style={styles.infoIcon} />
+				<TouchableOpacity
+					style={styles.infoButton}
+					onPress={showMediaInfoOverlay}
+				>
+					<Icon
+						name={'ios-information-circle-outline'}
+						style={styles.infoIcon}
+					/>
 				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
 };
 
-const CloseButton: React.SFC<{isPortrait: boolean; onExitFullScreen: () => void}> = ({
-	isPortrait,
-	onExitFullScreen,
-}) => {
+const CloseButton: React.SFC<{
+	isPortrait: boolean;
+	onExitFullScreen: () => void;
+}> = ({ isPortrait, onExitFullScreen }) => {
 	if (!isPortrait) {
 		return (
 			<TouchableOpacity onPress={onExitFullScreen} style={styles.closeButton}>
@@ -123,7 +155,10 @@ const CloseButton: React.SFC<{isPortrait: boolean; onExitFullScreen: () => void}
 	return null;
 };
 
-const Pagination: React.SFC<{mediaObjects: IMediaProps[]; activeSlide: number}> = ({mediaObjects, activeSlide}) => {
+const Pagination: React.SFC<{
+	mediaObjects: IMediaProps[];
+	activeSlide: number;
+}> = ({ mediaObjects, activeSlide }) => {
 	if (mediaObjects.length > 1) {
 		return (
 			<View style={styles.paginationContainer}>
@@ -138,20 +173,24 @@ const Pagination: React.SFC<{mediaObjects: IMediaProps[]; activeSlide: number}> 
 	return null;
 };
 
-const MediaInfoSection: React.SFC<{mediaObjects: IMediaProps[]; activeSlide: number}> = ({
-	mediaObjects,
-	activeSlide,
-}) => {
+const MediaInfoSection: React.SFC<{
+	mediaObjects: IMediaProps[];
+	activeSlide: number;
+}> = ({ mediaObjects, activeSlide }) => {
 	const currentMedia = mediaObjects[activeSlide];
-	const numberOfLikes = currentMedia.numberOfLikes | 0;
-	const numberOfComments = currentMedia.numberOfComments | 0;
+	const numberOfLikes = currentMedia.numberOfLikes || 0;
+	const numberOfComments = currentMedia.numberOfComments || 0;
 
 	if (numberOfComments > 0 || numberOfLikes > 0) {
 		return (
 			<View style={styles.mediaInfoSection}>
-				{numberOfLikes > 0 && <Text style={styles.infoText}>{'Likes ' + numberOfLikes}</Text>}
-				<View style={{flex: 1}} />
-				{numberOfComments > 0 && <Text style={styles.infoText}>{'Comments ' + numberOfComments}</Text>}
+				{numberOfLikes > 0 && (
+					<Text style={styles.infoText}>{'Likes ' + numberOfLikes}</Text>
+				)}
+				<View style={{ flex: 1 }} />
+				{numberOfComments > 0 && (
+					<Text style={styles.infoText}>{'Comments ' + numberOfComments}</Text>
+				)}
 			</View>
 		);
 	}

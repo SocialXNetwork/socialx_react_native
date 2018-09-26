@@ -1,8 +1,8 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {PostText} from '../../../../../src/components/displayers/WallPostCard';
+import { PostText } from '../../../../../src/components/displayers/WallPostCard';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -21,9 +21,15 @@ storiesOf('Components/displayers', module)
 				}
 				fullTextVisible={fullTextVisible}
 				toggleShowFullText={() => console.log('toggleShowFullText')}
-				handleHashTag={(hashTag: string) => console.log('handleHashTag', hashTag)}
-				handleUserTag={(userTag: string) => console.log('handleUserTag', userTag)}
-				launchExternalUrl={(url: string) => console.log('launchExternalUrl', url)}
+				handleHashTag={(hashTag: string) =>
+					console.log('handleHashTag', hashTag)
+				}
+				handleUserTag={(userTag: string) =>
+					console.log('handleUserTag', userTag)
+				}
+				launchExternalUrl={(url: string) =>
+					console.log('launchExternalUrl', url)
+				}
 			/>
 		);
 	});

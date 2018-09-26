@@ -4,12 +4,12 @@
  */
 
 import * as React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import SplashScreen from 'react-native-smart-splash-screen';
 
-import {HelloFoo} from './app/';
-import {ManagedKeyboard} from './components/';
-import {KeyboardContext} from './environment/consts';
+import { HelloFoo } from './app/';
+import { ManagedKeyboard } from './components/';
+import { KeyboardContext } from './environment/consts';
 
 export default class App extends React.Component<{}> {
 	public componentDidMount(): void {

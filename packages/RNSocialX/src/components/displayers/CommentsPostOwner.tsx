@@ -1,10 +1,10 @@
 import moment from 'moment';
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {AvatarImage, CommentsHeaderMenuButton} from '../';
-import {ITranslatedProps} from '../../types';
+import { AvatarImage, CommentsHeaderMenuButton } from '../';
+import { ITranslatedProps } from '../../types';
 import styles from './CommentsPostOwner.style';
 
 interface IPostOwnerProps extends ITranslatedProps {
@@ -31,11 +31,13 @@ export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 				<Icon name={'md-close'} style={styles.arrow} />
 			</TouchableOpacity>
 			<TouchableOpacity onPress={() => showUserProfile(owner.userId)}>
-				<AvatarImage image={{uri: owner.avatarURL}} style={styles.avatar} />
+				<AvatarImage image={{ uri: owner.avatarURL }} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.textContainer}>
 				<Text style={styles.user}>{owner.fullName}</Text>
-				<Text style={styles.timestamp}>{`${timeStampDate} at ${timeStampHour}`}</Text>
+				<Text
+					style={styles.timestamp}
+				>{`${timeStampDate} at ${timeStampHour}`}</Text>
 			</View>
 			<View style={styles.dotsContainer}>
 				<CommentsHeaderMenuButton

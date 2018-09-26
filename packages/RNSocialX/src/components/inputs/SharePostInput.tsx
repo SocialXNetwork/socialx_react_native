@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, TextInput, View} from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
-import {AvatarImage} from '../';
-import style, {customStyleProps} from './SharePostInput.style';
+import { AvatarImage } from '../';
+import style, { customStyleProps } from './SharePostInput.style';
 
 const MAX_POST_LENGTH = 500;
 
@@ -13,7 +13,12 @@ interface ISharePostInputProps {
 	onTextUpdate: (value: string) => void;
 }
 
-export const SharePostInput: React.SFC<ISharePostInputProps> = ({avatarSource, placeholder, text, onTextUpdate}) => (
+export const SharePostInput: React.SFC<ISharePostInputProps> = ({
+	avatarSource,
+	placeholder,
+	text,
+	onTextUpdate,
+}) => (
 	<View style={style.shareMessageContainer}>
 		<AvatarImage image={avatarSource} style={style.avatarImage} />
 		<View style={style.captionContainer}>

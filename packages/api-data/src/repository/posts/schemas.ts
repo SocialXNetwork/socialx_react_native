@@ -23,19 +23,19 @@ const longTextType = yup
 export const postData = yup
 	.object()
 	.shape({
+		image_hash: longTextType,
+		location: longTextType,
+		optimized_image_hash: longTextType,
+		privatePost: yup
+			.boolean()
+			.default(false)
+			.required(),
+		text: longTextType,
 		title: yup
 			.string()
 			.trim()
 			.min(1)
 			.max(256)
-			.required(),
-		text: longTextType,
-		location: longTextType,
-		image_hash: longTextType,
-		optimized_image_hash: longTextType,
-		privatePost: yup
-			.boolean()
-			.default(false)
 			.required(),
 	})
 	.required();
@@ -76,10 +76,10 @@ export const getPostLikes = yup
 	.required();
 
 export default {
-	postData,
-	likePost,
-	getPostPathsByUser,
 	getPostByPath,
-	getPublicPostsByDate,
 	getPostLikes,
+	getPostPathsByUser,
+	getPublicPostsByDate,
+	likePost,
+	postData,
 };

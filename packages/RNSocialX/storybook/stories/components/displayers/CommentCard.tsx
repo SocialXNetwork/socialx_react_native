@@ -1,8 +1,8 @@
-import {boolean, date, number, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, date, number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {CommentCard} from '../../../../src/components/displayers/CommentCard';
+import { CommentCard } from '../../../../src/components/displayers/CommentCard';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -11,10 +11,16 @@ storiesOf('Components/displayers', module)
 	.add('CommentCard', () => {
 		const isReply = boolean('isReply', false);
 		const likedByMe = boolean('likedByMe', false);
-		const commentText = text('commentText', 'Sample comment text here.\nGoing on the second line');
+		const commentText = text(
+			'commentText',
+			'Sample comment text here.\nGoing on the second line',
+		);
 		const replyText = text('replyText', 'One line text reply.');
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
-		const userAvatarURL = text('user.avatarURL', 'https://avatars2.githubusercontent.com/u/212');
+		const userAvatarURL = text(
+			'user.avatarURL',
+			'https://avatars2.githubusercontent.com/u/212',
+		);
 		const userFullName = text('user.fullName', 'Sharell Watchman');
 		const numberOfLikes = number('numberOfLikes', 10);
 
@@ -50,10 +56,14 @@ storiesOf('Components/displayers', module)
 					],
 				}}
 				onCommentLike={() => console.log('onCommentLike')}
-				onCommentReply={(startReply) => console.log('onCommentReply', startReply)}
+				onCommentReply={(startReply) =>
+					console.log('onCommentReply', startReply)
+				}
 				onViewUserProfile={(userId) => console.log('onViewUserProfile', userId)}
 				onShowOptionsMenu={() => console.log('onShowOptionsMenu')}
-				onCommentContainerWidthChange={(value) => console.log('onCommentContainerWidthChange', value)}
+				onCommentContainerWidthChange={(value) =>
+					console.log('onCommentContainerWidthChange', value)
+				}
 				commentLikesPosition={{
 					bottom: -18,
 					right: 0,

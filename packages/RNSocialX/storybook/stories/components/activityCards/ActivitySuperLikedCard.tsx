@@ -1,7 +1,7 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {ActivitySuperLikedCard} from '../../../../src/components';
+import { ActivitySuperLikedCard } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const image = 'https://www.w3schools.com/w3css/img_lights.jpg';

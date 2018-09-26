@@ -1,8 +1,8 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {SuggestedSearches} from '../../../../src/components/';
-import {ISearchResultData, SearchResultKind} from '../../../../src/types';
+import { SuggestedSearches } from '../../../../src/components/';
+import { ISearchResultData, SearchResultKind } from '../../../../src/types';
 
 const items: ISearchResultData[] = [
 	{
@@ -31,4 +31,6 @@ const items: ISearchResultData[] = [
 	},
 ];
 
-storiesOf('Components/displayers', module).add('SuggestedSearches', () => <SuggestedSearches items={items} />);
+storiesOf('Components/displayers', module).add('SuggestedSearches', () => (
+	<SuggestedSearches items={items} />
+));

@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const style: any = {
 	container: {
@@ -14,7 +14,7 @@ const style: any = {
 		width: '100%',
 		maxWidth: 500,
 		shadowColor: Colors.black,
-		shadowOffset: {width: 0, height: 4},
+		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.3,
 		shadowRadius: 8,
 	},

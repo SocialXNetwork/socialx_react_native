@@ -5,8 +5,8 @@
  */
 
 import * as React from 'react';
-import {IRegisterData} from '../../../screens/preAuth/RegisterScreen.view';
-import {ITranslatedProps} from '../../../types';
+import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
@@ -51,8 +51,11 @@ interface IWithRegisterProps {
 
 interface IWithRegisterState {}
 
-export class WithRegister extends React.Component<IWithRegisterProps, IWithRegisterState> {
+export class WithRegister extends React.Component<
+	IWithRegisterProps,
+	IWithRegisterState
+> {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

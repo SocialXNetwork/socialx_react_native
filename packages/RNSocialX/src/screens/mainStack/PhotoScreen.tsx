@@ -7,19 +7,27 @@
  * 4. (Later) Consider using Formik to manage all user input data.
  */
 
-import {ActionSheet} from 'native-base';
+import { ActionSheet } from 'native-base';
 import * as React from 'react';
 
-import {WithModalForAddFriends} from '../../components';
-import {IWithPhotoEnhancedActions, IWithPhotoEnhancedData, WithPhoto} from '../../enhancers/screens';
-import {IFriendsSearchResult, INavigationProps, IWallPostPhotoOptimized} from '../../types';
+import { WithModalForAddFriends } from '../../components';
+import {
+	IWithPhotoEnhancedActions,
+	IWithPhotoEnhancedData,
+	WithPhoto,
+} from '../../enhancers/screens';
+import {
+	IFriendsSearchResult,
+	INavigationProps,
+	IWallPostPhotoOptimized,
+} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
 	IPickerImageMultiple,
 } from '../../utilities';
-import {PhotoScreenView} from './PhotoScreen.view';
+import { PhotoScreenView } from './PhotoScreen.view';
 
 interface IPhotoScreenNavParams {
 	params: {
@@ -27,7 +35,9 @@ interface IPhotoScreenNavParams {
 	};
 }
 
-type IPhotoScreenProps = INavigationProps<IPhotoScreenNavParams> & IWithPhotoEnhancedActions & IWithPhotoEnhancedData;
+type IPhotoScreenProps = INavigationProps<IPhotoScreenNavParams> &
+	IWithPhotoEnhancedActions &
+	IWithPhotoEnhancedData;
 
 interface IPhotoScreenState {
 	locationEnabled: boolean;
@@ -41,12 +51,24 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	private addedFriends: IFriendsSearchResult[] = [];
 
 	public render() {
-		const {currentUserAvatarURL, loading, marginBottom, navigation, getText} = this.props;
-		const {locationEnabled, location, tagFriends, shareText, mediaObjects} = this.state;
+		const {
+			currentUserAvatarURL,
+			loading,
+			marginBottom,
+			navigation,
+			getText,
+		} = this.props;
+		const {
+			locationEnabled,
+			location,
+			tagFriends,
+			shareText,
+			mediaObjects,
+		} = this.state;
 
 		return (
 			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
-				{({showAddFriendsModal, addedFriends}) => {
+				{({ showAddFriendsModal, addedFriends }) => {
 					this.addedFriends = addedFriends;
 					return (
 						<PhotoScreenView
@@ -99,7 +121,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	private onAddMediaHandler = () => {
-		const {getText} = this.props;
+		const { getText } = this.props;
 		ActionSheet.show(
 			{
 				options: [
@@ -119,22 +141,38 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				}
 				if (selectedMediaObjects.length > 0) {
 					const optimizedMediaObjects = await Promise.all(
-						selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
+						selectedMediaObjects.map(async (mObject) =>
+							getOptimizedMediaObject(mObject),
+						),
 					);
-					this.setState({mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects]});
+					this.setState({
+						mediaObjects: [
+							...this.state.mediaObjects,
+							...optimizedMediaObjects,
+						],
+					});
 				}
 			},
 		);
 	};
 
 	private sendPostHandler = () => {
-		const {mediaObjects, tagFriends, shareText, locationEnabled, location} = this.state;
-		const {createPost} = this.props;
+		const {
+			mediaObjects,
+			tagFriends,
+			shareText,
+			locationEnabled,
+			location,
+		} = this.state;
+		const { createPost } = this.props;
 
 		createPost({
 			mediaObjects,
 			location: locationEnabled && location !== '' ? location : undefined,
-			taggedFriends: tagFriends && this.addedFriends.length > 0 ? this.addedFriends : undefined,
+			taggedFriends:
+				tagFriends && this.addedFriends.length > 0
+					? this.addedFriends
+					: undefined,
 			title: shareText ? shareText : undefined,
 		});
 	};
@@ -144,6 +182,10 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 }
 
-export const PhotoScreen = (navProps: INavigationProps<IPhotoScreenNavParams>) => (
-	<WithPhoto>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
+export const PhotoScreen = (
+	navProps: INavigationProps<IPhotoScreenNavParams>,
+) => (
+	<WithPhoto>
+		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+	</WithPhoto>
 );

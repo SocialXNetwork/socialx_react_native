@@ -1,11 +1,17 @@
 import moment from 'moment';
 import * as React from 'react';
-import {StyleProp, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {
+	StyleProp,
+	Text,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native';
 
-import {AvatarImage} from '../../';
-import {AnimatedText} from '../../../environment/theme';
-import {ITranslatedProps, IWallPostComment} from '../../../types';
-import {CommentLikes, CommentReplies, ReplyButton} from './';
+import { AvatarImage } from '../../';
+import { AnimatedText } from '../../../environment/theme';
+import { ITranslatedProps, IWallPostComment } from '../../../types';
+import { CommentLikes, CommentReplies, ReplyButton } from './';
 import styles from './CommentCard.style';
 
 const PULSATE_PERIOD = 700;
@@ -39,7 +45,14 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 			getText,
 		} = this.props;
 
-		const {likedByMe, numberOfLikes, replies, text, user, timestamp} = comment;
+		const {
+			likedByMe,
+			numberOfLikes,
+			replies,
+			text,
+			user,
+			timestamp,
+		} = comment;
 		const commentTimestamp = moment(timestamp).fromNow();
 
 		const animatedText: React.RefObject<any> = React.createRef();
@@ -51,28 +64,48 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 				</TouchableOpacity>
 				<View style={styles.rightContainer}>
 					<View>
-						<TouchableOpacity style={styles.commentBackground} onLongPress={onShowOptionsMenu}>
-							<Text style={styles.userFullName} onPress={() => onViewUserProfile(user.id)}>
+						<TouchableOpacity
+							style={styles.commentBackground}
+							onLongPress={onShowOptionsMenu}
+						>
+							<Text
+								style={styles.userFullName}
+								onPress={() => onViewUserProfile(user.id)}
+							>
 								{user.fullName}
 							</Text>
 							<Text style={styles.commentText}>{text}</Text>
 						</TouchableOpacity>
 						{numberOfLikes > 0 && (
-							<CommentLikes numberOfLikes={numberOfLikes} commentLikesPosition={commentLikesPosition} />
+							<CommentLikes
+								numberOfLikes={numberOfLikes}
+								commentLikesPosition={commentLikesPosition}
+							/>
 						)}
 					</View>
 					<View
 						style={styles.actionsContainer}
-						onLayout={(event) => onCommentContainerWidthChange(event.nativeEvent.layout.width)}
+						onLayout={(event) =>
+							onCommentContainerWidthChange(event.nativeEvent.layout.width)
+						}
 					>
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
-						<TouchableOpacity onPress={() => this.onCommentLikeHandler(onCommentLike, animatedText)}>
+						<TouchableOpacity
+							onPress={() =>
+								this.onCommentLikeHandler(onCommentLike, animatedText)
+							}
+						>
 							<AnimatedText ref={animatedText} style={styles.actionButtonText}>
-								{likedByMe ? getText('comments.screen.actions.unlike') : getText('comments.screen.actions.like')}
+								{likedByMe
+									? getText('comments.screen.actions.unlike')
+									: getText('comments.screen.actions.like')}
 							</AnimatedText>
 						</TouchableOpacity>
 						{!isReply && (
-							<ReplyButton onCommentReply={onCommentReply} label={getText('comments.screen.actions.reply')} />
+							<ReplyButton
+								onCommentReply={onCommentReply}
+								label={getText('comments.screen.actions.reply')}
+							/>
 						)}
 					</View>
 					{!isReply && (
@@ -88,7 +121,10 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 		);
 	}
 
-	private onCommentLikeHandler = (onCommentLike: () => void, animatedText: React.RefObject<any>) => {
+	private onCommentLikeHandler = (
+		onCommentLike: () => void,
+		animatedText: React.RefObject<any>,
+	) => {
 		onCommentLike();
 		animatedText.current.animate('pulse', PULSATE_PERIOD);
 	};

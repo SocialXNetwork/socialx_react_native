@@ -1,2 +1,2 @@
-export {configureStore} from './configureStore';
-export {IApplicationState} from './rootReducer';
+export { configureStore } from './configureStore';
+export { IApplicationState } from './rootReducer';

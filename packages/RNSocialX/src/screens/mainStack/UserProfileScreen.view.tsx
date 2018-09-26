@@ -1,18 +1,42 @@
 import * as React from 'react';
-import {Animated, Dimensions, RefreshControl, ScrollView, View} from 'react-native';
-import {AnimatedValue} from 'react-navigation';
-import {DataProvider} from 'recyclerlistview';
+import {
+	Animated,
+	Dimensions,
+	RefreshControl,
+	ScrollView,
+	View,
+} from 'react-native';
+import { AnimatedValue } from 'react-navigation';
+import { DataProvider } from 'recyclerlistview';
 
-import {CloseButton, Header, NoPhotos, ProfilePhotoGrid, ProfileTopContainer, WallPostCard} from '../../components';
-import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
-import {PROFILE_TAB_ICON_TYPES} from '../../environment/consts';
-import {ICurrentUser, ILike, IWallPostCardActions, IWallPostCardData, SearchResultKind} from '../../types';
+import {
+	CloseButton,
+	Header,
+	NoPhotos,
+	ProfilePhotoGrid,
+	ProfileTopContainer,
+	WallPostCard,
+} from '../../components';
+import {
+	IWithLoaderProps,
+	WithInlineLoader,
+} from '../../components/inlineLoader';
+import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
+import {
+	ICurrentUser,
+	ILike,
+	IWallPostCardActions,
+	IWallPostCardData,
+	SearchResultKind,
+} from '../../types';
 
-import styles, {colors} from './UserProfileScreen.style';
+import styles, { colors } from './UserProfileScreen.style';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-interface IUserProfileScreenViewProps extends IWithLoaderProps, IWallPostCardActions {
+interface IUserProfileScreenViewProps
+	extends IWithLoaderProps,
+		IWallPostCardActions {
 	avatarURL: any;
 	fullName: string;
 	userName: false | string;
@@ -86,13 +110,15 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
 		contentContainerStyle =
 			containerHeight < SCREEN_HEIGHT / 2
-				? [styles.contentContainer, {height: SCREEN_HEIGHT / 2}]
-				: [styles.contentContainer, {height: containerHeight}];
+				? [styles.contentContainer, { height: SCREEN_HEIGHT / 2 }]
+				: [styles.contentContainer, { height: containerHeight }];
 	} else {
 		contentContainerStyle = styles.contentContainer;
 	}
 
-	const scrollContainerStyles = hasPhotos ? styles.scrollContainer : [styles.scrollContainer, {flex: 1}];
+	const scrollContainerStyles = hasPhotos
+		? styles.scrollContainer
+		: [styles.scrollContainer, { flex: 1 }];
 
 	return (
 		<WithInlineLoader isLoading={isLoading}>
@@ -102,7 +128,13 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 				<ScrollView
 					contentContainerStyle={scrollContainerStyles}
 					showsVerticalScrollIndicator={false}
-					refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							tintColor={colors.white}
+						/>
+					}
 					scrollEnabled={hasPhotos}
 				>
 					<ProfileTopContainer
@@ -126,11 +158,18 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					/>
 					{hasPhotos && (
 						<View style={contentContainerStyle}>
-							<Animated.View style={[styles.postsContainer, {transform: [{translateX: listTranslate}]}]}>
+							<Animated.View
+								style={[
+									styles.postsContainer,
+									{ transform: [{ translateX: listTranslate }] },
+								]}
+							>
 								{recentPosts.map((post: IWallPostCardData, index: number) => {
 									let likedByMe = false;
 									if (post.likes.length > 0) {
-										likedByMe = !!post.likes.find((like: ILike) => like.userId === currentUser.userId);
+										likedByMe = !!post.likes.find(
+											(like: ILike) => like.userId === currentUser.userId,
+										);
 									}
 
 									return (
@@ -144,7 +183,10 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												onImagePress={onImagePress}
 												onUserPress={onUserPress}
 												/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
-												onAddComment={(dummyIndex: number, cardHeight: number) => onAddComment(index, cardHeight)}
+												onAddComment={(
+													dummyIndex: number,
+													cardHeight: number,
+												) => onAddComment(index, cardHeight)}
 												onSubmitComment={onSubmitComment}
 												onLikeButtonPress={onLikeButtonPress}
 												noInput={true}
@@ -163,14 +205,17 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 										onLayoutChange(event.nativeEvent.layout.height);
 									}
 								}}
-								style={[styles.gridContainer, {transform: [{translateX: gridTranslate}]}]}
+								style={[
+									styles.gridContainer,
+									{ transform: [{ translateX: gridTranslate }] },
+								]}
 							>
 								<ProfilePhotoGrid
 									loadMorePhotosHandler={loadMorePhotosHandler}
 									gridMediaProvider={gridMediaProvider}
 									onViewMediaFullScreen={onViewMediaFullscreen}
 									header={{
-										element: <View style={{width: 1, height: 1}} />,
+										element: <View style={{ width: 1, height: 1 }} />,
 										height: hasPhotos ? 1 : SCREEN_HEIGHT,
 									}}
 									disabled={hasPhotos}

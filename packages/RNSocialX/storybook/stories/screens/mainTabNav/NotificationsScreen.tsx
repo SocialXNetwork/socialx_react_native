@@ -1,9 +1,9 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {NOTIFICATION_TYPES} from '../../../../src/environment/consts';
-import {NotificationsScreenView} from '../../../../src/screens/mainTabNav/NotificationsScreen.view';
+import { NOTIFICATION_TYPES } from '../../../../src/environment/consts';
+import { NotificationsScreenView } from '../../../../src/screens/mainTabNav/NotificationsScreen.view';
 
 const NOTIFICATION_CARDS = [
 	{
@@ -100,12 +100,24 @@ storiesOf('Screens/mainTabNav', module)
 				notifications={NOTIFICATION_CARDS}
 				refreshing={refreshing}
 				onRefresh={(...args: any[]) => console.log('onRefresh', args)}
-				onPostThumbPressed={(...args: any[]) => console.log('onPostThumbPressed', args)}
-				onSuperLikedPhotoPressed={(...args: any[]) => console.log('onSuperLikedPhotoPressed', args)}
-				onFriendRequestApproved={(...args: any[]) => console.log('onFriendRequestApproved', args)}
-				onFriendRequestDeclined={(...args: any[]) => console.log('onFriendRequestDeclined', args)}
-				onCheckNotification={(...args: any[]) => console.log('onCheckNotification', args)}
-				onViewUserProfile={(...args: any[]) => console.log('onViewUserProfile', args)}
+				onPostThumbPressed={(...args: any[]) =>
+					console.log('onPostThumbPressed', args)
+				}
+				onSuperLikedPhotoPressed={(...args: any[]) =>
+					console.log('onSuperLikedPhotoPressed', args)
+				}
+				onFriendRequestApproved={(...args: any[]) =>
+					console.log('onFriendRequestApproved', args)
+				}
+				onFriendRequestDeclined={(...args: any[]) =>
+					console.log('onFriendRequestDeclined', args)
+				}
+				onCheckNotification={(...args: any[]) =>
+					console.log('onCheckNotification', args)
+				}
+				onViewUserProfile={(...args: any[]) =>
+					console.log('onViewUserProfile', args)
+				}
 				showConfirm={(...args: any[]) => console.log('showConfirm', args)}
 				hideConfirm={(...args: any[]) => console.log('hideConfirm', args)}
 			/>

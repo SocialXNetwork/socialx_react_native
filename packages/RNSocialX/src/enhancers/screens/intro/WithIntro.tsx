@@ -4,7 +4,7 @@
  */
 
 import * as React from 'react';
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithIntroEnhancedProps = {
 	data: {},
@@ -33,9 +33,12 @@ interface IWithIntroProps {
 
 interface IWithIntroState {}
 
-export class WithIntro extends React.Component<IWithIntroProps, IWithIntroState> {
+export class WithIntro extends React.Component<
+	IWithIntroProps,
+	IWithIntroState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

@@ -1,7 +1,7 @@
 // TODO: @Alex fix any typings
 
 import * as React from 'react';
-import {FlatList, Image, Text, View} from 'react-native';
+import { FlatList, Image, Text, View } from 'react-native';
 
 import {
 	ActivityFriendRequestCard,
@@ -10,12 +10,18 @@ import {
 	ActivitySuperLikedCard,
 	Header,
 } from '../../components';
-import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
-import {NOTIFICATION_TYPES} from '../../environment/consts';
-import {IConfirmActions, ITranslatedProps} from '../../types';
-import styles, {emptyListIcon} from './NotificationsScreen.style';
+import {
+	IWithLoaderProps,
+	WithInlineLoader,
+} from '../../components/inlineLoader';
+import { NOTIFICATION_TYPES } from '../../environment/consts';
+import { IConfirmActions, ITranslatedProps } from '../../types';
+import styles, { emptyListIcon } from './NotificationsScreen.style';
 
-interface INotificationsScreenViewProps extends IWithLoaderProps, ITranslatedProps, IConfirmActions {
+interface INotificationsScreenViewProps
+	extends IWithLoaderProps,
+		ITranslatedProps,
+		IConfirmActions {
 	notifications: any[];
 	refreshing: boolean;
 	onRefresh: () => void;
@@ -41,10 +47,16 @@ interface IActivityCardsProps extends ITranslatedProps, IConfirmActions {
 	onViewUserProfile: (userId: string) => void;
 }
 
-const EmptyListComponent: React.SFC<ITranslatedProps> = ({getText}) => (
+const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.emptyContainer}>
-		<Image style={styles.noNotificationsIcon} source={emptyListIcon} resizeMode={'contain'} />
-		<Text style={styles.noNotificationsText}>{getText('notifications.empty.list')}</Text>
+		<Image
+			style={styles.noNotificationsIcon}
+			source={emptyListIcon}
+			resizeMode={'contain'}
+		/>
+		<Text style={styles.noNotificationsText}>
+			{getText('notifications.empty.list')}
+		</Text>
 	</View>
 );
 
@@ -62,10 +74,16 @@ const ActivityCard: React.SFC<IActivityCardsProps> = ({
 	// onGroupRequestConfirmed,
 	// onGroupRequestDeclined,
 }) => {
-	const {requestId} = data;
+	const { requestId } = data;
 
 	if (data.type === NOTIFICATION_TYPES.RECENT_COMMENT) {
-		return <ActivityRecentCommentCard {...data} onThumbPress={onPostThumbPressed} getText={getText} />;
+		return (
+			<ActivityRecentCommentCard
+				{...data}
+				onThumbPress={onPostThumbPressed}
+				getText={getText}
+			/>
+		);
 	} else if (data.type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
 		return (
 			<ActivityFriendRequestCard
@@ -96,12 +114,20 @@ const ActivityCard: React.SFC<IActivityCardsProps> = ({
 				/>
 			);*/
 	} else if (data.type === NOTIFICATION_TYPES.SUPER_LIKED) {
-		return <ActivitySuperLikedCard {...data} onThumbPress={onSuperLikedPhotoPressed} getText={getText} />;
+		return (
+			<ActivitySuperLikedCard
+				{...data}
+				onThumbPress={onSuperLikedPhotoPressed}
+				getText={getText}
+			/>
+		);
 	}
 	return null;
 };
 
-export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> = ({
+export const NotificationsScreenView: React.SFC<
+	INotificationsScreenViewProps
+> = ({
 	notifications,
 	refreshing,
 	onRefresh,

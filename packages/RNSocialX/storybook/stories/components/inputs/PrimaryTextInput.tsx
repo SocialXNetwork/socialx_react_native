@@ -1,8 +1,12 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {PrimaryTextInput, TKeyboardKeys, TRKeyboardKeys} from '../../../../src/components';
-import {Colors} from '../../../../src/environment/theme';
+import {
+	PrimaryTextInput,
+	TKeyboardKeys,
+	TRKeyboardKeys,
+} from '../../../../src/components';
+import { Colors } from '../../../../src/environment/theme';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/inputs', module)

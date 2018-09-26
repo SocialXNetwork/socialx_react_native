@@ -1,11 +1,15 @@
 import * as React from 'react';
-import {Dimensions, Platform} from 'react-native';
-import Orientation, {orientation} from 'react-native-orientation';
+import { Dimensions, Platform } from 'react-native';
+import Orientation, { orientation } from 'react-native-orientation';
 
-import {IWithMediaViewerEnhancedActions, IWithMediaViewerEnhancedData, WithMediaViewer} from '../../enhancers/screens';
-import {DeviceOrientations, OS_TYPES} from '../../environment/consts';
-import {IMediaProps, INavigationProps} from '../../types';
-import {MediaViewerScreenView} from './MediaViewerScreen.view';
+import {
+	IWithMediaViewerEnhancedActions,
+	IWithMediaViewerEnhancedData,
+	WithMediaViewer,
+} from '../../enhancers/screens';
+import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
+import { IMediaProps, INavigationProps } from '../../types';
+import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 interface IMediaViewerScreenNavParams {
 	params: {
@@ -28,7 +32,10 @@ type IMediaViewerScreenProps = INavigationProps<IMediaViewerScreenNavParams> &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions;
 
-class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
+class Screen extends React.Component<
+	IMediaViewerScreenProps,
+	IMediaViewerScreenState
+> {
 	public state = {
 		orientation: DeviceOrientations.Portrait,
 		activeSlide: this.props.navigation.state.params.startIndex,
@@ -54,7 +61,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	}
 
 	public render() {
-		const {params} = this.props.navigation.state;
+		const { params } = this.props.navigation.state;
 
 		return (
 			<MediaViewerScreenView
@@ -76,14 +83,16 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	}
 
 	private orientationDidChange = (orient: orientation) => {
-		this.setState({orientation: orient});
+		this.setState({ orientation: orient });
 	};
 
 	private slideChangedHandler = (index: number) => {
-		this.setState({activeSlide: index});
+		this.setState({ activeSlide: index });
 	};
 
-	private carouselContainerOnLayoutHandler = (event: {nativeEvent: {layout: {width: number; height: number}}}) => {
+	private carouselContainerOnLayoutHandler = (event: {
+		nativeEvent: { layout: { width: number; height: number } };
+	}) => {
 		this.setState({
 			viewport: {
 				width: event.nativeEvent.layout.width,
@@ -92,7 +101,8 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	};
 
 	private onExitFullScreenHandler = () => {
-		const timeoutBeforeAllowAgainAllOrientation = Platform.OS === OS_TYPES.IOS ? 100 : 5000;
+		const timeoutBeforeAllowAgainAllOrientation =
+			Platform.OS === OS_TYPES.IOS ? 100 : 5000;
 		Orientation.lockToPortrait();
 		setTimeout(() => {
 			Orientation.unlockAllOrientations();
@@ -116,6 +126,10 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	};
 }
 
-export const MediaViewerScreen = (navProps: INavigationProps<IMediaViewerScreenNavParams>) => (
-	<WithMediaViewer>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithMediaViewer>
+export const MediaViewerScreen = (
+	navProps: INavigationProps<IMediaViewerScreenNavParams>,
+) => (
+	<WithMediaViewer>
+		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+	</WithMediaViewer>
 );

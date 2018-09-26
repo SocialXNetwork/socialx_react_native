@@ -18,33 +18,36 @@
         "trailingComma": "all",
         "tabWidth": 2,
         "useTabs": true,
-        "printWidth": 120,
-        "arrowParens": "always",
-        "bracketSpacing": false
+        "arrowParens": "always"
       }
     ],
-    "interface-name": false,
-    "object-literal-sort-keys": false,
-    "no-object-literal-type-assertion": false,
-    "quotemark": [
+    "no-implicit-dependencies": [true, "dev"],
+    "no-submodule-imports": [
       true,
-      "single"
+      "gun",
+      "react-native-vector-icons",
+      "uuid"
     ],
     "no-empty-interface": false,
-    "no-submodule-imports": false,
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
+    "object-literal-sort-keys":false,
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
     "indent": [
       true,
       "tabs",
       2
     ],
     "jsx-no-lambda": false,
-    "no-implicit-dependencies": false,
-    "prefer-for-of": false,
     "jsx-no-multiline-js": false,
-    "no-bitwise": false,
     "member-access": false,
-    "no-console": false,
-    "semicolon": false
+    "no-console": false
   },
   "include": [
     "./packages/**/*.ts",

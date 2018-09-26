@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithMaintenanceEnhancedProps = {
 	data: {},
@@ -30,9 +30,12 @@ interface IWithMaintenanceProps {
 
 interface IWithMaintenanceState {}
 
-export class WithMaintenance extends React.Component<IWithMaintenanceProps, IWithMaintenanceState> {
+export class WithMaintenance extends React.Component<
+	IWithMaintenanceProps,
+	IWithMaintenanceState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

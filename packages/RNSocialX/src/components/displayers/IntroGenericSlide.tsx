@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, ImageRequireSource, Text, View} from 'react-native';
+import { Image, ImageRequireSource, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import style from './IntroGenericSlide.style';
@@ -37,8 +37,8 @@ export const IntroGenericSlide: React.SFC<IIntroGenericSlideProps> = ({
 			},
 		]}
 		colors={gradient}
-		start={{x: 0, y: 0}}
-		end={{x: 0, y: 1}}
+		start={{ x: 0, y: 0 }}
+		end={{ x: 0, y: 1 }}
 	>
 		<Image source={image} style={style.slideImage} resizeMode={'contain'} />
 		<View style={style.textContainer}>

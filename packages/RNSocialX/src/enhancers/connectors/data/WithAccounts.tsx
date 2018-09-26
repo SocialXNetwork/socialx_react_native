@@ -1,8 +1,13 @@
-import {IChangePasswordInput, ICreateAccountInput, ICredentials, IRecoverAccountInput} from '@socialx/api-data';
+import {
+	IChangePasswordInput,
+	ICreateAccountInput,
+	ICredentials,
+	IRecoverAccountInput,
+} from '@socialx/api-data';
 import * as React from 'react';
-import {connect, ConnectedComponentClass} from 'react-redux';
-import {createSelector} from 'reselect';
-import {IApplicationState} from '../../../store';
+import { connect, ConnectedComponentClass } from 'react-redux';
+import { createSelector } from 'reselect';
+import { IApplicationState } from '../../../store';
 import {
 	changePassword,
 	createAccount,
@@ -13,7 +18,7 @@ import {
 	recoverAccount,
 	trustAccount,
 } from '../../../store/data/accounts';
-import {IThunkDispatch} from '../../../store/types';
+import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	accounts: IAccount[];
@@ -37,7 +42,7 @@ interface IChildren {
 
 class Enhancer extends React.Component<IProps & IChildren> {
 	render() {
-		const {children, ...props} = this.props;
+		const { children, ...props } = this.props;
 		return children(props);
 	}
 }
@@ -52,16 +57,22 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	changePassword: (changePasswordInput: IChangePasswordInput) => dispatch(changePassword(changePasswordInput)),
-	createAccount: (createAccountInput: ICreateAccountInput) => dispatch(createAccount(createAccountInput)),
+	changePassword: (changePasswordInput: IChangePasswordInput) =>
+		dispatch(changePassword(changePasswordInput)),
+	createAccount: (createAccountInput: ICreateAccountInput) =>
+		dispatch(createAccount(createAccountInput)),
 	isAccountLoggedIn: () => dispatch(isAccountLoggedIn()),
 	login: (credentials: ICredentials) => dispatch(login(credentials)),
 	logout: () => dispatch(logout()),
-	recoverAccount: (recoverAccountInput: IRecoverAccountInput) => dispatch(recoverAccount(recoverAccountInput)),
+	recoverAccount: (recoverAccountInput: IRecoverAccountInput) =>
+		dispatch(recoverAccount(recoverAccountInput)),
 	trustAccount: () => dispatch(trustAccount()),
 });
 
-export const WithAccounts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
+export const WithAccounts: ConnectedComponentClass<
+	JSX.Element,
+	IChildren
+> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer) as any;

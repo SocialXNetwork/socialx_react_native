@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {TextInput, TouchableOpacity, View} from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import style, {customStyleProps} from './CommentTextInput.style';
+import style, { customStyleProps } from './CommentTextInput.style';
 
 interface ICommentTextInputProps {
 	placeholder: string;
@@ -13,8 +13,21 @@ interface ICommentTextInputProps {
 	onCommentTextChange: (value: string) => void;
 }
 
-export const CommentTextInput = React.forwardRef<TextInput, ICommentTextInputProps>(
-	({placeholder, autoFocus = true, commentText, onCommentTextChange, showSendButton, onCommentSend}, ref) => (
+export const CommentTextInput = React.forwardRef<
+	TextInput,
+	ICommentTextInputProps
+>(
+	(
+		{
+			placeholder,
+			autoFocus = true,
+			commentText,
+			onCommentTextChange,
+			showSendButton,
+			onCommentSend,
+		},
+		ref,
+	) => (
 		<View style={style.inputContainer}>
 			<TextInput
 				ref={ref}

@@ -6,8 +6,8 @@
 
 import * as React from 'react';
 
-import {NavigationScreenProp} from 'react-navigation';
-import {ITranslatedProps} from '../../../types';
+import { NavigationScreenProp } from 'react-navigation';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithLaunchEnhancedProps = {
 	data: {
@@ -15,7 +15,10 @@ const mock: IWithLaunchEnhancedProps = {
 		applicationInMaintenanceMode: false,
 	},
 	actions: {
-		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => {
+		resetNavigationToRoute: (
+			screenName: string,
+			navigation: NavigationScreenProp<any>,
+		) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -28,7 +31,10 @@ export interface IWithLaunchEnhancedData {
 }
 
 export interface IWithLaunchEnhancedActions extends ITranslatedProps {
-	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
+	resetNavigationToRoute: (
+		screenName: string,
+		navigation: NavigationScreenProp<any>,
+	) => void;
 }
 
 interface IWithLaunchEnhancedProps {
@@ -42,9 +48,12 @@ interface IWithLaunchProps {
 
 interface IWithLaunchState {}
 
-export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchState> {
+export class WithLaunch extends React.Component<
+	IWithLaunchProps,
+	IWithLaunchState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

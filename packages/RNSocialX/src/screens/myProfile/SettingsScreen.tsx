@@ -7,8 +7,8 @@
 
 import * as React from 'react';
 
-import {INavigationProps} from '../../types';
-import {ISettingsData, SettingsScreenView} from './SettingsScreen.view';
+import { INavigationProps } from '../../types';
+import { ISettingsData, SettingsScreenView } from './SettingsScreen.view';
 
 import {
 	ISaveChangesParams,
@@ -17,9 +17,14 @@ import {
 	WithSettings,
 } from '../../enhancers/screens';
 
-type ISettingsScreenProps = INavigationProps & IWithSettingsEnhancedActions & IWithSettingsEnhancedData;
+type ISettingsScreenProps = INavigationProps &
+	IWithSettingsEnhancedActions &
+	IWithSettingsEnhancedData;
 
-const saveChanges = (saveData: ISettingsData, {currentUser, updateUserProfile}: ISaveChangesParams) => {
+const saveChanges = (
+	saveData: ISettingsData,
+	{ currentUser, updateUserProfile }: ISaveChangesParams,
+) => {
 	const avatarHasChanged = currentUser.avatarURL !== saveData.avatarURL;
 	updateUserProfile(saveData, avatarHasChanged);
 };
@@ -49,17 +54,27 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 		miningEnabled={currentUser.miningEnabled}
 		avatarURL={currentUser.avatarURL || null}
 		userName={currentUser.userName}
-		onSaveChanges={(saveData: ISettingsData) => saveChanges(saveData, {currentUser, updateUserProfile})}
+		onSaveChanges={(saveData: ISettingsData) =>
+			saveChanges(saveData, { currentUser, updateUserProfile })
+		}
 		onLogout={() => onLogoutHandler(logout)}
 		onGoBack={() => onGoBackHandler(navigation)}
 		getText={getText}
 	/>
 );
 
-export const SettingsScreen = ({navigation, navigationOptions}: INavigationProps) => (
+export const SettingsScreen = ({
+	navigation,
+	navigationOptions,
+}: INavigationProps) => (
 	<WithSettings>
-		{({data, actions}) => (
-			<Screen navigation={navigation} navigationOptions={navigationOptions} {...data} {...actions} />
+		{({ data, actions }) => (
+			<Screen
+				navigation={navigation}
+				navigationOptions={navigationOptions}
+				{...data}
+				{...actions}
+			/>
 		)}
 	</WithSettings>
 );

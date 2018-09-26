@@ -15,23 +15,19 @@ const questionType = yup
 const recoverType = yup
 	.object()
 	.shape({
+		encryptedReminder: yup.string().trim(),
 		question1: questionType,
 		question2: questionType,
 		reminder: questionType,
-		encryptedReminder: yup.string().trim(),
 	})
 	.required();
 
 export const createAccountInput = yup
 	.object()
 	.shape({
-		username: usernameOrPasswordType,
-		password: usernameOrPasswordType,
-		name: yup
+		avatar: yup
 			.string()
 			.trim()
-			.min(4)
-			.max(128)
 			.required(),
 		email: yup
 			.string()
@@ -39,42 +35,46 @@ export const createAccountInput = yup
 			.lowercase()
 			.email()
 			.required(),
-		avatar: yup
+		name: yup
 			.string()
 			.trim()
+			.min(4)
+			.max(128)
 			.required(),
+		password: usernameOrPasswordType,
 		recover: recoverType,
+		username: usernameOrPasswordType,
 	})
 	.required();
 
 export const credentials = yup
 	.object()
 	.shape({
-		username: usernameOrPasswordType,
 		password: usernameOrPasswordType,
+		username: usernameOrPasswordType,
 	})
 	.required();
 
 export const changePassword = yup
 	.object()
 	.shape({
-		oldPassword: usernameOrPasswordType,
 		newPassword: usernameOrPasswordType,
+		oldPassword: usernameOrPasswordType,
 	})
 	.required();
 
 export const recoverAccountInput = yup
 	.object()
 	.shape({
-		username: usernameOrPasswordType,
 		question1: questionType,
 		question2: questionType,
+		username: usernameOrPasswordType,
 	})
 	.required();
 
 export default {
+	changePassword,
 	createAccountInput,
 	credentials,
-	changePassword,
 	recoverAccountInput,
 };

@@ -1,14 +1,17 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {SettingCheckbox} from '../../../../src/components/';
+import { SettingCheckbox } from '../../../../src/components/';
 import CenterView from '../../../helpers/CenterView';
 
 interface ISettingCheckboxStoryState {
 	value: boolean;
 }
 
-class SettingCheckboxStory extends React.Component<{}, ISettingCheckboxStoryState> {
+class SettingCheckboxStory extends React.Component<
+	{},
+	ISettingCheckboxStoryState
+> {
 	public state = {
 		value: false,
 	};

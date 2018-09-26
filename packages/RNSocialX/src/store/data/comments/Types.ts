@@ -1,6 +1,6 @@
-import {ICommentMetasCallback, ILikesMetasCallback} from '@socialx/api-data';
-import {Action} from 'redux';
-import {DeepReadonly} from 'utility-types';
+import { ICommentMetasCallback, ILikesMetasCallback } from '@socialx/api-data';
+import { Action } from 'redux';
+import { DeepReadonly } from 'utility-types';
 
 export interface ICommentData {
 	id: string;
@@ -54,4 +54,8 @@ export interface ILikeCommentAction extends Action {
 	payload: ICommentIdArgument;
 }
 
-export type IAction = IPostCommentsAction | ICommentLikesAction | ICreateCommentAction | ILikeCommentAction;
+export type IAction =
+	| IPostCommentsAction
+	| ICommentLikesAction
+	| ICreateCommentAction
+	| ILikeCommentAction;

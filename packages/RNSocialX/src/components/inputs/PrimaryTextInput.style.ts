@@ -1,7 +1,7 @@
-import {Platform, StyleSheet} from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
-import {OS_TYPES} from '../../environment/consts';
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { OS_TYPES } from '../../environment/consts';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const INPUT_FONT_SIZE = Sizes.smartHorizontalScale(14);
 
@@ -31,7 +31,10 @@ const style: any = {
 		paddingTop: Sizes.smartVerticalScale(7),
 	},
 	textInputNormal: {
-		paddingVertical: Platform.OS === OS_TYPES.Android ? Sizes.smartHorizontalScale(10) : Sizes.smartHorizontalScale(16),
+		paddingVertical:
+			Platform.OS === OS_TYPES.Android
+				? Sizes.smartHorizontalScale(10)
+				: Sizes.smartHorizontalScale(16),
 	},
 	textInputSmall: {
 		paddingVertical: 0,

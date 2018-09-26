@@ -1,9 +1,15 @@
 import * as React from 'react';
-import {ActivityIndicator, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+	ActivityIndicator,
+	Image,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 
-import {AvatarImage} from '../';
-import {ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './ActivityFriendRequestCard.style';
+import { AvatarImage } from '../';
+import { ITranslatedProps } from '../../types';
+import style, { customStyleProps } from './ActivityFriendRequestCard.style';
 
 interface IFriendRequestProps extends ITranslatedProps {
 	avatarURL: string;
@@ -38,23 +44,44 @@ export const ActivityFriendRequestCard: React.SFC<IFriendRequestProps> = ({
 	const isLoading = loadingConfirmed || loadingDeclined;
 	return (
 		<View style={style.container}>
-			<TouchableOpacity style={style.leftContainer} onPress={() => onViewUserProfile(userId)}>
+			<TouchableOpacity
+				style={style.leftContainer}
+				onPress={() => onViewUserProfile(userId)}
+			>
 				<AvatarImage image={avatarURL} style={style.avatarImage} />
 				<View style={style.avatarNameContainer}>
 					<Text style={style.fullName}>{fullName}</Text>
-					{userName !== '' && <Text style={style.userName}>{'@' + userName}</Text>}
-					<Text style={style.friendRequest}>{getText('notifications.card.friend.request.title')}</Text>
+					{userName !== '' && (
+						<Text style={style.userName}>{'@' + userName}</Text>
+					)}
+					<Text style={style.friendRequest}>
+						{getText('notifications.card.friend.request.title')}
+					</Text>
 				</View>
 			</TouchableOpacity>
 			{!loadingConfirmed && (
-				<TouchableOpacity onPress={onRequestConfirmed} style={style.iconTouch} disabled={isLoading}>
-					<Image source={customStyleProps.iconRequestConfirmed} style={style.iconImage} />
+				<TouchableOpacity
+					onPress={onRequestConfirmed}
+					style={style.iconTouch}
+					disabled={isLoading}
+				>
+					<Image
+						source={customStyleProps.iconRequestConfirmed}
+						style={style.iconImage}
+					/>
 				</TouchableOpacity>
 			)}
 			{loadingConfirmed && <InlineLoader />}
 			{!loadingDeclined && (
-				<TouchableOpacity onPress={onRequestDeclined} style={style.iconTouch} disabled={isLoading}>
-					<Image source={customStyleProps.iconRequestDeclined} style={style.iconImage} />
+				<TouchableOpacity
+					onPress={onRequestDeclined}
+					style={style.iconTouch}
+					disabled={isLoading}
+				>
+					<Image
+						source={customStyleProps.iconRequestDeclined}
+						style={style.iconImage}
+					/>
 				</TouchableOpacity>
 			)}
 			{loadingDeclined && <InlineLoader />}

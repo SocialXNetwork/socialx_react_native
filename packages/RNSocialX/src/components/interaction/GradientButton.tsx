@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import {Colors, Sizes} from '../../environment/theme';
-import {IPrimaryButtonProps, PrimaryButton} from './PrimaryButton';
+import { Colors, Sizes } from '../../environment/theme';
+import { IPrimaryButtonProps, PrimaryButton } from './PrimaryButton';
 
 interface IGradientButtonProps extends IPrimaryButtonProps {
 	colorStart: string;
@@ -11,18 +11,28 @@ interface IGradientButtonProps extends IPrimaryButtonProps {
 }
 
 export const GradientButton: React.SFC<IGradientButtonProps> = (props) => {
-	const {colorStart, colorEnd, disabled, loading, size, ...buttonProps} = props;
+	const {
+		colorStart,
+		colorEnd,
+		disabled,
+		loading,
+		size,
+		...buttonProps
+	} = props;
 
 	const buttonDisabled = disabled || loading;
 
 	return (
 		<LinearGradient
-			start={{x: 0, y: 0.5}}
-			end={{x: 1, y: 0.5}}
+			start={{ x: 0, y: 0.5 }}
+			end={{ x: 1, y: 0.5 }}
 			colors={[colorStart, colorEnd]}
 			style={[styles.container, buttonDisabled ? styles.disabledButton : {}]}
 		>
-			<PrimaryButton {...buttonProps} containerStyle={styles.innerButtonContainer} />
+			<PrimaryButton
+				{...buttonProps}
+				containerStyle={styles.innerButtonContainer}
+			/>
 		</LinearGradient>
 	);
 };

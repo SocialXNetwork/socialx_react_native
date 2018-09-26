@@ -1,23 +1,23 @@
-import {assertNever} from '../../helpers';
+import { assertNever } from '../../helpers';
 import initialState from './initialState';
-import {ActionTypes, IAction, IState} from './Types';
+import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.CREATE_COMMENT: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.LIKE_COMMENT: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.COMMENT_LIKES: {
-			return {...state};
+			return { ...state };
 		}
 
 		case ActionTypes.POST_COMMENTS: {
-			return {...state};
+			return { ...state };
 		}
 
 		default: {

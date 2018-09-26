@@ -1,8 +1,20 @@
 import * as React from 'react';
-import {Animated, Dimensions, ImageRequireSource, Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+	Animated,
+	Dimensions,
+	ImageRequireSource,
+	Keyboard,
+	StyleSheet,
+	TouchableOpacity,
+} from 'react-native';
 
-import {InputSizes, PrimaryTextInput, TRKeyboardKeys} from '../../';
-import {AnimatedImage, Colors, Images, Sizes} from '../../../environment/theme';
+import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
+import {
+	AnimatedImage,
+	Colors,
+	Images,
+	Sizes,
+} from '../../../environment/theme';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -37,12 +49,26 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		return null;
 	} else {
 		return (
-			<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.commentInputContainer}>
+			<TouchableOpacity
+				onPress={onCommentInputPress}
+				activeOpacity={1}
+				style={styles.commentInputContainer}
+			>
 				<AnimatedImage
-					source={typeof avatarURL === 'string' ? {uri: avatarURL} : avatarURL}
-					style={[styles.commentInputAvatar, {width: animationValues.width, height: animationValues.height}]}
+					source={
+						typeof avatarURL === 'string' ? { uri: avatarURL } : avatarURL
+					}
+					style={[
+						styles.commentInputAvatar,
+						{ width: animationValues.width, height: animationValues.height },
+					]}
 				/>
-				<Animated.View style={[styles.commentInputView, {borderWidth: animationValues.border}]}>
+				<Animated.View
+					style={[
+						styles.commentInputView,
+						{ borderWidth: animationValues.border },
+					]}
+				>
 					<PrimaryTextInput
 						width={SCREEN_WIDTH - 90}
 						borderWidth={0}

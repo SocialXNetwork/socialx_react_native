@@ -1,7 +1,14 @@
 import * as React from 'react';
-import {ActivityIndicator, StyleProp, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {
+	ActivityIndicator,
+	StyleProp,
+	Text,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native';
 
-import {defaultColor, styles} from './PrimaryButton.style';
+import { defaultColor, styles } from './PrimaryButton.style';
 
 export enum ButtonSizes {
 	Small = 'Small',
@@ -38,26 +45,40 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 
 	const containerStyles = [
 		styles.container,
-		{borderColor},
+		{ borderColor },
 		styles['container' + size],
 		containerStyle ? containerStyle : {},
 		buttonDisabled ? styles.disabledButton : {},
 	];
 
-	let containerWidth: StyleProp<ViewStyle> = {width: '100%'};
+	let containerWidth: StyleProp<ViewStyle> = { width: '100%' };
 	if (width) {
-		containerWidth = {width};
+		containerWidth = { width };
 	} else if (autoWidth) {
 		containerWidth = {};
 	}
 
-	const textStyles = [styles.text, {color: textColor ? textColor : defaultColor}, size ? styles['text' + size] : {}];
+	const textStyles = [
+		styles.text,
+		{ color: textColor ? textColor : defaultColor },
+		size ? styles['text' + size] : {},
+	];
 
 	return (
-		<TouchableOpacity disabled={buttonDisabled} onPress={onPress} style={containerWidth}>
+		<TouchableOpacity
+			disabled={buttonDisabled}
+			onPress={onPress}
+			style={containerWidth}
+		>
 			<View style={containerStyles}>
 				<Text style={textStyles}>{label}</Text>
-				{loading && <ActivityIndicator size={'small'} color={defaultColor} style={styles.loadingIndicator} />}
+				{loading && (
+					<ActivityIndicator
+						size={'small'}
+						color={defaultColor}
+						style={styles.loadingIndicator}
+					/>
+				)}
 			</View>
 		</TouchableOpacity>
 	);

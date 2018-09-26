@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Animated, FlatList, View} from 'react-native';
-import {AnimatedValue} from 'react-navigation';
+import { Animated, FlatList, View } from 'react-native';
+import { AnimatedValue } from 'react-navigation';
 
 import {
 	FeedWithNoPosts,
@@ -10,11 +10,21 @@ import {
 	SuggestionsCarousel,
 	WallPostCard,
 } from '../../../components';
-import {IWithLoaderProps, WithInlineLoader} from '../../../components/inlineLoader';
-import {getTextSignature, ICurrentUser, IWallPostCardActions, IWallPostCardData} from '../../../types';
+import {
+	IWithLoaderProps,
+	WithInlineLoader,
+} from '../../../components/inlineLoader';
+import {
+	getTextSignature,
+	ICurrentUser,
+	IWallPostCardActions,
+	IWallPostCardData,
+} from '../../../types';
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps extends IWithLoaderProps, IWallPostCardActions {
+interface IUserFeedScreenViewProps
+	extends IWithLoaderProps,
+		IWallPostCardActions {
 	avatarImage: any;
 	wallPosts: IWallPostCardData[];
 	refreshing: boolean;
@@ -31,7 +41,9 @@ interface IUserFeedScreenViewProps extends IWithLoaderProps, IWallPostCardAction
 	scrollY: AnimatedValue;
 }
 
-export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
+export class UserFeedScreenView extends React.Component<
+	IUserFeedScreenViewProps
+> {
 	public render() {
 		const {
 			avatarImage,
@@ -83,7 +95,9 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 							onScrollToIndexFailed={() => {
 								/**/
 							}}
-							onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}])}
+							onScroll={Animated.event([
+								{ nativeEvent: { contentOffset: { y: scrollY } } },
+							])}
 							scrollEventThrottle={16}
 							showsVerticalScrollIndicator={false}
 						/>
@@ -95,14 +109,24 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 
 	private keyExtractor = (item: IWallPostCardData) => item.id;
 
-	private renderWallPosts = (data: {item: IWallPostCardData; index: number}, getText: getTextSignature) => {
+	private renderWallPosts = (
+		data: { item: IWallPostCardData; index: number },
+		getText: getTextSignature,
+	) => {
 		const postData = data.item;
 		if (postData.suggested) {
-			return <SuggestionsCarousel items={postData.suggested} getText={this.props.getText} />;
+			return (
+				<SuggestionsCarousel
+					items={postData.suggested}
+					getText={this.props.getText}
+				/>
+			);
 		}
 
 		const canDelete = this.props.currentUser.userId === postData.owner.userId;
-		const likedByMe = !!postData.likes.find((like: any) => like.userId === this.props.currentUser.userId);
+		const likedByMe = !!postData.likes.find(
+			(like: any) => like.userId === this.props.currentUser.userId,
+		);
 
 		return (
 			<View style={styles.wallPostContainer}>
@@ -118,7 +142,9 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					onLikeButtonPress={this.props.onLikeButtonPress}
 					onUserPress={(userId: string) => this.props.onUserPress(userId)}
 					/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as data.index */
-					onAddComment={(dummyIndex: number, cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
+					onAddComment={(dummyIndex: number, cardHeight: number) =>
+						this.props.onAddComment(data.index, cardHeight)
+					}
 					onSubmitComment={this.props.onSubmitComment}
 					getText={getText}
 					onBlockUser={this.props.onBlockUser}

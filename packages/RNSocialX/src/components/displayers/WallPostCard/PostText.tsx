@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 
-import {RichText} from '../..';
-import {ITranslatedProps} from '../../../types';
+import { RichText } from '../..';
+import { ITranslatedProps } from '../../../types';
 import styles from './PostText.style';
 
 const POST_SHORT_LENGTH = 100;
@@ -29,7 +29,10 @@ export const PostText: React.SFC<IPostTextProps> = ({
 	if (text) {
 		const numberOfLines = text.split('\n').length;
 
-		const hasMore = (text.length > POST_SHORT_LENGTH || numberOfLines > POST_SHORT_MAX_LINES) && !fullTextVisible;
+		const hasMore =
+			(text.length > POST_SHORT_LENGTH ||
+				numberOfLines > POST_SHORT_MAX_LINES) &&
+			!fullTextVisible;
 
 		let textToRender = text;
 
@@ -53,7 +56,7 @@ export const PostText: React.SFC<IPostTextProps> = ({
 				<Text style={styles.text}>
 					<RichText
 						style={styles.text}
-						childrenProps={{allowFontScaling: false}}
+						childrenProps={{ allowFontScaling: false }}
 						parse={[
 							{
 								type: 'hashtag',

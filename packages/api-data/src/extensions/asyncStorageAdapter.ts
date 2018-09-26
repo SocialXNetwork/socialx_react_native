@@ -1,18 +1,18 @@
 // TODO: this needs to get out of this library and be plugged in from RN, but
 // better yet, do this in redux as a storage!
 import * as Gun from 'gun';
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 class Adapter {
 	public read = (context: any) => {
-		const {get, gun} = context;
-		const {'#': key} = get;
+		const { get, gun } = context;
+		const { '#': key } = get;
 
 		const done = (err: any, data?: any) => {
 			gun._.root.on('in', {
+				err,
 				'@': context['#'],
 				put: Gun.graph.node(data),
-				err,
 			});
 		};
 
@@ -29,16 +29,19 @@ class Adapter {
 	};
 
 	public write = (context: any) => {
-		const {put: graph, gun} = context;
+		const { put: graph, gun } = context;
 		const keys = Object.keys(graph);
 
-		const instructions = keys.map((key: string) => [key, JSON.stringify(graph[key])]);
+		const instructions = keys.map((key: string) => [
+			key,
+			JSON.stringify(graph[key]),
+		]);
 
 		AsyncStorage.multiMerge(instructions, (err?: any[]) => {
 			gun._.root.on('in', {
+				err,
 				'@': context['#'],
 				ok: !err || err.length === 0,
-				err,
 			});
 		});
 	};

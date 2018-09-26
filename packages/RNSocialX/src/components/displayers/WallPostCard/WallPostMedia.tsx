@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import {IMediaProps, ITranslatedProps} from '../../../types';
-import {MediaObjectViewer} from '../MediaObjectViewer';
+import { IMediaProps, ITranslatedProps } from '../../../types';
+import { MediaObjectViewer } from '../MediaObjectViewer';
 import style from './WallPostMedia.style';
 
 interface ISingleMediaPostProps extends ITranslatedProps {
@@ -35,7 +35,11 @@ interface IDualMediaPostProps extends ITranslatedProps {
 	onMediaObjectView: (index: number) => void;
 }
 
-const DualMediaPost: React.SFC<IDualMediaPostProps> = ({mediaObjects, onMediaObjectView, getText}) => (
+const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
+	mediaObjects,
+	onMediaObjectView,
+	getText,
+}) => (
 	<View style={style.postMediaContainerFullWidth}>
 		<View style={style.fullHeightHalfWidth}>
 			<MediaObjectViewer
@@ -65,7 +69,11 @@ interface IMultiMediaPostProps extends ITranslatedProps {
 	onMediaObjectView: (index: number) => void;
 }
 
-const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaObjectView, getText}) => {
+const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
+	mediaObjects,
+	onMediaObjectView,
+	getText,
+}) => {
 	const numberOfMoreMediaObjects = mediaObjects.length - 3;
 	return (
 		<View style={style.postMediaContainerFullWidth}>
@@ -89,7 +97,10 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 						getText={getText}
 					/>
 				</View>
-				<TouchableOpacity style={style.fullWidthHalfHeight} onPress={() => onMediaObjectView(2)}>
+				<TouchableOpacity
+					style={style.fullWidthHalfHeight}
+					onPress={() => onMediaObjectView(2)}
+				>
 					<MediaObjectViewer
 						thumbOnly={true}
 						uri={mediaObjects[2].url}
@@ -99,7 +110,9 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({mediaObjects, onMediaO
 					/>
 					{numberOfMoreMediaObjects > 0 && (
 						<View style={style.moreOverlay}>
-							<Text style={style.moreText}>{`+${numberOfMoreMediaObjects} more`}</Text>
+							<Text
+								style={style.moreText}
+							>{`+${numberOfMoreMediaObjects} more`}</Text>
 						</View>
 					)}
 				</TouchableOpacity>
@@ -129,10 +142,18 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 	return (
 		<React.Fragment>
 			{mediaObjects.length > 2 && (
-				<MultiMediaPost mediaObjects={mediaObjects} onMediaObjectView={onMediaObjectView} getText={getText} />
+				<MultiMediaPost
+					mediaObjects={mediaObjects}
+					onMediaObjectView={onMediaObjectView}
+					getText={getText}
+				/>
 			)}
 			{mediaObjects.length === 2 && (
-				<DualMediaPost mediaObjects={mediaObjects} onMediaObjectView={onMediaObjectView} getText={getText} />
+				<DualMediaPost
+					mediaObjects={mediaObjects}
+					onMediaObjectView={onMediaObjectView}
+					getText={getText}
+				/>
 			)}
 			{mediaObjects.length === 1 && (
 				<SingleMediaPost

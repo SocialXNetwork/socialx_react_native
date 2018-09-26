@@ -4,10 +4,10 @@
  */
 
 import * as React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
-import {IconButton, LikeAnimatingButton} from '../../components';
-import {ITranslatedProps} from '../../types';
+import { IconButton, LikeAnimatingButton } from '../../components';
+import { ITranslatedProps } from '../../types';
 import styles from './CommentsPostActions.style';
 
 interface IPostActionsProps extends ITranslatedProps {
@@ -23,7 +23,16 @@ export const CommentsPostActions: React.SFC<IPostActionsProps> = ({
 	getText,
 }) => (
 	<View style={styles.container}>
-		<LikeAnimatingButton onPress={onLikePress} likedByMe={likedByMe} getText={getText} />
-		<IconButton iconSource={'comment-o'} iconType={'fa'} onPress={onStartComment} iconStyle={styles.icon} />
+		<LikeAnimatingButton
+			onPress={onLikePress}
+			likedByMe={likedByMe}
+			getText={getText}
+		/>
+		<IconButton
+			iconSource={'comment-o'}
+			iconType={'fa'}
+			onPress={onStartComment}
+			iconStyle={styles.icon}
+		/>
 	</View>
 );

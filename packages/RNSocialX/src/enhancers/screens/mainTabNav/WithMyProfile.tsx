@@ -5,11 +5,11 @@
  */
 
 import * as React from 'react';
-import {NavigationScreenProp} from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 
-import {IDotsMenuItem} from '../../../components';
-import {currentUser} from '../../../mocks';
-import {ICurrentUser, ITranslatedProps} from '../../../types';
+import { IDotsMenuItem } from '../../../components';
+import { currentUser } from '../../../mocks';
+import { ICurrentUser, ITranslatedProps } from '../../../types';
 
 const mock: IWithMyProfileEnhancedProps = {
 	data: {
@@ -19,7 +19,10 @@ const mock: IWithMyProfileEnhancedProps = {
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
-		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => {
+		resetNavigationToRoute: (
+			screenName: string,
+			navigation: NavigationScreenProp<any>,
+		) => {
 			/**/
 		},
 		showDotsMenuModal: (items: IDotsMenuItem[]) => {
@@ -41,7 +44,10 @@ export interface IWithMyProfileEnhancedData {
 }
 
 export interface IWithMyProfileEnhancedActions extends ITranslatedProps {
-	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
+	resetNavigationToRoute: (
+		screenName: string,
+		navigation: NavigationScreenProp<any>,
+	) => void;
 	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
 	refreshUser: (userId: string) => void;
 	logout: () => void;
@@ -58,9 +64,12 @@ interface IWithMyProfileProps {
 
 interface IWithMyProfileState {}
 
-export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyProfileState> {
+export class WithMyProfile extends React.Component<
+	IWithMyProfileProps,
+	IWithMyProfileState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

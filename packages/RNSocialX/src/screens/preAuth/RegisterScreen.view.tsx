@@ -4,16 +4,25 @@
  * 2. Decide where how prop marginBottom for InputSMSCodeModal should be implemented.
  */
 
-import {Formik, FormikErrors, FormikProps} from 'formik';
-import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
-import {CheckBox} from 'native-base';
+import { Formik, FormikErrors, FormikProps } from 'formik';
+import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
+import { CheckBox } from 'native-base';
 import * as React from 'react';
-import {ImageSourcePropType, Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import CountryPicker, {getAllCountries} from 'react-native-country-picker-modal';
+import {
+	ImageSourcePropType,
+	Keyboard,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import CountryPicker, {
+	getAllCountries,
+} from 'react-native-country-picker-modal';
 import DeviceInfo from 'react-native-device-info';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {string} from 'yup';
+import { string } from 'yup';
 
 import {
 	AvatarPicker,
@@ -25,9 +34,9 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import {KeyboardContext} from '../../environment/consts';
-import {ITranslatedProps} from '../../types';
-import style, {colors, defaultStyles} from './RegisterScreen.style';
+import { KeyboardContext } from '../../environment/consts';
+import { ITranslatedProps } from '../../types';
+import style, { colors, defaultStyles } from './RegisterScreen.style';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -77,11 +86,15 @@ const DEVICE_COUNTRY = DeviceInfo.getDeviceCountry();
 const ALL_COUNTRIES = getAllCountries();
 const COUNTRY_LIST = ALL_COUNTRIES.map((country: ICountryData) => country.cca2);
 const DEVICE_COUNTRY_CALLING_CODE = ALL_COUNTRIES.reduce(
-	(value: string, country: ICountryData) => (country.cca2 === DEVICE_COUNTRY ? country.callingCode : value),
+	(value: string, country: ICountryData) =>
+		country.cca2 === DEVICE_COUNTRY ? country.callingCode : value,
 	'',
 );
 
-const ErrorMessage: React.SFC<{text: any; visible: boolean}> = ({text, visible}) => (
+const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({
+	text,
+	visible,
+}) => (
 	<React.Fragment>
 		{visible && (
 			<View style={style.errorContainer}>
@@ -105,8 +118,8 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	getText,
 }) => (
 	<KeyboardContext.Consumer>
-		{({safeRunAfterKeyboardHide}) => (
-			<View style={{flex: 1}}>
+		{({ safeRunAfterKeyboardHide }) => (
+			<View style={{ flex: 1 }}>
 				<Header
 					title={getText('register.screen.title')}
 					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
@@ -154,20 +167,34 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								errors.userName = getText('register.screen.userName.required');
 							}
 							if (!phoneNumber) {
-								errors.phoneNumber = getText('register.screen.phone.number.required');
+								errors.phoneNumber = getText(
+									'register.screen.phone.number.required',
+								);
 							} else {
 								try {
-									const rawPhoneNumber = phoneUtil.parse(`+${countryCallingCode}${phoneNumber}`, countryCCA2);
-									const isPhoneNumberValid = phoneUtil.isValidNumberForRegion(rawPhoneNumber, countryCCA2);
+									const rawPhoneNumber = phoneUtil.parse(
+										`+${countryCallingCode}${phoneNumber}`,
+										countryCCA2,
+									);
+									const isPhoneNumberValid = phoneUtil.isValidNumberForRegion(
+										rawPhoneNumber,
+										countryCCA2,
+									);
 									if (!isPhoneNumberValid) {
-										errors.phoneNumber = getText('register.screen.phone.number.invalid');
+										errors.phoneNumber = getText(
+											'register.screen.phone.number.invalid',
+										);
 									}
 								} catch (e) {
-									errors.phoneNumber = getText('register.screen.phone.number.invalid');
+									errors.phoneNumber = getText(
+										'register.screen.phone.number.invalid',
+									);
 								}
 							}
 							if (!password) {
-								errors.password = getText('register.screen.confirm.password.required');
+								errors.password = getText(
+									'register.screen.confirm.password.required',
+								);
 							} else {
 								// const passwordErrors = PASSWORD_VALIDATOR_SCHEMA.validate(password, {list: true});
 								// if (passwordErrors.length > 0) {
@@ -180,9 +207,13 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								// }
 							}
 							if (!confirmPassword) {
-								errors.confirmPassword = getText('register.screen.confirm.password.required');
+								errors.confirmPassword = getText(
+									'register.screen.confirm.password.required',
+								);
 							} else if (!errors.password && confirmPassword !== password) {
-								errors.confirmPassword = getText('register.screen.confirm.password.mismatch');
+								errors.confirmPassword = getText(
+									'register.screen.confirm.password.mismatch',
+								);
 							}
 							return errors;
 						}}
@@ -197,12 +228,18 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							countryCCA2,
 						}: IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
-								const rawPhoneNumber = phoneUtil.parse(`+${countryCallingCode}${phoneNumber}`, countryCCA2);
+								const rawPhoneNumber = phoneUtil.parse(
+									`+${countryCallingCode}${phoneNumber}`,
+									countryCCA2,
+								);
 								onStartRegister({
 									email,
 									name,
 									userName,
-									phoneNumber: phoneUtil.format(rawPhoneNumber, PhoneNumberFormat.E164),
+									phoneNumber: phoneUtil.format(
+										rawPhoneNumber,
+										PhoneNumberFormat.E164,
+									),
 									password,
 									avatarImage,
 								});
@@ -247,12 +284,24 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										getText={getText}
 										avatarImage={avatarImage}
 										afterImagePick={(localPhotoPath: string) =>
-											setFieldValue('avatarImage', {uri: localPhotoPath}, false)
+											setFieldValue(
+												'avatarImage',
+												{ uri: localPhotoPath },
+												false,
+											)
 										}
 									/>
 								</View>
-								<View style={[style.textInputContainer, style.textInputContainerFirst]}>
-									<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
+								<View
+									style={[
+										style.textInputContainer,
+										style.textInputContainerFirst,
+									]}
+								>
+									<ErrorMessage
+										text={errors.email}
+										visible={!!touched.email && !!errors.email}
+									/>
 									<PrimaryTextInput
 										iconColor={colors.iron}
 										icon={'envelope'}
@@ -265,12 +314,17 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('email', value);
 											setFieldTouched('email');
 										}}
-										onSubmitPressed={() => nameRef.current && nameRef.current.focusInput()}
+										onSubmitPressed={() =>
+											nameRef.current && nameRef.current.focusInput()
+										}
 										keyboardType={TKeyboardKeys.emailAddress}
 									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage text={errors.name} visible={!!touched.name && !!errors.name} />
+									<ErrorMessage
+										text={errors.name}
+										visible={!!touched.name && !!errors.name}
+									/>
 									<PrimaryTextInput
 										autoCapitalize={'words'}
 										autoCorrect={true}
@@ -286,11 +340,16 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('name', value);
 											setFieldTouched('name');
 										}}
-										onSubmitPressed={() => usernameRef.current && usernameRef.current.focusInput()}
+										onSubmitPressed={() =>
+											usernameRef.current && usernameRef.current.focusInput()
+										}
 									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage text={errors.userName} visible={!!touched.userName && !!errors.userName} />
+									<ErrorMessage
+										text={errors.userName}
+										visible={!!touched.userName && !!errors.userName}
+									/>
 									<PrimaryTextInput
 										iconColor={colors.iron}
 										icon={'user'}
@@ -304,11 +363,16 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('userName', value);
 											setFieldTouched('userName');
 										}}
-										onSubmitPressed={() => phoneNumberRef.current && phoneNumberRef.current.focus()}
+										onSubmitPressed={() =>
+											phoneNumberRef.current && phoneNumberRef.current.focus()
+										}
 									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage text={errors.phoneNumber} visible={!!touched.phoneNumber && !!errors.phoneNumber} />
+									<ErrorMessage
+										text={errors.phoneNumber}
+										visible={!!touched.phoneNumber && !!errors.phoneNumber}
+									/>
 									<View style={style.directionRow}>
 										<View style={style.phoneInputIconContainer}>
 											<Icon name={'phone'} style={style.phoneIcon} />
@@ -320,13 +384,18 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 												cca2={countryCCA2}
 												onChange={(country: ICountryData) => {
 													setFieldValue('countryCCA2', country.cca2);
-													setFieldValue('countryCallingCode', country.callingCode);
+													setFieldValue(
+														'countryCallingCode',
+														country.callingCode,
+													);
 												}}
 												closeable={true}
 												filterable={true}
 												filterPlaceholder={getText('register.country.select')}
 											/>
-											<Text style={style.countryCode}>{`(+${countryCallingCode})`}</Text>
+											<Text
+												style={style.countryCode}
+											>{`(+${countryCallingCode})`}</Text>
 										</View>
 										<TextInput
 											placeholder={getText('register.phone.number')}
@@ -344,12 +413,17 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 												setFieldValue('phoneNumber', value);
 												setFieldTouched('phoneNumber');
 											}}
-											onSubmitEditing={() => passwordRef.current && passwordRef.current.focusInput()}
+											onSubmitEditing={() =>
+												passwordRef.current && passwordRef.current.focusInput()
+											}
 										/>
 									</View>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage text={errors.password} visible={!!touched.password && !!errors.password} />
+									<ErrorMessage
+										text={errors.password}
+										visible={!!touched.password && !!errors.password}
+									/>
 									<PrimaryTextInput
 										isPassword={true}
 										iconColor={colors.iron}
@@ -364,13 +438,18 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('password', value);
 											setFieldTouched('password');
 										}}
-										onSubmitPressed={() => confirmPasswordRef.current && confirmPasswordRef.current.focusInput()}
+										onSubmitPressed={() =>
+											confirmPasswordRef.current &&
+											confirmPasswordRef.current.focusInput()
+										}
 									/>
 								</View>
 								<View style={style.textInputContainer}>
 									<ErrorMessage
 										text={errors.confirmPassword}
-										visible={!!touched.confirmPassword && !!errors.confirmPassword}
+										visible={
+											!!touched.confirmPassword && !!errors.confirmPassword
+										}
 									/>
 									<PrimaryTextInput
 										isPassword={true}
@@ -391,13 +470,19 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 								</View>
 								<View style={style.termsContainer}>
-									<Text style={style.acceptText}>{getText('register.accept.part1')}</Text>
+									<Text style={style.acceptText}>
+										{getText('register.accept.part1')}
+									</Text>
 									<TouchableOpacity onPress={onNavigateToTermsAndConditions}>
-										<Text style={style.acceptTextLink}>{getText('register.accept.part2')}</Text>
+										<Text style={style.acceptTextLink}>
+											{getText('register.accept.part2')}
+										</Text>
 									</TouchableOpacity>
 									<CheckBox
 										checked={termsAccepted}
-										onPress={() => setFieldValue('termsAccepted', !termsAccepted)}
+										onPress={() =>
+											setFieldValue('termsAccepted', !termsAccepted)
+										}
 										color={colors.pink}
 										style={style.acceptCheckbox}
 									/>

@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithTermsAndConditionsEnhancedProps = {
 	data: {},
@@ -16,7 +16,8 @@ const mock: IWithTermsAndConditionsEnhancedProps = {
 
 export interface IWithTermsAndConditionsEnhancedData {}
 
-export interface IWithTermsAndConditionsEnhancedActions extends ITranslatedProps {}
+export interface IWithTermsAndConditionsEnhancedActions
+	extends ITranslatedProps {}
 
 interface IWithTermsAndConditionsEnhancedProps {
 	data: IWithTermsAndConditionsEnhancedData;
@@ -34,6 +35,6 @@ export class WithTermsAndConditions extends React.Component<
 	IWithTermsAndConditionsState
 > {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

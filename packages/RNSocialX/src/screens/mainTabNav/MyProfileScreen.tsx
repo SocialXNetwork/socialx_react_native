@@ -5,23 +5,32 @@
  */
 
 import * as React from 'react';
-import {DataProvider} from 'recyclerlistview';
+import { DataProvider } from 'recyclerlistview';
 import uuidv4 from 'uuid/v4';
 
-import {IWithMyProfileEnhancedActions, IWithMyProfileEnhancedData, WithMyProfile} from '../../enhancers/screens';
-import {INavigationProps} from '../../types';
-import {icons} from './MyProfileScreen.style';
-import {MyProfileScreenView} from './MyProfileScreen.view';
+import {
+	IWithMyProfileEnhancedActions,
+	IWithMyProfileEnhancedData,
+	WithMyProfile,
+} from '../../enhancers/screens';
+import { INavigationProps } from '../../types';
+import { icons } from './MyProfileScreen.style';
+import { MyProfileScreenView } from './MyProfileScreen.view';
 
 const GRID_PAGE_SIZE = 20;
 
-type IMyProfileScreenProps = INavigationProps & IWithMyProfileEnhancedData & IWithMyProfileEnhancedActions;
+type IMyProfileScreenProps = INavigationProps &
+	IWithMyProfileEnhancedData &
+	IWithMyProfileEnhancedActions;
 
 interface IMyProfileScreenState {
 	gridMediaProvider: DataProvider;
 }
 
-class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
+class Screen extends React.Component<
+	IMyProfileScreenProps,
+	IMyProfileScreenState
+> {
 	// todo @serkan @jake why?
 	private lastLoadedPhotoIndex = 0;
 
@@ -39,8 +48,8 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public render() {
-		const {currentUser, refreshingUser, loadingUser, getText} = this.props;
-		const {gridMediaProvider} = this.state;
+		const { currentUser, refreshingUser, loadingUser, getText } = this.props;
+		const { gridMediaProvider } = this.state;
 		const {
 			numberOfLikes,
 			numberOfPhotos,
@@ -82,7 +91,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	private getDotsModalItems = () => {
-		const {navigation, getText, logout} = this.props;
+		const { navigation, getText, logout } = this.props;
 		return [
 			{
 				label: getText('my.profile.screen.menu.profile.analytics'),
@@ -108,30 +117,36 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	private onShowDotsModalHandler = () => {
-		const {showDotsMenuModal} = this.props;
+		const { showDotsMenuModal } = this.props;
 
 		const menuItems = this.getDotsModalItems();
 		showDotsMenuModal(menuItems);
 	};
 
 	private loadMorePhotosHandler = () => {
-		const {gridMediaProvider} = this.state;
-		const {mediaObjects} = this.props.currentUser;
-		const headerElement = [{index: uuidv4()}];
+		const { gridMediaProvider } = this.state;
+		const { mediaObjects } = this.props.currentUser;
+		const headerElement = [{ index: uuidv4() }];
 
 		if (mediaObjects.length === 0) {
 			this.setState({
 				gridMediaProvider: gridMediaProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < mediaObjects.length && !this.props.refreshingUser) {
+		} else if (
+			this.lastLoadedPhotoIndex < mediaObjects.length &&
+			!this.props.refreshingUser
+		) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
-			const newMedia = mediaObjects.slice(this.lastLoadedPhotoIndex, endIndex).map((mediaObject, index: number) => ({
-				url: mediaObject.url,
-				type: mediaObject.type,
-				index: this.lastLoadedPhotoIndex + index,
-			}));
+			const loadedMedia =
+				loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+			const newMedia = mediaObjects
+				.slice(this.lastLoadedPhotoIndex, endIndex)
+				.map((mediaObject, index: number) => ({
+					url: mediaObject.url,
+					type: mediaObject.type,
+					index: this.lastLoadedPhotoIndex + index,
+				}));
 
 			const allMedia = [...loadedMedia, ...newMedia];
 
@@ -143,7 +158,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	private onRefresHandler = () => {
-		const {currentUser, refreshUser, refreshingUser} = this.props;
+		const { currentUser, refreshUser, refreshingUser } = this.props;
 		if (!refreshingUser) {
 			refreshUser(currentUser.userId);
 		}
@@ -152,7 +167,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	private onPhotoPressHandler = (index: number) => {
 		const {
 			navigation,
-			currentUser: {mediaObjects},
+			currentUser: { mediaObjects },
 		} = this.props;
 
 		navigation.navigate('MediaViewerScreen', {
@@ -162,16 +177,18 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	private onEditProfilePressHandler = () => {
-		const {navigation} = this.props;
+		const { navigation } = this.props;
 		navigation.navigate('SettingsScreen');
 	};
 
 	private onSharePressHandler = () => {
-		const {navigation} = this.props;
+		const { navigation } = this.props;
 		navigation.navigate('ReferralScreen');
 	};
 }
 
 export const MyProfileScreen = (navProps: INavigationProps) => (
-	<WithMyProfile>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithMyProfile>
+	<WithMyProfile>
+		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+	</WithMyProfile>
 );

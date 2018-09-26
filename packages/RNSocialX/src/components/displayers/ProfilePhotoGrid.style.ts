@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Colors, Sizes} from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 
 export const USER_MEDIA_THUMB_SIZE = Sizes.getThumbSize();
 

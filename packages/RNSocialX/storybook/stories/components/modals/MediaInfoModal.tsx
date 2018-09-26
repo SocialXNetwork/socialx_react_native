@@ -1,10 +1,10 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {MediaInfoModal} from '../../../../src/components';
-import {MediaTypeImage} from '../../../../src/types';
+import { MediaInfoModal } from '../../../../src/components';
+import { MediaTypeImage } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)
@@ -20,7 +20,9 @@ storiesOf('Components/modals', module)
 				mediaSize={88152}
 				mediaName={null}
 				mediaType={MediaTypeImage}
-				mediaURL={'https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=350'}
+				mediaURL={
+					'https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=350'
+				}
 				closeHandler={action('Close!')}
 				getText={(text) => text}
 			/>

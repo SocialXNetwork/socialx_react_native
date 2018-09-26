@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../types';
+import { ITranslatedProps } from '../../types';
 
 const mock: IWithNavigationEnhancedProps = {
 	notifications: 15,
@@ -23,9 +23,12 @@ interface IWithNavigationProps {
 
 interface IWithNavigationState {}
 
-export class WithNavigation extends React.Component<IWithNavigationProps, IWithNavigationState> {
+export class WithNavigation extends React.Component<
+	IWithNavigationProps,
+	IWithNavigationState
+> {
 	render() {
-		const {children} = this.props;
+		const { children } = this.props;
 		return children({
 			notifications: mock.notifications,
 			getText: mock.getText,

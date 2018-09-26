@@ -1,11 +1,11 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
 	container: {
 		backgroundColor: Colors.white,
 		shadowColor: Colors.blackWithAlpha(0.17),
-		shadowOffset: {width: 0, height: 4},
+		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 1,
 		shadowRadius: 22,
 		paddingHorizontal: Sizes.smartHorizontalScale(21),
