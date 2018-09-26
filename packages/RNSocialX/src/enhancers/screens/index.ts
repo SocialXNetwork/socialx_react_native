@@ -64,6 +64,11 @@ export {
 	IWithReferralEnhancedData,
 } from './myProfile/WithReferral';
 export {
+	WithWallet,
+	IWithWalletEnhancedActions,
+	IWithWalletEnhancedData,
+} from './myProfile/WithWallet';
+export {
 	WithSettings,
 	IWithSettingsEnhancedActions,
 	IWithSettingsEnhancedData,

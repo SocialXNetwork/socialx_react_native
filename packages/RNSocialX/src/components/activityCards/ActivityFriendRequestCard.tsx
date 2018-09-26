@@ -25,7 +25,7 @@ interface IFriendRequestProps extends ITranslatedProps {
 
 const InlineLoader: React.SFC = () => (
 	<View style={style.iconTouch}>
-		<ActivityIndicator size={'small'} />
+		<ActivityIndicator size="small" />
 	</View>
 );
 

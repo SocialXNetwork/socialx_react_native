@@ -3,16 +3,11 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { ButtonSizes, PrimaryButton } from '../../components';
-import { ITranslatedProps } from '../../types';
+import { ITranslatedProps, TrendOptions } from '../../types';
 import styles, { defaultStyles } from './MyWalletInfo.style';
 
-export enum TrendOptions {
-	Up = 'UP',
-	Down = 'DOWN',
-}
-
 interface IMyWalletInfoProps extends ITranslatedProps {
-	myCoins: string;
+	coins: string;
 	trendPercentage: string;
 	trendArrow: TrendOptions;
 	onViewAccount: () => void;
@@ -20,7 +15,7 @@ interface IMyWalletInfoProps extends ITranslatedProps {
 
 // TODO: Add 'View account' to dictionary
 export const MyWalletInfo: React.SFC<IMyWalletInfoProps> = ({
-	myCoins,
+	coins,
 	trendPercentage,
 	trendArrow,
 	onViewAccount,
@@ -35,7 +30,7 @@ export const MyWalletInfo: React.SFC<IMyWalletInfoProps> = ({
 		<View style={styles.container}>
 			<Text style={styles.myCoinsValue}>
 				{'SOCX '}
-				{myCoins}
+				{coins}
 			</Text>
 			<View style={styles.secondLine}>
 				<View style={styles.secondLineLeft}>
