@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -7,12 +8,8 @@ storiesOf('Screens/into', module).add('IntroScreen', () => {
 	return (
 		<IntroScreenView
 			getText={(text) => text}
-			doneButtonHandler={(...args: any[]) =>
-				console.log('doneButtonHandler', args)
-			}
-			skipButtonHandler={(...args: any[]) =>
-				console.log('skipButtonHandler', args)
-			}
+			doneButtonHandler={action('doneButtonHandler')}
+			skipButtonHandler={action('skipButtonHandler')}
 		/>
 	);
 });

@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -99,27 +100,15 @@ storiesOf('Screens/mainTabNav', module)
 				getText={(text) => text}
 				notifications={NOTIFICATION_CARDS}
 				refreshing={refreshing}
-				onRefresh={(...args: any[]) => console.log('onRefresh', args)}
-				onPostThumbPressed={(...args: any[]) =>
-					console.log('onPostThumbPressed', args)
-				}
-				onSuperLikedPhotoPressed={(...args: any[]) =>
-					console.log('onSuperLikedPhotoPressed', args)
-				}
-				onFriendRequestApproved={(...args: any[]) =>
-					console.log('onFriendRequestApproved', args)
-				}
-				onFriendRequestDeclined={(...args: any[]) =>
-					console.log('onFriendRequestDeclined', args)
-				}
-				onCheckNotification={(...args: any[]) =>
-					console.log('onCheckNotification', args)
-				}
-				onViewUserProfile={(...args: any[]) =>
-					console.log('onViewUserProfile', args)
-				}
-				showConfirm={(...args: any[]) => console.log('showConfirm', args)}
-				hideConfirm={(...args: any[]) => console.log('hideConfirm', args)}
+				onRefresh={action('onRefresh')}
+				onPostThumbPressed={action('onPostThumbPressed')}
+				onSuperLikedPhotoPressed={action('onSuperLikedPhotoPressed')}
+				onFriendRequestApproved={action('onFriendRequestApproved')}
+				onFriendRequestDeclined={action('onFriendRequestDeclined')}
+				onCheckNotification={action('onCheckNotification')}
+				onViewUserProfile={action('onViewUserProfile')}
+				showConfirm={action('showConfirm')}
+				hideConfirm={action('hideConfirm')}
 			/>
 		);
 	});

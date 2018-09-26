@@ -83,18 +83,12 @@ storiesOf('Screens/mainStack', module)
 				onLayoutChange={action('onLayoutChange')}
 				isLoading={isLoading}
 				onClose={action('onClose')}
-				onDeletePress={(postId) => console.log('onDeletePress', postId)}
-				onUserPress={(userId) => console.log('onUserPress', userId)}
-				onSubmitComment={(commentText, postId) =>
-					console.log('onSubmitComment', commentText, postId)
-				}
-				onAddComment={(index, cardHeight) =>
-					console.log('onAddComment', index, cardHeight)
-				}
-				onBlockUser={(userId) => console.log('onBlockUser', userId)}
-				onReportProblem={(reason, message) =>
-					console.log('onReportProblem', reason, message)
-				}
+				onDeletePress={action('onDeletePress')}
+				onUserPress={action('onUserPress')}
+				onSubmitComment={action('onSubmitComment')}
+				onAddComment={action('onAddComment')}
+				onBlockUser={action('onBlockUser')}
+				onReportProblem={action('onReportProblem')}
 			/>
 		);
 	});

@@ -52,7 +52,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 		/**/
 	},
 	sendMessageToUser = () => {
-		console.log('sendMessageToUser');
+		/**/
 	},
 	onIconPress = () => {
 		/**/

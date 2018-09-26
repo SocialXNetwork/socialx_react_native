@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -10,8 +11,6 @@ storiesOf('Components/displayers', module)
 		<DotsMenuButton
 			iconColor={'black'}
 			iconName={'ios-more'}
-			onPress={() => {
-				/**/
-			}}
+			onPress={action('onPress')}
 		/>
 	));

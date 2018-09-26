@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -13,7 +14,7 @@ storiesOf('Components/inputs', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('PrimaryTextInput', () => (
 		<PrimaryTextInput
-			onChangeText={(value) => console.log('onChangeText', value)}
+			onChangeText={action('onChangeText')}
 			placeholder={'Sample input'}
 			placeholderColor={Colors.green}
 			returnKeyType={TRKeyboardKeys.next}

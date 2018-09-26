@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -32,5 +33,10 @@ const items: ISearchResultData[] = [
 ];
 
 storiesOf('Components/displayers', module).add('SuggestedSearches', () => (
-	<SuggestedSearches items={items} />
+	<SuggestedSearches
+		items={items}
+		onAddFriend={action('onAddFriend')}
+		onResultPress={action('onResultPress')}
+		getText={(text) => text}
+	/>
 ));
