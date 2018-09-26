@@ -10,11 +10,10 @@ export interface IPostData {
 	privatePost: boolean;
 }
 
-// TODO: @jake this is wrong, consult serkan
 export type IState = DeepReadonly<{
-	publicPosts: IPostData[] | null;
-	privatePosts: IPostData[] | null;
-	currentAccountPosts: IPostData[] | null;
+	posts: IPostData[];
+	postMetaById: IPostData[];
+	postMetasByUser: IPostData[];
 }>;
 
 export interface IUsernameArgument {

@@ -12,11 +12,8 @@ export interface IProfile {
 	avatar: string;
 }
 
-// TODO: @jake this is wrong, consult serkan
 export type IState = DeepReadonly<{
-	currentProfile: IProfile | null;
-	profileByUsername: IProfile | null;
-	publicKeyByUsername: string | null;
+	profiles: IProfile[];
 }>;
 
 export const enum ActionTypes {
