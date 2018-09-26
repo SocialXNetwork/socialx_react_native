@@ -28,19 +28,19 @@ export interface ICreateCommentInput {
 }
 
 export const enum ActionTypes {
-	POST_COMMENTS = 'data/comments/POST_COMMENTS',
-	COMMENT_LIKES = 'data/comments/COMMENT_LIKES',
+	GET_POST_COMMENTS = 'data/comments/GET_POST_COMMENTS',
+	GET_COMMENT_LIKES = 'data/comments/GET_COMMENT_LIKES',
 	CREATE_COMMENT = 'data/comments/CREATE_COMMENT',
 	LIKE_COMMENT = 'data/comments/LIKE_COMMENT',
 }
 
-export interface IPostCommentsAction extends Action {
-	type: ActionTypes.POST_COMMENTS;
+export interface IGetPostCommentsAction extends Action {
+	type: ActionTypes.GET_POST_COMMENTS;
 	payload: IPostIdArgument;
 }
 
-export interface ICommentLikesAction extends Action {
-	type: ActionTypes.COMMENT_LIKES;
+export interface IGetCommentLikesAction extends Action {
+	type: ActionTypes.GET_COMMENT_LIKES;
 	payload: ICommentIdArgument;
 }
 
@@ -55,7 +55,7 @@ export interface ILikeCommentAction extends Action {
 }
 
 export type IAction =
-	| IPostCommentsAction
-	| ICommentLikesAction
+	| IGetPostCommentsAction
+	| IGetCommentLikesAction
 	| ICreateCommentAction
 	| ILikeCommentAction;

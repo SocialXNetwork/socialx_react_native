@@ -21,7 +21,7 @@ export const enum ActionTypes {
 	CREATE_ACCOUNT = 'data/accounts/CREATE_ACCOUNT',
 	RECOVER_ACCOUNT = 'data/accounts/RECOVER_ACCOUNT',
 	TRUST_ACCOUNT = 'data/accounts/TRUST_ACCOUNT',
-	IS_ACCOUNT_LOGGED_IN = 'data/accounts/IS_ACCOUNT_LOGGED_IN',
+	GET_IS_ACCOUNT_LOGGED_IN = 'data/accounts/GET_IS_ACCOUNT_LOGGED_IN',
 	CHANGE_PASSWORD = 'data/accounts/CHANGE_PASSWORD',
 	LOGIN = 'data/accounts/LOGIN',
 	LOGOUT = 'data/accounts/LOGOUT',
@@ -50,8 +50,8 @@ export interface ILogoutAction extends Action {
 	type: ActionTypes.LOGOUT;
 }
 
-export interface IIsAccountLoggedInAction extends Action {
-	type: ActionTypes.IS_ACCOUNT_LOGGED_IN;
+export interface IGetIsAccountLoggedInAction extends Action {
+	type: ActionTypes.GET_IS_ACCOUNT_LOGGED_IN;
 }
 
 export interface IChangePasswordAction extends Action {
@@ -62,7 +62,7 @@ export interface IChangePasswordAction extends Action {
 export type IAction =
 	| ICreateAccountAction
 	| ITrustAccountAction
-	| IIsAccountLoggedInAction
+	| IGetIsAccountLoggedInAction
 	| IRecoverAccountAction
 	| ILoginAction
 	| ILogoutAction

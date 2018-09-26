@@ -4,9 +4,9 @@ import { IThunk } from '../../types';
 import {
 	ActionTypes,
 	ICreateProfileAction,
-	ICurrentProfileAction,
-	IProfileByUsernameAction,
-	IPublicKeyByUsernameAction,
+	IGetCurrentProfileAction,
+	IGetProfileByUsernameAction,
+	IGetPublicKeyByUsernameAction,
 	IUsernameArgument,
 } from './Types';
 
@@ -27,10 +27,10 @@ export const createProfile = (
 	}
 };
 
-const getProfileByUsernameAction: ActionCreator<IProfileByUsernameAction> = (
+const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
 	getProfileByUsernameInput: IUsernameArgument,
 ) => ({
-	type: ActionTypes.PROFILE_BY_USERNAME,
+	type: ActionTypes.GET_PROFILE_BY_USERNAME,
 	payload: getProfileByUsernameInput,
 });
 
@@ -44,8 +44,10 @@ export const getProfileByUsername = (
 	}
 };
 
-const getCurrentProfileAction: ActionCreator<ICurrentProfileAction> = () => ({
-	type: ActionTypes.CURRENT_PROFILE,
+const getCurrentProfileAction: ActionCreator<
+	IGetCurrentProfileAction
+> = () => ({
+	type: ActionTypes.GET_CURRENT_PROFILE,
 });
 
 export const getCurrentProfile = (): IThunk => async (
@@ -61,9 +63,9 @@ export const getCurrentProfile = (): IThunk => async (
 };
 
 const getPublicKeyByUsernameAction: ActionCreator<
-	IPublicKeyByUsernameAction
+	IGetPublicKeyByUsernameAction
 > = (getProfileUsernameInput: IUsernameArgument) => ({
-	type: ActionTypes.PUBLIC_KEY_BY_USERNAME,
+	type: ActionTypes.GET_PUBLIC_KEY_BY_USERNAME,
 	payload: getProfileUsernameInput,
 });
 

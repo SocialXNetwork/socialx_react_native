@@ -3,18 +3,18 @@ import { IThunk } from '../../types';
 import {
 	ActionTypes,
 	ICommentIdArgument,
-	ICommentLikesAction,
 	ICreateCommentAction,
 	ICreateCommentInput,
+	IGetCommentLikesAction,
+	IGetPostCommentsAction,
 	ILikeCommentAction,
-	IPostCommentsAction,
 	IPostIdArgument,
 } from './Types';
 
-const getPostCommentsAction: ActionCreator<IPostCommentsAction> = (
+const getPostCommentsAction: ActionCreator<IGetPostCommentsAction> = (
 	getPostCommentsArguments: IPostIdArgument,
 ) => ({
-	type: ActionTypes.POST_COMMENTS,
+	type: ActionTypes.GET_POST_COMMENTS,
 	payload: getPostCommentsArguments,
 });
 
@@ -28,10 +28,10 @@ export const getPostComments = (
 	}
 };
 
-const getCommentLikesAction: ActionCreator<ICommentLikesAction> = (
+const getCommentLikesAction: ActionCreator<IGetCommentLikesAction> = (
 	commentLikesArgument: ICommentIdArgument,
 ) => ({
-	type: ActionTypes.COMMENT_LIKES,
+	type: ActionTypes.GET_COMMENT_LIKES,
 	payload: commentLikesArgument,
 });
 

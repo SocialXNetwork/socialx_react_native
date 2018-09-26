@@ -39,31 +39,31 @@ export interface IProfile {
 }
 
 export const enum ActionTypes {
-	POST_PATHS_BY_USER = 'data/posts/POST_PATHS_BY_USER',
-	POST_BY_PATH = 'data/posts/POST_BY_PATH',
-	PUBLIC_POSTS_BY_DATE = 'data/posts/PUBLIC_POSTS_BY_DATE',
-	POST_LIKES = 'data/posts/POST_LIKES',
+	GET_POST_PATHS_BY_USER = 'data/posts/GET_POST_PATHS_BY_USER',
+	GET_POST_BY_PATH = 'data/posts/GET_POST_BY_PATH',
+	GET_PUBLIC_POSTS_BY_DATE = 'data/posts/GET_PUBLIC_POSTS_BY_DATE',
+	GET_POST_LIKES = 'data/posts/GET_POST_LIKES',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
 }
 
-export interface IPostPathsByUserAction extends Action {
-	type: ActionTypes.POST_PATHS_BY_USER;
+export interface IGetPostPathsByUserAction extends Action {
+	type: ActionTypes.GET_POST_PATHS_BY_USER;
 	payload: IUsernameArgument;
 }
 
-export interface IPostByPathAction extends Action {
-	type: ActionTypes.POST_BY_PATH;
+export interface IGetPostByPathAction extends Action {
+	type: ActionTypes.GET_POST_BY_PATH;
 	payload: IPostPathArgument;
 }
 
-export interface IPublicPostsByDateAction extends Action {
-	type: ActionTypes.PUBLIC_POSTS_BY_DATE;
+export interface IGetPublicPostsByDateAction extends Action {
+	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE;
 	payload: IDateArgument;
 }
 
-export interface IPostLikesAction extends Action {
-	type: ActionTypes.POST_LIKES;
+export interface IGetPostLikesAction extends Action {
+	type: ActionTypes.GET_POST_LIKES;
 	payload: IPostIdArgument;
 }
 
@@ -78,9 +78,9 @@ export interface ILikePostAction extends Action {
 }
 
 export type IAction =
-	| IPostPathsByUserAction
-	| IPublicPostsByDateAction
-	| IPostLikesAction
+	| IGetPostPathsByUserAction
+	| IGetPublicPostsByDateAction
+	| IGetPostLikesAction
 	| ICreatePostAction
 	| ILikePostAction
-	| IPostByPathAction;
+	| IGetPostByPathAction;
