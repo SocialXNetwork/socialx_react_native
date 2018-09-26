@@ -1,3 +1,5 @@
+import './displayers/MyWalletInfo';
+
 import './activityCards/ActivityFriendRequestCard';
 import './activityCards/ActivityGenericCard';
 import './activityCards/ActivityRecentCommentCard';
@@ -15,6 +17,7 @@ import './displayers/Header';
 import './displayers/HeartAnimation';
 import './displayers/MediaHorizontalScroller';
 import './displayers/MediaObjectViewer';
+
 import './displayers/NavigationItems';
 import './displayers/PeopleSearchResultEntry';
 import './displayers/ProfilePhotoGrid';
