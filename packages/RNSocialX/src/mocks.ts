@@ -9,6 +9,7 @@ import {
 	ITrendingContentItem,
 	IWallPostCardData,
 	MediaTypeImage,
+	MediaTypeVideo,
 	SearchResultKind,
 } from './types';
 
@@ -124,11 +125,10 @@ export const posts: IWallPostCardData[] = [
 		canDelete: false,
 		media: [
 			{
-				url:
-					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
+				url: 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4',
 				hash: '131289fsdf03yr9hehdiwb32',
-				type: MediaTypeImage,
-				extension: 'jpg',
+				type: MediaTypeVideo,
+				extension: 'mp4',
 				size: 51231,
 				numberOfLikes: 0,
 				numberOfComments: 0,

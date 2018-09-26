@@ -1,13 +1,15 @@
-import * as React from 'react';
-import {
-	StyleProp,
-	TouchableWithoutFeedback,
-	View,
-	ViewStyle,
-} from 'react-native';
+/**
+ * TODO list:
+ * 1. @Ionut & @Serkan: Figure out a better strategy and get rid of UNSAFE_componentWillReceiveProps.
+ * What we want to do is allow user to pause/mute the video and also let player be paused/muted from the outside.
+ * Control from the outside should take over user control.
+ */
 
+import * as React from 'react';
+import {StyleProp, TouchableWithoutFeedback, View, ViewStyle} from 'react-native';
 import Video from 'react-native-video';
-import { VideoControls } from './';
+
+import {VideoControls} from './VideoControls';
 import styles from './VideoPlayer.style';
 
 export interface IVideoOptions {
@@ -20,73 +22,71 @@ export interface IVideoOptions {
 }
 
 interface IVideoPlayerProps extends IVideoOptions {
+	thumbOnly: boolean;
+	muted: boolean;
 	videoURL: string;
 	onPressVideo?: () => void;
-	onMuteVideo: () => void;
-	onUpdateResizeMode: (newModeResize: 'cover' | 'contain') => void;
 }
 
 interface IVideoPlayerState {
 	ended: boolean;
 	playReady: boolean;
-	fullscreen: boolean;
+	fullScreen: boolean;
+	paused: boolean;
+	muted: boolean;
+	resizeMode: 'cover' | 'contain';
 }
 
-export class VideoPlayer extends React.Component<
-	IVideoPlayerProps,
-	IVideoPlayerState
-> {
+export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayerState> {
 	public static defaultProps = {
 		containerStyle: styles.container,
 		muted: false,
+		paused: true,
 		thumbOnly: false,
 		resizeMode: 'cover',
 		resizeToChangeAspectRatio: false,
-		paused: true,
-		onMuteVideo: () => {
-			/**/
-		},
-		onUpdateResizeMode: () => {
-			/**/
-		},
+	};
+
+	public state = {
+		ended: false,
+		playReady: false,
+		fullScreen: false,
+		paused: 'paused' in this.props ? this.props.paused! : true,
+		muted: this.props.muted || false,
+		resizeMode: this.props.resizeMode || 'cover',
 	};
 
 	private playerRef: React.RefObject<Video> = React.createRef();
 
-	constructor(props: IVideoPlayerProps) {
-		super(props);
-
-		this.state = {
-			ended: false,
-			playReady: false,
-			fullscreen: false,
-		};
+	public UNSAFE_componentWillReceiveProps(nextProps: IVideoPlayerProps) {
+		if ('paused' in nextProps && nextProps.paused !== this.props.paused) {
+			this.setState({
+				paused: nextProps.paused!,
+			});
+		}
+		if ('muted' in nextProps && nextProps.muted !== this.props.muted) {
+			this.setState({
+				muted: nextProps.muted!,
+			});
+		}
 	}
 
 	public render() {
-		const {
-			containerStyle,
-			muted,
-			thumbOnly,
-			resizeMode,
-			resizeToChangeAspectRatio,
-			paused,
-			videoURL,
-			onPressVideo,
-			onMuteVideo,
-		} = this.props;
-		const { ended, playReady, fullscreen } = this.state;
+		const {containerStyle, thumbOnly, resizeToChangeAspectRatio, videoURL, onPressVideo} = this.props;
+		const {ended, playReady, fullScreen, muted, paused, resizeMode} = this.state;
 
 		const showPlayButton = paused || ended;
-		const muteIcon = muted ? 'md-volume-off' : 'md-volume-high';
 
 		return (
-			<TouchableWithoutFeedback onPress={onPressVideo} disabled={!onPressVideo}>
+			<TouchableWithoutFeedback
+				onPress={thumbOnly ? onPressVideo : this.pauseVideoHandler}
+				disabled={thumbOnly && !onPressVideo}
+			>
 				<View style={containerStyle}>
 					<Video
 						onReadyForDisplay={this.videoReadyHandler}
 						// poster='https://baconmockup.com/300/200/'
-						source={{ uri: videoURL }}
+						source={{uri: videoURL}}
 						resizeMode={resizeMode}
 						paused={paused}
 						muted={muted}
@@ -94,23 +94,37 @@ export class VideoPlayer extends React.Component<
 						playInBackground={false}
 						playWhenInactive={false}
 						style={styles.videoObject}
-						fullscreen={fullscreen}
+						fullscreen={fullScreen}
 						ref={this.playerRef}
+						onFullscreenPlayerDidDismiss={this.exitFullScreen}
+						useTextureView={true}
 					/>
 					<VideoControls
 						showPlayButton={showPlayButton}
-						muteIcon={muteIcon}
+						muted={muted}
 						resizeToChangeAspectRatio={resizeToChangeAspectRatio}
 						playReady={playReady}
-						thumbOnly={!thumbOnly}
+						thumbOnly={thumbOnly}
 						onVideoPlayStart={this.onVideoPlayStart}
-						onVideoMuteToggle={onMuteVideo}
+						onVideoMuteToggle={this.onVideoMuteToggle}
 						onVideoEnterFullScreen={this.onVideoEnterFullScreen}
 					/>
 				</View>
 			</TouchableWithoutFeedback>
 		);
 	}
+
+	private pauseVideoHandler = () => {
+		this.setState({
+			paused: true,
+		});
+	};
+
+	private onVideoMuteToggle = () => {
+		this.setState({
+			muted: !this.state.muted,
+		});
+	};
 
 	private videoReadyHandler = () => {
 		// TODO: issue with local video files, see bug report:
@@ -123,11 +137,13 @@ export class VideoPlayer extends React.Component<
 	};
 
 	private onVideoPlayStart = () => {
+		console.log('onVideoPlayStart');
 		if (this.state.ended && this.playerRef.current) {
 			this.playerRef.current.seek(0);
 		}
 		this.setState({
 			ended: false,
+			paused: false,
 		});
 	};
 
@@ -138,17 +154,20 @@ export class VideoPlayer extends React.Component<
 	};
 
 	private onVideoEnterFullScreen = () => {
-		const {
-			resizeToChangeAspectRatio,
-			onUpdateResizeMode,
-			resizeMode,
-		} = this.props;
-		if (resizeToChangeAspectRatio) {
-			onUpdateResizeMode(resizeMode === 'cover' ? 'contain' : 'cover');
+		if (this.props.resizeToChangeAspectRatio) {
+			this.setState({
+				resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
+			});
 		} else {
 			this.setState({
-				fullscreen: true,
+				fullScreen: true,
 			});
 		}
+	};
+
+	private exitFullScreen = () => {
+		this.setState({
+			fullScreen: false,
+		});
 	};
 }
