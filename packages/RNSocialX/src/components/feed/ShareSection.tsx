@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Animated, TouchableWithoutFeedback, View} from 'react-native';
+import { Animated, TouchableWithoutFeedback, View } from 'react-native';
 
 import styles from './ShareSection.style';
 
@@ -16,11 +16,17 @@ export const ShareSection: React.SFC<IShareSectionProps> = ({
 	onShowNewWallPostPress,
 	opacity,
 }) => (
-	<Animated.View style={[styles.container, {opacity}]}>
-		<Animated.Image source={avatarImage} resizeMode={'cover'} style={[styles.avatar, {opacity}]} />
+	<Animated.View style={[styles.container, { opacity }]}>
+		<Animated.Image
+			source={avatarImage}
+			resizeMode={'cover'}
+			style={[styles.avatar, { opacity }]}
+		/>
 		<TouchableWithoutFeedback onPress={onShowNewWallPostPress}>
 			<View style={styles.textContainer}>
-				<Animated.Text style={[styles.placeholder, {opacity}]}>{sharePlaceholder}</Animated.Text>
+				<Animated.Text style={[styles.placeholder, { opacity }]}>
+					{sharePlaceholder}
+				</Animated.Text>
 			</View>
 		</TouchableWithoutFeedback>
 	</Animated.View>

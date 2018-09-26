@@ -1,19 +1,28 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
-import {ITranslatedProps} from '../../../types';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import { ITranslatedProps } from '../../../types';
 
 interface IViewAllCommentsProps extends ITranslatedProps {
 	numberOfComments: number;
 	onCommentPress: () => void;
 }
 
-export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({numberOfComments, onCommentPress, getText}) => {
+export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({
+	numberOfComments,
+	onCommentPress,
+	getText,
+}) => {
 	if (numberOfComments > 0) {
 		return (
-			<TouchableOpacity style={styles.numCommentsContainer} onPress={onCommentPress}>
-				<Text style={styles.viewAllCommentsText}>{getText('post.card.view.all.comments', numberOfComments)}</Text>
+			<TouchableOpacity
+				style={styles.numCommentsContainer}
+				onPress={onCommentPress}
+			>
+				<Text style={styles.viewAllCommentsText}>
+					{getText('post.card.view.all.comments', numberOfComments)}
+				</Text>
 			</TouchableOpacity>
 		);
 	}

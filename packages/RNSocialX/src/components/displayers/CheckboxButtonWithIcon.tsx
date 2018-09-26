@@ -1,8 +1,8 @@
-import {CheckBox} from 'native-base';
+import { CheckBox } from 'native-base';
 import * as React from 'react';
-import {Image, Text, View} from 'react-native';
+import { Image, Text, View } from 'react-native';
 
-import styles, {defaultColor} from './CheckboxButtonWithIcon.style';
+import styles, { defaultColor } from './CheckboxButtonWithIcon.style';
 
 interface ICheckboxButtonWithIconProps {
 	selected: boolean;
@@ -11,7 +11,9 @@ interface ICheckboxButtonWithIconProps {
 	text: string;
 }
 
-export const CheckboxButtonWithIcon: React.SFC<ICheckboxButtonWithIconProps> = ({
+export const CheckboxButtonWithIcon: React.SFC<
+	ICheckboxButtonWithIconProps
+> = ({
 	selected,
 	onPress = () => {
 		/**/
@@ -20,8 +22,19 @@ export const CheckboxButtonWithIcon: React.SFC<ICheckboxButtonWithIconProps> = (
 	text,
 }) => (
 	<View style={styles.container}>
-		<CheckBox checked={selected} onPress={onPress} color={defaultColor} style={styles.checkbox} />
+		<CheckBox
+			checked={selected}
+			onPress={onPress}
+			color={defaultColor}
+			style={styles.checkbox}
+		/>
 		<Text style={styles.buttonText}>{text}</Text>
-		{iconSource && <Image source={iconSource} style={styles.iconStyle} resizeMode={'contain'} />}
+		{iconSource && (
+			<Image
+				source={iconSource}
+				style={styles.iconStyle}
+				resizeMode={'contain'}
+			/>
+		)}
 	</View>
 );

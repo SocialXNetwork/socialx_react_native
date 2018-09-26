@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Image, Text, View} from 'react-native';
+import { Image, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import style, {customStyleProps} from './IntroFirstSlide.style';
+import style, { customStyleProps } from './IntroFirstSlide.style';
 
 interface IIntroFirstSlideProps {
 	width: number;
@@ -35,11 +35,14 @@ export const IntroFirstSlide: React.SFC<IIntroFirstSlideProps> = ({
 			},
 		]}
 		colors={gradient}
-		start={{x: 0, y: 0}}
-		end={{x: 0, y: 1}}
+		start={{ x: 0, y: 0 }}
+		end={{ x: 0, y: 1 }}
 	>
 		<Image source={customStyleProps.slideLogoImage} style={style.logoImage} />
-		<Image source={customStyleProps.slideBackgroundImage} style={style.slideImage} />
+		<Image
+			source={customStyleProps.slideBackgroundImage}
+			style={style.slideImage}
+		/>
 		<View style={style.textContainer}>
 			<Text style={style.slideTitle}>{title}</Text>
 			<Text style={style.slideDescription}>{description}</Text>

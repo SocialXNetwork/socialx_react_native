@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 
-import {ITabMenuItem, TabButton} from './';
+import { ITabMenuItem, TabButton } from './';
 import styles from './NotificationsWithBadge.style';
 
 interface INotificationsWithBadgeProps {
@@ -11,12 +11,9 @@ interface INotificationsWithBadgeProps {
 	tabChange: (tab: string) => void;
 }
 
-export const NotificationsWithBadge: React.SFC<INotificationsWithBadgeProps> = ({
-	item,
-	notifications,
-	selectedTab,
-	tabChange,
-}) => (
+export const NotificationsWithBadge: React.SFC<
+	INotificationsWithBadgeProps
+> = ({ item, notifications, selectedTab, tabChange }) => (
 	<View style={styles.container}>
 		<TabButton item={item} selectedTab={selectedTab} tabChange={tabChange} />
 

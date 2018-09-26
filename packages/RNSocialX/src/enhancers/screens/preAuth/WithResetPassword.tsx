@@ -4,7 +4,7 @@
  */
 
 import * as React from 'react';
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithResetPasswordEnhancedProps = {
 	data: {},
@@ -19,7 +19,11 @@ const mock: IWithResetPasswordEnhancedProps = {
 export interface IWithResetPasswordEnhancedData {}
 
 export interface IWithResetPasswordEnhancedActions extends ITranslatedProps {
-	resetPassword: (userName: string, resetCode: string, password: string) => void;
+	resetPassword: (
+		userName: string,
+		resetCode: string,
+		password: string,
+	) => void;
 }
 
 interface IWithResetPasswordEnhancedProps {
@@ -33,8 +37,11 @@ interface IWithResetPasswordProps {
 
 interface IWithResetPasswordState {}
 
-export class WithResetPassword extends React.Component<IWithResetPasswordProps, IWithResetPasswordState> {
+export class WithResetPassword extends React.Component<
+	IWithResetPasswordProps,
+	IWithResetPasswordState
+> {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

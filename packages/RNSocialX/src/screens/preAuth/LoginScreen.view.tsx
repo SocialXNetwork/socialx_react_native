@@ -1,12 +1,25 @@
-import {Formik, FormikErrors, FormikProps} from 'formik';
+import { Formik, FormikErrors, FormikProps } from 'formik';
 import * as React from 'react';
-import {Keyboard, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {
+	Keyboard,
+	SafeAreaView,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {Header, HeaderButton, PrimaryButton, PrimaryTextInput, TKeyboardKeys, TRKeyboardKeys} from '../../components';
-import {KeyboardContext} from '../../environment/consts';
-import {ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './LoginScreen.style';
+import {
+	Header,
+	HeaderButton,
+	PrimaryButton,
+	PrimaryTextInput,
+	TKeyboardKeys,
+	TRKeyboardKeys,
+} from '../../components';
+import { KeyboardContext } from '../../environment/consts';
+import { ITranslatedProps } from '../../types';
+import style, { customStyleProps } from './LoginScreen.style';
 
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
@@ -20,15 +33,15 @@ interface ILoginScreenData {
 	password: string;
 }
 
-const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
+const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 	<KeyboardContext.Consumer>
-		{({marginBottom, safeRunAfterKeyboardHide}) => (
+		{({ marginBottom, safeRunAfterKeyboardHide }) => (
 			<Formik
 				initialValues={{
 					userName: '',
 					password: '',
 				}}
-				validate={({userName, password}: ILoginScreenData) => {
+				validate={({ userName, password }: ILoginScreenData) => {
 					const errors: FormikErrors<ILoginScreenData> = {};
 					if (!userName) {
 						errors.userName = getText('login.userName.required');
@@ -39,11 +52,13 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 					return errors;
 				}}
 				onSubmit={(values: ILoginScreenData) => {
-					safeRunAfterKeyboardHide(() => onStartLogin(values.userName, values.password));
+					safeRunAfterKeyboardHide(() =>
+						onStartLogin(values.userName, values.password),
+					);
 					Keyboard.dismiss();
 				}}
 				render={({
-					values: {userName, password},
+					values: { userName, password },
 					errors,
 					handleBlur,
 					handleSubmit,
@@ -63,11 +78,18 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 								setFieldValue('userName', value);
 								setFieldTouched('userName');
 							}}
-							focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('userName')}
-							onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
+							focusUpdateHandler={(hasFocus) =>
+								!hasFocus && setFieldTouched('userName')
+							}
+							onSubmitPressed={() =>
+								passwordRef.current && passwordRef.current.focusInput()
+							}
 							ref={usernameRef}
 						/>
-						{touched.userName && errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
+						{touched.userName &&
+							errors.userName && (
+								<Text style={style.errorText}>{errors.userName}</Text>
+							)}
 						<View style={style.passwordContainer}>
 							<PrimaryTextInput
 								placeholder={getText('login.password.input')}
@@ -81,10 +103,15 @@ const LoginForm: React.SFC<ILoginFormProps> = ({getText, onStartLogin}) => (
 									setFieldValue('password', value);
 									setFieldTouched('password');
 								}}
-								focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('password')}
+								focusUpdateHandler={(hasFocus) =>
+									!hasFocus && setFieldTouched('password')
+								}
 								ref={passwordRef}
 							/>
-							{touched.password && errors.password && <Text style={style.errorText}>{errors.password}</Text>}
+							{touched.password &&
+								errors.password && (
+									<Text style={style.errorText}>{errors.password}</Text>
+								)}
 						</View>
 						<View style={style.fullWidth}>
 							<PrimaryButton
@@ -140,8 +167,13 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			/>*/}
 			<Text style={style.welcomeText}>{getText('login.welcome.message')}</Text>
 			<LoginForm getText={getText} onStartLogin={onStartLogin} />
-			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={style.forgotPassword}>
-				<Text style={style.forgotPasswordText}>{getText('login.forgot.password')}</Text>
+			<TouchableOpacity
+				onPress={onNavigateToPasswordForgot}
+				style={style.forgotPassword}
+			>
+				<Text style={style.forgotPasswordText}>
+					{getText('login.forgot.password')}
+				</Text>
 			</TouchableOpacity>
 			<PrimaryButton
 				label={getText('login.use.unlock.file')}
@@ -150,7 +182,9 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 				disabled={false}
 			/>
 			<View style={style.noAccountContainer}>
-				<Text style={style.noAccountQuestion}>{getText('login.no.account.text')}</Text>
+				<Text style={style.noAccountQuestion}>
+					{getText('login.no.account.text')}
+				</Text>
 				<TouchableOpacity onPress={onNavigateToRegister}>
 					<Text style={style.signUpText}>{getText('login.signUp.button')}</Text>
 				</TouchableOpacity>

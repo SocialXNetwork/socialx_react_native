@@ -5,8 +5,12 @@
  */
 
 import * as React from 'react';
-import {NOTIFICATION_TYPES} from '../../../environment/consts';
-import {IConfirmActions, IConfirmationModalProps, ITranslatedProps} from '../../../types';
+import { NOTIFICATION_TYPES } from '../../../environment/consts';
+import {
+	IConfirmActions,
+	IConfirmationModalProps,
+	ITranslatedProps,
+} from '../../../types';
 
 const mock: IWithNotificationsEnhancedProps = {
 	data: {
@@ -139,7 +143,9 @@ export interface IWithNotificationsEnhancedData {
 	refreshing: boolean;
 }
 
-export interface IWithNotificationsEnhancedActions extends ITranslatedProps, IConfirmActions {
+export interface IWithNotificationsEnhancedActions
+	extends ITranslatedProps,
+		IConfirmActions {
 	loadNotifications: () => void;
 	checkNotification: (requestId: string) => void;
 	acceptFriendRequest: (requestId: string) => void;
@@ -157,9 +163,12 @@ interface IWithNotificationsProps {
 
 interface IWithNotificationsState {}
 
-export class WithNotifications extends React.Component<IWithNotificationsProps, IWithNotificationsState> {
+export class WithNotifications extends React.Component<
+	IWithNotificationsProps,
+	IWithNotificationsState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

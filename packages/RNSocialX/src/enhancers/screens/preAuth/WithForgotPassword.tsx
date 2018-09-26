@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithForgotPasswordEnhancedProps = {
 	data: {},
@@ -34,9 +34,12 @@ interface IWithForgotPasswordProps {
 
 interface IWithForgotPasswordState {}
 
-export class WithForgotPassword extends React.Component<IWithForgotPasswordProps, IWithForgotPasswordState> {
+export class WithForgotPassword extends React.Component<
+	IWithForgotPasswordProps,
+	IWithForgotPasswordState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

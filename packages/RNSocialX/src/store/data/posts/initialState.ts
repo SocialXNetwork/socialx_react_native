@@ -1,7 +1,9 @@
-import {IState} from './Types';
+import { IState } from './Types';
 
-export default {
+const initialState: IState = {
 	posts: [],
 	postMetaById: [],
 	postMetasByUser: [],
-} as IState;
+};
+
+export default initialState;

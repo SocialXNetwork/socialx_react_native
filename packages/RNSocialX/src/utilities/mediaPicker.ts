@@ -1,7 +1,7 @@
-import ImagePicker, {Image, Options} from 'react-native-image-crop-picker';
+import ImagePicker, { Image, Options } from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
 
-import {MediaTypeImage} from '../types';
+import { MediaTypeImage } from '../types';
 
 const DEFAULT_CAMERA_OPTIONS: Partial<Options> = {
 	cropping: false,
@@ -19,9 +19,13 @@ export type IPickerImage = Image;
 export type IPickerImageMultiple = Image[];
 type IPickerImageOrMultiple = Image | Image[];
 
-export const getCameraMediaObject = async (options: Partial<Options> = {}): Promise<IPickerImage | undefined> => {
+export const getCameraMediaObject = async (
+	options: Partial<Options> = {},
+): Promise<IPickerImage | undefined> => {
 	try {
-		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openCamera({
+		const mediaObject:
+			| IPickerImage
+			| IPickerImage[] = await ImagePicker.openCamera({
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});
@@ -31,7 +35,9 @@ export const getCameraMediaObject = async (options: Partial<Options> = {}): Prom
 	}
 };
 
-export const getGalleryMediaObjectMultiple = async (options = {}): Promise<IPickerImageMultiple> => {
+export const getGalleryMediaObjectMultiple = async (
+	options = {},
+): Promise<IPickerImageMultiple> => {
 	try {
 		const mediaObject: IPickerImageOrMultiple = await ImagePicker.openPicker({
 			...DEFAULT_PICKER_OPTIONS,
@@ -48,9 +54,13 @@ export const getGalleryMediaObjectMultiple = async (options = {}): Promise<IPick
 	}
 };
 
-export const getGalleryMediaObject = async (options: Partial<Options> = {}): Promise<IPickerImage | undefined> => {
+export const getGalleryMediaObject = async (
+	options: Partial<Options> = {},
+): Promise<IPickerImage | undefined> => {
 	try {
-		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openPicker({
+		const mediaObject:
+			| IPickerImage
+			| IPickerImage[] = await ImagePicker.openPicker({
 			...DEFAULT_PICKER_OPTIONS,
 			...options,
 		});
@@ -60,9 +70,13 @@ export const getGalleryMediaObject = async (options: Partial<Options> = {}): Pro
 	}
 };
 
-export const getCameraMediaObjectMultiple = async (options = {}): Promise<IPickerImageMultiple> => {
+export const getCameraMediaObjectMultiple = async (
+	options = {},
+): Promise<IPickerImageMultiple> => {
 	try {
-		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openCamera({
+		const mediaObject:
+			| IPickerImage
+			| IPickerImage[] = await ImagePicker.openCamera({
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});

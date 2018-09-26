@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const style: any = {
 	container: {
@@ -27,7 +27,7 @@ const style: any = {
 		borderRadius: Sizes.smartHorizontalScale(9),
 		maxWidth: 500,
 		shadowColor: Colors.black,
-		shadowOffset: {width: 0, height: 4},
+		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.3,
 		shadowRadius: 8,
 		width: '100%',

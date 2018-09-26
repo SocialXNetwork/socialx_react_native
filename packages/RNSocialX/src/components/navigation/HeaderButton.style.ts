@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Sizes } from '../../environment/theme';
 
 export const HEADER_BUTTON_SIZE = Sizes.smartHorizontalScale(30);
 

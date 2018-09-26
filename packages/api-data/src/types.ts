@@ -36,12 +36,15 @@ export interface ILikesMetasCallback {
 }
 
 export interface IMetasCallback {
-	[key: string]: IPostMetasCallback | ICommentMetasCallback | ILikesMetasCallback;
+	[key: string]:
+		| IPostMetasCallback
+		| ICommentMetasCallback
+		| ILikesMetasCallback;
 }
 
 export interface IContext {
-	account: GunAccountInstance;
-	gun: GunInstance;
+	account: IGunAccountInstance;
+	gun: IGunInstance;
 	time: () => Date;
 	encrypt: (target: string, salt: string) => Promise<string>;
 	work: (pairsalt1: string, pairsalt2: string) => Promise<string>;
@@ -53,47 +56,58 @@ export interface IGunSetterCallback {
 	ok: boolean;
 	err?: string;
 	out?: object;
-	user?: GunAccountInstance;
+	user?: IGunAccountInstance;
 }
 
 export type IGunCallback<T> = (err: string | null, result?: T) => void;
 
-export interface GunInstance {
+export interface IGunInstance {
 	// core api
-	put: (data: GunDataNode, callback?: (data: IGunSetterCallback) => void) => GunInstance;
-	get: (path: string) => GunInstance;
-	opt: (opts: object) => GunInstance;
-	back: (amount?: number) => GunInstance;
+	put: (
+		data: GunDataNode,
+		callback?: (data: IGunSetterCallback) => void,
+	) => IGunInstance;
+	get: (path: string) => IGunInstance;
+	opt: (opts: object) => IGunInstance;
+	back: (amount?: number) => IGunInstance;
 
 	// main api
-	on: (callback?: any, options?: object) => GunInstance;
-	once: (callback?: any, options?: object) => GunInstance;
-	set: (data: GunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
-	map: (callback?: any) => GunInstance;
+	on: (callback?: any, options?: object) => IGunInstance;
+	once: (callback?: any, options?: object) => IGunInstance;
+	set: (
+		data: IGunInstance | object,
+		callback?: (data: IGunSetterCallback) => void,
+	) => void;
+	map: (callback?: any) => IGunInstance;
 
 	// extended api
-	unset: (node: GunInstance) => GunInstance;
-	docLoad: <T>(callback: (data: T, key: string) => void) => GunInstance;
-	encrypt: (data: GunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
+	unset: (node: IGunInstance) => IGunInstance;
+	docLoad: <T>(callback: (data: T, key: string) => void) => IGunInstance;
+	encrypt: (
+		data: IGunInstance | object,
+		callback?: (data: IGunSetterCallback) => void,
+	) => void;
 
 	// subInstance api
-	user: (pub?: string) => GunAccountInstance;
+	user: (pub?: string) => IGunAccountInstance;
 }
 
-export interface GunAccountInstance extends GunInstance {
+export interface IGunAccountInstance extends IGunInstance {
 	// core api
 
 	/**
 	 * creates a user
 	 * @param username a string containing the username
 	 * @param passphrase a string containing the password/passphrase
-	 * @return returns a GunAccountInstance
+	 * @return returns a IGunAccountInstance
 	 */
 	create: (
 		username: string,
 		passphrase: string,
-		callback?: (data: {wait?: boolean; err?: string; ok?: number; pub: string}) => void,
-	) => GunAccountInstance;
+		callback?: (
+			data: { wait?: boolean; err?: string; ok?: number; pub: string },
+		) => void,
+	) => IGunAccountInstance;
 
 	/**
 	 * authenticate the user in
@@ -101,51 +115,59 @@ export interface GunAccountInstance extends GunInstance {
 	 * @param passphrase a string containing the password/passphrase
 	 * @param callback a function to be invoked after the user creation
 	 * @param opts an optional object containing optional parameters that extends the functions functionality
-	 * @return a GunAccountInstance
+	 * @return a IGunAccountInstance
 	 */
 	auth: (
 		username: string,
 		passphrase: string,
-		callback?: (data: {wait?: boolean; err?: string; ok?: number; pub: string}) => void,
-		opts?: {newpass?: string; pin?: string; change?: string},
-	) => GunAccountInstance;
+		callback?: (
+			data: { wait?: boolean; err?: string; ok?: number; pub: string },
+		) => void,
+		opts?: { newpass?: string; pin?: string; change?: string },
+	) => IGunAccountInstance;
 
 	/**
 	 * log the user out
-	 * @return a promise to be resolved into a GunAccountInstance object
+	 * @return a promise to be resolved into a IGunAccountInstance object
 	 */
-	leave: () => Promise<GunAccountInstance | Error>;
+	leave: () => Promise<IGunAccountInstance | Error>;
 
 	/**
 	 * remove the actual user
 	 * @param username a string containing the username
 	 * @param passphrase a string containing the password/passphrase
-	 * @return a promise to be resolved into a GunAccountInstance object
+	 * @return a promise to be resolved into a IGunAccountInstance object
 	 */
-	delete: (username: string, passphrase: string) => Promise<GunAccountInstance>;
+	delete: (
+		username: string,
+		passphrase: string,
+	) => Promise<IGunAccountInstance>;
 
 	/**
 	 * go back
 	 * @param back a number indicates how much to return from the current index (optional)
 	 * @param opts an object containing properties that extend the functionality of this function
 	 */
-	recall: (back?: number, opts?: {hook?: (props: object) => any}) => Promise<GunAccountInstance>;
+	recall: (
+		back?: number,
+		opts?: { hook?: (props: object) => any },
+	) => Promise<IGunAccountInstance>;
 
 	/**
 	 * this function returns back to the user root document (with user.back(-1)) and internally calls reAuth on the current user
-	 * @return a promise to be resolved into a GunAccountInstance object
+	 * @return a promise to be resolved into a IGunAccountInstance object
 	 */
-	alive: () => Promise<GunAccountInstance>;
+	alive: () => Promise<IGunAccountInstance>;
 
 	/**
 	 * trust another user with a specific current user data
 	 * example: user.get('private').get('age').trust(bob)
-	 * @param user a user GunInstance object
-	 * @return this function returns an extended GunInstance with extra properties that are useless
+	 * @param user a user IGunInstance object
+	 * @return this function returns an extended IGunInstance with extra properties that are useless
 	 */
-	trust: (user: GunInstance) => Promise<null>;
+	trust: (user: IGunInstance) => Promise<null>;
 
-	grant: (user: GunInstance) => Promise<null>;
+	grant: (user: IGunInstance) => Promise<null>;
 
 	/**
 	 * this function returns the pair keys (private/public) keys of the current users encryption (rsa)

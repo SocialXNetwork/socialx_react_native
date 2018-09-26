@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
-import {SafeAreaView} from 'react-navigation';
+import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 
-import {HeaderLogo} from '../';
+import { HeaderLogo } from '../';
 import styles from './Header.style';
 
 interface IHeaderProps {
@@ -13,7 +13,13 @@ interface IHeaderProps {
 	logo?: boolean;
 }
 
-export const Header: React.SFC<IHeaderProps> = ({center, left, right, title = '', logo}) => {
+export const Header: React.SFC<IHeaderProps> = ({
+	center,
+	left,
+	right,
+	title = '',
+	logo,
+}) => {
 	const displayCenter = center;
 	const displayTitle = title.length > 0 && !center;
 	const displayLogo = !center && title.length === 0 && logo;
@@ -21,7 +27,11 @@ export const Header: React.SFC<IHeaderProps> = ({center, left, right, title = ''
 
 	return (
 		<View style={styles.container}>
-			{left ? <View style={styles.left}>{left}</View> : <View style={styles.placeholder} />}
+			{left ? (
+				<View style={styles.left}>{left}</View>
+			) : (
+				<View style={styles.placeholder} />
+			)}
 			{displayCenter && <View style={styles.center}>{center}</View>}
 			{displayTitle && (
 				<View style={styles.center}>
@@ -34,7 +44,11 @@ export const Header: React.SFC<IHeaderProps> = ({center, left, right, title = ''
 				</View>
 			)}
 			{displayNone && <View style={styles.placeholder} />}
-			{right ? <View style={styles.right}>{right}</View> : <View style={styles.placeholder} />}
+			{right ? (
+				<View style={styles.right}>{right}</View>
+			) : (
+				<View style={styles.placeholder} />
+			)}
 		</View>
 	);
 };

@@ -6,7 +6,12 @@
 
 import * as React from 'react';
 
-import {IFriendsSearchResult, IResizeProps, ITranslatedProps, IWallPostPhotoOptimized} from '../../../types';
+import {
+	IFriendsSearchResult,
+	IResizeProps,
+	ITranslatedProps,
+	IWallPostPhotoOptimized,
+} from '../../../types';
 
 interface IWallPostPhotoData {
 	mediaObjects: IWallPostPhotoOptimized[];
@@ -49,9 +54,12 @@ interface IWithPhotoProps {
 
 interface IWithPhotoState {}
 
-export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState> {
+export class WithPhoto extends React.Component<
+	IWithPhotoProps,
+	IWithPhotoState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

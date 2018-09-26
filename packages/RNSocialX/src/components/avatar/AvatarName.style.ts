@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Fonts, Sizes} from '../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 export const CONTAINER_HEIGHT_FULL = Sizes.smartHorizontalScale(60);
 export const CONTAINER_HEIGHT_NAME_ONLY = Sizes.smartHorizontalScale(40);

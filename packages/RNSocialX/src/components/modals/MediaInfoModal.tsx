@@ -1,10 +1,10 @@
 import numeral from 'numeral';
 import * as React from 'react';
-import {Alert, Linking, Text, View} from 'react-native';
+import { Alert, Linking, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import {IMediaTypes, ITranslatedProps} from '../../types';
-import {WithManagedTransitions} from '../managedTransitions';
+import { IMediaTypes, ITranslatedProps } from '../../types';
+import { WithManagedTransitions } from '../managedTransitions';
 import styles from './MediaInfoModal.style';
 
 interface IMediaInfoOverlayProps extends ITranslatedProps {
@@ -41,7 +41,7 @@ export const MediaInfoModal: React.SFC<IMediaInfoOverlayProps> = ({
 	getText,
 }) => (
 	<WithManagedTransitions modalVisible={visible}>
-		{({onModalHide, onDismiss}) => (
+		{({ onModalHide, onDismiss }) => (
 			<Modal
 				// @ts-ignore
 				onDismiss={onDismiss}
@@ -58,16 +58,26 @@ export const MediaInfoModal: React.SFC<IMediaInfoOverlayProps> = ({
 					<Text style={styles.title}>{getText('media.info.title')}</Text>
 					<View style={styles.infoContainer}>
 						<View style={styles.infoTitles}>
-							<Text style={styles.fieldTitle}>{getText('media.info.hash')}</Text>
-							<Text style={styles.fieldTitle}>{getText('media.info.size')}</Text>
-							<Text style={styles.fieldTitle}>{getText('media.info.name')}</Text>
-							<Text style={styles.fieldTitle}>{getText('media.info.type')}</Text>
+							<Text style={styles.fieldTitle}>
+								{getText('media.info.hash')}
+							</Text>
+							<Text style={styles.fieldTitle}>
+								{getText('media.info.size')}
+							</Text>
+							<Text style={styles.fieldTitle}>
+								{getText('media.info.name')}
+							</Text>
+							<Text style={styles.fieldTitle}>
+								{getText('media.info.type')}
+							</Text>
 						</View>
-						<View style={{flex: 1}}>
+						<View style={{ flex: 1 }}>
 							<Text
 								style={[styles.fieldValue, styles.filedValueLink]}
 								numberOfLines={1}
-								onPress={() => openURL(mediaURL, getText('message.link.not.supported'))}
+								onPress={() =>
+									openURL(mediaURL, getText('message.link.not.supported'))
+								}
 							>
 								{mediaHash}
 							</Text>

@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {Colors, Sizes} from '../../../environment/theme';
+import { StyleSheet } from 'react-native';
+import { Colors, Sizes } from '../../../environment/theme';
 
 const ICON_PADDING = Sizes.smartVerticalScale(12);
 

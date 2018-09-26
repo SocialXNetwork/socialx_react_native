@@ -1,5 +1,7 @@
-import {IState} from './Types';
+import { IState } from './Types';
 
-export default {
+const initialState: IState = {
 	accounts: [],
-} as IState;
+};
+
+export default initialState;

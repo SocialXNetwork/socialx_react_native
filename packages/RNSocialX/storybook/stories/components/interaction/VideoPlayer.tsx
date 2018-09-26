@@ -1,11 +1,12 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {VideoPlayer} from '../../../../src/components';
+import { VideoPlayer } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
-const VIDEO_URL = 'https://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4';
+const VIDEO_URL =
+	'https://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4';
 
 storiesOf('Components/interaction', module)
 	.addDecorator(withKnobs)
@@ -41,7 +42,9 @@ storiesOf('Components/interaction', module)
 				resizeMode={'contain'}
 				paused={true}
 				thumbOnly={true}
-				onPressVideo={() => console.log('onPressVideo, show full screen screen')}
+				onPressVideo={() =>
+					console.log('onPressVideo, show full screen screen')
+				}
 			/>
 		);
 	});

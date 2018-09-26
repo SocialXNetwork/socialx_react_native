@@ -1,10 +1,10 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, number, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {DataProvider} from 'recyclerlistview';
+import { DataProvider } from 'recyclerlistview';
 
-import {MyProfileScreenView} from '../../../../src/screens/mainTabNav/MyProfileScreen.view';
+import { MyProfileScreenView } from '../../../../src/screens/mainTabNav/MyProfileScreen.view';
 
 class MyProfileScreenViewStory extends React.Component {
 	public state = {
@@ -58,14 +58,17 @@ class MyProfileScreenViewStory extends React.Component {
 	}
 
 	private loadMorePhotosHandler = () => {
-		const {gridMediaProvider} = this.state;
-		const headerElement = [{index: '1da431da-fad41dasg5125'}];
+		const { gridMediaProvider } = this.state;
+		const headerElement = [{ index: '1da431da-fad41dasg5125' }];
 
 		const loadedSize = gridMediaProvider.getSize();
-		const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+		const loadedMedia =
+			loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
 
 		const newMedia = new Array(20).fill(0).map((val, index) => ({
-			url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedPhotoIndex + index),
+			url:
+				'https://avatars2.githubusercontent.com/u/' +
+				(this.lastLoadedPhotoIndex + index),
 			index: this.lastLoadedPhotoIndex + index,
 		}));
 		const allMedia = [...loadedMedia, ...newMedia];

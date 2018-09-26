@@ -1,10 +1,20 @@
 import * as React from 'react';
-import {ActivityIndicator, Dimensions, Text, TouchableOpacity, View} from 'react-native';
+import {
+	ActivityIndicator,
+	Dimensions,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import Swipeable from 'react-native-swipeable';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {AvatarImage} from '../';
-import {IConfirmActions, IConfirmationModalProps, ITranslatedProps} from '../../types';
+import { AvatarImage } from '../';
+import {
+	IConfirmActions,
+	IConfirmationModalProps,
+	ITranslatedProps,
+} from '../../types';
 import style from './ActivityGenericCard.style';
 
 interface IActivityGenericCardProps extends ITranslatedProps, IConfirmActions {
@@ -18,7 +28,7 @@ interface IActivityGenericCardProps extends ITranslatedProps, IConfirmActions {
 	onViewUserProfile: (userId: string) => void;
 }
 
-const SwipeLeftContent: React.SFC<{label: string}> = ({label}) => (
+const SwipeLeftContent: React.SFC<{ label: string }> = ({ label }) => (
 	<View style={style.leftSwipeContainer}>
 		<Text style={style.leftText}>{label}</Text>
 	</View>
@@ -65,14 +75,28 @@ export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
 	return (
 		<View style={style.container}>
 			<Swipeable
-				leftContent={<SwipeLeftContent label={getText('notifications.card.generic.swipeout.label')} />}
+				leftContent={
+					<SwipeLeftContent
+						label={getText('notifications.card.generic.swipeout.label')}
+					/>
+				}
 				onLeftActionRelease={() =>
-					confirmDismissNotification(true, requestId, showConfirm, hideConfirm, onCheckNotification, confirmTitle)
+					confirmDismissNotification(
+						true,
+						requestId,
+						showConfirm,
+						hideConfirm,
+						onCheckNotification,
+						confirmTitle,
+					)
 				}
 				leftActionActivationDistance={Dimensions.get('window').width / 2}
 			>
 				<View style={style.swipeContainer}>
-					<TouchableOpacity style={style.leftContainer} onPress={() => onViewUserProfile(userId)}>
+					<TouchableOpacity
+						style={style.leftContainer}
+						onPress={() => onViewUserProfile(userId)}
+					>
 						<AvatarImage image={avatarURL} style={style.avatarImage} />
 						<View style={style.avatarNameContainer}>
 							<Text style={style.fullName}>{fullName}</Text>
@@ -82,7 +106,14 @@ export const ActivityGenericCard: React.SFC<IActivityGenericCardProps> = ({
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={() =>
-							confirmDismissNotification(false, requestId, showConfirm, hideConfirm, onCheckNotification, confirmTitle)
+							confirmDismissNotification(
+								false,
+								requestId,
+								showConfirm,
+								hideConfirm,
+								onCheckNotification,
+								confirmTitle,
+							)
 						}
 					>
 						<Icon name={'md-close'} style={style.iconButton} />

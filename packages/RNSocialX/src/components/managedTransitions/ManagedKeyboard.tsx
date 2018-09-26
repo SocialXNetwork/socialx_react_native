@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Keyboard} from 'react-native';
+import { Keyboard } from 'react-native';
 
-import {IKeyboardContextProps} from '../../environment/consts';
+import { IKeyboardContextProps } from '../../environment/consts';
 
 interface IManagedKeyboardProps {
 	children(props: IKeyboardContextProps): JSX.Element;
@@ -12,7 +12,10 @@ interface IManagedKeyboardState {
 	keyboardIsHidden: boolean;
 }
 
-export class ManagedKeyboard extends React.Component<IManagedKeyboardProps, IManagedKeyboardState> {
+export class ManagedKeyboard extends React.Component<
+	IManagedKeyboardProps,
+	IManagedKeyboardState
+> {
 	public state = {
 		marginBottom: 0,
 		keyboardIsHidden: false,
@@ -24,8 +27,14 @@ export class ManagedKeyboard extends React.Component<IManagedKeyboardProps, IMan
 	private keyboardDidHideListener: any;
 
 	public componentDidMount() {
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+		this.keyboardDidShowListener = Keyboard.addListener(
+			'keyboardDidShow',
+			this.keyboardDidShow,
+		);
+		this.keyboardDidHideListener = Keyboard.addListener(
+			'keyboardDidHide',
+			this.keyboardDidHide,
+		);
 	}
 
 	public componentWillUnmount() {

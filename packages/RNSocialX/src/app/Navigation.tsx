@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated, Easing} from 'react-native';
+import { Animated, Easing } from 'react-native';
 import {
 	createBottomTabNavigator,
 	createMaterialTopTabNavigator,
@@ -8,10 +8,10 @@ import {
 	TransitionConfig,
 } from 'react-navigation';
 
-import {NavigationTabBar} from '../components';
-import {WithNavigation} from '../enhancers/navigation/WithNavigation';
-import {INavigationProps, IStackDefaultConfig} from '../types';
-import {tabStyles} from './Navigation.style';
+import { NavigationTabBar } from '../components';
+import { WithNavigation } from '../enhancers/navigation/WithNavigation';
+import { INavigationProps, IStackDefaultConfig } from '../types';
+import { tabStyles } from './Navigation.style';
 
 import {
 	CommentsScreen,
@@ -36,7 +36,13 @@ import {
 	UserProfileScreen,
 } from '../screens';
 
-import {PeopleTab, PlacesTab, TagsTab, TopTab, TrendingScreen} from '../screens/mainTabNav/SearchScreen';
+import {
+	PeopleTab,
+	PlacesTab,
+	TagsTab,
+	TopTab,
+	TrendingScreen,
+} from '../screens/mainTabNav/SearchScreen';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -52,7 +58,7 @@ const slideFromLeftTransition = (): TransitionConfig => ({
 		timing: Animated.timing,
 	},
 	screenInterpolator: (sceneProps: NavigationSceneRendererProps) => {
-		const {layout, position, scene} = sceneProps;
+		const { layout, position, scene } = sceneProps;
 
 		const thisSceneIndex = scene.index;
 		const width = layout.initWidth;
@@ -62,13 +68,13 @@ const slideFromLeftTransition = (): TransitionConfig => ({
 			outputRange: [-width, 0],
 		});
 
-		return {transform: [{translateX}]};
+		return { transform: [{ translateX }] };
 	},
 });
 
 const fadeIn = (): TransitionConfig => ({
 	screenInterpolator: (sceneProps: NavigationSceneRendererProps) => {
-		const {position, scene} = sceneProps;
+		const { position, scene } = sceneProps;
 
 		const sceneIndex = scene.index;
 
@@ -77,24 +83,24 @@ const fadeIn = (): TransitionConfig => ({
 			outputRange: [0, 1],
 		});
 
-		return {opacity};
+		return { opacity };
 	},
 });
 
 const MainStackScreens = {
-	CreateWallPostScreen: {screen: CreateWallPostScreen},
-	PhotoScreen: {screen: PhotoScreen},
-	MediaViewerScreen: {screen: MediaViewerScreen},
-	CommentsScreen: {screen: CommentsScreen},
-	UserProfileScreen: {screen: UserProfileScreen},
+	CreateWallPostScreen: { screen: CreateWallPostScreen },
+	PhotoScreen: { screen: PhotoScreen },
+	MediaViewerScreen: { screen: MediaViewerScreen },
+	CommentsScreen: { screen: CommentsScreen },
+	UserProfileScreen: { screen: UserProfileScreen },
 };
 
 const MyProfileStackNavigator = createStackNavigator(
 	{
-		MyProfileScreen: {screen: MyProfileScreen},
-		SettingsScreen: {screen: SettingsScreen},
-		SocialXAccountScreen: {screen: SocialXAccountScreen},
-		ReferralScreen: {screen: ReferralScreen},
+		MyProfileScreen: { screen: MyProfileScreen },
+		SettingsScreen: { screen: SettingsScreen },
+		SocialXAccountScreen: { screen: SocialXAccountScreen },
+		ReferralScreen: { screen: ReferralScreen },
 	},
 	defaultConfig,
 );
@@ -174,7 +180,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 
 const MainScreenWithModal = createStackNavigator(
 	{
-		MainScreenTabNavigationWithModal: {screen: MainScreenTabNavigation},
+		MainScreenTabNavigationWithModal: { screen: MainScreenTabNavigation },
 		...MainStackScreens,
 	},
 	{
@@ -186,22 +192,22 @@ const MainScreenWithModal = createStackNavigator(
 
 const PreAuthNavigator = createStackNavigator(
 	{
-		LaunchScreen: {screen: LaunchScreen},
-		LoginScreen: {screen: LoginScreen},
-		SignUpScreen: {screen: RegisterScreen},
-		ForgotPasswordScreen: {screen: ForgotPasswordScreen},
-		ResetPasswordScreen: {screen: ResetPasswordScreen},
-		TermsAndConditionsScreen: {screen: TermsAndConditionsScreen},
+		LaunchScreen: { screen: LaunchScreen },
+		LoginScreen: { screen: LoginScreen },
+		SignUpScreen: { screen: RegisterScreen },
+		ForgotPasswordScreen: { screen: ForgotPasswordScreen },
+		ResetPasswordScreen: { screen: ResetPasswordScreen },
+		TermsAndConditionsScreen: { screen: TermsAndConditionsScreen },
 	},
 	defaultConfig,
 );
 
 const AppNavigation = createStackNavigator(
 	{
-		PreAuthScreen: {screen: PreAuthNavigator},
-		IntroScreen: {screen: IntroScreen},
-		MainScreen: {screen: MainScreenWithModal},
-		Maintenance: {screen: MaintenanceScreen},
+		PreAuthScreen: { screen: PreAuthNavigator },
+		IntroScreen: { screen: IntroScreen },
+		MainScreen: { screen: MainScreenWithModal },
+		Maintenance: { screen: MaintenanceScreen },
 	},
 	{
 		headerMode: 'none',
@@ -210,6 +216,11 @@ const AppNavigation = createStackNavigator(
 
 export const Navigation = (navigationProps: INavigationProps) => (
 	<WithNavigation>
-		{({notifications, getText}) => <AppNavigation {...navigationProps} screenProps={{notifications, getText}} />}
+		{({ notifications, getText }) => (
+			<AppNavigation
+				{...navigationProps}
+				screenProps={{ notifications, getText }}
+			/>
+		)}
 	</WithNavigation>
 );

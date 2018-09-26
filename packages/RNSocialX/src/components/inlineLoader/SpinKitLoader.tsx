@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Spinner from 'react-native-spinkit';
 
-import {Colors, Sizes} from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 
 export enum SpinnerTypes {
 	NineCubeGrid = '9CubeGrid',
@@ -42,6 +42,11 @@ export const SpinKitLoader: React.SFC<ISpinKitLoaderProps> = ({
 	spinnerType = SpinnerTypes.NineCubeGrid,
 }) => (
 	<View style={style.spinnerContainer}>
-		<Spinner isVisible={true} size={spinnerSize} type={spinnerType} color={spinnerColor} />
+		<Spinner
+			isVisible={true}
+			size={spinnerSize}
+			type={spinnerType}
+			color={spinnerColor}
+		/>
 	</View>
 );

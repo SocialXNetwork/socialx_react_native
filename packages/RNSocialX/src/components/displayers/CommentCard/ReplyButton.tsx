@@ -1,14 +1,17 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 interface IReplyButtonProps {
 	label: string;
 	onCommentReply: (value: boolean) => void;
 }
 
-export const ReplyButton: React.SFC<IReplyButtonProps> = ({onCommentReply, label}) => (
+export const ReplyButton: React.SFC<IReplyButtonProps> = ({
+	onCommentReply,
+	label,
+}) => (
 	<TouchableOpacity onPress={() => onCommentReply(true)}>
 		<Text style={style.actionButtonText}>{label}</Text>
 	</TouchableOpacity>

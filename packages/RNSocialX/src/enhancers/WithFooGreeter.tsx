@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 interface IGreeterEnhancedProps {
 	salute: string;
@@ -16,9 +16,9 @@ interface IWithFooGreeterProps {
 
 // foo is imported here directly just as an example. Normally, there should
 // be a WithFoo component for this purpose, too!
-export const WithFooGreeter: React.SFC<IWithFooGreeterProps> = ({children}) => (
-	<View>{children({salute: 'Hello ', from: 'foo'})}</View>
-);
+export const WithFooGreeter: React.SFC<IWithFooGreeterProps> = ({
+	children,
+}) => <View>{children({ salute: 'Hello ', from: 'foo' })}</View>;
 
 // =====================================================
 // EXAMPLE ENHANCER AS A STATEFUL CLASS COMPONENT
@@ -53,15 +53,19 @@ export class WithFooGreeterAndCounter extends React.Component<
 	}
 
 	increment = () => {
-		this.setState(({counter}) => ({counter: counter + 1}));
+		this.setState(({ counter }) => ({ counter: counter + 1 }));
 	};
 
 	render() {
-		const {counter} = this.state;
-		const {children} = this.props;
+		const { counter } = this.state;
+		const { children } = this.props;
 
 		// foo is imported here directly just as an example. Normally, there should
 		// be a WithFoo component for this purpose, too!
-		return <View>{children({salute: `Hello ${counter} times `, from: 'foo'})}</View>;
+		return (
+			<View>
+				{children({ salute: `Hello ${counter} times `, from: 'foo' })}
+			</View>
+		);
 	}
 }

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import {Colors, Fonts, Sizes} from '../../../environment/theme';
-import {ITranslatedProps, IWallPostComment} from '../../../types';
-import {CommentReply} from './';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import { ITranslatedProps, IWallPostComment } from '../../../types';
+import { CommentReply } from './';
 
 interface ICommentRepliesProps extends ITranslatedProps {
 	replies: IWallPostComment[];
@@ -24,10 +24,17 @@ export const CommentReplies: React.SFC<ICommentRepliesProps> = ({
 				<View>
 					<TouchableOpacity onPress={() => onCommentReply(false)}>
 						<Text style={style.viewMoreReplies}>
-							{getText('comments.screen.comment.card.view.more', replies.length - 1)}
+							{getText(
+								'comments.screen.comment.card.view.more',
+								replies.length - 1,
+							)}
 						</Text>
 					</TouchableOpacity>
-					<CommentReply reply={lastReply} onCommentReply={onCommentReply} onViewUserProfile={onViewUserProfile} />
+					<CommentReply
+						reply={lastReply}
+						onCommentReply={onCommentReply}
+						onViewUserProfile={onViewUserProfile}
+					/>
 				</View>
 			);
 		} else if (replies.length > 0) {

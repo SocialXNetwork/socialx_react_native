@@ -1,9 +1,9 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import moment from 'moment';
 import * as React from 'react';
 
-import {UserDetails} from '../../../../../src/components/displayers/WallPostCard';
+import { UserDetails } from '../../../../../src/components/displayers/WallPostCard';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)

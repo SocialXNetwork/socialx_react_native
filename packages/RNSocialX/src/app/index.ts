@@ -1,1 +1,1 @@
-export {HelloFoo} from '../screens';
+export { HelloFoo } from '../screens';

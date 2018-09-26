@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import {ITranslatedProps} from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 const mock: IWithMediaViewerEnhancedProps = {
 	data: {},
@@ -30,9 +30,12 @@ interface IWithMediaViewerProps {
 
 interface IWithMediaViewerState {}
 
-export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWithMediaViewerState> {
+export class WithMediaViewer extends React.Component<
+	IWithMediaViewerProps,
+	IWithMediaViewerState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

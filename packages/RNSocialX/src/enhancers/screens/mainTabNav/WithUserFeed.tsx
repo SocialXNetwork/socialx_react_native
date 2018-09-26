@@ -5,9 +5,13 @@
  */
 
 import * as React from 'react';
-import {FEED_TYPES} from '../../../environment/consts';
-import {currentUser, posts} from '../../../mocks';
-import {ICurrentUser, ITranslatedProps, IWallPostCardData} from '../../../types';
+import { FEED_TYPES } from '../../../environment/consts';
+import { currentUser, posts } from '../../../mocks';
+import {
+	ICurrentUser,
+	ITranslatedProps,
+	IWallPostCardData,
+} from '../../../types';
 
 // TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 const mock: IWithUserFeedEnhancedProps = {
@@ -79,8 +83,11 @@ interface IWithUserFeedProps {
 
 interface IWithUserFeedState {}
 
-export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserFeedState> {
+export class WithUserFeed extends React.Component<
+	IWithUserFeedProps,
+	IWithUserFeedState
+> {
 	render() {
-		return this.props.children({data: mock.data, actions: mock.actions});
+		return this.props.children({ data: mock.data, actions: mock.actions });
 	}
 }

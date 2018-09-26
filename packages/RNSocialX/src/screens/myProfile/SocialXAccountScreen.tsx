@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
-import {INavigationProps} from '../../types';
-import {SocialXAccountScreenView} from './SocialXAccountScreen.view';
+import { INavigationProps } from '../../types';
+import { SocialXAccountScreenView } from './SocialXAccountScreen.view';
 
 import {
 	IWithSocialXAccountEnhancedActions,
@@ -15,7 +15,10 @@ type ISocialXAccountScreenProps = IWithSocialXAccountEnhancedActions &
 	INavigationProps<any, any>;
 interface ISocialXAccountScreenState {}
 
-class Screen extends React.Component<ISocialXAccountScreenProps, ISocialXAccountScreenState> {
+class Screen extends React.Component<
+	ISocialXAccountScreenProps,
+	ISocialXAccountScreenState
+> {
 	public render() {
 		return (
 			<SocialXAccountScreenView
@@ -41,8 +44,12 @@ class Screen extends React.Component<ISocialXAccountScreenProps, ISocialXAccount
 	};
 }
 
-export const SocialXAccountScreen = ({navigation}: INavigationProps<any, any>) => (
+export const SocialXAccountScreen = ({
+	navigation,
+}: INavigationProps<any, any>) => (
 	<WithSocialXAccount>
-		{({data, actions}) => <Screen navigation={navigation} {...data} {...actions} />}
+		{({ data, actions }) => (
+			<Screen navigation={navigation} {...data} {...actions} />
+		)}
 	</WithSocialXAccount>
 );

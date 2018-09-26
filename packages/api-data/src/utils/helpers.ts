@@ -1,11 +1,18 @@
-import {IContext, ILikesMetasCallback, IMetasCallback} from '../types';
+import { IContext, ILikesMetasCallback, IMetasCallback } from '../types';
 
 export const datePathFromDate = (date: Date) =>
-	date.getUTCFullYear() + '/' + (date.getUTCMonth() + 1) + '/' + date.getUTCDate();
+	date.getUTCFullYear() +
+	'/' +
+	(date.getUTCMonth() + 1) +
+	'/' +
+	date.getUTCDate();
 
-export const setToArray = ({_: parentSoul, ...data}: IMetasCallback | ILikesMetasCallback) => {
-	return Object.values(data).map(({v, ...rest}: any) => {
-		const {_: deepSoul, ...deepRest} = rest;
+export const setToArray = ({
+	_: parentSoul,
+	...data
+}: IMetasCallback | ILikesMetasCallback) => {
+	return Object.values(data).map(({ v, ...rest }: any) => {
+		const { _: deepSoul, ...deepRest } = rest;
 		return deepRest;
 	});
 };

@@ -1,5 +1,5 @@
-import {Dimensions, StyleSheet} from 'react-native';
-import {Colors, Icons, Sizes} from '../../environment/theme';
+import { Dimensions, StyleSheet } from 'react-native';
+import { Colors, Icons, Sizes } from '../../environment/theme';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -38,5 +38,5 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
-export const colors = {white: Colors.white};
+export const colors = { white: Colors.white };
 export const icons = Icons;

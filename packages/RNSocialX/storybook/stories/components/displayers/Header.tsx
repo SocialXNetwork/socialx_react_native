@@ -1,9 +1,9 @@
-import {boolean, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 
-import {Header} from '../../../../src/components';
+import { Header } from '../../../../src/components';
 
 storiesOf('Components/displayers', module)
 	.addDecorator(withKnobs)

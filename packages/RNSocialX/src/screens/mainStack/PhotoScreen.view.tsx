@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
 	AddFriendsList,
@@ -12,9 +12,9 @@ import {
 	SharePostInput,
 	WithInlineLoader,
 } from '../../components';
-import {IWithLoaderProps} from '../../components/inlineLoader';
-import {IFriendsSearchResult, ITranslatedProps} from '../../types';
-import style, {customStyleProps} from './PhotoScreen.style';
+import { IWithLoaderProps } from '../../components/inlineLoader';
+import { IFriendsSearchResult, ITranslatedProps } from '../../types';
+import style, { customStyleProps } from './PhotoScreen.style';
 
 interface IPhotoScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	avatarURL?: string;
@@ -98,7 +98,12 @@ const TagFriendsSection: React.SFC<ITagFriendsSectionProps> = ({
 				text={checkboxLabel}
 				onPress={onTagFriendsToggle}
 			/>
-			{tagFriends && <AddFriendsList taggedFriends={taggedFriends} showTagFriendsModal={showTagFriendsModal} />}
+			{tagFriends && (
+				<AddFriendsList
+					taggedFriends={taggedFriends}
+					showTagFriendsModal={showTagFriendsModal}
+				/>
+			)}
 		</View>
 	);
 };
@@ -129,7 +134,11 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 				right={<HeaderButton iconName={'md-checkmark'} onPress={sendPost} />}
 			/>
 		}
-		<KeyboardAwareScrollView style={style.scrollView} alwaysBounceVertical={true} keyboardShouldPersistTaps={'handled'}>
+		<KeyboardAwareScrollView
+			style={style.scrollView}
+			alwaysBounceVertical={true}
+			keyboardShouldPersistTaps={'handled'}
+		>
 			<SharePostInput
 				avatarSource={avatarURL}
 				placeholder={getText('photo.screen.share.input.placeholder')}
@@ -141,8 +150,14 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 			</View>
 			<View style={style.addMediaContainer}>
 				<TouchableOpacity style={style.addMediaButton} onPress={onAddMedia}>
-					<Image source={customStyleProps.iconNewPostAddMedia} style={style.photoIcon} resizeMode={'contain'} />
-					<Text style={style.addMediaText}>{getText('photo.screen.add.media')}</Text>
+					<Image
+						source={customStyleProps.iconNewPostAddMedia}
+						style={style.photoIcon}
+						resizeMode={'contain'}
+					/>
+					<Text style={style.addMediaText}>
+						{getText('photo.screen.add.media')}
+					</Text>
 				</TouchableOpacity>
 			</View>
 			<View style={style.paddingContainer}>

@@ -1,9 +1,9 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {RegisterScreenView} from '../../../../src/screens/preAuth/RegisterScreen.view';
+import { RegisterScreenView } from '../../../../src/screens/preAuth/RegisterScreen.view';
 
 storiesOf('Screens/preAuth', module)
 	.addDecorator(withKnobs)

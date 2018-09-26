@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {Dimensions, ScrollView, StyleSheet} from 'react-native';
+import { Dimensions, ScrollView, StyleSheet } from 'react-native';
 
-import {MediaObjectViewer} from '../';
-import {Sizes} from '../../environment/theme';
-import {ITranslatedProps} from '../../types';
+import { MediaObjectViewer } from '../';
+import { Sizes } from '../../environment/theme';
+import { ITranslatedProps } from '../../types';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -15,11 +15,13 @@ const scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
 const onScrollContentSizeChange = () => {
 	if (scrollViewRef.current) {
-		scrollViewRef.current.scrollToEnd({animated: true});
+		scrollViewRef.current.scrollToEnd({ animated: true });
 	}
 };
 
-export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> = ({mediaURIs, getText}) => {
+export const MediaHorizontalScroller: React.SFC<
+	IMediaHorizontalScrollerProps
+> = ({ mediaURIs, getText }) => {
 	return (
 		<ScrollView
 			ref={scrollViewRef}
@@ -34,7 +36,13 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 					key={mediaURI}
 					uri={mediaURI}
 					thumbOnly={true}
-					style={[style.mediaObject, {width: mediaURIs.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8}]}
+					style={[
+						style.mediaObject,
+						{
+							width:
+								mediaURIs.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
+						},
+					]}
 					getText={getText}
 				/>
 			))}

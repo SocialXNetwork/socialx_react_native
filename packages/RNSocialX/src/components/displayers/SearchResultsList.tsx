@@ -1,8 +1,8 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 
-import {SearchResultsItem} from '../../components';
-import {ISearchResultData} from '../../types';
+import { SearchResultsItem } from '../../components';
+import { ISearchResultData } from '../../types';
 import styles from './SearchResultsList.style';
 
 interface IPaginatedList {
@@ -16,7 +16,7 @@ interface ISearchResultsListProps extends IPaginatedList {
 	onLoadMore: () => void;
 }
 
-const LoadingFooter: React.SFC<IPaginatedList> = ({hasMore}) => {
+const LoadingFooter: React.SFC<IPaginatedList> = ({ hasMore }) => {
 	if (hasMore) {
 		return (
 			<View style={styles.bottomLoadingContainer}>
@@ -51,7 +51,7 @@ export const SearchResultsList: React.SFC<ISearchResultsListProps> = ({
 }) => (
 	<FlatList
 		data={searchResults}
-		renderItem={({item}) => renderItem(item, onAddFriend, onResultPress)}
+		renderItem={({ item }) => renderItem(item, onAddFriend, onResultPress)}
 		style={styles.resultsContainer}
 		keyboardShouldPersistTaps={'handled'}
 		keyExtractor={keyExtractor}

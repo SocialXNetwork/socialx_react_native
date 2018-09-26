@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {Colors, Sizes} from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 
 interface IDotsMenuButtonProps {
 	iconColor?: string;

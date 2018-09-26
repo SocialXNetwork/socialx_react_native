@@ -83,7 +83,11 @@ const mock: IWithCommentsEnhancedProps = {
 		reloadComments: (sortOption: CommentsSortingOptions) => {
 			/**/
 		},
-		sendComment: (text: string, targetPostId: string | undefined, targetCommentId: string | undefined) => {
+		sendComment: (
+			text: string,
+			targetPostId: string | undefined,
+			targetCommentId: string | undefined,
+		) => {
 			/**/
 		},
 		likeComment: (commentId: string) => {
@@ -127,7 +131,11 @@ export interface IWithCommentsEnhancedData {
 
 export interface IWithCommentsEnhancedActions extends ITranslatedProps {
 	reloadComments: (sortOption: CommentsSortingOptions) => void;
-	sendComment: (text: string, targetPostId: string | undefined, targetCommentId: string | undefined) => void;
+	sendComment: (
+		text: string,
+		targetPostId: string | undefined,
+		targetCommentId: string | undefined,
+	) => void;
 	likeComment: (commentId: string) => void;
 	removeCommentLike: (commentId: string) => void;
 	deleteComment: (commentId: string) => void;
@@ -149,9 +157,12 @@ interface IWithCommentsState {}
 // This is a class because we might want to do transformations and optimizations here
 // Also, this will import individual connectors/enhancers and compose them to
 // pass the real data and actions instead of the mocks
-export class WithComments extends React.Component<IWithCommentsProps, IWithCommentsState> {
+export class WithComments extends React.Component<
+	IWithCommentsProps,
+	IWithCommentsState
+> {
 	render() {
-		const {children} = this.props;
-		return children({data: mock.data, actions: mock.actions});
+		const { children } = this.props;
+		return children({ data: mock.data, actions: mock.actions });
 	}
 }

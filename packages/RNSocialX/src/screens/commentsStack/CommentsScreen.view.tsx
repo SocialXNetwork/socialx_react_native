@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, SafeAreaView, ScrollView, TextInput} from 'react-native';
+import { Platform, SafeAreaView, ScrollView, TextInput } from 'react-native';
 
 import {
 	CommentCard,
@@ -10,9 +10,17 @@ import {
 	CommentTextInput,
 	NoComments,
 } from '../../components';
-import {WallPostMedia} from '../../components/displayers/WallPostCard';
-import {IWithLoaderProps, WithInlineLoader} from '../../components/inlineLoader';
-import {IMediaProps, IResizeProps, ITranslatedProps, IWallPostComment} from '../../types';
+import { WallPostMedia } from '../../components/displayers/WallPostCard';
+import {
+	IWithLoaderProps,
+	WithInlineLoader,
+} from '../../components/inlineLoader';
+import {
+	IMediaProps,
+	IResizeProps,
+	ITranslatedProps,
+	IWallPostComment,
+} from '../../types';
 import style from './CommentsScreen.style';
 
 const onStartCommentHandler = (commentInputRef: React.RefObject<TextInput>) => {
@@ -21,14 +29,20 @@ const onStartCommentHandler = (commentInputRef: React.RefObject<TextInput>) => {
 	}
 };
 
-const onCommentSendHandler = (commentInputRef: React.RefObject<TextInput>, onCommentSend: () => void) => {
+const onCommentSendHandler = (
+	commentInputRef: React.RefObject<TextInput>,
+	onCommentSend: () => void,
+) => {
 	if (commentInputRef.current) {
 		commentInputRef.current.blur();
 	}
 	onCommentSend();
 };
 
-interface ICommentsScreenComponentProps extends IWithLoaderProps, ITranslatedProps, IResizeProps {
+interface ICommentsScreenComponentProps
+	extends IWithLoaderProps,
+		ITranslatedProps,
+		IResizeProps {
 	comments: IWallPostComment[];
 	onCommentLike: (comment: IWallPostComment) => void;
 	onCommentReply: (comment: IWallPostComment, startReply: boolean) => void;
@@ -76,10 +90,14 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	marginBottom,
 	isReplyScreen,
 }) => {
-	const {id, likes, media, text, timestamp} = postData;
-	const likedByMe = !!likes.find((like: any) => like.userId === currentUser.userId);
+	const { id, likes, media, text, timestamp } = postData;
+	const likedByMe = !!likes.find(
+		(like: any) => like.userId === currentUser.userId,
+	);
 
-	const noCommentsText = isReplyScreen ? getText('replies.screen.no.comments') : getText('comments.screen.no.comments');
+	const noCommentsText = isReplyScreen
+		? getText('replies.screen.no.comments')
+		: getText('comments.screen.no.comments');
 	const commentInputPlaceholder = isReplyScreen
 		? getText('replies.screen.comment.input.placeholder')
 		: getText('comments.screen.comment.input.placeholder');
@@ -88,7 +106,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	const commentInputRef: React.RefObject<TextInput> = React.createRef();
 
 	return (
-		<SafeAreaView style={[style.container, Platform.select({ios: {marginBottom}})]}>
+		<SafeAreaView
+			style={[style.container, Platform.select({ ios: { marginBottom } })]}
+		>
 			<WithInlineLoader isLoading={isLoading}>
 				<ScrollView
 					style={style.commentsList}
@@ -117,7 +137,11 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 							getText={getText}
 						/>
 					)}
-					<CommentsPostLikes getText={getText} likes={likes} showUserProfile={onViewUserProfile} />
+					<CommentsPostLikes
+						getText={getText}
+						likes={likes}
+						showUserProfile={onViewUserProfile}
+					/>
 					<CommentsPostActions
 						likedByMe={likedByMe}
 						onLikePress={() => onLikePress(likedByMe, id)}
@@ -132,10 +156,14 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 								key={comment.id}
 								comment={comment}
 								onCommentLike={() => onCommentLike(comment)}
-								onCommentReply={(startReply: boolean) => onCommentReply(comment, startReply)}
+								onCommentReply={(startReply: boolean) =>
+									onCommentReply(comment, startReply)
+								}
 								onViewUserProfile={onViewUserProfile}
 								onShowOptionsMenu={() => onShowOptionsMenu(comment)}
-								onCommentContainerWidthChange={(width: number) => onCommentContainerWidthChange(width)}
+								onCommentContainerWidthChange={(width: number) =>
+									onCommentContainerWidthChange(width)
+								}
 								commentLikesPosition={commentLikesPosition}
 								getText={getText}
 							/>
@@ -145,7 +173,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 				<CommentTextInput
 					ref={commentInputRef}
 					autoFocus={startComment}
-					onCommentSend={() => onCommentSendHandler(commentInputRef, onCommentSend)}
+					onCommentSend={() =>
+						onCommentSendHandler(commentInputRef, onCommentSend)
+					}
 					placeholder={commentInputPlaceholder}
 					showSendButton={showSendButton}
 					commentText={commentText}

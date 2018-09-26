@@ -5,14 +5,20 @@
  */
 
 import * as React from 'react';
-import {Keyboard, View} from 'react-native';
+import { Keyboard, View } from 'react-native';
 
-import {INavigationProps} from '../../types';
-import {RegisterScreenView} from './RegisterScreen.view';
+import { INavigationProps } from '../../types';
+import { RegisterScreenView } from './RegisterScreen.view';
 
-import {IWithRegisterEnhancedActions, IWithRegisterEnhancedData, WithRegister} from '../../enhancers/screens';
+import {
+	IWithRegisterEnhancedActions,
+	IWithRegisterEnhancedData,
+	WithRegister,
+} from '../../enhancers/screens';
 
-type IRegisterScreenProps = IWithRegisterEnhancedActions & IWithRegisterEnhancedData & INavigationProps;
+type IRegisterScreenProps = IWithRegisterEnhancedActions &
+	IWithRegisterEnhancedData &
+	INavigationProps;
 
 class Screen extends React.Component<IRegisterScreenProps> {
 	public render() {
@@ -36,7 +42,9 @@ class Screen extends React.Component<IRegisterScreenProps> {
 				onSmsCodeResend={resendSMSCode}
 				onStartRegister={doRegister}
 				onAlreadyHaveCode={this.toggleVisibleModalSMS}
-				onNavigateToTermsAndConditions={this.onNavigateToTermsAndConditionsHandler}
+				onNavigateToTermsAndConditions={
+					this.onNavigateToTermsAndConditionsHandler
+				}
 				onGoBack={this.onGoBackHandler}
 			/>
 		);
@@ -59,10 +67,18 @@ class Screen extends React.Component<IRegisterScreenProps> {
 	};
 }
 
-export const RegisterScreen = ({navigation, navigationOptions}: INavigationProps<any, any>) => (
+export const RegisterScreen = ({
+	navigation,
+	navigationOptions,
+}: INavigationProps<any, any>) => (
 	<WithRegister>
-		{({data, actions}) => (
-			<Screen navigation={navigation} navigationOptions={navigationOptions} {...data} {...actions} />
+		{({ data, actions }) => (
+			<Screen
+				navigation={navigation}
+				navigationOptions={navigationOptions}
+				{...data}
+				{...actions}
+			/>
 		)}
 	</WithRegister>
 );

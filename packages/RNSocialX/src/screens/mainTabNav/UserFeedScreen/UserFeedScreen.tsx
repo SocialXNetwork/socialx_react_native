@@ -6,16 +6,22 @@
  */
 
 import * as React from 'react';
-import {Animated, Dimensions, FlatList, Platform} from 'react-native';
-import {AnimatedValue, NavigationScreenProp} from 'react-navigation';
+import { Animated, Dimensions, FlatList, Platform } from 'react-native';
+import { AnimatedValue, NavigationScreenProp } from 'react-navigation';
 
-import {IWithUserFeedEnhancedActions, IWithUserFeedEnhancedData} from '../../../enhancers/screens';
+import {
+	IWithUserFeedEnhancedActions,
+	IWithUserFeedEnhancedData,
+} from '../../../enhancers/screens';
 
 // import {ipfsConfig as base} from 'configuration';
-import {FEED_TYPES, OS_TYPES} from '../../../environment/consts';
-import {IMediaProps, IWallPostCardData} from '../../../types';
-import {SHARE_SECTION_HEIGHT, USER_PLACEHOLDER_AVATAR} from './UserFeedScreen.style';
-import {UserFeedScreenView} from './UserFeedScreen.view';
+import { FEED_TYPES, OS_TYPES } from '../../../environment/consts';
+import { IMediaProps, IWallPostCardData } from '../../../types';
+import {
+	SHARE_SECTION_HEIGHT,
+	USER_PLACEHOLDER_AVATAR,
+} from './UserFeedScreen.style';
+import { UserFeedScreenView } from './UserFeedScreen.view';
 
 const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
@@ -31,10 +37,18 @@ export interface INavigationProps {
 
 interface IUserFeedScreenState {}
 
-type IUserFeedScreenProps = INavigationProps & IFeedProps & IWithUserFeedEnhancedData & IWithUserFeedEnhancedActions;
+type IUserFeedScreenProps = INavigationProps &
+	IFeedProps &
+	IWithUserFeedEnhancedData &
+	IWithUserFeedEnhancedActions;
 
-export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
-	private readonly scrollRef: React.RefObject<FlatList<IWallPostCardData>> = React.createRef();
+export class Screen extends React.Component<
+	IUserFeedScreenProps,
+	IUserFeedScreenState
+> {
+	private readonly scrollRef: React.RefObject<
+		FlatList<IWallPostCardData>
+	> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public render() {
@@ -102,7 +116,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private onLoadMorePostsHandler = async () => {
-		const {loadPosts, feedType} = this.props;
+		const { loadPosts, feedType } = this.props;
 
 		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
 			loadPosts(feedType);
@@ -110,7 +124,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private showNewWallPostPage = () => {
-		const {currentUser, navigation} = this.props;
+		const { currentUser, navigation } = this.props;
 		navigation.navigate('CreateWallPostScreen', {
 			fullName: currentUser.fullName,
 			avatarImage: this.getAvatarImage(),
@@ -119,7 +133,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private onRefreshHandler = async () => {
-		const {refreshFeed, feedType} = this.props;
+		const { refreshFeed, feedType } = this.props;
 
 		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
 			refreshFeed(feedType);
@@ -127,7 +141,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
-		const {likePost, unlikePost} = this.props;
+		const { likePost, unlikePost } = this.props;
 
 		if (likedByMe) {
 			unlikePost(postId);
@@ -139,22 +153,32 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private gotoUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', {userId});
+		this.props.navigation.navigate('UserProfileScreen', { userId });
 	};
 
-	private onMediaObjectPressHandler = (index: number, medias: IMediaProps[]) => {
+	private onMediaObjectPressHandler = (
+		index: number,
+		medias: IMediaProps[],
+	) => {
 		this.props.navigation.navigate('MediaViewerScreen', {
 			mediaObjects: medias,
 			startIndex: index,
 		});
 	};
 
-	private onCommentsButtonPressHandler = (postId: string, startComment: boolean) => {
-		this.props.navigation.navigate('CommentsScreen', {postId, startComment});
+	private onCommentsButtonPressHandler = (
+		postId: string,
+		startComment: boolean,
+	) => {
+		this.props.navigation.navigate('CommentsScreen', { postId, startComment });
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		if (!this.props.refreshingFeed && !this.props.loadingMorePosts && this.scrollRef.current) {
+		if (
+			!this.props.refreshingFeed &&
+			!this.props.loadingMorePosts &&
+			this.scrollRef.current
+		) {
 			this.scrollRef.current.scrollToIndex({
 				animated: true,
 				index,
@@ -189,7 +213,8 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		const offset = (baseScreenHeight * idealOffset) / AVAILABLE_SCREEN_HEIGHT;
 
 		if (Platform.OS === OS_TYPES.Android) {
-			const softwareButtonsBarHeight = TOTAL_SCREEN_HEIGHT - AVAILABLE_SCREEN_HEIGHT;
+			const softwareButtonsBarHeight =
+				TOTAL_SCREEN_HEIGHT - AVAILABLE_SCREEN_HEIGHT;
 			return -(offset - diff + softwareButtonsBarHeight);
 		}
 

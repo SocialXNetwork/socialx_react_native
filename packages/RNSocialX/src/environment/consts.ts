@@ -1,6 +1,6 @@
 import * as React from 'react';
 // DO NOT SHORTEN THIS IMPORT! For some reason, RN/Typescript cannot import the icons like that
-import {Icons} from './theme/Icons';
+import { Icons } from './theme/Icons';
 
 export enum FormTypes {
 	Input,
@@ -60,7 +60,9 @@ export interface IKeyboardContextProps {
 	safeRunAfterKeyboardHide: (handler: () => void) => void;
 }
 
-export const KeyboardContext: React.Context<IKeyboardContextProps> = React.createContext({
+export const KeyboardContext: React.Context<
+	IKeyboardContextProps
+> = React.createContext({
 	marginBottom: 0,
 	safeRunAfterKeyboardHide: (handler: () => void) => {
 		/**/

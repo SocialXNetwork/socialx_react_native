@@ -1,10 +1,10 @@
-import {action} from '@storybook/addon-actions';
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {SearchResults} from '../../../../src/components/';
-import {ISearchResultData, SearchResultKind} from '../../../../src/types';
+import { SearchResults } from '../../../../src/components/';
+import { ISearchResultData, SearchResultKind } from '../../../../src/types';
 
 const items: ISearchResultData[] = [
 	{

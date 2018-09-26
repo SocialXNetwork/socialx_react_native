@@ -1,15 +1,17 @@
 import * as React from 'react';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 	WithNotifications,
 } from '../../enhancers/screens';
-import {INavigationProps} from '../../types';
-import {NotificationsScreenView} from './NotificationsScreen.view';
+import { INavigationProps } from '../../types';
+import { NotificationsScreenView } from './NotificationsScreen.view';
 
-type INotificationsScreenProps = INavigationProps & IWithNotificationsEnhancedData & IWithNotificationsEnhancedActions;
+type INotificationsScreenProps = INavigationProps &
+	IWithNotificationsEnhancedData &
+	IWithNotificationsEnhancedActions;
 
 class Screen extends React.Component<INotificationsScreenProps> {
 	public render() {
@@ -64,10 +66,12 @@ class Screen extends React.Component<INotificationsScreenProps> {
 	// };
 
 	private onViewUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', {userId});
+		this.props.navigation.navigate('UserProfileScreen', { userId });
 	};
 }
 
 export const NotificationsScreen = (navProps: INavigationProps) => (
-	<WithNotifications>{({data, actions}) => <Screen {...navProps} {...data} {...actions} />}</WithNotifications>
+	<WithNotifications>
+		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+	</WithNotifications>
 );

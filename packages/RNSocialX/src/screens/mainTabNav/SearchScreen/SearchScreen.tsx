@@ -1,9 +1,17 @@
 import * as React from 'react';
-import {debounce} from 'throttle-debounce';
+import { debounce } from 'throttle-debounce';
 
-import {IWithSearchEnhancedActions, IWithSearchEnhancedData} from '../../../enhancers/screens';
-import {INavigationProps, ISearchResultData, SearchResultKind, SearchTabs} from '../../../types';
-import {SearchScreenView} from './SearchScreen.view';
+import {
+	IWithSearchEnhancedActions,
+	IWithSearchEnhancedData,
+} from '../../../enhancers/screens';
+import {
+	INavigationProps,
+	ISearchResultData,
+	SearchResultKind,
+	SearchTabs,
+} from '../../../types';
+import { SearchScreenView } from './SearchScreen.view';
 
 const SEARCH_DEBOUNCE_TIME_MS = 300;
 
@@ -11,13 +19,19 @@ export interface ISearchProps {
 	tab: SearchTabs;
 }
 
-type ISearchScreenProps = INavigationProps & ISearchProps & IWithSearchEnhancedActions & IWithSearchEnhancedData;
+type ISearchScreenProps = INavigationProps &
+	ISearchProps &
+	IWithSearchEnhancedActions &
+	IWithSearchEnhancedData;
 
 interface ISearchScreenState {
 	term: string;
 }
 
-export class Screen extends React.Component<ISearchScreenProps, ISearchScreenState> {
+export class Screen extends React.Component<
+	ISearchScreenProps,
+	ISearchScreenState
+> {
 	public state = {
 		term: '',
 	};
@@ -46,7 +60,7 @@ export class Screen extends React.Component<ISearchScreenProps, ISearchScreenSta
 
 	private onSearchTermChangeHandler = (term: string) => {
 		this.debounceSearch(term);
-		this.setState({term});
+		this.setState({ term });
 	};
 
 	private onAddFriendHandler = (userId: string) => {
@@ -59,7 +73,9 @@ export class Screen extends React.Component<ISearchScreenProps, ISearchScreenSta
 			result.relationship === SearchResultKind.NotFriend ||
 			result.relationship === SearchResultKind.FriendRequestSent
 		) {
-			this.props.navigation.navigate('UserProfileScreen', {userId: result.userId});
+			this.props.navigation.navigate('UserProfileScreen', {
+				userId: result.userId,
+			});
 		}
 	};
 

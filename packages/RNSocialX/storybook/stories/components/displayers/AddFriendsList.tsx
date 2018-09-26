@@ -1,7 +1,7 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {AddFriendsList} from '../../../../src/components';
+import { AddFriendsList } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const taggedFriends = [

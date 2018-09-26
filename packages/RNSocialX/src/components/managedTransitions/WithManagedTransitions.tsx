@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
-import {OS_TYPES} from '../../environment/consts';
-import {ModalManager} from './ModalManager';
+import { OS_TYPES } from '../../environment/consts';
+import { ModalManager } from './ModalManager';
 
 export interface IManagedModal {
 	onDismiss: () => void;
@@ -15,12 +15,16 @@ interface IWithManagedTransitionsProps {
 	children(props: IManagedModal): JSX.Element;
 }
 
-export class WithManagedTransitions extends React.Component<IWithManagedTransitionsProps> {
+export class WithManagedTransitions extends React.Component<
+	IWithManagedTransitionsProps
+> {
 	public static defaultProps = {
 		afterDismiss: false,
 	};
 
-	public componentDidUpdate(prevProps: Readonly<IWithManagedTransitionsProps>): void {
+	public componentDidUpdate(
+		prevProps: Readonly<IWithManagedTransitionsProps>,
+	): void {
 		if (!prevProps.modalVisible && this.props.modalVisible) {
 			ModalManager.toggleModalShow(true);
 		}

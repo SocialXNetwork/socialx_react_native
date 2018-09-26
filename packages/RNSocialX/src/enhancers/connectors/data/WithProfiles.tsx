@@ -1,8 +1,8 @@
-import {ICreateProfileInput} from '@socialx/api-data';
+import { ICreateProfileInput } from '@socialx/api-data';
 import * as React from 'react';
-import {connect, ConnectedComponentClass} from 'react-redux';
-import {createSelector} from 'reselect';
-import {IApplicationState} from '../../../store';
+import { connect, ConnectedComponentClass } from 'react-redux';
+import { createSelector } from 'reselect';
+import { IApplicationState } from '../../../store';
 import {
 	createProfile,
 	currentProfile,
@@ -11,7 +11,7 @@ import {
 	profileByUsername,
 	publicKeyByUsername,
 } from '../../../store/data/profiles';
-import {IThunkDispatch} from '../../../store/types';
+import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	profiles: IProfile[];
@@ -32,7 +32,7 @@ interface IChildren {
 
 class Enhancer extends React.Component<IProps & IChildren> {
 	render() {
-		const {children, ...props} = this.props;
+		const { children, ...props } = this.props;
 		return children(props);
 	}
 }
@@ -47,13 +47,19 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	publicKeyByUsername: (profileUsernameInput: IUsernameArgument) => dispatch(publicKeyByUsername(profileUsernameInput)),
+	publicKeyByUsername: (profileUsernameInput: IUsernameArgument) =>
+		dispatch(publicKeyByUsername(profileUsernameInput)),
 	currentProfile: () => dispatch(currentProfile()),
-	profileByUsername: (profileByUsernameInput: IUsernameArgument) => dispatch(profileByUsername(profileByUsernameInput)),
-	createProfile: (createProfileInput: ICreateProfileInput) => dispatch(createProfile(createProfileInput)),
+	profileByUsername: (profileByUsernameInput: IUsernameArgument) =>
+		dispatch(profileByUsername(profileByUsernameInput)),
+	createProfile: (createProfileInput: ICreateProfileInput) =>
+		dispatch(createProfile(createProfileInput)),
 });
 
-export const WithAccounts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
+export const WithAccounts: ConnectedComponentClass<
+	JSX.Element,
+	IChildren
+> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer) as any;

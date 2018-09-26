@@ -1,9 +1,9 @@
-import {boolean, date, number, text, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, date, number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {WallPostCard} from '../../../../../src/components';
-import {MediaTypeImage} from '../../../../../src/types';
+import { WallPostCard } from '../../../../../src/components';
+import { MediaTypeImage } from '../../../../../src/types';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -17,8 +17,14 @@ storiesOf('Components/displayers', module)
 		const location = text('location', 'Timisoara');
 		const timestamp = date('timestamp', new Date('December 17, 2017 04:55:00'));
 		const ownerName = text('owner.name', 'Michael Foucault');
-		const ownerAvatarURL = text('owner.avatarURL', 'https://avatars2.githubusercontent.com/u/2531');
-		const currentUserAvatarURL = text('currentUserAvatarURL', 'https://avatars2.githubusercontent.com/u/239');
+		const ownerAvatarURL = text(
+			'owner.avatarURL',
+			'https://avatars2.githubusercontent.com/u/2531',
+		);
+		const currentUserAvatarURL = text(
+			'currentUserAvatarURL',
+			'https://avatars2.githubusercontent.com/u/239',
+		);
 		const governanceVersion = boolean('governanceVersion', false);
 		const numberOfComments = number('numberOfComments', 2);
 		const numberOfSuperLikes = number('numberOfSuperLikes', 2);
@@ -36,7 +42,10 @@ storiesOf('Components/displayers', module)
 				id={'test_post_id'}
 				postText={postText}
 				location={location}
-				taggedFriends={[{fullName: 'Stanley Sater'}, {fullName: 'Yolonda Rodda'}]}
+				taggedFriends={[
+					{ fullName: 'Stanley Sater' },
+					{ fullName: 'Yolonda Rodda' },
+				]}
 				timestamp={timestamp}
 				owner={{
 					userId: 'user_id_test',
@@ -80,22 +89,26 @@ storiesOf('Components/displayers', module)
 					{
 						id: 'comm1',
 						text: 'Sample comment no. 1',
-						likes: [{userId: 'user2', userName: 'userName2'}],
-						owner: {userName: 'ionut_socx_0', userId: 'user1'},
+						likes: [{ userId: 'user2', userName: 'userName2' }],
+						owner: { userName: 'ionut_socx_0', userId: 'user1' },
 					},
 					{
 						id: 'comm2',
 						text: 'Some very long comment that should span on multiple lines',
-						likes: [{userId: 'user3', userName: 'userName3'}],
-						owner: {userName: 'ionut_socx_2', userId: 'user4'},
+						likes: [{ userId: 'user3', userName: 'userName3' }],
+						owner: { userName: 'ionut_socx_2', userId: 'user4' },
 					},
 				]}
 				listLoading={listLoading}
 				suggested={undefined}
 				noInput={false}
-				onSubmitComment={(commentText, postId) => console.log('onSubmitComment', commentText, postId)}
+				onSubmitComment={(commentText, postId) =>
+					console.log('onSubmitComment', commentText, postId)
+				}
 				onBlockUser={(userId) => console.log('onBlockUser', userId)}
-				onReportProblem={(reason, message) => console.log('onReportProblem', reason, message)}
+				onReportProblem={(reason, message) =>
+					console.log('onReportProblem', reason, message)
+				}
 			/>
 		);
 	});

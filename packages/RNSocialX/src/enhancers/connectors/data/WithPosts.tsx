@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {connect, ConnectedComponentClass} from 'react-redux';
-import {createSelector} from 'reselect';
-import {IApplicationState} from '../../../store';
+import { connect, ConnectedComponentClass } from 'react-redux';
+import { createSelector } from 'reselect';
+import { IApplicationState } from '../../../store';
 import {
 	createPost,
 	IDateArgument,
@@ -15,7 +15,7 @@ import {
 	postPathsByUser,
 	publicPostsByDate,
 } from '../../../store/data/posts';
-import {IThunkDispatch} from '../../../store/types';
+import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	posts: IPostData[];
@@ -40,12 +40,15 @@ interface IChildren {
 
 class Enhancer extends React.Component<IProps & IChildren> {
 	render() {
-		const {children, ...props} = this.props;
+		const { children, ...props } = this.props;
 		return children(props);
 	}
 }
 
-const selectPosts = createSelector((state: IApplicationState) => state.data.posts.posts, (posts) => posts);
+const selectPosts = createSelector(
+	(state: IApplicationState) => state.data.posts.posts,
+	(posts) => posts,
+);
 
 const selectPostMetaById = createSelector(
 	(state: IApplicationState) => state.data.posts.postMetaById,
@@ -64,15 +67,24 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	createPost: (createPostArgument: IPostData) => dispatch(createPost(createPostArgument)),
-	likePost: (likePostArgument: IPostIdArgument) => dispatch(likePost(likePostArgument)),
-	postByPath: (postPathArgument: IPostPathArgument) => dispatch(postByPath(postPathArgument)),
-	postLikes: (postLikesArgument: IPostIdArgument) => dispatch(postLikes(postLikesArgument)),
-	postPathsByUser: (postPathsByUsernameInput: IUsernameArgument) => dispatch(postPathsByUser(postPathsByUsernameInput)),
-	publicPostsByDate: (postByDateArgument: IDateArgument) => dispatch(publicPostsByDate(postByDateArgument)),
+	createPost: (createPostArgument: IPostData) =>
+		dispatch(createPost(createPostArgument)),
+	likePost: (likePostArgument: IPostIdArgument) =>
+		dispatch(likePost(likePostArgument)),
+	postByPath: (postPathArgument: IPostPathArgument) =>
+		dispatch(postByPath(postPathArgument)),
+	postLikes: (postLikesArgument: IPostIdArgument) =>
+		dispatch(postLikes(postLikesArgument)),
+	postPathsByUser: (postPathsByUsernameInput: IUsernameArgument) =>
+		dispatch(postPathsByUser(postPathsByUsernameInput)),
+	publicPostsByDate: (postByDateArgument: IDateArgument) =>
+		dispatch(publicPostsByDate(postByDateArgument)),
 });
 
-export const WithAccounts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
+export const WithAccounts: ConnectedComponentClass<
+	JSX.Element,
+	IChildren
+> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer) as any;

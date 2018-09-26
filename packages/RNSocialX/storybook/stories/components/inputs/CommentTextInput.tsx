@@ -1,8 +1,8 @@
-import {action} from '@storybook/addon-actions';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {CommentTextInput} from '../../../../src/components/';
+import { CommentTextInput } from '../../../../src/components/';
 import CenterView from '../../../helpers/CenterView';
 
 class CommentTextInputStory extends React.Component {
@@ -17,14 +17,14 @@ class CommentTextInputStory extends React.Component {
 				autoFocus={true}
 				showSendButton={true}
 				commentText={this.state.value}
-				onCommentTextChange={(value) => this.setState({value})}
+				onCommentTextChange={(value) => this.setState({ value })}
 				onCommentSend={this.onSendHandler}
 			/>
 		);
 	}
 
 	private onSendHandler = () => {
-		this.setState({value: ''});
+		this.setState({ value: '' });
 		action('Comment sent!');
 	};
 }

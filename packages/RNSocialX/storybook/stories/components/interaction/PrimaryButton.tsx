@@ -1,9 +1,9 @@
-import {action} from '@storybook/addon-actions';
-import {storiesOf} from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {ButtonSizes, PrimaryButton} from '../../../../src/components';
-import {Colors} from '../../../../src/environment/theme';
+import { ButtonSizes, PrimaryButton } from '../../../../src/components';
+import { Colors } from '../../../../src/environment/theme';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/interaction', module)
@@ -18,6 +18,6 @@ storiesOf('Components/interaction', module)
 			borderColor={Colors.pink}
 			textColor={Colors.pink}
 			loading={false}
-			containerStyle={{backgroundColor: Colors.transparent, borderRadius: 10}}
+			containerStyle={{ backgroundColor: Colors.transparent, borderRadius: 10 }}
 		/>
 	));
