@@ -2,7 +2,7 @@ import {IApiOptions, IDataApiFactory} from '@socialx/api-data';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {IApplicationState} from './rootReducer';
 
-import {IAction as IAccountActions} from './app/accounts/Types';
+import {IAction as IAccountActions} from './data/accounts/Types';
 import {IAction as ICommentsActions} from './data/comments/Types';
 import {IAction as IPostsActions} from './data/posts/Types';
 import {IAction as IProfilesActions} from './data/profiles/Types';

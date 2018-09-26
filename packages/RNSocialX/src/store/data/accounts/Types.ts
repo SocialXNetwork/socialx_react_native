@@ -9,17 +9,17 @@ export interface IAccount {
 }
 
 export type IState = DeepReadonly<{
-	currentAccount: IAccount | null;
+	accounts: IAccount[];
 }>;
 
 export const enum ActionTypes {
-	CREATE_ACCOUNT = 'app/accounts/CREATE_ACCOUNT',
-	RECOVER_ACCOUNT = 'app/accounts/RECOVER_ACCOUNT',
-	TRUST_ACCOUNT = 'app/accounts/TRUST_ACCOUNT',
-	IS_ACCOUNT_LOGGED_IN = 'app/accounts/IS_ACCOUNT_LOGGED_IN',
-	CHANGE_PASSWORD = 'app/accounts/CHANGE_PASSWORD',
-	LOGIN = 'app/accounts/LOGIN',
-	LOGOUT = 'app/accounts/LOGOUT',
+	CREATE_ACCOUNT = 'data/accounts/CREATE_ACCOUNT',
+	RECOVER_ACCOUNT = 'data/accounts/RECOVER_ACCOUNT',
+	TRUST_ACCOUNT = 'data/accounts/TRUST_ACCOUNT',
+	IS_ACCOUNT_LOGGED_IN = 'data/accounts/IS_ACCOUNT_LOGGED_IN',
+	CHANGE_PASSWORD = 'data/accounts/CHANGE_PASSWORD',
+	LOGIN = 'data/accounts/LOGIN',
+	LOGOUT = 'data/accounts/LOGOUT',
 }
 
 export interface ICreateAccountAction extends Action {

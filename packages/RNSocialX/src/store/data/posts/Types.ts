@@ -1,6 +1,22 @@
 import {Action} from 'redux';
 import {DeepReadonly} from 'utility-types';
 
+export interface IPostData {
+	title: string;
+	text?: string;
+	location?: string;
+	image_hash?: string;
+	optimized_image_hash?: string;
+	privatePost: boolean;
+}
+
+// TODO: @jake this is wrong, consult serkan
+export type IState = DeepReadonly<{
+	publicPosts: IPostData[] | null;
+	privatePosts: IPostData[] | null;
+	currentAccountPosts: IPostData[] | null;
+}>;
+
 export interface IUsernameArgument {
 	username: string;
 }
@@ -17,34 +33,19 @@ export interface IPostIdArgument {
 	postId: string;
 }
 
-export interface IPostData {
-	title: string;
-	text?: string;
-	location?: string;
-	image_hash?: string;
-	optimized_image_hash?: string;
-	privatePost: boolean;
-}
-
 export interface IProfile {
 	pub: string;
 	email: string;
 	avatar: string;
 }
 
-export type IState = DeepReadonly<{
-	publicPosts: IPostData[] | null;
-	privatePosts: IPostData[] | null;
-	currentAccountPosts: IPostData[] | null;
-}>;
-
 export const enum ActionTypes {
-	POST_PATHS_BY_USER = 'app/data/posts/POST_PATHS_BY_USER',
-	POST_BY_PATH = 'app/data/posts/POST_BY_PATH',
-	PUBLIC_POSTS_BY_DATE = 'app/data/posts/PUBLIC_POSTS_BY_DATE',
-	POST_LIKES = 'app/data/posts/POST_LIKES',
-	CREATE_POST = 'app/data/posts/CREATE_POST',
-	LIKE_POST = 'app/data/posts/LIKE_POST',
+	POST_PATHS_BY_USER = 'data/posts/POST_PATHS_BY_USER',
+	POST_BY_PATH = 'data/posts/POST_BY_PATH',
+	PUBLIC_POSTS_BY_DATE = 'data/posts/PUBLIC_POSTS_BY_DATE',
+	POST_LIKES = 'data/posts/POST_LIKES',
+	CREATE_POST = 'data/posts/CREATE_POST',
+	LIKE_POST = 'data/posts/LIKE_POST',
 }
 
 export interface IPostPathsByUserAction extends Action {
