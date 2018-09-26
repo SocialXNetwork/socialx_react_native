@@ -25,7 +25,9 @@ export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({
 			borderColor={colors.pink}
 			textColor={colors.white}
 			containerStyle={styles.buttonContainer}
-			onPress={() => console.log('Add friend')}
+			onPress={() => {
+				/**/
+			}}
 		/>
 		<View style={styles.iconContainer}>
 			<IconButton

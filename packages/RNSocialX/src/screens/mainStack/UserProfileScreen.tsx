@@ -128,9 +128,9 @@ class Screen extends React.Component<
 				onUserPress={this.onViewUserProfile}
 				onSubmitComment={postComment}
 				onCommentPress={this.onViewCommentsForPost}
-				onAddComment={(height: number) =>
-					console.log('addComment from user profile screen', height)
-				}
+				onAddComment={(height: number) => {
+					/**/
+				}}
 				onDeletePress={() => {
 					/* When viewing a user profile page there is no option to delete a post. This should remain empty. */
 				}}

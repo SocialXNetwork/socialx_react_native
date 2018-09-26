@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -25,9 +26,9 @@ storiesOf('Components/interaction', module)
 				muted={muted}
 				resizeMode={'cover'}
 				thumbOnly={false}
-				onPressVideo={() => console.log('onPressVideo, should pause')}
-				onMuteVideo={() => console.log('onMuteVideo')}
-				onUpdateResizeMode={() => console.log('onUpdateResizeMode')}
+				onPressVideo={action('onPressVideo')}
+				onMuteVideo={action('onMuteVideo')}
+				onUpdateResizeMode={action('onUpdateResizeMode')}
 			/>
 		);
 	})
@@ -42,9 +43,7 @@ storiesOf('Components/interaction', module)
 				resizeMode={'contain'}
 				paused={true}
 				thumbOnly={true}
-				onPressVideo={() =>
-					console.log('onPressVideo, show full screen screen')
-				}
+				onPressVideo={action('onPressVideo')}
 			/>
 		);
 	});

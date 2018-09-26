@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { boolean, date, number, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -55,15 +56,11 @@ storiesOf('Components/displayers', module)
 						},
 					],
 				}}
-				onCommentLike={() => console.log('onCommentLike')}
-				onCommentReply={(startReply) =>
-					console.log('onCommentReply', startReply)
-				}
-				onViewUserProfile={(userId) => console.log('onViewUserProfile', userId)}
-				onShowOptionsMenu={() => console.log('onShowOptionsMenu')}
-				onCommentContainerWidthChange={(value) =>
-					console.log('onCommentContainerWidthChange', value)
-				}
+				onCommentLike={action('onCommentLike')}
+				onCommentReply={action('onCommentReply')}
+				onViewUserProfile={action('onViewUserProfile')}
+				onShowOptionsMenu={action('onShowOptionsMenu')}
+				onCommentContainerWidthChange={action('onCommentContainerWidthChange')}
 				commentLikesPosition={{
 					bottom: -18,
 					right: 0,

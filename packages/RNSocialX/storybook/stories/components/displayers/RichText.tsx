@@ -12,8 +12,8 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('RichText', () => {
-		// @ts-ignore
 		return (
+			// @ts-ignore
 			<RichText onPress={action('Pressed')} style={{ textAlign: 'center' }} />
 		);
 	});

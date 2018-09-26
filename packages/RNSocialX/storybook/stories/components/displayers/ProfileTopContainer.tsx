@@ -1,5 +1,6 @@
 // TODO: @Alex check the component again when getText is implemented
 
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -29,21 +30,11 @@ storiesOf('Components/displayers', module)
 				tabs={true}
 				activeTab={PROFILE_TAB_ICON_TYPES.LIST}
 				aboutMeText={'Hi, this is some text about me.'}
-				onAddFriend={() => {
-					/**/
-				}}
-				onEditProfile={() => {
-					/**/
-				}}
-				onIconPress={() => {
-					/**/
-				}}
-				onShowFriendshipOptions={() => {
-					/**/
-				}}
-				onViewProfilePhoto={() => {
-					/**/
-				}}
+				onAddFriend={action('onRequestConfirmed')}
+				onEditProfile={action('onRequestConfirmed')}
+				onIconPress={action('onRequestConfirmed')}
+				onShowFriendshipOptions={action('onRequestConfirmed')}
+				onViewProfilePhoto={action('onRequestConfirmed')}
 				getText={(text) => text}
 			/>
 		</View>

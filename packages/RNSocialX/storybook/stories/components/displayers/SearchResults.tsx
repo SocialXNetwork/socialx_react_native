@@ -47,6 +47,7 @@ storiesOf('Components/displayers', module)
 				onAddFriend={action('onAddFriend')}
 				onResultPress={action('onResultPress')}
 				onLoadMore={action('onLoadMore')}
+				getText={(text) => text}
 			/>
 		);
 	});
