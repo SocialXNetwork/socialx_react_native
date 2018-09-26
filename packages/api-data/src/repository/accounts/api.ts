@@ -1,4 +1,4 @@
-import { IContext } from '../../types';
+import { IAccountData, IContext } from '../../types';
 import getters from './getters';
 import schemas from './schemas';
 import setters, {
@@ -110,6 +110,28 @@ export default (context: IContext) => ({
 	trustAccount: (): Promise<null> =>
 		new Promise((resolve, reject) => {
 			setters.logout(context, (e, r) => {
+				if (e) {
+					reject(e);
+				}
+				resolve(r);
+			});
+		}),
+	getCurrentAccount: (): Promise<IAccountData> =>
+		new Promise((resolve, reject) => {
+			getters.getCurrentAccount(context, (e, r) => {
+				if (e) {
+					reject(e);
+				}
+				resolve(r);
+			});
+		}),
+	getAccountByPub: ({
+		publicKey,
+	}: {
+		publicKey: string;
+	}): Promise<IAccountData> =>
+		new Promise((resolve, reject) => {
+			getters.getAccountByPub(context, { publicKey }, (e, r) => {
 				if (e) {
 					reject(e);
 				}

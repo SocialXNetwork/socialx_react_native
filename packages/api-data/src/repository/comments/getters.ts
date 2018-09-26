@@ -7,6 +7,7 @@ import {
 	IGunCallback,
 	ILikesMetasCallback,
 	IMetasCallback,
+	IPostMetasCallback,
 	TABLES,
 } from '../../types';
 import { setToArray } from '../../utils/helpers';
@@ -18,7 +19,7 @@ export const getPostComments = (
 ) => {
 	postHandles
 		.postMetaById(context, postId)
-		.docLoad((postMeta: { postPath: string }) => {
+		.docLoad((postMeta: IPostMetasCallback) => {
 			if (!postMeta) {
 				return callback('no post found with this id');
 			}
@@ -29,10 +30,11 @@ export const getPostComments = (
 						return callback('no posts found by this path');
 					}
 					const comments = setToArray(commentMeta).map(
-						({ text, timestamp, owner }: IMetasCallback) => ({
+						({ text, timestamp, owner, commentId }: IMetasCallback) => ({
 							owner,
 							text,
 							timestamp,
+							commentId,
 						}),
 					);
 
