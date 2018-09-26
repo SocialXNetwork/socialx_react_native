@@ -7,6 +7,13 @@ const usernameOrPasswordType = yup
 	.max(32)
 	.required();
 
+const mediumLongTextType = yup
+	.string()
+	.trim()
+	.min(5)
+	.max(300)
+	.required();
+
 const idType = yup
 	.string()
 	.trim()
@@ -23,19 +30,37 @@ const longTextType = yup
 export const postData = yup
 	.object()
 	.shape({
-		image_hash: longTextType,
-		location: longTextType,
-		optimized_image_hash: longTextType,
-		privatePost: yup
+		postText: mediumLongTextType.required(),
+		location: mediumLongTextType,
+		taggedFriends: yup.array().of(
+			yup
+				.object()
+				.shape({
+					fullName: usernameOrPasswordType.required(),
+				})
+				.required(),
+		),
+		media: yup.array().of(
+			yup
+				.object()
+				.shape({
+					hash: longTextType.required(),
+					optimized_hash: longTextType.required(),
+					type: yup.object().shape({
+						key: longTextType.required(),
+						name: longTextType.required(),
+						category: longTextType.required(),
+					}),
+				})
+				.required(),
+		),
+		governanceVersion: yup
 			.boolean()
 			.default(false)
 			.required(),
-		text: longTextType,
-		title: yup
-			.string()
-			.trim()
-			.min(1)
-			.max(256)
+		privatePost: yup
+			.boolean()
+			.default(false)
 			.required(),
 	})
 	.required();

@@ -1,4 +1,5 @@
 import {
+	IAccountByPubInput,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
@@ -8,8 +9,10 @@ import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
 	ActionTypes,
+	IAccountByPubAction,
 	IChangePasswordAction,
 	ICreateAccountAction,
+	ICurrentAccountAction,
 	IGetIsAccountLoggedInAction,
 	ILoginAction,
 	ILogoutAction,
@@ -28,16 +31,6 @@ export const createAccount = (
 	createAccountInput: ICreateAccountInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		// get something from anywhere redux store
-		// const currentUserAccount = getState().app.accounts.currentUser;
-		// const currentOverlayStatus = getState().ui.overlays.currentOverlayStatus;
-
-		// get something from api
-		// const data = await context.dataApi.accounts.createAccount(createAccountInput);
-
-		// for instance import this action from ui and begin showing loding indicator
-		// dispatch(setGlobalLoadingIndicator(true));
-
 		dispatch(createAccountAction(createAccountInput));
 	} catch (e) {
 		// dispatch(setGlobalLoadingIndicator(false);
@@ -139,6 +132,39 @@ export const changePassword = (
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(changePasswordAction(changePasswordInput));
+	} catch (e) {
+		/**/
+	}
+};
+
+const getCurrentAccountAction: ActionCreator<ICurrentAccountAction> = () => ({
+	type: ActionTypes.CURRENT_ACCOUNT,
+});
+
+export const getCurrentAccount = (): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(getCurrentAccountAction());
+	} catch (e) {
+		/**/
+	}
+};
+
+const getAccountByPubAction: ActionCreator<IAccountByPubAction> = (
+	accountByPubInput: IAccountByPubInput,
+) => ({
+	type: ActionTypes.ACCOUNT_BY_PUB,
+	payload: accountByPubInput,
+});
+
+export const getAccountByPub = (
+	accountByPubInput: IAccountByPubInput,
+): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(getAccountByPubAction(accountByPubInput));
 	} catch (e) {
 		/**/
 	}
