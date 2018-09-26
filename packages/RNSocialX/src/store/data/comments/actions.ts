@@ -11,35 +11,35 @@ import {
 	IPostIdArgument,
 } from './Types';
 
-const postCommentsAction: ActionCreator<IPostCommentsAction> = (
-	postCommentsArguments: IPostIdArgument,
+const getPostCommentsAction: ActionCreator<IPostCommentsAction> = (
+	getPostCommentsArguments: IPostIdArgument,
 ) => ({
 	type: ActionTypes.POST_COMMENTS,
-	payload: postCommentsArguments,
+	payload: getPostCommentsArguments,
 });
 
-export const postComments = (
-	postCommentsArguments: IPostIdArgument,
+export const getPostComments = (
+	getPostCommentsArguments: IPostIdArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(postCommentsAction(postCommentsArguments));
+		dispatch(getPostCommentsAction(getPostCommentsArguments));
 	} catch (e) {
 		/**/
 	}
 };
 
-const commentLikesAction: ActionCreator<ICommentLikesAction> = (
+const getCommentLikesAction: ActionCreator<ICommentLikesAction> = (
 	commentLikesArgument: ICommentIdArgument,
 ) => ({
 	type: ActionTypes.COMMENT_LIKES,
 	payload: commentLikesArgument,
 });
 
-export const commentLikes = (
-	commentLikesArgument: ICommentIdArgument,
+export const getCommentLikes = (
+	getCommentLikesArgument: ICommentIdArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(commentLikesAction(commentLikesArgument));
+		dispatch(getCommentLikesAction(getCommentLikesArgument));
 	} catch (e) {
 		/**/
 	}

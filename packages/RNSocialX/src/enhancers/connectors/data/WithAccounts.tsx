@@ -11,8 +11,8 @@ import { IApplicationState } from '../../../store';
 import {
 	changePassword,
 	createAccount,
+	getIsAccountLoggedIn,
 	IAccount,
-	isAccountLoggedIn,
 	login,
 	logout,
 	recoverAccount,
@@ -27,7 +27,7 @@ interface IDataProps {
 interface IActionProps {
 	changePassword: (changePasswordInput: IChangePasswordInput) => void;
 	createAccount: (createAccountInput: ICreateAccountInput) => void;
-	isAccountLoggedIn: () => void;
+	getIsAccountLoggedIn: () => void;
 	login: (credentials: ICredentials) => void;
 	logout: () => void;
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) => void;
@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(changePassword(changePasswordInput)),
 	createAccount: (createAccountInput: ICreateAccountInput) =>
 		dispatch(createAccount(createAccountInput)),
-	isAccountLoggedIn: () => dispatch(isAccountLoggedIn()),
+	getIsAccountLoggedIn: () => dispatch(getIsAccountLoggedIn()),
 	login: (credentials: ICredentials) => dispatch(login(credentials)),
 	logout: () => dispatch(logout()),
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) =>

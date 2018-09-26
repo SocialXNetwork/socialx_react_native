@@ -12,10 +12,10 @@ export {
 	IDateArgument,
 } from './Types';
 export {
-	postByPath,
-	postLikes,
-	postPathsByUser,
-	publicPostsByDate,
+	getPostByPath,
+	getPostLikes,
+	getPostPathsByUsername,
+	getPublicPostsByDate,
 	createPost,
 	likePost,
 } from './actions';

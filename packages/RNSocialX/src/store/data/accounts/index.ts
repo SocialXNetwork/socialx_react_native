@@ -6,6 +6,6 @@ export {
 	logout,
 	trustAccount,
 	createAccount,
-	isAccountLoggedIn,
+	getIsAccountLoggedIn,
 	login,
 } from './actions';

@@ -5,11 +5,11 @@ import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
 	createProfile,
-	currentProfile,
+	getCurrentProfile,
+	getProfileByUsername,
+	getPublicKeyByUsername,
 	IProfile,
 	IUsernameArgument,
-	profileByUsername,
-	publicKeyByUsername,
 } from '../../../store/data/profiles';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -18,9 +18,11 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	publicKeyByUsername: (profileUsernameInput: IUsernameArgument) => void;
-	currentProfile: () => void;
-	profileByUsername: (profileByUsernameInput: IUsernameArgument) => void;
+	getPublicKeyByUsername: (
+		getPublicKeyByUsernameInput: IUsernameArgument,
+	) => void;
+	getCurrentProfile: () => void;
+	getProfileByUsername: (getProfileByUsernameInput: IUsernameArgument) => void;
 	createProfile: (createProfileInput: ICreateProfileInput) => void;
 }
 
@@ -47,11 +49,11 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	publicKeyByUsername: (profileUsernameInput: IUsernameArgument) =>
-		dispatch(publicKeyByUsername(profileUsernameInput)),
-	currentProfile: () => dispatch(currentProfile()),
-	profileByUsername: (profileByUsernameInput: IUsernameArgument) =>
-		dispatch(profileByUsername(profileByUsernameInput)),
+	getPublicKeyByUsername: (getPublicKeyByUsernameInput: IUsernameArgument) =>
+		dispatch(getPublicKeyByUsername(getPublicKeyByUsernameInput)),
+	getCurrentProfile: () => dispatch(getCurrentProfile()),
+	getProfileByUsername: (getProfileByUsernameInput: IUsernameArgument) =>
+		dispatch(getProfileByUsername(getProfileByUsernameInput)),
 	createProfile: (createProfileInput: ICreateProfileInput) =>
 		dispatch(createProfile(createProfileInput)),
 });

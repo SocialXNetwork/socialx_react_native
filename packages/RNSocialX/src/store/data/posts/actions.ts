@@ -15,71 +15,69 @@ import {
 	IUsernameArgument,
 } from './Types';
 
-const postPathsByUserAction: ActionCreator<IPostPathsByUserAction> = (
-	postPathsByUsernameInput: IUsernameArgument,
+const getPostPathsByUsernameAction: ActionCreator<IPostPathsByUserAction> = (
+	getPostPathsByUsernameInput: IUsernameArgument,
 ) => ({
 	type: ActionTypes.POST_PATHS_BY_USER,
-	payload: postPathsByUsernameInput,
+	payload: getPostPathsByUsernameInput,
 });
 
-export const postPathsByUser = (
-	postPathsByUsernameInput: IUsernameArgument,
+export const getPostPathsByUsername = (
+	getPostPathsByUsernameInput: IUsernameArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(postPathsByUserAction(postPathsByUsernameInput));
+		dispatch(getPostPathsByUsernameAction(getPostPathsByUsernameInput));
 	} catch (e) {
 		/**/
 	}
 };
 
-const postByPathAction: ActionCreator<IPostByPathAction> = (
-	postPathArgument: IPostPathArgument,
+const getPostByPathAction: ActionCreator<IPostByPathAction> = (
+	getPostPathArgument: IPostPathArgument,
 ) => ({
 	type: ActionTypes.POST_BY_PATH,
-	payload: postPathArgument,
+	payload: getPostPathArgument,
 });
 
-export const postByPath = (
-	postPathArgument: IPostPathArgument,
+export const getPostByPath = (
+	getPostPathArgument: IPostPathArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(postByPathAction(postPathArgument));
+		dispatch(getPostByPathAction(getPostPathArgument));
 	} catch (e) {
 		/**/
 	}
 };
 
-const publicPostsByDateAction: ActionCreator<IPublicPostsByDateAction> = (
-	postByDateArgument: IDateArgument,
+const getPublicPostsByDateAction: ActionCreator<IPublicPostsByDateAction> = (
+	getPostByDateArgument: IDateArgument,
 ) => ({
 	type: ActionTypes.PUBLIC_POSTS_BY_DATE,
-	payload: postByDateArgument,
+	payload: getPostByDateArgument,
 });
 
-export const publicPostsByDate = (
-	postByDateArgument: IDateArgument,
+export const getPublicPostsByDate = (
+	getPostByDateArgument: IDateArgument,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(publicPostsByDateAction(postByDateArgument));
+		dispatch(getPublicPostsByDateAction(getPostByDateArgument));
 	} catch (e) {
 		/**/
 	}
 };
 
-const postLikesAction: ActionCreator<IPostLikesAction> = (
-	postLikesArgument: IPostIdArgument,
+const getPostLikesAction: ActionCreator<IPostLikesAction> = (
+	getPostLikesArgument: IPostIdArgument,
 ) => ({
 	type: ActionTypes.POST_LIKES,
-	payload: postLikesArgument,
+	payload: getPostLikesArgument,
 });
 
-export const postLikes = (postLikesArgument: IPostIdArgument): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const getPostLikes = (
+	getPostLikesArgument: IPostIdArgument,
+): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(postLikesAction(postLikesArgument));
+		dispatch(getPostLikesAction(getPostLikesArgument));
 	} catch (e) {
 		/**/
 	}
