@@ -28,7 +28,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
-		case ActionTypes.IS_ACCOUNT_LOGGED_IN: {
+		case ActionTypes.GET_IS_ACCOUNT_LOGGED_IN: {
 			return { ...state };
 		}
 

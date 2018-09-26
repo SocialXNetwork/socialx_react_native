@@ -12,19 +12,19 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
-		case ActionTypes.POST_LIKES: {
+		case ActionTypes.GET_POST_LIKES: {
 			return { ...state };
 		}
 
-		case ActionTypes.PUBLIC_POSTS_BY_DATE: {
+		case ActionTypes.GET_PUBLIC_POSTS_BY_DATE: {
 			return { ...state };
 		}
 
-		case ActionTypes.POST_BY_PATH: {
+		case ActionTypes.GET_POST_BY_PATH: {
 			return { ...state };
 		}
 
-		case ActionTypes.POST_PATHS_BY_USER: {
+		case ActionTypes.GET_POST_PATHS_BY_USER: {
 			return { ...state };
 		}
 

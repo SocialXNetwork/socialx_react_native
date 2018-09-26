@@ -12,11 +12,11 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
-		case ActionTypes.COMMENT_LIKES: {
+		case ActionTypes.GET_COMMENT_LIKES: {
 			return { ...state };
 		}
 
-		case ActionTypes.POST_COMMENTS: {
+		case ActionTypes.GET_POST_COMMENTS: {
 			return { ...state };
 		}
 

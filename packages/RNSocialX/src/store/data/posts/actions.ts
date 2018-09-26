@@ -4,21 +4,21 @@ import {
 	ActionTypes,
 	ICreatePostAction,
 	IDateArgument,
+	IGetPostByPathAction,
+	IGetPostLikesAction,
+	IGetPostPathsByUserAction,
+	IGetPublicPostsByDateAction,
 	ILikePostAction,
-	IPostByPathAction,
 	IPostData,
 	IPostIdArgument,
-	IPostLikesAction,
 	IPostPathArgument,
-	IPostPathsByUserAction,
-	IPublicPostsByDateAction,
 	IUsernameArgument,
 } from './Types';
 
-const getPostPathsByUsernameAction: ActionCreator<IPostPathsByUserAction> = (
+const getPostPathsByUsernameAction: ActionCreator<IGetPostPathsByUserAction> = (
 	getPostPathsByUsernameInput: IUsernameArgument,
 ) => ({
-	type: ActionTypes.POST_PATHS_BY_USER,
+	type: ActionTypes.GET_POST_PATHS_BY_USER,
 	payload: getPostPathsByUsernameInput,
 });
 
@@ -32,10 +32,10 @@ export const getPostPathsByUsername = (
 	}
 };
 
-const getPostByPathAction: ActionCreator<IPostByPathAction> = (
+const getPostByPathAction: ActionCreator<IGetPostByPathAction> = (
 	getPostPathArgument: IPostPathArgument,
 ) => ({
-	type: ActionTypes.POST_BY_PATH,
+	type: ActionTypes.GET_POST_BY_PATH,
 	payload: getPostPathArgument,
 });
 
@@ -49,10 +49,10 @@ export const getPostByPath = (
 	}
 };
 
-const getPublicPostsByDateAction: ActionCreator<IPublicPostsByDateAction> = (
+const getPublicPostsByDateAction: ActionCreator<IGetPublicPostsByDateAction> = (
 	getPostByDateArgument: IDateArgument,
 ) => ({
-	type: ActionTypes.PUBLIC_POSTS_BY_DATE,
+	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
 	payload: getPostByDateArgument,
 });
 
@@ -66,10 +66,10 @@ export const getPublicPostsByDate = (
 	}
 };
 
-const getPostLikesAction: ActionCreator<IPostLikesAction> = (
+const getPostLikesAction: ActionCreator<IGetPostLikesAction> = (
 	getPostLikesArgument: IPostIdArgument,
 ) => ({
-	type: ActionTypes.POST_LIKES,
+	type: ActionTypes.GET_POST_LIKES,
 	payload: getPostLikesArgument,
 });
 

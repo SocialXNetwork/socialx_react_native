@@ -18,9 +18,9 @@ export type IState = DeepReadonly<{
 
 export const enum ActionTypes {
 	CREATE_PROFILE = 'app/data/profiles/CREATE_PROFILE',
-	PROFILE_BY_USERNAME = 'app/data/profiles/PROFILE_BY_USERNAME',
-	CURRENT_PROFILE = 'app/data/profiles/CURRENT_PROFILE',
-	PUBLIC_KEY_BY_USERNAME = 'app/data/profiles/PUBLIC_KEY_BY_USERNAME',
+	GET_PROFILE_BY_USERNAME = 'app/data/profiles/GET_PROFILE_BY_USERNAME',
+	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
+	GET_PUBLIC_KEY_BY_USERNAME = 'app/data/profiles/GET_PUBLIC_KEY_BY_USERNAME',
 }
 
 export interface ICreateProfileAction extends Action {
@@ -28,22 +28,22 @@ export interface ICreateProfileAction extends Action {
 	payload: ICreateProfileInput;
 }
 
-export interface IProfileByUsernameAction extends Action {
-	type: ActionTypes.PROFILE_BY_USERNAME;
+export interface IGetProfileByUsernameAction extends Action {
+	type: ActionTypes.GET_PROFILE_BY_USERNAME;
 	payload: IUsernameArgument;
 }
 
-export interface ICurrentProfileAction extends Action {
-	type: ActionTypes.CURRENT_PROFILE;
+export interface IGetCurrentProfileAction extends Action {
+	type: ActionTypes.GET_CURRENT_PROFILE;
 }
 
-export interface IPublicKeyByUsernameAction extends Action {
-	type: ActionTypes.PUBLIC_KEY_BY_USERNAME;
+export interface IGetPublicKeyByUsernameAction extends Action {
+	type: ActionTypes.GET_PUBLIC_KEY_BY_USERNAME;
 	payload: IUsernameArgument;
 }
 
 export type IAction =
 	| ICreateProfileAction
-	| IProfileByUsernameAction
-	| ICurrentProfileAction
-	| IPublicKeyByUsernameAction;
+	| IGetProfileByUsernameAction
+	| IGetCurrentProfileAction
+	| IGetPublicKeyByUsernameAction;
