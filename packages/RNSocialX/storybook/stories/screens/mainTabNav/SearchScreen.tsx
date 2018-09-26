@@ -1,4 +1,5 @@
 import {action} from '@storybook/addon-actions';
+import {boolean, text, withKnobs} from '@storybook/addon-knobs';
 import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 
@@ -32,15 +33,25 @@ const items: ISearchResultData[] = [
 	},
 ];
 
-storiesOf('Screens/mainTabNav', module).add('SearchScreen', () => (
-	<SearchScreenView
-		searching={false}
-		onAddFriend={action('onAddFriend')}
-		searchResults={items}
-		onResultPress={action('onResultPress')}
-		onLoadMoreResults={action('onLoadMoreResults')}
-		hasMoreResults={false}
-		// @ts-ignore
-		navigation={null}
-	/>
-));
+storiesOf('Screens/mainTabNav', module)
+	.addDecorator(withKnobs)
+	.add('SearchScreen', () => {
+		const searchTermValue = text('searchTermValue', '');
+		const searching = boolean('searching', false);
+		const hasMoreResults = boolean('hasMoreResults', false);
+		return (
+			<SearchScreenView
+				searching={searching}
+				onAddFriend={action('onAddFriend')}
+				searchResults={items}
+				suggestions={items}
+				searchTermValue={searchTermValue}
+				onSearchTermChange={action('onSearchTermChange')}
+				onResultPress={action('onResultPress')}
+				onLoadMoreResults={action('onLoadMoreResults')}
+				hasMoreResults={hasMoreResults}
+				// @ts-ignore
+				navigation={null}
+			/>
+		);
+	});
