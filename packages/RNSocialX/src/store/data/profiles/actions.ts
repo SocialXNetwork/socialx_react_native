@@ -5,7 +5,6 @@ import {
 	ActionTypes,
 	ICreateProfileAction,
 	ICurrentProfileAction,
-	IProfile,
 	IProfileByUsernameAction,
 	IPublicKeyByUsernameAction,
 	IUsernameArgument,
@@ -22,20 +21,9 @@ export const createProfile = (createProfileInput: ICreateProfileInput): IThunk =
 	context,
 ) => {
 	try {
-		// get something from anywhere redux store
-		// const currentUserAccount = getState().app.accounts.currentUser;
-		// const currentOverlayStatus = getState().ui.overlays.currentOverlayStatus;
-
-		// get something from api
-		// const data = await context.dataApi.accounts.createAccount(createAccountInput);
-
-		// for instance import this action from ui and begin showing loding indicator
-		// dispatch(setGlobalLoadingIndicator(true));
-
 		dispatch(createProfileAction(createProfileInput));
 	} catch (e) {
-		// dispatch(setGlobalLoadingIndicator(false);
-		// dispatch(addNotificationtoQueue('there was an error');
+		/**/
 	}
 };
 
@@ -84,18 +72,6 @@ export const publicKeyByUsername = (profileUsernameInput: IUsernameArgument): IT
 ) => {
 	try {
 		dispatch(publicKeyByUsernameAction(profileUsernameInput));
-	} catch (e) {
-		/**/
-	}
-};
-
-const currentUserProfileAction: ActionCreator<ICurrentProfileAction> = () => ({
-	type: ActionTypes.CURRENT_PROFILE,
-});
-
-export const logout = (): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(currentProfile());
 	} catch (e) {
 		/**/
 	}

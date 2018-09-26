@@ -1,4 +1,3 @@
-import {ICreateProfileInput} from '@socialx/api-data';
 import {ActionCreator} from 'redux';
 import {IThunk} from '../../types';
 import {
@@ -27,20 +26,9 @@ export const postPathsByUser = (postPathsByUsernameInpit: IUsernameArgument): IT
 	context,
 ) => {
 	try {
-		// get something from anywhere redux store
-		// const currentUserAccount = getState().app.accounts.currentUser;
-		// const currentOverlayStatus = getState().ui.overlays.currentOverlayStatus;
-
-		// get something from api
-		// const data = await context.dataApi.accounts.createAccount(createAccountInput);
-
-		// for instance import this action from ui and begin showing loding indicator
-		// dispatch(setGlobalLoadingIndicator(true));
-
 		dispatch(postPathsByUserAction(postPathsByUsernameInpit));
 	} catch (e) {
-		// dispatch(setGlobalLoadingIndicator(false);
-		// dispatch(addNotificationtoQueue('there was an error');
+		/**/
 	}
 };
 

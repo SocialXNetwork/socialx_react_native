@@ -2,6 +2,19 @@ import {ICommentMetasCallback} from '@socialx/api-data';
 import {Action} from 'redux';
 import {DeepReadonly} from 'utility-types';
 
+// export interface ICommentData {
+// 	id: string;
+// 	text: string;
+// 	owner: string;
+// }
+
+// TODO: @jake this is wrong, consult serkan
+export type IState = DeepReadonly<{
+	// they both are almost the same thing?
+	bestComments: ICommentMetasCallback[] | null;
+	currentPostComments: ICommentMetasCallback[] | null;
+}>;
+
 export interface IPostIdArgument {
 	postId: string;
 }
@@ -15,23 +28,11 @@ export interface ICreateCommentInput {
 	postId: string;
 }
 
-// export interface ICommentData {
-// 	id: string;
-// 	text: string;
-// 	owner: string;
-// }
-
-export type IState = DeepReadonly<{
-	// they both are almost the same thing?
-	bestComments: ICommentMetasCallback[] | null;
-	currentPostComments: ICommentMetasCallback[] | null;
-}>;
-
 export const enum ActionTypes {
-	POST_COMMENTS = 'app/data/POST_COMMENTS',
-	COMMENT_LIKES = 'app/data/COMMENT_LIKES',
-	CREATE_COMMENT = 'app/data/CREATE_COMMENT',
-	LIKE_COMMENT = 'app/data/LIKE_COMMENT',
+	POST_COMMENTS = 'data/comments/POST_COMMENTS',
+	COMMENT_LIKES = 'data/comments/COMMENT_LIKES',
+	CREATE_COMMENT = 'data/comments/CREATE_COMMENT',
+	LIKE_COMMENT = 'data/comments/LIKE_COMMENT',
 }
 
 export interface IPostCommentsAction extends Action {
