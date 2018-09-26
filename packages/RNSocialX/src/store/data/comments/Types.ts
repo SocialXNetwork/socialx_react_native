@@ -1,18 +1,17 @@
-import {ICommentMetasCallback} from '@socialx/api-data';
+import {ICommentMetasCallback, ILikesMetasCallback} from '@socialx/api-data';
 import {Action} from 'redux';
 import {DeepReadonly} from 'utility-types';
 
-// export interface ICommentData {
-// 	id: string;
-// 	text: string;
-// 	owner: string;
-// }
+export interface ICommentData {
+	id: string;
+	text: string;
+	owner: string;
+	likes: ILikesMetasCallback[];
+}
 
-// TODO: @jake this is wrong, consult serkan
 export type IState = DeepReadonly<{
-	// they both are almost the same thing?
-	bestComments: ICommentMetasCallback[] | null;
-	currentPostComments: ICommentMetasCallback[] | null;
+	comments: ICommentData[];
+	commentMetaById: ICommentMetasCallback[];
 }>;
 
 export interface IPostIdArgument {
