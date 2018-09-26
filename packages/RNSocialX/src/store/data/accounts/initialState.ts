@@ -1,5 +1,5 @@
 import {IState} from './Types';
 
 export default {
-	currentAccount: null,
+	accounts: [],
 } as IState;

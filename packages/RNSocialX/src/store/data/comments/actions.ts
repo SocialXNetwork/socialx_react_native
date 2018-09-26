@@ -20,8 +20,7 @@ export const postComments = (postCommentsArguments: IPostIdArgument): IThunk => 
 	try {
 		dispatch(postCommentsAction(postCommentsArguments));
 	} catch (e) {
-		// dispatch(setGlobalLoadingIndicator(false);
-		// dispatch(addNotificationtoQueue('there was an error');
+		/**/
 	}
 };
 
