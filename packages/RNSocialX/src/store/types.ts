@@ -7,11 +7,14 @@ import { IAction as ICommentsActions } from './data/comments/Types';
 import { IAction as IPostsActions } from './data/posts/Types';
 import { IAction as IProfilesActions } from './data/profiles/Types';
 
+import { IAction as II18nActions } from './app/i18n/Types';
+
 type IApplicationAction =
 	| IAccountActions
 	| IProfilesActions
 	| IPostsActions
-	| ICommentsActions;
+	| ICommentsActions
+	| II18nActions;
 
 export type IThunk = ThunkAction<
 	Promise<void>,

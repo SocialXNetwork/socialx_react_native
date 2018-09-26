@@ -13,6 +13,7 @@ import {
 	IWallPostComment,
 	MediaTypeImage,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithCommentsEnhancedProps = {
 	data: {
@@ -105,6 +106,7 @@ const mock: IWithCommentsEnhancedProps = {
 		unlikePost: (postId: string) => {
 			/**/
 		},
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -163,6 +165,15 @@ export class WithComments extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
