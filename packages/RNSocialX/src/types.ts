@@ -246,12 +246,25 @@ export interface IStackDefaultConfig {
 export interface ITrendingCategoriesItem {
 	id: string;
 	name: string;
+	url: string;
 }
 
-// TODO: @Alex, fix typing for content
+interface ITrendingContentImage {
+	type: string;
+	url: string;
+	postId: string;
+	middle?: boolean;
+}
+
+interface ITrendingContentImageWithVideo {
+	type: string;
+	url: string;
+	postId: string;
+}
+
 export interface ITrendingContentItem {
 	name: string;
-	content: any;
+	content: Array<ITrendingContentImage | ITrendingContentImageWithVideo[]>;
 }
 
 /**

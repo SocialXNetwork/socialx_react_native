@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {View} from 'react-native';
-import {NavigationScreenProp} from 'react-navigation';
 
 import {SearchHeader, TrendingCategoriesCarousel, TrendingContentCarousel} from '../../../components';
-import {ITrendingCategoriesItem, ITrendingContentItem} from '../../../types';
+import {INavigationProps, ITrendingCategoriesItem, ITrendingContentItem} from '../../../types';
 
-interface ITrendingScreenViewProps {
-	navigation: NavigationScreenProp<any>;
+interface ITrendingScreenViewProps extends INavigationProps {
 	trendingCategoriesItems: ITrendingCategoriesItem[];
 	trendingContentItems: ITrendingContentItem[];
 	contentRef: React.RefObject<any>;
@@ -23,6 +21,6 @@ export const TrendingScreenView: React.SFC<ITrendingScreenViewProps> = ({
 	<View style={{flex: 1}}>
 		<SearchHeader navigation={navigation} />
 		<TrendingCategoriesCarousel items={trendingCategoriesItems} contentRef={contentRef} />
-		<TrendingContentCarousel items={trendingContentItems} passContentRef={passContentRef} />
+		<TrendingContentCarousel items={trendingContentItems} passContentRef={passContentRef} navigation={navigation} />
 	</View>
 );
