@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -20,16 +21,10 @@ storiesOf('Components/displayers', module)
 					'\nhttps://socialx.network @user11 #hashTagText'
 				}
 				fullTextVisible={fullTextVisible}
-				toggleShowFullText={() => console.log('toggleShowFullText')}
-				handleHashTag={(hashTag: string) =>
-					console.log('handleHashTag', hashTag)
-				}
-				handleUserTag={(userTag: string) =>
-					console.log('handleUserTag', userTag)
-				}
-				launchExternalUrl={(url: string) =>
-					console.log('launchExternalUrl', url)
-				}
+				toggleShowFullText={action('toggleShowFullText')}
+				handleHashTag={action('handleHashTag')}
+				handleUserTag={action('handleUserTag')}
+				launchExternalUrl={action('launchExternalUrl')}
 			/>
 		);
 	});

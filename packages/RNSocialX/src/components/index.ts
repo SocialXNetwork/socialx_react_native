@@ -49,6 +49,7 @@ export { SearchResultsItem } from './displayers/SearchResultsItem';
 export { SearchResultsList } from './displayers/SearchResultsList';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
+export { TransactionItem, TransactionType } from './displayers/TransactionItem';
 export { WallPostCard } from './displayers/WallPostCard';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';

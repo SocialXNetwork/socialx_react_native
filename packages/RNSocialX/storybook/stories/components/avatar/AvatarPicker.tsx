@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -12,9 +13,7 @@ storiesOf('Components/avatar', module)
 	.add('AvatarPicker', () => (
 		<AvatarPicker
 			avatarImage={image}
-			afterImagePick={() => {
-				/**/
-			}}
+			afterImagePick={action('afterImagePick')}
 			avatarSize={200}
 			getText={(text) => text}
 		/>

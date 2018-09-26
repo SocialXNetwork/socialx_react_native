@@ -11,7 +11,7 @@ export enum TrendOptions {
 	Down = 'DOWN',
 }
 
-export interface IMyWalletInfoProps extends ITranslatedProps {
+interface IMyWalletInfoProps extends ITranslatedProps {
 	myCoins: string;
 	trendPercentage: string;
 	trendArrow: TrendOptions;
