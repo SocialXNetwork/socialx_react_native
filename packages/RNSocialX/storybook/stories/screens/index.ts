@@ -1,3 +1,5 @@
+import './myProfile/WalletActivityScreen';
+
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';

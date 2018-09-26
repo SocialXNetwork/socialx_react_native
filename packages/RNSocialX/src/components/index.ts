@@ -26,7 +26,7 @@ export { IntroFirstSlide } from './displayers/IntroFirstSlide';
 export { IntroGenericSlide } from './displayers/IntroGenericSlide';
 export { MediaHorizontalScroller } from './displayers/MediaHorizontalScroller';
 export { MediaObjectViewer } from './displayers/MediaObjectViewer';
-export { MyWalletInfo, TrendOptions } from './displayers/MyWalletInfo';
+export { MyWalletInfo } from './displayers/MyWalletInfo';
 export { NoComments } from './displayers/NoComments';
 export { NoPhotos } from './displayers/NoPhotos';
 export {
@@ -49,7 +49,7 @@ export { SearchResultsItem } from './displayers/SearchResultsItem';
 export { SearchResultsList } from './displayers/SearchResultsList';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
-export { TransactionItem, TransactionType } from './displayers/TransactionItem';
+export { TransactionItem } from './displayers/TransactionItem';
 export { WallPostCard } from './displayers/WallPostCard';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';

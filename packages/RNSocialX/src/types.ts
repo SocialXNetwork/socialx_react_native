@@ -1,6 +1,8 @@
 import { Image as PickerImage } from 'react-native-image-crop-picker';
 import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
+
 import { IAccountCurrencyData } from './components';
+import { CoinSymbol } from './environment/consts';
 
 export interface IFriendsSearchResult {
 	id: string;
@@ -188,6 +190,34 @@ export interface IWallPostCardActions extends ITranslatedProps {
 }
 
 export type IWallPostCardProps = IWallPostCardData & IWallPostCardActions;
+
+export enum TransactionType {
+	Sold = 'Sold',
+	Bought = 'Bought',
+}
+
+export enum TrendOptions {
+	Up = 'UP',
+	Down = 'DOWN',
+}
+
+export interface ITransactionData {
+	id: string;
+	type: TransactionType;
+	firstAmount: number;
+	firstCoin: CoinSymbol;
+	secondAmount: number;
+	secondCoin: CoinSymbol;
+	date: Date;
+}
+
+export interface IWallet {
+	coins: string;
+	trendPercentage: string;
+	trendArrow: TrendOptions;
+	transactions: ITransactionData[];
+	refreshing: boolean;
+}
 
 // =====================================================
 // ENHANCER DATA TYPES
