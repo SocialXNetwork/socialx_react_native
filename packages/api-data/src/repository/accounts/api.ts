@@ -55,9 +55,9 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	isAccountLoggedIn: (): Promise<{ loggedIn: boolean }> =>
+	getIsAccountLoggedIn: (): Promise<{ loggedIn: boolean }> =>
 		new Promise((resolve, reject) => {
-			getters.isAccountLoggedIn(context, (e, r) => {
+			getters.getIsAccountLoggedIn(context, (e, r) => {
 				if (e) {
 					reject(e);
 				}
