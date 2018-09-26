@@ -6,6 +6,6 @@ export {
 } from './repository/accounts/setters';
 
 export {ICreateProfileInput} from './repository/profiles/setters';
-export {ICommentMetasCallback} from './types';
+export {ICommentMetasCallback, ILikesMetasCallback} from './types';
 
 export {dataApiFactory, IApiOptions, IDataApiFactory} from './api';
