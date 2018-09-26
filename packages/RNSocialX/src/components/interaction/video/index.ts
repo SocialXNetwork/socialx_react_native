@@ -1,1 +1,1 @@
-export {IVideoOptions, VideoPlayer} from './VideoPlayer';
+export { IVideoOptions, VideoPlayer } from './VideoPlayer';

@@ -1,7 +1,7 @@
-import {storiesOf} from '@storybook/react-native';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {MediaObjectViewer} from '../../../../src/components';
+import { MediaObjectViewer } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const image = 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4';
@@ -12,7 +12,7 @@ storiesOf('Components/displayers', module)
 		<MediaObjectViewer
 			extension={'mp4'}
 			uri={image}
-			style={{width: 300, height: 300}}
+			style={{ width: 300, height: 300 }}
 			resizeMode={'contain'}
 			getText={(text) => text}
 		/>
