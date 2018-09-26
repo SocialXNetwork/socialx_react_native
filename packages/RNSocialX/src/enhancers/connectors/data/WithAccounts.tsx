@@ -75,4 +75,4 @@ export const WithAccounts: ConnectedComponentClass<
 > = connect(
 	mapStateToProps,
 	mapDispatchToProps,
-)(Enhancer) as any;
+)(Enhancer as any) as any;
