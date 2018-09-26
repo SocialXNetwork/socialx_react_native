@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
@@ -40,10 +41,8 @@ class CommentInputStory extends React.Component {
 					border: this.state.inputBorderWidth,
 				}}
 				onCommentInputPress={this.onCommentInputPressHandler}
-				onCommentInputChange={(comment: string) =>
-					console.log('onCommentInputChange', comment)
-				}
-				onSubmitComment={() => console.log('onSubmitComment')}
+				onCommentInputChange={action('onCommentInputChange')}
+				onSubmitComment={action('onSubmitComment')}
 			/>
 		);
 	}

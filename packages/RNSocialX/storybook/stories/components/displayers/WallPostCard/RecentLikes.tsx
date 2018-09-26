@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -14,7 +15,7 @@ storiesOf('Components/displayers', module)
 					userId: 'user11',
 				},
 			]}
-			onUserPress={(userId: string) => console.log('onUserPress', userId)}
+			onUserPress={action('onUserPress')}
 			getText={(text) => text}
 		/>
 	))
@@ -30,7 +31,7 @@ storiesOf('Components/displayers', module)
 					userId: 'user22',
 				},
 			]}
-			onUserPress={(userId: string) => console.log('onUserPress', userId)}
+			onUserPress={action('onUserPress')}
 			getText={(text) => text}
 		/>
 	))
@@ -50,7 +51,7 @@ storiesOf('Components/displayers', module)
 					userId: 'user33',
 				},
 			]}
-			onUserPress={(userId: string) => console.log('onUserPress', userId)}
+			onUserPress={action('onUserPress')}
 			getText={(text) => text}
 		/>
 	));

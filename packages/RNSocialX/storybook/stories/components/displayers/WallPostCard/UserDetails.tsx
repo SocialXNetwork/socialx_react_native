@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import moment from 'moment';
@@ -29,8 +30,8 @@ storiesOf('Components/displayers', module)
 				hideGoToUserProfile={hideGoToUserProfile}
 				taggedFriends={[]}
 				location={'Timisoara'}
-				onUserPress={() => console.log('onUserPress')}
-				onShowAdvancedMenu={() => console.log('onShowAdvancedMenu')}
+				onUserPress={action('onUserPress')}
+				onShowAdvancedMenu={action('onShowAdvancedMenu')}
 			/>
 		);
 	});

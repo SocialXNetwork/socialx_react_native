@@ -1,20 +1,18 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { WallPostMedia } from '../../../../../src/components/displayers/WallPostCard';
 import CenterView from '../../../../helpers/CenterView';
 
-const onMediaObjectViewHandler = (index: number) =>
-	console.log('View media at index: ' + index);
-
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('WallPostMedia single photo', () => (
 		// @ts-ignore
 		<WallPostMedia
-			onMediaObjectView={onMediaObjectViewHandler}
+			onMediaObjectView={action('onMediaObjectView')}
 			noInteraction={false}
-			onLikeButtonPressed={() => console.log('Like photo with double tap')}
+			onLikeButtonPressed={action('onLikeButtonPressed')}
 			// @ts-ignore
 			mediaObjects={[
 				{
@@ -27,7 +25,7 @@ storiesOf('Components/displayers', module)
 	.add('WallPostMedia dual photo', () => (
 		// @ts-ignore
 		<WallPostMedia
-			onMediaObjectView={onMediaObjectViewHandler}
+			onMediaObjectView={action('onMediaObjectView')}
 			noInteraction={false}
 			// @ts-ignore
 			mediaObjects={[
@@ -45,7 +43,7 @@ storiesOf('Components/displayers', module)
 	.add('WallPostMedia 3+ photos', () => (
 		// @ts-ignore
 		<WallPostMedia
-			onMediaObjectView={onMediaObjectViewHandler}
+			onMediaObjectView={action('onMediaObjectView')}
 			noInteraction={false}
 			// @ts-ignore
 			mediaObjects={[

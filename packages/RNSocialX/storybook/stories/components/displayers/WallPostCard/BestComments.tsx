@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -22,7 +23,7 @@ storiesOf('Components/displayers', module)
 					owner: { userName: 'ionut_socx_2', userId: 'user4' },
 				},
 			]}
-			onUserPress={(userId: string) => console.log('onUserPress: ' + userId)}
-			onCommentPress={() => console.log('onCommentPress')}
+			onUserPress={action('onUserPress')}
+			onCommentPress={action('onCommentPress')}
 		/>
 	));

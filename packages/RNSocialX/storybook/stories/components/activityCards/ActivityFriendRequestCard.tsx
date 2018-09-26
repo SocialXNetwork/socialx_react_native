@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -14,15 +15,9 @@ storiesOf('Components/activityCards', module)
 			fullName={'Alex Sirbu'}
 			userName={'alexsirbu'}
 			userId={'85-f3r1-5ad'}
-			onRequestConfirmed={() => {
-				/**/
-			}}
-			onRequestDeclined={() => {
-				/**/
-			}}
-			onViewUserProfile={() => {
-				/**/
-			}}
+			onRequestConfirmed={action('onRequestConfirmed')}
+			onRequestDeclined={action('onRequestDeclined')}
+			onViewUserProfile={action('onViewUserProfile')}
 			loadingConfirmed={false}
 			loadingDeclined={false}
 			getText={(text) => text}

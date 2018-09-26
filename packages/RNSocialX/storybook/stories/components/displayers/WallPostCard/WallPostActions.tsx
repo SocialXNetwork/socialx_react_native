@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
@@ -11,10 +12,10 @@ storiesOf('Components/displayers', module)
 			likedByMe={false}
 			numberOfSuperLikes={0}
 			numberOfWalletCoins={15679}
-			onLikePress={() => console.log('onLikePress')}
-			onSuperLikePress={() => console.log('onSuperLikePress')}
-			onCommentPress={() => console.log('onCommentsPress')}
-			onWalletCoinsButtonPress={() => console.log('onWalletCoinsButtonPress')}
+			onLikePress={action('onLikePress')}
+			onSuperLikePress={action('onSuperLikePress')}
+			onCommentPress={action('onCommentPress')}
+			onWalletCoinsButtonPress={action('onWalletCoinsButtonPress')}
 			getText={(text) => text}
 		/>
 	));
