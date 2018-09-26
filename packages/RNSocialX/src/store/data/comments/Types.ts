@@ -11,7 +11,9 @@ export interface ICommentData {
 
 export type IState = DeepReadonly<{
 	comments: ICommentData[];
-	commentMetaById: ICommentMetasCallback[];
+	commentMetaById: {
+		[commentId: string]: ICommentMetasCallback;
+	};
 }>;
 
 export interface IPostIdArgument {

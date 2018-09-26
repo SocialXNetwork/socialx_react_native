@@ -17,7 +17,9 @@ import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	comments: ICommentData[];
-	commentMetaById: ICommentMetasCallback[];
+	commentMetaById: {
+		[commentId: string]: ICommentMetasCallback;
+	};
 }
 
 interface IActionProps {
