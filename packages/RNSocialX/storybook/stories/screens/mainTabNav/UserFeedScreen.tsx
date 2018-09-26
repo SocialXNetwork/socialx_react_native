@@ -10,7 +10,6 @@ import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
-	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('UserFeedScreen', () => {
 		const avatar = { uri: 'https://www.w3schools.com/w3css/img_lights.jpg' };
 

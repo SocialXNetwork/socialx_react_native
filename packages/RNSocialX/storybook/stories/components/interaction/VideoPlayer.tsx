@@ -1,20 +1,19 @@
-import { action } from '@storybook/addon-actions';
-import { boolean, withKnobs } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react-native';
+import {boolean, withKnobs} from '@storybook/addon-knobs';
+import {storiesOf} from '@storybook/react-native';
 import * as React from 'react';
 
-import { VideoPlayer } from '../../../../src/components';
+import {VideoPlayer} from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
-const VIDEO_URL =
-	'https://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4';
+const VIDEO_URL = 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4';
 
 storiesOf('Components/interaction', module)
 	.addDecorator(withKnobs)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('VideoPlayer', () => {
-		const paused = boolean('paused', true);
+		const paused = boolean('paused', false);
 		const muted = boolean('muted', false);
+		const resizeToChangeAspectRatio = boolean('resizeToChangeAspectRatio', true);
 		return (
 			<VideoPlayer
 				videoURL={VIDEO_URL}
@@ -26,9 +25,7 @@ storiesOf('Components/interaction', module)
 				muted={muted}
 				resizeMode={'cover'}
 				thumbOnly={false}
-				onPressVideo={action('onPressVideo')}
-				onMuteVideo={action('onMuteVideo')}
-				onUpdateResizeMode={action('onUpdateResizeMode')}
+				resizeToChangeAspectRatio={resizeToChangeAspectRatio}
 			/>
 		);
 	})
@@ -43,7 +40,7 @@ storiesOf('Components/interaction', module)
 				resizeMode={'contain'}
 				paused={true}
 				thumbOnly={true}
-				onPressVideo={action('onPressVideo')}
+				onPressVideo={() => console.log('onPressVideo, show full screen screen')}
 			/>
 		);
 	});

@@ -51,7 +51,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	style: customStyle,
 	resizeMode = 'cover',
 	extension = 'jpg',
-	type = MediaTypeImage,
+	type,
 	getText,
 	canZoom = false,
 	muted = false,

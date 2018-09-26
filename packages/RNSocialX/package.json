@@ -41,7 +41,7 @@
     "react-native-country-picker-modal": "^0.6.2",
     "react-native-crypto": "^2.1.2",
     "react-native-device-info": "^0.21.5",
-    "react-native-fast-image": "^5.0.3",
+    "react-native-fast-image": "5.0.4",
     "react-native-fs": "^2.11.15",
     "react-native-image-crop-picker": "^0.21.1",
     "react-native-image-resizer": "^1.0.0",
