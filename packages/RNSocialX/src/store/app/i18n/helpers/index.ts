@@ -1,0 +1,1 @@
+export { getText } from './getText';
