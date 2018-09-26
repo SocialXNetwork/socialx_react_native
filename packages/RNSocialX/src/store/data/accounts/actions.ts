@@ -10,7 +10,7 @@ import {
 	ActionTypes,
 	IChangePasswordAction,
 	ICreateAccountAction,
-	IIsAccountLoggedInAction,
+	IGetIsAccountLoggedInAction,
 	ILoginAction,
 	ILogoutAction,
 	IRecoverAccountAction,
@@ -110,9 +110,9 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 };
 
 const getIsAccountLoggedInAction: ActionCreator<
-	IIsAccountLoggedInAction
+	IGetIsAccountLoggedInAction
 > = () => ({
-	type: ActionTypes.IS_ACCOUNT_LOGGED_IN,
+	type: ActionTypes.GET_IS_ACCOUNT_LOGGED_IN,
 });
 
 export const getIsAccountLoggedIn = (): IThunk => async (
