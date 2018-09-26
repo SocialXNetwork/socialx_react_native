@@ -42,7 +42,10 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectAccounts = createSelector((state: IApplicationState) => state.data.accounts, (accounts) => accounts);
+const selectAccounts = createSelector(
+	(state: IApplicationState) => state.data.accounts.accounts,
+	(accounts) => accounts,
+);
 
 const mapStateToProps = (state: IApplicationState) => ({
 	accounts: selectAccounts(state),
