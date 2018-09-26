@@ -1,8 +1,9 @@
-import {boolean, withKnobs} from '@storybook/addon-knobs';
-import {storiesOf} from '@storybook/react-native';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {VideoPlayer} from '../../../../src/components';
+import { action } from '@storybook/addon-actions';
+import { VideoPlayer } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const VIDEO_URL = 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4';
@@ -13,7 +14,10 @@ storiesOf('Components/interaction', module)
 	.add('VideoPlayer', () => {
 		const paused = boolean('paused', false);
 		const muted = boolean('muted', false);
-		const resizeToChangeAspectRatio = boolean('resizeToChangeAspectRatio', true);
+		const resizeToChangeAspectRatio = boolean(
+			'resizeToChangeAspectRatio',
+			true,
+		);
 		return (
 			<VideoPlayer
 				videoURL={VIDEO_URL}
@@ -40,7 +44,7 @@ storiesOf('Components/interaction', module)
 				resizeMode={'contain'}
 				paused={true}
 				thumbOnly={true}
-				onPressVideo={() => console.log('onPressVideo, show full screen screen')}
+				onPressVideo={action('onPressVideo, show full screen screen')}
 			/>
 		);
 	});
