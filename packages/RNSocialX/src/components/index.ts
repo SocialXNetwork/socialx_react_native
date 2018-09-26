@@ -22,6 +22,7 @@ export {IntroFirstSlide} from './displayers/IntroFirstSlide';
 export {IntroGenericSlide} from './displayers/IntroGenericSlide';
 export {MediaHorizontalScroller} from './displayers/MediaHorizontalScroller';
 export {MediaObjectViewer} from './displayers/MediaObjectViewer';
+export {MyWalletInfo, TrendOptions} from './displayers/MyWalletInfo';
 export {NoComments} from './displayers/NoComments';
 export {NoPhotos} from './displayers/NoPhotos';
 export {NavigationTabBar, NavigationItems} from './displayers/NavigationTabBar';
