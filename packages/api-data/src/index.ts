@@ -1,14 +1,7 @@
-export {
-	ICreateAccountInput,
-	IChangePasswordInput,
-	ICredentials,
-	IRecoverAccountInput,
-	IAccountByPubInput,
-} from './repository/accounts';
-
-export { ICreateProfileInput } from './repository/profiles';
-export { ICommentMetasCallback } from './repository/comments';
-export { IPostData, ICreatePostInput } from './repository/posts';
+export * from './repository/accounts/types';
+export * from './repository/profiles/types';
+export * from './repository/comments/types';
+export * from './repository/posts/types';
 
 export { ILikesMetasCallback } from './types';
 
