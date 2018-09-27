@@ -1,8 +1,8 @@
 import {
-	IAccountByPubInput,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
+	IGetAccountByPubInput,
 	IRecoverAccountInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
@@ -156,14 +156,14 @@ export const getCurrentAccount = (): IThunk => async (
 };
 
 const getAccountByPubAction: ActionCreator<IGetAccountByPubAction> = (
-	getAccountByPubInput: IAccountByPubInput,
+	getAccountByPubInput: IGetAccountByPubInput,
 ) => ({
 	type: ActionTypes.GET_ACCOUNT_BY_PUB,
 	payload: getAccountByPubInput,
 });
 
 export const getAccountByPub = (
-	getAccountByPubInput: IAccountByPubInput,
+	getAccountByPubInput: IGetAccountByPubInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(getAccountByPubAction(getAccountByPubInput));

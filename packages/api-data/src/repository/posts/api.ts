@@ -5,27 +5,27 @@ import setters from './setters';
 
 import {
 	ICreatePostInput,
-	IDeletePostInput,
 	IPostData,
+	IRemovePostInput,
 	IUnlikePostInput,
 } from './types';
+
+import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
 	createPost: (createPostInput: ICreatePostInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.postData.validate(createPostInput, {
-					stripUnknown: true,
-				});
+				const validatedInput = await schemas.postData.validate(
+					createPostInput,
+					{
+						stripUnknown: true,
+					},
+				);
 				setters.createPost(
 					context,
-					validatedArgs as ICreatePostInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as ICreatePostInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -34,7 +34,7 @@ export default (context: IContext) => ({
 	getPostByPath: ({ postPath }: { postPath: string }): Promise<IPostData> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getPostByPath.validate(
+				const validatedInput = await schemas.getPostByPath.validate(
 					{ postPath },
 					{
 						stripUnknown: true,
@@ -42,13 +42,8 @@ export default (context: IContext) => ({
 				);
 				getters.getPostByPath(
 					context,
-					validatedArgs as { postPath: string },
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as { postPath: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -61,7 +56,7 @@ export default (context: IContext) => ({
 	}): Promise<ILikesMetasCallback> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getPostLikes.validate(
+				const validatedInput = await schemas.getPostLikes.validate(
 					{ postId },
 					{
 						stripUnknown: true,
@@ -69,13 +64,8 @@ export default (context: IContext) => ({
 				);
 				getters.getPostLikes(
 					context,
-					validatedArgs as { postId: string },
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as { postId: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -84,7 +74,7 @@ export default (context: IContext) => ({
 	getPostPathsByUser: ({ username }: { username: string }): Promise<string[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getPostPathsByUser.validate(
+				const validatedInput = await schemas.getPostPathsByUser.validate(
 					{ username },
 					{
 						stripUnknown: true,
@@ -92,13 +82,8 @@ export default (context: IContext) => ({
 				);
 				getters.getPostPathsByUser(
 					context,
-					validatedArgs as { username: string },
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as { username: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -107,7 +92,7 @@ export default (context: IContext) => ({
 	getPublicPostsByDate: ({ date }: { date: Date }): Promise<IPostData> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getPublicPostsByDate.validate(
+				const validatedInput = await schemas.getPublicPostsByDate.validate(
 					{ date },
 					{
 						stripUnknown: true,
@@ -115,13 +100,8 @@ export default (context: IContext) => ({
 				);
 				getters.getPublicPostsByDate(
 					context,
-					validatedArgs as { date: Date },
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as { date: Date },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -130,7 +110,7 @@ export default (context: IContext) => ({
 	likePost: ({ postId }: { postId: string }): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.likePost.validate(
+				const validatedInput = await schemas.likePost.validate(
 					{ postId },
 					{
 						stripUnknown: true,
@@ -138,34 +118,24 @@ export default (context: IContext) => ({
 				);
 				setters.likePost(
 					context,
-					validatedArgs as { postId: string },
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as { postId: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	deletePost: (deletePostInput: IDeletePostInput): Promise<null> =>
+	removePost: (removePostInput: IRemovePostInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.deletePost.validate(
-					deletePostInput,
+				const validatedInput = await schemas.removePost.validate(
+					removePostInput,
 					{ stripUnknown: true },
 				);
-				setters.deletePost(
+				setters.removePost(
 					context,
-					validatedArgs as IDeletePostInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as IRemovePostInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
@@ -174,19 +144,14 @@ export default (context: IContext) => ({
 	unlikePost: (unlikePostInput: IUnlikePostInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.unlikePost.validate(
+				const validatedInput = await schemas.unlikePost.validate(
 					unlikePostInput,
 					{ stripUnknown: true },
 				);
 				setters.unlikePost(
 					context,
-					validatedArgs as IUnlikePostInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as IUnlikePostInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);

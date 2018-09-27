@@ -1,9 +1,9 @@
 import { IContext, IGunCallback } from '../../types';
 import * as handles from './handles';
 
-import { IDiscardNotificationInput, INotificationData } from './types';
+import { INotificationData, IRemoveNotificationInput } from './types';
 
-export const addNotification = (
+export const createNotification = (
 	context: IContext,
 	createNotificationInput: INotificationData,
 	callback: IGunCallback<null>,
@@ -18,9 +18,9 @@ export const addNotification = (
 		});
 };
 
-export const discardNotification = (
+export const removeNotification = (
 	context: IContext,
-	discardInput: IDiscardNotificationInput,
+	discardInput: IRemoveNotificationInput,
 	callback: IGunCallback<null>,
 ) => {
 	handles
@@ -34,6 +34,6 @@ export const discardNotification = (
 };
 
 export default {
-	addNotification,
-	discardNotification,
+	createNotification,
+	removeNotification,
 };

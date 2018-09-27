@@ -49,7 +49,7 @@ export const getProfileByUsername = (
 		});
 };
 
-export const getCurrentFriends = (
+export const getCurrentProfileFriends = (
 	context: IContext,
 	callback: IGunCallback<IFriendsReturnData>,
 ) => {
@@ -67,5 +67,5 @@ export default {
 	getCurrentProfile,
 	getProfileByUsername,
 	getPublicKeyByUsername,
-	getCurrentFriends,
+	getCurrentProfileFriends,
 };

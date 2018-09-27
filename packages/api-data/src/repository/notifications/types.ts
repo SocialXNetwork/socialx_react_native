@@ -27,6 +27,6 @@ export interface INotificationByIdInput {
 	notificationId: string;
 }
 
-export interface IDiscardNotificationInput {
+export interface IRemoveNotificationInput {
 	notificationId: string;
 }

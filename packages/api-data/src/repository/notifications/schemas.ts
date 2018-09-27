@@ -1,6 +1,6 @@
 import yup from 'yup';
 
-const types = [
+const notificationTypes = [
 	'RECENT_COMMENT',
 	'FRIEND_REQUEST',
 	'FRIEND_REQUEST_RESPONSE',
@@ -13,13 +13,14 @@ const stringType = yup
 	.min(1)
 	.max(50);
 
-const notificationType = yup.string().oneOf(types);
+const notificationType = yup.string().oneOf(notificationTypes);
+
 const accountType = yup.object().shape({
 	alias: stringType.required(),
 	pub: stringType.required(),
 });
 
-export const addNotifications = yup
+export const createNotification = yup
 	.object()
 	.shape({
 		type: notificationType.required(),
@@ -29,18 +30,18 @@ export const addNotifications = yup
 	})
 	.required();
 
-export const discardNotification = yup
+export const removeNotification = yup
 	.object()
 	.shape({
 		notificationId: stringType.required(),
 	})
 	.required();
 
-export const notificationById = yup
+export const getNotificationById = yup
 	.object()
 	.shape({
 		notificationId: stringType.required(),
 	})
 	.required();
 
-export default { addNotifications, discardNotification, notificationById };
+export default { createNotification, removeNotification, getNotificationById };

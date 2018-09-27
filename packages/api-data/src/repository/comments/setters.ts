@@ -44,12 +44,12 @@ export const createComment = (
 						pub: ownerPub,
 					},
 				},
-				(flags) => {
-					if (flags.err) {
-						return callback('failed, error => ' + flags.err);
+				(commentCallback) => {
+					if (commentCallback.err) {
+						return callback('failed, error => ' + commentCallback.err);
 					}
 
-					const commentId = flags['#'];
+					const commentId = commentCallback['#'];
 
 					commentHandles.commentMetaById(context, commentId).put(
 						{
@@ -120,7 +120,7 @@ export const likeComment = (
 		});
 };
 
-export const deleteComment = (
+export const removeComment = (
 	context: IContext,
 	{ postPath, commentId }: IRemoveCommentInput,
 	callback: IGunCallback<null>,
@@ -164,6 +164,6 @@ export const unlikeComment = (
 export default {
 	createComment,
 	likeComment,
-	deleteComment,
+	removeComment,
 	unlikeComment,
 };

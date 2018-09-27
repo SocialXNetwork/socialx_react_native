@@ -39,7 +39,7 @@ export interface IPostData extends ICreatePostInput {
 	timestamp: number;
 }
 
-export interface IDeletePostInput {
+export interface IRemovePostInput {
 	postPath: string;
 	postMetaId: string;
 }
