@@ -1,12 +1,14 @@
-import {
-	IContext,
-	ICreatePostInput,
-	ILikesMetasCallback,
-	IPostData,
-} from '../../types';
+import { IContext, ILikesMetasCallback } from '../../types';
 import getters from './getters';
 import schemas from './schemas';
 import setters from './setters';
+
+import {
+	ICreatePostInput,
+	IDeletePostInput,
+	IPostData,
+	IUnlikePostInput,
+} from './types';
 
 export default (context: IContext) => ({
 	createPost: (createPostInput: ICreatePostInput): Promise<null> =>
@@ -146,6 +148,48 @@ export default (context: IContext) => ({
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
+			}
+		}),
+	deletePost: (deletePostInput: IDeletePostInput): Promise<null> =>
+		new Promise(async (resolve, reject) => {
+			try {
+				const validatedArgs = await schemas.deletePost.validate(
+					deletePostInput,
+					{ stripUnknown: true },
+				);
+				setters.deletePost(
+					context,
+					validatedArgs as IDeletePostInput,
+					(e, r) => {
+						if (e) {
+							reject(e);
+						}
+						resolve(r);
+					},
+				);
+			} catch (e) {
+				reject(e);
+			}
+		}),
+	unlikePost: (unlikePostInput: IUnlikePostInput): Promise<null> =>
+		new Promise(async (resolve, reject) => {
+			try {
+				const validatedArgs = await schemas.unlikePost.validate(
+					unlikePostInput,
+					{ stripUnknown: true },
+				);
+				setters.unlikePost(
+					context,
+					validatedArgs as IUnlikePostInput,
+					(e, r) => {
+						if (e) {
+							reject(e);
+						}
+						resolve(r);
+					},
+				);
+			} catch (e) {
+				reject(e);
 			}
 		}),
 });

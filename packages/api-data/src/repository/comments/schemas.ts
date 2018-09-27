@@ -42,9 +42,39 @@ export const createComment = yup
 	})
 	.required();
 
+export const removeComment = yup
+	.object()
+	.shape({
+		postPath: yup
+			.string()
+			.trim()
+			.required(),
+		commentId: yup
+			.string()
+			.trim()
+			.required(),
+	})
+	.required();
+
+export const unlikeComment = yup
+	.object()
+	.shape({
+		postPath: yup
+			.string()
+			.trim()
+			.required(),
+		commentId: yup
+			.string()
+			.trim()
+			.required(),
+	})
+	.required();
+
 export default {
 	createComment,
 	getCommentLikes,
 	getPostComments,
 	likeComment,
+	removeComment,
+	unlikeComment,
 };

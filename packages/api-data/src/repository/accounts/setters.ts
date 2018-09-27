@@ -29,40 +29,13 @@ import { getPublicKeyByUsername } from '../profiles/getters';
 import { createProfile } from '../profiles/setters';
 import * as accountHandles from './handles';
 
-export interface ICredentials {
-	username: string;
-	password: string;
-}
-
-interface IRecoverData<T> {
-	recover: {
-		question1: T;
-		question2: T;
-		reminder: string;
-		encryptedReminder?: string;
-	};
-}
-
-export interface IRecoverAccountInput {
-	username: string;
-	question1: string;
-	question2: string;
-}
-
-export interface IChangePasswordInput {
-	oldPassword: string;
-	newPassword: string;
-}
-
-export interface ICreateAccountInput
-	extends IRecoverData<string>,
-		ICredentials {
-	name: string;
-	email: string;
-	avatar: string;
-	aboutMeText: string;
-	miningEnabled: boolean;
-}
+import {
+	IChangePasswordInput,
+	ICreateAccountInput,
+	ICredentials,
+	IRecoverAccountInput,
+	IRecoverData,
+} from './types';
 
 // TODO: rollback
 export const createAccount = (
@@ -74,8 +47,8 @@ export const createAccount = (
 
 	const {
 		username,
-		name,
 		password,
+		fullName,
 		email,
 		avatar,
 		aboutMeText,
@@ -118,12 +91,12 @@ export const createAccount = (
 						createProfile(
 							context,
 							{
-								aboutMeText,
-								avatar,
-								email,
-								miningEnabled,
-								name,
 								username,
+								aboutMeText,
+								miningEnabled,
+								fullName,
+								email,
+								avatar,
 								pub: account.is.pub,
 							},
 							(err) => {

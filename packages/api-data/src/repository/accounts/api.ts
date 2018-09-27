@@ -1,12 +1,14 @@
-import { IAccountData, IContext } from '../../types';
+import { IContext } from '../../types';
 import getters from './getters';
 import schemas from './schemas';
-import setters, {
+import setters from './setters';
+import {
+	IAccountData,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
 	IRecoverAccountInput,
-} from './setters';
+} from './types';
 
 export default (context: IContext) => ({
 	changePassword: (changePasswordInput: IChangePasswordInput): Promise<null> =>

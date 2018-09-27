@@ -1,14 +1,16 @@
-import {
-	ICommentMetasCallback,
-	IContext,
-	ICreateCommentInput,
-	IGunCallback,
-	IPostMetasCallback,
-	TABLES,
-} from '../../types';
+import { IContext, IGunCallback, TABLES } from '../../types';
 import { getContextMeta } from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';
+
+import { IPostMetasCallback } from '../posts';
+
+import {
+	ICommentMetasCallback,
+	ICreateCommentInput,
+	IRemoveCommentInput,
+	IUnlikeCommentInput,
+} from './types';
 
 export const createComment = (
 	context: IContext,
@@ -73,6 +75,8 @@ export const createComment = (
 		});
 };
 
+// todo: properly fix this
+// to change - {commentId} to {postPath, commentId} instead of getting metas
 export const likeComment = (
 	context: IContext,
 	{ commentId }: { commentId: string },
@@ -92,6 +96,7 @@ export const likeComment = (
 			}
 
 			const { owner, ownerPub, timestamp } = getContextMeta(context);
+			// who ever wrote this is bananas
 			const commentPath = `${TABLES.POSTS}/${commentMeta.postPath}/${
 				TABLES.COMMENTS
 			}/${commentId}`;
@@ -115,7 +120,50 @@ export const likeComment = (
 		});
 };
 
+export const deleteComment = (
+	context: IContext,
+	{ postPath, commentId }: IRemoveCommentInput,
+	callback: IGunCallback<null>,
+) => {
+	commentHandles
+		.commentsByPostPath(context, postPath)
+		.get(commentId)
+		.put(null, (removePostCallback) => {
+			if (removePostCallback.err) {
+				return callback('failed, error => ' + removePostCallback.err);
+			}
+			commentHandles
+				.commentMetaById(context, commentId)
+				.put(null, (removeCommentMetaCallback) => {
+					if (removeCommentMetaCallback.err) {
+						return callback(
+							'failed, error => ' + removeCommentMetaCallback.err,
+						);
+					}
+					return callback(null);
+				});
+		});
+};
+
+export const unlikeComment = (
+	context: IContext,
+	{ postPath, commentId }: IUnlikeCommentInput,
+	callback: IGunCallback<null>,
+) => {
+	commentHandles
+		.likesByCommentPath(context, postPath)
+		.get(commentId)
+		.put(null, (unlikeCommentCallback) => {
+			if (unlikeCommentCallback.err) {
+				return callback('failed, error => ' + unlikeCommentCallback.err);
+			}
+			return callback(null);
+		});
+};
+
 export default {
 	createComment,
 	likeComment,
+	deleteComment,
+	unlikeComment,
 };
