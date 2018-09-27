@@ -1,5 +1,3 @@
-import './displayers/TransactionItem';
-
 import './activityCards/ActivityFriendRequestCard';
 import './activityCards/ActivityGenericCard';
 import './activityCards/ActivityRecentCommentCard';
@@ -26,8 +24,10 @@ import './displayers/RichText';
 import './displayers/SearchResults';
 import './displayers/SearchResultsItem';
 import './displayers/SearchResultsList';
+import './displayers/SendCoinsHeader';
 import './displayers/SuggestedSearches';
 import './displayers/TextGradient';
+import './displayers/TransactionItem';
 import './displayers/WallPostCard/BestComments';
 import './displayers/WallPostCard/CommentInput';
 import './displayers/WallPostCard/PostText';
