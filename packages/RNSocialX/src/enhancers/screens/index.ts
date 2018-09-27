@@ -64,10 +64,10 @@ export {
 	IWithReferralEnhancedData,
 } from './myProfile/WithReferral';
 export {
-	WithWallet,
-	IWithWalletEnhancedActions,
-	IWithWalletEnhancedData,
-} from './myProfile/WithWallet';
+	IWithSendCoinsEnhancedActions,
+	IWithSendCoinsEnhancedData,
+	WithSendCoins,
+} from './myProfile/WithSendCoins';
 export {
 	WithSettings,
 	IWithSettingsEnhancedActions,
@@ -79,6 +79,11 @@ export {
 	IWithSocialXAccountEnhancedActions,
 	IWithSocialXAccountEnhancedData,
 } from './myProfile/WithSocialXAccount';
+export {
+	WithWallet,
+	IWithWalletEnhancedActions,
+	IWithWalletEnhancedData,
+} from './myProfile/WithWallet';
 
 export {
 	WithForgotPassword,

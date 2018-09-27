@@ -1,3 +1,5 @@
+import './myProfile/SendCoinsScreen';
+
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';

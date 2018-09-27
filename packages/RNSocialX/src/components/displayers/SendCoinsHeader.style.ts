@@ -16,6 +16,7 @@ const styles: any = {
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		elevation: 3,
+		marginTop: Sizes.smartVerticalScale(20),
 	},
 	leftContainer: {
 		flexDirection: 'row',
