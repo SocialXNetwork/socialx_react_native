@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { SuggestedSearches } from '../../../../src/components/';
+import { getTextMock } from '../../../../src/mocks';
 import { ISearchResultData, SearchResultKind } from '../../../../src/types';
 
 const items: ISearchResultData[] = [
@@ -37,6 +38,6 @@ storiesOf('Components/displayers', module).add('SuggestedSearches', () => (
 		items={items}
 		onAddFriend={action('onAddFriend')}
 		onResultPress={action('onResultPress')}
-		getText={(text) => text}
+		getText={getTextMock}
 	/>
 ));

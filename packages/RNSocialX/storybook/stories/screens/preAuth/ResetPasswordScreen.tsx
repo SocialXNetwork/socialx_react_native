@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { ResetPasswordScreenView } from '../../../../src/screens/preAuth/ResetPasswordScreen.view';
 
 storiesOf('Screens/preAuth', module).add('ResetPasswordScreen', () => {
@@ -9,7 +10,7 @@ storiesOf('Screens/preAuth', module).add('ResetPasswordScreen', () => {
 		<ResetPasswordScreenView
 			onSetNewPassword={action('onSetNewPassword')}
 			onGoBack={action('onGoBack')}
-			getText={(value) => value}
+			getText={getTextMock}
 		/>
 	);
 });

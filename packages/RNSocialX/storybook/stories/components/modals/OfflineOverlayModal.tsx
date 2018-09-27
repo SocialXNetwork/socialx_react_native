@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { OfflineOverlayModal } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)
@@ -11,5 +12,5 @@ storiesOf('Components/modals', module)
 	.add('OfflineOverlayModal', () => {
 		const visible = boolean('visible', false);
 
-		return <OfflineOverlayModal visible={visible} getText={(text) => text} />;
+		return <OfflineOverlayModal visible={visible} getText={getTextMock} />;
 	});

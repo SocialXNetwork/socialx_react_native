@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { WallPostCard } from '../../../../../src/components';
+import { getTextMock } from '../../../../../src/mocks';
 import { MediaTypeImage } from '../../../../../src/types';
 import CenterView from '../../../../helpers/CenterView';
 
@@ -38,7 +39,7 @@ storiesOf('Components/displayers', module)
 		return (
 			<WallPostCard
 				contentOffensive={contentOffensive}
-				getText={(value) => value}
+				getText={getTextMock}
 				marginBottom={0}
 				id={'test_post_id'}
 				postText={postText}

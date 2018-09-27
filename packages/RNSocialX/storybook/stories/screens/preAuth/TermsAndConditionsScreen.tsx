@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 
 import { OS_TYPES } from '../../../../src/environment/consts';
 
+import { getTextMock } from '../../../../src/mocks';
 // @ts-ignore
 import TermsAndConditionsHTML from '../../../../src/screens/preAuth/terms-and-conditions.html';
 import { TermsAndConditionsScreenView } from '../../../../src/screens/preAuth/TermsAndConditionsScreen.view';
@@ -18,7 +19,7 @@ storiesOf('Screens/preAuth', module).add('TermsAndConditionsScreen', () => {
 	return (
 		<TermsAndConditionsScreenView
 			localSource={localSource}
-			getText={(text) => text}
+			getText={getTextMock}
 			onGoBack={action('onGoBack')}
 		/>
 	);

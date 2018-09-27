@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Dimensions } from 'react-native';
 
 import { DeviceOrientations } from '../../../../src/environment/consts';
+import { getTextMock } from '../../../../src/mocks';
 import { MediaViewerScreenView } from '../../../../src/screens/mainStack/MediaViewerScreen.view';
 import { MediaTypeImage } from '../../../../src/types';
 
@@ -28,7 +29,7 @@ storiesOf('Screens/mainStack', module)
 		const isInfoOverlayVisible = boolean('isInfoOverlayVisible', false);
 		return (
 			<MediaViewerScreenView
-				getText={(text) => text}
+				getText={getTextMock}
 				mediaObjects={generateMediaObjects(10)}
 				startIndex={7}
 				orientation={DeviceOrientations.Portrait}

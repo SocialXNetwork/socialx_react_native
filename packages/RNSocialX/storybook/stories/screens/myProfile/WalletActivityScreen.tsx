@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { transactions } from '../../../../src/mocks';
+import { getTextMock, transactions } from '../../../../src/mocks';
 import { WalletActivityScreenView } from '../../../../src/screens/myProfile/WalletActivityScreen.view';
 import { TrendOptions } from '../../../../src/types';
 
@@ -26,7 +26,7 @@ storiesOf('Screens/myProfile', module).add('WalletActivityScreenView', () => {
 			onRefresh={action('onRefresh')}
 			onEndReached={action('onEndReached')}
 			onGoBack={action('onGoBack')}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	);
 });

@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { PostText } from '../../../../../src/components/displayers/WallPostCard';
+import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -13,7 +14,7 @@ storiesOf('Components/displayers', module)
 		const fullTextVisible = boolean('fullTextVisible', false);
 		return (
 			<PostText
-				getText={(text) => text}
+				getText={getTextMock}
 				text={
 					'Here Ionut testing wall post card component in a Storybook' +
 					'\nMonday morning with 18 deg.' +

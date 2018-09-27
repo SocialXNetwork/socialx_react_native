@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { ViewAllComments } from '../../../../../src/components/displayers/WallPostCard';
+import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -15,7 +16,7 @@ storiesOf('Components/displayers', module)
 			<ViewAllComments
 				numberOfComments={numberOfComments}
 				onCommentPress={action('onCommentPress')}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		);
 	});

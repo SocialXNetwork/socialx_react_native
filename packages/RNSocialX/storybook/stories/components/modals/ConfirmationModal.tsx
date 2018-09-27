@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { ConfirmationModal } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)
@@ -21,7 +22,7 @@ storiesOf('Components/modals', module)
 				cancelButton={'No'}
 				confirmHandler={action('Confirm!')}
 				declineHandler={action('Cancel!')}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		);
 	});

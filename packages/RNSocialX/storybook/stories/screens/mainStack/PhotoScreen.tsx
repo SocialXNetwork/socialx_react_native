@@ -3,6 +3,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { PhotoScreenView } from '../../../../src/screens/mainStack/PhotoScreen.view';
 
 storiesOf('Screens/mainStack', module)
@@ -52,7 +53,7 @@ storiesOf('Screens/mainStack', module)
 				locationEnabled={locationEnabled}
 				tagFriends={tagFriends}
 				location={location}
-				getText={(value) => value}
+				getText={getTextMock}
 				onLocationToggle={action('onLocationToggle')}
 				onLocationTextUpdate={action('onLocationTextUpdate')}
 				onTagFriendsToggle={action('onTagFriendsToggle')}

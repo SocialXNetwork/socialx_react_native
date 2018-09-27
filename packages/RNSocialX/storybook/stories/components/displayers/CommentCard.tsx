@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { CommentCard } from '../../../../src/components/displayers/CommentCard';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -66,7 +67,7 @@ storiesOf('Components/displayers', module)
 					right: 0,
 				}}
 				isReply={isReply}
-				getText={(value) => value}
+				getText={getTextMock}
 			/>
 		);
 	});

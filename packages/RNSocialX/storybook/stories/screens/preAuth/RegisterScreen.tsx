@@ -3,6 +3,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { RegisterScreenView } from '../../../../src/screens/preAuth/RegisterScreen.view';
 
 storiesOf('Screens/preAuth', module)
@@ -23,7 +24,7 @@ storiesOf('Screens/preAuth', module)
 				onAlreadyHaveCode={action('onAlreadyHaveCode')}
 				onNavigateToTermsAndConditions={action('onNavigateToTermsAndCond')}
 				onGoBack={action('onGoBack')}
-				getText={(value) => value}
+				getText={getTextMock}
 			/>
 		);
 	});

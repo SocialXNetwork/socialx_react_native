@@ -2,6 +2,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { LikeAnimatingButton } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 class LikeAnimatingButtonStory extends React.Component {
@@ -21,7 +22,7 @@ class LikeAnimatingButtonStory extends React.Component {
 					})
 				}
 				likedByMe={this.state.likedByMe}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		);
 	}

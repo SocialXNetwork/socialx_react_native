@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { RecentLikes } from '../../../../../src/components/displayers/WallPostCard';
+import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -16,7 +17,7 @@ storiesOf('Components/displayers', module)
 				},
 			]}
 			onUserPress={action('onUserPress')}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	))
 	.add('RecentLikes 2 likes', () => (
@@ -32,7 +33,7 @@ storiesOf('Components/displayers', module)
 				},
 			]}
 			onUserPress={action('onUserPress')}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	))
 	.add('RecentLikes 3+ likes', () => (
@@ -52,6 +53,6 @@ storiesOf('Components/displayers', module)
 				},
 			]}
 			onUserPress={action('onUserPress')}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	));
