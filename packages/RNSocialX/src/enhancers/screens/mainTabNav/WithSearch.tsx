@@ -12,6 +12,7 @@ import {
 	ITranslatedProps,
 	SearchTabs,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithSearchEnhancedProps = {
 	data: {
@@ -63,6 +64,15 @@ export class WithSearch extends React.Component<
 	IWithSearchState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
