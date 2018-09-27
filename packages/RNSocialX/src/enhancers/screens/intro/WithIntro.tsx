@@ -43,10 +43,10 @@ export class WithIntro extends React.Component<
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{({ getText }) =>
+				{(i18nProps) =>
 					children({
 						data: mock.data,
-						actions: { ...mock.actions, getText },
+						actions: { ...mock.actions, getText: i18nProps.getText },
 					})
 				}
 			</WithI18n>
