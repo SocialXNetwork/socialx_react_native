@@ -7,6 +7,7 @@
 import * as React from 'react';
 import { transactions } from '../../../mocks';
 import { ITranslatedProps, IWallet, TrendOptions } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithWalletEnhancedProps = {
 	data: {
@@ -54,6 +55,15 @@ export class WithWallet extends React.Component<
 	IWithWalletState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

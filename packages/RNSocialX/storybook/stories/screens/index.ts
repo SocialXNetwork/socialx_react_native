@@ -1,5 +1,3 @@
-import './myProfile/WalletActivityScreen';
-
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';
@@ -18,6 +16,7 @@ import './mainTabNav/UserFeedScreen';
 import './myProfile/ReferralScreen';
 import './myProfile/SettingsScreen';
 import './myProfile/SocialXAccountScreen';
+import './myProfile/WalletActivityScreen';
 
 import './preAuth/ForgotPasswordScreen';
 import './preAuth/LaunchScreen';

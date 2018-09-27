@@ -1,9 +1,12 @@
 /**
  * TODO list:
  * 1. Data props: iOSContent, iOSOptions, androidContent, androidOptions, socx, referrals, code, url
+ * 2. Action props: getText
  */
 
 import * as React from 'react';
+import { ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithReferralEnhancedProps = {
 	data: {
@@ -26,7 +29,7 @@ const mock: IWithReferralEnhancedProps = {
 		url: 'http://www.lorem.ipsum.com',
 		code: '5H91BGD34',
 	},
-	actions: {},
+	actions: { getText: (value: string, ...args: any[]) => value },
 };
 
 export interface IWithReferralEnhancedData {
@@ -50,7 +53,7 @@ export interface IWithReferralEnhancedData {
 	url: string;
 }
 
-export interface IWithReferralEnhancedActions {}
+export interface IWithReferralEnhancedActions extends ITranslatedProps {}
 
 interface IWithReferralEnhancedProps {
 	data: IWithReferralEnhancedData;
@@ -68,6 +71,15 @@ export class WithReferral extends React.Component<
 	IWithReferralState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

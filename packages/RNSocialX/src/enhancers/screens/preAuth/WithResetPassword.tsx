@@ -5,6 +5,7 @@
 
 import * as React from 'react';
 import { ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithResetPasswordEnhancedProps = {
 	data: {},
@@ -42,6 +43,15 @@ export class WithResetPassword extends React.Component<
 	IWithResetPasswordState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
