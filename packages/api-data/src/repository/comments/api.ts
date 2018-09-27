@@ -3,7 +3,7 @@ import getters from './getters';
 import schemas from './schemas';
 import setters from './setters';
 
-import { apiResolveExt } from '../../utils/helpers';
+import { resolveCallback } from '../../utils/helpers';
 import { IRemoveCommentInput, IUnlikeCommentInput } from './types';
 
 export default (context: IContext) => ({
@@ -16,7 +16,7 @@ export default (context: IContext) => ({
 	}): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.createComment.validate(
+				const validatedInput = await schemas.createComment.validate(
 					{ text, postId },
 					{
 						stripUnknown: true,
@@ -24,8 +24,8 @@ export default (context: IContext) => ({
 				);
 				setters.createComment(
 					context,
-					validatedArgs as { text: string; postId: string },
-					apiResolveExt(resolve, reject),
+					validatedInput as { text: string; postId: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -38,7 +38,7 @@ export default (context: IContext) => ({
 	}): Promise<ILikesMetasCallback[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getCommentLikes.validate(
+				const validatedInput = await schemas.getCommentLikes.validate(
 					{ commentId },
 					{
 						stripUnknown: true,
@@ -46,8 +46,8 @@ export default (context: IContext) => ({
 				);
 				getters.getCommentLikes(
 					context,
-					validatedArgs as { commentId: string },
-					apiResolveExt(resolve, reject),
+					validatedInput as { commentId: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -60,7 +60,7 @@ export default (context: IContext) => ({
 	}): Promise<IMetasCallback[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getPostComments.validate(
+				const validatedInput = await schemas.getPostComments.validate(
 					{ postId },
 					{
 						stripUnknown: true,
@@ -68,8 +68,8 @@ export default (context: IContext) => ({
 				);
 				getters.getPostComments(
 					context,
-					validatedArgs as { postId: string },
-					apiResolveExt(resolve, reject),
+					validatedInput as { postId: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -78,7 +78,7 @@ export default (context: IContext) => ({
 	likeComment: ({ commentId }: { commentId: string }): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.likeComment.validate(
+				const validatedInput = await schemas.likeComment.validate(
 					{ commentId },
 					{
 						stripUnknown: true,
@@ -86,8 +86,8 @@ export default (context: IContext) => ({
 				);
 				setters.likeComment(
 					context,
-					validatedArgs as { commentId: string },
-					apiResolveExt(resolve, reject),
+					validatedInput as { commentId: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -96,14 +96,14 @@ export default (context: IContext) => ({
 	removeComment: (removeCommentInput: IRemoveCommentInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.removeComment.validate(
+				const validatedInput = await schemas.removeComment.validate(
 					removeCommentInput,
 					{ stripUnknown: true },
 				);
-				setters.deleteComment(
+				setters.removeComment(
 					context,
-					validatedArgs as IRemoveCommentInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as IRemoveCommentInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
@@ -112,14 +112,14 @@ export default (context: IContext) => ({
 	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.unlikeComment.validate(
+				const validatedInput = await schemas.unlikeComment.validate(
 					unlikeCommentInput,
 					{ stripUnknown: true },
 				);
 				setters.unlikeComment(
 					context,
 					unlikeCommentInput,
-					apiResolveExt(resolve, reject),
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);

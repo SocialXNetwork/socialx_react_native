@@ -10,11 +10,13 @@ import {
 	IRecoverAccountInput,
 } from './types';
 
+import { resolveCallback } from '../../utils/helpers';
+
 export default (context: IContext) => ({
 	changePassword: (changePasswordInput: IChangePasswordInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.changePassword.validate(
+				const validatedInput = await schemas.changePassword.validate(
 					changePasswordInput,
 					{
 						stripUnknown: true,
@@ -22,13 +24,8 @@ export default (context: IContext) => ({
 				);
 				setters.changePassword(
 					context,
-					validatedArgs as IChangePasswordInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as IChangePasswordInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -37,7 +34,7 @@ export default (context: IContext) => ({
 	createAccount: (createAccountInput: ICreateAccountInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.createAccountInput.validate(
+				const validatedInput = await schemas.createAccountInput.validate(
 					createAccountInput,
 					{
 						stripUnknown: true,
@@ -45,13 +42,8 @@ export default (context: IContext) => ({
 				);
 				setters.createAccount(
 					context,
-					validatedArgs as ICreateAccountInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as ICreateAccountInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -59,37 +51,22 @@ export default (context: IContext) => ({
 		}),
 	getIsAccountLoggedIn: (): Promise<{ loggedIn: boolean }> =>
 		new Promise((resolve, reject) => {
-			getters.getIsAccountLoggedIn(context, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+			getters.getIsAccountLoggedIn(context, resolveCallback(resolve, reject));
 		}),
 	login: (credentials: ICredentials): Promise<null> =>
 		new Promise((resolve, reject) => {
-			setters.login(context, credentials, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+			setters.login(context, credentials, resolveCallback(resolve, reject));
 		}),
 	logout: (): Promise<null> =>
 		new Promise((resolve, reject) => {
-			setters.logout(context, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+			setters.logout(context, resolveCallback(resolve, reject));
 		}),
 	recoverAccount: (
 		recoverAccountInput: IRecoverAccountInput,
 	): Promise<{ hint: string }> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.changePassword.validate(
+				const validatedInput = await schemas.changePassword.validate(
 					recoverAccountInput,
 					{
 						stripUnknown: true,
@@ -97,13 +74,8 @@ export default (context: IContext) => ({
 				);
 				setters.recoverAccount(
 					context,
-					validatedArgs as IRecoverAccountInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as IRecoverAccountInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -111,21 +83,11 @@ export default (context: IContext) => ({
 		}),
 	trustAccount: (): Promise<null> =>
 		new Promise((resolve, reject) => {
-			setters.logout(context, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+			setters.logout(context, resolveCallback(resolve, reject));
 		}),
 	getCurrentAccount: (): Promise<IAccountData> =>
 		new Promise((resolve, reject) => {
-			getters.getCurrentAccount(context, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+			getters.getCurrentAccount(context, resolveCallback(resolve, reject));
 		}),
 	getAccountByPub: ({
 		publicKey,
@@ -133,11 +95,10 @@ export default (context: IContext) => ({
 		publicKey: string;
 	}): Promise<IAccountData> =>
 		new Promise((resolve, reject) => {
-			getters.getAccountByPub(context, { publicKey }, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+			getters.getAccountByPub(
+				context,
+				{ publicKey },
+				resolveCallback(resolve, reject),
+			);
 		}),
 });

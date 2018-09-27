@@ -83,9 +83,9 @@ export const createAccount = (
 						question1: question1.length,
 						question2: question2.length,
 					},
-					(flags) => {
-						if (flags.err) {
-							return callback('failed, error => ' + flags.err);
+					(recoverCallback) => {
+						if (recoverCallback.err) {
+							return callback('failed, error => ' + recoverCallback.err);
 						}
 
 						createProfile(

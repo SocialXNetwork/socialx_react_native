@@ -7,7 +7,7 @@ import {
 	INotificationsReturnData,
 } from './types';
 
-export const currentNotifications = (
+export const getCurrentNotifications = (
 	context: IContext,
 	callback: IGunCallback<INotificationsReturnData>,
 ) => {
@@ -21,7 +21,7 @@ export const currentNotifications = (
 		});
 };
 
-export const notificationById = (
+export const getNotificationById = (
 	context: IContext,
 	notificationByIdInput: INotificationByIdInput,
 	callback: IGunCallback<INotificationData>,
@@ -37,6 +37,6 @@ export const notificationById = (
 };
 
 export default {
-	currentNotifications,
-	notificationById,
+	getCurrentNotifications,
+	getNotificationById,
 };

@@ -10,8 +10,8 @@ import * as postHandles from './handles';
 
 import {
 	ICreatePostInput,
-	IDeletePostInput,
 	IPostMetasCallback,
+	IRemovePostInput,
 	IUnlikePostInput,
 } from './types';
 
@@ -121,9 +121,9 @@ export const likePost = (
 		});
 };
 
-export const deletePost = (
+export const removePost = (
 	context: IContext,
-	{ postMetaId, postPath }: IDeletePostInput,
+	{ postMetaId, postPath }: IRemovePostInput,
 	callback: IGunCallback<null>,
 ) => {
 	postHandles
@@ -134,9 +134,9 @@ export const deletePost = (
 			}
 			postHandles
 				.postByPath(context, postPath)
-				.put(null, (deletePostCallback) => {
-					if (deletePostCallback.err) {
-						return callback('failed, error => ' + deletePostCallback.err);
+				.put(null, (removePostCallback) => {
+					if (removePostCallback.err) {
+						return callback('failed, error => ' + removePostCallback.err);
 					}
 					return callback(null);
 				});
@@ -158,4 +158,4 @@ export const unlikePost = (
 		});
 };
 
-export default { createPost, likePost, deletePost, unlikePost };
+export default { createPost, likePost, removePost, unlikePost };

@@ -9,7 +9,7 @@ import { ManagedKeyboard } from '../src/components/managedTransitions';
 
 // import stories (components or screens)
 configure(() => {
-  require('./stories/screens');
+  require('./stories');
 }, module);
 
 // This assumes that storybook is running on the same host as your RN packager,

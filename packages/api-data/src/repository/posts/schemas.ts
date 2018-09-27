@@ -100,7 +100,7 @@ export const getPostLikes = yup
 	})
 	.required();
 
-export const deletePost = yup
+export const removePost = yup
 	.object()
 	.shape({
 		postPath: longTextType.required(),
@@ -122,6 +122,6 @@ export default {
 	getPublicPostsByDate,
 	likePost,
 	postData,
-	deletePost,
+	removePost,
 	unlikePost,
 };
