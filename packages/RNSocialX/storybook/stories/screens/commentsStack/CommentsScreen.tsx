@@ -5,6 +5,7 @@ import * as React from 'react';
 
 import { CommentsScreenView } from '../../../../src/screens/commentsStack/CommentsScreen.view';
 import { CommentsSortingOptions } from '../../../../src/types';
+import { mockGetText } from '../../../helpers/i18n';
 
 storiesOf('Screens/commentsStack', module)
 	.addDecorator(withKnobs)
@@ -70,7 +71,7 @@ storiesOf('Screens/commentsStack', module)
 		return (
 			<CommentsScreenView
 				isLoading={isLoading}
-				getText={(value) => value}
+				getText={mockGetText}
 				marginBottom={marginBottom}
 				comments={[
 					{
