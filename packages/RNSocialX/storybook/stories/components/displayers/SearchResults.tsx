@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { SearchResults } from '../../../../src/components/';
+import { getTextMock } from '../../../../src/mocks';
 import { ISearchResultData, SearchResultKind } from '../../../../src/types';
 
 const items: ISearchResultData[] = [
@@ -47,7 +48,7 @@ storiesOf('Components/displayers', module)
 				onAddFriend={action('onAddFriend')}
 				onResultPress={action('onResultPress')}
 				onLoadMore={action('onLoadMore')}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		);
 	});

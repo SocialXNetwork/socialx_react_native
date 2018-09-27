@@ -12,7 +12,7 @@ import { Animated } from 'react-native';
 import { DataProvider } from 'recyclerlistview';
 
 import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
-import { currentUser, posts } from '../../../../src/mocks';
+import { currentUser, getTextMock, posts } from '../../../../src/mocks';
 import { UserProfileScreenView } from '../../../../src/screens/mainStack/UserProfileScreen.view';
 import { SearchResultKind } from '../../../../src/types';
 
@@ -59,7 +59,7 @@ storiesOf('Screens/mainStack', module)
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
 				numberOfViews={numberOfViews}
-				getText={(value) => value}
+				getText={getTextMock}
 				onAddFriend={action('onAddFriend')}
 				onShowFriendshipOptions={action('onShowFriendshipOptions')}
 				relationship={relationship}

@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { ActivityGenericCard } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 const image = 'https://www.w3schools.com/w3css/img_lights.jpg';
@@ -23,6 +24,6 @@ storiesOf('Components/activityCards', module)
 			onCheckNotification={action('onCheckNotification')}
 			showConfirm={action('showConfirm')}
 			hideConfirm={action('hideConfirm')}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	));

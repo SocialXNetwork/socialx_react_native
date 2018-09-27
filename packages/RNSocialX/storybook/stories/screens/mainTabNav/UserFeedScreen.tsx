@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { Animated } from 'react-native';
 
-import { currentUser, posts } from '../../../../src/mocks';
+import { currentUser, getTextMock, posts } from '../../../../src/mocks';
 import { UserFeedScreenView } from '../../../../src/screens/mainTabNav/UserFeedScreen/UserFeedScreen.view';
 import CenterView from '../../../helpers/CenterView';
 
@@ -47,7 +47,7 @@ storiesOf('Screens/mainTabNav', module)
 				scrollRef={React.createRef()}
 				scrollY={new Animated.Value(0)}
 				isLoading={isLoading}
-				getText={(value) => value}
+				getText={getTextMock}
 				onBlockUser={action('onBlockUser')}
 				onReportProblem={action('onReportProblem')}
 			/>

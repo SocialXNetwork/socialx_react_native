@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import { DataProvider } from 'recyclerlistview';
 
 import { ProfilePhotoGrid } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 class GithubUsersPhotoGrid extends React.Component<
@@ -31,7 +32,7 @@ class GithubUsersPhotoGrid extends React.Component<
 						height: 1,
 					}}
 					disabled={false}
-					getText={(value) => value}
+					getText={getTextMock}
 				/>
 			</View>
 		);

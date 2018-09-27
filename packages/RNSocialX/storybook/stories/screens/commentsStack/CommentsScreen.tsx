@@ -3,6 +3,7 @@ import { boolean, date, number, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { CommentsScreenView } from '../../../../src/screens/commentsStack/CommentsScreen.view';
 import { CommentsSortingOptions } from '../../../../src/types';
 
@@ -70,7 +71,7 @@ storiesOf('Screens/commentsStack', module)
 		return (
 			<CommentsScreenView
 				isLoading={isLoading}
-				getText={(value) => value}
+				getText={getTextMock}
 				marginBottom={marginBottom}
 				comments={[
 					{

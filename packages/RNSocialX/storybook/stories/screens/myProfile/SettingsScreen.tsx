@@ -3,6 +3,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { SettingsScreenView } from '../../../../src/screens/myProfile/SettingsScreen.view';
 
 storiesOf('Screens/myProfile', module)
@@ -24,7 +25,7 @@ storiesOf('Screens/myProfile', module)
 				onSaveChanges={action('onSaveChanges')}
 				onLogout={action('onLogout')}
 				onGoBack={action('onGoBack')}
-				getText={(value) => value}
+				getText={getTextMock}
 				aboutMeText={aboutMeText}
 				firstName={firstName}
 				lastName={lastName}

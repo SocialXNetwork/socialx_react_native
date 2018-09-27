@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { AvatarPicker } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 const image =
@@ -15,6 +16,6 @@ storiesOf('Components/avatar', module)
 			avatarImage={image}
 			afterImagePick={action('afterImagePick')}
 			avatarSize={200}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	));

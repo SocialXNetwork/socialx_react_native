@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { TagFriendsModal } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 const MOCK_SEARCH_RESULTS = [
@@ -67,7 +68,7 @@ storiesOf('Components/modals', module)
 				onDismiss={action('onDismiss')}
 				onModalHide={action('onModalHide')}
 				marginBottom={125}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		);
 	});

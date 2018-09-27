@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { DataProvider } from 'recyclerlistview';
 
+import { getTextMock } from '../../../../src/mocks';
 import { MyProfileScreenView } from '../../../../src/screens/mainTabNav/MyProfileScreen.view';
 
 class MyProfileScreenViewStory extends React.Component {
@@ -40,7 +41,7 @@ class MyProfileScreenViewStory extends React.Component {
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
 				numberOfViews={numberOfViews}
-				getText={(value) => value}
+				getText={getTextMock}
 				onViewProfilePhoto={action('onViewProfilePhoto')}
 				aboutMeText={aboutMeText}
 				refreshing={refreshing}
