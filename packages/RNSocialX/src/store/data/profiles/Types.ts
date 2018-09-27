@@ -8,7 +8,7 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
-export interface IUsernameArgument {
+export interface IUsernameInput {
 	username: string;
 }
 
@@ -40,7 +40,7 @@ export interface ICreateProfileAction extends Action {
 
 export interface IGetProfileByUsernameAction extends Action {
 	type: ActionTypes.GET_PROFILE_BY_USERNAME;
-	payload: IUsernameArgument;
+	payload: IUsernameInput;
 }
 
 export interface IGetCurrentProfileAction extends Action {
@@ -49,7 +49,7 @@ export interface IGetCurrentProfileAction extends Action {
 
 export interface IGetPublicKeyByUsernameAction extends Action {
 	type: ActionTypes.GET_PUBLIC_KEY_BY_USERNAME;
-	payload: IUsernameArgument;
+	payload: IUsernameInput;
 }
 
 export interface IUpdateProfileAction extends Action {

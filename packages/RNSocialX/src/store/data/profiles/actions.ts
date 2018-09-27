@@ -17,7 +17,7 @@ import {
 	IGetPublicKeyByUsernameAction,
 	IRemoveFriendAction,
 	IUpdateProfileAction,
-	IUsernameArgument,
+	IUsernameInput,
 } from './Types';
 
 const createProfileAction: ActionCreator<ICreateProfileAction> = (
@@ -38,14 +38,14 @@ export const createProfile = (
 };
 
 const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
-	getProfileByUsernameInput: IUsernameArgument,
+	getProfileByUsernameInput: IUsernameInput,
 ) => ({
 	type: ActionTypes.GET_PROFILE_BY_USERNAME,
 	payload: getProfileByUsernameInput,
 });
 
 export const getProfileByUsername = (
-	getProfileByUsernameInput: IUsernameArgument,
+	getProfileByUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
@@ -74,13 +74,13 @@ export const getCurrentProfile = (): IThunk => async (
 
 const getPublicKeyByUsernameAction: ActionCreator<
 	IGetPublicKeyByUsernameAction
-> = (getProfileUsernameInput: IUsernameArgument) => ({
+> = (getProfileUsernameInput: IUsernameInput) => ({
 	type: ActionTypes.GET_PUBLIC_KEY_BY_USERNAME,
 	payload: getProfileUsernameInput,
 });
 
 export const getPublicKeyByUsername = (
-	getProfileUsernameInput: IUsernameArgument,
+	getProfileUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(getPublicKeyByUsernameAction(getProfileUsernameInput));

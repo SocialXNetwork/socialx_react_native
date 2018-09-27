@@ -1,6 +1,6 @@
 import { IContext, IGunCallback } from '../../types';
 
-import { IAccountByPubInput, IAccountData } from './types';
+import { IAccountData, IGetAccountByPubInput } from './types';
 
 export const getIsAccountLoggedIn = (
 	context: IContext,
@@ -29,7 +29,7 @@ export const getCurrentAccount = (
 
 export const getAccountByPub = (
 	context: IContext,
-	{ publicKey }: IAccountByPubInput,
+	{ publicKey }: IGetAccountByPubInput,
 	callback: IGunCallback<IAccountData>,
 ) => {
 	const { gun } = context;

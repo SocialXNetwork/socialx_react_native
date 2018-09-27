@@ -142,6 +142,7 @@ export const deletePost = (
 				});
 		});
 };
+
 export const unlikePost = (
 	context: IContext,
 	{ postPath }: IUnlikePostInput,

@@ -20,7 +20,7 @@ export interface IAccountData {
 	};
 }
 
-export interface IAccountByPubInput {
+export interface IGetAccountByPubInput {
 	publicKey: string;
 }
 
