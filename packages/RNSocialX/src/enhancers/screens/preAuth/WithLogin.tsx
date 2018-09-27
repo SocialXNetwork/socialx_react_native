@@ -1,13 +1,14 @@
 /**
  * TODO list:
  * 1. Props data: none :)
- * 2. Props actions: doLogin, getText
+ * 2. Props actions: doLogin
  * 3. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
  */
 
 import * as React from 'react';
 
 import { ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithLoginEnhancedProps = {
 	data: {},
@@ -15,6 +16,7 @@ const mock: IWithLoginEnhancedProps = {
 		doLogin: (userName: string, password: string) => {
 			/**/
 		},
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -42,6 +44,15 @@ export class WithLogin extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

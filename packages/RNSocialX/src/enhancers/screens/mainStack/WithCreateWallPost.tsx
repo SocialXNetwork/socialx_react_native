@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Props data: currentUserAvatarURL, marginBottom (can be provided via KeyboardContext in consts.ts)
- * 2. Props actions: createPost, getText
+ * 2. Props actions: createPost
  */
 
 import * as React from 'react';
@@ -11,6 +11,7 @@ import {
 	ITranslatedProps,
 	IWallPostPhotoOptimized,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithCreateWallPostEnhancedProps = {
 	data: {
@@ -21,6 +22,7 @@ const mock: IWithCreateWallPostEnhancedProps = {
 		createPost: (wallPostData: IWallPostData) => {
 			/**/
 		},
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -55,6 +57,15 @@ export class WithCreateWallPost extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

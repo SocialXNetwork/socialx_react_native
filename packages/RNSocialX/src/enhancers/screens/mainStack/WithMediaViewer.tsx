@@ -1,16 +1,12 @@
-/**
- * TODO list:
- * 1. Props data: none :)
- * 2. Props actions: getText
- */
-
 import * as React from 'react';
 
 import { ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithMediaViewerEnhancedProps = {
 	data: {},
 	actions: {
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -36,6 +32,15 @@ export class WithMediaViewer extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
