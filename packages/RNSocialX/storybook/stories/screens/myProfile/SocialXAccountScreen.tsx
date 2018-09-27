@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { CoinSymbol } from '../../../../src/environment/consts';
+import { getTextMock } from '../../../../src/mocks';
 import { SocialXAccountScreenView } from '../../../../src/screens/myProfile/SocialXAccountScreen.view';
 
 storiesOf('Screens/myProfile', module).add('SocialXAccountScreen', () => {
@@ -69,7 +70,7 @@ storiesOf('Screens/myProfile', module).add('SocialXAccountScreen', () => {
 			onSend={action('Send')}
 			onReceive={action('Receive')}
 			onGoBack={action('onGoBack')}
-			getText={(value) => value}
+			getText={getTextMock}
 		/>
 	);
 });

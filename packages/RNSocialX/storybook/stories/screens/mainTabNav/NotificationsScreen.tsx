@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { NOTIFICATION_TYPES } from '../../../../src/environment/consts';
+import { getTextMock } from '../../../../src/mocks';
 import { NotificationsScreenView } from '../../../../src/screens/mainTabNav/NotificationsScreen.view';
 
 const NOTIFICATION_CARDS = [
@@ -97,7 +98,7 @@ storiesOf('Screens/mainTabNav', module)
 		return (
 			<NotificationsScreenView
 				isLoading={isLoading}
-				getText={(text) => text}
+				getText={getTextMock}
 				notifications={NOTIFICATION_CARDS}
 				refreshing={refreshing}
 				onRefresh={action('onRefresh')}

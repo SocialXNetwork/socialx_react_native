@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { WallPostActions } from '../../../../../src/components/displayers/WallPostCard/';
+import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -16,6 +17,6 @@ storiesOf('Components/displayers', module)
 			onSuperLikePress={action('onSuperLikePress')}
 			onCommentPress={action('onCommentPress')}
 			onWalletCoinsButtonPress={action('onWalletCoinsButtonPress')}
-			getText={(text) => text}
+			getText={getTextMock}
 		/>
 	));

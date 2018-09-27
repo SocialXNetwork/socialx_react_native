@@ -7,6 +7,7 @@ import { View } from 'react-native';
 
 import { ProfileTopContainer } from '../../../../src/components';
 import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
+import { getTextMock } from '../../../../src/mocks';
 import { SearchResultKind } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
@@ -35,7 +36,7 @@ storiesOf('Components/displayers', module)
 				onIconPress={action('onRequestConfirmed')}
 				onShowFriendshipOptions={action('onRequestConfirmed')}
 				onViewProfilePhoto={action('onRequestConfirmed')}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		</View>
 	));

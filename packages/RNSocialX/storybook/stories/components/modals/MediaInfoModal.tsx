@@ -4,6 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { MediaInfoModal } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import { MediaTypeImage } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
@@ -24,7 +25,7 @@ storiesOf('Components/modals', module)
 					'https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=350'
 				}
 				closeHandler={action('Close!')}
-				getText={(text) => text}
+				getText={getTextMock}
 			/>
 		);
 	});

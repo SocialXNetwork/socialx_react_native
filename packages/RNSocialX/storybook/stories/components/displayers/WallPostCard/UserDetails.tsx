@@ -5,6 +5,7 @@ import moment from 'moment';
 import * as React from 'react';
 
 import { UserDetails } from '../../../../../src/components/displayers/WallPostCard';
+import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -23,7 +24,7 @@ storiesOf('Components/displayers', module)
 					name: 'Michael Foucault',
 					avatarURL: 'https://avatars2.githubusercontent.com/u/2531',
 				}}
-				getText={(text) => text}
+				getText={getTextMock}
 				timeStampDate={timeStampDate}
 				timeStampHour={timeStampHour}
 				hideAdvancedMenu={hideAdvancedMenu}

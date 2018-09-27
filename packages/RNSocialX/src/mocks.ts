@@ -502,3 +502,7 @@ export const transactions: ITransactionData[] = [
 		date: new Date(2018, 11, 12),
 	},
 ];
+
+export const getTextMock = (text: string) => {
+	return text;
+};
