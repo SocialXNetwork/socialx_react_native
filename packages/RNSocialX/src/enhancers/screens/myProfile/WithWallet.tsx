@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Data props: wallet
- * 2. Action props: loadMoreTransactions, refreshTransactions, getText
+ * 2. Action props: loadMoreTransactions, refreshTransactions
  */
 
 import * as React from 'react';

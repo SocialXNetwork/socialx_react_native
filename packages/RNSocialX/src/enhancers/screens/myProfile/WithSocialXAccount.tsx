@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Props data: stats
- * 2. Props actions: getText
+ * 2. Props actions:
  */
 
 import * as React from 'react';
