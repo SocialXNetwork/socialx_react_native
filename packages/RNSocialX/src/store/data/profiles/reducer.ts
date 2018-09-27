@@ -20,6 +20,22 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
+		case ActionTypes.UPDATE_PROFILE: {
+			return { ...state };
+		}
+
+		case ActionTypes.ADD_FRIEND: {
+			return { ...state };
+		}
+
+		case ActionTypes.REMOVE_FRIEND: {
+			return { ...state };
+		}
+
+		case ActionTypes.ACCEPT_FRIEND: {
+			return { ...state };
+		}
+
 		default: {
 			assertNever(action);
 			return state;
