@@ -14,13 +14,13 @@ import {
 	IUpdateProfileInput,
 } from './types';
 
-import { apiResolveExt } from '../../utils/helpers';
+import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
 	createProfile: (createProfileInput: ICreateProfileInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.createProfileInput.validate(
+				const validatedInput = await schemas.createProfileInput.validate(
 					createProfileInput,
 					{
 						stripUnknown: true,
@@ -28,8 +28,8 @@ export default (context: IContext) => ({
 				);
 				setters.createProfile(
 					context,
-					validatedArgs as ICreateProfileInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as ICreateProfileInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -37,7 +37,7 @@ export default (context: IContext) => ({
 		}),
 	getCurrentProfile: (): Promise<IProfile> =>
 		new Promise(async (resolve, reject) => {
-			getters.getCurrentProfile(context, apiResolveExt(resolve, reject));
+			getters.getCurrentProfile(context, resolveCallback(resolve, reject));
 		}),
 	getProfileByUsername: ({
 		username,
@@ -46,7 +46,7 @@ export default (context: IContext) => ({
 	}): Promise<IProfile> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.getProfileByUsername.validate(
+				const validatedInput = await schemas.getProfileByUsername.validate(
 					{ username },
 					{
 						stripUnknown: true,
@@ -54,8 +54,8 @@ export default (context: IContext) => ({
 				);
 				getters.getProfileByUsername(
 					context,
-					validatedArgs as { username: string },
-					apiResolveExt(resolve, reject),
+					validatedInput as { username: string },
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -64,7 +64,7 @@ export default (context: IContext) => ({
 	getPublicKeyByUsername: ({ username }: IGetPublicKeyInput): Promise<string> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.publicKeyInput.validate(
+				const validatedInput = await schemas.publicKeyInput.validate(
 					{ username },
 					{
 						stripUnknown: true,
@@ -72,8 +72,8 @@ export default (context: IContext) => ({
 				);
 				getters.getPublicKeyByUsername(
 					context,
-					validatedArgs as IGetPublicKeyInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as IGetPublicKeyInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
@@ -82,14 +82,14 @@ export default (context: IContext) => ({
 	updateProfile: (updateProfileInput: IUpdateProfileInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.updateProfile.validate(
+				const validatedInput = await schemas.updateProfile.validate(
 					updateProfileInput,
 					{ stripUnknown: true },
 				);
 				setters.updateProfile(
 					context,
-					validatedArgs as IUpdateProfileInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as IUpdateProfileInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
@@ -98,13 +98,16 @@ export default (context: IContext) => ({
 	addFriend: (addFriendInput: IAddFriendInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.addFriend.validate(addFriendInput, {
-					stripUnknown: true,
-				});
+				const validatedInput = await schemas.addFriend.validate(
+					addFriendInput,
+					{
+						stripUnknown: true,
+					},
+				);
 				setters.addFriend(
 					context,
-					validatedArgs as IAddFriendInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as IAddFriendInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
@@ -113,14 +116,14 @@ export default (context: IContext) => ({
 	removeFriend: (removeFriendInput: IRemoveFriendInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.removeFriend.validate(
+				const validatedInput = await schemas.removeFriend.validate(
 					removeFriendInput,
 					{ stripUnknown: true },
 				);
 				setters.removeFriend(
 					context,
-					validatedArgs as IRemoveFriendInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as IRemoveFriendInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
@@ -129,21 +132,24 @@ export default (context: IContext) => ({
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArgs = await schemas.acceptFriend.validate(
+				const validatedInput = await schemas.acceptFriend.validate(
 					acceptFriendInput,
 					{ stripUnknown: true },
 				);
 				setters.acceptFriend(
 					context,
-					validatedArgs as IAcceptFriendInput,
-					apiResolveExt(resolve, reject),
+					validatedInput as IAcceptFriendInput,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
 			}
 		}),
-	currentProfileFriends: (): Promise<IFriendsReturnData> =>
+	getCurrentProfileFriends: (): Promise<IFriendsReturnData> =>
 		new Promise((resolve, reject) => {
-			getters.getCurrentFriends(context, apiResolveExt(resolve, reject));
+			getters.getCurrentProfileFriends(
+				context,
+				resolveCallback(resolve, reject),
+			);
 		}),
 });

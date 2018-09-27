@@ -15,7 +15,7 @@ import {
 	IUsernameInput,
 } from './Types';
 
-// todo: add the new api actions here
+// todo: @jake add the new api actions here
 // removePost
 // unlikePost
 

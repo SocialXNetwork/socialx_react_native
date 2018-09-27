@@ -19,9 +19,9 @@ export const createProfile = (
 	const { username, ...rest } = createProfileInput;
 	profileHandles
 		.profileByUsername(context, username)
-		.put({ ...rest }, (flags) => {
-			if (flags.err) {
-				return callback('failed, error => ' + flags.err);
+		.put({ ...rest }, (profileCallback) => {
+			if (profileCallback.err) {
+				return callback('failed, error => ' + profileCallback.err);
 			}
 
 			callback(null);

@@ -1,87 +1,76 @@
 import { IContext } from '../../types';
 import {
-	IDiscardNotificationInput,
 	INotificationByIdInput,
 	INotificationData,
 	INotificationsReturnData,
+	IRemoveNotificationInput,
 } from './types';
 
 import getters from './getters';
 import schemas from './schemas';
-import setters, { discardNotification } from './setters';
+import setters, { removeNotification } from './setters';
+
+import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
-	addNotifcation: (addNotificationInput: INotificationData): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.addNotifications.validate(
-					addNotificationInput,
-					{ stripUnknown: true },
-				);
-				setters.addNotification(
-					context,
-					validatedInput as INotificationData,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
-				);
-			} catch (e) {
-				reject(e);
-			}
-		}),
-	discardNotifcation: (
-		discardNotifcationInput: IDiscardNotificationInput,
+	// todo @jake I think we should separate the input type from the data type
+	// because the data can always contain auto generated things that don't exist on the input itself
+	createNotification: (
+		createNotificationInput: INotificationData,
 	): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedInput = await schemas.discardNotification.validate(
-					discardNotification,
+				const validatedInput = await schemas.createNotification.validate(
+					createNotificationInput,
 					{ stripUnknown: true },
 				);
-				setters.discardNotification(
+				setters.createNotification(
 					context,
-					validatedInput as IDiscardNotificationInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					validatedInput as INotificationData,
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);
 			}
 		}),
-	currentNotifications: (): Promise<INotificationsReturnData> =>
-		new Promise((resolve, reject) => {
-			getters.currentNotifications(context, (e, r) => {
-				if (e) {
-					reject(e);
-				}
-				resolve(r);
-			});
+	removeNotification: (
+		removeNotifcationInput: IRemoveNotificationInput,
+	): Promise<null> =>
+		new Promise(async (resolve, reject) => {
+			try {
+				const validatedInput = await schemas.removeNotification.validate(
+					removeNotification,
+					{ stripUnknown: true },
+				);
+				setters.removeNotification(
+					context,
+					validatedInput as IRemoveNotificationInput,
+					resolveCallback(resolve, reject),
+				);
+			} catch (e) {
+				reject(e);
+			}
 		}),
-	notificationById: (
+	getCurrentNotifications: (): Promise<INotificationsReturnData> =>
+		new Promise((resolve, reject) => {
+			getters.getCurrentNotifications(
+				context,
+				resolveCallback(resolve, reject),
+			);
+		}),
+	getNotificationById: (
 		notificationByIdInput: INotificationByIdInput,
 	): Promise<INotificationData> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedInput = await schemas.notificationById.validate(
+				const validatedInput = await schemas.getNotificationById.validate(
 					notificationByIdInput,
 					{ stripUnknown: true },
 				);
-				getters.notificationById(
+				getters.getNotificationById(
 					context,
 					validatedInput as INotificationByIdInput,
-					(e, r) => {
-						if (e) {
-							reject(e);
-						}
-						resolve(r);
-					},
+					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
 				reject(e);

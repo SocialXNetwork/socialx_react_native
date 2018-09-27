@@ -36,7 +36,8 @@ export interface IMetasCallback {
 		| ILikesMetasCallback;
 }
 
-export type GunDataNode = object | string | boolean | number | null;
+export type IGunDataNode = object | string | boolean | number | null;
+
 export interface IContext {
 	account: IGunAccountInstance;
 	gun: IGunInstance;
@@ -59,7 +60,7 @@ export type IGunCallback<T> = (err: string | null, result?: T) => void;
 export interface IGunInstance {
 	// core api
 	put: (
-		data: GunDataNode,
+		data: IGunDataNode,
 		callback?: (data: IGunSetterCallback) => void,
 	) => IGunInstance;
 	get: (path: string) => IGunInstance;

@@ -1,11 +1,7 @@
 import { IContext, ILikesMetasCallback, IMetasCallback } from '../types';
 
 export const datePathFromDate = (date: Date) =>
-	date.getUTCFullYear() +
-	'/' +
-	(date.getUTCMonth() + 1) +
-	'/' +
-	date.getUTCDate();
+	`${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
 
 export const setToArray = ({
 	_: parentSoul,
@@ -23,7 +19,7 @@ export const getContextMeta = (context: IContext) => ({
 	ownerPub: context.account.is.pub,
 });
 
-export const apiResolveExt = (resolve: any, reject: any) => (
+export const resolveCallback = (resolve: any, reject: any) => (
 	e: any,
 	r: any,
 ) => {

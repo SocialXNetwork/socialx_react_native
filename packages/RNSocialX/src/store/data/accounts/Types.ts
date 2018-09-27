@@ -1,8 +1,8 @@
 import {
-	IAccountByPubInput,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
+	IGetAccountByPubInput,
 	IRecoverAccountInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
@@ -68,7 +68,7 @@ export interface IGetCurrentAccountAction extends Action {
 
 export interface IGetAccountByPubAction extends Action {
 	type: ActionTypes.GET_ACCOUNT_BY_PUB;
-	payload: IAccountByPubInput;
+	payload: IGetAccountByPubInput;
 }
 
 export type IAction =
