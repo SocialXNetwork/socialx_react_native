@@ -8,11 +8,11 @@ import {
 	getPostLikes,
 	getPostPathsByUsername,
 	getPublicPostsByDate,
-	IDateArgument,
+	IDateInput,
 	IPostData,
-	IPostIdArgument,
-	IPostPathArgument,
-	IUsernameArgument,
+	IPostIdInput,
+	IPostPathInput,
+	IUsernameInput,
 	likePost,
 } from '../../../store/data/posts';
 import { IThunkDispatch } from '../../../store/types';
@@ -28,14 +28,12 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	createPost: (createPostArgument: IPostData) => void;
-	likePost: (likePostArgument: IPostIdArgument) => void;
-	getPostByPath: (getPostByPathArgument: IPostPathArgument) => void;
-	getPostLikes: (getPostLikesArgument: IPostIdArgument) => void;
-	getPostPathsByUsername: (
-		getPostPathsByUsernameInput: IUsernameArgument,
-	) => void;
-	getPublicPostsByDate: (getPostByDateArgument: IDateArgument) => void;
+	createPost: (createPostInput: IPostData) => void;
+	likePost: (likePostInput: IPostIdInput) => void;
+	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
+	getPostLikes: (getPostLikesInput: IPostIdInput) => void;
+	getPostPathsByUsername: (getPostPathsByUsernameInput: IUsernameInput) => void;
+	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -73,18 +71,17 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	createPost: (createPostArgument: IPostData) =>
-		dispatch(createPost(createPostArgument)),
-	likePost: (likePostArgument: IPostIdArgument) =>
-		dispatch(likePost(likePostArgument)),
-	getPostByPath: (getPostPathArgument: IPostPathArgument) =>
-		dispatch(getPostByPath(getPostPathArgument)),
-	getPostLikes: (getPostLikesArgument: IPostIdArgument) =>
-		dispatch(getPostLikes(getPostLikesArgument)),
-	getPostPathsByUser: (getPostPathsByUsernameInput: IUsernameArgument) =>
+	createPost: (createPostInput: IPostData) =>
+		dispatch(createPost(createPostInput)),
+	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
+	getPostByPath: (getPostPathInput: IPostPathInput) =>
+		dispatch(getPostByPath(getPostPathInput)),
+	getPostLikes: (getPostLikesInput: IPostIdInput) =>
+		dispatch(getPostLikes(getPostLikesInput)),
+	getPostPathsByUser: (getPostPathsByUsernameInput: IUsernameInput) =>
 		dispatch(getPostPathsByUsername(getPostPathsByUsernameInput)),
-	getPublicPostsByDate: (getPostByDateArgument: IDateArgument) =>
-		dispatch(getPublicPostsByDate(getPostByDateArgument)),
+	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
+		dispatch(getPublicPostsByDate(getPostByDateInput)),
 });
 
 export const WithAccounts: ConnectedComponentClass<

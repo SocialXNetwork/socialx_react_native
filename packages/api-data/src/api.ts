@@ -1,20 +1,21 @@
 // tslint:disable-next-line no-submodule-imports
 import * as Gun from 'gun/gun';
 
-// temp and should be removed (just for offline testing on node)
-// import 'gun/lib/store';
-
 // tslint:disable-next-line no-submodule-imports
 import 'gun/nts';
+
 // tslint:disable-next-line no-submodule-imports
 import 'gun/sea';
 
 import './extensions/asyncStorageAdapter';
+
 import './extensions/docload';
+
 import './extensions/encrypt';
 
 import { api as accountsApi } from './repository/accounts';
 import { api as commentsApi } from './repository/comments';
+import { api as notificationsApi } from './repository/notifications';
 import { api as postsApi } from './repository/posts';
 import { api as profilesApi } from './repository/profiles';
 
@@ -46,12 +47,14 @@ export const dataApiFactory = ({ peers }: IApiOptions) => {
 
 	const accounts = accountsApi(context);
 	const comments = commentsApi(context);
+	const notifications = notificationsApi(context);
 	const posts = postsApi(context);
 	const profiles = profilesApi(context);
 
 	return {
 		accounts,
 		comments,
+		notifications,
 		posts,
 		profiles,
 	};

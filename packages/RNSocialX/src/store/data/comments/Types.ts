@@ -21,11 +21,11 @@ export type IState = DeepReadonly<{
 	};
 }>;
 
-export interface IPostIdArgument {
+export interface IPostIdInput {
 	postId: string;
 }
 
-export interface ICommentIdArgument {
+export interface ICommentIdInput {
 	commentId: string;
 }
 
@@ -45,12 +45,12 @@ export const enum ActionTypes {
 
 export interface IGetPostCommentsAction extends Action {
 	type: ActionTypes.GET_POST_COMMENTS;
-	payload: IPostIdArgument;
+	payload: IPostIdInput;
 }
 
 export interface IGetCommentLikesAction extends Action {
 	type: ActionTypes.GET_COMMENT_LIKES;
-	payload: ICommentIdArgument;
+	payload: ICommentIdInput;
 }
 
 export interface ICreateCommentAction extends Action {
@@ -60,7 +60,7 @@ export interface ICreateCommentAction extends Action {
 
 export interface ILikeCommentAction extends Action {
 	type: ActionTypes.LIKE_COMMENT;
-	payload: ICommentIdArgument;
+	payload: ICommentIdInput;
 }
 
 export interface IRemoveCommentAction extends Action {

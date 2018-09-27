@@ -1,13 +1,13 @@
-import { ICommentIdArgument, ICreateCommentInput } from './Types';
+import { ICommentIdInput, ICreateCommentInput } from './Types';
 
 export { default as reducer } from './reducer';
 export {
 	IState,
 	IAction,
 	ICommentData,
-	ICommentIdArgument,
+	ICommentIdInput,
 	ICreateCommentInput,
-	IPostIdArgument,
+	IPostIdInput,
 } from './Types';
 export {
 	createComment,

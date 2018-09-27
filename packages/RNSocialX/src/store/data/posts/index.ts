@@ -1,4 +1,4 @@
-import { IPostData, IPostIdArgument, IPostPathArgument } from './Types';
+import { IPostData, IPostIdInput, IPostPathInput } from './Types';
 
 export { default as reducer } from './reducer';
 export {
@@ -6,10 +6,10 @@ export {
 	IAction,
 	IProfile,
 	IPostData,
-	IPostIdArgument,
-	IPostPathArgument,
-	IUsernameArgument,
-	IDateArgument,
+	IPostIdInput,
+	IPostPathInput,
+	IUsernameInput,
+	IDateInput,
 } from './Types';
 export {
 	getPostByPath,
