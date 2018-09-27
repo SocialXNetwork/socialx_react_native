@@ -8,9 +8,9 @@ import {
 	getCommentLikes,
 	getPostComments,
 	ICommentData,
-	ICommentIdArgument,
+	ICommentIdInput,
 	ICreateCommentInput,
-	IPostIdArgument,
+	IPostIdInput,
 	likeComment,
 } from '../../../store/data/comments';
 import { IThunkDispatch } from '../../../store/types';
@@ -23,10 +23,10 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	createComment: (createCommentArgument: ICreateCommentInput) => void;
-	likeComment: (likeCommentArgument: ICommentIdArgument) => void;
-	getCommentLikes: (getCommentLikesArgument: ICommentIdArgument) => void;
-	getPostComments: (postCommentsArguments: IPostIdArgument) => void;
+	createComment: (createCommentInput: ICreateCommentInput) => void;
+	likeComment: (likeCommentInput: ICommentIdInput) => void;
+	getCommentLikes: (getCommentLikesInput: ICommentIdInput) => void;
+	getPostComments: (postCommentsInput: IPostIdInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -57,14 +57,14 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	createComment: (createCommentArgument: ICreateCommentInput) =>
-		dispatch(createComment(createCommentArgument)),
-	getCommentLikes: (getCommentLikesArgument: ICommentIdArgument) =>
-		dispatch(getCommentLikes(getCommentLikesArgument)),
-	getPostComments: (getPostCommentsArguments: IPostIdArgument) =>
-		dispatch(getPostComments(getPostCommentsArguments)),
-	likeComment: (likeCommentArgument: ICommentIdArgument) =>
-		dispatch(likeComment(likeCommentArgument)),
+	createComment: (createCommentInput: ICreateCommentInput) =>
+		dispatch(createComment(createCommentInput)),
+	getCommentLikes: (getCommentLikesInput: ICommentIdInput) =>
+		dispatch(getCommentLikes(getCommentLikesInput)),
+	getPostComments: (getPostCommentsInput: IPostIdInput) =>
+		dispatch(getPostComments(getPostCommentsInput)),
+	likeComment: (likeCommentInput: ICommentIdInput) =>
+		dispatch(likeComment(likeCommentInput)),
 });
 
 export const WithAccounts: ConnectedComponentClass<

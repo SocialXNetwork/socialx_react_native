@@ -14,13 +14,13 @@ export default (context: IContext) => ({
 	addNotifcation: (addNotificationInput: INotificationData): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArguments = await schemas.addNotifications.validate(
+				const validatedInput = await schemas.addNotifications.validate(
 					addNotificationInput,
 					{ stripUnknown: true },
 				);
 				setters.addNotification(
 					context,
-					validatedArguments as INotificationData,
+					validatedInput as INotificationData,
 					(e, r) => {
 						if (e) {
 							reject(e);
@@ -37,13 +37,13 @@ export default (context: IContext) => ({
 	): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArguments = await schemas.discardNotification.validate(
+				const validatedInput = await schemas.discardNotification.validate(
 					discardNotification,
 					{ stripUnknown: true },
 				);
 				setters.discardNotification(
 					context,
-					validatedArguments as IDiscardNotificationInput,
+					validatedInput as IDiscardNotificationInput,
 					(e, r) => {
 						if (e) {
 							reject(e);
@@ -69,13 +69,13 @@ export default (context: IContext) => ({
 	): Promise<INotificationData> =>
 		new Promise(async (resolve, reject) => {
 			try {
-				const validatedArguments = await schemas.notificationById.validate(
+				const validatedInput = await schemas.notificationById.validate(
 					notificationByIdInput,
 					{ stripUnknown: true },
 				);
 				getters.notificationById(
 					context,
-					validatedArguments as INotificationByIdInput,
+					validatedInput as INotificationByIdInput,
 					(e, r) => {
 						if (e) {
 							reject(e);

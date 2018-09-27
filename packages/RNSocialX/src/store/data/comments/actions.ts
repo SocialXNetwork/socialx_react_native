@@ -3,84 +3,80 @@ import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
 	ActionTypes,
-	ICommentIdArgument,
+	ICommentIdInput,
 	ICreateCommentAction,
 	ICreateCommentInput,
 	IGetCommentLikesAction,
 	IGetPostCommentsAction,
 	ILikeCommentAction,
-	IPostIdArgument,
+	IPostIdInput,
 	IRemoveCommentAction,
 	IUnlikeCommentAction,
 } from './Types';
 
-// todo: add the new api actions here
-// removeComment
-// unlikeComment
-
 const getPostCommentsAction: ActionCreator<IGetPostCommentsAction> = (
-	getPostCommentsArguments: IPostIdArgument,
+	getPostCommentsInput: IPostIdInput,
 ) => ({
 	type: ActionTypes.GET_POST_COMMENTS,
-	payload: getPostCommentsArguments,
+	payload: getPostCommentsInput,
 });
 
 export const getPostComments = (
-	getPostCommentsArguments: IPostIdArgument,
+	getPostCommentsInput: IPostIdInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getPostCommentsAction(getPostCommentsArguments));
+		dispatch(getPostCommentsAction(getPostCommentsInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const getCommentLikesAction: ActionCreator<IGetCommentLikesAction> = (
-	commentLikesArgument: ICommentIdArgument,
+	commentLikesInput: ICommentIdInput,
 ) => ({
 	type: ActionTypes.GET_COMMENT_LIKES,
-	payload: commentLikesArgument,
+	payload: commentLikesInput,
 });
 
 export const getCommentLikes = (
-	getCommentLikesArgument: ICommentIdArgument,
+	getCommentLikesInput: ICommentIdInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getCommentLikesAction(getCommentLikesArgument));
+		dispatch(getCommentLikesAction(getCommentLikesInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const createCommentAction: ActionCreator<ICreateCommentAction> = (
-	createCommentArgument: ICreateCommentInput,
+	createCommentInput: ICreateCommentInput,
 ) => ({
 	type: ActionTypes.CREATE_COMMENT,
-	payload: createCommentArgument,
+	payload: createCommentInput,
 });
 
 export const createComment = (
-	createCommentArgument: ICreateCommentInput,
+	createCommentInput: ICreateCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(createCommentAction(createCommentArgument));
+		dispatch(createCommentAction(createCommentInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const likeCommentAction: ActionCreator<ILikeCommentAction> = (
-	likeCommentArgument: ICommentIdArgument,
+	likeCommentInput: ICommentIdInput,
 ) => ({
 	type: ActionTypes.LIKE_COMMENT,
-	payload: likeCommentArgument,
+	payload: likeCommentInput,
 });
 
 export const likeComment = (
-	likeCommentArgument: ICommentIdArgument,
+	likeCommentInput: ICommentIdInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(likeCommentAction(likeCommentArgument));
+		dispatch(likeCommentAction(likeCommentInput));
 	} catch (e) {
 		/**/
 	}

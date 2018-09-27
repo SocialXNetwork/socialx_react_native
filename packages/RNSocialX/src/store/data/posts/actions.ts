@@ -4,15 +4,15 @@ import { IThunk } from '../../types';
 import {
 	ActionTypes,
 	ICreatePostAction,
-	IDateArgument,
+	IDateInput,
 	IGetPostByPathAction,
 	IGetPostLikesAction,
 	IGetPostPathsByUserAction,
 	IGetPublicPostsByDateAction,
 	ILikePostAction,
-	IPostIdArgument,
-	IPostPathArgument,
-	IUsernameArgument,
+	IPostIdInput,
+	IPostPathInput,
+	IUsernameInput,
 } from './Types';
 
 // todo: add the new api actions here
@@ -20,14 +20,14 @@ import {
 // unlikePost
 
 const getPostPathsByUsernameAction: ActionCreator<IGetPostPathsByUserAction> = (
-	getPostPathsByUsernameInput: IUsernameArgument,
+	getPostPathsByUsernameInput: IUsernameInput,
 ) => ({
 	type: ActionTypes.GET_POST_PATHS_BY_USER,
 	payload: getPostPathsByUsernameInput,
 });
 
 export const getPostPathsByUsername = (
-	getPostPathsByUsernameInput: IUsernameArgument,
+	getPostPathsByUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(getPostPathsByUsernameAction(getPostPathsByUsernameInput));
@@ -37,87 +37,91 @@ export const getPostPathsByUsername = (
 };
 
 const getPostByPathAction: ActionCreator<IGetPostByPathAction> = (
-	getPostPathArgument: IPostPathArgument,
+	getPostPathInput: IPostPathInput,
 ) => ({
 	type: ActionTypes.GET_POST_BY_PATH,
-	payload: getPostPathArgument,
+	payload: getPostPathInput,
 });
 
 export const getPostByPath = (
-	getPostPathArgument: IPostPathArgument,
+	getPostPathInput: IPostPathInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getPostByPathAction(getPostPathArgument));
+		dispatch(getPostByPathAction(getPostPathInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const getPublicPostsByDateAction: ActionCreator<IGetPublicPostsByDateAction> = (
-	getPostByDateArgument: IDateArgument,
+	getPostByDateInput: IDateInput,
 ) => ({
 	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-	payload: getPostByDateArgument,
+	payload: getPostByDateInput,
 });
 
 export const getPublicPostsByDate = (
-	getPostByDateArgument: IDateArgument,
+	getPostByDateInput: IDateInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getPublicPostsByDateAction(getPostByDateArgument));
+		dispatch(getPublicPostsByDateAction(getPostByDateInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const getPostLikesAction: ActionCreator<IGetPostLikesAction> = (
-	getPostLikesArgument: IPostIdArgument,
+	getPostLikesInput: IPostIdInput,
 ) => ({
 	type: ActionTypes.GET_POST_LIKES,
-	payload: getPostLikesArgument,
+	payload: getPostLikesInput,
 });
 
-export const getPostLikes = (
-	getPostLikesArgument: IPostIdArgument,
-): IThunk => async (dispatch, getState, context) => {
+export const getPostLikes = (getPostLikesInput: IPostIdInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
-		dispatch(getPostLikesAction(getPostLikesArgument));
+		dispatch(getPostLikesAction(getPostLikesInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const createPostAction: ActionCreator<ICreatePostAction> = (
-	createPostArgument: ICreatePostInput,
+	createPostInput: ICreatePostInput,
 ) => ({
 	type: ActionTypes.CREATE_POST,
-	payload: createPostArgument,
+	payload: createPostInput,
 });
 
-export const createPost = (
-	createPostArgument: ICreatePostInput,
-): IThunk => async (dispatch, getState, context) => {
+export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
-		dispatch(createPostAction(createPostArgument));
+		dispatch(createPostAction(createPostInput));
 	} catch (e) {
 		/**/
 	}
 };
 
 const likePostAction: ActionCreator<ILikePostAction> = (
-	likePostArgument: IPostIdArgument,
+	likePostInput: IPostIdInput,
 ) => ({
 	type: ActionTypes.LIKE_POST,
-	payload: likePostArgument,
+	payload: likePostInput,
 });
 
-export const likePost = (likePostArgument: IPostIdArgument): IThunk => async (
+export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(likePostAction(likePostArgument));
+		dispatch(likePostAction(likePostInput));
 	} catch (e) {
 		/**/
 	}

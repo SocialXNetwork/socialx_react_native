@@ -9,10 +9,10 @@ import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
 	ActionTypes,
-	IAccountByPubAction,
 	IChangePasswordAction,
 	ICreateAccountAction,
-	ICurrentAccountAction,
+	IGetAccountByPubAction,
+	IGetCurrentAccountAction,
 	IGetIsAccountLoggedInAction,
 	ILoginAction,
 	ILogoutAction,
@@ -137,8 +137,10 @@ export const changePassword = (
 	}
 };
 
-const getCurrentAccountAction: ActionCreator<ICurrentAccountAction> = () => ({
-	type: ActionTypes.CURRENT_ACCOUNT,
+const getCurrentAccountAction: ActionCreator<
+	IGetCurrentAccountAction
+> = () => ({
+	type: ActionTypes.GET_CURRENT_ACCOUNT,
 });
 
 export const getCurrentAccount = (): IThunk => async (
@@ -153,18 +155,18 @@ export const getCurrentAccount = (): IThunk => async (
 	}
 };
 
-const getAccountByPubAction: ActionCreator<IAccountByPubAction> = (
-	accountByPubInput: IAccountByPubInput,
+const getAccountByPubAction: ActionCreator<IGetAccountByPubAction> = (
+	getAccountByPubInput: IAccountByPubInput,
 ) => ({
-	type: ActionTypes.ACCOUNT_BY_PUB,
-	payload: accountByPubInput,
+	type: ActionTypes.GET_ACCOUNT_BY_PUB,
+	payload: getAccountByPubInput,
 });
 
 export const getAccountByPub = (
-	accountByPubInput: IAccountByPubInput,
+	getAccountByPubInput: IAccountByPubInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getAccountByPubAction(accountByPubInput));
+		dispatch(getAccountByPubAction(getAccountByPubInput));
 	} catch (e) {
 		/**/
 	}

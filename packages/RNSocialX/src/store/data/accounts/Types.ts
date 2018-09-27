@@ -26,8 +26,8 @@ export const enum ActionTypes {
 	CHANGE_PASSWORD = 'data/accounts/CHANGE_PASSWORD',
 	LOGIN = 'data/accounts/LOGIN',
 	LOGOUT = 'data/accounts/LOGOUT',
-	CURRENT_ACCOUNT = 'data/accounts/CURRENT_ACCOUNT',
-	ACCOUNT_BY_PUB = 'data/accounts/ACCOUNT_BY_PUB',
+	GET_CURRENT_ACCOUNT = 'data/accounts/GET_CURRENT_ACCOUNT',
+	GET_ACCOUNT_BY_PUB = 'data/accounts/GET_ACCOUNT_BY_PUB',
 }
 
 export interface ICreateAccountAction extends Action {
@@ -62,12 +62,12 @@ export interface IChangePasswordAction extends Action {
 	payload: IChangePasswordInput;
 }
 
-export interface ICurrentAccountAction extends Action {
-	type: ActionTypes.CURRENT_ACCOUNT;
+export interface IGetCurrentAccountAction extends Action {
+	type: ActionTypes.GET_CURRENT_ACCOUNT;
 }
 
-export interface IAccountByPubAction extends Action {
-	type: ActionTypes.ACCOUNT_BY_PUB;
+export interface IGetAccountByPubAction extends Action {
+	type: ActionTypes.GET_ACCOUNT_BY_PUB;
 	payload: IAccountByPubInput;
 }
 
@@ -79,5 +79,5 @@ export type IAction =
 	| ILoginAction
 	| ILogoutAction
 	| IChangePasswordAction
-	| ICurrentAccountAction
-	| IAccountByPubAction;
+	| IGetCurrentAccountAction
+	| IGetAccountByPubAction;

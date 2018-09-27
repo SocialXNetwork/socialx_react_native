@@ -12,19 +12,19 @@ export type IState = DeepReadonly<{
 	};
 }>;
 
-export interface IUsernameArgument {
+export interface IUsernameInput {
 	username: string;
 }
 
-export interface IPostPathArgument {
+export interface IPostPathInput {
 	postPath: string;
 }
 
-export interface IDateArgument {
+export interface IDateInput {
 	date: Date;
 }
 
-export interface IPostIdArgument {
+export interface IPostIdInput {
 	postId: string;
 }
 
@@ -45,22 +45,22 @@ export const enum ActionTypes {
 
 export interface IGetPostPathsByUserAction extends Action {
 	type: ActionTypes.GET_POST_PATHS_BY_USER;
-	payload: IUsernameArgument;
+	payload: IUsernameInput;
 }
 
 export interface IGetPostByPathAction extends Action {
 	type: ActionTypes.GET_POST_BY_PATH;
-	payload: IPostPathArgument;
+	payload: IPostPathInput;
 }
 
 export interface IGetPublicPostsByDateAction extends Action {
 	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE;
-	payload: IDateArgument;
+	payload: IDateInput;
 }
 
 export interface IGetPostLikesAction extends Action {
 	type: ActionTypes.GET_POST_LIKES;
-	payload: IPostIdArgument;
+	payload: IPostIdInput;
 }
 
 export interface ICreatePostAction extends Action {
@@ -70,7 +70,7 @@ export interface ICreatePostAction extends Action {
 
 export interface ILikePostAction extends Action {
 	type: ActionTypes.LIKE_POST;
-	payload: IPostIdArgument;
+	payload: IPostIdInput;
 }
 
 export type IAction =
