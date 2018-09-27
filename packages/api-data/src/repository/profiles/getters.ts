@@ -1,15 +1,7 @@
 import { IContext, IGunCallback } from '../../types';
 import * as profileHandles from './handles';
 
-export interface IGetPublicKeyInput {
-	username: string;
-}
-
-export interface IProfile {
-	pub: string;
-	email: string;
-	avatar: string;
-}
+import { IFriendsReturnData, IGetPublicKeyInput, IProfile } from './types';
 
 export const getPublicKeyByUsername = (
 	context: IContext,
@@ -57,8 +49,23 @@ export const getProfileByUsername = (
 		});
 };
 
+export const getCurrentFriends = (
+	context: IContext,
+	callback: IGunCallback<IFriendsReturnData>,
+) => {
+	profileHandles
+		.currentProfileFriends(context)
+		.docLoad((data: IFriendsReturnData) => {
+			if (!data) {
+				return callback('failed, no friends found :(');
+			}
+			return callback(null, data);
+		});
+};
+
 export default {
 	getCurrentProfile,
 	getProfileByUsername,
 	getPublicKeyByUsername,
+	getCurrentFriends,
 };

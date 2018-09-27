@@ -1,14 +1,19 @@
 import {
 	IContext,
-	ICreatePostInput,
 	IGunCallback,
 	IGunSetterCallback,
-	IPostMetasCallback,
 	TABLE_ENUMS,
 	TABLES,
 } from '../../types';
 import { datePathFromDate, getContextMeta } from '../../utils/helpers';
 import * as postHandles from './handles';
+
+import {
+	ICreatePostInput,
+	IDeletePostInput,
+	IPostMetasCallback,
+	IUnlikePostInput,
+} from './types';
 
 export const createPost = (
 	context: IContext,
@@ -116,4 +121,40 @@ export const likePost = (
 		});
 };
 
-export default { createPost, likePost };
+export const deletePost = (
+	context: IContext,
+	{ postMetaId, postPath }: IDeletePostInput,
+	callback: IGunCallback<null>,
+) => {
+	postHandles
+		.postMetaById(context, postMetaId)
+		.put(null, (deleteMetaCallback) => {
+			if (deleteMetaCallback.err) {
+				return callback('failed, error => ' + deleteMetaCallback.err);
+			}
+			postHandles
+				.postByPath(context, postPath)
+				.put(null, (deletePostCallback) => {
+					if (deletePostCallback.err) {
+						return callback('failed, error => ' + deletePostCallback.err);
+					}
+					return callback(null);
+				});
+		});
+};
+export const unlikePost = (
+	context: IContext,
+	{ postPath }: IUnlikePostInput,
+	callback: IGunCallback<null>,
+) => {
+	postHandles
+		.postLikesByCurrentUser(context, postPath)
+		.put(null, (unlikePostCallback) => {
+			if (unlikePostCallback.err) {
+				return callback('couldnt unlike post => ' + unlikePostCallback.err);
+			}
+			return callback(null);
+		});
+};
+
+export default { createPost, likePost, deletePost, unlikePost };

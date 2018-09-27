@@ -3,15 +3,13 @@ export {
 	IChangePasswordInput,
 	ICredentials,
 	IRecoverAccountInput,
-} from './repository/accounts/setters';
-export { IAccountByPubInput } from './repository/accounts/getters';
+	IAccountByPubInput,
+} from './repository/accounts';
 
-export { ICreateProfileInput } from './repository/profiles/setters';
-export {
-	ICommentMetasCallback,
-	ILikesMetasCallback,
-	IPostData,
-	ICreatePostInput,
-} from './types';
+export { ICreateProfileInput } from './repository/profiles';
+export { ICommentMetasCallback } from './repository/comments';
+export { IPostData, ICreatePostInput } from './repository/posts';
+
+export { ILikesMetasCallback } from './types';
 
 export { dataApiFactory, IApiOptions, IDataApiFactory } from './api';

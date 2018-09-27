@@ -14,6 +14,11 @@ import {
 	IPostPathArgument,
 	IUsernameArgument,
 } from './Types';
+
+// todo: add the new api actions here
+// removePost
+// unlikePost
+
 const getPostPathsByUsernameAction: ActionCreator<IGetPostPathsByUserAction> = (
 	getPostPathsByUsernameInput: IUsernameArgument,
 ) => ({

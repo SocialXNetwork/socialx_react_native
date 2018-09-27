@@ -11,6 +11,10 @@ import {
 	IPostIdArgument,
 } from './Types';
 
+// todo: add the new api actions here
+// removeComment
+// unlikeComment
+
 const getPostCommentsAction: ActionCreator<IGetPostCommentsAction> = (
 	getPostCommentsArguments: IPostIdArgument,
 ) => ({

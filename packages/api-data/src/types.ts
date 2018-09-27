@@ -1,4 +1,5 @@
-export type GunDataNode = object | string | boolean | number | null;
+import { ICommentMetasCallback } from './repository/comments';
+import { IPostMetasCallback } from './repository/posts';
 
 export enum TABLES {
 	POSTS = 'posts',
@@ -8,32 +9,14 @@ export enum TABLES {
 	COMMENT_META_BY_ID = 'commentMetaById',
 	LIKES = 'likes',
 	PROFILES = 'profiles',
+	NOTIFICATIONS = 'notifications',
 }
 
 export enum TABLE_ENUMS {
 	PRIVATE = 'private',
 	PUBLIC = 'public',
 	RECOVER = 'recover',
-}
-
-export interface IPostMetasCallback {
-	owner: {
-		alias: string;
-		pub: string;
-	};
-	postPath: string;
-	timestamp: number;
-	privatePost: boolean;
-}
-
-export interface ICommentMetasCallback {
-	owner: {
-		alias: string;
-		pub: string;
-	};
-	timestamp: number;
-	postPath: string;
-	commentId: string;
+	FRIENDS = 'friends',
 }
 
 export interface ILikesMetasCallback {
@@ -53,61 +36,7 @@ export interface IMetasCallback {
 		| ILikesMetasCallback;
 }
 
-export interface ICreateCommentInput {
-	text: string;
-	postId: string;
-}
-
-interface IMediaTypes {
-	key: string;
-	name: 'Video' | 'Photo';
-	category: string;
-}
-
-interface IMedia {
-	hash: string;
-	optimized_hash: string;
-	type: IMediaTypes;
-	extension: string;
-	size: number;
-}
-export interface ICreatePostInput {
-	postText: string;
-	location?: string;
-	taggedFriends?: Array<{ fullName: string }>;
-	media?: IMedia;
-	governanceVersion: boolean;
-	privatePost: boolean;
-}
-
-export interface IPostData extends ICreatePostInput {
-	owner: {
-		alias: string;
-		pub: string;
-	};
-	timestamp: number;
-}
-
-export interface IAccountData {
-	alias: string;
-	auth: {
-		ek: string;
-		s: string;
-	};
-	epub: string;
-	pub: string;
-	trust?: {
-		[key: string]: {
-			[key: string]: string;
-		};
-	};
-	recover?: {
-		encryptedReminder: string;
-		question1: number;
-		question2: number;
-	};
-}
-
+export type GunDataNode = object | string | boolean | number | null;
 export interface IContext {
 	account: IGunAccountInstance;
 	gun: IGunInstance;
