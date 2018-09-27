@@ -1,3 +1,4 @@
+import { IRemoveCommentInput, IUnlikeCommentInput } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
@@ -9,6 +10,8 @@ import {
 	IGetPostCommentsAction,
 	ILikeCommentAction,
 	IPostIdArgument,
+	IRemoveCommentAction,
+	IUnlikeCommentAction,
 } from './Types';
 
 // todo: add the new api actions here
@@ -78,6 +81,40 @@ export const likeComment = (
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(likeCommentAction(likeCommentArgument));
+	} catch (e) {
+		/**/
+	}
+};
+
+const removeCommentAction: ActionCreator<IRemoveCommentAction> = (
+	removeCommentInput: IRemoveCommentInput,
+) => ({
+	type: ActionTypes.REMOVE_COMMENT,
+	payload: removeCommentInput,
+});
+
+export const removeComment = (
+	removeCommentInput: IRemoveCommentInput,
+): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(removeCommentAction(removeCommentInput));
+	} catch (e) {
+		/**/
+	}
+};
+
+const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
+	unlikeCommentInput: IUnlikeCommentInput,
+) => ({
+	type: ActionTypes.UNLIKE_COMMENT,
+	payload: unlikeCommentInput,
+});
+
+export const unlikeComment = (
+	unlikeCommentInput: IUnlikeCommentInput,
+): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(unlikeCommentAction(unlikeCommentInput));
 	} catch (e) {
 		/**/
 	}
