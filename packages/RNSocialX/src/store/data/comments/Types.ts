@@ -1,4 +1,9 @@
-import { ICommentMetasCallback, ILikesMetasCallback } from '@socialx/api-data';
+import {
+	ICommentMetasCallback,
+	ILikesMetasCallback,
+	IRemoveCommentInput,
+	IUnlikeCommentInput,
+} from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
@@ -34,6 +39,8 @@ export const enum ActionTypes {
 	GET_COMMENT_LIKES = 'data/comments/GET_COMMENT_LIKES',
 	CREATE_COMMENT = 'data/comments/CREATE_COMMENT',
 	LIKE_COMMENT = 'data/comments/LIKE_COMMENT',
+	REMOVE_COMMENT = 'data/comments/REMOVE_COMMENT',
+	UNLIKE_COMMENT = 'data/comments/UNLIKE_COMMENT',
 }
 
 export interface IGetPostCommentsAction extends Action {
@@ -56,8 +63,20 @@ export interface ILikeCommentAction extends Action {
 	payload: ICommentIdArgument;
 }
 
+export interface IRemoveCommentAction extends Action {
+	type: ActionTypes.REMOVE_COMMENT;
+	payload: IRemoveCommentInput;
+}
+
+export interface IUnlikeCommentAction extends Action {
+	type: ActionTypes.UNLIKE_COMMENT;
+	payload: IUnlikeCommentInput;
+}
+
 export type IAction =
 	| IGetPostCommentsAction
 	| IGetCommentLikesAction
 	| ICreateCommentAction
-	| ILikeCommentAction;
+	| ILikeCommentAction
+	| IRemoveCommentAction
+	| IUnlikeCommentAction;
