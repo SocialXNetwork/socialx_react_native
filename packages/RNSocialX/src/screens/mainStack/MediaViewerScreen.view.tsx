@@ -20,11 +20,44 @@ import {
 	CloseButton as CloseModal,
 	Header,
 	MediaInfoModal,
+	MediaInteractionButtons,
 	MediaObjectViewer,
 } from '../../components';
 import { DeviceOrientations } from '../../environment/consts';
 import { IMediaProps, ITranslatedProps } from '../../types';
 import styles from './MediaViewerScreen.style';
+
+const CloseButton: React.SFC<{
+	isPortrait: boolean;
+	onExitFullScreen: () => void;
+}> = ({ isPortrait, onExitFullScreen }) => {
+	if (!isPortrait) {
+		return (
+			<TouchableOpacity onPress={onExitFullScreen} style={styles.closeButton}>
+				<Icon name={'md-close'} style={styles.infoIcon} />
+			</TouchableOpacity>
+		);
+	}
+	return null;
+};
+
+const Pagination: React.SFC<{
+	mediaObjects: IMediaProps[];
+	activeSlide: number;
+}> = ({ mediaObjects, activeSlide }) => {
+	if (mediaObjects.length > 1) {
+		return (
+			<View style={styles.paginationContainer}>
+				<Text style={styles.paginationText}>
+					{activeSlide + 1}
+					{' / '}
+					{mediaObjects.length}
+				</Text>
+			</View>
+		);
+	}
+	return null;
+};
 
 interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
@@ -121,9 +154,10 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					onExitFullScreen={onExitFullScreen}
 				/>
 				<View style={styles.screenFooter} pointerEvents={'none'}>
-					<MediaInfoSection
+					<MediaInteractionButtons
 						mediaObjects={mediaObjects}
 						activeSlide={activeSlide}
+						getText={getText}
 					/>
 					<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
 				</View>
@@ -139,60 +173,4 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 			</View>
 		</SafeAreaView>
 	);
-};
-
-const CloseButton: React.SFC<{
-	isPortrait: boolean;
-	onExitFullScreen: () => void;
-}> = ({ isPortrait, onExitFullScreen }) => {
-	if (!isPortrait) {
-		return (
-			<TouchableOpacity onPress={onExitFullScreen} style={styles.closeButton}>
-				<Icon name={'md-close'} style={styles.infoIcon} />
-			</TouchableOpacity>
-		);
-	}
-	return null;
-};
-
-const Pagination: React.SFC<{
-	mediaObjects: IMediaProps[];
-	activeSlide: number;
-}> = ({ mediaObjects, activeSlide }) => {
-	if (mediaObjects.length > 1) {
-		return (
-			<View style={styles.paginationContainer}>
-				<Text style={styles.paginationText}>
-					{activeSlide + 1}
-					{' / '}
-					{mediaObjects.length}
-				</Text>
-			</View>
-		);
-	}
-	return null;
-};
-
-const MediaInfoSection: React.SFC<{
-	mediaObjects: IMediaProps[];
-	activeSlide: number;
-}> = ({ mediaObjects, activeSlide }) => {
-	const currentMedia = mediaObjects[activeSlide];
-	const numberOfLikes = currentMedia.numberOfLikes || 0;
-	const numberOfComments = currentMedia.numberOfComments || 0;
-
-	if (numberOfComments > 0 || numberOfLikes > 0) {
-		return (
-			<View style={styles.mediaInfoSection}>
-				{numberOfLikes > 0 && (
-					<Text style={styles.infoText}>{'Likes ' + numberOfLikes}</Text>
-				)}
-				<View style={{ flex: 1 }} />
-				{numberOfComments > 0 && (
-					<Text style={styles.infoText}>{'Comments ' + numberOfComments}</Text>
-				)}
-			</View>
-		);
-	}
-	return null;
 };

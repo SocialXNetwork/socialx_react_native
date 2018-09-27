@@ -217,6 +217,8 @@ export default {
 	'socialx.account.screen.account': 'Account',
 	'maintenance.message': 'App currently under maintenance, try again later!',
 	'media.viewer.screen.title':'MEDIA',
+	'media.viewer.screen.likes':'Likes',
+	'media.viewer.screen.comments':'Comments',
 	'notifications.screen.title':'ACTIVITY',
 	'wall.post.menu.block.user': 'Block',
 	'wall.post.menu.report.problem': 'Report a Problem',
