@@ -47,6 +47,7 @@ export { SearchHeader } from './displayers/SearchHeader';
 export { SearchResults } from './displayers/SearchResults';
 export { SearchResultsItem } from './displayers/SearchResultsItem';
 export { SearchResultsList } from './displayers/SearchResultsList';
+export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
 export { TransactionItem } from './displayers/TransactionItem';
