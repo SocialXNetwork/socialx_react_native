@@ -8,6 +8,7 @@ import * as React from 'react';
 import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithSettingsEnhancedProps = {
 	data: {
@@ -62,6 +63,15 @@ export class WithSettings extends React.Component<
 	IWithSettingsState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

@@ -12,6 +12,7 @@ import {
 	ITranslatedProps,
 	IWallPostPhotoOptimized,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 interface IWallPostPhotoData {
 	mediaObjects: IWallPostPhotoOptimized[];
@@ -59,7 +60,15 @@ export class WithPhoto extends React.Component<
 	IWithPhotoState
 > {
 	render() {
-		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

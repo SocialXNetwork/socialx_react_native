@@ -12,6 +12,7 @@ import {
 	ITranslatedProps,
 	IWallPostCardData,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 // TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 const mock: IWithUserFeedEnhancedProps = {
@@ -88,6 +89,15 @@ export class WithUserFeed extends React.Component<
 	IWithUserFeedState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

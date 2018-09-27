@@ -13,6 +13,7 @@ import {
 	MediaTypeImage,
 	SearchResultKind,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock = {
 	data: {
@@ -109,6 +110,15 @@ export class WithUserProfile extends React.Component<
 	IWithUserProfileState
 > {
 	render() {
-		return this.props.children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					this.props.children({
+						data: mock.data,
+						actions: { ...mock.actions, getText: i18nProps.getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
