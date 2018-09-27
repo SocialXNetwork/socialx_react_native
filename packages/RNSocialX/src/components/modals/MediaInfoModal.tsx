@@ -7,7 +7,7 @@ import { IMediaTypes, ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 import styles from './MediaInfoModal.style';
 
-interface IMediaInfoOverlayProps extends ITranslatedProps {
+interface IMediaInfoModalProps extends ITranslatedProps {
 	visible: boolean;
 	mediaHash: string;
 	mediaSize: number;
@@ -30,7 +30,7 @@ const openURL = async (url: string, errorText: string) => {
 	}
 };
 
-export const MediaInfoModal: React.SFC<IMediaInfoOverlayProps> = ({
+export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 	visible,
 	mediaHash,
 	mediaSize,

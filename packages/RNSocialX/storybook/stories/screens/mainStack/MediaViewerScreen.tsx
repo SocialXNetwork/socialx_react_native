@@ -29,8 +29,8 @@ storiesOf('Screens/mainStack', module)
 		return (
 			<MediaViewerScreenView
 				getText={(text) => text}
-				mediaObjects={generateMediaObjects(100)}
-				startIndex={90}
+				mediaObjects={generateMediaObjects(10)}
+				startIndex={7}
 				orientation={DeviceOrientations.Portrait}
 				activeSlide={activeSlide}
 				viewport={{

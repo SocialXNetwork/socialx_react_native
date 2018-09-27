@@ -81,6 +81,7 @@ export { CommentsPostActions } from './interaction/CommentsPostActions';
 export { GradientButton } from './interaction/GradientButton';
 export { IconButton } from './interaction/IconButton';
 export { LikeAnimatingButton } from './interaction/LikeAnimatingButton';
+export { MediaInteractionButtons } from './interaction/MediaInteractionButtons';
 export {
 	PrimaryButton,
 	IPrimaryButtonProps,
