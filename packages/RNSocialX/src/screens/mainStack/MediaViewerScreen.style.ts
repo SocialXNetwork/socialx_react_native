@@ -33,17 +33,6 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(16),
 		color: Colors.dustWhite,
 	},
-	mediaInfoSection: {
-		width: '100%',
-		paddingBottom: Sizes.smartVerticalScale(20),
-		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		flexDirection: 'row',
-	},
-	infoText: {
-		...Fonts.centuryGothic,
-		color: Colors.white,
-		fontSize: Sizes.smartHorizontalScale(16),
-	},
 	infoIcon: {
 		color: Colors.white,
 		fontSize: Sizes.smartHorizontalScale(30),
