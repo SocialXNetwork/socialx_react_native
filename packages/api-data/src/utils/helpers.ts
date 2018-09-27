@@ -22,3 +22,13 @@ export const getContextMeta = (context: IContext) => ({
 	timestamp: context.time().getTime(),
 	ownerPub: context.account.is.pub,
 });
+
+export const apiResolveExt = (resolve: any, reject: any) => (
+	e: any,
+	r: any,
+) => {
+	if (e) {
+		reject(e);
+	}
+	resolve(r);
+};

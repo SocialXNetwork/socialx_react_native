@@ -10,6 +10,12 @@ import {
 	IUsernameArgument,
 } from './Types';
 
+// todo: add the new api actions here
+// updateProfile
+// addFriend
+// removeFriend
+// acceptFriend
+
 const createProfileAction: ActionCreator<ICreateProfileAction> = (
 	createProfileInput: ICreateProfileInput,
 ) => ({

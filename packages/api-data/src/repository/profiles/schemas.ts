@@ -49,7 +49,7 @@ export const createProfileInput = yup
 			.bool()
 			.default(false)
 			.required(),
-		name: yup
+		fullName: yup
 			.string()
 			.trim()
 			.min(4)
@@ -60,8 +60,62 @@ export const createProfileInput = yup
 	})
 	.required();
 
+export const updateProfile = yup
+	.object()
+	.shape({
+		aboutMeText: yup
+			.string()
+			.trim()
+			.min(10)
+			.max(200),
+		avatar: yup
+			.string()
+			.trim()
+			.required(),
+		email: yup
+			.string()
+			.trim()
+			.lowercase()
+			.email()
+			.required(),
+		fullName: yup
+			.string()
+			.trim()
+			.min(4)
+			.max(128)
+			.required(),
+	})
+	.required();
+
+export const addFriend = yup
+	.object()
+	.shape({
+		username: usernameOrPasswordType,
+	})
+	.required();
+
+export const removeFriend = yup
+	.object()
+	.shape({
+		friendshipId: longTextType.required(),
+		username: usernameOrPasswordType,
+	})
+	.required();
+
+export const acceptFriend = yup
+	.object()
+	.shape({
+		friendshipId: longTextType.required(),
+		username: usernameOrPasswordType,
+	})
+	.required();
+
 export default {
 	createProfileInput,
 	getProfileByUsername,
 	publicKeyInput,
+	updateProfile,
+	addFriend,
+	removeFriend,
+	acceptFriend,
 };

@@ -1,9 +1,6 @@
-import { IAccountData, IContext, IGunCallback } from '../../types';
-import * as accountHandles from './handles';
+import { IContext, IGunCallback } from '../../types';
 
-export interface IAccountByPubInput {
-	publicKey: string;
-}
+import { IAccountByPubInput, IAccountData } from './types';
 
 export const getIsAccountLoggedIn = (
 	context: IContext,

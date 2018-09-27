@@ -5,9 +5,10 @@ import {
 	IGunCallback,
 	ILikesMetasCallback,
 	IMetasCallback,
-	IPostData,
 } from '../../types';
 import { datePathFromDate, setToArray } from '../../utils/helpers';
+
+import { IPostData } from './types';
 
 export const getPostPathsByUser = (
 	context: IContext,
