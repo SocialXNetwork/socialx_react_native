@@ -1,11 +1,12 @@
 /**
  * TODO list:
- * 1. Props actions: sendResetCode, getText
+ * 1. Props actions: sendResetCode
  */
 
 import * as React from 'react';
 
 import { ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithForgotPasswordEnhancedProps = {
 	data: {},
@@ -13,6 +14,7 @@ const mock: IWithForgotPasswordEnhancedProps = {
 		sendResetCode: (userName: string) => {
 			/**/
 		},
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -40,6 +42,15 @@ export class WithForgotPassword extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

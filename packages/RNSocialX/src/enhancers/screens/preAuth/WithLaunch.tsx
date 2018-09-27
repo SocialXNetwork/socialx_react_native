@@ -1,13 +1,14 @@
 /**
  * TODO list:
  * 1. Props data: currentUser, applicationInMaintenanceMode
- * 2. Props actions: getText, resetNavigationToRoute (check old repo. Internals/backend/actions/navigation.ts)
+ * 2. Props actions: resetNavigationToRoute (check old repo. Internals/backend/actions/navigation.ts)
  */
 
 import * as React from 'react';
 
 import { NavigationScreenProp } from 'react-navigation';
 import { ITranslatedProps } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithLaunchEnhancedProps = {
 	data: {
@@ -21,6 +22,7 @@ const mock: IWithLaunchEnhancedProps = {
 		) => {
 			/**/
 		},
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -54,6 +56,15 @@ export class WithLaunch extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
