@@ -1,7 +1,7 @@
 /**
  * TODO list:
  * 1. Props data: notifications, loading, refreshing
- * 2. Props actions: loadNotifications, checkNotification, acceptFriendRequest, declineFriendRequest, getText, hideConfirm,
+ * 2. Props actions: loadNotifications, checkNotification, acceptFriendRequest, declineFriendRequest, hideConfirm,
  */
 
 import * as React from 'react';
@@ -11,6 +11,7 @@ import {
 	IConfirmationModalProps,
 	ITranslatedProps,
 } from '../../../types';
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithNotificationsEnhancedProps = {
 	data: {
@@ -100,6 +101,7 @@ const mock: IWithNotificationsEnhancedProps = {
 		refreshing: false,
 	},
 	actions: {
+		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 		showConfirm: (confirmationOptions: IConfirmationModalProps) => {
 			/**/
@@ -169,6 +171,15 @@ export class WithNotifications extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({ data: mock.data, actions: mock.actions });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					children({
+						data: mock.data,
+						actions: { ...mock.actions, getText },
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
