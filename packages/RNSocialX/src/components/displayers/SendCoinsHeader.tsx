@@ -1,4 +1,3 @@
-import numeral from 'numeral';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,27 +12,21 @@ export interface ISendCoinsHeaderProps {
 export const SendCoinsHeader: React.SFC<ISendCoinsHeaderProps> = ({
 	coins,
 	onDropDownPress,
-}) => {
-	const formattedCoins = numeral(coins).format('0.00a');
-	return (
-		<View style={styles.container}>
-			<View style={styles.leftContainer}>
-				<Image
-					source={icons.socxCoinIcon}
-					style={styles.coinIcon}
-					resizeMode="contain"
-				/>
-				<View>
-					<Text style={styles.coinTitle}>SOCX</Text>
-					<Text style={styles.coinDetails}>
-						{formattedCoins}
-						SOCX in wallet
-					</Text>
-				</View>
+}) => (
+	<View style={styles.container}>
+		<View style={styles.leftContainer}>
+			<Image
+				source={icons.socxCoinIcon}
+				style={styles.coinIcon}
+				resizeMode="contain"
+			/>
+			<View>
+				<Text style={styles.coinTitle}>SOCX</Text>
+				<Text style={styles.coinDetails}>{coins} SOCX in wallet</Text>
 			</View>
-			<TouchableOpacity style={styles.dropDownArrow} onPress={onDropDownPress}>
-				<Icon name="md-arrow-round-down" style={styles.arrowIcon} />
-			</TouchableOpacity>
 		</View>
-	);
-};
+		<TouchableOpacity style={styles.dropDownArrow} onPress={onDropDownPress}>
+			<Icon name="md-arrow-round-down" style={styles.arrowIcon} />
+		</TouchableOpacity>
+	</View>
+);
