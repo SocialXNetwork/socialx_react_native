@@ -20,6 +20,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
+		case ActionTypes.REMOVE_COMMENT: {
+			return { ...state };
+		}
+
+		case ActionTypes.UNLIKE_COMMENT: {
+			return { ...state };
+		}
+
 		default: {
 			assertNever(action);
 			return state;
