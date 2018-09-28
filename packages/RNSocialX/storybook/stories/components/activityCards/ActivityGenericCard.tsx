@@ -16,11 +16,11 @@ storiesOf('Components/activityCards', module)
 		<ActivityGenericCard
 			onViewUserProfile={action('onViewUserProfile')}
 			avatarURL={image}
-			fullName={'Alex Sirbu'}
-			userName={'alexsirbu'}
-			userId={'85-f3r1-5ad'}
-			requestId={'87-ga2d-1d'}
-			text={'Hello, my name is Alex.'}
+			fullName="Alex Sirbu"
+			userName="alexsirbu"
+			userId="85-f3r1-5ad"
+			requestId="87-ga2d-1d"
+			text="Hello, my name is Alex."
 			onCheckNotification={action('onCheckNotification')}
 			showConfirm={action('showConfirm')}
 			hideConfirm={action('hideConfirm')}

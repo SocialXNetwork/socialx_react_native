@@ -10,6 +10,8 @@ const style: any = {
 		flexDirection: 'row',
 		width: '100%',
 		alignItems: 'center',
+		backgroundColor: Colors.white,
+		borderRadius: Sizes.smartHorizontalScale(6),
 	},
 	inputContainer: {
 		flexDirection: 'row',

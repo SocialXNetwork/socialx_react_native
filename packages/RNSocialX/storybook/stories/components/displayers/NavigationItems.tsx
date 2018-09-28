@@ -10,7 +10,7 @@ storiesOf('Components/displayers', module)
 	.add('NavigationItems', () => (
 		<NavigationItems
 			notifications={5}
-			selectedTab={'UserFeedTab'}
+			selectedTab="UserFeedTab"
 			showPhotoOptionsMenu={action('showPhotoOptionsMenu')}
 			tabChange={action('tabChange')}
 		/>

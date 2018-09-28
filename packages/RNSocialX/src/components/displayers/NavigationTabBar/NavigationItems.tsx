@@ -97,7 +97,7 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 							<View style={styles.imageContainer}>
 								<Image
 									source={item.image}
-									resizeMode={'contain'}
+									resizeMode="contain"
 									style={item.style}
 								/>
 							</View>

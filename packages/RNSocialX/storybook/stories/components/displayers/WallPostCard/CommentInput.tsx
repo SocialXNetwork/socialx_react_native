@@ -11,8 +11,8 @@ class CommentInputStory extends React.Component {
 	public state = {
 		inputFocused: false,
 		inputBorderWidth: new Animated.Value(0),
-		inputAvatarWidth: new Animated.Value(25),
-		inputAvatarHeight: new Animated.Value(25),
+		inputAvatarSize: new Animated.Value(25),
+		inputAvatarRadius: new Animated.Value(12.5),
 	};
 
 	private keyboardDidHideListener: any;
@@ -32,12 +32,12 @@ class CommentInputStory extends React.Component {
 		return (
 			<CommentInput
 				noInput={false}
-				comment={''}
+				comment=""
 				disabled={false}
 				avatarURL={'https://avatars2.githubusercontent.com/u/212'}
 				animationValues={{
-					width: this.state.inputAvatarWidth,
-					height: this.state.inputAvatarHeight,
+					size: this.state.inputAvatarSize,
+					radius: this.state.inputAvatarRadius,
 					border: this.state.inputBorderWidth,
 				}}
 				onCommentInputPress={this.onCommentInputPressHandler}
@@ -54,12 +54,12 @@ class CommentInputStory extends React.Component {
 					toValue: 0,
 					duration: 250,
 				}),
-				Animated.timing(this.state.inputAvatarWidth, {
+				Animated.timing(this.state.inputAvatarSize, {
 					toValue: 25,
 					duration: 250,
 				}),
-				Animated.timing(this.state.inputAvatarHeight, {
-					toValue: 25,
+				Animated.timing(this.state.inputAvatarRadius, {
+					toValue: 12.5,
 					duration: 250,
 				}),
 			]).start();
@@ -72,15 +72,15 @@ class CommentInputStory extends React.Component {
 			Animated.parallel([
 				Animated.timing(this.state.inputBorderWidth, {
 					toValue: 2,
-					duration: 350,
+					duration: 250,
 				}),
-				Animated.timing(this.state.inputAvatarWidth, {
+				Animated.timing(this.state.inputAvatarSize, {
 					toValue: 35,
-					duration: 350,
+					duration: 250,
 				}),
-				Animated.timing(this.state.inputAvatarHeight, {
-					toValue: 35,
-					duration: 350,
+				Animated.timing(this.state.inputAvatarRadius, {
+					toValue: 17.5,
+					duration: 250,
 				}),
 			]).start();
 			this.setState({ inputFocused: true });

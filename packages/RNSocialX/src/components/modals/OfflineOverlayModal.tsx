@@ -21,14 +21,14 @@ export const OfflineOverlayModal: React.SFC<IOfflineOverlayModalProps> = ({
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={visible}
-				backdropOpacity={0.2}
-				animationIn={'slideInDown'}
-				animationOut={'slideOutUp'}
+				backdropOpacity={0.5}
+				animationIn="slideInDown"
+				animationOut="slideOutUp"
 				style={styles.container}
 			>
 				<SafeAreaView>
 					<View style={styles.boxContainer}>
-						<ActivityIndicator size={'small'} color={defaultColor} />
+						<ActivityIndicator size="small" color={defaultColor} />
 						<Text style={styles.message}>
 							{getText('offline.overlay.message')}
 						</Text>

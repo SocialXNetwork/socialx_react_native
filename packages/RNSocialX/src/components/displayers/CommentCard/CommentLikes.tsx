@@ -16,7 +16,7 @@ export const CommentLikes: React.SFC<ICommentLikesProps> = ({
 	<View style={[styles.likesContainer, commentLikesPosition]}>
 		<View style={styles.likesBorder}>
 			<View style={styles.iconContainer}>
-				<Icon name={'md-thumbs-up'} style={styles.icon} />
+				<Icon name="md-thumbs-up" style={styles.icon} />
 			</View>
 			<Text style={styles.numberOfLikes}>{numberOfLikes}</Text>
 		</View>

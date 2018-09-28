@@ -19,8 +19,8 @@ import {
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface IAnimationValues {
-	width: Animated.Value;
-	height: Animated.Value;
+	size: Animated.Value;
+	radius: Animated.Value;
 	border: Animated.Value;
 }
 
@@ -60,20 +60,26 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 					}
 					style={[
 						styles.commentInputAvatar,
-						{ width: animationValues.width, height: animationValues.height },
+						{
+							width: animationValues.size,
+							height: animationValues.size,
+							borderRadius: animationValues.radius,
+						},
 					]}
 				/>
 				<Animated.View
 					style={[
 						styles.commentInputView,
-						{ borderWidth: animationValues.border },
+						{
+							borderWidth: animationValues.border,
+						},
 					]}
 				>
 					<PrimaryTextInput
 						width={SCREEN_WIDTH - 90}
 						borderWidth={0}
 						size={InputSizes.Small}
-						placeholder={'Add a comment...'}
+						placeholder="Add a comment..."
 						value={comment}
 						onChangeText={onCommentInputChange}
 						focusUpdateHandler={onCommentInputPress}
@@ -105,7 +111,7 @@ const styles: any = StyleSheet.create({
 	commentInputAvatar: {
 		width: Sizes.smartHorizontalScale(25),
 		height: Sizes.smartHorizontalScale(25),
-		borderRadius: Sizes.smartHorizontalScale(40) / 2,
+		borderRadius: Sizes.smartHorizontalScale(25) / 2,
 		marginRight: Sizes.smartHorizontalScale(8),
 	},
 });

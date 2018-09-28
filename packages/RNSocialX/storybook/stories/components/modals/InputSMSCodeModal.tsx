@@ -11,12 +11,12 @@ storiesOf('Components/modals', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('InputSMSCodeModal', () => {
-		const visible = boolean('visible', false);
+		const visible = boolean('visible', true);
 
 		return (
 			<InputSMSCodeModal
 				visible={visible}
-				phoneNumber={'0749 274 064'}
+				phoneNumber="0749 274 064"
 				errorMessage={null}
 				resendingCode={false}
 				confirmHandler={action('Confirm!')}

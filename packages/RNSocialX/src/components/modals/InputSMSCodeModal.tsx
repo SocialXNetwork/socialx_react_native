@@ -60,9 +60,9 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 				// @ts-ignore
 				onDismiss={onDismiss}
 				isVisible={visible}
-				backdropOpacity={0.7}
-				animationIn={'zoomIn'}
-				animationOut={'zoomOut'}
+				backdropOpacity={0.5}
+				animationIn="zoomIn"
+				animationOut="zoomOut"
 				onBackdropPress={declineHandler}
 				style={[
 					style.container,

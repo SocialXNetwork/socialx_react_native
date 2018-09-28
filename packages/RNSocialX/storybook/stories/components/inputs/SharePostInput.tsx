@@ -15,7 +15,7 @@ class SharePostInputStory extends React.Component {
 		return (
 			<SharePostInput
 				avatarSource={image}
-				placeholder={'Type something'}
+				placeholder="Type something"
 				text={this.state.value}
 				onTextUpdate={(value) => this.setState({ value })}
 			/>

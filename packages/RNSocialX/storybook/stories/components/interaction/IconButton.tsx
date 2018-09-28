@@ -10,10 +10,10 @@ storiesOf('Components/interaction', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('IconButton', () => (
 		<IconButton
-			label={'Button (Surprising, I know)'}
+			label="Button (Surprising, I know)"
 			onPress={action('Pressed!')}
-			iconType={'io'}
-			iconSource={'ios-add-circle'}
+			iconType="io"
+			iconSource="ios-add-circle"
 			iconStyle={{ fontSize: 25, color: Colors.pink }}
 			textStyle={{ color: Colors.pink }}
 			containerStyle={{

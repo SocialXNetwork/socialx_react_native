@@ -11,10 +11,10 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('MediaObjectViewer', () => (
 		<MediaObjectViewer
-			extension={'mp4'}
+			extension="mp4"
 			uri={image}
 			style={{ width: 300, height: 300 }}
-			resizeMode={'contain'}
+			resizeMode="contain"
 			getText={getTextMock}
 		/>
 	));

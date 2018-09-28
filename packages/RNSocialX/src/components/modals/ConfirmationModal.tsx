@@ -6,7 +6,7 @@ import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 import style from './ConfirmationModal.style';
 
-interface IConfirmationModalPropsExtended extends ITranslatedProps {
+interface IConfirmationModalProps {
 	confirmActive: boolean;
 	title: string | null;
 	message: string | null;
@@ -16,27 +16,26 @@ interface IConfirmationModalPropsExtended extends ITranslatedProps {
 	declineHandler: () => void;
 }
 
-export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
+export const ConfirmationModal: React.SFC<IConfirmationModalProps> = ({
 	confirmActive,
 	title = null,
 	message = null,
-	confirmButton = 'button.yes',
-	cancelButton = 'button.no',
+	confirmButton = 'Yes',
+	cancelButton = 'No',
 	confirmHandler = () => {
 		/**/
 	},
 	declineHandler = () => {
 		/**/
 	},
-	getText,
 }) => (
 	<WithManagedTransitions modalVisible={confirmActive}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
 				isVisible={confirmActive}
-				backdropOpacity={0.2}
-				animationIn={'zoomIn'}
-				animationOut={'zoomOut'}
+				backdropOpacity={0.5}
+				animationIn="zoomIn"
+				animationOut="zoomOut"
 				onBackdropPress={declineHandler}
 				style={style.container}
 				// @ts-ignore
@@ -46,12 +45,12 @@ export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
 				<View style={style.boxContainer}>
 					{title && (
 						<View style={style.titleBorder}>
-							<Text style={style.title}>{getText(title)}</Text>
+							<Text style={style.title}>{title}</Text>
 						</View>
 					)}
 					{message && (
 						<View style={style.messageBorder}>
-							<Text style={style.message}>{getText(message)}</Text>
+							<Text style={style.message}>{message}</Text>
 						</View>
 					)}
 					<View style={style.buttonsContainer}>
@@ -60,12 +59,12 @@ export const ConfirmationModal: React.SFC<IConfirmationModalPropsExtended> = ({
 							onPress={declineHandler}
 						>
 							<Text style={[style.buttonText, style.buttonTextCancel]}>
-								{getText(cancelButton)}
+								{cancelButton}
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={style.button} onPress={confirmHandler}>
 							<Text style={[style.buttonText, style.buttonTextConfirm]}>
-								{getText(confirmButton)}
+								{confirmButton}
 							</Text>
 						</TouchableOpacity>
 					</View>

@@ -21,7 +21,7 @@ storiesOf('Components/displayers', module)
 			<UserDetails
 				user={{
 					userId: 'user_id_test',
-					name: 'Michael Foucault',
+					fullName: 'Michael Foucault',
 					avatarURL: 'https://avatars2.githubusercontent.com/u/2531',
 				}}
 				getText={getTextMock}
@@ -30,7 +30,7 @@ storiesOf('Components/displayers', module)
 				hideAdvancedMenu={hideAdvancedMenu}
 				hideGoToUserProfile={hideGoToUserProfile}
 				taggedFriends={[]}
-				location={'Timisoara'}
+				location="Timisoara"
 				onUserPress={action('onUserPress')}
 				onShowAdvancedMenu={action('onShowAdvancedMenu')}
 			/>

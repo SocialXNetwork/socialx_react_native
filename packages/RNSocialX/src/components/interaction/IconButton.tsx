@@ -38,7 +38,7 @@ export const IconButton: React.SFC<IIconButtonProps> = ({
 			<Image
 				source={iconSource as ImageRequireSource}
 				style={[styles.icon, iconStyle]}
-				resizeMode={'contain'}
+				resizeMode="contain"
 			/>
 		)}
 		{iconType === 'io' && (

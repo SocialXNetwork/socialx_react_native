@@ -25,12 +25,12 @@ export const Tabs: React.SFC<ITabs> = ({ onIconPress, activeTab }) => {
 			<TouchableOpacity
 				onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.LIST)}
 			>
-				<Icon name={'ios-list-box'} style={listStyle} />
+				<Icon name="md-list-box" style={listStyle} />
 			</TouchableOpacity>
 			<TouchableOpacity
 				onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.GRID)}
 			>
-				<Icon name={'ios-grid'} style={gridStyle} />
+				<Icon name="md-grid" style={gridStyle} />
 			</TouchableOpacity>
 		</View>
 	);

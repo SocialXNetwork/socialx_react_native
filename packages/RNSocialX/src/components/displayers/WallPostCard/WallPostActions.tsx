@@ -26,8 +26,6 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 }) => {
 	return (
 		<View style={styles.container}>
-			{/* Text component for the container alignment, causes padding issues if empty */}
-			<Text />
 			{/* TODO: add when implmented: Socx Wallet / Post Total Rewards
 				 <IconButton
 					iconSource={Icons.iconPostWalletCoins}
@@ -47,8 +45,8 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 						label={umberOfSuperLikes.toString()}
                     /> */}
 				<IconButton
-					iconSource={'comment-o'}
-					iconType={'fa'}
+					iconSource="comment-o"
+					iconType="fa"
 					onPress={onCommentPress}
 					iconStyle={styles.icon}
 				/>

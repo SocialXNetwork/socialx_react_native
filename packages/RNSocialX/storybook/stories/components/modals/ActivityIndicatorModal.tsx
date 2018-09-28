@@ -9,12 +9,12 @@ storiesOf('Components/modals', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('ActivityIndicatorModal', () => {
-		const visible = boolean('visible', false);
+		const visible = boolean('visible', true);
 
 		return (
 			<ActivityIndicatorModal
-				activityIndicatorTitle={'Uploading'}
-				activityIndicatorMessage={'Please wait until the photo is uploaded'}
+				activityIndicatorTitle="Uploading"
+				activityIndicatorMessage="Please wait until the photo is uploaded"
 				showActivityIndicator={visible}
 			/>
 		);
