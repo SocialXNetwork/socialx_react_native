@@ -228,6 +228,8 @@ const AppNavigation = createStackNavigator(
 	},
 );
 
+// TODO @jake @serkan @alex when jake completes the notifications provider and redux api,
+// we will remove WithNavigation from here and instead directly use WithI18n and WithNotifications
 const Navigation = () => (
 	<WithNavigation>
 		{({ notifications, getText }) => (
@@ -272,8 +274,14 @@ const Navigation = () => (
 															overlayProps.confirmation.message
 														}
 														confirmActive={!!overlayProps.confirmation}
-														confirmHandler={overlayProps.hideConfirmation}
-														declineHandler={overlayProps.hideConfirmation}
+														confirmHandler={() => {
+															console.log('confirmed');
+															overlayProps.hideConfirmation();
+														}}
+														declineHandler={() => {
+															console.log('declined');
+															overlayProps.hideConfirmation();
+														}}
 													/>
 												</React.Fragment>
 											)}

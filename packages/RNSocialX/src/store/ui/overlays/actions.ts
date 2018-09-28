@@ -49,13 +49,13 @@ const showConfirmationAction: ActionCreator<IShowConfirmationAction> = (
 	payload: confirmation,
 });
 
-export const showConfirmation = (modal: IConfirmation): IThunk => async (
+export const showConfirmation = (confirmation: IConfirmation): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(showConfirmationAction(modal));
+		dispatch(showConfirmationAction(confirmation));
 	} catch (e) {
 		/**/
 	}

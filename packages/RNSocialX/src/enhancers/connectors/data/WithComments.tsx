@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(likeComment(likeCommentInput)),
 });
 
-export const WithAccounts: ConnectedComponentClass<
+export const WithComments: ConnectedComponentClass<
 	JSX.Element,
 	IChildren
 > = connect(
