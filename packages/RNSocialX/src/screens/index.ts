@@ -1,5 +1,3 @@
-export { HelloFoo } from './HelloFoo';
-
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 
 export { IntroScreen } from './intro/IntroScreen';

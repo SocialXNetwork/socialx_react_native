@@ -5022,11 +5022,6 @@ es5-shim@^4.5.10:
   resolved "https://registry.yarnpkg.com/es5-shim/-/es5-shim-4.5.11.tgz#f7406770b0eee9ecb717e306b018728114e4e47d"
   integrity sha512-7NY8JWNUZGpg+Ade2/ufJ9N6uMCiII5Oyf1H89/AuJKjYqUBU7i5bSnz0rOcIjNzQkvPJ+TfP19BTDP2FJg9pg==
 
-es6-promisify@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/es6-promisify/-/es6-promisify-6.0.0.tgz#b526a75eaa5ca600e960bf3d5ad98c40d75c7203"
-  integrity sha512-8Tbqjrb8lC85dd81haajYwuRmiU2rkqNAFnlvQOJeeKqdUloIlI+JcUqeJruV4rCm5Y7oNU7jfs2FbmxhRR/2g==
-
 es6-shim@^0.35.3:
   version "0.35.3"
   resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.3.tgz#9bfb7363feffff87a6cdb6cd93e405ec3c4b6f26"
@@ -5895,7 +5890,7 @@ gud@^1.0.0:
   resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
   integrity sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==
 
-gun@^0.9.99994:
+gun@^0.9.99995:
   version "0.9.99995"
   resolved "https://registry.yarnpkg.com/gun/-/gun-0.9.99995.tgz#2eb085e6ef0236df8dc912aa79fac55fa6f9b4f3"
   integrity sha512-5BI3dkDNmEJ6XKAHiTtH9IL9/zxTDdEYxtQWh/h/CEIatkFjHF48e9j6MJ1jJpvSMZ/2PxOAS1S/G79Hdfw6SA==
@@ -9489,10 +9484,10 @@ react-native-crypto@^2.1.2:
     pbkdf2 "3.0.8"
     public-encrypt "^4.0.0"
 
-react-native-device-info@^0.21.5:
-  version "0.21.5"
-  resolved "http://registry.npmjs.org/react-native-device-info/-/react-native-device-info-0.21.5.tgz#99478a2d68182e012297f2d63f2bd1b788106dee"
-  integrity sha512-Bvl7TyVMDbBH3wzvZx0xj3deMhWVRDHdOdjP1MjGVxVVH+bSlCi6oYDScaX2yz5rfi2OvevWWCg8jUqFKeepjA==
+react-native-device-info@^0.22.6:
+  version "0.22.6"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.6.tgz#32a674b0484d31214fdcfbbb0e677621e83ba69d"
+  integrity sha512-/w87PmHPvT5MY3HwzdVEWyFg/ib91lY6TlYJGNnNPaXNXY60ShB8HI+GXKyq4KAtbUc/WhRM1RQ8/WKJOal+UQ==
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"

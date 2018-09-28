@@ -1,3 +1,5 @@
-// todo
-// why did jake cross the road?
-// he didnt, he was busy sleeping
+// todo @jake
+
+export { default as reducer } from './reducer';
+export { IState, IAction } from './Types';
+export { createNotification } from './actions';

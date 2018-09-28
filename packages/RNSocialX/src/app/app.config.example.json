@@ -1,0 +1,16 @@
+{
+  "gun": {
+    "superPeers": [
+      "http://127.0.0.1:8765/gun"
+    ]
+  },
+  "ipfsConfig": {
+    "ipfs_URL": "https://ipfs.infura.io/ipfs/",
+    "ipfs_server": "ipfs.infura.io",
+    "ipfs_port": "5001",
+    "opts": {
+      "root": "/api/v0",
+      "protocol": "https"
+    }
+  }
+}

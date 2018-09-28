@@ -2,7 +2,11 @@ import { combineReducers } from 'redux';
 
 import { IState as IConfig, reducer as config } from './app/config';
 import { IState as II18n, reducer as i18n } from './app/i18n';
-import { IState as INavigation, reducer as navigation } from './app/navigation';
+import {
+	IState as INavigationParams,
+	reducer as navigationParams,
+} from './app/navigationParams';
+
 import { IState as IAccounts, reducer as accounts } from './data/accounts';
 import { IState as IComments, reducer as comments } from './data/comments';
 import {
@@ -11,7 +15,11 @@ import {
 } from './data/notifications';
 import { IState as IPosts, reducer as posts } from './data/posts';
 import { IState as IProfiles, reducer as profiles } from './data/profiles';
+
 import { IState as IFiles, reducer as files } from './storage/files';
+
+import { IState as IActivities, reducer as activities } from './ui/activities';
+import { IState as IGlobals, reducer as globals } from './ui/globals';
 import { IState as IOverlays, reducer as overlays } from './ui/overlays';
 
 export interface IApplicationState {
@@ -25,9 +33,11 @@ export interface IApplicationState {
 	app: {
 		config: IConfig;
 		i18n: II18n;
-		navigation: INavigation;
+		navigationParams: INavigationParams;
 	};
 	ui: {
+		activities: IActivities;
+		globals: IGlobals;
 		overlays: IOverlays;
 	};
 	storage: {
@@ -46,9 +56,11 @@ export default combineReducers<IApplicationState>({
 	app: combineReducers({
 		config,
 		i18n,
-		navigation,
+		navigationParams,
 	}),
 	ui: combineReducers({
+		activities,
+		globals,
 		overlays,
 	}),
 	storage: combineReducers({

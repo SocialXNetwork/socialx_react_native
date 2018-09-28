@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "@socialx/commons": "^0.0.1",
-    "es6-promisify": "^6.0.0",
-    "gun": "^0.9.99994",
+    "gun": "^0.9.99995",
     "utility-types": "^2.1.0",
     "yup": "^0.26.6"
   },
