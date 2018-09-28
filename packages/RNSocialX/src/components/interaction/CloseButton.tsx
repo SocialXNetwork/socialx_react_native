@@ -20,7 +20,7 @@ export const CloseButton: React.SFC<IScreenCloseButtonProps> = ({
 		}}
 	>
 		<Icon
-			name={'md-close'}
+			name="md-close"
 			size={Sizes.smartHorizontalScale(25)}
 			color={Colors.white}
 			style={style.closeIcon}

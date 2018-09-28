@@ -13,7 +13,7 @@ storiesOf('Components/activityCards', module)
 	.add('ActivitySuperLikedCard', () => (
 		<ActivitySuperLikedCard
 			avatarURL={image}
-			fullName={'Alex Sirbu'}
+			fullName="Alex Sirbu"
 			timestamp={new Date(Date.now())}
 			wallPosts={[]}
 			onThumbPress={action('onThumbPress')}

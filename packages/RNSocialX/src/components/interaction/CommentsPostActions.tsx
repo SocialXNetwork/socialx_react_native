@@ -29,8 +29,8 @@ export const CommentsPostActions: React.SFC<IPostActionsProps> = ({
 			getText={getText}
 		/>
 		<IconButton
-			iconSource={'comment-o'}
-			iconType={'fa'}
+			iconSource="comment-o"
+			iconType="fa"
 			onPress={onStartComment}
 			iconStyle={styles.icon}
 		/>

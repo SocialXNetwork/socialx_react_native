@@ -13,7 +13,7 @@ class LikeAnimatingButtonStory extends React.Component {
 	public render() {
 		return (
 			<LikeAnimatingButton
-				label={'Like'}
+				label="Like"
 				onPress={() =>
 					this.setState((prevState: { likedByMe: boolean }) => {
 						return {

@@ -53,7 +53,7 @@ storiesOf('Components/modals', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('TagFriendsModal', () => {
-		const visible = boolean('visible', false);
+		const visible = boolean('visible', true);
 
 		return (
 			<TagFriendsModal

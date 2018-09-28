@@ -56,13 +56,13 @@ const ReportProblemModalComponent: React.SFC<
 				onModalHide={onModalHide}
 				isVisible={visible}
 				backdropOpacity={Platform.select({ ios: 0, android: 0.7 })}
-				animationIn={'slideInDown'}
-				animationOut={'slideOutUp'}
+				animationIn="slideInDown"
+				animationOut="slideOutUp"
 				style={style.container}
 			>
 				{Platform.OS === OS_TYPES.IOS && (
 					<TouchableWithoutFeedback onPress={declineHandler}>
-						<BlurView style={style.blurView} blurType={'dark'} blurAmount={2} />
+						<BlurView style={style.blurView} blurType="dark" blurAmount={2} />
 					</TouchableWithoutFeedback>
 				)}
 				<View
@@ -84,11 +84,11 @@ const ReportProblemModalComponent: React.SFC<
 									<Image
 										source={Icons.iconDropDown}
 										style={style.icon}
-										resizeMode={'contain'}
+										resizeMode="contain"
 									/>
 								</View>
 								<ModalDropdown
-									keyboardShouldPersistTaps={'handled'}
+									keyboardShouldPersistTaps="handled"
 									style={style.pickerStyle}
 									dropdownStyle={style.dropdownStyle}
 									dropdownTextStyle={style.dropdownTextStyle}
@@ -103,7 +103,7 @@ const ReportProblemModalComponent: React.SFC<
 							</View>
 							<View style={style.descriptionContainer}>
 								<PrimaryTextInput
-									autoCapitalize={'sentences'}
+									autoCapitalize="sentences"
 									autoCorrect={true}
 									numberOfLines={3}
 									borderColor={Colors.dustWhite}

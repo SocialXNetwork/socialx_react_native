@@ -17,7 +17,7 @@ storiesOf('Components/displayers', module)
 			'Here Ionut testing wall post card component in a Storybook\nMonday morning with 18 deg.',
 		);
 		const location = text('location', 'Timisoara');
-		const timestamp = date('timestamp', new Date('December 17, 2017 04:55:00'));
+		const timestamp = date('timestamp', new Date('October 17, 2017 04:55:00'));
 		const ownerName = text('owner.name', 'Michael Foucault');
 		const ownerAvatarURL = text(
 			'owner.avatarURL',
@@ -41,7 +41,7 @@ storiesOf('Components/displayers', module)
 				contentOffensive={contentOffensive}
 				getText={getTextMock}
 				marginBottom={0}
-				id={'test_post_id'}
+				id="test_post_id"
 				postText={postText}
 				location={location}
 				taggedFriends={[

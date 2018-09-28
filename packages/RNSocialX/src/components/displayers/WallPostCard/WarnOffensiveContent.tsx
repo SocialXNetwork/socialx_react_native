@@ -38,6 +38,7 @@ const style: any = {
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginHorizontal: Sizes.smartHorizontalScale(16),
+		marginVertical: Sizes.smartVerticalScale(5),
 		padding: Sizes.smartHorizontalScale(10),
 		borderWidth: Sizes.smartHorizontalScale(1),
 		borderColor: Colors.grayText,

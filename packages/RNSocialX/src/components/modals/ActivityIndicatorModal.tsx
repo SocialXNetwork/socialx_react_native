@@ -27,9 +27,9 @@ export const ActivityIndicatorModal: React.SFC<
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={showActivityIndicator}
-				backdropOpacity={0.2}
-				animationIn={'slideInDown'}
-				animationOut={'slideOutUp'}
+				backdropOpacity={0.5}
+				animationIn="slideInDown"
+				animationOut="slideOutUp"
 				style={style.container}
 			>
 				<View style={style.boxContainer}>
@@ -40,7 +40,7 @@ export const ActivityIndicatorModal: React.SFC<
 						<Text style={style.message}>{activityIndicatorMessage}</Text>
 					)}
 					<ActivityIndicator
-						size={'large'}
+						size="large"
 						color={customStyleProps.activityIndicatorColor}
 					/>
 				</View>

@@ -11,7 +11,7 @@ const styles: any = {
 	},
 	badge: {
 		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
+		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: BADGE_HEIGHT,
 		color: Colors.white,
 	},
@@ -19,11 +19,13 @@ const styles: any = {
 		position: 'absolute',
 		borderRadius: BADGE_HEIGHT / 2,
 		minWidth: BADGE_HEIGHT,
-		paddingHorizontal: Sizes.smartHorizontalScale(4),
+		paddingHorizontal: 1,
+		paddingBottom: 1,
 		backgroundColor: Colors.red,
 		alignItems: 'center',
+		justifyContent: 'center',
 		left: '55%',
-		top: 0,
+		top: 2.5,
 	},
 };
 

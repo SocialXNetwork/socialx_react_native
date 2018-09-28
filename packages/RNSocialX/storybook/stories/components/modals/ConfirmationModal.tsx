@@ -4,25 +4,23 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { ConfirmationModal } from '../../../../src/components';
-import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('ConfirmationModal', () => {
-		const visible = boolean('visible', false);
+		const visible = boolean('visible', true);
 
 		return (
 			<ConfirmationModal
 				confirmActive={visible}
-				title={'Delete'}
-				message={'Are you sure you want to delete?'}
-				confirmButton={'Yes'}
-				cancelButton={'No'}
+				title="Delete"
+				message="Are you sure you want to delete?"
+				confirmButton="Yes"
+				cancelButton="No"
 				confirmHandler={action('Confirm!')}
 				declineHandler={action('Cancel!')}
-				getText={getTextMock}
 			/>
 		);
 	});

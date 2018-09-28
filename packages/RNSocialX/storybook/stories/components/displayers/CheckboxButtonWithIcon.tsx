@@ -13,6 +13,6 @@ storiesOf('Components/displayers', module)
 			selected={true}
 			onPress={action('onPress')}
 			iconSource={Icons.iconLocationPin}
-			text={'Location'}
+			text="Location"
 		/>
 	));
