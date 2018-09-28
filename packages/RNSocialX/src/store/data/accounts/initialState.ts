@@ -1,7 +1,8 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	accounts: [],
+	accounts: null,
+	currentAccount: null,
 };
 
 export default initialState;

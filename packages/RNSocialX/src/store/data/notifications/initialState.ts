@@ -1,9 +1,7 @@
-// todo @jake
-
 import { IState } from './Types';
 
 const initialState: IState = {
-	notifications: [],
+	notifications: null,
 };
 
 export default initialState;
