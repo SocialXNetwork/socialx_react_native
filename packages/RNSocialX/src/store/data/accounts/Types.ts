@@ -9,14 +9,21 @@ import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
 export interface IAccount {
-	alias?: string;
+	alias: string;
 	username: string;
 	pub: string;
+	epub: string;
+}
+
+export interface IRecoveryData {
+	hint: string;
 }
 
 export type IState = DeepReadonly<{
-	accounts: IAccount[] | null;
+	account: IAccount | null;
 	currentAccount: IAccount | null;
+	recovery: IRecoveryData | null;
+	loggedIn: boolean;
 }>;
 
 export const enum ActionTypes {
@@ -38,7 +45,7 @@ export interface ICreateAccountAction extends Action {
 
 export interface IRecoverAccountAction extends Action {
 	type: ActionTypes.RECOVER_ACCOUNT;
-	payload: IRecoverAccountInput;
+	payload: IRecoverAccountInput & IRecoveryData;
 }
 
 export interface ITrustAccountAction extends Action {
@@ -56,6 +63,7 @@ export interface ILogoutAction extends Action {
 
 export interface IGetIsAccountLoggedInAction extends Action {
 	type: ActionTypes.GET_IS_ACCOUNT_LOGGED_IN;
+	payload: boolean;
 }
 
 export interface IChangePasswordAction extends Action {
@@ -65,11 +73,12 @@ export interface IChangePasswordAction extends Action {
 
 export interface IGetCurrentAccountAction extends Action {
 	type: ActionTypes.GET_CURRENT_ACCOUNT;
+	payload: IAccount;
 }
 
 export interface IGetAccountByPubAction extends Action {
 	type: ActionTypes.GET_ACCOUNT_BY_PUB;
-	payload: IGetAccountByPubInput;
+	payload: IGetAccountByPubInput & { account: IAccount };
 }
 
 export type IAction =
