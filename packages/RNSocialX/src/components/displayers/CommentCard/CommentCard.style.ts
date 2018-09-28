@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(40);
-const REPLY_AVATAR_SIZE = Sizes.smartHorizontalScale(30);
 export const DROPDOWN_ITEM_HEIGHT = Sizes.smartHorizontalScale(35);
 
 const styles: any = {

@@ -27,12 +27,12 @@ export const TabButton: React.SFC<ITabButtonProps> = ({
 			<View style={styles.imageContainer}>
 				<Image
 					source={item.image}
-					resizeMode={'contain'}
+					resizeMode="contain"
 					style={[item.style, { opacity: isSelected ? 0 : 1 }]}
 				/>
 				<Image
 					source={item.imageSelected!}
-					resizeMode={'contain'}
+					resizeMode="contain"
 					style={[
 						item.style,
 						styles.imageSelected,

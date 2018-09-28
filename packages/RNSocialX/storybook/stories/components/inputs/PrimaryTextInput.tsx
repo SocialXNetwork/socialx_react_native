@@ -15,10 +15,10 @@ storiesOf('Components/inputs', module)
 	.add('PrimaryTextInput', () => (
 		<PrimaryTextInput
 			onChangeText={action('onChangeText')}
-			placeholder={'Sample input'}
+			placeholder="Sample input"
 			placeholderColor={Colors.green}
 			returnKeyType={TRKeyboardKeys.next}
 			keyboardType={TKeyboardKeys.emailAddress}
-			value={'Test 123'}
+			value="Test 123"
 		/>
 	));

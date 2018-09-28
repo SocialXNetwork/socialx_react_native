@@ -26,7 +26,7 @@ const SortingItem: React.SFC<{
 	<View style={style.lineContainer}>
 		<View style={style.iconView}>
 			{selectedValue === optionValue ? (
-				<Icon name={'md-checkmark'} style={style.selectedIcon} />
+				<Icon name="md-checkmark" style={style.selectedIcon} />
 			) : null}
 		</View>
 		<Text style={style.label}>{optionValue}</Text>

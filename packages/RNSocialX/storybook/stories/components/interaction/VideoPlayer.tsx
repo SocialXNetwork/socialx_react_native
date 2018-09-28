@@ -27,7 +27,7 @@ storiesOf('Components/interaction', module)
 				}}
 				paused={paused}
 				muted={muted}
-				resizeMode={'cover'}
+				resizeMode="cover"
 				thumbOnly={false}
 				resizeToChangeAspectRatio={resizeToChangeAspectRatio}
 			/>
@@ -41,7 +41,7 @@ storiesOf('Components/interaction', module)
 					width: '100%',
 					height: 250,
 				}}
-				resizeMode={'contain'}
+				resizeMode="contain"
 				paused={true}
 				thumbOnly={true}
 				onPressVideo={action('onPressVideo, show full screen screen')}

@@ -14,7 +14,6 @@ import {
 	Sizes,
 } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
-import { showToastMessage } from '../../utilities';
 
 const PULSATE_PERIOD = 700;
 

@@ -10,7 +10,7 @@ storiesOf('Components/interaction', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('PrimaryButton', () => (
 		<PrimaryButton
-			label={'Button (Surprising, I know)'}
+			label="Button (Surprising, I know)"
 			disabled={false}
 			onPress={action('Pressed!')}
 			size={ButtonSizes.Normal}

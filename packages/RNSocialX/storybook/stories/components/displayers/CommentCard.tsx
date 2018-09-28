@@ -63,7 +63,7 @@ storiesOf('Components/displayers', module)
 				onShowOptionsMenu={action('onShowOptionsMenu')}
 				onCommentContainerWidthChange={action('onCommentContainerWidthChange')}
 				commentLikesPosition={{
-					bottom: -18,
+					bottom: -15,
 					right: 0,
 				}}
 				isReply={isReply}

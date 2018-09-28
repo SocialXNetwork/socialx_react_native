@@ -4,7 +4,7 @@ import { Colors, Fonts, Sizes } from '../../../environment/theme';
 const styles: any = {
 	textPadding: {
 		marginHorizontal: Sizes.smartHorizontalScale(16),
-		paddingBottom: Sizes.smartHorizontalScale(6),
+		paddingBottom: Sizes.smartHorizontalScale(10),
 	},
 	text: {
 		...Fonts.centuryGothic,

@@ -11,8 +11,8 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('MyWalletInfo', () => (
 		<MyWalletInfo
-			coins={'53,680'}
-			trendPercentage={'27.21'}
+			coins="53,680"
+			trendPercentage="27.21"
 			trendArrow={TrendOptions.Up}
 			onViewAccount={action('onViewAccount')}
 			getText={getTextMock}

@@ -13,8 +13,8 @@ storiesOf('Components/displayers', module)
 	.add('PeopleSearchResultEntry', () => (
 		<PeopleSearchResultEntry
 			avatarURL={image}
-			fullName={'Alex Sirbu'}
-			location={'Timisoara'}
+			fullName="Alex Sirbu"
+			location="Timisoara"
 			selected={true}
 			addHandler={action('addHandler')}
 			getText={getTextMock}

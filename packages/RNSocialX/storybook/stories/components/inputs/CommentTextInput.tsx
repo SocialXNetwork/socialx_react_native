@@ -13,7 +13,7 @@ class CommentTextInputStory extends React.Component {
 	public render() {
 		return (
 			<CommentTextInput
-				placeholder={'Type something'}
+				placeholder="Type something"
 				autoFocus={true}
 				showSendButton={true}
 				commentText={this.state.value}
