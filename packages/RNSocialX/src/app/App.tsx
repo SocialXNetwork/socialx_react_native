@@ -5,6 +5,7 @@ import ErrorBoundary from './ErrorBoundary';
 import Init from './Init';
 import Keyboard from './Keyboard';
 import Navigation from './Navigation';
+import OfflineHandlers from './OfflineHandlers';
 import Splash from './Splash';
 import StatusBar from './StatusBar';
 import Store from './Store';
@@ -18,8 +19,10 @@ export default class App extends React.Component<{}> {
 						<Splash>
 							<Keyboard>
 								<Store>
-									<StatusBar />
-									<Navigation />
+									<OfflineHandlers>
+										<StatusBar />
+										<Navigation />
+									</OfflineHandlers>
 								</Store>
 							</Keyboard>
 						</Splash>
