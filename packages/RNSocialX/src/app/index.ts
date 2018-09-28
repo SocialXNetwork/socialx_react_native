@@ -1,1 +1,1 @@
-export { HelloFoo } from '../screens';
+export { default as App } from './App';
