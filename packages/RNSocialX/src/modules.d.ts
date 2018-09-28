@@ -25,3 +25,8 @@ declare module 'react-native-country-picker-modal';
 declare module 'react-native-mime-types';
 
 // declare module 'native-base';
+
+declare module '*.json' {
+	const value: any;
+	export default value;
+}

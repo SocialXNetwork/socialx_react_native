@@ -1,5 +1,3 @@
-export { Foo } from './Foo';
-
 export {
 	ActivityFriendRequestCard,
 } from './activityCards/ActivityFriendRequestCard';

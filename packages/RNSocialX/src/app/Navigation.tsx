@@ -8,9 +8,16 @@ import {
 	TransitionConfig,
 } from 'react-navigation';
 
-import { NavigationTabBar } from '../components';
+import { Root } from 'native-base';
+
+import {
+	ActivityIndicatorModal,
+	ConfirmationModal,
+	NavigationTabBar,
+	OfflineOverlayModal,
+} from '../components';
 import { WithNavigation } from '../enhancers/navigation/WithNavigation';
-import { INavigationProps, IStackDefaultConfig } from '../types';
+import { IStackDefaultConfig } from '../types';
 import { tabStyles } from './Navigation.style';
 
 import {
@@ -44,6 +51,11 @@ import {
 	TopTab,
 	TrendingScreen,
 } from '../screens/mainTabNav/SearchScreen';
+
+import { WithI18n } from '../enhancers/connectors/app/WithI18n';
+import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
+import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
+import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -216,13 +228,65 @@ const AppNavigation = createStackNavigator(
 	},
 );
 
-export const Navigation = (navigationProps: INavigationProps) => (
+const Navigation = () => (
 	<WithNavigation>
 		{({ notifications, getText }) => (
-			<AppNavigation
-				{...navigationProps}
-				screenProps={{ notifications, getText }}
-			/>
+			<Root>
+				<AppNavigation screenProps={{ notifications, getText }} />
+				<WithGlobals>
+					{(globalsProps) => (
+						<WithActivities>
+							{(activitiesProps) => (
+								<WithOverlays>
+									{(overlayProps) => (
+										<WithI18n>
+											{(i18nProps) => (
+												<React.Fragment>
+													<OfflineOverlayModal
+														visible={!!globalsProps.globals.offline}
+														getText={i18nProps.getText}
+													/>
+													<ActivityIndicatorModal
+														showActivityIndicator={
+															activitiesProps.activities.length > 0
+														}
+														activityIndicatorTitle={
+															activitiesProps.activities.length > 0
+																? activitiesProps.activities[0].uuid
+																: ''
+														}
+														activityIndicatorMessage={
+															activitiesProps.activities.length > 0
+																? activitiesProps.activities[0].type
+																: ''
+														}
+													/>
+													<ConfirmationModal
+														getText={i18nProps.getText}
+														title={
+															overlayProps.confirmation &&
+															overlayProps.confirmation.title
+														}
+														message={
+															overlayProps.confirmation &&
+															overlayProps.confirmation.message
+														}
+														confirmActive={!!overlayProps.confirmation}
+														confirmHandler={overlayProps.hideConfirmation}
+														declineHandler={overlayProps.hideConfirmation}
+													/>
+												</React.Fragment>
+											)}
+										</WithI18n>
+									)}
+								</WithOverlays>
+							)}
+						</WithActivities>
+					)}
+				</WithGlobals>
+			</Root>
 		)}
 	</WithNavigation>
 );
+
+export default Navigation;

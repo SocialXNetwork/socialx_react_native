@@ -17,6 +17,13 @@ import {
 
 import { CoinSymbol } from './environment/consts';
 
+import dictionary from './store/app/i18n/data/dictionary.en';
+import { getText } from './store/app/i18n/helpers';
+
+export const getTextMock = (key: string, ...args: Array<string | number>) => {
+	return getText(dictionary, key, ...args);
+};
+
 const avatar =
 	'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
 
@@ -502,7 +509,3 @@ export const transactions: ITransactionData[] = [
 		date: new Date(2018, 11, 12),
 	},
 ];
-
-export const getTextMock = (text: string) => {
-	return text;
-};

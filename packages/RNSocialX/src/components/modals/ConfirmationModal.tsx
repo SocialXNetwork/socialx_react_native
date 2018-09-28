@@ -10,8 +10,8 @@ interface IConfirmationModalPropsExtended extends ITranslatedProps {
 	confirmActive: boolean;
 	title: string | null;
 	message: string | null;
-	confirmButton: string;
-	cancelButton: string;
+	confirmButton?: string;
+	cancelButton?: string;
 	confirmHandler: () => void;
 	declineHandler: () => void;
 }

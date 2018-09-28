@@ -1,10 +1,11 @@
 /**
  * TODO list:
  * 1. Props data: notifications
- * 2. Props actions: getText
  */
 
 import * as React from 'react';
+
+import { WithI18n } from '../connectors/app/WithI18n';
 
 import { ITranslatedProps } from '../../types';
 
@@ -29,9 +30,15 @@ export class WithNavigation extends React.Component<
 > {
 	render() {
 		const { children } = this.props;
-		return children({
-			notifications: mock.notifications,
-			getText: mock.getText,
-		});
+		return (
+			<WithI18n>
+				{(i18nProps) =>
+					children({
+						notifications: mock.notifications,
+						getText: i18nProps.getText,
+					})
+				}
+			</WithI18n>
+		);
 	}
 }
