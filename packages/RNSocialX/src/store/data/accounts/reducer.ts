@@ -11,7 +11,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.RECOVER_ACCOUNT: {
-			return { ...state };
+			const recovery = action.payload;
+			return { ...state, recovery };
 		}
 
 		case ActionTypes.CHANGE_PASSWORD: {
@@ -23,23 +24,27 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.LOGIN: {
-			return { ...state };
+			return { ...state, loggedIn: true };
 		}
 
 		case ActionTypes.LOGOUT: {
-			return { ...state };
+			return { ...state, loggedIn: false };
 		}
 
+		// guess this can be used as an extra check?
 		case ActionTypes.GET_IS_ACCOUNT_LOGGED_IN: {
-			return { ...state };
+			const loggedIn = action.payload;
+			return { ...state, loggedIn };
 		}
 
 		case ActionTypes.GET_CURRENT_ACCOUNT: {
-			return { ...state };
+			const currentAccount = action.payload;
+			return { ...state, currentAccount };
 		}
 
 		case ActionTypes.GET_ACCOUNT_BY_PUB: {
-			return { ...state };
+			const { account } = action.payload;
+			return { ...state, account };
 		}
 
 		default: {
