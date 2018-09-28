@@ -1,16 +1,19 @@
-import { IPostData, IPostIdInput, IPostPathInput } from './Types';
+import { IPostIdInput, IPostPathInput } from './Types';
 
 export { default as reducer } from './reducer';
+
+export { IPostData } from '@socialx/api-data';
+
 export {
 	IState,
 	IAction,
 	IProfile,
-	IPostData,
 	IPostIdInput,
 	IPostPathInput,
 	IUsernameInput,
 	IDateInput,
 } from './Types';
+
 export {
 	getPostByPath,
 	getPostLikes,

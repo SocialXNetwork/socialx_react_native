@@ -13,6 +13,8 @@ import {
 	IWallPostCardData,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 
 // TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 const mock: IWithUserFeedEnhancedProps = {

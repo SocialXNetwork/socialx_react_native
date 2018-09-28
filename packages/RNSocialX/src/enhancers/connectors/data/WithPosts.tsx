@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
 });
 
-export const WithAccounts: ConnectedComponentClass<
+export const WithPosts: ConnectedComponentClass<
 	JSX.Element,
 	IChildren
 > = connect(

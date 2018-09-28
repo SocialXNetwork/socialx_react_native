@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(createProfile(createProfileInput)),
 });
 
-export const WithAccounts: ConnectedComponentClass<
+export const WithProfiles: ConnectedComponentClass<
 	JSX.Element,
 	IChildren
 > = connect(
