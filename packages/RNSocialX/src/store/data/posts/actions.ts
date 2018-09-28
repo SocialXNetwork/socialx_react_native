@@ -1,4 +1,8 @@
-import { ICreatePostInput } from '@socialx/api-data';
+import {
+	ICreatePostInput,
+	IRemovePostInput,
+	IUnlikePostInput,
+} from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
@@ -12,12 +16,10 @@ import {
 	ILikePostAction,
 	IPostIdInput,
 	IPostPathInput,
+	IRemovePostAction,
+	IUnlikePostAction,
 	IUsernameInput,
 } from './Types';
-
-// todo: @jake add the new api actions here
-// removePost
-// unlikePost
 
 const getPostPathsByUsernameAction: ActionCreator<IGetPostPathsByUserAction> = (
 	getPostPathsByUsernameInput: IUsernameInput,
@@ -122,6 +124,44 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 ) => {
 	try {
 		dispatch(likePostAction(likePostInput));
+	} catch (e) {
+		/**/
+	}
+};
+
+const removePostAction: ActionCreator<IRemovePostAction> = (
+	removePostInput: IRemovePostInput,
+) => ({
+	type: ActionTypes.REMOVE_POST,
+	payload: removePostInput,
+});
+
+export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(removePostAction(removePostInput));
+	} catch (e) {
+		/**/
+	}
+};
+
+const unlikePostAction: ActionCreator<IUnlikePostAction> = (
+	unlikePostInput: IUnlikePostInput,
+) => ({
+	type: ActionTypes.UNLIKE_POST,
+	payload: unlikePostInput,
+});
+
+export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(unlikePostAction(unlikePostInput));
 	} catch (e) {
 		/**/
 	}

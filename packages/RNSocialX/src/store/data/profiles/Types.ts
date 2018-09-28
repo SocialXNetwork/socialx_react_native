@@ -19,7 +19,7 @@ export interface IProfile {
 }
 
 export type IState = DeepReadonly<{
-	profiles: IProfile[];
+	profiles: IProfile[] | null;
 }>;
 
 export const enum ActionTypes {

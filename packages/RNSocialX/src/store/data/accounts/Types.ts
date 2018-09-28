@@ -15,7 +15,8 @@ export interface IAccount {
 }
 
 export type IState = DeepReadonly<{
-	accounts: IAccount[];
+	accounts: IAccount[] | null;
+	currentAccount: IAccount | null;
 }>;
 
 export const enum ActionTypes {

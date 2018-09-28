@@ -1,15 +1,20 @@
-import { ICreatePostInput, IPostData } from '@socialx/api-data';
+import {
+	ICreatePostInput,
+	IPostData,
+	IRemovePostInput,
+	IUnlikePostInput,
+} from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
 export type IState = DeepReadonly<{
-	posts: IPostData[];
+	posts: IPostData[] | null;
 	postMetaById: {
 		[postId: string]: IPostData;
-	};
+	} | null;
 	postMetasByUser: {
 		[username: string]: IPostData;
-	};
+	} | null;
 }>;
 
 export interface IUsernameInput {
@@ -41,6 +46,8 @@ export const enum ActionTypes {
 	GET_POST_LIKES = 'data/posts/GET_POST_LIKES',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
+	REMOVE_POST = 'data/posts/REMOVE_POST',
+	UNLIKE_POST = 'data/posts/UNLIKE_POST',
 }
 
 export interface IGetPostPathsByUserAction extends Action {
@@ -73,10 +80,25 @@ export interface ILikePostAction extends Action {
 	payload: IPostIdInput;
 }
 
+// removePost
+// unlikePost
+
+export interface IRemovePostAction extends Action {
+	type: ActionTypes.REMOVE_POST;
+	payload: IRemovePostInput;
+}
+
+export interface IUnlikePostAction extends Action {
+	type: ActionTypes.UNLIKE_POST;
+	payload: IUnlikePostInput;
+}
+
 export type IAction =
 	| IGetPostPathsByUserAction
 	| IGetPublicPostsByDateAction
 	| IGetPostLikesAction
 	| ICreatePostAction
 	| ILikePostAction
-	| IGetPostByPathAction;
+	| IGetPostByPathAction
+	| IRemovePostAction
+	| IUnlikePostAction;
