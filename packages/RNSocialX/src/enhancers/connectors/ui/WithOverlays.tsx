@@ -70,7 +70,17 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	showModal: (modal: IModal) => dispatch(showModal(modal)),
 	hideModal: () => dispatch(hideModal()),
 	showConfirmation: (confirmation: IConfirmation) =>
-		dispatch(showConfirmation(confirmation)),
+		dispatch(
+			showConfirmation({
+				...confirmation,
+				// Todo: this is a hack because when we make a property optional here,
+				// typescript says it is not compatible with the deepreadonly version
+				// if we cannot solve it, we can maybe remove deepreadonly
+				// or make sure we always pass the default values to this action
+				confirmButtonLabel: confirmation.confirmButtonLabel || 'OK',
+				cancelButtonLabel: confirmation.cancelButtonLabel || 'CANCEL',
+			}),
+		),
 	hideConfirmation: () => dispatch(hideConfirmation()),
 });
 
