@@ -1,4 +1,10 @@
-import { ICreateProfileInput } from '@socialx/api-data';
+import {
+	IAcceptFriendInput,
+	IAddFriendInput,
+	ICreateProfileInput,
+	IRemoveFriendInput,
+	IUpdateProfileInput,
+} from '@socialx/api-data';
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -11,10 +17,16 @@ import {
 	IProfile,
 	IUsernameInput,
 } from '../../../store/data/profiles';
+import {
+	acceptFriend,
+	addFriend,
+	removeFriend,
+} from '../../../store/data/profiles/actions';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	profiles: IProfile[];
+	profiles: IProfile[] | null;
+	currentProfile: IProfile | null;
 }
 
 interface IActionProps {
@@ -22,6 +34,10 @@ interface IActionProps {
 	getCurrentProfile: () => void;
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) => void;
 	createProfile: (createProfileInput: ICreateProfileInput) => void;
+	updateProfile: (updateProfileInput: IUpdateProfileInput) => void;
+	addFriend: (addFriendInput: IAddFriendInput) => void;
+	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
+	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -42,8 +58,14 @@ const selectProfiles = createSelector(
 	(profiles) => profiles,
 );
 
+const selectCurrentProfile = createSelector(
+	(state: IApplicationState) => state.data.profiles.currentProfile,
+	(currentProfile) => currentProfile,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
+	currentProfile: selectCurrentProfile(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -54,6 +76,12 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getProfileByUsername(getProfileByUsernameInput)),
 	createProfile: (createProfileInput: ICreateProfileInput) =>
 		dispatch(createProfile(createProfileInput)),
+	addFriend: (addFriendInput: IAddFriendInput) =>
+		dispatch(addFriend(addFriendInput)),
+	removeFriend: (removeFriendInput: IRemoveFriendInput) =>
+		dispatch(removeFriend(removeFriendInput)),
+	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
+		dispatch(acceptFriend(acceptFriendInput)),
 });
 
 export const WithProfiles: ConnectedComponentClass<

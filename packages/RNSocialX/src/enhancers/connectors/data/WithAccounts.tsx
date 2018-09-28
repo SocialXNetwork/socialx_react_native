@@ -2,6 +2,7 @@ import {
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
+	IGetAccountByPubInput,
 	IRecoverAccountInput,
 } from '@socialx/api-data';
 import * as React from 'react';
@@ -11,6 +12,8 @@ import { IApplicationState } from '../../../store';
 import {
 	changePassword,
 	createAccount,
+	getAccountByPub,
+	getCurrentAccount,
 	getIsAccountLoggedIn,
 	IAccount,
 	login,
@@ -21,7 +24,8 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	accounts: IAccount[];
+	accounts: IAccount[] | null;
+	currentAccount: IAccount | null;
 }
 
 interface IActionProps {
@@ -32,6 +36,8 @@ interface IActionProps {
 	logout: () => void;
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) => void;
 	trustAccount: () => void;
+	currentAccount: () => void;
+	getAccountByPub: (accountByIdInput: IGetAccountByPubInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -52,8 +58,14 @@ const selectAccounts = createSelector(
 	(accounts) => accounts,
 );
 
+const selectCurrentAccount = createSelector(
+	(state: IApplicationState) => state.data.accounts.currentAccount,
+	(currentAccount) => currentAccount,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	accounts: selectAccounts(state),
+	currentAccount: selectCurrentAccount(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -67,6 +79,9 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) =>
 		dispatch(recoverAccount(recoverAccountInput)),
 	trustAccount: () => dispatch(trustAccount()),
+	currentAccount: () => dispatch(getCurrentAccount()),
+	getAccountByPub: (getAccountByPubInput: IGetAccountByPubInput) =>
+		dispatch(getAccountByPub(getAccountByPubInput)),
 });
 
 export const WithAccounts: ConnectedComponentClass<

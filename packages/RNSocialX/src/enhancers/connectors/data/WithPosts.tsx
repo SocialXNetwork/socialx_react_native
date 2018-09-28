@@ -1,3 +1,4 @@
+import { IRemovePostInput, IUnlikePostInput } from '@socialx/api-data';
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -14,17 +15,19 @@ import {
 	IPostPathInput,
 	IUsernameInput,
 	likePost,
+	removePost,
+	unlikePost,
 } from '../../../store/data/posts';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	posts: IPostData[];
+	posts: IPostData[] | null;
 	postMetaById: {
 		[postId: string]: IPostData;
-	};
+	} | null;
 	postMetasByUser: {
 		[username: string]: IPostData;
-	};
+	} | null;
 }
 
 interface IActionProps {
@@ -34,6 +37,8 @@ interface IActionProps {
 	getPostLikes: (getPostLikesInput: IPostIdInput) => void;
 	getPostPathsByUsername: (getPostPathsByUsernameInput: IUsernameInput) => void;
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
+	removePost: (removePostInput: IRemovePostInput) => void;
+	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -82,6 +87,10 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getPostPathsByUsername(getPostPathsByUsernameInput)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
+	removePost: (removePostInput: IRemovePostInput) =>
+		dispatch(removePost(removePostInput)),
+	unlikePost: (unlikePostInput: IUnlikePostInput) =>
+		dispatch(unlikePost(unlikePostInput)),
 });
 
 export const WithPosts: ConnectedComponentClass<
