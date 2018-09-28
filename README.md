@@ -2,12 +2,6 @@
 - [ ] Fix RN postinstall scripts (check if postinstall:compat:react-native-vector-icons is needed!)
 - [ ] Add fastlane
 - [ ] Add bugsnag
-- [ ] Add storybook
-- [ ] Migrate components first and then the rest of the ui
-- [ ] Migrate libraries
-- [ ] Implement data api
-- [ ] Add redux example to enhancer (with example data api call)
-- [ ] Remove deprecated @types/redux
 
 ---
 
@@ -59,12 +53,18 @@ The following RN packages are linked:
 17. bugsnag-react-native (Podfile)
 18. react-native-smart-splash-screen
 19. react-native-orientation (Podfile)
+20. native-base
 
 Before you begin, make sure you have installed the following tooling
 
 - node >=8.11
 - npm >=6.3
 - yarn >=1.9 
+
+Make sure you have a valid `packages/RNSocialX/src/app/app.config.json` file,
+you can copy `packages/RNSocialX/src/app/app.config.example.json` if you don't
+have one. If you have gun connection errors, change `127.0.0.1` to your
+computer's local lan IP address.
 
 To begin development, run the following commands
 
@@ -78,6 +78,7 @@ The build step must be repeated if modules have changed.
 To run the app on the emulator/simulator, run the the following
 
 ```
+$ yarn run start:database
 $ yarn run start:js
 $ yarn run start:android
 $ yarn run start:ios

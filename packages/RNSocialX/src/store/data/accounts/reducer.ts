@@ -1,3 +1,5 @@
+// todo @jake implement the reducers based on gun data shape from getters
+
 import { assertNever } from '../../helpers';
 import initialState from './initialState';
 import { ActionTypes, IAction, IState } from './Types';
@@ -29,6 +31,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.GET_IS_ACCOUNT_LOGGED_IN: {
+			return { ...state };
+		}
+
+		case ActionTypes.GET_CURRENT_ACCOUNT: {
+			return { ...state };
+		}
+
+		case ActionTypes.GET_ACCOUNT_BY_PUB: {
 			return { ...state };
 		}
 
