@@ -80,9 +80,6 @@ export interface ILikePostAction extends Action {
 	payload: IPostIdInput;
 }
 
-// removePost
-// unlikePost
-
 export interface IRemovePostAction extends Action {
 	type: ActionTypes.REMOVE_POST;
 	payload: IRemovePostInput;

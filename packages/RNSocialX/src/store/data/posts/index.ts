@@ -21,4 +21,6 @@ export {
 	getPublicPostsByDate,
 	createPost,
 	likePost,
+	removePost,
+	unlikePost,
 } from './actions';
