@@ -12,18 +12,16 @@ storiesOf('Components/modals', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
 	.add('MediaInfoModal', () => {
-		const visible = boolean('visible', false);
+		const visible = boolean('visible', true);
 
 		return (
 			<MediaInfoModal
 				visible={visible}
-				mediaHash={'d89c92b4400b15c39e462a8caa939ab40c3aeeea:1234'}
+				mediaHash="d89c92b4400b15c39e462a8caa939ab40c3aeeea:1234"
 				mediaSize={88152}
 				mediaName={null}
 				mediaType={MediaTypeImage}
-				mediaURL={
-					'https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=350'
-				}
+				mediaURL="https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=350"
 				closeHandler={action('Close!')}
 				getText={getTextMock}
 			/>

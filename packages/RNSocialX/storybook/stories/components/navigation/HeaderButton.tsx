@@ -11,7 +11,7 @@ storiesOf('Components/navigation', module)
 	.add('HeaderButton', () => (
 		<HeaderButton
 			onPress={action('onPress')}
-			iconName={'ios-add-circle'}
+			iconName="ios-add-circle"
 			iconSize={50}
 			iconColor={Colors.pink}
 		/>

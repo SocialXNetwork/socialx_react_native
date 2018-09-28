@@ -37,7 +37,7 @@ const items: ISearchResultData[] = [
 storiesOf('Components/displayers', module)
 	.addDecorator(withKnobs)
 	.add('SearchResults', () => {
-		const searching = boolean('searching', true);
+		const searching = boolean('searching', false);
 		const hasMore = boolean('hasMore', false);
 
 		return (

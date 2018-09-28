@@ -41,7 +41,7 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 				<View style={styles.container}>
 					{showPlayButton && (
 						<TouchableOpacity onPress={onVideoPlayStart}>
-							<Icon name={'md-play'} style={styles.playIcon} />
+							<Icon name="md-play" style={styles.playIcon} />
 						</TouchableOpacity>
 					)}
 					<TouchableOpacity
@@ -58,19 +58,19 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 							style={styles.resizeButton}
 							onPress={onVideoEnterFullScreen}
 						>
-							<Icon name={'md-resize'} style={styles.smallControlIcon} />
+							<Icon name="md-resize" style={styles.smallControlIcon} />
 						</TouchableOpacity>
 					)}
 				</View>
 			)}
 		{thumbOnly && (
 			<View style={styles.thumbOverlay}>
-				<Icon name={'md-videocam'} style={styles.thumbVideoIcon} />
+				<Icon name="md-videocam" style={styles.thumbVideoIcon} />
 			</View>
 		)}
 		{!playReady && (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator size={'large'} color={defaultColor} />
+				<ActivityIndicator size="large" color={defaultColor} />
 			</View>
 		)}
 	</React.Fragment>

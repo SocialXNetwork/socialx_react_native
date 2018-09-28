@@ -74,7 +74,7 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 				<Text style={textStyles}>{label}</Text>
 				{loading && (
 					<ActivityIndicator
-						size={'small'}
+						size="small"
 						color={defaultColor}
 						style={styles.loadingIndicator}
 					/>

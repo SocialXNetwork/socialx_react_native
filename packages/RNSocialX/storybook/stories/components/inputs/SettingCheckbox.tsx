@@ -19,7 +19,7 @@ class SettingCheckboxStory extends React.Component<
 	public render() {
 		return (
 			<SettingCheckbox
-				title={'Are you a vegetarian?'}
+				title="Are you a vegetarian?"
 				description={false}
 				value={this.state.value}
 				onValueUpdated={this.onValueUpdatedHandler}

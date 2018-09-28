@@ -13,9 +13,9 @@ storiesOf('Components/activityCards', module)
 	.add('ActivityFriendRequestCard', () => (
 		<ActivityFriendRequestCard
 			avatarURL={image}
-			fullName={'Alex Sirbu'}
-			userName={'alexsirbu'}
-			userId={'85-f3r1-5ad'}
+			fullName="Alex Sirbu"
+			userName="alexsirbu"
+			userId="85-f3r1-5ad"
 			onRequestConfirmed={action('onRequestConfirmed')}
 			onRequestDeclined={action('onRequestDeclined')}
 			onViewUserProfile={action('onViewUserProfile')}

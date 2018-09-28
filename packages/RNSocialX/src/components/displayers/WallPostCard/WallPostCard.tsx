@@ -46,8 +46,8 @@ export interface IWallPostCardState {
 	comment: string;
 	inputFocused: boolean;
 	inputBorderWidth: Animated.Value;
-	inputAvatarWidth: Animated.Value;
-	inputAvatarHeight: Animated.Value;
+	inputAvatarSize: Animated.Value;
+	inputAvatarRadius: Animated.Value;
 	viewOffensiveContent: boolean;
 }
 
@@ -80,8 +80,8 @@ export class WallPostCard extends React.Component<
 		comment: '',
 		inputFocused: false,
 		inputBorderWidth: new Animated.Value(0),
-		inputAvatarWidth: new Animated.Value(25),
-		inputAvatarHeight: new Animated.Value(25),
+		inputAvatarSize: new Animated.Value(25),
+		inputAvatarRadius: new Animated.Value(12.5),
 		viewOffensiveContent: false,
 	};
 
@@ -112,8 +112,8 @@ export class WallPostCard extends React.Component<
 			this.state.comment !== nextState.comment ||
 			this.state.inputFocused !== nextState.inputFocused ||
 			this.state.inputBorderWidth !== nextState.inputBorderWidth ||
-			this.state.inputAvatarWidth !== nextState.inputAvatarWidth ||
-			this.state.inputAvatarHeight !== nextState.inputAvatarHeight ||
+			this.state.inputAvatarSize !== nextState.inputAvatarSize ||
+			this.state.inputAvatarRadius !== nextState.inputAvatarRadius ||
 			this.props.listLoading !== nextProps.listLoading ||
 			this.state.viewOffensiveContent !== nextState.viewOffensiveContent
 		);
@@ -155,8 +155,8 @@ export class WallPostCard extends React.Component<
 
 		const {
 			viewOffensiveContent,
-			inputAvatarHeight,
-			inputAvatarWidth,
+			inputAvatarRadius,
+			inputAvatarSize,
 			inputBorderWidth,
 			hideAdvancedMenu,
 			reportProblemModalVisible,
@@ -173,8 +173,8 @@ export class WallPostCard extends React.Component<
 		const formatedTimestamp = this.getFormattedPostTime(timestamp);
 		const animationValues = {
 			border: inputBorderWidth,
-			width: inputAvatarWidth,
-			height: inputAvatarHeight,
+			size: inputAvatarSize,
+			radius: inputAvatarRadius,
 		};
 
 		return (
@@ -209,18 +209,6 @@ export class WallPostCard extends React.Component<
 					handleUserTag={this.handleUserTag}
 					launchExternalUrl={this.launchExternalURL}
 				/>
-				{!hidePostActionsAndComments && (
-					<WallPostActions
-						likedByMe={likedByMe}
-						numberOfSuperLikes={numberOfSuperLikes}
-						numberOfWalletCoins={numberOfWalletCoins}
-						onLikePress={() => onLikeButtonPress(likedByMe, id)}
-						onCommentPress={() => onCommentPress(id, true)}
-						onSuperLikePress={this.superLikeButtonPressedHandler}
-						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
-						getText={getText}
-					/>
-				)}
 				<View>
 					{heartAnimation && (
 						<HeartAnimation
@@ -245,6 +233,18 @@ export class WallPostCard extends React.Component<
 						visible={contentOffensive && !viewOffensiveContent}
 					/>
 				</View>
+				{!hidePostActionsAndComments && (
+					<WallPostActions
+						likedByMe={likedByMe}
+						numberOfSuperLikes={numberOfSuperLikes}
+						numberOfWalletCoins={numberOfWalletCoins}
+						onLikePress={() => onLikeButtonPress(likedByMe, id)}
+						onCommentPress={() => onCommentPress(id, true)}
+						onSuperLikePress={this.superLikeButtonPressedHandler}
+						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
+						getText={getText}
+					/>
+				)}
 				<RecentLikes
 					likes={likes}
 					onUserPress={onUserPress}
@@ -284,12 +284,12 @@ export class WallPostCard extends React.Component<
 					toValue: 0,
 					duration: 250,
 				}),
-				Animated.timing(this.state.inputAvatarWidth, {
+				Animated.timing(this.state.inputAvatarSize, {
 					toValue: 25,
 					duration: 250,
 				}),
-				Animated.timing(this.state.inputAvatarHeight, {
-					toValue: 25,
+				Animated.timing(this.state.inputAvatarRadius, {
+					toValue: 12.5,
 					duration: 250,
 				}),
 			]).start();
@@ -375,15 +375,15 @@ export class WallPostCard extends React.Component<
 				Animated.parallel([
 					Animated.timing(this.state.inputBorderWidth, {
 						toValue: 2,
-						duration: 350,
+						duration: 250,
 					}),
-					Animated.timing(this.state.inputAvatarWidth, {
+					Animated.timing(this.state.inputAvatarSize, {
 						toValue: 35,
-						duration: 350,
+						duration: 250,
 					}),
-					Animated.timing(this.state.inputAvatarHeight, {
-						toValue: 35,
-						duration: 350,
+					Animated.timing(this.state.inputAvatarRadius, {
+						toValue: 17.5,
+						duration: 250,
 					}),
 				]).start();
 				this.setState({ inputFocused: true });

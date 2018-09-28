@@ -8,9 +8,9 @@ storiesOf('Components/avatar', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('AvatarName', () => (
 		<AvatarName
-			fullName={'Alex Sirbu'}
-			userName={'alexsirbu'}
-			fullNameColor={'black'}
-			userNameColor={'black'}
+			fullName="Alex Sirbu"
+			userName="alexsirbu"
+			fullNameColor="black"
+			userNameColor="black"
 		/>
 	));

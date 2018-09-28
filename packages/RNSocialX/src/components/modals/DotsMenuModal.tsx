@@ -32,8 +32,8 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 				onModalHide={onModalHide}
 				isVisible={visible}
 				backdropOpacity={0.5}
-				animationIn={'slideInUp'}
-				animationOut={'slideOutDown'}
+				animationIn="slideInUp"
+				animationOut="slideOutDown"
 				onBackdropPress={onBackdropPress}
 				style={styles.container}
 			>
