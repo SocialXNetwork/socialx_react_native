@@ -15,10 +15,10 @@ export interface ICommentData {
 }
 
 export type IState = DeepReadonly<{
-	comments: ICommentData[];
+	comments: ICommentData[] | null;
 	commentMetaById: {
 		[commentId: string]: ICommentMetasCallback;
-	};
+	} | null;
 }>;
 
 export interface IPostIdInput {

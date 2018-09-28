@@ -30,6 +30,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
+		case ActionTypes.REMOVE_POST: {
+			return { ...state };
+		}
+
+		case ActionTypes.UNLIKE_POST: {
+			return { ...state };
+		}
+
 		default: {
 			assertNever(action);
 			return state;
