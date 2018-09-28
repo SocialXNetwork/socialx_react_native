@@ -1,4 +1,8 @@
-import { ICommentMetasCallback } from '@socialx/api-data';
+import {
+	ICommentMetasCallback,
+	IRemoveCommentInput,
+	IUnlikeCommentInput,
+} from '@socialx/api-data';
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -13,13 +17,17 @@ import {
 	IPostIdInput,
 	likeComment,
 } from '../../../store/data/comments';
+import {
+	removeComment,
+	unlikeComment,
+} from '../../../store/data/comments/actions';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	comments: ICommentData[];
+	comments: ICommentData[] | null;
 	commentMetaById: {
 		[commentId: string]: ICommentMetasCallback;
-	};
+	} | null;
 }
 
 interface IActionProps {
@@ -27,6 +35,8 @@ interface IActionProps {
 	likeComment: (likeCommentInput: ICommentIdInput) => void;
 	getCommentLikes: (getCommentLikesInput: ICommentIdInput) => void;
 	getPostComments: (postCommentsInput: IPostIdInput) => void;
+	removeComment: (removeCommentInput: IRemoveCommentInput) => void;
+	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -46,6 +56,7 @@ const selectComments = createSelector(
 	(state: IApplicationState) => state.data.comments.comments,
 	(comments) => comments,
 );
+
 const selectCommentMetaById = createSelector(
 	(state: IApplicationState) => state.data.comments.commentMetaById,
 	(commentMetaById) => commentMetaById,
@@ -65,6 +76,10 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getPostComments(getPostCommentsInput)),
 	likeComment: (likeCommentInput: ICommentIdInput) =>
 		dispatch(likeComment(likeCommentInput)),
+	removeComment: (removeCommentInput: IRemoveCommentInput) =>
+		dispatch(removeComment(removeCommentInput)),
+	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
+		dispatch(unlikeComment(unlikeCommentInput)),
 });
 
 export const WithComments: ConnectedComponentClass<

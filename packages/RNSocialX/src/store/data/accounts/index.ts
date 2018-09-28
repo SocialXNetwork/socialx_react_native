@@ -8,4 +8,6 @@ export {
 	createAccount,
 	getIsAccountLoggedIn,
 	login,
+	getCurrentAccount,
+	getAccountByPub,
 } from './actions';
