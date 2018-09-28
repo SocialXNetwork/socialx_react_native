@@ -1,5 +1,3 @@
-// todo @jake implement the reducers based on gun data shape from getters
-
 import { assertNever } from '../../helpers';
 import initialState from './initialState';
 import { ActionTypes, IAction, IState } from './Types';

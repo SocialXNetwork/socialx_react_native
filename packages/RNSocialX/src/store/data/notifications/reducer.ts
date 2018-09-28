@@ -1,5 +1,3 @@
-// todo @jake
-
 import { assertNever } from '../../helpers';
 import initialState from './initialState';
 import { ActionTypes, IAction, IState } from './Types';
@@ -10,9 +8,20 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
+		case ActionTypes.REMOVE_NOTIFICATION: {
+			return { ...state };
+		}
+
+		case ActionTypes.CURRENT_NOTIFICATION: {
+			return { ...state };
+		}
+
+		case ActionTypes.NOTIFICATION_BY_ID: {
+			return { ...state };
+		}
+
 		default: {
-			// @ts-ignore
-			assertNever(action); // typescript bug when there's only 1 case?
+			assertNever(action);
 			return state;
 		}
 	}
