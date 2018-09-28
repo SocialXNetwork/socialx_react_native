@@ -13,6 +13,8 @@ export interface IModal {
 export interface IConfirmation {
 	title: string;
 	message: string;
+	confirmButtonLabel: string;
+	cancelButtonLabel: string;
 }
 
 export type IState = DeepReadonly<{
