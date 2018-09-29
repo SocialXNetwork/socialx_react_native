@@ -4,7 +4,7 @@ export { default as reducer } from './reducer';
 export {
 	IState,
 	IAction,
-	ICommentData,
+	ICommentsApiData,
 	ICommentIdInput,
 	ICreateCommentInput,
 	IPostIdInput,

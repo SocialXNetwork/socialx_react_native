@@ -11,8 +11,8 @@ import {
 	createComment,
 	getCommentLikes,
 	getPostComments,
-	ICommentData,
 	ICommentIdInput,
+	ICommentsApiData,
 	ICreateCommentInput,
 	IPostIdInput,
 	likeComment,
@@ -24,7 +24,7 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	comments: ICommentData[] | null;
+	comments: ICommentsApiData[] | null;
 	commentMetaById: {
 		[commentId: string]: ICommentMetasCallback;
 	} | null;
@@ -57,6 +57,11 @@ const selectComments = createSelector(
 	(comments) => comments,
 );
 
+const selectCommentLikes = createSelector(
+	(state: IApplicationState) => state.data.comments.commentLikes,
+	(commentLikes) => commentLikes,
+);
+
 const selectCommentMetaById = createSelector(
 	(state: IApplicationState) => state.data.comments.commentMetaById,
 	(commentMetaById) => commentMetaById,
@@ -65,6 +70,7 @@ const selectCommentMetaById = createSelector(
 const mapStateToProps = (state: IApplicationState) => ({
 	comments: selectComments(state),
 	commentMetaById: selectCommentMetaById(state),
+	commentLikes: selectCommentLikes(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({

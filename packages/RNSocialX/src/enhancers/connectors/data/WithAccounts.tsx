@@ -53,8 +53,8 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectAccounts = createSelector(
-	(state: IApplicationState) => state.data.accounts.accounts,
+const selectAccount = createSelector(
+	(state: IApplicationState) => state.data.accounts.account,
 	(accounts) => accounts,
 );
 
@@ -63,9 +63,21 @@ const selectCurrentAccount = createSelector(
 	(currentAccount) => currentAccount,
 );
 
+const selectAccountLoggedIn = createSelector(
+	(state: IApplicationState) => state.data.accounts.loggedIn,
+	(loggedIn) => loggedIn,
+);
+
+const selectAccountRecovery = createSelector(
+	(state: IApplicationState) => state.data.accounts.recovery,
+	(recovery) => recovery,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
-	accounts: selectAccounts(state),
+	account: selectAccount(state),
 	currentAccount: selectCurrentAccount(state),
+	loggedIn: selectAccountLoggedIn(state),
+	recovery: selectAccountRecovery(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
