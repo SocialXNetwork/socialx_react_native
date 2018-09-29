@@ -26,6 +26,7 @@
     "typescript": "^3.0.1"
   },
   "jest": {
+		"testEnvironment": "node",
     "roots": [
       "<rootDir>/src"
     ],

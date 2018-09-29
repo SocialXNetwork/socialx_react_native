@@ -1,12 +1,10 @@
-// tslint:disable-next-line no-submodule-imports
 import * as Gun from 'gun/gun';
 
-// tslint:disable-next-line no-submodule-imports
 import 'gun/nts';
-
-// tslint:disable-next-line no-submodule-imports
 import 'gun/sea';
 
+// this should be extracted to its own library in order to make this
+// more easily testable and also importable into the server for api reuse
 import './extensions/asyncStorageAdapter';
 
 import './extensions/docload';
