@@ -5,7 +5,7 @@ import setters from './setters';
 
 import { resolveCallback } from '../../utils/helpers';
 import {
-	ICommentData,
+	ICommentDataCallback,
 	IRemoveCommentInput,
 	IUnlikeCommentInput,
 } from './types';
@@ -57,7 +57,11 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	getPostComments: ({ postId }: { postId: string }): Promise<ICommentData[]> =>
+	getPostComments: ({
+		postId,
+	}: {
+		postId: string;
+	}): Promise<ICommentDataCallback[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedInput = await schemas.getPostComments.validate(
