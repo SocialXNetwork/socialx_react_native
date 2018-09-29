@@ -7,8 +7,8 @@ import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
 	ActionTypes,
-	ICommensApiData,
 	ICommentIdInput,
+	ICommentsApiData,
 	ICreateCommentAction,
 	ICreateCommentInput,
 	IGetCommentLikesAction,
@@ -20,7 +20,7 @@ import {
 } from './Types';
 
 const getPostCommentsAction: ActionCreator<IGetPostCommentsAction> = (
-	postComments: IPostIdInput & { comments: ICommensApiData[] },
+	postComments: IPostIdInput & { comments: ICommentsApiData[] },
 ) => ({
 	type: ActionTypes.GET_POST_COMMENTS,
 	payload: postComments,

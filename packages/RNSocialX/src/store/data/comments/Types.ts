@@ -9,13 +9,13 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
-export interface ICommensApiData extends ICommentData {
+export interface ICommentsApiData extends ICommentData {
 	likes: ILikesMetasCallback;
 	commentId: string;
 }
 
 export type IState = DeepReadonly<{
-	comments: ICommensApiData[] | null;
+	comments: ICommentsApiData[] | null;
 	commentLikes: ILikeData[] | null;
 	commentMetaById: {
 		[commentId: string]: ICommentMetasCallback;
@@ -46,7 +46,7 @@ export const enum ActionTypes {
 
 export interface IGetPostCommentsAction extends Action {
 	type: ActionTypes.GET_POST_COMMENTS;
-	payload: IPostIdInput & { comments: ICommensApiData[] };
+	payload: IPostIdInput & { comments: ICommentsApiData[] };
 }
 
 export interface IGetCommentLikesAction extends Action {
