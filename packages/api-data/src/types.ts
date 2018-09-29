@@ -5,9 +5,7 @@ export enum TABLES {
 	POSTS = 'posts',
 	POST_META_BY_ID = 'postMetaById',
 	POST_METAS_BY_USER = 'postMetasByUser',
-	COMMENTS = 'comments',
 	COMMENT_META_BY_ID = 'commentMetaById',
-	LIKES = 'likes',
 	PROFILES = 'profiles',
 	NOTIFICATIONS = 'notifications',
 }
@@ -17,6 +15,8 @@ export enum TABLE_ENUMS {
 	PUBLIC = 'public',
 	RECOVER = 'recover',
 	FRIENDS = 'friends',
+	COMMENTS = 'comments',
+	LIKES = 'likes',
 }
 
 export interface ILikeData {
@@ -28,9 +28,7 @@ export interface ILikeData {
 	likeId: string;
 }
 
-export interface ILikesData {
-	likes: ILikeData[];
-}
+export type ILikesArray = ILikeData[];
 
 export interface ILikesMetasCallback {
 	[key: string]: {

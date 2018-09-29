@@ -5,7 +5,8 @@ import setters from './setters';
 
 import {
 	ICreatePostInput,
-	IPostData,
+	IPostArrayData,
+	IPostReturnData,
 	IRemovePostInput,
 	IUnlikePostInput,
 } from './types';
@@ -31,7 +32,11 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	getPostByPath: ({ postPath }: { postPath: string }): Promise<IPostData> =>
+	getPostByPath: ({
+		postPath,
+	}: {
+		postPath: string;
+	}): Promise<IPostReturnData> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedInput = await schemas.getPostByPath.validate(
@@ -43,28 +48,6 @@ export default (context: IContext) => ({
 				getters.getPostByPath(
 					context,
 					validatedInput as { postPath: string },
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
-	getPostLikes: ({
-		postId,
-	}: {
-		postId: string;
-	}): Promise<ILikesMetasCallback> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.getPostLikes.validate(
-					{ postId },
-					{
-						stripUnknown: true,
-					},
-				);
-				getters.getPostLikes(
-					context,
-					validatedInput as { postId: string },
 					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
@@ -89,7 +72,7 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	getPublicPostsByDate: ({ date }: { date: Date }): Promise<IPostData> =>
+	getPublicPostsByDate: ({ date }: { date: Date }): Promise<IPostArrayData> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedInput = await schemas.getPublicPostsByDate.validate(

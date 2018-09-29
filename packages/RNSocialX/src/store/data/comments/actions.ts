@@ -1,8 +1,4 @@
-import {
-	ILikeData,
-	IRemoveCommentInput,
-	IUnlikeCommentInput,
-} from '@socialx/api-data';
+import { IRemoveCommentInput, IUnlikeCommentInput } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
@@ -11,59 +7,11 @@ import {
 	ICommentsApiData,
 	ICreateCommentAction,
 	ICreateCommentInput,
-	IGetCommentLikesAction,
-	IGetPostCommentsAction,
 	ILikeCommentAction,
 	IPostIdInput,
 	IRemoveCommentAction,
 	IUnlikeCommentAction,
 } from './Types';
-
-const getPostCommentsAction: ActionCreator<IGetPostCommentsAction> = (
-	postComments: IPostIdInput & { comments: ICommentsApiData[] },
-) => ({
-	type: ActionTypes.GET_POST_COMMENTS,
-	payload: postComments,
-});
-
-export const getPostComments = (
-	getPostCommentsInput: IPostIdInput,
-): IThunk => async (dispatch, getState, context) => {
-	try {
-		const { dataApi } = context;
-		const comments = await dataApi.comments.getPostComments(
-			getPostCommentsInput,
-		);
-		dispatch(getPostCommentsAction({ ...getPostCommentsInput, comments }));
-	} catch (e) {
-		/**/
-	}
-};
-
-const getCommentLikesAction: ActionCreator<IGetCommentLikesAction> = (
-	commentLikesData: ICommentIdInput & { likes: ILikeData[] },
-) => ({
-	type: ActionTypes.GET_COMMENT_LIKES,
-	payload: commentLikesData,
-});
-
-export const getCommentLikes = (
-	getCommentLikesInput: ICommentIdInput,
-): IThunk => async (dispatch, getState, context) => {
-	try {
-		const { dataApi } = context;
-		const likes = await dataApi.comments.getCommentLikes(getCommentLikesInput);
-
-		dispatch(
-			getCommentLikesAction({
-				...getCommentLikesInput,
-				likes,
-			}),
-		);
-	} catch (e) {
-		/**/
-	}
-};
 
 const createCommentAction: ActionCreator<ICreateCommentAction> = (
 	createCommentInput: ICreateCommentInput,

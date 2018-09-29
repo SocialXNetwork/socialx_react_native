@@ -19,9 +19,9 @@ export const setToArray = <T = {}>({
 };
 
 export const setToArrayWithKey = ({ _: parentSoul, ...data }: any) => {
-	return Object.keys(data).map(
-		(k, v): any => {
-			const { _: deepSoul, ...deepRest } = data[k];
+	return Object.entries(data).map(
+		([k, v]): any => {
+			const { _: deepSoul, ...deepRest }: any = v;
 			return { ...deepRest, k };
 		},
 	) as any;

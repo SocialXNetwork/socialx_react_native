@@ -33,7 +33,7 @@ export const likesByPostPath = (context: IContext, postPath: string) => {
 	return gun
 		.get(TABLES.POSTS)
 		.get(postPath)
-		.get(TABLES.LIKES);
+		.get(TABLE_ENUMS.LIKES);
 };
 
 export const postLikesByCurrentUser = (context: IContext, postPath: string) => {
@@ -41,6 +41,6 @@ export const postLikesByCurrentUser = (context: IContext, postPath: string) => {
 	return gun
 		.get(TABLES.POSTS)
 		.get(postPath)
-		.get(TABLES.LIKES)
+		.get(TABLE_ENUMS.LIKES)
 		.get(account.is.alias);
 };

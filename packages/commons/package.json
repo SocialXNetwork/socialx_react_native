@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "base-64": "^0.1.0",
-    "utility-types": "^2.1.0"
+    "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
     "@types/base-64": "^0.1.2",

@@ -14,10 +14,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
-		case ActionTypes.GET_POST_LIKES: {
-			return { ...state };
-		}
-
 		case ActionTypes.GET_PUBLIC_POSTS_BY_DATE: {
 			return { ...state };
 		}

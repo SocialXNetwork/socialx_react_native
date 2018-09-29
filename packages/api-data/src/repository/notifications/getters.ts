@@ -1,42 +1,29 @@
 import { IContext, IGunCallback } from '../../types';
 import * as handles from './handles';
 
-import {
-	INotificationByIdInput,
-	INotificationData,
-	INotificationsReturnData,
-} from './types';
+import { setToArrayWithKey } from '../../utils/helpers';
+import { INotificationData, INotificationsReturnData } from './types';
 
-export const getCurrentNotifications = (
+export const getNotifications = (
 	context: IContext,
-	callback: IGunCallback<INotificationsReturnData>,
+	callback: IGunCallback<INotificationsReturnData[]>,
 ) => {
 	handles
-		.currentNotifications(context)
+		.notifications(context)
 		.docLoad((notifications: INotificationsReturnData) => {
 			if (!notifications) {
 				return callback('failed, no notifications found');
 			}
-			return callback(null, notifications);
-		});
-};
-
-export const getNotificationById = (
-	context: IContext,
-	notificationByIdInput: INotificationByIdInput,
-	callback: IGunCallback<INotificationData>,
-) => {
-	handles
-		.notificationById(context, notificationByIdInput.notificationId)
-		.docLoad((notification: INotificationData) => {
-			if (!notification) {
-				return callback('failed, no notification found at this id');
-			}
-			return callback(null, notification);
+			const notifcationsReturnData = setToArrayWithKey(notifications).map(
+				({ k, ...notification }: INotificationData & { k: string }) => ({
+					notificationId: k,
+					...notification,
+				}),
+			);
+			return callback(null, notifcationsReturnData);
 		});
 };
 
 export default {
-	getCurrentNotifications,
-	getNotificationById,
+	getNotifications,
 };

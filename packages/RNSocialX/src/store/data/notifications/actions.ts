@@ -1,17 +1,18 @@
 import {
-	INotificationByIdInput,
 	INotificationData,
-	INotificationsReturnData,
+	INotificationReturnData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
+import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
+import { beginActivity, endActivity } from '../../ui/activities';
 import {
 	ActionTypes,
 	ICreateNotificationAction,
-	ICurrentNotificationsAction,
-	INotificationByIdAction,
+	IGetNotificationsAction,
 	IRemoveNotificationAction,
+	ISyncNotificationsAction,
 } from './Types';
 
 const createNotificationAction: ActionCreator<ICreateNotificationAction> = (
@@ -25,8 +26,9 @@ export const createNotification = (
 	createNotificationInput: INotificationData,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		const { dataApi } = context;
-		await dataApi.notifications.createNotification(createNotificationInput);
+		// TODO: this should not be exposed to redux
+		// const { dataApi } = context;
+		// await dataApi.notifications.createNotification(createNotificationInput);
 		dispatch(createNotificationAction(createNotificationInput));
 	} catch (e) {
 		/**/
@@ -52,51 +54,39 @@ export const removeNotification = (
 	}
 };
 
-export const currentNotificationAction: ActionCreator<
-	ICurrentNotificationsAction
-> = (currentNotificationsData: INotificationsReturnData) => ({
-	type: ActionTypes.CURRENT_NOTIFICATION,
-	payload: currentNotificationsData,
+export const getNotificationsAction: ActionCreator<
+	IGetNotificationsAction
+> = () => ({
+	type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
 });
 
-export const currentNotification = (): IThunk => async (
+export const syncNotificationsAction: ActionCreator<
+	ISyncNotificationsAction
+> = (notifications: INotificationReturnData[]) => ({
+	type: ActionTypes.SYNC_CURRENT_NOTIFICATIONS,
+	payload: notifications,
+});
+
+export const getNotifications = (): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
-		const { dataApi } = context;
-		const notifications = await dataApi.notifications.getCurrentNotifications();
-		dispatch(currentNotificationAction(notifications));
-	} catch (e) {
-		/**/
-	}
-};
-
-const notificationByIdAction: ActionCreator<INotificationByIdAction> = (
-	notificationByIdData: INotificationByIdInput & {
-		notification: INotificationData;
-	},
-) => ({
-	type: ActionTypes.NOTIFICATION_BY_ID,
-	payload: notificationByIdData,
-});
-
-export const notificationById = (
-	notificationByIdInput: INotificationByIdInput,
-): IThunk => async (dispatch, getState, context) => {
-	try {
-		const { dataApi } = context;
-		const notification = await dataApi.notifications.getNotificationById(
-			notificationByIdInput,
-		);
+		dispatch(getNotificationsAction());
 		dispatch(
-			notificationByIdAction({
-				...notificationByIdInput,
-				notification,
+			beginActivity({
+				uuid: activityId,
+				type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
 			}),
 		);
+		const { dataApi } = context;
+		const notifications = await dataApi.notifications.getNotifications();
+		dispatch(syncNotificationsAction(notifications));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
