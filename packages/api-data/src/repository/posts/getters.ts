@@ -5,10 +5,16 @@ import {
 	IGunCallback,
 	ILikesMetasCallback,
 	IMetasCallback,
+	TABLE_ENUMS,
+	TABLES,
 } from '../../types';
-import { datePathFromDate, setToArray } from '../../utils/helpers';
+import {
+	datePathFromDate,
+	setToArray,
+	setToArrayWithKey,
+} from '../../utils/helpers';
 
-import { IPostData } from './types';
+import { IPostData, IPostDataCallback } from './types';
 
 export const getPostPathsByUser = (
 	context: IContext,
@@ -41,17 +47,51 @@ export const getPostByPath = (
 export const getPublicPostsByDate = (
 	context: IContext,
 	{ date }: { date: Date },
-	callback: IGunCallback<IPostData>,
+	callback: IGunCallback<IPostData[]>,
 ) => {
 	const datePath = datePathFromDate(date);
 
-	postHandles.postsByDate(context, datePath).docLoad((postData: IPostData) => {
-		if (!postData) {
-			return callback('failed, no posts found by date');
-		}
+	postHandles
+		.postsByDate(context, datePath)
+		.docLoad(async (postsData: IPostDataCallback) => {
+			if (!postsData) {
+				return callback('failed, no posts found by date');
+			}
 
-		return callback(null, postData);
-	});
+			const posts: IPostData[] = setToArray(postsData).map((post) => post);
+
+			// some big hook
+			const postsWithMeta = posts.map<Promise<IPostData>>(
+				// k is the key which is the postId
+				async ({ k: postId, ...rest }: any): Promise<IPostData> => {
+					const postPath = `${TABLES.POSTS}/${datePath}/${
+						TABLE_ENUMS.PUBLIC
+					}/${postId}`;
+					const promiseHook: Promise<IPostData> = new Promise((resolve) => {
+						postHandles
+							.likesByPostPath(context, postPath)
+							.docLoad((postLikes: ILikesMetasCallback) => {
+								if (!postLikes) {
+									resolve({
+										...rest,
+										postPath,
+									});
+								}
+								resolve({
+									...rest,
+									postPath,
+									likes: postLikes,
+								});
+							});
+					});
+					return promiseHook;
+				},
+			);
+
+			const allPostsWithMeta = await Promise.all(postsWithMeta);
+
+			return callback(null, allPostsWithMeta);
+		});
 };
 
 export const getPostLikes = (

@@ -1,3 +1,5 @@
+import { ILikesMetasCallback } from '../../types';
+
 export interface ICommentMetasCallback {
 	owner: {
 		alias: string;
@@ -19,6 +21,7 @@ export interface ICommentData {
 
 export interface ICommentDataCallback extends ICommentData {
 	commentId: string;
+	likes: ILikesMetasCallback | null;
 }
 
 export interface ICommentsData {
