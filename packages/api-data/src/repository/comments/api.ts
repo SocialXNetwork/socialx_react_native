@@ -1,10 +1,14 @@
-import { IContext, ILikesMetasCallback, IMetasCallback } from '../../types';
+import { IContext, ILikeData } from '../../types';
 import getters from './getters';
 import schemas from './schemas';
 import setters from './setters';
 
 import { resolveCallback } from '../../utils/helpers';
-import { IRemoveCommentInput, IUnlikeCommentInput } from './types';
+import {
+	ICommentData,
+	IRemoveCommentInput,
+	IUnlikeCommentInput,
+} from './types';
 
 export default (context: IContext) => ({
 	createComment: ({
@@ -35,7 +39,7 @@ export default (context: IContext) => ({
 		commentId,
 	}: {
 		commentId: string;
-	}): Promise<ILikesMetasCallback[]> =>
+	}): Promise<ILikeData[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedInput = await schemas.getCommentLikes.validate(
@@ -53,11 +57,7 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	getPostComments: ({
-		postId,
-	}: {
-		postId: string;
-	}): Promise<IMetasCallback[]> =>
+	getPostComments: ({ postId }: { postId: string }): Promise<ICommentData[]> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedInput = await schemas.getPostComments.validate(

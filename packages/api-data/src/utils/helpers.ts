@@ -1,16 +1,30 @@
-import { IContext, ILikesMetasCallback, IMetasCallback } from '../types';
+import {
+	IContext,
+	ILikesMetasCallback,
+	IMetasCallback,
+	IMetasTypeCallback,
+} from '../types';
 
 export const datePathFromDate = (date: Date) =>
 	`${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
 
-export const setToArray = ({
+export const setToArray = <T = {}>({
 	_: parentSoul,
 	...data
-}: IMetasCallback | ILikesMetasCallback) => {
+}: IMetasCallback | IMetasTypeCallback<T>) => {
 	return Object.values(data).map(({ v, ...rest }: any) => {
 		const { _: deepSoul, ...deepRest } = rest;
 		return deepRest;
 	});
+};
+
+export const setToArrayWithKey = ({ _: parentSoul, ...data }: any) => {
+	return Object.keys(data).map(
+		(k, v): any => {
+			const { _: deepSoul, ...deepRest } = data[k];
+			return { ...deepRest, k };
+		},
+	) as any;
 };
 
 export const getContextMeta = (context: IContext) => ({
