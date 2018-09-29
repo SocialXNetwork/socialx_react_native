@@ -1,8 +1,13 @@
-import { IRemoveCommentInput, IUnlikeCommentInput } from '@socialx/api-data';
+import {
+	ILikeData,
+	IRemoveCommentInput,
+	IUnlikeCommentInput,
+} from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import {
 	ActionTypes,
+	ICommensApiData,
 	ICommentIdInput,
 	ICreateCommentAction,
 	ICreateCommentInput,
@@ -15,34 +20,46 @@ import {
 } from './Types';
 
 const getPostCommentsAction: ActionCreator<IGetPostCommentsAction> = (
-	getPostCommentsInput: IPostIdInput,
+	postComments: IPostIdInput & { comments: ICommensApiData[] },
 ) => ({
 	type: ActionTypes.GET_POST_COMMENTS,
-	payload: getPostCommentsInput,
+	payload: postComments,
 });
 
 export const getPostComments = (
 	getPostCommentsInput: IPostIdInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getPostCommentsAction(getPostCommentsInput));
+		const { dataApi } = context;
+		const comments = await dataApi.comments.getPostComments(
+			getPostCommentsInput,
+		);
+		dispatch(getPostCommentsAction({ ...getPostCommentsInput, comments }));
 	} catch (e) {
 		/**/
 	}
 };
 
 const getCommentLikesAction: ActionCreator<IGetCommentLikesAction> = (
-	commentLikesInput: ICommentIdInput,
+	commentLikesData: ICommentIdInput & { likes: ILikeData[] },
 ) => ({
 	type: ActionTypes.GET_COMMENT_LIKES,
-	payload: commentLikesInput,
+	payload: commentLikesData,
 });
 
 export const getCommentLikes = (
 	getCommentLikesInput: ICommentIdInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(getCommentLikesAction(getCommentLikesInput));
+		const { dataApi } = context;
+		const likes = await dataApi.comments.getCommentLikes(getCommentLikesInput);
+
+		dispatch(
+			getCommentLikesAction({
+				...getCommentLikesInput,
+				likes,
+			}),
+		);
 	} catch (e) {
 		/**/
 	}
@@ -59,6 +76,8 @@ export const createComment = (
 	createCommentInput: ICreateCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		const { dataApi } = context;
+		await dataApi.comments.createComment(createCommentInput);
 		dispatch(createCommentAction(createCommentInput));
 	} catch (e) {
 		/**/
@@ -76,6 +95,8 @@ export const likeComment = (
 	likeCommentInput: ICommentIdInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		const { dataApi } = context;
+		await dataApi.comments.likeComment(likeCommentInput);
 		dispatch(likeCommentAction(likeCommentInput));
 	} catch (e) {
 		/**/
@@ -93,6 +114,8 @@ export const removeComment = (
 	removeCommentInput: IRemoveCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		const { dataApi } = context;
+		await dataApi.comments.removeComment(removeCommentInput);
 		dispatch(removeCommentAction(removeCommentInput));
 	} catch (e) {
 		/**/
@@ -110,6 +133,8 @@ export const unlikeComment = (
 	unlikeCommentInput: IUnlikeCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		const { dataApi } = context;
+		await dataApi.comments.unlikeComment(unlikeCommentInput);
 		dispatch(unlikeCommentAction(unlikeCommentInput));
 	} catch (e) {
 		/**/
