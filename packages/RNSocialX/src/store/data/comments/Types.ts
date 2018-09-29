@@ -1,5 +1,7 @@
 import {
+	ICommentData,
 	ICommentMetasCallback,
+	ILikeData,
 	ILikesMetasCallback,
 	IRemoveCommentInput,
 	IUnlikeCommentInput,
@@ -7,15 +9,14 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
-export interface ICommentData {
-	id: string;
-	text: string;
-	owner: string;
-	likes: ILikesMetasCallback[];
+export interface ICommensApiData extends ICommentData {
+	likes: ILikesMetasCallback;
+	commentId: string;
 }
 
 export type IState = DeepReadonly<{
-	comments: ICommentData[] | null;
+	comments: ICommensApiData[] | null;
+	commentLikes: ILikeData[] | null;
 	commentMetaById: {
 		[commentId: string]: ICommentMetasCallback;
 	} | null;
@@ -45,12 +46,12 @@ export const enum ActionTypes {
 
 export interface IGetPostCommentsAction extends Action {
 	type: ActionTypes.GET_POST_COMMENTS;
-	payload: IPostIdInput;
+	payload: IPostIdInput & { comments: ICommensApiData[] };
 }
 
 export interface IGetCommentLikesAction extends Action {
 	type: ActionTypes.GET_COMMENT_LIKES;
-	payload: ICommentIdInput;
+	payload: ICommentIdInput & { likes: ILikeData[] };
 }
 
 export interface ICreateCommentAction extends Action {
