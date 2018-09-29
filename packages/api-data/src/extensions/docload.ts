@@ -1,4 +1,3 @@
-// tslint:disable-next-line no-submodule-imports
 import * as Gun from 'gun/gun';
 import { IGunInstance } from '../types';
 
