@@ -1,7 +1,6 @@
 import { IContext } from '../../types';
 import {
-	INotificationByIdInput,
-	INotificationData,
+	ICreateNotification,
 	INotificationsReturnData,
 	IRemoveNotificationInput,
 } from './types';
@@ -16,7 +15,7 @@ export default (context: IContext) => ({
 	// todo @jake I think we should separate the input type from the data type
 	// because the data can always contain auto generated things that don't exist on the input itself
 	createNotification: (
-		createNotificationInput: INotificationData,
+		createNotificationInput: ICreateNotification,
 	): Promise<null> =>
 		new Promise(async (resolve, reject) => {
 			try {
@@ -26,7 +25,7 @@ export default (context: IContext) => ({
 				);
 				setters.createNotification(
 					context,
-					validatedInput as INotificationData,
+					validatedInput as ICreateNotification,
 					resolveCallback(resolve, reject),
 				);
 			} catch (e) {
@@ -51,29 +50,8 @@ export default (context: IContext) => ({
 				reject(e);
 			}
 		}),
-	getCurrentNotifications: (): Promise<INotificationsReturnData> =>
+	getNotifications: (): Promise<INotificationsReturnData[]> =>
 		new Promise((resolve, reject) => {
-			getters.getCurrentNotifications(
-				context,
-				resolveCallback(resolve, reject),
-			);
-		}),
-	getNotificationById: (
-		notificationByIdInput: INotificationByIdInput,
-	): Promise<INotificationData> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.getNotificationById.validate(
-					notificationByIdInput,
-					{ stripUnknown: true },
-				);
-				getters.getNotificationById(
-					context,
-					validatedInput as INotificationByIdInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(e);
-			}
+			getters.getNotifications(context, resolveCallback(resolve, reject));
 		}),
 });

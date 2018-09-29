@@ -1,22 +1,20 @@
 import {
-	INotificationByIdInput,
 	INotificationData,
-	INotificationsReturnData,
+	INotificationReturnData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
-import { DeepReadonly } from 'utility-types';
+import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
-	notifications: INotificationsReturnData | null;
-	notification: INotificationData | null;
+	notifications: INotificationReturnData[];
 }>;
 
 export const enum ActionTypes {
 	CREATE_NOTIFICATION = 'data/notifications/CREATE_NOTIFICATION',
 	REMOVE_NOTIFICATION = 'data/notifications/REMOVE_NOTIFICATION',
-	CURRENT_NOTIFICATION = 'data/notifications/CURRENT_NOTIFICATION',
-	NOTIFICATION_BY_ID = 'data/notifications/NOTIFICATION_BY_ID',
+	SYNC_CURRENT_NOTIFICATIONS = 'data/notifications/SYNC_CURRENT_NOTIFICATIONS',
+	GET_CURRENT_NOTIFICATIONS = 'data/notifications/GET_CURRENT_NOTIFICATIONS',
 }
 
 export interface ICreateNotificationAction extends Action {
@@ -29,18 +27,17 @@ export interface IRemoveNotificationAction extends Action {
 	payload: IRemoveNotificationInput;
 }
 
-export interface ICurrentNotificationsAction extends Action {
-	type: ActionTypes.CURRENT_NOTIFICATION;
-	payload: INotificationsReturnData;
+export interface IGetNotificationsAction extends Action {
+	type: ActionTypes.GET_CURRENT_NOTIFICATIONS;
 }
 
-export interface INotificationByIdAction extends Action {
-	type: ActionTypes.NOTIFICATION_BY_ID;
-	payload: INotificationByIdInput & { notification: INotificationData };
+export interface ISyncNotificationsAction extends Action {
+	type: ActionTypes.SYNC_CURRENT_NOTIFICATIONS;
+	payload: INotificationReturnData[];
 }
 
 export type IAction =
 	| ICreateNotificationAction
 	| IRemoveNotificationAction
-	| ICurrentNotificationsAction
-	| INotificationByIdAction;
+	| IGetNotificationsAction
+	| ISyncNotificationsAction;

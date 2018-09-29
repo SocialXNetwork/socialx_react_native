@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { DeepReadonly } from 'utility-types';
+import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export const enum AvailableLocales {
 	EN = 'en',

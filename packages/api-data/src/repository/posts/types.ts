@@ -1,4 +1,5 @@
-import { ILikesMetasCallback } from '../../types';
+import { ILikesArray, ILikesMetasCallback } from '../../types';
+import { ICommentsArray, ICommentsPostData } from '../comments';
 
 export interface IMediaTypes {
 	key: string;
@@ -8,7 +9,6 @@ export interface IMediaTypes {
 
 export interface IMedia {
 	hash: string;
-	optimized_hash: string;
 	type: IMediaTypes;
 	extension: string;
 	size: number;
@@ -33,18 +33,33 @@ export interface ICreatePostInput {
 	privatePost: boolean;
 }
 
-export interface IPostData extends ICreatePostInput {
+export interface IPostCallbackData extends ICreatePostInput {
 	owner: {
 		alias: string;
 		pub: string;
 	};
 	timestamp: number;
-	postPath?: string;
-	likes: ILikesMetasCallback | null;
+	likes: ILikesMetasCallback;
+	comments: ICommentsPostData;
 }
 
-export interface IPostDataCallback {
-	[postId: string]: IPostData;
+export interface IPostReturnData extends ICreatePostInput {
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	timestamp: number;
+	likes: ILikesArray;
+	comments: ICommentsArray;
+}
+
+export type IPostArrayData = IPostReturnData[];
+
+export interface IPostsCallbackData {
+	[postId: string]: IPostCallbackData;
+}
+export interface IPostsDataCallback {
+	[postId: string]: IPostCallbackData;
 }
 
 export interface IRemovePostInput {

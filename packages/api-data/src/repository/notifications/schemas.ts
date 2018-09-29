@@ -15,6 +15,11 @@ const stringType = yup
 
 const notificationType = yup.string().oneOf(notificationTypes);
 
+const metaDataType = yup.object().shape({
+	postId: stringType,
+	commentId: stringType,
+});
+
 const accountType = yup.object().shape({
 	alias: stringType.required(),
 	pub: stringType.required(),
@@ -25,7 +30,7 @@ export const createNotification = yup
 	.shape({
 		type: notificationType.required(),
 		from: accountType.required(),
-		to: accountType.required(),
+		metaData: metaDataType,
 		timestamp: yup.number().required(),
 	})
 	.required();

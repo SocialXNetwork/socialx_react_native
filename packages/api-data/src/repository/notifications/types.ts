@@ -12,19 +12,23 @@ export interface INotificationData {
 		alias: string;
 		pub: string;
 	};
-	to: {
-		alias: string;
-		pub: string;
+	metaData?: {
+		postId?: string;
+		commentId?: string;
 	};
 	timestamp: number;
 }
 
-export interface INotificationsReturnData {
-	[key: string]: INotificationData;
+export interface INotificationReturnData extends INotificationData {
+	notificationId: string;
 }
 
-export interface INotificationByIdInput {
-	notificationId: string;
+export interface ICreateNotification extends INotificationData {
+	to: string;
+}
+
+export interface INotificationsReturnData {
+	[key: string]: INotificationData;
 }
 
 export interface IRemoveNotificationInput {

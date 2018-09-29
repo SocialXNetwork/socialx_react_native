@@ -7,20 +7,12 @@ import {
 	IUnlikeCommentInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
-import { DeepReadonly } from 'utility-types';
+import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export interface ICommentsApiData extends ICommentData {
 	likes: ILikesMetasCallback;
 	commentId: string;
 }
-
-export type IState = DeepReadonly<{
-	comments: ICommentsApiData[] | null;
-	commentLikes: ILikeData[] | null;
-	commentMetaById: {
-		[commentId: string]: ICommentMetasCallback;
-	} | null;
-}>;
 
 export interface IPostIdInput {
 	postId: string;
@@ -36,22 +28,10 @@ export interface ICreateCommentInput {
 }
 
 export const enum ActionTypes {
-	GET_POST_COMMENTS = 'data/comments/GET_POST_COMMENTS',
-	GET_COMMENT_LIKES = 'data/comments/GET_COMMENT_LIKES',
 	CREATE_COMMENT = 'data/comments/CREATE_COMMENT',
 	LIKE_COMMENT = 'data/comments/LIKE_COMMENT',
 	REMOVE_COMMENT = 'data/comments/REMOVE_COMMENT',
 	UNLIKE_COMMENT = 'data/comments/UNLIKE_COMMENT',
-}
-
-export interface IGetPostCommentsAction extends Action {
-	type: ActionTypes.GET_POST_COMMENTS;
-	payload: IPostIdInput & { comments: ICommentsApiData[] };
-}
-
-export interface IGetCommentLikesAction extends Action {
-	type: ActionTypes.GET_COMMENT_LIKES;
-	payload: ICommentIdInput & { likes: ILikeData[] };
 }
 
 export interface ICreateCommentAction extends Action {
@@ -75,8 +55,6 @@ export interface IUnlikeCommentAction extends Action {
 }
 
 export type IAction =
-	| IGetPostCommentsAction
-	| IGetCommentLikesAction
 	| ICreateCommentAction
 	| ILikeCommentAction
 	| IRemoveCommentAction

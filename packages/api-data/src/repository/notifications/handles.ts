@@ -8,15 +8,11 @@ export const notificationsByUsername = (
 	return gun.get(TABLES.NOTIFICATIONS).get(username);
 };
 
-export const currentNotifications = (context: IContext) => {
+export const notifications = (context: IContext) => {
 	const { gun, account } = context;
 	return gun.get(TABLES.NOTIFICATIONS).get(account.is.alias);
 };
 
 export const notificationById = (context: IContext, notificationId: string) => {
-	const { gun, account } = context;
-	return gun
-		.get(TABLES.NOTIFICATIONS)
-		.get(account.is.alias)
-		.get(notificationId);
+	return notifications(context).get(notificationId);
 };

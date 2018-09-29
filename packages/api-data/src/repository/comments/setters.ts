@@ -1,4 +1,4 @@
-import { IContext, IGunCallback, TABLES } from '../../types';
+import { IContext, IGunCallback, TABLE_ENUMS, TABLES } from '../../types';
 import { getContextMeta } from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';
@@ -96,9 +96,8 @@ export const likeComment = (
 			}
 
 			const { owner, ownerPub, timestamp } = getContextMeta(context);
-			// who ever wrote this is bananas
 			const commentPath = `${TABLES.POSTS}/${commentMeta.postPath}/${
-				TABLES.COMMENTS
+				TABLE_ENUMS.COMMENTS
 			}/${commentId}`;
 
 			commentHandles.likesByCommentPath(context, commentPath).set(

@@ -1,5 +1,3 @@
-import { IPostIdInput, IPostPathInput } from './Types';
-
 export { default as reducer } from './reducer';
 
 export { IPostData } from '@socialx/api-data';
@@ -16,7 +14,6 @@ export {
 
 export {
 	getPostByPath,
-	getPostLikes,
 	getPostPathsByUsername,
 	getPublicPostsByDate,
 	createPost,

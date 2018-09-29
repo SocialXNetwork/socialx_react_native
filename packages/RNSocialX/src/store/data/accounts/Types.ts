@@ -6,13 +6,14 @@ import {
 	IRecoverAccountInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
-import { DeepReadonly } from 'utility-types';
+import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export interface IAccount {
 	alias: string;
 	username: string;
 	pub: string;
 	epub: string;
+	recovery: IRecoveryData;
 }
 
 export interface IRecoveryData {
@@ -20,10 +21,7 @@ export interface IRecoveryData {
 }
 
 export type IState = DeepReadonly<{
-	account: IAccount | null;
-	currentAccount: IAccount | null;
-	recovery: IRecoveryData | null;
-	loggedIn: boolean;
+	accounts: IAccount[];
 }>;
 
 export const enum ActionTypes {

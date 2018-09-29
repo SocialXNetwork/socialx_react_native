@@ -10,7 +10,6 @@ import {
 	ICreatePostAction,
 	IDateInput,
 	IGetPostByPathAction,
-	IGetPostLikesAction,
 	IGetPostPathsByUserAction,
 	IGetPublicPostsByDateAction,
 	ILikePostAction,
@@ -67,25 +66,6 @@ export const getPublicPostsByDate = (
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(getPublicPostsByDateAction(getPostByDateInput));
-	} catch (e) {
-		/**/
-	}
-};
-
-const getPostLikesAction: ActionCreator<IGetPostLikesAction> = (
-	getPostLikesInput: IPostIdInput,
-) => ({
-	type: ActionTypes.GET_POST_LIKES,
-	payload: getPostLikesInput,
-});
-
-export const getPostLikes = (getPostLikesInput: IPostIdInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	try {
-		dispatch(getPostLikesAction(getPostLikesInput));
 	} catch (e) {
 		/**/
 	}

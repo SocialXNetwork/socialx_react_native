@@ -72,7 +72,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "throttle-debounce": "^2.0.1",
-    "utility-types": "^2.1.0",
+    "utility-types-fixme-todo": "latest",
     "uuid": "^3.3.2",
     "vm-browserify": "^1.1.0",
     "yup": "^0.26.3"
