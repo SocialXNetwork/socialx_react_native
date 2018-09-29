@@ -1,0 +1,22 @@
+import { Action } from 'redux';
+import { DeepReadonly } from 'utility-types';
+
+export interface IAuthData {
+	alias: string;
+	pub: string;
+}
+
+export type IState = DeepReadonly<{
+	auth: IAuthData | null;
+}>;
+
+export const enum ActionTypes {
+	SET_AUTH = 'app/auth/SET_AUTH',
+}
+
+export interface ISetAuthAction extends Action {
+	type: ActionTypes.SET_AUTH;
+	payload: IAuthData | null;
+}
+
+export type IAction = ISetAuthAction;

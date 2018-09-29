@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import { IState as IAuth, reducer as auth } from './app/auth';
 import { IState as IConfig, reducer as config } from './app/config';
 import { IState as II18n, reducer as i18n } from './app/i18n';
 import {
@@ -31,6 +32,7 @@ export interface IApplicationState {
 		profiles: IProfiles;
 	};
 	app: {
+		auth: IAuth;
 		config: IConfig;
 		i18n: II18n;
 		navigationParams: INavigationParams;
@@ -54,6 +56,7 @@ export default combineReducers<IApplicationState>({
 		profiles,
 	}),
 	app: combineReducers({
+		auth,
 		config,
 		i18n,
 		navigationParams,
