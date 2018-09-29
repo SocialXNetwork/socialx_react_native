@@ -19,6 +19,19 @@ export enum TABLE_ENUMS {
 	FRIENDS = 'friends',
 }
 
+export interface ILikeData {
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	timestamp: number;
+	likeId: string;
+}
+
+export interface ILikesData {
+	likes: ILikeData[];
+}
+
 export interface ILikesMetasCallback {
 	[key: string]: {
 		owner: {
@@ -34,6 +47,10 @@ export interface IMetasCallback {
 		| IPostMetasCallback
 		| ICommentMetasCallback
 		| ILikesMetasCallback;
+}
+
+export interface IMetasTypeCallback<T> {
+	[key: string]: T;
 }
 
 export type IGunDataNode = object | string | boolean | number | null;

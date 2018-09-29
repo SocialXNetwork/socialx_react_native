@@ -4,20 +4,25 @@ import * as commentHandles from './handles';
 import {
 	IContext,
 	IGunCallback,
+	ILikeData,
 	ILikesMetasCallback,
-	IMetasCallback,
 	TABLES,
 } from '../../types';
-import { setToArray } from '../../utils/helpers';
+import { setToArray, setToArrayWithKey } from '../../utils/helpers';
 
 import { IPostMetasCallback } from '../posts';
 
-import { ICommentMetasCallback } from './types';
+import {
+	ICommentData,
+	ICommentDataCallback,
+	ICommentMetasCallback,
+	ICommentsData,
+} from './types';
 
 export const getPostComments = (
 	context: IContext,
 	{ postId }: { postId: string },
-	callback: IGunCallback<IMetasCallback[]>,
+	callback: IGunCallback<ICommentDataCallback[]>,
 ) => {
 	postHandles
 		.postMetaById(context, postId)
@@ -27,12 +32,12 @@ export const getPostComments = (
 			}
 			commentHandles
 				.commentsByPostPath(context, postMeta.postPath)
-				.docLoad((commentMeta: IMetasCallback) => {
+				.docLoad((commentMeta: ICommentsData) => {
 					if (!commentMeta) {
 						return callback('no posts found by this path');
 					}
-					const comments = setToArray(commentMeta).map(
-						({ text, timestamp, owner, commentId }: IMetasCallback) => ({
+					const comments = setToArray<ICommentData>(commentMeta).map(
+						({ text, timestamp, owner, commentId }): ICommentDataCallback => ({
 							owner,
 							text,
 							timestamp,
@@ -48,7 +53,7 @@ export const getPostComments = (
 export const getCommentLikes = (
 	context: IContext,
 	{ commentId }: { commentId: string },
-	callback: IGunCallback<ILikesMetasCallback[]>,
+	callback: IGunCallback<ILikeData[]>,
 ) => {
 	commentHandles
 		.commentMetaById(context, commentId)
@@ -67,10 +72,11 @@ export const getCommentLikes = (
 						return callback('no likes found by this comment');
 					}
 
-					const likes = setToArray(likesMeta).map(
-						({ owner, timestamp }: ILikesMetasCallback) => ({
+					const likes: ILikeData[] = setToArrayWithKey(likesMeta).map(
+						({ owner, timestamp, k }: ILikesMetasCallback) => ({
 							owner,
 							timestamp,
+							likeId: k,
 						}),
 					);
 					return callback(null, likes);
