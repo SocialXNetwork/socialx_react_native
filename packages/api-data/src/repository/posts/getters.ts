@@ -3,10 +3,9 @@ import * as postHandles from './handles';
 import {
 	IContext,
 	IGunCallback,
+	ILikesArray,
 	ILikesMetasCallback,
 	IMetasCallback,
-	TABLE_ENUMS,
-	TABLES,
 } from '../../types';
 import {
 	datePathFromDate,
@@ -14,7 +13,18 @@ import {
 	setToArrayWithKey,
 } from '../../utils/helpers';
 
-import { IPostData, IPostDataCallback } from './types';
+import {
+	ICommentCallbackData,
+	ICommentData,
+	ICommentsPostData,
+} from '../comments';
+import {
+	IPostArrayData,
+	IPostCallbackData,
+	IPostReturnData,
+	IPostsCallbackData,
+	IPostsDataCallback,
+} from './types';
 
 export const getPostPathsByUser = (
 	context: IContext,
@@ -34,91 +44,85 @@ export const getPostPathsByUser = (
 		});
 };
 
+const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
+	setToArrayWithKey(likes).map(({ k, postLike }: any) => ({
+		likeId: k,
+		...postLike,
+	}));
+
+const convertCommentsToArray = (comments: ICommentsPostData): ICommentData =>
+	setToArrayWithKey(comments).map(
+		({ k, ...postComment }: ICommentCallbackData & { k: string }) => {
+			// convert comment likes into an array with key
+			const commentLikes = convertLikesToArray(postComment.likes);
+			const { likes, ...postRest } = postComment;
+			return {
+				commentId: k,
+				likes: commentLikes,
+				...postRest,
+			} as any;
+		},
+	);
+
 export const getPostByPath = (
 	context: IContext,
 	{ postPath }: { postPath: string },
-	callback: IGunCallback<IPostData>,
+	callback: IGunCallback<IPostReturnData>,
 ) => {
-	postHandles.postByPath(context, postPath).docLoad((postData: IPostData) => {
-		return callback(null, postData);
-	});
+	postHandles
+		.postByPath(context, postPath)
+		.docLoad((postData: IPostCallbackData) => {
+			const { likes, comments, ...restPost } = postData;
+			// convert likes into an array with keys
+			const postLikes = convertLikesToArray(likes);
+			// convert comments and their likes into an array with keys
+			const postComments: any = convertCommentsToArray(comments);
+
+			const post: IPostReturnData = {
+				likes: postLikes,
+				comments: postComments,
+				...restPost,
+			};
+			return callback(null, post);
+		});
 };
 
 export const getPublicPostsByDate = (
 	context: IContext,
 	{ date }: { date: Date },
-	callback: IGunCallback<IPostData[]>,
+	callback: IGunCallback<IPostsCallbackData[]>,
 ) => {
 	const datePath = datePathFromDate(date);
 
 	postHandles
 		.postsByDate(context, datePath)
-		.docLoad(async (postsData: IPostDataCallback) => {
+		.docLoad(async (postsData: IPostsDataCallback) => {
 			if (!postsData) {
 				return callback('failed, no posts found by date');
 			}
 
-			const posts: IPostData[] = setToArray(postsData).map((post) => post);
-
-			// some big hook
-			const postsWithMeta = posts.map<Promise<IPostData>>(
-				// k is the key which is the postId
-				async ({ k: postId, ...rest }: any): Promise<IPostData> => {
-					const postPath = `${TABLES.POSTS}/${datePath}/${
-						TABLE_ENUMS.PUBLIC
-					}/${postId}`;
-					const promiseHook: Promise<IPostData> = new Promise((resolve) => {
-						postHandles
-							.likesByPostPath(context, postPath)
-							.docLoad((postLikes: ILikesMetasCallback) => {
-								if (!postLikes) {
-									resolve({
-										...rest,
-										postPath,
-									});
-								}
-								resolve({
-									...rest,
-									postPath,
-									likes: postLikes,
-								});
-							});
-					});
-					return promiseHook;
+			const posts = setToArrayWithKey(postsData).map(
+				({ k: postId, ...post }: IPostCallbackData & { k: string }) => {
+					// convert likes into an array with keys
+					const postLikes = convertLikesToArray(post.likes);
+					// convert comments and their likes into an array with keys
+					const postComments = convertCommentsToArray(post.comments);
+					const { likes, comments, ...postRest } = post;
+					return {
+						postId,
+						likes: postLikes,
+						comments: postComments,
+						...postRest,
+					};
 				},
 			);
 
-			const allPostsWithMeta = await Promise.all(postsWithMeta);
-
-			return callback(null, allPostsWithMeta);
-		});
-};
-
-export const getPostLikes = (
-	context: IContext,
-	{ postId }: { postId: string },
-	callback: IGunCallback<ILikesMetasCallback>,
-) => {
-	postHandles
-		.postMetaById(context, postId)
-		.docLoad((postMeta: { postPath: string }) => {
-			if (!postMeta) {
-				return callback('no post found by this id');
-			}
-			postHandles
-				.likesByPostPath(context, postMeta.postPath)
-				.docLoad((likesMeta: ILikesMetasCallback) => {
-					if (!likesMeta) {
-						return callback('no post found by this path');
-					}
-					return callback(null, likesMeta);
-				});
+			return callback(null, posts);
 		});
 };
 
 export default {
 	getPostByPath,
-	getPostLikes,
 	getPostPathsByUser,
 	getPublicPostsByDate,
 };

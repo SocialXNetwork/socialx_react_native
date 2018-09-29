@@ -87,13 +87,13 @@ const showMessageAction: ActionCreator<IShowMessageAction> = (
 	payload: message,
 });
 
-export const showMessage = (modal: IMessage): IThunk => async (
+export const showMessage = (message: IMessage): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(showMessageAction(modal));
+		dispatch(showMessageAction(message));
 	} catch (e) {
 		/**/
 	}

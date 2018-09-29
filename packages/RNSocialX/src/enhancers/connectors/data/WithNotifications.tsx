@@ -1,7 +1,6 @@
 import {
-	INotificationByIdInput,
 	INotificationData,
-	INotificationsReturnData,
+	INotificationsCallbackData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
 import * as React from 'react';
@@ -24,14 +23,13 @@ import {
 } from '../../../store/data/comments/actions';
 import { createNotification } from '../../../store/data/notifications';
 import {
-	currentNotification,
-	notificationById,
+	getNotifications,
 	removeNotification,
 } from '../../../store/data/notifications/actions';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	notifications: INotificationsReturnData | null;
+	notifications: INotificationsCallbackData | null;
 	notification: INotificationData | null;
 }
 
@@ -40,8 +38,7 @@ interface IActionProps {
 	removeNotification: (
 		removeNotificationInput: IRemoveNotificationInput,
 	) => void;
-	currentNotifications: () => void;
-	notificationById: (notificationByIdInput: INotificationByIdInput) => void;
+	getNotifications: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -62,14 +59,8 @@ const selectNotifications = createSelector(
 	(notifications) => notifications,
 );
 
-const selectNotification = createSelector(
-	(state: IApplicationState) => state.data.notifications.notification,
-	(notification) => notification,
-);
-
 const mapStateToProps = (state: IApplicationState) => ({
 	notifications: selectNotifications(state),
-	notification: selectNotification(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -77,9 +68,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(createNotification(createNotificationInput)),
 	removeNotification: (removeNotificationInput: IRemoveNotificationInput) =>
 		dispatch(removeNotification(removeNotificationInput)),
-	currentNotifications: () => dispatch(currentNotification()),
-	notificationById: (notificationByIdInput: INotificationByIdInput) =>
-		dispatch(notificationById(notificationByIdInput)),
+	getNotifications: () => dispatch(getNotifications()),
 });
 
 export const WithNotifications: ConnectedComponentClass<

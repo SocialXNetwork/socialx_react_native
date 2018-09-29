@@ -11,7 +11,7 @@
   "dependencies": {
     "@socialx/api-storage": "^0.0.1",
     "@socialx/commons": "^0.0.1",
-    "utility-types": "^2.1.0"
+    "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",

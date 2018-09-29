@@ -1,14 +1,9 @@
-import { IContext, ILikeData } from '../../types';
-import getters from './getters';
+import { IContext } from '../../types';
 import schemas from './schemas';
 import setters from './setters';
 
 import { resolveCallback } from '../../utils/helpers';
-import {
-	ICommentDataCallback,
-	IRemoveCommentInput,
-	IUnlikeCommentInput,
-} from './types';
+import { IRemoveCommentInput, IUnlikeCommentInput } from './types';
 
 export default (context: IContext) => ({
 	createComment: ({
@@ -29,50 +24,6 @@ export default (context: IContext) => ({
 				setters.createComment(
 					context,
 					validatedInput as { text: string; postId: string },
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
-	getCommentLikes: ({
-		commentId,
-	}: {
-		commentId: string;
-	}): Promise<ILikeData[]> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.getCommentLikes.validate(
-					{ commentId },
-					{
-						stripUnknown: true,
-					},
-				);
-				getters.getCommentLikes(
-					context,
-					validatedInput as { commentId: string },
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
-	getPostComments: ({
-		postId,
-	}: {
-		postId: string;
-	}): Promise<ICommentDataCallback[]> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.getPostComments.validate(
-					{ postId },
-					{
-						stripUnknown: true,
-					},
-				);
-				getters.getPostComments(
-					context,
-					validatedInput as { postId: string },
 					resolveCallback(resolve, reject),
 				);
 			} catch (e) {

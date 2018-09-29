@@ -6,7 +6,7 @@ import {
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
-import { DeepReadonly } from 'utility-types';
+import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export interface IUsernameInput {
 	username: string;
@@ -19,8 +19,7 @@ export interface IProfile {
 }
 
 export type IState = DeepReadonly<{
-	profiles: IProfile[] | null;
-	currentProfile: IProfile | null;
+	profiles: IProfile[];
 }>;
 
 export const enum ActionTypes {

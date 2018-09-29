@@ -1,16 +1,17 @@
 import { IContext, IGunCallback } from '../../types';
 import * as handles from './handles';
 
-import { INotificationData, IRemoveNotificationInput } from './types';
+import { ICreateNotification, IRemoveNotificationInput } from './types';
 
 export const createNotification = (
 	context: IContext,
-	createNotificationInput: INotificationData,
+	createNotificationInput: ICreateNotification,
 	callback: IGunCallback<null>,
 ) => {
+	const { to, ...notification } = createNotificationInput;
 	handles
-		.currentNotifications(context)
-		.set(createNotificationInput, (notificationCallback) => {
+		.notificationsByUsername(context, to)
+		.set(notification, (notificationCallback) => {
 			if (!notificationCallback) {
 				return callback('failed, couldnt create notification');
 			}
@@ -20,11 +21,11 @@ export const createNotification = (
 
 export const removeNotification = (
 	context: IContext,
-	discardInput: IRemoveNotificationInput,
+	removeNotificationInput: IRemoveNotificationInput,
 	callback: IGunCallback<null>,
 ) => {
 	handles
-		.notificationById(context, discardInput.notificationId)
+		.notificationById(context, removeNotificationInput.notificationId)
 		.put(null, (discardCallback) => {
 			if (!discardCallback) {
 				return callback('failed, couldnt discard notification');
