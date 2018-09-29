@@ -7,14 +7,18 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types';
 
+export interface IPostMetaByIdState {
+	[postId: string]: IPostData;
+}
+
+export interface IPostMetasByUserState {
+	[username: string]: IPostData;
+}
+
 export type IState = DeepReadonly<{
 	posts: IPostData[] | null;
-	postMetaById: {
-		[postId: string]: IPostData;
-	} | null;
-	postMetasByUser: {
-		[username: string]: IPostData;
-	} | null;
+	postMetaById: IPostMetaByIdState | null;
+	postMetasByUser: IPostMetasByUserState | null;
 }>;
 
 export interface IUsernameInput {

@@ -29,7 +29,7 @@ export const createPost = (
 
 	const datePath = datePathFromDate(new Date(timestamp));
 
-	const publicPath = `${datePath}/${TABLE_ENUMS.PUBLIC}/`;
+	const publicPath = `${datePath}/${TABLE_ENUMS.PUBLIC}`;
 	const privatePath = `${datePath}/${TABLE_ENUMS.PRIVATE}/${owner}`;
 
 	const { privatePost } = createPostInput;
