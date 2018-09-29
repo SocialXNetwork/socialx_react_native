@@ -9,6 +9,7 @@ import { DeepReadonly } from 'utility-types';
 
 export type IState = DeepReadonly<{
 	notifications: INotificationsReturnData | null;
+	notification: INotificationData | null;
 }>;
 
 export const enum ActionTypes {
@@ -30,11 +31,12 @@ export interface IRemoveNotificationAction extends Action {
 
 export interface ICurrentNotificationsAction extends Action {
 	type: ActionTypes.CURRENT_NOTIFICATION;
+	payload: INotificationsReturnData;
 }
 
 export interface INotificationByIdAction extends Action {
 	type: ActionTypes.NOTIFICATION_BY_ID;
-	payload: INotificationByIdInput;
+	payload: INotificationByIdInput & { notification: INotificationData };
 }
 
 export type IAction =

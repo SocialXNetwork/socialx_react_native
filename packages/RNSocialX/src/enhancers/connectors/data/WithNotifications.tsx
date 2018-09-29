@@ -1,6 +1,7 @@
 import {
 	INotificationByIdInput,
 	INotificationData,
+	INotificationsReturnData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
 import * as React from 'react';
@@ -30,7 +31,8 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	notifications: INotificationData | null;
+	notifications: INotificationsReturnData | null;
+	notification: INotificationData | null;
 }
 
 interface IActionProps {
@@ -60,8 +62,14 @@ const selectNotifications = createSelector(
 	(notifications) => notifications,
 );
 
+const selectNotification = createSelector(
+	(state: IApplicationState) => state.data.notifications.notification,
+	(notification) => notification,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	notifications: selectNotifications(state),
+	notification: selectNotification(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
