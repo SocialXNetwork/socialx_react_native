@@ -1,3 +1,5 @@
+import { ILikesMetasCallback } from '../../types';
+
 export interface IMediaTypes {
 	key: string;
 	name: 'Video' | 'Photo';
@@ -37,6 +39,12 @@ export interface IPostData extends ICreatePostInput {
 		pub: string;
 	};
 	timestamp: number;
+	postPath?: string;
+	likes: ILikesMetasCallback | null;
+}
+
+export interface IPostDataCallback {
+	[postId: string]: IPostData;
 }
 
 export interface IRemovePostInput {
