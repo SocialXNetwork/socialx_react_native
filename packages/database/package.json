@@ -1,0 +1,42 @@
+{
+	"name": "@socialx/database",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"build": "tsc",
+		"test": "jest",
+		"start": "node dist/index.js"
+	},
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"dependencies": {
+		"@socialx/commons": "^0.0.1",
+		"express": "^4.16.3",
+		"gun": "^0.9.99995",
+		"utility-types-fixme-todo": "^2.1.0"
+	},
+	"devDependencies": {
+		"@types/jest": "^23.3.1",
+		"@types/express": "^4.16.0",
+		"jest": "^23.5.0",
+		"ts-jest": "^23.1.4",
+		"typescript": "^3.0.1"
+	},
+	"jest": {
+		"roots": [
+			"<rootDir>/src"
+		],
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
+		]
+	}
+}
