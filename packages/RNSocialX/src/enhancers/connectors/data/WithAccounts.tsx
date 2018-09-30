@@ -1,4 +1,5 @@
 import {
+	IAccountData,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
@@ -15,7 +16,6 @@ import {
 	getAccountByPub,
 	getCurrentAccount,
 	getIsAccountLoggedIn,
-	IAccount,
 	login,
 	logout,
 	recoverAccount,
@@ -24,8 +24,7 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	accounts: IAccount[] | null;
-	currentAccount: IAccount | null;
+	accounts: IAccountData[];
 }
 
 interface IActionProps {
@@ -36,7 +35,7 @@ interface IActionProps {
 	logout: () => void;
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) => void;
 	trustAccount: () => void;
-	currentAccount: () => void;
+	getCurrentAccount: () => void;
 	getAccountByPub: (accountByIdInput: IGetAccountByPubInput) => void;
 }
 
@@ -54,30 +53,12 @@ class Enhancer extends React.Component<IProps & IChildren> {
 }
 
 const selectAccount = createSelector(
-	(state: IApplicationState) => state.data.accounts.account,
+	(state: IApplicationState) => state.data.accounts.accounts,
 	(accounts) => accounts,
-);
-
-const selectCurrentAccount = createSelector(
-	(state: IApplicationState) => state.data.accounts.currentAccount,
-	(currentAccount) => currentAccount,
-);
-
-const selectAccountLoggedIn = createSelector(
-	(state: IApplicationState) => state.data.accounts.loggedIn,
-	(loggedIn) => loggedIn,
-);
-
-const selectAccountRecovery = createSelector(
-	(state: IApplicationState) => state.data.accounts.recovery,
-	(recovery) => recovery,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
 	account: selectAccount(state),
-	currentAccount: selectCurrentAccount(state),
-	loggedIn: selectAccountLoggedIn(state),
-	recovery: selectAccountRecovery(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -91,7 +72,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) =>
 		dispatch(recoverAccount(recoverAccountInput)),
 	trustAccount: () => dispatch(trustAccount()),
-	currentAccount: () => dispatch(getCurrentAccount()),
+	getCurrentAccount: () => dispatch(getCurrentAccount()),
 	getAccountByPub: (getAccountByPubInput: IGetAccountByPubInput) =>
 		dispatch(getAccountByPub(getAccountByPubInput)),
 });
