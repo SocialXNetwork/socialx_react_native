@@ -12,11 +12,28 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
+		// TODO: @jake check with serkan
+		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
+			const profile = action.payload;
+			return { ...state, profiles: [profile] };
+		}
+
 		case ActionTypes.GET_PROFILE_BY_USERNAME: {
 			return { ...state };
 		}
 
+		// TODO: @jake check with serkan
+		case ActionTypes.SYNC_GET_PROFILE_BY_USERNAME: {
+			const profile = action.payload;
+			return { ...state, profiles: [profile] };
+		}
+
 		case ActionTypes.GET_PUBLIC_KEY_BY_USERNAME: {
+			return { ...state };
+		}
+
+		// TODO: @jake check with serkan
+		case ActionTypes.SYNC_GET_PUBLIC_KEY_BY_USERNAME: {
 			return { ...state };
 		}
 

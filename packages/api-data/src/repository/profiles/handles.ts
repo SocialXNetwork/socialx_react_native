@@ -14,8 +14,8 @@ export const currentProfileFriends = (context: IContext) => {
 	const { account, gun } = context;
 	return gun
 		.get(TABLES.PROFILES)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(account.is.alias);
+		.get(account.is.alias)
+		.get(TABLE_ENUMS.FRIENDS);
 };
 
 export const profileFriendsByUsername = (
@@ -25,6 +25,6 @@ export const profileFriendsByUsername = (
 	const { gun } = context;
 	return gun
 		.get(TABLES.PROFILES)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(username);
+		.get(username)
+		.get(TABLE_ENUMS.FRIENDS);
 };
