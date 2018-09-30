@@ -32,7 +32,7 @@ export interface ICreatePostInput {
 	postText: string;
 	location?: string;
 	taggedFriends?: Array<{ fullName: string }>;
-	media?: IMedia;
+	media?: IMedia[];
 	governanceVersion: boolean;
 	privatePost: boolean;
 }
