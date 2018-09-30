@@ -2,6 +2,7 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	ICreateProfileInput,
+	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
@@ -14,7 +15,6 @@ import {
 	getCurrentProfile,
 	getProfileByUsername,
 	getPublicKeyByUsername,
-	IProfile,
 	IUsernameInput,
 } from '../../../store/data/profiles';
 import {
@@ -25,8 +25,7 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	profiles: IProfile[] | null;
-	currentProfile: IProfile | null;
+	profiles: IProfileData[];
 }
 
 interface IActionProps {
@@ -58,14 +57,8 @@ const selectProfiles = createSelector(
 	(profiles) => profiles,
 );
 
-const selectCurrentProfile = createSelector(
-	(state: IApplicationState) => state.data.profiles.currentProfile,
-	(currentProfile) => currentProfile,
-);
-
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
-	currentProfile: selectCurrentProfile(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
