@@ -1,40 +1,23 @@
-import {
-	INotificationData,
-	INotificationsCallbackData,
-	IRemoveNotificationInput,
-} from '@socialx/api-data';
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
-	createComment,
-	getCommentLikes,
-	getPostComments,
-	ICommentIdInput,
-	ICommentsApiData,
-	ICreateCommentInput,
-	IPostIdInput,
-	likeComment,
-} from '../../../store/data/comments';
-import {
-	removeComment,
-	unlikeComment,
-} from '../../../store/data/comments/actions';
-import { createNotification } from '../../../store/data/notifications';
-import {
+	createNotification,
 	getNotifications,
+	ICreateNotification,
+	INotificationReturnData,
+	IRemoveNotificationInput,
 	removeNotification,
-} from '../../../store/data/notifications/actions';
+} from '../../../store/data/notifications';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	notifications: INotificationsCallbackData | null;
-	notification: INotificationData | null;
+	notifications: INotificationReturnData;
 }
 
 interface IActionProps {
-	createNotification: (createNotificationInput: INotificationData) => void;
+	createNotification: (createNotificationInput: ICreateNotification) => void;
 	removeNotification: (
 		removeNotificationInput: IRemoveNotificationInput,
 	) => void;
@@ -64,7 +47,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	createNotification: (createNotificationInput: INotificationData) =>
+	createNotification: (createNotificationInput: ICreateNotification) =>
 		dispatch(createNotification(createNotificationInput)),
 	removeNotification: (removeNotificationInput: IRemoveNotificationInput) =>
 		dispatch(removeNotification(removeNotificationInput)),

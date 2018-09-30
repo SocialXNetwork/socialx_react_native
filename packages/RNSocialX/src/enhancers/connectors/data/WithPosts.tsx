@@ -1,37 +1,41 @@
-import { IRemovePostInput, IUnlikePostInput } from '@socialx/api-data';
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
+	createComment,
 	createPost,
 	getPostByPath,
-	getPostLikes,
 	getPostPathsByUsername,
 	getPublicPostsByDate,
+	ICommentIdInput,
+	ICreateCommentInput,
+	ICreatePostInput,
 	IDateInput,
-	IPostData,
+	IPostArrayData,
 	IPostIdInput,
 	IPostPathInput,
+	IRemoveCommentInput,
+	IRemovePostInput,
+	IUnlikeCommentInput,
+	IUnlikePostInput,
 	IUsernameInput,
+	likeComment,
 	likePost,
+	removeComment,
 	removePost,
+	unlikeComment,
 	unlikePost,
 } from '../../../store/data/posts';
+
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	posts: IPostData[] | null;
-	postMetaById: {
-		[postId: string]: IPostData;
-	} | null;
-	postMetasByUser: {
-		[username: string]: IPostData;
-	} | null;
+	posts: IPostArrayData;
 }
 
 interface IActionProps {
-	createPost: (createPostInput: IPostData) => void;
+	createPost: (createPostInput: ICreatePostInput) => void;
 	likePost: (likePostInput: IPostIdInput) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	getPostLikes: (getPostLikesInput: IPostIdInput) => void;
@@ -39,6 +43,11 @@ interface IActionProps {
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
 	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
+	// comments
+	createComment: (createCommentInput: ICreateCommentInput) => void;
+	removeComment: (removeCommentInput: IRemoveCommentInput) => void;
+	likeComment: (likeCommentInput: ICommentIdInput) => void;
+	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -59,30 +68,16 @@ const selectPosts = createSelector(
 	(posts) => posts,
 );
 
-const selectPostMetaById = createSelector(
-	(state: IApplicationState) => state.data.posts.postMetaById,
-	(postMetaById) => postMetaById,
-);
-
-const selectPostMetasByUser = createSelector(
-	(state: IApplicationState) => state.data.posts.postMetasByUser,
-	(postMetasByUser) => postMetasByUser,
-);
-
 const mapStateToProps = (state: IApplicationState) => ({
 	posts: selectPosts(state),
-	postMetaById: selectPostMetaById(state),
-	postMetasByUser: selectPostMetasByUser(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	createPost: (createPostInput: IPostData) =>
+	createPost: (createPostInput: ICreatePostInput) =>
 		dispatch(createPost(createPostInput)),
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
 	getPostByPath: (getPostPathInput: IPostPathInput) =>
 		dispatch(getPostByPath(getPostPathInput)),
-	getPostLikes: (getPostLikesInput: IPostIdInput) =>
-		dispatch(getPostLikes(getPostLikesInput)),
 	getPostPathsByUser: (getPostPathsByUsernameInput: IUsernameInput) =>
 		dispatch(getPostPathsByUsername(getPostPathsByUsernameInput)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
@@ -91,6 +86,15 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(removePost(removePostInput)),
 	unlikePost: (unlikePostInput: IUnlikePostInput) =>
 		dispatch(unlikePost(unlikePostInput)),
+	// comments
+	createComment: (createCommentInput: ICreateCommentInput) =>
+		dispatch(createComment(createCommentInput)),
+	removeComment: (removeCommentInput: IRemoveCommentInput) =>
+		dispatch(removeComment(removeCommentInput)),
+	likeComment: (likeCommentInput: ICommentIdInput) =>
+		dispatch(likeComment(likeCommentInput)),
+	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
+		dispatch(unlikeComment(unlikeCommentInput)),
 });
 
 export const WithPosts: ConnectedComponentClass<

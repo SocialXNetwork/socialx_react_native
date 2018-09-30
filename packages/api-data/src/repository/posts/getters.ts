@@ -5,7 +5,6 @@ import {
 	IGunCallback,
 	ILikesArray,
 	ILikesMetasCallback,
-	IMetasCallback,
 } from '../../types';
 import {
 	datePathFromDate,
@@ -19,11 +18,11 @@ import {
 	ICommentsPostData,
 } from '../comments';
 import {
-	IPostArrayData,
 	IPostCallbackData,
 	IPostReturnData,
 	IPostsCallbackData,
 	IPostsDataCallback,
+	IPostUserMetasCallback,
 } from './types';
 
 export const getPostPathsByUser = (
@@ -33,7 +32,7 @@ export const getPostPathsByUser = (
 ) => {
 	postHandles
 		.postMetasByUsername(context, username)
-		.docLoad((postMeta: IMetasCallback) => {
+		.docLoad((postMeta: IPostUserMetasCallback) => {
 			if (!postMeta) {
 				return callback('failed, no posts found');
 			}
