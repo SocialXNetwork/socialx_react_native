@@ -1,11 +1,3 @@
-import {
-	IAccountData,
-	IChangePasswordInput,
-	ICreateAccountInput,
-	ICredentials,
-	IGetAccountByPubInput,
-	IRecoverAccountInput,
-} from '@socialx/api-data';
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -16,6 +8,12 @@ import {
 	getAccountByPub,
 	getCurrentAccount,
 	getIsAccountLoggedIn,
+	IAccountData,
+	IChangePasswordInput,
+	ICreateAccountInput,
+	ICredentials,
+	IGetAccountByPubInput,
+	IRecoverAccountInput,
 	login,
 	logout,
 	recoverAccount,

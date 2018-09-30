@@ -1,5 +1,5 @@
 import {
-	INotificationData,
+	ICreateNotification,
 	INotificationReturnData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
@@ -16,20 +16,20 @@ import {
 } from './Types';
 
 const createNotificationAction: ActionCreator<ICreateNotificationAction> = (
-	createNotificationInput: INotificationData,
+	createNotificationInput: ICreateNotification,
 ) => ({
 	type: ActionTypes.CREATE_NOTIFICATION,
 	payload: createNotificationInput,
 });
 
 export const createNotification = (
-	createNotificationInput: INotificationData,
+	createNotificationInput: ICreateNotification,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
-		// TODO: this should not be exposed to redux
-		// const { dataApi } = context;
-		// await dataApi.notifications.createNotification(createNotificationInput);
 		dispatch(createNotificationAction(createNotificationInput));
+		const { dataApi } = context;
+		await dataApi.notifications.createNotification(createNotificationInput);
+		dispatch(getNotifications());
 	} catch (e) {
 		/**/
 	}
@@ -46,9 +46,10 @@ export const removeNotification = (
 	removeNotificationInput: IRemoveNotificationInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		dispatch(removeNotificationAction(removeNotificationInput));
 		const { dataApi } = context;
 		await dataApi.notifications.removeNotification(removeNotificationInput);
-		dispatch(removeNotificationAction(removeNotificationInput));
+		dispatch(getNotifications());
 	} catch (e) {
 		/**/
 	}
