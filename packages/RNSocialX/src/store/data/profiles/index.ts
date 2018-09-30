@@ -1,7 +1,7 @@
 import { IUsernameInput } from './Types';
 
 export { default as reducer } from './reducer';
-export { IState, IAction, IProfile, IUsernameInput } from './Types';
+export { IState, IAction, IUsernameInput } from './Types';
 export {
 	createProfile,
 	getCurrentProfile,

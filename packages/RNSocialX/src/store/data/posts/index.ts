@@ -1,7 +1,5 @@
 export { default as reducer } from './reducer';
 
-export { IPostData } from '@socialx/api-data';
-
 export {
 	IState,
 	IAction,

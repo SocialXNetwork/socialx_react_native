@@ -1,4 +1,5 @@
 import {
+	IAccountData,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
@@ -8,20 +9,8 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
-export interface IAccount {
-	alias: string;
-	username: string;
-	pub: string;
-	epub: string;
-	recovery: IRecoveryData;
-}
-
-export interface IRecoveryData {
-	hint: string;
-}
-
 export type IState = DeepReadonly<{
-	accounts: IAccount[];
+	accounts: IAccountData[];
 }>;
 
 export const enum ActionTypes {
@@ -33,7 +22,9 @@ export const enum ActionTypes {
 	LOGIN = 'data/accounts/LOGIN',
 	LOGOUT = 'data/accounts/LOGOUT',
 	GET_CURRENT_ACCOUNT = 'data/accounts/GET_CURRENT_ACCOUNT',
+	SYNC_GET_CURRENT_ACCOUNT = 'data/accounts/SYNC_GET_CURRENT_ACCOUNT',
 	GET_ACCOUNT_BY_PUB = 'data/accounts/GET_ACCOUNT_BY_PUB',
+	SYNC_GET_ACCOUNT_BY_PUB = 'data/accounts/SYNC_GET_ACCOUNT_BY_PUB',
 }
 
 export interface ICreateAccountAction extends Action {
@@ -43,7 +34,7 @@ export interface ICreateAccountAction extends Action {
 
 export interface IRecoverAccountAction extends Action {
 	type: ActionTypes.RECOVER_ACCOUNT;
-	payload: IRecoverAccountInput & IRecoveryData;
+	payload: IRecoverAccountInput;
 }
 
 export interface ITrustAccountAction extends Action {
@@ -61,7 +52,6 @@ export interface ILogoutAction extends Action {
 
 export interface IGetIsAccountLoggedInAction extends Action {
 	type: ActionTypes.GET_IS_ACCOUNT_LOGGED_IN;
-	payload: boolean;
 }
 
 export interface IChangePasswordAction extends Action {
@@ -71,12 +61,21 @@ export interface IChangePasswordAction extends Action {
 
 export interface IGetCurrentAccountAction extends Action {
 	type: ActionTypes.GET_CURRENT_ACCOUNT;
-	payload: IAccount;
+}
+
+export interface ISyncGetCurrentAccountAction extends Action {
+	type: ActionTypes.SYNC_GET_CURRENT_ACCOUNT;
+	payload: IAccountData;
 }
 
 export interface IGetAccountByPubAction extends Action {
 	type: ActionTypes.GET_ACCOUNT_BY_PUB;
-	payload: IGetAccountByPubInput & { account: IAccount };
+	payload: IGetAccountByPubInput;
+}
+
+export interface ISyncGetAccountByPubAction extends Action {
+	type: ActionTypes.SYNC_GET_ACCOUNT_BY_PUB;
+	payload: IAccountData;
 }
 
 export type IAction =
@@ -88,4 +87,6 @@ export type IAction =
 	| ILogoutAction
 	| IChangePasswordAction
 	| IGetCurrentAccountAction
-	| IGetAccountByPubAction;
+	| ISyncGetCurrentAccountAction
+	| IGetAccountByPubAction
+	| ISyncGetAccountByPubAction;

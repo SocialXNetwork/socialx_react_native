@@ -1,4 +1,5 @@
 import {
+	IAccountData,
 	IChangePasswordInput,
 	ICreateAccountInput,
 	ICredentials,
@@ -6,10 +7,11 @@ import {
 	IRecoverAccountInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
+import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
+import { beginActivity, endActivity } from '../../ui/activities';
 import {
 	ActionTypes,
-	IAccount,
 	IChangePasswordAction,
 	ICreateAccountAction,
 	IGetAccountByPubAction,
@@ -18,7 +20,8 @@ import {
 	ILoginAction,
 	ILogoutAction,
 	IRecoverAccountAction,
-	IRecoveryData,
+	ISyncGetAccountByPubAction,
+	ISyncGetCurrentAccountAction,
 	ITrustAccountAction,
 } from './Types';
 
@@ -33,17 +36,18 @@ export const createAccount = (
 	createAccountInput: ICreateAccountInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		dispatch(createAccountAction(createAccountInput));
 		const { dataApi } = context;
 		await dataApi.accounts.createAccount(createAccountInput);
-		dispatch(createAccountAction(createAccountInput));
 	} catch (e) {
 		// dispatch(setGlobalLoadingIndicator(false);
 		// dispatch(addNotificationtoQueue('there was an error');
 	}
 };
 
+// TODO: @jake check with serkan
 const recoverAccountAction: ActionCreator<IRecoverAccountAction> = (
-	recoverAccountActionInput: IRecoverAccountInput & IRecoveryData,
+	recoverAccountActionInput: IRecoverAccountInput,
 ) => ({
 	type: ActionTypes.RECOVER_ACCOUNT,
 	payload: recoverAccountActionInput,
@@ -53,11 +57,11 @@ export const recoverAccount = (
 	recoverAccountInput: IRecoverAccountInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		dispatch(recoverAccountAction(recoverAccountInput));
 		const { dataApi } = context;
 		const recoveryData = await dataApi.accounts.recoverAccount(
 			recoverAccountInput,
 		);
-		dispatch(recoverAccountAction({ ...recoverAccountInput, ...recoveryData }));
 	} catch (e) {
 		/**/
 	}
@@ -92,9 +96,9 @@ export const login = (credentials: ICredentials): IThunk => async (
 	context,
 ) => {
 	try {
+		dispatch(loginAction(credentials));
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
-		dispatch(loginAction(credentials));
 	} catch (e) {
 		/**/
 	}
@@ -106,19 +110,18 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 
 export const logout = (): IThunk => async (dispatch, getState, context) => {
 	try {
+		dispatch(logoutAction());
 		const { dataApi } = context;
 		await dataApi.accounts.logout();
-		dispatch(logoutAction());
 	} catch (e) {
 		/**/
 	}
 };
 
-const getIsAccountLoggedInAction: ActionCreator<IGetIsAccountLoggedInAction> = (
-	loggedIn: boolean,
-) => ({
+const getIsAccountLoggedInAction: ActionCreator<
+	IGetIsAccountLoggedInAction
+> = () => ({
 	type: ActionTypes.GET_IS_ACCOUNT_LOGGED_IN,
-	payload: loggedIn,
 });
 
 export const getIsAccountLoggedIn = (): IThunk => async (
@@ -127,9 +130,9 @@ export const getIsAccountLoggedIn = (): IThunk => async (
 	context,
 ) => {
 	try {
+		dispatch(getIsAccountLoggedInAction());
 		const { dataApi } = context;
-		const { loggedIn } = await dataApi.accounts.getIsAccountLoggedIn();
-		dispatch(getIsAccountLoggedInAction(loggedIn));
+		const accountLoggedIn = await dataApi.accounts.getIsAccountLoggedIn();
 	} catch (e) {
 		/**/
 	}
@@ -146,19 +149,25 @@ export const changePassword = (
 	changePasswordInput: IChangePasswordInput,
 ): IThunk => async (dispatch, getState, context) => {
 	try {
+		dispatch(changePasswordAction(changePasswordInput));
 		const { dataApi } = context;
 		await dataApi.accounts.changePassword(changePasswordInput);
-		dispatch(changePasswordAction(changePasswordInput));
 	} catch (e) {
 		/**/
 	}
 };
 
-const getCurrentAccountAction: ActionCreator<IGetCurrentAccountAction> = (
-	currentAccount: IAccount,
-) => ({
+const getCurrentAccountAction: ActionCreator<
+	IGetCurrentAccountAction
+> = () => ({
 	type: ActionTypes.GET_CURRENT_ACCOUNT,
-	payload: currentAccount,
+});
+
+const syncGetCurrentAccountAction: ActionCreator<
+	ISyncGetCurrentAccountAction
+> = (account: IAccountData) => ({
+	type: ActionTypes.SYNC_GET_CURRENT_ACCOUNT,
+	payload: account,
 });
 
 export const getCurrentAccount = (): IThunk => async (
@@ -166,42 +175,56 @@ export const getCurrentAccount = (): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
+		dispatch(getCurrentAccountAction());
+		dispatch(
+			beginActivity({
+				type: ActionTypes.GET_CURRENT_ACCOUNT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
-		const { alias, epub, pub } = await dataApi.accounts.getCurrentAccount();
-		dispatch(getCurrentAccountAction({ alias, username: alias, epub, pub }));
+		const account = await dataApi.accounts.getCurrentAccount();
+		dispatch(syncGetCurrentAccountAction(account));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
 const getAccountByPubAction: ActionCreator<IGetAccountByPubAction> = (
-	account: IGetAccountByPubInput & { account: IAccount },
+	getAccountByPubInput: IGetAccountByPubInput,
 ) => ({
 	type: ActionTypes.GET_ACCOUNT_BY_PUB,
+	payload: getAccountByPubInput,
+});
+
+const syncGetAccountByPubAction: ActionCreator<ISyncGetAccountByPubAction> = (
+	account: IAccountData,
+) => ({
+	type: ActionTypes.SYNC_GET_ACCOUNT_BY_PUB,
 	payload: account,
 });
 
 export const getAccountByPub = (
 	getAccountByPubInput: IGetAccountByPubInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
+		dispatch(getAccountByPubAction(getAccountByPubInput));
+		dispatch(
+			beginActivity({ type: ActionTypes.GET_ACCOUNT_BY_PUB, uuid: activityId }),
+		);
 		const { dataApi } = context;
-		const { alias, pub, epub } = await dataApi.accounts.getAccountByPub(
+		const account = await dataApi.accounts.getAccountByPub(
 			getAccountByPubInput,
 		);
-		dispatch(
-			getAccountByPubAction({
-				...getAccountByPubInput,
-				account: {
-					alias,
-					username: alias,
-					pub,
-					epub,
-				},
-			}),
-		);
+		dispatch(syncGetAccountByPubAction(account));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };

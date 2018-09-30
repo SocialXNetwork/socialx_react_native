@@ -2,13 +2,28 @@ export interface IGetPublicKeyInput {
 	username: string;
 }
 
-export interface IProfile {
+export interface IProfileCallbackData {
 	pub: string;
 	email: string;
 	avatar: string;
 	fullName: string;
 	miningEnabled: boolean;
 	aboutMeText: string;
+	friends: IFriendsCallbackData;
+}
+
+export interface IFriendReturnData extends IFriendData {
+	friendId: string;
+}
+
+export interface IProfileData {
+	pub: string;
+	email: string;
+	avatar: string;
+	fullName: string;
+	miningEnabled: boolean;
+	aboutMeText: string;
+	friends: IFriendReturnData[];
 }
 
 export interface ICreateProfileInput {
@@ -53,6 +68,6 @@ export interface IFriendData {
 	relation: FRIEND_TYPES;
 }
 
-export interface IFriendsReturnData {
+export interface IFriendsCallbackData {
 	[key: string]: IFriendData;
 }

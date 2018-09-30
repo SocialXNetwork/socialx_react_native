@@ -7,9 +7,10 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	ICreateProfileInput,
-	IFriendsReturnData,
+	IFriendsCallbackData,
 	IGetPublicKeyInput,
-	IProfile,
+	IProfileCallbackData,
+	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from './types';
@@ -35,7 +36,7 @@ export default (context: IContext) => ({
 				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
 			}
 		}),
-	getCurrentProfile: (): Promise<IProfile> =>
+	getCurrentProfile: (): Promise<IProfileData> =>
 		new Promise(async (resolve, reject) => {
 			getters.getCurrentProfile(context, resolveCallback(resolve, reject));
 		}),
@@ -43,7 +44,7 @@ export default (context: IContext) => ({
 		username,
 	}: {
 		username: string;
-	}): Promise<IProfile> =>
+	}): Promise<IProfileData> =>
 		new Promise(async (resolve, reject) => {
 			try {
 				const validatedInput = await schemas.getProfileByUsername.validate(
@@ -145,7 +146,7 @@ export default (context: IContext) => ({
 				reject(e);
 			}
 		}),
-	getCurrentProfileFriends: (): Promise<IFriendsReturnData> =>
+	getCurrentProfileFriends: (): Promise<IFriendsCallbackData> =>
 		new Promise((resolve, reject) => {
 			getters.getCurrentProfileFriends(
 				context,
