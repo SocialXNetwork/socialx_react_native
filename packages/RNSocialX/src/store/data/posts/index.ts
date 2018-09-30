@@ -8,7 +8,18 @@ export {
 	IPostPathInput,
 	IUsernameInput,
 	IDateInput,
+	ICommentIdInput,
+	ICreateCommentInput,
 } from './Types';
+
+export {
+	ICreatePostInput,
+	IPostArrayData,
+	IRemoveCommentInput,
+	IRemovePostInput,
+	IUnlikeCommentInput,
+	IUnlikePostInput,
+} from '@socialx/api-data';
 
 export {
 	getPostByPath,
@@ -18,4 +29,9 @@ export {
 	likePost,
 	removePost,
 	unlikePost,
+	// comments
+	createComment,
+	removeComment,
+	likeComment,
+	unlikeComment,
 } from './actions';

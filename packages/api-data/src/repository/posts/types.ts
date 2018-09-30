@@ -24,6 +24,10 @@ export interface IPostMetasCallback {
 	privatePost: boolean;
 }
 
+export interface IPostUserMetasCallback {
+	[postMetaId: string]: IPostMetasCallback;
+}
+
 export interface ICreatePostInput {
 	postText: string;
 	location?: string;
