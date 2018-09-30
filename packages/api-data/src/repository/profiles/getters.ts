@@ -1,7 +1,15 @@
 import { IContext, IGunCallback } from '../../types';
 import * as profileHandles from './handles';
 
-import { IFriendsReturnData, IGetPublicKeyInput, IProfile } from './types';
+import { setToArrayWithKey } from '../../utils/helpers';
+import {
+	IFriendData,
+	IFriendReturnData,
+	IFriendsCallbackData,
+	IGetPublicKeyInput,
+	IProfileCallbackData,
+	IProfileData,
+} from './types';
 
 export const getPublicKeyByUsername = (
 	context: IContext,
@@ -10,56 +18,81 @@ export const getPublicKeyByUsername = (
 ) => {
 	profileHandles
 		.profileByUsername(context, username)
-		.docLoad(({ pub }: IProfile) => {
+		.docLoad(({ pub }: IProfileCallbackData) => {
 			return callback(null, pub);
 		});
 };
 
+const friendsToArray = (friends: IFriendsCallbackData) =>
+	setToArrayWithKey(friends).map(
+		({ k, ...friend }: IFriendData & { k: string }) => ({
+			friendId: k,
+			...friend,
+		}),
+	);
+
 export const getCurrentProfile = (
 	context: IContext,
-	callback: IGunCallback<IProfile>,
+	callback: IGunCallback<IProfileData>,
 ) => {
 	const { account } = context;
 	if (!account.is) {
 		return callback('a user needs to be logged in to proceed');
 	}
 
-	profileHandles.currentUserProfile(context).docLoad((profile: IProfile) => {
-		if (!profile) {
-			return callback('no user profile found');
-		}
+	profileHandles
+		.currentUserProfile(context)
+		.docLoad((profile: IProfileCallbackData) => {
+			if (!profile) {
+				return callback('no user profile found');
+			}
+			const { friends, ...profileRest } = profile;
 
-		return callback(null, profile);
-	});
+			const friendsData = friendsToArray(friends);
+			const profileReturnData = {
+				friends: friendsData,
+				...profileRest,
+			};
+			return callback(null, profileReturnData);
+		});
 };
 
 export const getProfileByUsername = (
 	context: IContext,
 	{ username }: { username: string },
-	callback: IGunCallback<IProfile>,
+	callback: IGunCallback<IProfileCallbackData>,
 ) => {
 	profileHandles
 		.profileByUsername(context, username)
-		.docLoad((profile: IProfile) => {
+		.docLoad((profile: IProfileCallbackData) => {
 			if (!profile) {
 				return callback('no user profile found');
 			}
+			const { friends, ...profileRest } = profile;
 
-			return callback(null, profile);
+			const friendsData = friendsToArray(friends);
+			const profileReturnData = {
+				friends: friendsData,
+				...profileRest,
+			};
+			return callback(null, profileReturnData);
 		});
 };
 
 export const getCurrentProfileFriends = (
 	context: IContext,
-	callback: IGunCallback<IFriendsReturnData>,
+	callback: IGunCallback<IFriendReturnData[]>,
 ) => {
 	profileHandles
 		.currentProfileFriends(context)
-		.docLoad((data: IFriendsReturnData) => {
-			if (!data) {
+		.docLoad((friends: IFriendsCallbackData) => {
+			if (!friends) {
 				return callback('failed, no friends found :(');
 			}
-			return callback(null, data);
+
+			const friendsData = friendsToArray(friends);
+
+			return callback(null, friendsData);
 		});
 };
 

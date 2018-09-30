@@ -10,9 +10,9 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { ...state };
 		}
 
+		// TODO: @jake see this with serkan
 		case ActionTypes.RECOVER_ACCOUNT: {
-			const recovery = action.payload;
-			return { ...state, recovery };
+			return { ...state };
 		}
 
 		case ActionTypes.CHANGE_PASSWORD: {
@@ -24,27 +24,35 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.LOGIN: {
-			return { ...state, loggedIn: true };
+			return { ...state };
 		}
 
 		case ActionTypes.LOGOUT: {
-			return { ...state, loggedIn: false };
+			return { ...state };
 		}
 
-		// guess this can be used as an extra check?
 		case ActionTypes.GET_IS_ACCOUNT_LOGGED_IN: {
-			const loggedIn = action.payload;
-			return { ...state, loggedIn };
+			return { ...state };
 		}
 
 		case ActionTypes.GET_CURRENT_ACCOUNT: {
-			const currentAccount = action.payload;
-			return { ...state, currentAccount };
+			return { ...state };
+		}
+
+		// TODO: @jake see this with serkan
+		case ActionTypes.SYNC_GET_CURRENT_ACCOUNT: {
+			const account = action.payload;
+			return { ...state, accounts: [...state.accounts, account] };
 		}
 
 		case ActionTypes.GET_ACCOUNT_BY_PUB: {
-			const { account } = action.payload;
-			return { ...state, account };
+			return { ...state };
+		}
+
+		// TODO: @jake see this with serkan
+		case ActionTypes.SYNC_GET_ACCOUNT_BY_PUB: {
+			const account = action.payload;
+			return { ...state, accounts: [...state.accounts, account] };
 		}
 
 		default: {

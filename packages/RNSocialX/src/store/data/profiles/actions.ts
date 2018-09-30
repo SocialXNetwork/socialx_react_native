@@ -2,11 +2,14 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	ICreateProfileInput,
+	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
+import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
+import { beginActivity, endActivity } from '../../ui/activities';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
@@ -16,6 +19,9 @@ import {
 	IGetProfileByUsernameAction,
 	IGetPublicKeyByUsernameAction,
 	IRemoveFriendAction,
+	ISyncGetCurrentProfileAction,
+	ISyncGetProfileByUsernameAction,
+	ISyncGetPublicKeyByUsernameAction,
 	IUpdateProfileAction,
 	IUsernameInput,
 } from './Types';
@@ -27,6 +33,7 @@ const createProfileAction: ActionCreator<ICreateProfileAction> = (
 	payload: createProfileInput,
 });
 
+// ? should this method be exposed? since its being used internally by createAccount
 export const createProfile = (
 	createProfileInput: ICreateProfileInput,
 ): IThunk => async (dispatch, getState, context) => {
@@ -44,13 +51,34 @@ const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
 	payload: getProfileByUsernameInput,
 });
 
+const syncGetProfileByUsernameAction: ActionCreator<
+	ISyncGetProfileByUsernameAction
+> = (profile: IProfileData) => ({
+	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME,
+	payload: profile,
+});
+
 export const getProfileByUsername = (
 	getProfileByUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.GET_PROFILE_BY_USERNAME,
+				uuid: activityId,
+			}),
+		);
+		const { dataApi } = context;
+		const profile = await dataApi.profiles.getProfileByUsername(
+			getProfileByUsernameInput,
+		);
+		dispatch(syncGetProfileByUsernameAction(profile));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -60,15 +88,34 @@ const getCurrentProfileAction: ActionCreator<
 	type: ActionTypes.GET_CURRENT_PROFILE,
 });
 
+const syncGetCurrentProfileAction: ActionCreator<
+	ISyncGetCurrentProfileAction
+> = (profile: IProfileData) => ({
+	type: ActionTypes.SYNC_GET_CURRENT_PROFILE,
+	payload: profile,
+});
+
 export const getCurrentProfile = (): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(getCurrentProfileAction());
+		dispatch(
+			beginActivity({
+				type: ActionTypes.GET_CURRENT_PROFILE,
+				uuid: activityId,
+			}),
+		);
+		const { dataApi } = context;
+		const profile = await dataApi.profiles.getCurrentProfile();
+		dispatch(syncGetCurrentProfileAction(profile));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -79,13 +126,35 @@ const getPublicKeyByUsernameAction: ActionCreator<
 	payload: getProfileUsernameInput,
 });
 
+// TODO: @jake check with serkan on this
+const syncGetPublicKeyByUsernameAction: ActionCreator<
+	ISyncGetPublicKeyByUsernameAction
+> = (publicKey: string) => ({
+	type: ActionTypes.SYNC_GET_PUBLIC_KEY_BY_USERNAME,
+	payload: publicKey,
+});
+
 export const getPublicKeyByUsername = (
 	getProfileUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(getPublicKeyByUsernameAction(getProfileUsernameInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.GET_PUBLIC_KEY_BY_USERNAME,
+				uuid: activityId,
+			}),
+		);
+		const { dataApi } = context;
+		const publicKey = await dataApi.profiles.getPublicKeyByUsername(
+			getProfileUsernameInput,
+		);
+		dispatch(syncGetPublicKeyByUsernameAction(publicKey));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -101,6 +170,9 @@ export const updateCurrentProfile = (
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(updateCurrentProfileAction(updateProfileInput));
+		const { dataApi } = context;
+		await dataApi.profiles.updateProfile(updateProfileInput);
+		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
 	}
@@ -120,6 +192,9 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 ) => {
 	try {
 		dispatch(addFriendAction(addFriendInput));
+		const { dataApi } = context;
+		await dataApi.profiles.addFriend(addFriendInput);
+		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
 	}
@@ -137,6 +212,9 @@ export const removeFriend = (
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(removeFriendAction(removeFriendInput));
+		const { dataApi } = context;
+		await dataApi.profiles.removeFriend(removeFriendInput);
+		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
 	}
@@ -154,6 +232,9 @@ export const acceptFriend = (
 ): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(acceptFriendAction(acceptFriendInput));
+		const { dataApi } = context;
+		await dataApi.profiles.acceptFriend(acceptFriendInput);
+		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
 	}

@@ -1,4 +1,4 @@
-import { IProfile } from '../profiles';
+import { IProfileCallbackData } from '../profiles';
 
 export interface IAccountData {
 	alias: string;
@@ -52,4 +52,4 @@ export interface IChangePasswordInput {
 export interface ICreateAccountInput
 	extends IRecoverData<string>,
 		ICredentials,
-		IProfile {}
+		IProfileCallbackData {}
