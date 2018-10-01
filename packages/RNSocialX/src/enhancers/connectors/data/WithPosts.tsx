@@ -6,7 +6,7 @@ import {
 	createComment,
 	createPost,
 	getPostByPath,
-	getPostPathsByUsername,
+	getPostsByUsername,
 	getPublicPostsByDate,
 	ICommentIdInput,
 	ICreateCommentInput,
@@ -36,13 +36,12 @@ interface IDataProps {
 
 interface IActionProps {
 	createPost: (createPostInput: ICreatePostInput) => void;
-	likePost: (likePostInput: IPostIdInput) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
-	getPostLikes: (getPostLikesInput: IPostIdInput) => void;
-	getPostPathsByUsername: (getPostPathsByUsernameInput: IUsernameInput) => void;
+	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
 	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
+	likePost: (likePostInput: IPostIdInput) => void;
 	// comments
 	createComment: (createCommentInput: ICreateCommentInput) => void;
 	removeComment: (removeCommentInput: IRemoveCommentInput) => void;
@@ -78,8 +77,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
 	getPostByPath: (getPostPathInput: IPostPathInput) =>
 		dispatch(getPostByPath(getPostPathInput)),
-	getPostPathsByUser: (getPostPathsByUsernameInput: IUsernameInput) =>
-		dispatch(getPostPathsByUsername(getPostPathsByUsernameInput)),
+	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
+		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
 	removePost: (removePostInput: IRemovePostInput) =>

@@ -5,15 +5,15 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.CREATE_NOTIFICATION: {
-			return { ...state };
+			return state;
 		}
 
 		case ActionTypes.REMOVE_NOTIFICATION: {
-			return { ...state };
+			return state;
 		}
 
 		case ActionTypes.GET_CURRENT_NOTIFICATIONS: {
-			return { ...state };
+			return state;
 		}
 
 		case ActionTypes.SYNC_CURRENT_NOTIFICATIONS: {

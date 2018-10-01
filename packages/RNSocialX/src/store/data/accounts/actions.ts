@@ -16,146 +16,12 @@ import {
 	ICreateAccountAction,
 	IGetAccountByPubAction,
 	IGetCurrentAccountAction,
-	IGetIsAccountLoggedInAction,
 	ILoginAction,
 	ILogoutAction,
 	IRecoverAccountAction,
 	ISyncGetAccountByPubAction,
 	ISyncGetCurrentAccountAction,
-	ITrustAccountAction,
 } from './Types';
-
-const createAccountAction: ActionCreator<ICreateAccountAction> = (
-	createAccountInput: ICreateAccountInput,
-) => ({
-	type: ActionTypes.CREATE_ACCOUNT,
-	payload: createAccountInput,
-});
-
-export const createAccount = (
-	createAccountInput: ICreateAccountInput,
-): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(createAccountAction(createAccountInput));
-		const { dataApi } = context;
-		await dataApi.accounts.createAccount(createAccountInput);
-	} catch (e) {
-		// dispatch(setGlobalLoadingIndicator(false);
-		// dispatch(addNotificationtoQueue('there was an error');
-	}
-};
-
-// TODO: @jake check with serkan
-const recoverAccountAction: ActionCreator<IRecoverAccountAction> = (
-	recoverAccountActionInput: IRecoverAccountInput,
-) => ({
-	type: ActionTypes.RECOVER_ACCOUNT,
-	payload: recoverAccountActionInput,
-});
-
-export const recoverAccount = (
-	recoverAccountInput: IRecoverAccountInput,
-): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(recoverAccountAction(recoverAccountInput));
-		const { dataApi } = context;
-		const recoveryData = await dataApi.accounts.recoverAccount(
-			recoverAccountInput,
-		);
-	} catch (e) {
-		/**/
-	}
-};
-
-const trustAccountAction: ActionCreator<ITrustAccountAction> = () => ({
-	type: ActionTypes.TRUST_ACCOUNT,
-});
-
-export const trustAccount = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	try {
-		dispatch(trustAccountAction());
-	} catch (e) {
-		/**/
-	}
-};
-
-const loginAction: ActionCreator<ILoginAction> = (
-	credentials: ICredentials,
-) => ({
-	type: ActionTypes.LOGIN,
-	payload: credentials,
-});
-
-export const login = (credentials: ICredentials): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	try {
-		dispatch(loginAction(credentials));
-		const { dataApi } = context;
-		await dataApi.accounts.login(credentials);
-	} catch (e) {
-		/**/
-	}
-};
-
-const logoutAction: ActionCreator<ILogoutAction> = () => ({
-	type: ActionTypes.LOGOUT,
-});
-
-export const logout = (): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(logoutAction());
-		const { dataApi } = context;
-		await dataApi.accounts.logout();
-	} catch (e) {
-		/**/
-	}
-};
-
-const getIsAccountLoggedInAction: ActionCreator<
-	IGetIsAccountLoggedInAction
-> = () => ({
-	type: ActionTypes.GET_IS_ACCOUNT_LOGGED_IN,
-});
-
-export const getIsAccountLoggedIn = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	try {
-		dispatch(getIsAccountLoggedInAction());
-		const { dataApi } = context;
-		const accountLoggedIn = await dataApi.accounts.getIsAccountLoggedIn();
-	} catch (e) {
-		/**/
-	}
-};
-
-const changePasswordAction: ActionCreator<IChangePasswordAction> = (
-	changePasswordInput: IChangePasswordInput,
-) => ({
-	type: ActionTypes.CHANGE_PASSWORD,
-	payload: changePasswordInput,
-});
-
-export const changePassword = (
-	changePasswordInput: IChangePasswordInput,
-): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(changePasswordAction(changePasswordInput));
-		const { dataApi } = context;
-		await dataApi.accounts.changePassword(changePasswordInput);
-	} catch (e) {
-		/**/
-	}
-};
 
 const getCurrentAccountAction: ActionCreator<
 	IGetCurrentAccountAction
@@ -191,6 +57,103 @@ export const getCurrentAccount = (): IThunk => async (
 		/**/
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
+const createAccountAction: ActionCreator<ICreateAccountAction> = (
+	createAccountInput: ICreateAccountInput,
+) => ({
+	type: ActionTypes.CREATE_ACCOUNT,
+	payload: createAccountInput,
+});
+
+export const createAccount = (
+	createAccountInput: ICreateAccountInput,
+): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(createAccountAction(createAccountInput));
+		const { dataApi } = context;
+		await dataApi.accounts.createAccount(createAccountInput);
+		dispatch(getCurrentAccount());
+	} catch (e) {
+		/** */
+	}
+};
+
+const recoverAccountAction: ActionCreator<IRecoverAccountAction> = (
+	recoverAccountActionInput: IRecoverAccountInput,
+) => ({
+	type: ActionTypes.RECOVER_ACCOUNT,
+	payload: recoverAccountActionInput,
+});
+
+export const recoverAccount = (
+	recoverAccountInput: IRecoverAccountInput,
+): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(recoverAccountAction(recoverAccountInput));
+		const { dataApi } = context;
+		const recoveryData = await dataApi.accounts.recoverAccount(
+			recoverAccountInput,
+		);
+	} catch (e) {
+		/**/
+	}
+};
+
+const loginAction: ActionCreator<ILoginAction> = (
+	credentials: ICredentials,
+) => ({
+	type: ActionTypes.LOGIN,
+	payload: credentials,
+});
+
+export const login = (credentials: ICredentials): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(loginAction(credentials));
+		const { dataApi } = context;
+		await dataApi.accounts.login(credentials);
+		dispatch(getCurrentAccount());
+	} catch (e) {
+		/**/
+	}
+};
+
+const logoutAction: ActionCreator<ILogoutAction> = () => ({
+	type: ActionTypes.LOGOUT,
+});
+
+// TODO: @serkan reset whole redux on logout
+export const logout = (): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(logoutAction());
+		const { dataApi } = context;
+		await dataApi.accounts.logout();
+	} catch (e) {
+		/**/
+	}
+};
+
+const changePasswordAction: ActionCreator<IChangePasswordAction> = (
+	changePasswordInput: IChangePasswordInput,
+) => ({
+	type: ActionTypes.CHANGE_PASSWORD,
+	payload: changePasswordInput,
+});
+
+export const changePassword = (
+	changePasswordInput: IChangePasswordInput,
+): IThunk => async (dispatch, getState, context) => {
+	try {
+		dispatch(changePasswordAction(changePasswordInput));
+		const { dataApi } = context;
+		await dataApi.accounts.changePassword(changePasswordInput);
+	} catch (e) {
+		/**/
 	}
 };
 

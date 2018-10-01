@@ -3,9 +3,7 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
-	createNotification,
 	getNotifications,
-	ICreateNotification,
 	INotificationReturnData,
 	IRemoveNotificationInput,
 	removeNotification,
@@ -17,7 +15,6 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	createNotification: (createNotificationInput: ICreateNotification) => void;
 	removeNotification: (
 		removeNotificationInput: IRemoveNotificationInput,
 	) => void;
@@ -47,8 +44,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	createNotification: (createNotificationInput: ICreateNotification) =>
-		dispatch(createNotification(createNotificationInput)),
 	removeNotification: (removeNotificationInput: IRemoveNotificationInput) =>
 		dispatch(removeNotification(removeNotificationInput)),
 	getNotifications: () => dispatch(getNotifications()),

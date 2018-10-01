@@ -9,10 +9,8 @@ export {
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 export {
-	createProfile,
 	getCurrentProfile,
 	getProfileByUsername,
-	getPublicKeyByUsername,
 	acceptFriend,
 	addFriend,
 	removeFriend,

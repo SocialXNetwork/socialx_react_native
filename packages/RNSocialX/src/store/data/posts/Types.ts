@@ -37,8 +37,8 @@ export interface IProfile {
 }
 
 export const enum ActionTypes {
-	GET_POST_PATHS_BY_USER = 'data/posts/GET_POST_PATHS_BY_USER',
-	SYNC_GET_POST_PATHS_BY_USER = 'data/posts/SYNC_GET_POST_PATHS_BY_USER',
+	GET_POSTS_BY_USER = 'data/posts/GET_POST_PATHS_BY_USER',
+	SYNC_GET_POSTS_BY_USER = 'data/posts/SYNC_GET_POST_PATHS_BY_USER',
 	GET_POST_BY_PATH = 'data/posts/GET_POST_BY_PATH',
 	SYNC_GET_POST_BY_PATH = 'data/posts/SYNC_GET_POST_BY_PATH',
 	GET_PUBLIC_POSTS_BY_DATE = 'data/posts/GET_PUBLIC_POSTS_BY_DATE',
@@ -54,14 +54,14 @@ export const enum ActionTypes {
 	UNLIKE_COMMENT = 'data/posts/UNLIKE_COMMENT',
 }
 
-export interface IGetPostPathsByUserAction extends Action {
-	type: ActionTypes.GET_POST_PATHS_BY_USER;
+export interface IGetPostsByUsernameAction extends Action {
+	type: ActionTypes.GET_POSTS_BY_USER;
 	payload: IUsernameInput;
 }
 
-export interface ISyncGetPostPathsByUserAction extends Action {
-	type: ActionTypes.SYNC_GET_POST_PATHS_BY_USER;
-	payload: string[];
+export interface ISyncGetPostsByUserAction extends Action {
+	type: ActionTypes.SYNC_GET_POSTS_BY_USER;
+	payload: IPostArrayData;
 }
 
 export interface IGetPostByPathAction extends Action {
@@ -140,8 +140,8 @@ export interface IUnlikeCommentAction extends Action {
 
 export type IAction =
 	// getters
-	| IGetPostPathsByUserAction
-	| ISyncGetPostPathsByUserAction
+	| IGetPostsByUsernameAction
+	| ISyncGetPostsByUserAction
 	| IGetPublicPostsByDateAction
 	| ISyncGetPublicPostsByDateAction
 	| IGetPostByPathAction

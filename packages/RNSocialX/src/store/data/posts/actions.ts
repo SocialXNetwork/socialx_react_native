@@ -19,7 +19,7 @@ import {
 	ICreatePostAction,
 	IDateInput,
 	IGetPostByPathAction,
-	IGetPostPathsByUserAction,
+	IGetPostsByUsernameAction,
 	IGetPublicPostsByDateAction,
 	ILikeCommentAction,
 	ILikePostAction,
@@ -28,49 +28,50 @@ import {
 	IRemoveCommentAction,
 	IRemovePostAction,
 	ISyncGetPostByPathAction,
-	ISyncGetPostPathsByUserAction,
+	ISyncGetPostsByUserAction,
 	ISyncGetPublicPostsByDateAction,
 	IUnlikeCommentAction,
 	IUnlikePostAction,
 	IUsernameInput,
 } from './Types';
 
-// TODO: @jake check with serkan
-const getPostPathsByUsernameAction: ActionCreator<IGetPostPathsByUserAction> = (
-	getPostPathsByUsernameInput: IUsernameInput,
+const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
+	getPostsByUsernameInput: IUsernameInput,
 ) => ({
-	type: ActionTypes.GET_POST_PATHS_BY_USER,
-	payload: getPostPathsByUsernameInput,
+	type: ActionTypes.GET_POSTS_BY_USER,
+	payload: getPostsByUsernameInput,
 });
 
-const syncGetPostPathsByUsernameAction: ActionCreator<
-	ISyncGetPostPathsByUserAction
-> = (postPaths: string[]) => ({
-	type: ActionTypes.SYNC_GET_POST_PATHS_BY_USER,
-	payload: postPaths,
+const syncGetPostsByUsernameAction: ActionCreator<ISyncGetPostsByUserAction> = (
+	posts: IPostArrayData,
+) => ({
+	type: ActionTypes.SYNC_GET_POSTS_BY_USER,
+	payload: posts,
 });
 
-export const getPostPathsByUsername = (
-	getPostPathsByUsernameInput: IUsernameInput,
+export const getPostsByUsername = (
+	getPostsByUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	try {
-		dispatch(getPostPathsByUsernameAction(getPostPathsByUsernameInput));
+		dispatch(getPostsByUsernameAction(getPostsByUsernameInput));
 		dispatch(
 			beginActivity({
-				type: ActionTypes.GET_POST_PATHS_BY_USER,
+				type: ActionTypes.GET_POSTS_BY_USER,
 				uuid: activityId,
 			}),
 		);
 		const { dataApi } = context;
-		const postPaths = await dataApi.posts.getPostPathsByUser(
-			getPostPathsByUsernameInput,
-		);
-		dispatch(syncGetPostPathsByUsernameAction(postPaths));
+		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
+		dispatch(syncGetPostsByUsernameAction(posts));
 	} catch (e) {
 		/**/
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		dispatch(
+			endActivity({
+				uuid: activityId,
+			}),
+		);
 	}
 };
 
