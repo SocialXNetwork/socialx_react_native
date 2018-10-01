@@ -5,13 +5,10 @@ import { IApplicationState } from '../../../store';
 import {
 	acceptFriend,
 	addFriend,
-	createProfile,
 	getCurrentProfile,
 	getProfileByUsername,
-	getPublicKeyByUsername,
 	IAcceptFriendInput,
 	IAddFriendInput,
-	ICreateProfileInput,
 	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
@@ -25,11 +22,8 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	getPublicKeyByUsername: (getPublicKeyByUsernameInput: IUsernameInput) => void;
 	getCurrentProfile: () => void;
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) => void;
-	// ! should not expose this
-	// createProfile: (createProfileInput: ICreateProfileInput) => void;
 	updateProfile: (updateProfileInput: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
@@ -59,13 +53,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	getPublicKeyByUsername: (getPublicKeyByUsernameInput: IUsernameInput) =>
-		dispatch(getPublicKeyByUsername(getPublicKeyByUsernameInput)),
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) =>
 		dispatch(getProfileByUsername(getProfileByUsernameInput)),
-	// createProfile: (createProfileInput: ICreateProfileInput) =>
-	// 	dispatch(createProfile(createProfileInput)),
 	addFriend: (addFriendInput: IAddFriendInput) =>
 		dispatch(addFriend(addFriendInput)),
 	removeFriend: (removeFriendInput: IRemoveFriendInput) =>

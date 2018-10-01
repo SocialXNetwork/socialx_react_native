@@ -12,10 +12,9 @@ export const setToArray = <T = {}>({
 	_: parentSoul,
 	...data
 }: IMetasCallback | IMetasTypeCallback<T>) => {
-	return Object.values(data).map(({ v, ...rest }: any) => {
-		const { _: deepSoul, ...deepRest } = rest;
-		return deepRest;
-	});
+	return Object.values(data).map(
+		({ _: deepSoul, ...deepRest }: any) => deepRest,
+	);
 };
 
 export const setToArrayWithKey = ({ _: parentSoul, ...data }: any) => {

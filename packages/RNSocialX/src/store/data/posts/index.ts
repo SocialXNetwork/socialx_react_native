@@ -23,7 +23,7 @@ export {
 
 export {
 	getPostByPath,
-	getPostPathsByUsername,
+	getPostsByUsername,
 	getPublicPostsByDate,
 	createPost,
 	likePost,

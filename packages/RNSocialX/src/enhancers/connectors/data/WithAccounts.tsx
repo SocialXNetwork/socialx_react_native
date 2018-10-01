@@ -7,7 +7,6 @@ import {
 	createAccount,
 	getAccountByPub,
 	getCurrentAccount,
-	getIsAccountLoggedIn,
 	IAccountData,
 	IChangePasswordInput,
 	ICreateAccountInput,
@@ -17,7 +16,6 @@ import {
 	login,
 	logout,
 	recoverAccount,
-	trustAccount,
 } from '../../../store/data/accounts';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -28,11 +26,9 @@ interface IDataProps {
 interface IActionProps {
 	changePassword: (changePasswordInput: IChangePasswordInput) => void;
 	createAccount: (createAccountInput: ICreateAccountInput) => void;
-	getIsAccountLoggedIn: () => void;
 	login: (credentials: ICredentials) => void;
 	logout: () => void;
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) => void;
-	trustAccount: () => void;
 	getCurrentAccount: () => void;
 	getAccountByPub: (accountByIdInput: IGetAccountByPubInput) => void;
 }
@@ -64,12 +60,10 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(changePassword(changePasswordInput)),
 	createAccount: (createAccountInput: ICreateAccountInput) =>
 		dispatch(createAccount(createAccountInput)),
-	getIsAccountLoggedIn: () => dispatch(getIsAccountLoggedIn()),
 	login: (credentials: ICredentials) => dispatch(login(credentials)),
 	logout: () => dispatch(logout()),
 	recoverAccount: (recoverAccountInput: IRecoverAccountInput) =>
 		dispatch(recoverAccount(recoverAccountInput)),
-	trustAccount: () => dispatch(trustAccount()),
 	getCurrentAccount: () => dispatch(getCurrentAccount()),
 	getAccountByPub: (getAccountByPubInput: IGetAccountByPubInput) =>
 		dispatch(getAccountByPub(getAccountByPubInput)),

@@ -18,9 +18,9 @@ import {
 	ICommentsPostData,
 } from '../comments';
 import {
+	IPostArrayData,
 	IPostCallbackData,
 	IPostReturnData,
-	IPostsCallbackData,
 	IPostsDataCallback,
 	IPostUserMetasCallback,
 } from './types';
@@ -78,6 +78,7 @@ export const getPostByPath = (
 			const postComments: any = convertCommentsToArray(comments);
 
 			const post: IPostReturnData = {
+				postId: postPath.split('/').reverse()[0],
 				likes: postLikes,
 				comments: postComments,
 				...restPost,
@@ -89,7 +90,7 @@ export const getPostByPath = (
 export const getPublicPostsByDate = (
 	context: IContext,
 	{ date }: { date: Date },
-	callback: IGunCallback<IPostsCallbackData[]>,
+	callback: IGunCallback<IPostArrayData>,
 ) => {
 	const datePath = datePathFromDate(date);
 
