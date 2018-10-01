@@ -9,6 +9,7 @@ import { NOTIFICATION_TYPES } from '../../../environment/consts';
 import {
 	IConfirmActions,
 	IConfirmationModalProps,
+	INavigationParamsActions,
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -121,6 +122,9 @@ const mock: IWithNotificationsEnhancedProps = {
 		declineFriendRequest: (requestId: string) => {
 			/**/
 		},
+		setNavigationParams: () => {
+			/**/
+		},
 	},
 };
 
@@ -147,6 +151,7 @@ export interface IWithNotificationsEnhancedData {
 
 export interface IWithNotificationsEnhancedActions
 	extends ITranslatedProps,
+		INavigationParamsActions,
 		IConfirmActions {
 	loadNotifications: () => void;
 	checkNotification: (requestId: string) => void;

@@ -13,6 +13,7 @@ import {
 	IWithLoginEnhancedData,
 	WithLogin,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { LoginScreenView } from './LoginScreen.view';
 
@@ -27,9 +28,9 @@ class Screen extends React.Component<ILoginScreenProps> {
 			<LoginScreenView
 				onStartLogin={doLogin}
 				onNavigateToPasswordForgot={() =>
-					this.safeNavigateToScreen('ForgotPasswordScreen')
+					this.safeNavigateToScreen(SCREENS.ForgotPassword)
 				}
-				onNavigateToRegister={() => this.safeNavigateToScreen('SignUpScreen')}
+				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
 				onNavigateToUploadKey={() =>
 					this.safeNavigateToScreen('UploadKeyScreen')
 				}

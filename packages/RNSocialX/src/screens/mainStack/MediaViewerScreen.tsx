@@ -8,16 +8,8 @@ import {
 	WithMediaViewer,
 } from '../../enhancers/screens';
 import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
-import { IMediaProps, INavigationProps } from '../../types';
+import { INavigationProps } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
-
-interface IMediaViewerScreenNavParams {
-	params: {
-		mediaObjects: IMediaProps[];
-		startIndex: number;
-		hideHeader: boolean;
-	};
-}
 
 interface IMediaViewerScreenState {
 	orientation: string;
@@ -28,7 +20,7 @@ interface IMediaViewerScreenState {
 	isInfoOverlayVisible: boolean;
 }
 
-type IMediaViewerScreenProps = INavigationProps<IMediaViewerScreenNavParams> &
+type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions;
 
@@ -38,7 +30,7 @@ class Screen extends React.Component<
 > {
 	public state = {
 		orientation: DeviceOrientations.Portrait,
-		activeSlide: this.props.navigation.state.params.startIndex,
+		activeSlide: this.props.startIndex,
 		viewport: {
 			width: Dimensions.get('window').width,
 		},
@@ -61,12 +53,10 @@ class Screen extends React.Component<
 	}
 
 	public render() {
-		const { params } = this.props.navigation.state;
-
 		return (
 			<MediaViewerScreenView
-				mediaObjects={params.mediaObjects}
-				startIndex={params.startIndex}
+				mediaObjects={this.props.mediaObjects}
+				startIndex={this.props.startIndex}
 				orientation={this.state.orientation}
 				activeSlide={this.state.activeSlide}
 				viewport={this.state.viewport}
@@ -126,9 +116,7 @@ class Screen extends React.Component<
 	};
 }
 
-export const MediaViewerScreen = (
-	navProps: INavigationProps<IMediaViewerScreenNavParams>,
-) => (
+export const MediaViewerScreen = (navProps: INavigationProps) => (
 	<WithMediaViewer>
 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
 	</WithMediaViewer>

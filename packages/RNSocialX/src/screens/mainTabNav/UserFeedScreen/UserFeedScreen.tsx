@@ -15,7 +15,7 @@ import {
 } from '../../../enhancers/screens';
 
 // import {ipfsConfig as base} from 'configuration';
-import { FEED_TYPES, OS_TYPES } from '../../../environment/consts';
+import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import { IMediaProps, IWallPostCardData } from '../../../types';
 import {
 	SHARE_SECTION_HEIGHT,
@@ -124,12 +124,16 @@ export class Screen extends React.Component<
 	};
 
 	private showNewWallPostPage = () => {
-		const { currentUser, navigation } = this.props;
-		navigation.navigate('CreateWallPostScreen', {
-			fullName: currentUser.fullName,
-			avatarImage: this.getAvatarImage(),
-			afterPostCreate: this.onRefreshHandler,
+		const { currentUser, navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.CreateWallPost,
+			params: {
+				fullName: currentUser.fullName,
+				avatarImage: this.getAvatarImage(),
+				afterPostCreate: this.onRefreshHandler,
+			},
 		});
+		navigation.navigate(SCREENS.CreateWallPost);
 	};
 
 	private onRefreshHandler = async () => {
@@ -153,24 +157,39 @@ export class Screen extends React.Component<
 	};
 
 	private gotoUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', { userId });
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
+			params: { userId },
+		});
+		navigation.navigate(SCREENS.UserProfile);
 	};
 
 	private onMediaObjectPressHandler = (
 		index: number,
 		medias: IMediaProps[],
 	) => {
-		this.props.navigation.navigate('MediaViewerScreen', {
-			mediaObjects: medias,
-			startIndex: index,
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects: medias,
+				startIndex: index,
+			},
 		});
+		navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onCommentsButtonPressHandler = (
 		postId: string,
 		startComment: boolean,
 	) => {
-		this.props.navigation.navigate('CommentsScreen', { postId, startComment });
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.Comments,
+			params: { postId, startComment },
+		});
+		navigation.navigate(SCREENS.Comments);
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {

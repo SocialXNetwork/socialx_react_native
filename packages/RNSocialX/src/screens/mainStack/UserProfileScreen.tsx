@@ -18,7 +18,7 @@ import {
 	WithUserProfile,
 } from '../../enhancers/screens';
 
-import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
+import { PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
 import { IMediaProps } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
@@ -112,7 +112,7 @@ class Screen extends React.Component<
 				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				relationship={relationship}
 				onViewProfilePhoto={this.onViewProfilePhotoHandler}
-				onViewMediaFullscreen={this.onViewMediaFullscreenHandler}
+				onViewMediaFullscreen={this.onViewMediaFullScreenHandler}
 				gridMediaProvider={gridMediaProvider}
 				currentUser={currentUser}
 				onIconPress={this.onIconPressHandler}
@@ -179,14 +179,24 @@ class Screen extends React.Component<
 	};
 
 	private onMediaObjectPressHandler = (index: number, media: any) => {
-		this.props.navigation.navigate('MediaViewerScreen', {
-			mediaObjects: media,
-			startIndex: index,
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects: media,
+				startIndex: index,
+			},
 		});
+		navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onViewCommentsForPost = (postId: string, startComment: boolean) => {
-		this.props.navigation.navigate('CommentsScreen', { postId, startComment });
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.Comments,
+			params: { postId, startComment },
+		});
+		navigation.navigate(SCREENS.Comments);
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
@@ -214,12 +224,16 @@ class Screen extends React.Component<
 		// });
 	};
 
-	private onViewMediaFullscreenHandler = (index: number) => {
-		const { mediaObjects } = this.props.visitedUser;
-		this.props.navigation.navigate('MediaViewerScreen', {
-			mediaObjects,
-			startIndex: index,
+	private onViewMediaFullScreenHandler = (index: number) => {
+		const { navigation, setNavigationParams, visitedUser } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects: visitedUser.mediaObjects,
+				startIndex: index,
+			},
 		});
+		navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onIconPressHandler = (tab: string) => {
@@ -291,7 +305,12 @@ class Screen extends React.Component<
 	};
 
 	private onViewUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', { userId });
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
+			params: { userId },
+		});
+		navigation.navigate(SCREENS.UserProfile);
 	};
 }
 

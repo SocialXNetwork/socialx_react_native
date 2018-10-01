@@ -3,6 +3,7 @@ import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 
 import { IAccountCurrencyData } from './components';
 import { CoinSymbol } from './environment/consts';
+import { ISetNavigationParamsInput } from './store/app/navigationParams';
 
 export interface IFriendsSearchResult {
 	id: string;
@@ -49,6 +50,12 @@ export type getTextSignature = (value: string, ...args: any[]) => string;
 
 export interface ITranslatedProps {
 	getText: getTextSignature;
+}
+
+export interface INavigationParamsActions {
+	setNavigationParams: (
+		setNavigationParamsInput: ISetNavigationParamsInput,
+	) => void;
 }
 
 export interface IResizeProps {

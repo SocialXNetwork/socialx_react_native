@@ -5,6 +5,7 @@ import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,
 } from '../../../enhancers/screens';
+import { SCREENS } from '../../../environment/consts';
 import {
 	INavigationProps,
 	ISearchResultData,
@@ -73,9 +74,12 @@ export class Screen extends React.Component<
 			result.relationship === SearchResultKind.NotFriend ||
 			result.relationship === SearchResultKind.FriendRequestSent
 		) {
-			this.props.navigation.navigate('UserProfileScreen', {
-				userId: result.userId,
+			const { navigation, setNavigationParams } = this.props;
+			setNavigationParams({
+				screenName: SCREENS.UserProfile,
+				params: { userId: result.userId },
 			});
+			navigation.navigate(SCREENS.UserProfile);
 		}
 	};
 

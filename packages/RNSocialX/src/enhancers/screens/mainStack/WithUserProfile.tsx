@@ -8,6 +8,7 @@ import * as React from 'react';
 import { currentUser, posts } from '../../../mocks';
 import {
 	ICurrentUser,
+	INavigationParamsActions,
 	ITranslatedProps,
 	IVisitedUser,
 	MediaTypeImage,
@@ -74,6 +75,9 @@ const mock = {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
+		setNavigationParams: () => {
+			/**/
+		},
 	},
 };
 
@@ -84,7 +88,9 @@ export interface IWithUserProfileEnhancedData {
 	loadingProfile: boolean;
 }
 
-export interface IWithUserProfileEnhancedActions extends ITranslatedProps {
+export interface IWithUserProfileEnhancedActions
+	extends ITranslatedProps,
+		INavigationParamsActions {
 	addFriend: (userId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;

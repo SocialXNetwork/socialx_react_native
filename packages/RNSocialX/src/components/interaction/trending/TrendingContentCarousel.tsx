@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Dimensions, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
+import { SCREENS } from '../../../environment/consts';
 import { INavigationProps, ITrendingContentItem } from '../../../types';
 import { ContentView } from './ContentView';
 
@@ -48,7 +49,7 @@ export class TrendingContentCarousel extends React.Component<
 	};
 
 	private onItemPress = (postId: string) => {
-		this.props.navigation.navigate('CommentsScreen', {
+		this.props.navigation.navigate(SCREENS.Comments, {
 			postId,
 			startComment: false,
 		});

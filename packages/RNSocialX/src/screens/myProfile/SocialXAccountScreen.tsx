@@ -12,7 +12,7 @@ import {
 
 type ISocialXAccountScreenProps = IWithSocialXAccountEnhancedActions &
 	IWithSocialXAccountEnhancedData &
-	INavigationProps<any, any>;
+	INavigationProps;
 interface ISocialXAccountScreenState {}
 
 class Screen extends React.Component<
@@ -44,9 +44,7 @@ class Screen extends React.Component<
 	};
 }
 
-export const SocialXAccountScreen = ({
-	navigation,
-}: INavigationProps<any, any>) => (
+export const SocialXAccountScreen = ({ navigation }: INavigationProps) => (
 	<WithSocialXAccount>
 		{({ data, actions }) => (
 			<Screen navigation={navigation} {...data} {...actions} />
