@@ -33,26 +33,101 @@ export class WithCurrentUserContent extends React.Component<
 						{(postsProps) => (
 							<WithCurrentUser>
 								{(currentUserProps) => {
-									const { posts } = postsProps;
 									const user = currentUserProps.currentUser;
 
-									const sortedPosts = posts.sort(
-										(x: any, y: any) => y.timestamp - x.timestamp,
+									const posts = postsProps.posts.filter(
+										(post) => post.owner.alias === user!.userId,
 									);
+
+									const recentPosts = posts
+										.sort((x: any, y: any) => y.timestamp - x.timestamp)
+										.slice(0, 5)
+										.map((post) => {
+											const foundLike = post.likes.find(
+												(like) => like.owner.alias === user!.userId,
+											);
+
+											return {
+												id: post.postId,
+												postText: post.postText,
+												location: post.location,
+												taggedFriends: post.taggedFriends,
+												timestamp: new Date(post.timestamp * 1000),
+												owner: {
+													userId: post.owner.alias,
+													fullName: user!.fullName,
+													avatarURL: user!.avatarURL,
+												},
+												governanceVersion: post.governanceVersion,
+												numberOfSuperLikes: 0,
+												numberOfComments: post.comments.length,
+												numberOfWalletCoins: 0,
+												likedByMe: !!foundLike,
+												canDelete: true,
+												media: post.media!.map((media) => ({
+													url:
+														configProps.appConfig.ipfsConfig.ipfs_URL +
+														media.hash,
+													hash: media.hash,
+													type:
+														media.type.name === 'Photo'
+															? MediaTypeImage
+															: MediaTypeVideo,
+													extension: media.extension,
+													size: media.size,
+													numberOfLikes: post.likes.length,
+													numberOfComments: post.comments.length,
+												})),
+												likes: post.likes.map((like) => {
+													return {
+														userId: like.owner.alias,
+														userName: like.owner.alias,
+													};
+												}),
+												bestComments: post.comments
+													.slice(0, 2)
+													.map((comment) => {
+														return {
+															id: String(comment.timestamp),
+															text: comment.text,
+
+															likes: Object.keys(comment.likes).map((key) => {
+																const like = comment.likes[key];
+																return {
+																	userId: like.owner.alias,
+																	userName: like.owner.alias,
+																};
+															}),
+															owner: {
+																userId: comment.owner.alias,
+																userName: comment.owner.alias,
+															},
+														};
+													}),
+												listLoading: false,
+												suggested: undefined,
+												noInput: true,
+												contentOffensive: false,
+												marginBottom: 0,
+											};
+										});
 
 									if (user) {
 										user.numberOfLikes = posts.reduce(
 											(acc, post) => acc + post.likes.length,
 											0,
 										);
+
 										user.numberOfPhotos = posts.reduce(
 											(acc, post) => (post.media ? acc + post.media.length : 0),
 											0,
 										);
+
 										user.numberOfComments = posts.reduce(
 											(acc, post) => acc + post.comments.length,
 											0,
 										);
+
 										user.mediaObjects = posts.reduce(
 											(acc: IMediaProps[], post) =>
 												post.media
@@ -75,8 +150,8 @@ export class WithCurrentUserContent extends React.Component<
 													: [...acc],
 											[],
 										);
-										user.recentPosts = sortedPosts.slice(0, 5);
-										// user.recentsPosts =
+
+										user.recentPosts = recentPosts;
 									}
 
 									return this.props.children({
