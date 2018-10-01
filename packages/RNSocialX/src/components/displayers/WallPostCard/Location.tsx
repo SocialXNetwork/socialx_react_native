@@ -6,13 +6,10 @@ import { Colors, Sizes } from '../../../environment/theme';
 import { ITranslatedProps } from '../../../types';
 
 interface ILocationProps extends ITranslatedProps {
-	location: false | string;
+	location?: string;
 }
 
-export const Location: React.SFC<ILocationProps> = ({
-	location = false,
-	getText,
-}) => {
+export const Location: React.SFC<ILocationProps> = ({ location, getText }) => {
 	if (location) {
 		return (
 			<React.Fragment>

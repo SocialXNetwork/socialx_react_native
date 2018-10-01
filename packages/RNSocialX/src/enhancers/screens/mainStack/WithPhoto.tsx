@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: loading, currentUserAvatarURL, marginBottom (can be provided via KeyboardContext in consts.ts)
+ * 1. Props data: loading, marginBottom (can be provided via KeyboardContext in consts.ts)
  * 2. Props actions: createPost, getText
  */
 
@@ -13,6 +13,7 @@ import {
 	IWallPostPhotoOptimized,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithCurrentUser } from '../intermediary';
 
 interface IWallPostPhotoData {
 	mediaObjects: IWallPostPhotoOptimized[];
@@ -62,12 +63,19 @@ export class WithPhoto extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					this.props.children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							this.props.children({
+								data: {
+									...mock.data,
+									currentUserAvatarURL: currentUserProps.currentUser!.avatarURL,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}

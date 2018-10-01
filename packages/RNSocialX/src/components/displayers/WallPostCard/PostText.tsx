@@ -9,7 +9,7 @@ const POST_SHORT_LENGTH = 100;
 const POST_SHORT_MAX_LINES = 3;
 
 interface IPostTextProps extends ITranslatedProps {
-	text: false | string;
+	text?: string;
 	fullTextVisible: boolean;
 	toggleShowFullText: () => void;
 	handleHashTag: (hashTag: string) => void;

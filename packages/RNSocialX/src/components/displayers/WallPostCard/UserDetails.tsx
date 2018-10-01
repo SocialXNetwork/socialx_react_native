@@ -13,8 +13,8 @@ interface IUserDetailsProps extends ITranslatedProps {
 	timeStampHour: string;
 	hideAdvancedMenu: boolean;
 	hideGoToUserProfile: boolean;
-	taggedFriends: Array<{ fullName: string }>;
-	location: false | string;
+	taggedFriends?: Array<{ fullName: string }>;
+	location?: string;
 	onUserPress: (userId: string) => void;
 	onShowAdvancedMenu: () => void;
 }
@@ -43,7 +43,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 		<View style={styles.topRightContainer}>
 			<Text style={styles.fullName}>
 				{user.fullName}
-				<TaggedFriends friends={taggedFriends} getText={getText} />
+				<TaggedFriends friends={taggedFriends || []} getText={getText} />
 				<Location location={location} getText={getText} />
 			</Text>
 			<Text

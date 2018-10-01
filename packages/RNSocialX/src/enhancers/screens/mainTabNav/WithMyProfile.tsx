@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: currentUser, loadingUser, refreshingUser
+ * 1. Props data: loadingUser, refreshingUser
  * 2. Props actions: showDotsMenuModal, refreshUser, logout, resetNavigationToRoute (see old repo. Internals/backend/actions/navigation.ts)
  */
 
@@ -11,6 +11,7 @@ import { IDotsMenuItem } from '../../../components';
 import { currentUser } from '../../../mocks';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithMyProfileEnhancedProps = {
 	data: {
@@ -71,15 +72,21 @@ export class WithMyProfile extends React.Component<
 	IWithMyProfileState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							this.props.children({
+								data: {
+									...mock.data,
+									currentUser: currentUserProps.currentUser!,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}
