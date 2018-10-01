@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: currentUser, posts, hasMorePosts, refreshingFeed, loadingMorePosts, loadingFeed
+ * 1. Props data: posts, hasMorePosts, refreshingFeed, loadingMorePosts, loadingFeed
  * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
  */
 
@@ -13,10 +13,8 @@ import {
 	IWallPostCardData,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithPosts } from '../../connectors/data/WithPosts';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithCurrentUser } from '../intermediary';
 
-// TODO: @alex @ionut the posts mock is mixed with actions, what is this?
 const mock: IWithUserFeedEnhancedProps = {
 	data: {
 		currentUser,
@@ -93,12 +91,19 @@ export class WithUserFeed extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					this.props.children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							this.props.children({
+								data: {
+									...mock.data,
+									currentUser: currentUserProps.currentUser!,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}

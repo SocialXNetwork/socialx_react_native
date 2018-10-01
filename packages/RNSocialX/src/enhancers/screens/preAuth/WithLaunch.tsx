@@ -1,18 +1,20 @@
 /**
  * TODO list:
- * 1. Props data: currentUser, applicationInMaintenanceMode
+ * 1. Props data: applicationInMaintenanceMode
  * 2. Props actions: resetNavigationToRoute (check old repo. Internals/backend/actions/navigation.ts)
  */
 
 import * as React from 'react';
 
 import { NavigationScreenProp } from 'react-navigation';
-import { ITranslatedProps } from '../../../types';
+import { currentUser } from '../../../mocks';
+import { ICurrentUser, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithLaunchEnhancedProps = {
 	data: {
-		currentUser: {},
+		currentUser,
 		applicationInMaintenanceMode: false,
 	},
 	actions: {
@@ -28,7 +30,7 @@ const mock: IWithLaunchEnhancedProps = {
 };
 
 export interface IWithLaunchEnhancedData {
-	currentUser: any; // we only care about the existence here!
+	currentUser?: ICurrentUser; // we only care about the existence here!
 	applicationInMaintenanceMode: boolean;
 }
 
@@ -58,12 +60,19 @@ export class WithLaunch extends React.Component<
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							children({
+								data: {
+									...mock.data,
+									currentUser: currentUserProps.currentUser,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}
