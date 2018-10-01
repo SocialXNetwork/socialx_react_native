@@ -11,7 +11,7 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	notifications: INotificationReturnData;
+	notifications: INotificationReturnData[];
 }
 
 interface IActionProps {
