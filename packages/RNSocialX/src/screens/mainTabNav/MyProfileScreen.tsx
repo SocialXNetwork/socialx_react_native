@@ -54,7 +54,7 @@ class Screen extends React.Component<
 			numberOfLikes,
 			numberOfPhotos,
 			numberOfFriends,
-			numberOfViews,
+			numberOfComments,
 			avatarURL,
 			fullName,
 			userName,
@@ -68,7 +68,7 @@ class Screen extends React.Component<
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
-				numberOfViews={numberOfViews}
+				numberOfComments={numberOfComments}
 				avatarURL={avatarURL}
 				fullName={fullName}
 				userName={userName}

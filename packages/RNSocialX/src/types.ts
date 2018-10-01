@@ -233,10 +233,11 @@ export interface ICurrentUser {
 	numberOfLikes: number;
 	numberOfPhotos: number;
 	numberOfFriends: number;
-	numberOfViews: number;
+	numberOfComments: number;
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardData[];
 	miningEnabled: boolean;
+	pub: string;
 }
 
 export interface IVisitedUser {
@@ -248,7 +249,7 @@ export interface IVisitedUser {
 	numberOfLikes: number;
 	numberOfPhotos: number;
 	numberOfFriends: number;
-	numberOfViews: number;
+	numberOfComments: number;
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardData[];
 	relationship: SearchResultKind;

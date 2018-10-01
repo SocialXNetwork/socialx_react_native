@@ -264,7 +264,6 @@ const Navigation = () => (
 														}
 													/>
 													<ConfirmationModal
-														getText={i18nProps.getText}
 														title={
 															overlayProps.confirmation &&
 															overlayProps.confirmation.title

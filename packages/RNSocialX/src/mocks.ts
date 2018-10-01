@@ -239,11 +239,12 @@ export const currentUser: ICurrentUser = {
 	userName: 'alexsirbu',
 	email: 'alex.sirbu@test.com',
 	aboutMeText: 'Lorem ipsum dolor sit amet',
+	pub: 'somepublickey',
 	miningEnabled: false,
 	numberOfLikes: 25,
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
-	numberOfViews: 87,
+	numberOfComments: 87,
 	mediaObjects: [
 		{
 			url:

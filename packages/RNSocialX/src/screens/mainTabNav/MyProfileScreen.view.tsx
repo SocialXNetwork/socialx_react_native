@@ -24,7 +24,7 @@ interface IMyProfileScreenViewProps extends IWithLoaderProps, ITranslatedProps {
 	numberOfPhotos: number;
 	numberOfLikes: number;
 	numberOfFriends: number;
-	numberOfViews: number;
+	numberOfComments: number;
 	onViewProfilePhoto: () => void;
 	aboutMeText: false | string;
 	refreshing: boolean;
@@ -47,7 +47,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	numberOfPhotos,
 	numberOfLikes,
 	numberOfFriends,
-	numberOfViews,
+	numberOfComments,
 	aboutMeText,
 	loadMorePhotosHandler,
 	gridMediaProvider,
@@ -99,7 +99,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						numberOfFriends={numberOfFriends}
 						numberOfLikes={numberOfLikes}
 						numberOfPhotos={numberOfPhotos}
-						numberOfViews={numberOfViews}
+						numberOfComments={numberOfComments}
 						onViewProfilePhoto={onViewProfilePhoto}
 						isCurrentUser={true}
 						aboutMeText={aboutMeText}
