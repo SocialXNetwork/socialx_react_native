@@ -8,17 +8,18 @@ import {
 export const datePathFromDate = (date: Date) =>
 	`${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
 
-export const setToArray = <T = {}>({
-	_: parentSoul,
-	...data
-}: IMetasCallback | IMetasTypeCallback<T>) => {
-	return Object.values(data).map(
+export const convertGunSetToArray = <T = {}>(
+	args: IMetasCallback | IMetasTypeCallback<T> = {},
+) => {
+	const { _: parentSoul, ...data } = args;
+	return Object.values(data || {}).map(
 		({ _: deepSoul, ...deepRest }: any) => deepRest,
 	);
 };
 
-export const setToArrayWithKey = ({ _: parentSoul, ...data }: any) => {
-	return Object.entries(data).map(
+export const convertGunSetToArrayWithKey = (args: any = {}) => {
+	const { _: parentSoul, ...data } = args;
+	return Object.entries(data || {}).map(
 		([k, v]): any => {
 			const { _: deepSoul, ...deepRest }: any = v;
 			return { ...deepRest, k };
@@ -31,6 +32,11 @@ export const getContextMeta = (context: IContext) => ({
 	timestamp: context.time().getTime(),
 	ownerPub: context.account.is.pub,
 });
+
+export const cleanGunMetaFromObject = (args: any = {}) => {
+	const { _: parentSoul, ...data } = args;
+	return data || {};
+};
 
 export const resolveCallback = (resolve: any, reject: any) => (
 	e: any,
@@ -45,5 +51,5 @@ export const resolveCallback = (resolve: any, reject: any) => (
 	// which expects state data to be immutable. Finally, we are doing it here
 	// because this looks like the only place where all getters return their data
 	// through. Not architecturally the best place, though.
-	resolve(JSON.parse(JSON.stringify(r)));
+	resolve(typeof r !== 'undefined' ? JSON.parse(JSON.stringify(r)) : undefined);
 };

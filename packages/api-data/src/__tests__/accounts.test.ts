@@ -13,7 +13,8 @@ let mockApi: ReturnType<typeof dataApiFactory>;
 describe.skip('accounts api', () => {
 	beforeEach(() => {
 		jest.setTimeout(30 * 1000);
-		mockApi = dataApiFactory();
+		const account = { is: { pub: 'bleep', alias: 'blah' } };
+		mockApi = dataApiFactory(account);
 	});
 
 	test('create account', async () => {
