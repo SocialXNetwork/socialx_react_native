@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: visitedUser, refreshingProfile, loadingProfile
+ * 1. Props data: currentUser, visitedUser, refreshingProfile, loadingProfile
  * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos, getText, postComment, blockUser, reportProblem
  */
 
@@ -15,7 +15,7 @@ import {
 	SearchResultKind,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
 const mock = {
 	data: {
@@ -121,17 +121,22 @@ export class WithUserProfile extends React.Component<
 			<WithI18n>
 				{(i18nProps) => (
 					<WithCurrentUser>
-						{(currentUserProps) =>
-							this.props.children({
-								data: {
-									...mock.data,
-									// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
-									// @Ionut, check similar use cases if any changes are to be done here.
-									currentUser: currentUserProps.currentUser!,
-								},
-								actions: { ...mock.actions, getText: i18nProps.getText },
-							})
-						}
+						{(currentUserProps) => (
+							<WithVisitedUserContent>
+								{({ visitedUser }) => {
+									return this.props.children({
+										data: {
+											...mock.data,
+											// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
+											// @Ionut, check similar use cases if any changes are to be done here.
+											currentUser: currentUserProps.currentUser!,
+											visitedUser: visitedUser!,
+										},
+										actions: { ...mock.actions, getText: i18nProps.getText },
+									});
+								}}
+							</WithVisitedUserContent>
+						)}
 					</WithCurrentUser>
 				)}
 			</WithI18n>

@@ -5,8 +5,8 @@
  */
 
 import * as React from 'react';
-
 import { NavigationScreenProp } from 'react-navigation';
+
 import { currentUser } from '../../../mocks';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';

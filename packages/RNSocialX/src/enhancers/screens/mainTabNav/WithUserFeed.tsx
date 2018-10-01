@@ -1,10 +1,10 @@
 /**
  * TODO list:
- * 1. Props data: posts, hasMorePosts, refreshingFeed, loadingMorePosts, loadingFeed
- * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
+ * Add the required loading/refreshing props
  */
 
 import * as React from 'react';
+
 import { FEED_TYPES } from '../../../environment/consts';
 import { currentUser, posts } from '../../../mocks';
 import {
@@ -13,7 +13,13 @@ import {
 	ITranslatedProps,
 	IWallPostCardData,
 } from '../../../types';
+import { mapPostsForUI } from '../../helpers';
+
+import { ActionTypes } from '../../../store/data/posts/Types';
+import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithUserFeedEnhancedProps = {
@@ -98,17 +104,44 @@ export class WithUserFeed extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithCurrentUser>
-						{(currentUserProps) =>
-							this.props.children({
-								data: {
-									...mock.data,
-									currentUser: currentUserProps.currentUser!,
-								},
-								actions: { ...mock.actions, getText: i18nProps.getText },
-							})
-						}
-					</WithCurrentUser>
+					<WithConfig>
+						{({ appConfig }) => (
+							<WithActivities>
+								{({ activities }) => (
+									<WithPosts>
+										{(postsProps) => (
+											<WithCurrentUser>
+												{(currentUserProps) => {
+													const feedPosts = mapPostsForUI(
+														postsProps.posts,
+														10,
+														currentUser!,
+														activities,
+														ActionTypes.GET_POSTS_BY_USER,
+														appConfig,
+													);
+
+													return this.props.children({
+														data: {
+															...mock.data,
+															currentUser: currentUserProps.currentUser!,
+															posts: feedPosts,
+															hasMorePosts:
+																postsProps.posts.length - feedPosts.length > 0,
+														},
+														actions: {
+															...mock.actions,
+															getText: i18nProps.getText,
+														},
+													});
+												}}
+											</WithCurrentUser>
+										)}
+									</WithPosts>
+								)}
+							</WithActivities>
+						)}
+					</WithConfig>
 				)}
 			</WithI18n>
 		);
