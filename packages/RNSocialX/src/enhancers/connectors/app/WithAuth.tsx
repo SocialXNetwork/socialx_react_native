@@ -10,6 +10,7 @@ interface IDataProps {
 }
 
 type IProps = IDataProps;
+export type IAuthProps = IProps;
 
 interface IChildren {
 	children: (props: IProps) => JSX.Element;

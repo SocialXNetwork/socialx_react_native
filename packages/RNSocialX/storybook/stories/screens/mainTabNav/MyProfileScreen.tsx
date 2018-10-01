@@ -28,7 +28,7 @@ class MyProfileScreenViewStory extends React.Component {
 		const numberOfPhotos = number('numberOfPhotos', 2);
 		const numberOfLikes = number('numberOfLikes', 65);
 		const numberOfFriends = number('numberOfFriends', 78);
-		const numberOfViews = number('numberOfViews', 100);
+		const numberOfComments = number('numberOfComments', 100);
 
 		const aboutMeText = text('aboutMeText', 'This is me.');
 
@@ -40,7 +40,7 @@ class MyProfileScreenViewStory extends React.Component {
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
-				numberOfViews={numberOfViews}
+				numberOfComments={numberOfComments}
 				getText={getTextMock}
 				onViewProfilePhoto={action('onViewProfilePhoto')}
 				aboutMeText={aboutMeText}

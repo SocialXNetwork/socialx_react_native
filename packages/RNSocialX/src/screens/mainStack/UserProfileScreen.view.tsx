@@ -43,7 +43,7 @@ interface IUserProfileScreenViewProps
 	numberOfPhotos: number;
 	numberOfLikes: number;
 	numberOfFriends: number;
-	numberOfViews: number;
+	numberOfComments: number;
 	relationship: SearchResultKind;
 	aboutMeText: string;
 	recentPosts: IWallPostCardData[];
@@ -86,7 +86,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onImagePress,
 	onLikeButtonPress,
 	aboutMeText,
-	numberOfViews,
+	numberOfComments,
 	currentUser,
 	onIconPress,
 	listTranslate,
@@ -144,7 +144,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 						numberOfFriends={numberOfFriends}
 						numberOfLikes={numberOfLikes}
 						numberOfPhotos={numberOfPhotos}
-						numberOfViews={numberOfViews}
+						numberOfComments={numberOfComments}
 						onViewProfilePhoto={onViewProfilePhoto}
 						onAddFriend={onAddFriend}
 						onShowFriendshipOptions={onShowFriendshipOptions}

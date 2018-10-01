@@ -28,7 +28,7 @@ storiesOf('Screens/mainStack', module)
 		const numberOfPhotos = number('numberOfPhotos', 2);
 		const numberOfLikes = number('numberOfLikes', 65);
 		const numberOfFriends = number('numberOfFriends', 78);
-		const numberOfViews = number('numberOfViews', 100);
+		const numberOfComments = number('numberOfComments', 100);
 		const relationship = select(
 			'relationship',
 			{
@@ -58,7 +58,7 @@ storiesOf('Screens/mainStack', module)
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
-				numberOfViews={numberOfViews}
+				numberOfComments={numberOfComments}
 				getText={getTextMock}
 				onAddFriend={action('onAddFriend')}
 				onShowFriendshipOptions={action('onShowFriendshipOptions')}
