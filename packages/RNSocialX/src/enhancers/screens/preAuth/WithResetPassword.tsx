@@ -1,6 +1,7 @@
 /**
  * TODO list:
- * 1. Action props: resetPassword
+ * 1. Data props: userName
+ * 2. Action props: resetPassword
  */
 
 import * as React from 'react';
@@ -8,7 +9,9 @@ import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithResetPasswordEnhancedProps = {
-	data: {},
+	data: {
+		userName: 'test.user.1',
+	},
 	actions: {
 		resetPassword: (userName: string, resetCode: string, password: string) => {
 			/**/
@@ -17,7 +20,9 @@ const mock: IWithResetPasswordEnhancedProps = {
 	},
 };
 
-export interface IWithResetPasswordEnhancedData {}
+export interface IWithResetPasswordEnhancedData {
+	userName: string;
+}
 
 export interface IWithResetPasswordEnhancedActions extends ITranslatedProps {
 	resetPassword: (

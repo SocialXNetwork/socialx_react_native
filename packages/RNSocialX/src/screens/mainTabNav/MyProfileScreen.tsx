@@ -13,6 +13,7 @@ import {
 	IWithMyProfileEnhancedData,
 	WithMyProfile,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { icons } from './MyProfileScreen.style';
 import { MyProfileScreenView } from './MyProfileScreen.view';
@@ -96,17 +97,17 @@ class Screen extends React.Component<
 			{
 				label: getText('my.profile.screen.menu.profile.analytics'),
 				icon: icons.iconProfileAnalytics,
-				actionHandler: () => navigation.navigate('ProfileAnalyticsScreen'),
+				actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
 			},
 			{
 				label: getText('my.profile.screen.menu.wallet'),
 				icon: icons.iconWallet2,
-				actionHandler: () => navigation.navigate('WalletActivityScreen'),
+				actionHandler: () => navigation.navigate(SCREENS.WalletActivity),
 			},
 			{
 				label: getText('my.profile.screen.menu.settings'),
 				icon: 'ios-settings-outline',
-				actionHandler: () => navigation.navigate('SettingsScreen'),
+				actionHandler: () => navigation.navigate(SCREENS.Settings),
 			},
 			{
 				label: getText('my.profile.screen.menu.logout'),
@@ -167,23 +168,28 @@ class Screen extends React.Component<
 	private onPhotoPressHandler = (index: number) => {
 		const {
 			navigation,
+			setNavigationParams,
 			currentUser: { mediaObjects },
 		} = this.props;
 
-		navigation.navigate('MediaViewerScreen', {
-			mediaObjects,
-			startIndex: index,
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects,
+				startIndex: index,
+			},
 		});
+		navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onEditProfilePressHandler = () => {
 		const { navigation } = this.props;
-		navigation.navigate('SettingsScreen');
+		navigation.navigate(SCREENS.Settings);
 	};
 
 	private onSharePressHandler = () => {
 		const { navigation } = this.props;
-		navigation.navigate('ReferralScreen');
+		navigation.navigate(SCREENS.Referral);
 	};
 }
 

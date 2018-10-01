@@ -6,6 +6,7 @@ import {
 	IWithNotificationsEnhancedData,
 	WithNotifications,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { NotificationsScreenView } from './NotificationsScreen.view';
 
@@ -66,7 +67,12 @@ class Screen extends React.Component<INotificationsScreenProps> {
 	// };
 
 	private onViewUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', { userId });
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
+			params: { userId },
+		});
+		navigation.navigate(SCREENS.UserProfile);
 	};
 }
 

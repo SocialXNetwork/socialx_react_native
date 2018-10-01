@@ -9,7 +9,11 @@ import { NavigationScreenProp } from 'react-navigation';
 
 import { IDotsMenuItem } from '../../../components';
 import { currentUser } from '../../../mocks';
-import { ICurrentUser, ITranslatedProps } from '../../../types';
+import {
+	ICurrentUser,
+	INavigationParamsActions,
+	ITranslatedProps,
+} from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithCurrentUser } from '../intermediary';
 
@@ -37,6 +41,9 @@ const mock: IWithMyProfileEnhancedProps = {
 		logout: () => {
 			/**/
 		},
+		setNavigationParams: () => {
+			/**/
+		},
 	},
 };
 
@@ -46,7 +53,9 @@ export interface IWithMyProfileEnhancedData {
 	refreshingUser: boolean;
 }
 
-export interface IWithMyProfileEnhancedActions extends ITranslatedProps {
+export interface IWithMyProfileEnhancedActions
+	extends ITranslatedProps,
+		INavigationParamsActions {
 	resetNavigationToRoute: (
 		screenName: string,
 		navigation: NavigationScreenProp<any>,

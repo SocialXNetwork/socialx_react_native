@@ -70,7 +70,7 @@ class Screen extends React.Component<IRegisterScreenProps> {
 export const RegisterScreen = ({
 	navigation,
 	navigationOptions,
-}: INavigationProps<any, any>) => (
+}: INavigationProps) => (
 	<WithRegister>
 		{({ data, actions }) => (
 			<Screen

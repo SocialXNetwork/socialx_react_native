@@ -8,6 +8,7 @@ import * as React from 'react';
 
 import { suggestedItems } from '../../../mocks';
 import {
+	INavigationParamsActions,
 	ISearchResultData,
 	ITranslatedProps,
 	SearchTabs,
@@ -32,6 +33,9 @@ const mock: IWithSearchEnhancedProps = {
 		addFriend: (userId: string) => {
 			/**/
 		},
+		setNavigationParams: () => {
+			/**/
+		},
 	},
 };
 
@@ -42,7 +46,9 @@ export interface IWithSearchEnhancedData {
 	hasMoreResults: boolean;
 }
 
-export interface IWithSearchEnhancedActions extends ITranslatedProps {
+export interface IWithSearchEnhancedActions
+	extends ITranslatedProps,
+		INavigationParamsActions {
 	search: (term: string, tab: SearchTabs) => void;
 	searchForMoreResults: () => void;
 	addFriend: (userId: string) => void;

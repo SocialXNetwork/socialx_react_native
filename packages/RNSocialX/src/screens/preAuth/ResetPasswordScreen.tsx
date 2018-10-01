@@ -35,14 +35,12 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 		resetCode: string,
 		password: string,
 	) => {
-		const { resetPassword, navigation, getText } = this.props;
+		const { resetPassword, getText, userName } = this.props;
 
-		const { params } = navigation.state;
-
-		if (!params.userName) {
+		if (!userName) {
 			Alert.alert(getText('general.error.message'));
 		} else {
-			resetPassword(params.userName, resetCode, password);
+			resetPassword(userName, resetCode, password);
 		}
 	};
 

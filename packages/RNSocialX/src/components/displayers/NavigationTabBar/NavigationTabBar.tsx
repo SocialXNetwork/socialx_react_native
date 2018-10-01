@@ -3,7 +3,8 @@ import * as React from 'react';
 import { SafeAreaView } from 'react-native';
 import { LayoutEvent, NavigationScreenProp } from 'react-navigation';
 
-import { ITranslatedProps } from '../../../types';
+import { SCREENS } from '../../../environment/consts';
+import { INavigationParamsActions, ITranslatedProps } from '../../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -13,14 +14,16 @@ import {
 } from '../../../utilities';
 import { NavigationItems } from './';
 
-const INITIAL_SCREEN = 'UserFeedTab';
+const INITIAL_SCREEN = SCREENS.UserFeed;
 
 interface ITabBarBottomState {
 	selectedTab: string;
 	changeInProgress: boolean;
 }
 
-interface ITabBarBottomProps extends ITranslatedProps {
+interface ITabBarBottomProps
+	extends ITranslatedProps,
+		INavigationParamsActions {
 	navigation: NavigationScreenProp<any>;
 	updateTabBarHeight: (value: number) => void;
 	notifications: number;
@@ -80,7 +83,7 @@ export class NavigationTabBar extends React.Component<
 	};
 
 	private showPhotoOptionsMenu = () => {
-		const { getText, navigation } = this.props;
+		const { getText, navigation, setNavigationParams } = this.props;
 		ActionSheet.show(
 			{
 				options: [
@@ -105,9 +108,11 @@ export class NavigationTabBar extends React.Component<
 							getOptimizedMediaObject(mediaObject),
 						),
 					);
-					navigation.navigate('PhotoScreen', {
-						mediaObjects: optimizedMediaObjects,
+					setNavigationParams({
+						screenName: SCREENS.Photo,
+						params: { mediaObjects: optimizedMediaObjects },
 					});
+					navigation.navigate(SCREENS.Photo);
 				}
 			},
 		);

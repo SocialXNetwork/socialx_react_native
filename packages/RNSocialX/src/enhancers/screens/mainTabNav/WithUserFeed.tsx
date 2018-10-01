@@ -9,6 +9,7 @@ import { FEED_TYPES } from '../../../environment/consts';
 import { currentUser, posts } from '../../../mocks';
 import {
 	ICurrentUser,
+	INavigationParamsActions,
 	ITranslatedProps,
 	IWallPostCardData,
 } from '../../../types';
@@ -50,6 +51,9 @@ const mock: IWithUserFeedEnhancedProps = {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
+		setNavigationParams: () => {
+			/**/
+		},
 	},
 };
 
@@ -62,7 +66,9 @@ export interface IWithUserFeedEnhancedData {
 	loadingFeed: boolean;
 }
 
-export interface IWithUserFeedEnhancedActions extends ITranslatedProps {
+export interface IWithUserFeedEnhancedActions
+	extends ITranslatedProps,
+		INavigationParamsActions {
 	loadPosts: (feed: FEED_TYPES) => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
 	likePost: (postId: string) => void;

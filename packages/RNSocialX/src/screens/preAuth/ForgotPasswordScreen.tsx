@@ -12,7 +12,7 @@ import {
 import { INavigationProps } from '../../types';
 import { ForgotPasswordScreenView } from './ForgotPasswordScreen.view';
 
-type IForgotPasswordScreenProps = INavigationProps<any, any> &
+type IForgotPasswordScreenProps = INavigationProps &
 	IWithForgotPasswordEnhancedData &
 	IWithForgotPasswordEnhancedActions;
 
@@ -32,7 +32,7 @@ const Screen: React.SFC<IForgotPasswordScreenProps> = ({
 	/>
 );
 
-export const ForgotPasswordScreen = (navProps: INavigationProps<any, any>) => (
+export const ForgotPasswordScreen = (navProps: INavigationProps) => (
 	<WithForgotPassword>
 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
 	</WithForgotPassword>

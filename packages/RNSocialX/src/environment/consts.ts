@@ -96,4 +96,7 @@ export enum SCREENS {
 	TermsAndConditions = 'TermsAndConditionsScreen',
 	UserProfile = 'UserProfileScreen',
 	WalletActivity = 'WalletActivityScreen',
+	ProfileAnalytics = 'ProfileAnalyticsScreen',
+	TabbedSearch = 'TabbedSearchScreen',
+	UserFeed = 'UserFeedTab',
 }
