@@ -120,7 +120,7 @@ export interface ISimpleComment {
 export interface IPostOwner {
 	userId: string;
 	fullName: string;
-	avatarURL: string;
+	avatarURL: string | undefined;
 }
 
 export interface IWallPostComment {
@@ -156,9 +156,9 @@ export interface ILike {
 
 export interface IWallPostCardData extends IResizeProps {
 	id: string;
-	postText: false | string;
-	location: false | string;
-	taggedFriends: Array<{ fullName: string }>;
+	postText: string | undefined;
+	location: string | undefined;
+	taggedFriends: Array<{ fullName: string }> | undefined;
 	timestamp: Date;
 	owner: IPostOwner;
 	currentUserAvatarURL?: string;
@@ -168,7 +168,7 @@ export interface IWallPostCardData extends IResizeProps {
 	numberOfWalletCoins: number;
 	likedByMe: boolean;
 	canDelete: boolean;
-	media: IMediaProps[];
+	media: IMediaProps[] | undefined;
 	likes: ILike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
