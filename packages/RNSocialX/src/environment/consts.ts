@@ -73,3 +73,27 @@ export enum FEED_TYPES {
 	GLOBAL = 'global',
 	FRIENDS = 'friends',
 }
+
+export enum SCREENS {
+	Comments = 'CommentsScreen',
+	CreateWallPost = 'CreateWallPostScreen',
+	ForgotPassword = 'ForgotPasswordScreen',
+	FriendsFeed = 'FriendsUserFeed',
+	GlobalFeed = 'GlobalUserFeed',
+	Intro = 'IntroScreen',
+	Launch = 'LaunchScreen',
+	Login = 'LoginScreen',
+	Maintenance = 'MaintenanceScreen',
+	MediaViewer = 'MediaViewerScreen',
+	MyProfile = 'MyProfileScreen',
+	Notifications = 'NotificationsScreen',
+	Photo = 'PhotoScreen',
+	Referral = 'ReferralScreen',
+	Register = 'RegisterScreen',
+	ResetPassword = 'ResetPasswordScreen',
+	Settings = 'SettingsScreen',
+	SocialXAccount = 'SocialXAccountScreen',
+	TermsAndConditions = 'TermsAndConditionsScreen',
+	UserProfile = 'UserProfileScreen',
+	WalletActivity = 'WalletActivityScreen',
+}
