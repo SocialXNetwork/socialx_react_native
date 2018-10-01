@@ -1,14 +1,13 @@
 /**
  * TODO list:
- * 1. Props data: none :)
- * 2. Props actions: doLogin
- * 3. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
+ * 1. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
  */
 
 import * as React from 'react';
 
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithAccounts } from '../../connectors/data/WithAccounts';
 
 const mock: IWithLoginEnhancedProps = {
 	data: {},
@@ -46,12 +45,21 @@ export class WithLogin extends React.Component<
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithAccounts>
+						{(accountsProps) =>
+							children({
+								data: mock.data,
+								actions: {
+									...mock.actions,
+									getText: i18nProps.getText,
+									doLogin: (userName: string, password: string) =>
+										accountsProps.login({ username: userName, password }),
+								},
+							})
+						}
+					</WithAccounts>
+				)}
 			</WithI18n>
 		);
 	}

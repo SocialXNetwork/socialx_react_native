@@ -1,8 +1,3 @@
-/**
- * TODO list:
- * 1. Props actions: getText
- */
-
 import * as React from 'react';
 
 import { ITranslatedProps } from '../../../types';
