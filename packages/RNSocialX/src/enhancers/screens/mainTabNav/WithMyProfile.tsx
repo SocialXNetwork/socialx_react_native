@@ -15,7 +15,7 @@ import {
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUserContent } from '../intermediary';
 
 const mock: IWithMyProfileEnhancedProps = {
 	data: {
@@ -84,7 +84,7 @@ export class WithMyProfile extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithCurrentUser>
+					<WithCurrentUserContent>
 						{(currentUserProps) =>
 							this.props.children({
 								data: {
@@ -94,7 +94,7 @@ export class WithMyProfile extends React.Component<
 								actions: { ...mock.actions, getText: i18nProps.getText },
 							})
 						}
-					</WithCurrentUser>
+					</WithCurrentUserContent>
 				)}
 			</WithI18n>
 		);

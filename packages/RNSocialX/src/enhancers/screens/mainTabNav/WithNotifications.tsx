@@ -13,6 +13,7 @@ import {
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 
 const mock: IWithNotificationsEnhancedProps = {
 	data: {
@@ -175,15 +176,18 @@ export class WithNotifications extends React.Component<
 	IWithNotificationsState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithNotificationsData>
+						{({ notifications }) => {
+							return this.props.children({
+								data: { ...mock.data },
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							});
+						}}
+					</WithNotificationsData>
+				)}
 			</WithI18n>
 		);
 	}
