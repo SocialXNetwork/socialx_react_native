@@ -28,7 +28,7 @@ const mock = {
 			numberOfLikes: 25,
 			numberOfPhotos: 1,
 			numberOfFriends: 2,
-			numberOfViews: 87,
+			numberOfComments: 87,
 			mediaObjects: [
 				{
 					url:

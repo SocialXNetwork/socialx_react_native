@@ -19,7 +19,7 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	numberOfPhotos: number;
 	numberOfLikes: number;
 	numberOfFriends: number;
-	numberOfViews: number;
+	numberOfComments: number;
 	onAddFriend: () => void;
 	onShowFriendshipOptions?: () => void;
 	relationship?: SearchResultKind;
@@ -40,7 +40,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	numberOfPhotos,
 	numberOfLikes,
 	numberOfFriends,
-	numberOfViews,
+	numberOfComments,
 	onAddFriend,
 	onShowFriendshipOptions = () => {
 		/**/
@@ -95,7 +95,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 					/>
 					<Statistics
 						text={getText('profile.statistics.view.count')}
-						value={numberOfViews}
+						value={numberOfComments}
 					/>
 				</View>
 			</View>
