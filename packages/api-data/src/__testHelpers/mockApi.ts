@@ -1,4 +1,5 @@
 import Gun from 'gun/gun';
+import 'gun/lib/store';
 import 'gun/sea';
 
 import '../extensions/docload';
@@ -96,8 +97,23 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 	const posts = postsApi(context);
 	const profiles = profilesApi(context);
 
+	const resetDatabase = (path: string) =>
+		new Promise((res, rej) => {
+			console.log('path', path);
+			gun.get(path).put(null, (ack: any) => {
+				if (ack.err) {
+					rej(ack.err);
+				}
+				res();
+			});
+		});
+
+	const resetAllDatabases: any = () =>
+		Promise.all(['profiles'].map(resetDatabase));
+
 	return {
 		accounts,
+		resetAllDatabases,
 		comments,
 		notifications,
 		posts,

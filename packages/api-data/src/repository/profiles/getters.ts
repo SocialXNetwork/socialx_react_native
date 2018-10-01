@@ -1,7 +1,10 @@
 import { IContext, IGunCallback } from '../../types';
 import * as profileHandles from './handles';
 
-import { setToArrayWithKey } from '../../utils/helpers';
+import {
+	cleanGunMetaFromObject,
+	convertGunSetToArrayWithKey,
+} from '../../utils/helpers';
 import {
 	IFriendData,
 	IFriendReturnData,
@@ -24,7 +27,7 @@ export const getPublicKeyByUsername = (
 };
 
 const friendsToArray = (friends: IFriendsCallbackData) =>
-	setToArrayWithKey(friends).map(
+	convertGunSetToArrayWithKey(friends).map(
 		({ k, ...friend }: IFriendData & { k: string }) => ({
 			friendId: k,
 			...friend,
@@ -46,12 +49,13 @@ export const getCurrentProfile = (
 			if (!profile) {
 				return callback('no user profile found');
 			}
-			const { friends, ...profileRest } = profile;
+			const { friends, username, ...profileRest } = profile;
 
+			const cleanedProfile = cleanGunMetaFromObject(profileRest);
 			const friendsData = friendsToArray(friends);
 			const profileReturnData = {
 				friends: friendsData,
-				...profileRest,
+				...cleanedProfile,
 			};
 			return callback(null, profileReturnData);
 		});

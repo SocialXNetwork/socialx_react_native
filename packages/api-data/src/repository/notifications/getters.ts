@@ -1,7 +1,7 @@
 import { IContext, IGunCallback } from '../../types';
 import * as handles from './handles';
 
-import { setToArrayWithKey } from '../../utils/helpers';
+import { convertGunSetToArrayWithKey } from '../../utils/helpers';
 import { INotificationData, INotificationsReturnData } from './types';
 
 export const getNotifications = (
@@ -14,12 +14,12 @@ export const getNotifications = (
 			if (!notifications) {
 				return callback('failed, no notifications found');
 			}
-			const notifcationsReturnData = setToArrayWithKey(notifications).map(
-				({ k, ...notification }: INotificationData & { k: string }) => ({
-					notificationId: k,
-					...notification,
-				}),
-			);
+			const notifcationsReturnData = convertGunSetToArrayWithKey(
+				notifications,
+			).map(({ k, ...notification }: INotificationData & { k: string }) => ({
+				notificationId: k,
+				...notification,
+			}));
 			return callback(null, notifcationsReturnData);
 		});
 };

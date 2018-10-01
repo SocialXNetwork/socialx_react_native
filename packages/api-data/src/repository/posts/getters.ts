@@ -7,9 +7,9 @@ import {
 	ILikesMetasCallback,
 } from '../../types';
 import {
+	convertGunSetToArray,
+	convertGunSetToArrayWithKey,
 	datePathFromDate,
-	setToArray,
-	setToArrayWithKey,
 } from '../../utils/helpers';
 
 import {
@@ -37,20 +37,22 @@ export const getPostPathsByUser = (
 				return callback('failed, no posts found');
 			}
 
-			const paths = setToArray(postMeta).map(({ postPath }: any) => postPath);
+			const paths = convertGunSetToArray(postMeta).map(
+				({ postPath }: any) => postPath,
+			);
 
 			return callback(null, paths);
 		});
 };
 
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
-	setToArrayWithKey(likes).map(({ k, postLike }: any) => ({
+	convertGunSetToArrayWithKey(likes).map(({ k, postLike }: any) => ({
 		likeId: k,
 		...postLike,
 	}));
 
 const convertCommentsToArray = (comments: ICommentsPostData): ICommentData =>
-	setToArrayWithKey(comments).map(
+	convertGunSetToArrayWithKey(comments).map(
 		({ k, ...postComment }: ICommentCallbackData & { k: string }) => {
 			// convert comment likes into an array with key
 			const commentLikes = convertLikesToArray(postComment.likes);
@@ -101,7 +103,7 @@ export const getPublicPostsByDate = (
 				return callback('failed, no posts found by date');
 			}
 
-			const posts = setToArrayWithKey(postsData).map(
+			const posts = convertGunSetToArrayWithKey(postsData).map(
 				({ k: postId, ...post }: IPostCallbackData & { k: string }) => {
 					// convert likes into an array with keys
 					const postLikes = convertLikesToArray(post.likes);
