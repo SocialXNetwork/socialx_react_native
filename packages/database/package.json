@@ -13,7 +13,7 @@
 		"@socialx/commons": "^0.0.1",
 		"express": "^4.16.3",
 		"gun": "^0.9.99995",
-		"utility-types-fixme-todo": "^2.1.0"
+		"utility-types-fixme-todo": "latest"
 	},
 	"devDependencies": {
 		"@types/jest": "^23.3.1",
