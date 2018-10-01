@@ -48,6 +48,7 @@ export interface IPostCallbackData extends ICreatePostInput {
 }
 
 export interface IPostReturnData extends ICreatePostInput {
+	postId: string;
 	owner: {
 		alias: string;
 		pub: string;
