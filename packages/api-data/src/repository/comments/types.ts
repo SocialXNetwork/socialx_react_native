@@ -20,11 +20,22 @@ export interface ICommentCallbackData {
 	likes: ILikesMetasCallback;
 }
 
+export interface ICommentsReturnData {
+	commentId: string;
+	text: string;
+	timestamp: number;
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	likes: ILikesArray;
+}
+
 export interface ICommentsPostData {
 	[commentId: string]: ICommentCallbackData;
 }
 
-export type ICommentsArray = ICommentCallbackData[];
+export type ICommentsArray = ICommentsReturnData[];
 
 export interface ICommentData {
 	text: string;
