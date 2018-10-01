@@ -25,15 +25,7 @@ describe.skip('accounts api', () => {
 				avatar: 'xxx',
 				email: 'test@test.com',
 				fullName: 'foo bar',
-				friends: {
-					xxx: {
-						username: 'foo',
-						timestamp: Date.now(),
-						relation: FRIEND_TYPES.PENDING,
-					},
-				},
 				miningEnabled: false,
-				pub: 'xxx',
 				recover: {
 					encryptedReminder: 'xxx',
 					question1: 'sss',
