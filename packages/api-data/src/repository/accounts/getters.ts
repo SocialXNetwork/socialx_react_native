@@ -20,7 +20,7 @@ export const getCurrentAccount = (
 	}
 
 	account.docLoad((data: IAccountData) => {
-		if (data) {
+		if (!data) {
 			return callback('current user object not found');
 		}
 		return callback(null, data);
