@@ -5,11 +5,12 @@
  */
 
 import * as React from 'react';
-import { ISetNavigationParamsInput } from '../../../store/app/navigationParams';
+import { SCREENS } from '../../../environment/consts';
 import {
 	CommentsSortingOptions,
 	ILike,
 	IMediaProps,
+	INavigationParamsActions,
 	ITranslatedProps,
 	IWallPostComment,
 	MediaTypeImage,
@@ -20,6 +21,9 @@ import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
 	data: {
+		startComment: false,
+		postId: '232362sgdxh',
+		commentId: 'atw3yhsxz',
 		postUser: {
 			userId: 'userId_0',
 			avatarURL: 'https://placeimg.com/200/200/people',
@@ -135,9 +139,14 @@ export interface IWithCommentsEnhancedData {
 	};
 	postComments: IWallPostComment[];
 	loadingComments: boolean;
+	commentId?: string; // only available for replies
+	postId?: string; // only for main comments screen
+	startComment: boolean;
 }
 
-export interface IWithCommentsEnhancedActions extends ITranslatedProps {
+export interface IWithCommentsEnhancedActions
+	extends ITranslatedProps,
+		INavigationParamsActions {
 	reloadComments: (sortOption: CommentsSortingOptions) => void;
 	sendComment: (
 		text: string,
@@ -149,9 +158,6 @@ export interface IWithCommentsEnhancedActions extends ITranslatedProps {
 	deleteComment: (commentId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
-	setNavigationParams: (
-		setNavigationParamsInput: ISetNavigationParamsInput,
-	) => void;
 }
 
 interface IWithCommentsEnhancedProps {
@@ -187,6 +193,15 @@ export class WithComments extends React.Component<
 											currentUser: {
 												userId: currentUserProps.currentUser!.userId,
 											},
+											startComment:
+												navigationParamsProps.navigationParams[SCREENS.Comments]
+													.startComment,
+											commentId:
+												navigationParamsProps.navigationParams[SCREENS.Comments]
+													.commentId,
+											postId:
+												navigationParamsProps.navigationParams[SCREENS.Comments]
+													.postId,
 										},
 										actions: {
 											...mock.actions,

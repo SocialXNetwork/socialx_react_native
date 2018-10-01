@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
-import { OS_TYPES } from '../../environment/consts';
+import { OS_TYPES, SCREENS } from '../../environment/consts';
 import styles, { colors } from './SearchHeader.style';
 
 interface ISearchHeaderProps {
@@ -108,7 +108,7 @@ export class SearchHeader extends Component<
 	private onPressInput = () => {
 		const { navigation } = this.props;
 		if (navigation.state.routeName === 'Trending') {
-			navigation.navigate('TabbedSearchScreen');
+			navigation.navigate(SCREENS.TabbedSearch);
 		}
 	};
 

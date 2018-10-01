@@ -36,15 +36,15 @@ interface ICommentsScreenState {
 	commentLikesPosition: object;
 }
 
-interface INavigationScreenProps {
-	params: {
-		commentId?: string; // only available for replies
-		postId?: string; // only for main comments screen
-		startComment: boolean;
-	};
-}
+// interface INavigationScreenProps {
+// 	params: {
+// 		commentId?: string; // only available for replies
+// 		postId?: string; // only for main comments screen
+// 		startComment: boolean;
+// 	};
+// }
 
-type ICommentsScreenProps = INavigationProps<INavigationScreenProps, any> &
+type ICommentsScreenProps = INavigationProps &
 	IWithCommentsEnhancedData &
 	IWithCommentsEnhancedActions;
 
@@ -85,6 +85,8 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			postComments,
 			loadingComments,
 			postData,
+			startComment,
+			commentId,
 		} = this.props;
 		const optionsProps = {
 			sortOption: this.state.sortOption,
@@ -99,7 +101,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentReply={this.onCommentReplyHandler}
 				onCommentSend={this.onCommentSendHandler}
-				startComment={navigation.state.params.startComment}
+				startComment={startComment}
 				onViewUserProfile={this.navigateToUserProfile}
 				onCommentTextChange={this.onCommentTextChangeHandler}
 				commentText={commentText}
@@ -116,7 +118,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				optionsProps={optionsProps}
 				getText={getText}
 				marginBottom={0}
-				isReplyScreen={navigation.state.params.commentId !== undefined}
+				isReplyScreen={!!commentId}
 			/>
 		);
 	}
@@ -125,13 +127,17 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		comment: IWallPostComment,
 		startComment: boolean,
 	) => {
-		this.props.navigation.navigate({
-			routeName: 'CommentsScreen',
-			key: comment.id,
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
 			params: {
 				commentId: comment.id,
 				startComment,
 			},
+		});
+		navigation.navigate({
+			routeName: SCREENS.Comments,
+			key: comment.id,
 		});
 	};
 
@@ -145,8 +151,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentSendHandler = () => {
-		const { sendComment, navigation } = this.props;
-		const { postId, commentId } = navigation.state.params;
+		const { sendComment, navigation, postId, commentId } = this.props;
 		const escapedComment = this.state.commentText.replace(/\n/g, '\\n');
 		sendComment(escapedComment, postId, commentId);
 		this.setState({
@@ -161,7 +166,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			screenName: SCREENS.UserProfile,
 			params: { userId },
 		});
-		navigation.navigate('UserProfileScreen');
+		navigation.navigate(SCREENS.UserProfile);
 	};
 
 	private updateSortingHandler = (value: CommentsSortingOptions) => {
@@ -201,14 +206,19 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentsBackPressHandler = () => {
-		this.props.navigation.navigate('UserFeedTab');
+		this.props.navigation.navigate(SCREENS.UserFeed);
 	};
 
 	private onImagePressHandler = (index: number, medias: IMediaProps[]) => {
-		this.props.navigation.navigate('MediaViewerScreen', {
-			mediaObjects: medias,
-			startIndex: index,
+		const { setNavigationParams, navigation } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects: medias,
+				startIndex: index,
+			},
 		});
+		navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
@@ -236,9 +246,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 }
 
 // We do it explicitly here instead of a generic wrapper for flexibility
-export const CommentsScreen = (
-	navProps: INavigationProps<INavigationScreenProps, any>,
-) => (
+export const CommentsScreen = (navProps: INavigationProps) => (
 	<WithComments>
 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
 	</WithComments>

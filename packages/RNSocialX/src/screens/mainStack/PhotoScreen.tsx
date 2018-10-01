@@ -1,10 +1,9 @@
 /**
  * old screen -> screens/PhotoScreen/index.tsx
  * TODO list:
- * 1. Refactor props.navigation.state.params.mediaObjects, that is sent from NavigationTabBar component with navigate action
- * 2. @Serkan: check pattern for this.addedFriends
- * 3. (Later) Get rid of navigation workaround for passing onSendPress
- * 4. (Later) Consider using Formik to manage all user input data.
+ * 1. @Serkan: check pattern for this.addedFriends
+ * 2. (Later) Get rid of navigation workaround for passing onSendPress
+ * 3. (Later) Consider using Formik to manage all user input data.
  */
 
 import { ActionSheet } from 'native-base';
@@ -29,13 +28,7 @@ import {
 } from '../../utilities';
 import { PhotoScreenView } from './PhotoScreen.view';
 
-interface IPhotoScreenNavParams {
-	params: {
-		mediaObjects: IWallPostPhotoOptimized[];
-	};
-}
-
-type IPhotoScreenProps = INavigationProps<IPhotoScreenNavParams> &
+type IPhotoScreenProps = INavigationProps &
 	IWithPhotoEnhancedActions &
 	IWithPhotoEnhancedData;
 
@@ -48,6 +41,14 @@ interface IPhotoScreenState {
 }
 
 class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
+	public state = {
+		locationEnabled: false,
+		tagFriends: false,
+		location: '',
+		shareText: '',
+		mediaObjects: [...this.props.mediaObjects],
+	};
+
 	private addedFriends: IFriendsSearchResult[] = [];
 
 	public render() {
@@ -182,9 +183,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 }
 
-export const PhotoScreen = (
-	navProps: INavigationProps<IPhotoScreenNavParams>,
-) => (
+export const PhotoScreen = (navProps: INavigationProps) => (
 	<WithPhoto>
 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
 	</WithPhoto>

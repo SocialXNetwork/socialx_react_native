@@ -12,6 +12,7 @@ import {
 	IWithLaunchEnhancedData,
 	WithLaunch,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 
 type ILaunchScreenProps = INavigationProps &
@@ -52,11 +53,11 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 	}
 
 	private navigateToLoginScreen = () => {
-		this.props.navigation.navigate('LoginScreen');
+		this.props.navigation.navigate(SCREENS.Login);
 	};
 
 	private navigateToRegisterScreen = () => {
-		this.props.navigation.navigate('RegisterScreen');
+		this.props.navigation.navigate(SCREENS.Register);
 	};
 
 	private closeSplashScreen = () => {

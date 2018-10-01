@@ -53,6 +53,7 @@ import {
 } from '../screens/mainTabNav/SearchScreen';
 
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
+import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
 import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
@@ -187,6 +188,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 				notifications={props.screenProps.notifications}
 				navigation={props.navigation}
 				getText={props.screenProps.getText}
+				setNavigationParams={props.screenProps.setNavigationParams}
 			/>
 		),
 	},
@@ -234,7 +236,13 @@ const Navigation = () => (
 	<WithNavigation>
 		{({ notifications, getText }) => (
 			<Root>
-				<AppNavigation screenProps={{ notifications, getText }} />
+				<WithNavigationParams>
+					{({ setNavigationParams }) => (
+						<AppNavigation
+							screenProps={{ notifications, getText, setNavigationParams }}
+						/>
+					)}
+				</WithNavigationParams>
 				<WithGlobals>
 					{(globalsProps) => (
 						<WithActivities>
