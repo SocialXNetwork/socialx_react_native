@@ -35,7 +35,7 @@ export const createAccountInput = yup
 			.lowercase()
 			.email()
 			.required(),
-		name: yup
+		fullName: yup
 			.string()
 			.trim()
 			.min(4)
