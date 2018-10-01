@@ -51,5 +51,10 @@ export interface IChangePasswordInput {
 
 export interface ICreateAccountInput
 	extends IRecoverData<string>,
-		ICredentials,
-		IProfileCallbackData {}
+		ICredentials {
+	email: string;
+	avatar: string;
+	fullName: string;
+	miningEnabled: boolean;
+	aboutMeText: string;
+}
