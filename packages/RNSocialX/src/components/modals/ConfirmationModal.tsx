@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 import style from './ConfirmationModal.style';
 
