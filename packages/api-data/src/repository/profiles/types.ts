@@ -9,6 +9,7 @@ export interface IProfileCallbackData {
 	fullName: string;
 	miningEnabled: boolean;
 	aboutMeText: string;
+	username: string;
 	friends: IFriendsCallbackData;
 }
 
