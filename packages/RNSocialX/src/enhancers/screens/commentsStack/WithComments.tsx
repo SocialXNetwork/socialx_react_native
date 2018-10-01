@@ -5,6 +5,7 @@
  */
 
 import * as React from 'react';
+import { ISetNavigationParamsInput } from '../../../store/app/navigationParams';
 import {
 	CommentsSortingOptions,
 	ILike,
@@ -14,6 +15,7 @@ import {
 	MediaTypeImage,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
@@ -109,6 +111,9 @@ const mock: IWithCommentsEnhancedProps = {
 		},
 		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
+		setNavigationParams: () => {
+			/**/
+		},
 	},
 };
 
@@ -144,6 +149,9 @@ export interface IWithCommentsEnhancedActions extends ITranslatedProps {
 	deleteComment: (commentId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
+	setNavigationParams: (
+		setNavigationParamsInput: ISetNavigationParamsInput,
+	) => void;
 }
 
 interface IWithCommentsEnhancedProps {
@@ -169,17 +177,28 @@ export class WithComments extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithCurrentUser>
-						{(currentUserProps) =>
-							children({
-								data: {
-									...mock.data,
-									currentUser: currentUserProps.currentUser!,
-								},
-								actions: { ...mock.actions, getText: i18nProps.getText },
-							})
-						}
-					</WithCurrentUser>
+					<WithNavigationParams>
+						{(navigationParamsProps) => (
+							<WithCurrentUser>
+								{(currentUserProps) =>
+									children({
+										data: {
+											...mock.data,
+											currentUser: {
+												userId: currentUserProps.currentUser!.userId,
+											},
+										},
+										actions: {
+											...mock.actions,
+											getText: i18nProps.getText,
+											setNavigationParams:
+												navigationParamsProps.setNavigationParams,
+										},
+									})
+								}
+							</WithCurrentUser>
+						)}
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);

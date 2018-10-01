@@ -19,7 +19,7 @@ import {
 	WithComments,
 } from '../../enhancers/screens';
 
-import { OS_TYPES } from '../../environment/consts';
+import { OS_TYPES, SCREENS } from '../../environment/consts';
 import {
 	CommentsSortingOptions,
 	IMediaProps,
@@ -156,7 +156,12 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private navigateToUserProfile = (userId: string) => {
-		this.props.navigation.navigate('UserProfileScreen', { userId });
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
+			params: { userId },
+		});
+		navigation.navigate('UserProfileScreen');
 	};
 
 	private updateSortingHandler = (value: CommentsSortingOptions) => {
