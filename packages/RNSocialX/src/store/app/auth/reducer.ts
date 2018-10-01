@@ -12,7 +12,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		default: {
-			// @tsling-ignore
+			// @ts-ignore // TODO: @Serkan better option to use `action as never` ?
 			assertNever(action);
 			return state;
 		}
