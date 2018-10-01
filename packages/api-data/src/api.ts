@@ -27,7 +27,13 @@ export const dataApiFactory = ({ peers }: IApiOptions) => {
 	const time = () => new Date(Gun.state());
 
 	const gun: IGunInstance = new Gun({
-		peers,
+		peers: peers.reduce(
+			(peersObject, peer) => ({
+				...peersObject,
+				[peer]: {},
+			}),
+			{},
+		),
 	});
 
 	const account = gun.user();
