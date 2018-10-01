@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: postUser, currentUser, postComments, loadingComments,
+ * 1. Props data: postUser, postComments, loadingComments,
  * 2. Props actions: reloadComments, sendComment, likeComment, removeCommentLike, deleteComment, likePost, unlikePost
  */
 
@@ -14,6 +14,7 @@ import {
 	MediaTypeImage,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
 	data: {
@@ -167,12 +168,19 @@ export class WithComments extends React.Component<
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							children({
+								data: {
+									...mock.data,
+									currentUser: currentUserProps.currentUser!,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}

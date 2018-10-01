@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: currentUserAvatarURL, marginBottom (can be provided via KeyboardContext in consts.ts)
+ * 1. Props data: marginBottom (can be provided via KeyboardContext in consts.ts)
  * 2. Props actions: createPost
  */
 
@@ -12,6 +12,7 @@ import {
 	IWallPostPhotoOptimized,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCreateWallPostEnhancedProps = {
 	data: {
@@ -59,12 +60,19 @@ export class WithCreateWallPost extends React.Component<
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							children({
+								data: {
+									...mock.data,
+									currentUserAvatarURL: currentUserProps.currentUser!.avatarURL,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}

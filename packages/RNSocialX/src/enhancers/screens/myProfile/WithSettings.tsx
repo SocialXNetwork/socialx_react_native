@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Data props: currentUser, settingsLoading
+ * 1. Data props: settingsLoading
  * 2. Action props: updateUserProfile, logout
  */
 
@@ -9,6 +9,7 @@ import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithSettingsEnhancedProps = {
 	data: {
@@ -65,12 +66,19 @@ export class WithSettings extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					this.props.children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
-					})
-				}
+				{(i18nProps) => (
+					<WithCurrentUser>
+						{(currentUserProps) =>
+							this.props.children({
+								data: {
+									...mock.data,
+									currentUser: currentUserProps.currentUser!,
+								},
+								actions: { ...mock.actions, getText: i18nProps.getText },
+							})
+						}
+					</WithCurrentUser>
+				)}
 			</WithI18n>
 		);
 	}

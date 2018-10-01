@@ -121,3 +121,5 @@ export {
 	IWithMaintenanceEnhancedData,
 	IWithMaintenanceEnhancedActions,
 } from './primaryNav/WithMaintenance';
+
+export { WithCurrentUser, WithCurrentUserContent } from './intermediary';
