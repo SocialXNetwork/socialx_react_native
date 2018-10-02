@@ -5976,10 +5976,10 @@ gud@^1.0.0:
   resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
   integrity sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==
 
-gun@^0.9.99995:
-  version "0.9.99995"
-  resolved "https://registry.yarnpkg.com/gun/-/gun-0.9.99995.tgz#2eb085e6ef0236df8dc912aa79fac55fa6f9b4f3"
-  integrity sha512-5BI3dkDNmEJ6XKAHiTtH9IL9/zxTDdEYxtQWh/h/CEIatkFjHF48e9j6MJ1jJpvSMZ/2PxOAS1S/G79Hdfw6SA==
+gun@latest:
+  version "0.9.99996"
+  resolved "https://registry.yarnpkg.com/gun/-/gun-0.9.99996.tgz#184c16800f08fed7913d15ddb832a9230ad6eb91"
+  integrity sha512-2hUCZKl9f4yegmmkKvCPQuXC67VcozZl/GuQ2li7okYQ985dqip8YbOjEfSWI/OnJmq0z7wHyxJCxK2xYextug==
   dependencies:
     ws "~>5.2.0"
 
