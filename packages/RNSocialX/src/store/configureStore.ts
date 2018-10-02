@@ -15,6 +15,7 @@ export const configureStore = (
 ) => {
 	const dataApi = dataApiFactory({
 		peers: depsConfig.dataApi.peers,
+		rootdb: depsConfig.dataApi.rootdb,
 	});
 
 	const store = createStore(
