@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@socialx/commons": "^0.0.1",
 		"express": "^4.16.3",
-		"gun": "^0.9.99995",
+		"gun": "latest",
 		"utility-types-fixme-todo": "latest"
 	},
 	"devDependencies": {
