@@ -11,6 +11,8 @@ import './extensions/docload';
 
 import './extensions/encrypt';
 
+import './extensions/erase';
+
 import { api as accountsApi } from './repository/accounts';
 import { api as commentsApi } from './repository/comments';
 import { api as notificationsApi } from './repository/notifications';
@@ -26,7 +28,7 @@ export interface IApiOptions {
 export const dataApiFactory = ({ peers }: IApiOptions) => {
 	const time = () => new Date(Gun.state());
 
-	const gun: IGunInstance = new Gun({
+	const rootGun: IGunInstance = new Gun({
 		peers: peers.reduce(
 			(peersObject, peer) => ({
 				...peersObject,
@@ -36,7 +38,9 @@ export const dataApiFactory = ({ peers }: IApiOptions) => {
 		),
 	});
 
-	const account = gun.user();
+	const gun = rootGun.get('db');
+
+	const account = rootGun.user();
 
 	const { encrypt, decrypt, work } = Gun.SEA;
 

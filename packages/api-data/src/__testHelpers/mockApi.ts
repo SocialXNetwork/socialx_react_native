@@ -3,8 +3,8 @@ import 'gun/lib/store';
 import 'gun/sea';
 
 import '../extensions/docload';
-
 import '../extensions/encrypt';
+import '../extensions/erase';
 
 import { api as accountsApi } from '../repository/accounts';
 import { api as commentsApi } from '../repository/comments';
@@ -24,10 +24,12 @@ interface IAccountMock {
 export const dataApiFactory = (accountMock: IAccountMock) => {
 	const time = () => new Date(Gun.state());
 
-	const gun: IGunInstance = new Gun({
+	const rootGun: IGunInstance = new Gun({
 		localStorage: false,
 		radix: true,
 	});
+
+	const gun = rootGun.get('db');
 
 	// const account = gun.user();
 	const account: IGunAccountInstance = {
@@ -99,8 +101,7 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 
 	const resetDatabase = (path: string) =>
 		new Promise((res, rej) => {
-			console.log('path', path);
-			gun.get(path).put(null, (ack: any) => {
+			gun.erase(path, (ack) => {
 				if (ack.err) {
 					rej(ack.err);
 				}
@@ -108,12 +109,12 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 			});
 		});
 
-	const resetAllDatabases: any = () =>
-		Promise.all(['profiles'].map(resetDatabase));
+	const resetAllDatabase: any = () =>
+		Promise.all(['profiles', 'posts', 'notifications'].map(resetDatabase));
 
 	return {
 		accounts,
-		resetAllDatabases,
+		resetAllDatabase,
 		comments,
 		notifications,
 		posts,

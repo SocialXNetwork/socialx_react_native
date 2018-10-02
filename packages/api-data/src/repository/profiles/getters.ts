@@ -14,6 +14,7 @@ import {
 	IProfileData,
 } from './types';
 
+// * this is used internally, do not remove
 export const getPublicKeyByUsername = (
 	context: IContext,
 	{ username }: IGetPublicKeyInput,
@@ -74,15 +75,18 @@ export const getProfileByUsername = (
 			}
 			const { friends, ...profileRest } = profile;
 
+			const cleanedProfile = cleanGunMetaFromObject(profileRest);
+
 			const friendsData = friendsToArray(friends);
 			const profileReturnData = {
 				friends: friendsData,
-				...profileRest,
+				...cleanedProfile,
 			};
 			return callback(null, profileReturnData);
 		});
 };
 
+// ? this is not needed anymore, should exist?
 export const getCurrentProfileFriends = (
 	context: IContext,
 	callback: IGunCallback<IFriendReturnData[]>,
