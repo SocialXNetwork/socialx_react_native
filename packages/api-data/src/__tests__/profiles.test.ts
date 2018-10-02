@@ -3,9 +3,9 @@ import { FRIEND_TYPES } from '../repository/profiles';
 
 let mockApi: ReturnType<typeof dataApiFactory> | null;
 
-const testProfile = {
+const mockProfile = {
 	aboutMeText: 'Hello there, I have been here',
-	avatar: '123',
+	avatar: '123456',
 	email: 'a@b.com',
 	fullName: 'neil de grasse tyson',
 	miningEnabled: true,
@@ -39,22 +39,54 @@ describe('profiles api', () => {
 		mockApi = null;
 	});
 
+	test('rejects create profile', async () => {
+		const invalidProfile = {
+			aboutMeText: 'Hell',
+			avatar: '',
+			email: 'a',
+			fullName: '',
+			miningEnabled: true,
+			pub: 'bleep',
+			username: 'bla',
+		};
+
+		Object.entries(invalidProfile).map(async ([key, value]) => {
+			const testProfile = {
+				...mockProfile,
+				[key]: value,
+			};
+
+			try {
+				if (!mockApi) {
+					throw new Error('mockApi is not defined');
+				}
+				await mockApi.profiles.createProfile(testProfile);
+			} catch (e) {
+				expect(e).toBeTruthy();
+			}
+		});
+	});
+
 	test('create profile', async () => {
 		try {
 			if (!mockApi) {
 				throw new Error('mockApi is not defined');
 			}
-			await mockApi.profiles.createProfile(testProfile);
+			await mockApi.profiles.createProfile(mockProfile);
 			const currentProfile = await mockApi.profiles.getCurrentProfile();
 
 			// Deconstruct because username is not in the returned object
-			const { username, ...profileData } = testProfile;
+			const { username, ...profileData } = mockProfile;
 			const profileUnderTest = { ...profileData, friends: [] };
 
 			expect(currentProfile).toEqual(profileUnderTest);
 		} catch (e) {
 			expect(e).toBe(undefined);
 		}
+	});
+
+	test('rejects get profile by username', () => {
+		//
 	});
 
 	test('get profile by username', async () => {
@@ -64,9 +96,9 @@ describe('profiles api', () => {
 			}
 			// Deconstruct because username is not in the returned object, but is required
 			// in the getter parameters
-			const { username, ...profileData } = testProfile;
+			const { username, ...profileData } = mockProfile;
 
-			await mockApi.profiles.createProfile(testProfile);
+			await mockApi.profiles.createProfile(mockProfile);
 			const userProfile = await mockApi.profiles.getProfileByUsername({
 				username,
 			});
@@ -78,5 +110,35 @@ describe('profiles api', () => {
 		}
 	});
 
-	// TODO: test for username and email edgecases
+	test('rejects update profile', () => {
+		//
+	});
+
+	test('updates profile', () => {
+		//
+	});
+
+	test('rejects adds friend', () => {
+		//
+	});
+
+	test('adds friend', () => {
+		//
+	});
+
+	test('rejects removes friend', () => {
+		//
+	});
+
+	test('removes friend', () => {
+		//
+	});
+
+	test('rejects accepts friend', () => {
+		//
+	});
+
+	test('accepts friend', () => {
+		//
+	});
 });

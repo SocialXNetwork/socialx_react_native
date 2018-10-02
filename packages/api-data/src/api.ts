@@ -23,9 +23,12 @@ import { IContext, IGunInstance } from './types';
 
 export interface IApiOptions {
 	peers: string[];
+	rootdb: string;
 }
 
-export const dataApiFactory = ({ peers }: IApiOptions) => {
+export const dataApiFactory = (config: IApiOptions) => {
+	const { peers, rootdb } = config;
+
 	const time = () => new Date(Gun.state());
 
 	const rootGun: IGunInstance = new Gun({
@@ -38,7 +41,7 @@ export const dataApiFactory = ({ peers }: IApiOptions) => {
 		),
 	});
 
-	const gun = rootGun.get('db');
+	const gun = rootGun.get(rootdb);
 
 	const account = rootGun.user();
 

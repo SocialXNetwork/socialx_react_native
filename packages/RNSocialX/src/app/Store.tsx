@@ -8,6 +8,7 @@ const store = configureStore(
 	{
 		dataApi: {
 			peers: appConfig.gun.superPeers,
+			rootdb: appConfig.gun.rootdb,
 		},
 	},
 	appConfig,
