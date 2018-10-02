@@ -29,7 +29,7 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		radix: true,
 	});
 
-	const gun = rootGun.get('db');
+	const gun = rootGun.get('test');
 
 	// const account = gun.user();
 	const account: IGunAccountInstance = {

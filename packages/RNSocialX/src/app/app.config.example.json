@@ -2,7 +2,8 @@
   "gun": {
     "superPeers": [
       "http://127.0.0.1:8765/gun"
-    ]
+    ],
+    "rootdb": "dev/xxxx"
   },
   "ipfsConfig": {
     "ipfs_URL": "https://ipfs.infura.io/ipfs/",
