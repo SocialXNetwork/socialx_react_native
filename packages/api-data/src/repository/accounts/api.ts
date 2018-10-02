@@ -13,42 +13,52 @@ import {
 import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
-	changePassword: (changePasswordInput: IChangePasswordInput): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.changePassword.validate(
-					changePasswordInput,
-					{
-						stripUnknown: true,
-					},
-				);
-				setters.changePassword(
-					context,
-					validatedInput as IChangePasswordInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
-	createAccount: (createAccountInput: ICreateAccountInput): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.createAccountInput.validate(
-					createAccountInput,
-					{
-						stripUnknown: true,
-					},
-				);
-				setters.createAccount(
-					context,
-					validatedInput as ICreateAccountInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
+	changePassword: async (
+		changePasswordInput: IChangePasswordInput,
+	): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.changePassword.validate(
+				changePasswordInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.changePassword(
+				context,
+				validatedInput as IChangePasswordInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	createAccount: async (
+		createAccountInput: ICreateAccountInput,
+	): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.createAccountInput.validate(
+				createAccountInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.createAccount(
+				context,
+				validatedInput as ICreateAccountInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
 	getIsAccountLoggedIn: (): Promise<{ loggedIn: boolean }> =>
 		new Promise((resolve, reject) => {
 			getters.getIsAccountLoggedIn(context, resolveCallback(resolve, reject));
@@ -61,26 +71,29 @@ export default (context: IContext) => ({
 		new Promise((resolve, reject) => {
 			setters.logout(context, resolveCallback(resolve, reject));
 		}),
-	recoverAccount: (
+	recoverAccount: async (
 		recoverAccountInput: IRecoverAccountInput,
-	): Promise<{ hint: string }> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.changePassword.validate(
-					recoverAccountInput,
-					{
-						stripUnknown: true,
-					},
-				);
-				setters.recoverAccount(
-					context,
-					validatedInput as IRecoverAccountInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
+	): Promise<{ hint: string }> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.recoverAccountInput.validate(
+				recoverAccountInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<{ hint: string }>((resolve, reject) => {
+			setters.recoverAccount(
+				context,
+				validatedInput as IRecoverAccountInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
 	trustAccount: (): Promise<null> =>
 		new Promise((resolve, reject) => {
 			setters.logout(context, resolveCallback(resolve, reject));

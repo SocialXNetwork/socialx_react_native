@@ -53,7 +53,7 @@ export const getCurrentProfile = (
 			const { friends, username, ...profileRest } = profile;
 
 			const cleanedProfile = cleanGunMetaFromObject(profileRest);
-			const friendsData = friendsToArray(friends);
+			const friendsData = friendsToArray(friends) || [];
 			const profileReturnData = {
 				friends: friendsData,
 				...cleanedProfile,

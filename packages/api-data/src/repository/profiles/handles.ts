@@ -28,3 +28,28 @@ export const profileFriendsByUsername = (
 		.get(username)
 		.get(TABLE_ENUMS.FRIENDS);
 };
+
+export const currentProfileFriendship = (
+	context: IContext,
+	friendshipId: string,
+) => {
+	const { gun, account } = context;
+	return gun
+		.get(TABLES.PROFILES)
+		.get(account.is.alias)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(friendshipId);
+};
+
+export const userProfileFriendship = (
+	context: IContext,
+	username: string,
+	friendshipId: string,
+) => {
+	const { gun } = context;
+	return gun
+		.get(TABLES.PROFILES)
+		.get(username)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(friendshipId);
+};
