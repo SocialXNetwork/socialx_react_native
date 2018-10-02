@@ -1,6 +1,7 @@
 /**
  * TODO list:
- * Add the required loading/refreshing props
+ * 1. Props data: refreshingFeed, loadingMorePosts, loadingFeed
+ * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
  */
 
 import * as React from 'react';

@@ -1,7 +1,7 @@
 /**
  * TODO list:
- * 1. Props data: currentUser, visitedUser, refreshingProfile, loadingProfile
- * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos, getText, postComment, blockUser, reportProblem
+ * 1. Props data: refreshingProfile, loadingProfile
+ * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos, postComment, blockUser, reportProblem
  */
 
 import * as React from 'react';

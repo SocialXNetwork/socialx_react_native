@@ -40,13 +40,11 @@ const onGoBackHandler = (navigation: any) => {
 const Screen: React.SFC<ISettingsScreenProps> = ({
 	currentUser,
 	updateUserProfile,
-	settingsLoading,
 	logout,
 	navigation,
 	getText,
 }) => (
 	<SettingsScreenView
-		isLoading={settingsLoading}
 		aboutMeText={currentUser.aboutMeText}
 		firstName={currentUser.fullName.split(' ')[0]}
 		lastName={currentUser.fullName.split(' ')[1]}

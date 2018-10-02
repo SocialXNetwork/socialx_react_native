@@ -1,7 +1,6 @@
 /**
  * TODO list:
  * 1. Data props: iOSContent, iOSOptions, androidContent, androidOptions, socx, referrals, code, url
- * 2. Action props:
  */
 
 import * as React from 'react';
