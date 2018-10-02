@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@socialx/commons": "^0.0.1",
-    "gun": "^0.9.99995",
+    "gun": "latest",
     "utility-types-fixme-todo": "latest",
     "yup": "^0.26.6"
   },
