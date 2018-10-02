@@ -98,6 +98,10 @@ export interface IGunInstance {
 		data: IGunInstance | object,
 		callback?: (data: IGunSetterCallback) => void,
 	) => void;
+	erase: (
+		path: string,
+		callback?: (data: IGunSetterCallback) => void,
+	) => IGunInstance;
 
 	// subInstance api
 	user: (pub?: string) => IGunAccountInstance;

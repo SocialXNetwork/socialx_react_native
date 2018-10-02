@@ -22,7 +22,7 @@ const testAccount = { is: { pub: 'bleep', alias: 'blahblah' } };
 // * Public key does not exist! (comes through as the error from the reject/catch)
 //
 // https://github.com/amark/gun/issues/579 seems to be very relevant
-describe.skip('profiles api', () => {
+describe('profiles api', () => {
 	beforeEach(() => {
 		if (mockApi) {
 			throw new Error('mockApi is already defined');
@@ -31,13 +31,13 @@ describe.skip('profiles api', () => {
 		mockApi = dataApiFactory(testAccount);
 	});
 
-	// afterEach(async () => {
-	// 	if (!mockApi) {
-	// 		throw new Error('mockApi is not defined');
-	// 	}
-	// 	await mockApi.resetAllDatabases();
-	// 	mockApi = null;
-	// });
+	afterEach(async () => {
+		if (!mockApi) {
+			throw new Error('mockApi is not defined');
+		}
+		await mockApi.resetAllDatabase();
+		mockApi = null;
+	});
 
 	test('create profile', async () => {
 		try {
@@ -51,26 +51,28 @@ describe.skip('profiles api', () => {
 			const { username, ...profileData } = testProfile;
 			const profileUnderTest = { ...profileData, friends: [] };
 
-
 			expect(currentProfile).toEqual(profileUnderTest);
 		} catch (e) {
 			expect(e).toBe(undefined);
 		}
 	});
 
-	test.skip('get profile by username', async () => {
+	test('get profile by username', async () => {
 		try {
 			if (!mockApi) {
 				throw new Error('mockApi is not defined');
 			}
-			// await mockApi.profiles.createProfile(testProfile);
-			const currentProfile = await mockApi.profiles.getCurrentProfile();
+			// Deconstruct because username is not in the returned object, but is required
+			// in the getter parameters
+			const { username, ...profileData } = testProfile;
 
-			// Deconstruct because username is not in the returned object
-			// const { username, ...profileData } = testProfile;
-			// const profileUnderTest = { ...profileData, friends: [] };
-      console.log('new currentProfile', currentProfile);
-			expect(currentProfile).toEqual(null);
+			await mockApi.profiles.createProfile(testProfile);
+			const userProfile = await mockApi.profiles.getProfileByUsername({
+				username,
+			});
+
+			const profileUnderTest = { ...profileData, friends: [] };
+			expect(userProfile).toEqual(profileUnderTest);
 		} catch (e) {
 			expect(e).toBe(undefined);
 		}
