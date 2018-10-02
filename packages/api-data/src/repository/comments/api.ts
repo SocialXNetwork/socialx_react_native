@@ -73,7 +73,7 @@ export default (context: IContext) => ({
 				);
 				setters.unlikeComment(
 					context,
-					unlikeCommentInput,
+					validatedInput as IUnlikeCommentInput,
 					resolveCallback(resolve, reject),
 				);
 			} catch (e) {

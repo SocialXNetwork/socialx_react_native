@@ -24,7 +24,7 @@ export const createProfile = (
 				return callback('failed, error => ' + profileCallback.err);
 			}
 
-			callback(null);
+			return callback(null);
 		});
 };
 
