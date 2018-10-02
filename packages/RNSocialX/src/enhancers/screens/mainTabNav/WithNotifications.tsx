@@ -1,7 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: notifications, loading, refreshing
- * 2. Props actions: loadNotifications, checkNotification, acceptFriendRequest, declineFriendRequest, hideConfirm,
+ * 1. Only FRIEND_REQUEST and FRIEND_REQUEST_RESPONSE are implemented right now
  */
 
 import * as React from 'react';
@@ -12,8 +11,10 @@ import {
 	INavigationParamsActions,
 	ITranslatedProps,
 } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 
 const mock: IWithNotificationsEnhancedProps = {
 	data: {
@@ -52,7 +53,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				type: NOTIFICATION_TYPES.FRIEND_REQUEST,
 				avatarURL: 'https://placeimg.com/151/151/people',
 				fullName: 'Teresa Lamb',
-				// userName: 'terlamb',
+				userName: 'terlamb',
 			},
 			{
 				requestId: '981326538',
@@ -60,7 +61,6 @@ const mock: IWithNotificationsEnhancedProps = {
 				avatarURL: 'https://placeimg.com/160/160/people',
 				fullName: 'Teresa Lamb',
 				userName: 'terlamb',
-				text: 'Friend request accepted.',
 			},
 			{
 				requestId: 'a24362',
@@ -179,14 +179,34 @@ export class WithNotifications extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithNotificationsData>
-						{({ notifications }) => {
-							return this.props.children({
-								data: { ...mock.data },
-								actions: { ...mock.actions, getText: i18nProps.getText },
-							});
-						}}
-					</WithNotificationsData>
+					<WithProfiles>
+						{({ profiles }) => (
+							<WithNotificationsData>
+								{({ notifications }) => {
+									return this.props.children({
+										data: {
+											...mock.data,
+											notifications: notifications.map((notification) => {
+												const profile = profiles.find(
+													(prof) => prof.pub === notification.from.pub,
+												);
+
+												return {
+													requestId: notification.notificationId,
+													type: notification.type,
+													fullName: profile!.fullName,
+													userName: notification.from.alias,
+													avatarURL: profile!.avatar,
+													timestamp: new Date(notification.timestamp * 1000),
+												};
+											}),
+										},
+										actions: { ...mock.actions, getText: i18nProps.getText },
+									});
+								}}
+							</WithNotificationsData>
+						)}
+					</WithProfiles>
 				)}
 			</WithI18n>
 		);
