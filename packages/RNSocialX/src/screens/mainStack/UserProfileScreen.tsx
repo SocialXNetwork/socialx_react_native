@@ -6,8 +6,8 @@
 
 import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import { Alert, Animated, Dimensions, View } from 'react-native';
-import { AnimatedValue, NavigationScreenProp } from 'react-navigation';
+import { Alert, Animated, Dimensions } from 'react-native';
+import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 // import {ipfsConfig as base} from 'configuration';
 import uuidv4 from 'uuid/v4';
@@ -19,15 +19,11 @@ import {
 } from '../../enhancers/screens';
 
 import { PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
-import { IMediaProps } from '../../types';
+import { IMediaProps, INavigationProps } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
-
-interface INavigationProps {
-	navigation: NavigationScreenProp<any>;
-}
 
 interface IUserProfileScreenState {
 	gridMediaProvider: DataProvider;

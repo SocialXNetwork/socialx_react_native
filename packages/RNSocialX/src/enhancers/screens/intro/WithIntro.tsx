@@ -1,16 +1,17 @@
-/**
- * TODO list:
- * 1. Props actions: navigateToMainScreen
- */
-
 import * as React from 'react';
+import { NavigationScreenProp } from 'react-navigation';
+
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { resetNavigationToRoute } from '../../helpers';
 
 const mock: IWithIntroEnhancedProps = {
 	data: {},
 	actions: {
-		navigateToMainScreen: () => {
+		resetNavigationToRoute: (
+			screenName: string,
+			navigation: NavigationScreenProp<any>,
+		) => {
 			/**/
 		},
 		// This is now implemented with the WithI18n connector enhancer
@@ -21,7 +22,10 @@ const mock: IWithIntroEnhancedProps = {
 export interface IWithIntroEnhancedData {}
 
 export interface IWithIntroEnhancedActions extends ITranslatedProps {
-	navigateToMainScreen: () => void;
+	resetNavigationToRoute: (
+		screenName: string,
+		navigation: NavigationScreenProp<any>,
+	) => void;
 }
 
 interface IWithIntroEnhancedProps {
@@ -46,7 +50,11 @@ export class WithIntro extends React.Component<
 				{(i18nProps) =>
 					children({
 						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+						actions: {
+							...mock.actions,
+							getText: i18nProps.getText,
+							resetNavigationToRoute,
+						},
 					})
 				}
 			</WithI18n>

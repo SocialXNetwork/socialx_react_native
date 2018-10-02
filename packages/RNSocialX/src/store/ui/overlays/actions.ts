@@ -6,11 +6,14 @@ import {
 	IHideConfirmationAction,
 	IHideMessageAction,
 	IHideModalAction,
+	IHideOptionsMenuAction,
 	IMessage,
 	IModal,
+	IOptionsMenu,
 	IShowConfirmationAction,
 	IShowMessageAction,
 	IShowModalAction,
+	IShowOptionsMenuAction,
 } from './Types';
 
 const showModalAction: ActionCreator<IShowModalAction> = (modal: IModal) => ({
@@ -110,6 +113,41 @@ export const hideMessage = (): IThunk => async (
 ) => {
 	try {
 		dispatch(hideMessageAction());
+	} catch (e) {
+		/**/
+	}
+};
+
+const showOptionsMenuAction: ActionCreator<IShowOptionsMenuAction> = (
+	optionsMenu: IOptionsMenu,
+) => ({
+	type: ActionTypes.SHOW_OPTIONS_MENU,
+	payload: optionsMenu,
+});
+
+export const showOptionsMenu = (optionsMenu: IOptionsMenu): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(showOptionsMenuAction(optionsMenu));
+	} catch (e) {
+		/**/
+	}
+};
+
+const hideOptionsMenuAction: ActionCreator<IHideOptionsMenuAction> = () => ({
+	type: ActionTypes.HIDE_OPTIONS_MENU,
+});
+
+export const hideOptionsMenu = (): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(hideOptionsMenuAction());
 	} catch (e) {
 		/**/
 	}

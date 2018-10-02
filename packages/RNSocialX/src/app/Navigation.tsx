@@ -13,6 +13,7 @@ import { Root } from 'native-base';
 import {
 	ActivityIndicatorModal,
 	ConfirmationModal,
+	DotsMenuModal,
 	NavigationTabBar,
 	OfflineOverlayModal,
 } from '../components';
@@ -289,6 +290,15 @@ const Navigation = () => (
 															console.log('declined');
 															overlayProps.hideConfirmation();
 														}}
+													/>
+													<DotsMenuModal
+														visible={!!overlayProps.optionsMenu}
+														items={
+															(overlayProps.optionsMenu &&
+																overlayProps.optionsMenu.items) ||
+															[]
+														}
+														onBackdropPress={overlayProps.hideOptionsMenu}
 													/>
 												</React.Fragment>
 											)}

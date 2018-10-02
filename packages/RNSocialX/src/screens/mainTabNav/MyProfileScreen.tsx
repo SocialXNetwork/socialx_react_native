@@ -49,7 +49,7 @@ class Screen extends React.Component<
 	}
 
 	public render() {
-		const { currentUser, refreshingUser, loadingUser, getText } = this.props;
+		const { currentUser, getText } = this.props;
 		const { gridMediaProvider } = this.state;
 		const {
 			numberOfLikes,
@@ -65,7 +65,6 @@ class Screen extends React.Component<
 
 		return (
 			<MyProfileScreenView
-				isLoading={loadingUser}
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
@@ -75,8 +74,6 @@ class Screen extends React.Component<
 				userName={userName}
 				aboutMeText={aboutMeText}
 				loadMorePhotosHandler={this.loadMorePhotosHandler}
-				onRefresh={this.onRefresHandler}
-				refreshing={refreshingUser}
 				gridMediaProvider={gridMediaProvider}
 				hasPhotos={mediaObjects.length > 0}
 				onViewMediaFullScreen={this.onPhotoPressHandler}
@@ -92,7 +89,7 @@ class Screen extends React.Component<
 	}
 
 	private getDotsModalItems = () => {
-		const { navigation, getText, logout } = this.props;
+		const { navigation, getText, logout, resetNavigationToRoute } = this.props;
 		return [
 			{
 				label: getText('my.profile.screen.menu.profile.analytics'),
@@ -112,7 +109,10 @@ class Screen extends React.Component<
 			{
 				label: getText('my.profile.screen.menu.logout'),
 				icon: 'ios-log-out',
-				actionHandler: () => logout(),
+				actionHandler: () => {
+					logout();
+					resetNavigationToRoute('PreAuthScreen', navigation);
+				},
 			},
 		];
 	};
@@ -133,10 +133,7 @@ class Screen extends React.Component<
 			this.setState({
 				gridMediaProvider: gridMediaProvider.cloneWithRows(headerElement),
 			});
-		} else if (
-			this.lastLoadedPhotoIndex < mediaObjects.length &&
-			!this.props.refreshingUser
-		) {
+		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia =
@@ -155,13 +152,6 @@ class Screen extends React.Component<
 				gridMediaProvider: gridMediaProvider.cloneWithRows(allMedia),
 			});
 			this.lastLoadedPhotoIndex = allMedia.length - 1;
-		}
-	};
-
-	private onRefresHandler = () => {
-		const { currentUser, refreshUser, refreshingUser } = this.props;
-		if (!refreshingUser) {
-			refreshUser(currentUser.userId);
 		}
 	};
 

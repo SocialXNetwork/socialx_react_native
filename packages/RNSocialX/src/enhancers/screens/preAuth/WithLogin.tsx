@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
+ * 1. LATER - @Jake, @Serkan, decide what will be used for login: userName, email, phonenumber?
  */
 
 import * as React from 'react';
