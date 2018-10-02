@@ -15,7 +15,6 @@ storiesOf('Screens/myProfile', module)
 		const userName = text('userName', 'alexsirbu');
 		const email = text('email', 'alex@test.com');
 		const mining = boolean('mining', false);
-		const isLoading = boolean('isLoading', false);
 
 		const userAvatar =
 			'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
@@ -32,7 +31,6 @@ storiesOf('Screens/myProfile', module)
 				userName={userName}
 				email={email}
 				miningEnabled={mining}
-				isLoading={isLoading}
 				avatarURL={userAvatar}
 			/>
 		);

@@ -1,7 +1,7 @@
 /**
  * TODO list:
- * 1. Data props: settingsLoading
- * 2. Action props: updateUserProfile, logout
+ * 1. Action props: updateUserProfile, logout
+ * 1.1 @Serkan: for logout check how can we include resetNavigationToRoute from helpers? Or do it as in WithMyProfile?
  */
 
 import * as React from 'react';
@@ -9,12 +9,12 @@ import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithSettingsEnhancedProps = {
 	data: {
 		currentUser,
-		settingsLoading: false,
 	},
 	actions: {
 		updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => {
@@ -37,7 +37,6 @@ export interface ISaveChangesParams {
 
 export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;
-	settingsLoading: boolean;
 }
 
 export interface IWithSettingsEnhancedActions extends ITranslatedProps {
@@ -67,17 +66,25 @@ export class WithSettings extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithCurrentUser>
-						{(currentUserProps) =>
-							this.props.children({
-								data: {
-									...mock.data,
-									currentUser: currentUserProps.currentUser!,
-								},
-								actions: { ...mock.actions, getText: i18nProps.getText },
-							})
-						}
-					</WithCurrentUser>
+					<WithAccounts>
+						{(accountsProps) => (
+							<WithCurrentUser>
+								{(currentUserProps) =>
+									this.props.children({
+										data: {
+											...mock.data,
+											currentUser: currentUserProps.currentUser!,
+										},
+										actions: {
+											...mock.actions,
+											getText: i18nProps.getText,
+											logout: accountsProps.logout,
+										},
+									})
+								}
+							</WithCurrentUser>
+						)}
+					</WithAccounts>
 				)}
 			</WithI18n>
 		);
