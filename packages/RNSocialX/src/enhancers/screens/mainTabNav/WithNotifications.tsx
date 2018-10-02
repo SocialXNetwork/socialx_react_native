@@ -1,6 +1,8 @@
 /**
  * TODO list:
- * 1. Only FRIEND_REQUEST and FRIEND_REQUEST_RESPONSE are implemented right now
+ * 1. Props actions: loadNotifications, checkNotification, acceptFriendRequest, declineFriendRequest, hideConfirm,
+ * 2. LATER - Props data: loading, refreshing, @Serkan: check if still needed?
+ * 3. OBS: Only FRIEND_REQUEST and FRIEND_REQUEST_RESPONSE are implemented right now
  */
 
 import * as React from 'react';
