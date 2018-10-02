@@ -46,6 +46,20 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.SHOW_OPTIONS_MENU: {
+			return {
+				...state,
+				optionsMenu: action.payload,
+			};
+		}
+
+		case ActionTypes.HIDE_OPTIONS_MENU: {
+			return {
+				...state,
+				optionsMenu: null,
+			};
+		}
+
 		default: {
 			assertNever(action);
 			return state;

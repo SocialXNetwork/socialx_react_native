@@ -2,7 +2,8 @@ import * as React from 'react';
 
 import { WithUserFeed } from '../../../enhancers/screens';
 import { FEED_TYPES } from '../../../environment/consts';
-import { INavigationProps, Screen } from './UserFeedScreen';
+import { INavigationProps } from '../../../types';
+import { Screen } from './UserFeedScreen';
 
 export const FriendsUserFeed = ({ navigation }: INavigationProps) => (
 	<WithUserFeed>

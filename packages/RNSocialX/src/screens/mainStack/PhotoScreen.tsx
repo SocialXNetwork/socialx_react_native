@@ -54,7 +54,6 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	public render() {
 		const {
 			currentUserAvatarURL,
-			loading,
 			marginBottom,
 			navigation,
 			getText,
@@ -73,7 +72,6 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 					this.addedFriends = addedFriends;
 					return (
 						<PhotoScreenView
-							isLoading={loading}
 							showTagFriendsModal={showAddFriendsModal}
 							avatarURL={currentUserAvatarURL}
 							mediaObjects={mediaObjects.map((mediaObject) => mediaObject.path)}

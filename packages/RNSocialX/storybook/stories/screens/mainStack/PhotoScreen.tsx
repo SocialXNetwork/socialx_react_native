@@ -40,7 +40,6 @@ storiesOf('Screens/mainStack', module)
 		];
 		const locationEnabled = boolean('locationEnabled', false);
 		const tagFriends = boolean('tagFriends', false);
-		const isLoading = boolean('isLoading', false);
 		const location = text('location', 'Timisoara');
 		const shareText = text('shareText', 'Lorem ipsum dolor sit amet.');
 
@@ -62,7 +61,6 @@ storiesOf('Screens/mainStack', module)
 				onAddMedia={action('onAddMedia')}
 				sendPost={action('sendPost')}
 				onClose={action('onClose')}
-				isLoading={isLoading}
 			/>
 		);
 	});

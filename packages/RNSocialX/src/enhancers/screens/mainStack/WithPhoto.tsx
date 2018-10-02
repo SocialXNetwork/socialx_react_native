@@ -1,12 +1,11 @@
 /**
  * TODO list:
- * 1. Props data: loading, marginBottom (can be provided via KeyboardContext in consts.ts)
- * 2. Props actions: createPost, getText
+ * 1. Props actions: createPost (should also upload media files)
  */
 
 import * as React from 'react';
 
-import { SCREENS } from '../../../environment/consts';
+import { KeyboardContext, SCREENS } from '../../../environment/consts';
 import {
 	IFriendsSearchResult,
 	IResizeProps,
@@ -28,7 +27,6 @@ const mock: IWithPhotoEnhancedProps = {
 	data: {
 		marginBottom: 0,
 		currentUserAvatarURL: 'https://placeimg.com/200/200/people',
-		loading: false,
 		mediaObjects: [],
 	},
 	actions: {
@@ -41,7 +39,6 @@ const mock: IWithPhotoEnhancedProps = {
 
 export interface IWithPhotoEnhancedData extends IResizeProps {
 	currentUserAvatarURL?: string;
-	loading: boolean;
 	mediaObjects: IWallPostPhotoOptimized[];
 }
 
@@ -68,25 +65,34 @@ export class WithPhoto extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithNavigationParams>
-						{(navigationParamsProps) => (
-							<WithCurrentUser>
-								{(currentUserProps) =>
-									this.props.children({
-										data: {
-											...mock.data,
-											currentUserAvatarURL: currentUserProps.currentUser!
-												.avatarURL,
-											mediaObjects:
-												navigationParamsProps.navigationParams[SCREENS.Photo]
-													.mediaObjects,
-										},
-										actions: { ...mock.actions, getText: i18nProps.getText },
-									})
-								}
-							</WithCurrentUser>
+					<KeyboardContext.Consumer>
+						{(keyboardProps) => (
+							<WithNavigationParams>
+								{(navigationParamsProps) => (
+									<WithCurrentUser>
+										{(currentUserProps) =>
+											this.props.children({
+												data: {
+													...mock.data,
+													currentUserAvatarURL: currentUserProps.currentUser!
+														.avatarURL,
+													mediaObjects:
+														navigationParamsProps.navigationParams[
+															SCREENS.Photo
+														].mediaObjects,
+													marginBottom: keyboardProps.marginBottom,
+												},
+												actions: {
+													...mock.actions,
+													getText: i18nProps.getText,
+												},
+											})
+										}
+									</WithCurrentUser>
+								)}
+							</WithNavigationParams>
 						)}
-					</WithNavigationParams>
+					</KeyboardContext.Consumer>
 				)}
 			</WithI18n>
 		);

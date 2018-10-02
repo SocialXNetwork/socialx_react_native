@@ -9,23 +9,29 @@ import {
 	IWithIntroEnhancedData,
 	WithIntro,
 } from '../../enhancers/screens';
+import { INavigationProps } from '../../types';
 import { IntroScreenView } from './IntroScreen.view';
 
-type IIntroScreenProps = IWithIntroEnhancedData & IWithIntroEnhancedActions;
+type IIntroScreenProps = IWithIntroEnhancedData &
+	IWithIntroEnhancedActions &
+	INavigationProps;
 
 const Screen: React.SFC<IIntroScreenProps> = ({
-	navigateToMainScreen,
+	resetNavigationToRoute,
+	navigation,
 	getText,
 }) => (
 	<IntroScreenView
-		doneButtonHandler={navigateToMainScreen}
-		skipButtonHandler={navigateToMainScreen}
+		doneButtonHandler={() => resetNavigationToRoute('MainScreen', navigation)}
+		skipButtonHandler={() => resetNavigationToRoute('MainScreen', navigation)}
 		getText={getText}
 	/>
 );
 
-export const IntroScreen = () => (
+export const IntroScreen = ({ navigation }: INavigationProps) => (
 	<WithIntro>
-		{({ data, actions }) => <Screen {...data} {...actions} />}
+		{({ data, actions }) => (
+			<Screen navigation={navigation} {...data} {...actions} />
+		)}
 	</WithIntro>
 );

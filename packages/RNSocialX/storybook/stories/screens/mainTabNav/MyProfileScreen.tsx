@@ -44,16 +44,13 @@ class MyProfileScreenViewStory extends React.Component {
 				getText={getTextMock}
 				onViewProfilePhoto={action('onViewProfilePhoto')}
 				aboutMeText={aboutMeText}
-				refreshing={refreshing}
 				gridMediaProvider={this.state.gridMediaProvider}
 				loadMorePhotosHandler={this.loadMorePhotosHandler}
-				onRefresh={action('onRefresh')}
 				onViewMediaFullScreen={action('onViewMediaFullScreen')}
 				onEditProfile={action('onEditProfile')}
 				onSharePress={action('onSharePress')}
 				onShowDotsModal={action('onShowDotsModal')}
 				hasPhotos={hasPhotos}
-				isLoading={isLoading}
 			/>
 		);
 	}

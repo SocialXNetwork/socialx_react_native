@@ -1,7 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: applicationInMaintenanceMode
- * 2. Props actions: resetNavigationToRoute (check old repo. Internals/backend/actions/navigation.ts)
+ * 1. LATER - data props: applicationInMaintenanceMode
  */
 
 import * as React from 'react';
@@ -10,6 +9,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { currentUser } from '../../../mocks';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { resetNavigationToRoute } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithLaunchEnhancedProps = {
@@ -68,7 +68,11 @@ export class WithLaunch extends React.Component<
 									...mock.data,
 									currentUser: currentUserProps.currentUser,
 								},
-								actions: { ...mock.actions, getText: i18nProps.getText },
+								actions: {
+									...mock.actions,
+									getText: i18nProps.getText,
+									resetNavigationToRoute,
+								},
 							})
 						}
 					</WithCurrentUser>
