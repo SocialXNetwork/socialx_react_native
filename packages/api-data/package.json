@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch --silent"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
