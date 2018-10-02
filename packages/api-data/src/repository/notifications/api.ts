@@ -14,42 +14,52 @@ import { resolveCallback } from '../../utils/helpers';
 export default (context: IContext) => ({
 	// todo @jake I think we should separate the input type from the data type
 	// because the data can always contain auto generated things that don't exist on the input itself
-	createNotification: (
+	createNotification: async (
 		createNotificationInput: ICreateNotification,
-	): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.createNotification.validate(
-					createNotificationInput,
-					{ stripUnknown: true },
-				);
-				setters.createNotification(
-					context,
-					validatedInput as ICreateNotification,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(e);
-			}
-		}),
-	removeNotification: (
+	): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.createNotification.validate(
+				createNotificationInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.createNotification(
+				context,
+				validatedInput as ICreateNotification,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	removeNotification: async (
 		removeNotifcationInput: IRemoveNotificationInput,
-	): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.removeNotification.validate(
-					removeNotification,
-					{ stripUnknown: true },
-				);
-				setters.removeNotification(
-					context,
-					validatedInput as IRemoveNotificationInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(e);
-			}
-		}),
+	): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.removeNotification.validate(
+				removeNotifcationInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.removeNotification(
+				context,
+				validatedInput as IRemoveNotificationInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
 	getNotifications: (): Promise<INotificationsReturnData[]> =>
 		new Promise((resolve, reject) => {
 			getters.getNotifications(context, resolveCallback(resolve, reject));

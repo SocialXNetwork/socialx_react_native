@@ -16,6 +16,7 @@
     "@socialx/commons": "^0.0.1",
     "gun": "latest",
     "utility-types-fixme-todo": "latest",
+    "uuid": "^3.3.2",
     "yup": "^0.26.6"
   },
   "devDependencies": {
