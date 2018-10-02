@@ -1,5 +1,7 @@
-import { IContext, IGunCallback } from '../../types';
+import { IContext, IGunCallback, TABLES } from '../../types';
 import * as profileHandles from './handles';
+
+import uuidv4 from 'uuid/v4';
 
 import { getContextMeta } from '../../utils/helpers';
 import {
@@ -56,27 +58,25 @@ export const addFriend = (
 		relation: FRIEND_TYPES.PENDING,
 	});
 
+	const relationshipId = uuidv4();
+
 	profileHandles
-		.currentProfileFriends(context)
-		.set(setFriendData(username), (addFriendCallback) => {
+		.currentProfileFriendship(context, relationshipId)
+		.put(setFriendData(username), (addFriendCallback) => {
 			if (addFriendCallback.err) {
 				return callback('failed, error => ' + addFriendCallback.err);
 			}
 
-			const mutualRelationId = addFriendCallback['#'];
 			// emulate a .set to achive mutual id, this will make accepting
 			// the friendship 2 operations less
-			profileHandles.profileFriendsByUsername(context, username).put(
-				{
-					[mutualRelationId]: setFriendData(owner),
-				},
-				(targetAddFriendCallback) => {
+			profileHandles
+				.userProfileFriendship(context, username, relationshipId)
+				.put(setFriendData(owner), (targetAddFriendCallback) => {
 					if (targetAddFriendCallback.err) {
 						return callback('failed, error => ' + targetAddFriendCallback.err);
 					}
 					return callback(null);
-				},
-			);
+				});
 		});
 };
 export const removeFriend = (
@@ -111,18 +111,17 @@ export const acceptFriend = (
 	callback: IGunCallback<null>,
 ) => {
 	profileHandles
-		.currentProfileFriends(context)
-		.get(friendshipId)
-		.put({ relation: FRIEND_TYPES.MUTUAL }, (acceptFriendCallback) => {
-			if (acceptFriendCallback.err) {
-				return callback('failed, error => ' + acceptFriendCallback.err);
+		.currentProfileFriendship(context, friendshipId)
+		.put({ relation: FRIEND_TYPES.MUTUAL }, (targetAcceptCallback) => {
+			if (targetAcceptCallback.err) {
+				return callback('failed, error => ' + targetAcceptCallback.err);
 			}
+			// ! this is not working? its like the target is an empty object
 			profileHandles
-				.profileFriendsByUsername(context, username)
-				.get(friendshipId)
-				.put({ relation: FRIEND_TYPES.MUTUAL }, (targetAcceptCallback) => {
-					if (targetAcceptCallback.err) {
-						return callback('failed, error => ' + targetAcceptCallback.err);
+				.userProfileFriendship(context, username, friendshipId)
+				.put({ relation: FRIEND_TYPES.MUTUAL }, (acceptFriendCallback) => {
+					if (acceptFriendCallback.err) {
+						return callback('failed, error => ' + acceptFriendCallback.err);
 					}
 					return callback(null);
 				});

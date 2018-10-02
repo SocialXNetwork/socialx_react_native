@@ -6,78 +6,94 @@ import { resolveCallback } from '../../utils/helpers';
 import { IRemoveCommentInput, IUnlikeCommentInput } from './types';
 
 export default (context: IContext) => ({
-	createComment: ({
-		text,
-		postId,
-	}: {
+	createComment: async (createCommentInput: {
 		text: string;
 		postId: string;
-	}): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.createComment.validate(
-					{ text, postId },
-					{
-						stripUnknown: true,
-					},
-				);
-				setters.createComment(
-					context,
-					validatedInput as { text: string; postId: string },
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
-	likeComment: ({ commentId }: { commentId: string }): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.likeComment.validate(
-					{ commentId },
-					{
-						stripUnknown: true,
-					},
-				);
-				setters.likeComment(
-					context,
-					validatedInput as { commentId: string },
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(typeof e.errors === 'string' ? e.errors : e.errors.join());
-			}
-		}),
-	removeComment: (removeCommentInput: IRemoveCommentInput): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.removeComment.validate(
-					removeCommentInput,
-					{ stripUnknown: true },
-				);
-				setters.removeComment(
-					context,
-					validatedInput as IRemoveCommentInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(e);
-			}
-		}),
-	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput): Promise<null> =>
-		new Promise(async (resolve, reject) => {
-			try {
-				const validatedInput = await schemas.unlikeComment.validate(
-					unlikeCommentInput,
-					{ stripUnknown: true },
-				);
-				setters.unlikeComment(
-					context,
-					validatedInput as IUnlikeCommentInput,
-					resolveCallback(resolve, reject),
-				);
-			} catch (e) {
-				reject(e);
-			}
-		}),
+	}): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.createComment.validate(
+				createCommentInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.createComment(
+				context,
+				validatedInput as { text: string; postId: string },
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	likeComment: async (likeCommentInput: {
+		commentId: string;
+	}): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.likeComment.validate(likeCommentInput, {
+				stripUnknown: true,
+			});
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.likeComment(
+				context,
+				validatedInput as { commentId: string },
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	removeComment: async (
+		removeCommentInput: IRemoveCommentInput,
+	): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.removeComment.validate(
+				removeCommentInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.removeComment(
+				context,
+				validatedInput as IRemoveCommentInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	unlikeComment: async (
+		unlikeCommentInput: IUnlikeCommentInput,
+	): Promise<null> => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.unlikeComment.validate(
+				unlikeCommentInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.unlikeComment(
+				context,
+				validatedInput as IUnlikeCommentInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
 });
