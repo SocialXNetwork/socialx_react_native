@@ -180,8 +180,4 @@ export default (context: IContext) => ({
 				resolveCallback(resolve, reject),
 			);
 		}),
-	getAllProfiles: (): Promise<any> =>
-		new Promise((r, j) => {
-			context.gun.get('profiles').docLoad((data) => r(data));
-		}),
 });
