@@ -14,11 +14,17 @@ import {
 	showMessage,
 	showModal,
 } from '../../../store/ui/overlays';
+import {
+	hideOptionsMenu,
+	showOptionsMenu,
+} from '../../../store/ui/overlays/actions';
+import { IOptionsMenu } from '../../../store/ui/overlays/Types';
 
 interface IDataProps {
 	message: IMessage | null;
 	modal: IModal | null;
 	confirmation: IConfirmation | null;
+	optionsMenu: IOptionsMenu | null;
 }
 
 interface IActionProps {
@@ -28,6 +34,8 @@ interface IActionProps {
 	hideModal: () => void;
 	showConfirmation: (confirmation: IConfirmation) => void;
 	hideConfirmation: () => void;
+	showOptionsMenu: (optionsMenu: IOptionsMenu) => void;
+	hideOptionsMenu: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -58,10 +66,16 @@ const selectConfirmation = createSelector(
 	(confirmation) => confirmation,
 );
 
+const selectOptionsMenu = createSelector(
+	(state: IApplicationState) => state.ui.overlays.optionsMenu,
+	(optionsMenu) => optionsMenu,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	message: selectMessage(state),
 	modal: selectModal(state),
 	confirmation: selectConfirmation(state),
+	optionsMenu: selectOptionsMenu(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -82,6 +96,9 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 			}),
 		),
 	hideConfirmation: () => dispatch(hideConfirmation()),
+	showOptionsMenu: (optionsMenu: IOptionsMenu) =>
+		dispatch(showOptionsMenu(optionsMenu)),
+	hideOptionsMenu: () => dispatch(hideOptionsMenu),
 });
 
 export const WithOverlays: ConnectedComponentClass<

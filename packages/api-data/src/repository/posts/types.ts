@@ -33,7 +33,6 @@ export interface ICreatePostInput {
 	location?: string;
 	taggedFriends?: Array<{ fullName: string }>;
 	media?: IMedia[];
-	governanceVersion: boolean;
 	privatePost: boolean;
 }
 

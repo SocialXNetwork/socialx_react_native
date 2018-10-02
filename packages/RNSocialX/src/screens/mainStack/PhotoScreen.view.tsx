@@ -10,13 +10,11 @@ import {
 	HeaderButton,
 	MediaHorizontalScroller,
 	SharePostInput,
-	WithInlineLoader,
 } from '../../components';
-import { IWithLoaderProps } from '../../components/inlineLoader';
 import { IFriendsSearchResult, ITranslatedProps } from '../../types';
 import style, { customStyleProps } from './PhotoScreen.style';
 
-interface IPhotoScreenViewProps extends IWithLoaderProps, ITranslatedProps {
+interface IPhotoScreenViewProps extends ITranslatedProps {
 	avatarURL?: string;
 	mediaObjects: string[];
 	showTagFriendsModal: () => void;
@@ -122,11 +120,10 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 	onShareTextUpdate,
 	onAddMedia,
 	getText,
-	isLoading,
 	sendPost,
 	onClose,
 }) => (
-	<WithInlineLoader isLoading={isLoading}>
+	<React.Fragment>
 		{
 			<Header
 				title={getText('photo.screen.title')}
@@ -177,5 +174,5 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 				/>
 			</View>
 		</KeyboardAwareScrollView>
-	</WithInlineLoader>
+	</React.Fragment>
 );

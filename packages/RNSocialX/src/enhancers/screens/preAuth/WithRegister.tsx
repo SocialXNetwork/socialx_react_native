@@ -1,8 +1,10 @@
 /**
  * TODO list:
- * 1. Props data: showModalForSMSCode, resendingCode, smsCodeErrorMessage,
- * 2. Props actions: doRegister, resendSMSCode, validateSMSCode
- * 3. Take care of account recover data + we need to upload profile photo before createAccount
+ * 2. Props actions: doRegister
+ * 2.1  We need to upload profile photo before createAccount
+ * 3. LATER - data props: showModalForSMSCode, resendingCode, smsCodeErrorMessage (KEEP MOCK DATA FOR NOW!)
+ * 3. LATER - actions props: resendSMSCode, validateSMSCode (KEEP MOCK ACTIONS FOR NOW!)
+ * 4. LATER - take care of account recover data
  */
 
 import * as React from 'react';

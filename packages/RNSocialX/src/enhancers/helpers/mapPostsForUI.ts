@@ -35,7 +35,7 @@ export const mapPostsForUI = (
 					fullName: user!.fullName,
 					avatarURL: user!.avatarURL,
 				},
-				governanceVersion: post.governanceVersion,
+				governanceVersion: false,
 				// TODO: add this later when data is available
 				numberOfSuperLikes: 0,
 				numberOfComments: post.comments.length,

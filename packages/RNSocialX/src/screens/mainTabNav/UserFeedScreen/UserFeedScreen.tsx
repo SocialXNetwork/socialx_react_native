@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
-import { AnimatedValue, NavigationScreenProp } from 'react-navigation';
+import { AnimatedValue } from 'react-navigation';
 
 import {
 	IWithUserFeedEnhancedActions,
@@ -16,7 +16,11 @@ import {
 
 // import {ipfsConfig as base} from 'configuration';
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
-import { IMediaProps, IWallPostCardData } from '../../../types';
+import {
+	IMediaProps,
+	INavigationProps,
+	IWallPostCardData,
+} from '../../../types';
 import {
 	SHARE_SECTION_HEIGHT,
 	USER_PLACEHOLDER_AVATAR,
@@ -29,10 +33,6 @@ const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
 export interface IFeedProps {
 	shareSectionPlaceholder: string | null;
 	feedType: FEED_TYPES;
-}
-
-export interface INavigationProps {
-	navigation: NavigationScreenProp<any>;
 }
 
 interface IUserFeedScreenState {}
