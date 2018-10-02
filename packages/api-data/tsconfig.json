@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["esnext"],
+    "lib": ["esnext", "es2015"],
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
