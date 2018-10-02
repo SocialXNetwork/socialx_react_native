@@ -112,7 +112,7 @@ export default {
 	'events.list.item.start.at': 'Start at',
 	'notifications.friend.request.accept.failed': 'Friend request could not be accepted at this time. Try again later..',
 	'notifications.friend.request.decline.failed': 'Friend request could not be declined at this time. Try again later..',
-	'notifications.friend.request.accepted': '${args[0]} has ${args[1]} your friend request.',
+	'notifications.friend.request.accepted': 'Friend request accepted',
 	'notifications.empty.list': 'You have no notifications!',
 	'notifications.card.friend.request.title': 'Friend Request',
 	'media.info.title': 'Media Info',
