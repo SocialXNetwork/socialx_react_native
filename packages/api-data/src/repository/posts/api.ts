@@ -87,9 +87,11 @@ export default function(context: IContext) {
 						const posts =
 							paths &&
 							Promise.all(
-								paths.map((path: string) =>
-									this.getPostByPath({ postPath: path }),
-								),
+								paths
+									.filter((v) => v)
+									.map((path: string) =>
+										this.getPostByPath({ postPath: path }),
+									),
 							);
 						resolve(posts);
 					},

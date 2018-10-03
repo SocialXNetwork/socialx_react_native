@@ -6,25 +6,30 @@ import {
 } from '../types';
 
 export const datePathFromDate = (date: Date) =>
-	`${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
+	`${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
 
 export const convertGunSetToArray = <T = {}>(
 	args: IMetasCallback | IMetasTypeCallback<T> = {},
 ) => {
 	const { _: parentSoul, ...data } = args;
 	return Object.values(data || {}).map(
-		({ _: deepSoul, ...deepRest }: any) => deepRest,
+		({ _: deepSoul, ...deepRest }: any = {}) => deepRest,
 	);
 };
 
 export const convertGunSetToArrayWithKey = (args: any = {}) => {
 	const { _: parentSoul, ...data } = args;
-	return Object.entries(data || {}).map(
-		([k, v]): any => {
-			const { _: deepSoul, ...deepRest }: any = v;
-			return { ...deepRest, k };
-		},
-	) as any;
+	return Object.entries(data || {})
+		.map(
+			([k, v]): any => {
+				if (!k || typeof v !== 'object') {
+					return;
+				}
+				const { _: deepSoul, ...deepRest }: any = v;
+				return { ...deepRest, k };
+			},
+		)
+		.filter((v) => v !== undefined) as any;
 };
 
 export const getContextMeta = (context: IContext) => ({

@@ -1,4 +1,5 @@
 import Gun from 'gun/gun';
+import 'gun/lib/path';
 import 'gun/lib/store';
 import 'gun/sea';
 
@@ -12,7 +13,7 @@ import { api as notificationsApi } from '../repository/notifications';
 import { api as postsApi } from '../repository/posts';
 import { api as profilesApi } from '../repository/profiles';
 
-import { IContext, IGunAccountInstance, IGunInstance } from '../types';
+import { IContext, IGunAccountInstance, IGunInstance, TABLES } from '../types';
 
 interface IAccountMock {
 	is: {
@@ -110,7 +111,7 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		});
 
 	const resetAllDatabase: any = () =>
-		Promise.all(['profiles', 'posts', 'notifications'].map(resetDatabase));
+		Promise.all(Object.values(TABLES).map(resetDatabase));
 
 	return {
 		accounts,
@@ -119,5 +120,6 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		notifications,
 		posts,
 		profiles,
+		context,
 	};
 };
