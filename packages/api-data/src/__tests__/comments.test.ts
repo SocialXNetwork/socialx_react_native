@@ -13,22 +13,23 @@ const testComment = {
 };
 
 describe('comments api', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		jest.setTimeout(30 * 1000);
 		mockApi = dataApiFactory(getTestAccount());
+		await mockApi.profiles.createProfile(profile);
+		await mockApi.posts.createPost(post);
 	});
 
 	afterEach(async () => {
 		await mockApi.resetAllDatabase();
 	});
 
-	test.skip('creates a comment', async () => {
+	test('creates a comment', async () => {
 		try {
-			await mockApi.profiles.createProfile(profile);
-			await mockApi.posts.createPost(post);
-			// TODO: get post by username or path fails
-			// can't get post to get the post id
-			const postId = '12341234';
+			const newPost = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			const postId = newPost[0].postId;
 			await mockApi.comments.createComment({
 				postId,
 				...testComment,
@@ -52,8 +53,24 @@ describe('comments api', () => {
 		expect(error).toEqual('no post found by this id');
 	});
 
-	test('like a comment', async () => {
-		/**/
+	test.skip('like a comment', async () => {
+		try {
+			const newPost = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			const postId = newPost[0].postId;
+			await mockApi.comments.createComment({
+				postId,
+				...testComment,
+			});
+			const updatedPosts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			// NOTE: No comment was added
+			// console.log(JSON.stringify(updatedPosts, null, 2));
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
 	});
 
 	test('reject like comment', async () => {
@@ -68,8 +85,24 @@ describe('comments api', () => {
 		expect(error).toEqual('no comment found by this id');
 	});
 
-	test('unlike a comment', async () => {
-		/**/
+	test.skip('unlike a comment', async () => {
+		try {
+			const newPost = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			const postId = newPost[0].postId;
+			await mockApi.comments.createComment({
+				postId,
+				...testComment,
+			});
+			const updatedPosts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			// NOTE: No comment was added
+			// console.log(JSON.stringify(updatedPosts, null, 2));
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
 	});
 
 	test('reject unlike comment', async () => {

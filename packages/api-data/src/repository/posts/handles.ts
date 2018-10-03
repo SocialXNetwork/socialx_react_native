@@ -22,10 +22,7 @@ export const postByPath = (context: IContext, postPath: string) => {
 
 export const postsByDate = (context: IContext, datePath: string) => {
 	const { gun } = context;
-	return gun
-		.get(TABLES.POSTS)
-		.get(datePath)
-		.get(TABLE_ENUMS.PUBLIC);
+	return gun.path(`${TABLES.POSTS}.${datePath}.${TABLE_ENUMS.PUBLIC}`);
 };
 
 export const likesByPostPath = (context: IContext, postPath: string) => {

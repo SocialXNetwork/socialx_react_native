@@ -35,7 +35,9 @@ export const createPost = (
 
 	const { privatePost } = createPostInput;
 
-	const postId = uuidv4();
+	// The schema currently restricts ids to 32 in length and
+	// uuidv4 is 36
+	const postId = uuidv4().slice(0, 32);
 	const postPath = (privatePost ? privatePath : publicPath) + `.${postId}`;
 
 	// TODO: can we extract this as an external handle?
