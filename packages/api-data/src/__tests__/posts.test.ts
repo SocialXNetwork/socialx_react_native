@@ -4,32 +4,24 @@ import records from '../__testHelpers/records';
 
 const { getPost, getProfile, getTestAccount } = records;
 
-let mockApi: ReturnType<typeof dataApiFactory> | undefined;
+let mockApi: ReturnType<typeof dataApiFactory>;
 const profile = getProfile();
 
 describe('posts api', () => {
 	beforeEach(async () => {
-		if (mockApi) {
-			throw new Error('mockApi is already defined');
-		}
 		jest.setTimeout(30 * 1000);
 		mockApi = dataApiFactory(getTestAccount());
 		await mockApi.profiles.createProfile(profile);
 	});
 
 	afterEach(async () => {
-		if (!mockApi) {
-			throw new Error('mockApi is not defined');
+		if (mockApi) {
+			await mockApi.resetAllDatabase();
 		}
-		await mockApi.resetAllDatabase();
-		mockApi = undefined;
 	});
 
 	test('creates a post', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 		} catch (e) {
@@ -40,9 +32,6 @@ describe('posts api', () => {
 	test('reject create a post', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const post = getPost();
 			const { postText, ...incompleteData } = post;
 			await mockApi.posts.createPost({ ...incompleteData, postText: '' });
@@ -54,9 +43,6 @@ describe('posts api', () => {
 
 	test('gets a post by path', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 			const createdPost = await mockApi.posts.getPostByPath({
@@ -72,9 +58,6 @@ describe('posts api', () => {
 	test('reject get post by path', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 			await mockApi.posts.getPostByPath({
