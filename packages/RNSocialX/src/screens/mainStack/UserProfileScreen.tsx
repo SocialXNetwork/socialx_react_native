@@ -9,7 +9,6 @@ import * as React from 'react';
 import { Alert, Animated, Dimensions } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
-// import {ipfsConfig as base} from 'configuration';
 import uuidv4 from 'uuid/v4';
 
 import {
@@ -174,13 +173,18 @@ class Screen extends React.Component<
 		addFriend(visitedUser.userId);
 	};
 
-	private onMediaObjectPressHandler = (index: number, media: any) => {
+	private onMediaObjectPressHandler = (
+		index: number,
+		media: IMediaProps[],
+		postId: string,
+	) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.MediaViewer,
 			params: {
 				mediaObjects: media,
 				startIndex: index,
+				postId,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);

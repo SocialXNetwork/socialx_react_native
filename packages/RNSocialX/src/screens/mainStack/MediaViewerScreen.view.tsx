@@ -6,16 +6,11 @@
  */
 
 import * as React from 'react';
-import {
-	Platform,
-	SafeAreaView,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { SafeAreaView } from 'react-navigation';
 import {
 	CloseButton as CloseModal,
 	Header,
@@ -74,6 +69,9 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	carouselContainerOnLayout: (event: any) => void;
 	onExitFullScreen: () => void;
 	onClose: () => void;
+	onCommentPress: () => void;
+	onLikePress: () => void;
+	canReactOnPost: boolean;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
@@ -90,12 +88,15 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	closeMediaInfoOverlay,
 	onExitFullScreen,
 	onClose,
+	onCommentPress,
+	onLikePress,
+	canReactOnPost,
 }) => {
 	const currentMediaObject = mediaObjects[activeSlide];
 	const isPortrait = orientation === DeviceOrientations.Portrait;
 
 	return (
-		<SafeAreaView style={styles.safeView}>
+		<View style={styles.rootView}>
 			{isPortrait && <Header left={<CloseModal onClose={onClose} />} />}
 			<MediaInfoModal
 				visible={isInfoOverlayVisible}
@@ -107,70 +108,75 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				mediaURL={currentMediaObject.url}
 				getText={getText}
 			/>
-			<View
-				style={styles.carouselContainer}
-				onLayout={carouselContainerOnLayout}
-			>
-				<Carousel
-					data={mediaObjects}
-					renderItem={({
-						item,
-						index,
-					}: {
-						item: IMediaProps;
-						index: number;
-					}) => (
-						<MediaObjectViewer
-							type={item.type}
-							paused={index !== activeSlide}
-							uri={item.url}
-							style={[styles.carouselMediaObject, { width: viewport.width }]}
-							resizeMode={'contain'}
-							resizeToChangeAspectRatio={true}
-							canZoom={false}
-							getText={getText}
-							thumbOnly={false}
-						/>
-					)}
-					sliderWidth={viewport.width}
-					itemWidth={viewport.width}
-					firstItem={startIndex}
-					onSnapToItem={slideChanged}
-					{...Platform.select({
-						android: {
-							windowSize: 5,
-							initialNumToRender: 5,
-							// layout: 'stack',
-							// useScrollView: true,
-						},
-						ios: {
-							windowSize: 3,
-							initialNumToRender: 3,
-						},
-					})}
-				/>
-				<CloseButton
-					isPortrait={isPortrait}
-					onExitFullScreen={onExitFullScreen}
-				/>
-				<View style={styles.screenFooter} pointerEvents={'none'}>
-					<MediaInteractionButtons
-						mediaObjects={mediaObjects}
-						activeSlide={activeSlide}
-						getText={getText}
-					/>
-					<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
-				</View>
-				<TouchableOpacity
-					style={styles.infoButton}
-					onPress={showMediaInfoOverlay}
+			<SafeAreaView style={{ flex: 1 }}>
+				<View
+					style={styles.carouselContainer}
+					onLayout={carouselContainerOnLayout}
 				>
-					<Icon
-						name={'ios-information-circle-outline'}
-						style={styles.infoIcon}
+					<Carousel
+						data={mediaObjects}
+						renderItem={({
+							item,
+							index,
+						}: {
+							item: IMediaProps;
+							index: number;
+						}) => (
+							<MediaObjectViewer
+								type={item.type}
+								paused={index !== activeSlide}
+								uri={item.url}
+								style={[styles.carouselMediaObject, { width: viewport.width }]}
+								resizeMode={'contain'}
+								resizeToChangeAspectRatio={true}
+								canZoom={false}
+								getText={getText}
+								thumbOnly={false}
+							/>
+						)}
+						sliderWidth={viewport.width}
+						itemWidth={viewport.width}
+						firstItem={startIndex}
+						onSnapToItem={slideChanged}
+						{...Platform.select({
+							android: {
+								windowSize: 5,
+								initialNumToRender: 5,
+								// layout: 'stack',
+								// useScrollView: true,
+							},
+							ios: {
+								windowSize: 3,
+								initialNumToRender: 3,
+							},
+						})}
 					/>
-				</TouchableOpacity>
-			</View>
-		</SafeAreaView>
+					<CloseButton
+						isPortrait={isPortrait}
+						onExitFullScreen={onExitFullScreen}
+					/>
+					<View style={styles.screenFooter}>
+						<MediaInteractionButtons
+							mediaObjects={mediaObjects}
+							activeSlide={activeSlide}
+							getText={getText}
+							onCommentPress={onCommentPress}
+							onLikePress={onLikePress}
+							canReactOnPost={canReactOnPost}
+						/>
+						<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
+					</View>
+					<TouchableOpacity
+						style={styles.infoButton}
+						onPress={showMediaInfoOverlay}
+					>
+						<Icon
+							name={'ios-information-circle-outline'}
+							style={styles.infoIcon}
+						/>
+					</TouchableOpacity>
+				</View>
+			</SafeAreaView>
+		</View>
 	);
 };
