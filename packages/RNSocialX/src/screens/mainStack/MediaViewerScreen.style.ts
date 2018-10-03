@@ -4,12 +4,12 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 const INFO_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
 const styles: any = {
-	safeView: {
+	rootView: {
 		backgroundColor: Colors.midnight,
 		flex: 1,
 	},
 	carouselContainer: {
-		height: '100%',
+		flex: 1,
 		width: '100%',
 	},
 	carouselMediaObject: {

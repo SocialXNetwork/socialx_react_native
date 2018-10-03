@@ -168,6 +168,7 @@ export class Screen extends React.Component<
 	private onMediaObjectPressHandler = (
 		index: number,
 		medias: IMediaProps[],
+		postId: string,
 	) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
@@ -175,6 +176,7 @@ export class Screen extends React.Component<
 			params: {
 				mediaObjects: medias,
 				startIndex: index,
+				postId,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);

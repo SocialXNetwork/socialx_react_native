@@ -220,7 +220,7 @@ export class WallPostCard extends React.Component<
 							<WallPostMedia
 								mediaObjects={media}
 								onMediaObjectView={(index: number) =>
-									onImagePress(index, media)
+									onImagePress(index, media, id)
 								}
 								onLikeButtonPressed={this.onDoubleTapLikeHandler}
 								noInteraction={disableMediaFullScreen}

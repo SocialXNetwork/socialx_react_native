@@ -185,7 +185,11 @@ export interface IWallPostCardData extends IResizeProps {
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {
-	onImagePress: (index: number, mediaObjects: IMediaProps[]) => void;
+	onImagePress: (
+		index: number,
+		mediaObjects: IMediaProps[],
+		postId: string,
+	) => void;
 	onLikeButtonPress: (likedByMe: boolean, postId: string) => boolean;
 	onDeletePress: (postId: string) => void;
 	onUserPress: (userId: string) => void;

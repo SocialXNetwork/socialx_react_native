@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 
+import { SafeAreaView } from 'react-navigation';
 import { HeaderLogo } from '../';
 import styles from './Header.style';
 
@@ -26,7 +26,7 @@ export const Header: React.SFC<IHeaderProps> = ({
 	const displayNone = !center && title.length === 0 && !logo;
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			{left ? (
 				<View style={styles.left}>{left}</View>
 			) : (
@@ -49,6 +49,6 @@ export const Header: React.SFC<IHeaderProps> = ({
 			) : (
 				<View style={styles.placeholder} />
 			)}
-		</View>
+		</SafeAreaView>
 	);
 };

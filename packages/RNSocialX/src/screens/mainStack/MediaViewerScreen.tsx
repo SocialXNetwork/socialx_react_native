@@ -7,7 +7,11 @@ import {
 	IWithMediaViewerEnhancedData,
 	WithMediaViewer,
 } from '../../enhancers/screens';
-import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
+import {
+	DeviceOrientations,
+	OS_TYPES,
+	SCREENS,
+} from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
@@ -68,6 +72,9 @@ class Screen extends React.Component<
 				onExitFullScreen={this.onExitFullScreenHandler}
 				onClose={this.onCloseHandler}
 				getText={this.props.getText}
+				canReactOnPost={!!this.props.postId}
+				onLikePress={this.props.onLikePress}
+				onCommentPress={this.openCommentsScreen}
 			/>
 		);
 	}
@@ -113,6 +120,15 @@ class Screen extends React.Component<
 
 	private onCloseHandler = () => {
 		this.props.navigation.goBack(null);
+	};
+
+	private openCommentsScreen = () => {
+		const { navigation, setNavigationParams, postId } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.Comments,
+			params: { postId, startComment: true },
+		});
+		navigation.navigate(SCREENS.Comments);
 	};
 }
 

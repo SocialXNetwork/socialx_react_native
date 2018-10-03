@@ -47,7 +47,7 @@ export const CreateWallPostScreenView: React.SFC<
 	marginBottom,
 	onClose,
 }) => (
-	<SafeAreaView
+	<View
 		style={[
 			style.safeView,
 			Platform.OS === OS_TYPES.IOS ? { paddingBottom: marginBottom } : {},
@@ -90,5 +90,5 @@ export const CreateWallPostScreenView: React.SFC<
 				borderColor={Colors.transparent}
 			/>
 		</ScrollView>
-	</SafeAreaView>
+	</View>
 );

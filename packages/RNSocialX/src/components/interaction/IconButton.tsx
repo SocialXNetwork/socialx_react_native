@@ -13,7 +13,7 @@ import styles from './IconButton.style';
 interface IIconButtonProps {
 	label?: string;
 	iconSource: ImageRequireSource | string; // use string for an Ionicon or FontAwesome source
-	iconType: string; // use "io" or "fa"
+	iconType: 'io' | 'fa' | 'image';
 	onPress: () => void;
 	iconStyle: any;
 	textStyle?: any;

@@ -216,6 +216,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			params: {
 				mediaObjects: medias,
 				startIndex: index,
+				postId: undefined, // don't allow to start a comment from MediaViewerScreen, so we avoid the loop
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);

@@ -221,6 +221,8 @@ export default {
 	'media.viewer.screen.title':'MEDIA',
 	'media.viewer.screen.likes':'Likes',
 	'media.viewer.screen.comments':'Comments',
+	'media.viewer.screen.like.button':'Like',
+	'media.viewer.screen.comment.button':'Comment',
 	'notifications.screen.title':'ACTIVITY',
 	'wall.post.menu.block.user': 'Block',
 	'wall.post.menu.report.problem': 'Report a Problem',
