@@ -34,3 +34,4 @@ export { TermsAndConditionsScreen } from './preAuth/TermsAndConditionsScreen';
 export { MaintenanceScreen } from './primaryNav/MaintenanceScreen';
 
 export { WalletAccountScreen } from './walletStack/WalletAccount';
+export { WalletKeysScreen } from './walletStack/WalletKeys';

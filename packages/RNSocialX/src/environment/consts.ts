@@ -100,4 +100,5 @@ export enum SCREENS {
 	TabbedSearch = 'TabbedSearchScreen',
 	UserFeed = 'UserFeedTab',
 	WalletAccount = 'WalletAccountScreen',
+	WalletKeys = 'WalletKeysScreen',
 }
