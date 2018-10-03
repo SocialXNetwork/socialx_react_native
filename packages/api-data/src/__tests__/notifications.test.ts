@@ -3,7 +3,7 @@ import records from '../__testHelpers/records';
 import { NOTIFICATION_TYPES } from '../repository/notifications/types';
 const { getProfile, getTestAccount } = records;
 
-let mockApi: ReturnType<typeof dataApiFactory> | undefined;
+let mockApi: ReturnType<typeof dataApiFactory>;
 
 const testAccount = getTestAccount();
 const testProfile = getProfile();
@@ -20,31 +20,25 @@ const testNotification = {
 
 describe('notifications api', () => {
 	beforeEach(() => {
-		expect(mockApi).toBeUndefined();
 		jest.setTimeout(30 * 1000);
 		mockApi = dataApiFactory(testAccount);
 	});
 
 	beforeEach(async () => {
-		if (!mockApi) {
-			throw new Error('mockApi is not defined');
+		if (mockApi) {
+			await mockApi.profiles.createProfile(testProfile);
+			// TODO: create a post
 		}
-		await mockApi.profiles.createProfile(testProfile);
 	});
 
 	afterEach(async () => {
-		if (!mockApi) {
-			throw new Error('mockApi is not defined');
+		if (mockApi) {
+			await mockApi.resetAllDatabase();
 		}
-		await mockApi.resetAllDatabase();
-		mockApi = undefined;
 	});
 
 	test('creates a notification', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.notifications.createNotification(testNotification);
 		} catch (e) {
 			expect(e).toBeUndefined();
@@ -54,9 +48,6 @@ describe('notifications api', () => {
 	test('reject create a notification', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const { from, ...incompleteData } = testNotification;
 			await mockApi.notifications.createNotification({
 				from: { alias: '', pub: '' },
@@ -70,9 +61,6 @@ describe('notifications api', () => {
 
 	test.skip('removes a notification', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.notifications.createNotification(testNotification);
 			// TODO: fails to get notifications
 			const notifications = await mockApi.notifications.getNotifications();
@@ -85,9 +73,6 @@ describe('notifications api', () => {
 	test('reject remove notification', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.notifications.removeNotification({ notificationId: '' });
 		} catch (e) {
 			error = e;
@@ -97,9 +82,6 @@ describe('notifications api', () => {
 
 	test.skip('get current notifications', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.notifications.createNotification(testNotification);
 			// TODO: fails to get notifications
 			const notifications = await mockApi.notifications.getNotifications();
@@ -111,9 +93,6 @@ describe('notifications api', () => {
 	test('reject get current notifications', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.notifications.createNotification(testNotification);
 			const notifications = await mockApi.notifications.getNotifications();
 		} catch (e) {

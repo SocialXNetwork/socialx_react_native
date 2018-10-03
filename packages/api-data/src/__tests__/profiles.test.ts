@@ -1,8 +1,8 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import { FRIEND_TYPES } from '../repository/profiles/types';
 
-let mockApi: ReturnType<typeof dataApiFactory> | undefined;
-let mockApi2: ReturnType<typeof dataApiFactory> | undefined;
+let mockApi: ReturnType<typeof dataApiFactory>;
+let mockApi2: ReturnType<typeof dataApiFactory>;
 
 const mockProfile = {
 	aboutMeText: 'Hello there, I have been here',
@@ -25,21 +25,15 @@ const testAccount2 = { is: { pub: 'boop', alias: 'bopybopy' } };
 // https://github.com/amark/gun/issues/579 seems to be very relevant
 describe('profiles api', () => {
 	beforeEach(() => {
-		expect(mockApi).toBeUndefined();
-		expect(mockApi2).toBeUndefined();
 		jest.setTimeout(30 * 1000);
 		mockApi = dataApiFactory(testAccount);
 		mockApi2 = dataApiFactory(testAccount2);
 	});
 
 	afterEach(async () => {
-		expect(mockApi).toBeDefined();
-		expect(mockApi2).toBeDefined();
 		if (mockApi && mockApi2) {
 			await mockApi.resetAllDatabase();
 		}
-		mockApi = undefined;
-		mockApi2 = undefined;
 	});
 
 	test('rejects create profile', async () => {
@@ -60,9 +54,6 @@ describe('profiles api', () => {
 			};
 
 			try {
-				if (!mockApi) {
-					throw new Error('mockApi is not defined');
-				}
 				await mockApi.profiles.createProfile(testProfile);
 			} catch (e) {
 				expect(e).toBeTruthy();
@@ -72,9 +63,6 @@ describe('profiles api', () => {
 
 	test('create profile', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.profiles.createProfile(mockProfile);
 			const currentProfile = await mockApi.profiles.getCurrentProfile();
 
@@ -91,9 +79,6 @@ describe('profiles api', () => {
 	test('rejects get profile by username', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.profiles.getProfileByUsername({ username: '*' });
 		} catch (e) {
 			error = e;
@@ -103,9 +88,6 @@ describe('profiles api', () => {
 
 	test('get profile by username', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			// Deconstruct because username is not in the returned object, but is required
 			// in the getter parameters
 			const { username, ...profileData } = mockProfile;
@@ -124,9 +106,6 @@ describe('profiles api', () => {
 
 	test('rejects update profile', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.profiles.createProfile(mockProfile);
 			await mockApi.profiles.updateProfile({
 				aboutMeText: 'This is a story about a man who lost his pants',
@@ -141,9 +120,6 @@ describe('profiles api', () => {
 
 	test('updates profile', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.profiles.createProfile(mockProfile);
 			// TODO: the helper seems to require all of the keys in
 			// IUpdateProfileInput and fails to update the profile
@@ -168,9 +144,6 @@ describe('profiles api', () => {
 
 	test('rejects adds friend', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.profiles.createProfile(mockProfile);
 			await mockApi.profiles.addFriend({ username: '' });
 		} catch (e) {
@@ -180,9 +153,6 @@ describe('profiles api', () => {
 
 	test('adds friend', async () => {
 		try {
-			if (!mockApi || !mockApi2) {
-				throw new Error('mockApi is not defined');
-			}
 			const friendProfile = {
 				...mockProfile,
 				username: 'bopybopy',
@@ -206,10 +176,6 @@ describe('profiles api', () => {
 
 	test('rejects removes friend', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
-
 			await mockApi.profiles.createProfile(mockProfile);
 			await mockApi.profiles.removeFriend({
 				friendshipId: '',
@@ -223,9 +189,6 @@ describe('profiles api', () => {
 	// ! profiles.removeFriend uses .put(null) which doesnt work, we have to use unset on the setter
 	test.skip('removes friend', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const friends = [
 				{
 					friendId: 'jmrzjcc101awINqWKVZDdRW',
@@ -255,9 +218,6 @@ describe('profiles api', () => {
 
 	test('rejects accepts friend', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const friendProfile = { ...mockProfile, username: 'first_friend' };
 			await Promise.all([
 				mockApi.profiles.createProfile(mockProfile),
@@ -275,9 +235,6 @@ describe('profiles api', () => {
 
 	test('accepts friend', async () => {
 		try {
-			if (!mockApi || !mockApi2) {
-				throw new Error('mockApi is not defined');
-			}
 			const friendProfile = {
 				...mockProfile,
 				username: 'bopybopy',
