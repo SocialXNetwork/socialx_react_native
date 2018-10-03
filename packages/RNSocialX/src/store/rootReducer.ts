@@ -9,7 +9,6 @@ import {
 } from './app/navigationParams';
 
 import { IState as IAccounts, reducer as accounts } from './data/accounts';
-import { IState as IComments, reducer as comments } from './data/comments';
 import {
 	IState as INotifications,
 	reducer as notifications,
@@ -26,7 +25,6 @@ import { IState as IOverlays, reducer as overlays } from './ui/overlays';
 export interface IApplicationState {
 	data: {
 		accounts: IAccounts;
-		comments: IComments;
 		notifications: INotifications;
 		posts: IPosts;
 		profiles: IProfiles;
@@ -50,7 +48,6 @@ export interface IApplicationState {
 export default combineReducers<IApplicationState>({
 	data: combineReducers({
 		accounts,
-		comments,
 		notifications,
 		posts,
 		profiles,
