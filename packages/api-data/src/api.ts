@@ -1,5 +1,7 @@
 import * as Gun from 'gun/gun';
 
+import 'gun/lib/path';
+
 import 'gun/nts';
 import 'gun/sea';
 
