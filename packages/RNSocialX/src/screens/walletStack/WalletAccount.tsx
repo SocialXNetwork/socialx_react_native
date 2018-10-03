@@ -6,6 +6,7 @@ import {
 	IWithWalletAccountEnhancedData,
 	WithWalletAccount,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { WalletAccountScreenView } from './WalletAccount.view';
 
@@ -58,7 +59,7 @@ class Screen extends React.Component<
 	};
 
 	private onGoNextHandler = () => {
-		this.props.navigation.navigate('Placeholder');
+		this.props.navigation.navigate(SCREENS.WalletKeys);
 	};
 
 	private onGenerateAccountNameHandler = () => {

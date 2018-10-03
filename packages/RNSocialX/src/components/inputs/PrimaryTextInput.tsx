@@ -158,6 +158,9 @@ export class PrimaryTextInput extends React.Component<
 		width: 0,
 		icon: '',
 		value: '',
+		onChangeText: () => {
+			/**/
+		},
 		iconColor: customStyleProps.defaultIconColor,
 		placeholder: '',
 		placeholderColor: customStyleProps.defaultPlaceholderColor,

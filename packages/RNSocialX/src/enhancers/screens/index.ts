@@ -125,5 +125,10 @@ export {
 	IWithWalletAccountEnhancedActions,
 	IWithWalletAccountEnhancedData,
 } from './walletStack/WithWalletAccount';
+export {
+	WithWalletKeys,
+	IWithWalletKeysEnhancedActions,
+	IWithWalletKeysEnhancedData,
+} from './walletStack/WithWalletKeys';
 
 export { WithCurrentUser, WithCurrentUserContent } from './intermediary';

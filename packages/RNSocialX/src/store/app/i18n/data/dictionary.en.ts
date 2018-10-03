@@ -15,6 +15,8 @@ export default {
 	'button.CONTINUE': 'CONTINUE',
 	'button.generate': 'Generate account name',
 	'button.next': 'Next',
+	'button.finalize': 'Finalize',
+	'button.export': 'Export keys to the device',
 	'text.and': 'and',
 	'text.with': 'with',
 	'text.others': 'others',
@@ -235,4 +237,11 @@ export default {
 	'wallet.account.input.placeholder': 'Account name',
 	'wallet.account.input.label': 'Unique blockchain account name',
 	'wallet.account.not.valid': 'Account name is already being used',
+	'wallet.keys.title': 'Wallet keys',
+	'wallet.keys.input.label': 'These keys are very important. If you lose them, you will have no control over the funds inside the wallet.',
+	'wallet.keys.creator.public': 'Creator public key',
+	'wallet.keys.creator.private': 'Creator private key',
+	'wallet.keys.owner.public': 'Owner public key',
+	'wallet.keys.owner.private': 'Owner private key'
+	
 };

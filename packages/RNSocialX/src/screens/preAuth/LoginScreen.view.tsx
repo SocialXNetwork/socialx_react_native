@@ -69,7 +69,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 				}: FormikProps<ILoginScreenData>) => (
 					<React.Fragment>
 						<PrimaryTextInput
-							placeholder={getText('login.userName.input')}
+							placeholder={getText('login.username.input')}
 							placeholderColor={customStyleProps.inputPlaceholderColor}
 							returnKeyType={TRKeyboardKeys.next}
 							keyboardType={TKeyboardKeys.emailAddress}
