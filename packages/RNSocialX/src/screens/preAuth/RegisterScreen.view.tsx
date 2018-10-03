@@ -353,7 +353,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<PrimaryTextInput
 										iconColor={colors.iron}
 										icon={'user'}
-										placeholder={getText('register.userName')}
+										placeholder={getText('register.username')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
 										returnKeyType={TRKeyboardKeys.next}

@@ -1,4 +1,4 @@
-import './walletStack/WalletAccountScreen';
+import './walletStack/WalletKeysScreen';
 
 import './commentsStack/CommentsScreen';
 
@@ -29,3 +29,5 @@ import './preAuth/ResetPasswordScreen';
 import './preAuth/TermsAndConditionsScreen';
 
 import './primaryNav/MaintenanceScreen';
+
+import './walletStack/WalletAccountScreen';

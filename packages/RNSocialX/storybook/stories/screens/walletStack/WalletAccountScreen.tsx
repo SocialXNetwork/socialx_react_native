@@ -41,6 +41,6 @@ class WalletAccountStory extends React.Component {
 	};
 }
 
-storiesOf('Screens/walletStack', module).add('WalletAccount', () => {
+storiesOf('Screens/walletStack', module).add('WalletAccountScreen', () => {
 	return <WalletAccountStory />;
 });
