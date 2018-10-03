@@ -15,8 +15,8 @@ const getProfile = () => ({
 const getPost = () => ({
 	postText: 'This is a new post',
 	location: 'Somewhere',
-	taggedFriends: [],
-	media: [],
+	// taggedFriends: [],
+	// media: [],
 	privatePost: false,
 });
 

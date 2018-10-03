@@ -19,22 +19,14 @@ const testNotification = {
 };
 
 describe('notifications api', () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		jest.setTimeout(30 * 1000);
 		mockApi = dataApiFactory(testAccount);
-	});
-
-	beforeEach(async () => {
-		if (mockApi) {
-			await mockApi.profiles.createProfile(testProfile);
-			// TODO: create a post
-		}
+		await mockApi.profiles.createProfile(testProfile);
 	});
 
 	afterEach(async () => {
-		if (mockApi) {
-			await mockApi.resetAllDatabase();
-		}
+		await mockApi.resetAllDatabase();
 	});
 
 	test('creates a notification', async () => {

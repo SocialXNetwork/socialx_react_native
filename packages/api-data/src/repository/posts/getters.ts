@@ -83,7 +83,7 @@ export const getPostByPath = (
 			const postComments: any = convertCommentsToArray(comments);
 
 			const post: IPostReturnData = {
-				postId: postPath.split('/').reverse()[0],
+				postId: postPath.split('.').reverse()[0],
 				likes: postLikes,
 				comments: postComments,
 				...restPost,

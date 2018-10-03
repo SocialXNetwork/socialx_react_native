@@ -19,9 +19,7 @@ describe('comments api', () => {
 	});
 
 	afterEach(async () => {
-		if (mockApi) {
-			await mockApi.resetAllDatabase();
-		}
+		await mockApi.resetAllDatabase();
 	});
 
 	test.skip('creates a comment', async () => {

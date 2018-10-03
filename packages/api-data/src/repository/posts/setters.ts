@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4';
 import {
 	IContext,
 	IGunCallback,
@@ -29,20 +30,19 @@ export const createPost = (
 
 	const datePath = datePathFromDate(new Date(timestamp));
 
-	const publicPath = `${datePath}/${TABLE_ENUMS.PUBLIC}`;
-	const privatePath = `${datePath}/${TABLE_ENUMS.PRIVATE}/${owner}`;
+	const publicPath = `${datePath}.${TABLE_ENUMS.PUBLIC}`;
+	const privatePath = `${datePath}.${TABLE_ENUMS.PRIVATE}.${owner}`;
 
 	const { privatePost } = createPostInput;
 
-	const path = privatePost ? privatePath : publicPath;
-
-	const method = privatePost ? 'encrypt' : 'set';
+	const postId = uuidv4();
+	const postPath = (privatePost ? privatePath : publicPath) + `.${postId}`;
 
 	// TODO: can we extract this as an external handle?
 	gun
 		.get(TABLES.POSTS)
-		.get(path)
-		[method](
+		.path(postPath)
+		.put(
 			{
 				...createPostInput,
 				owner: {
@@ -55,9 +55,6 @@ export const createPost = (
 				if (setPostCallback.err) {
 					return callback('failed, error => ' + setPostCallback.err);
 				}
-				const postId = setPostCallback['#'];
-				const postPath = `${path}/${postId}`;
-
 				postHandles.postMetasByCurrentUser(context).set(
 					{
 						postPath,

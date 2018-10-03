@@ -17,7 +17,7 @@ export const postMetasByCurrentUser = (context: IContext) => {
 
 export const postByPath = (context: IContext, postPath: string) => {
 	const { gun } = context;
-	return gun.get(TABLES.POSTS).get(postPath);
+	return gun.get(TABLES.POSTS).path(postPath);
 };
 
 export const postsByDate = (context: IContext, datePath: string) => {

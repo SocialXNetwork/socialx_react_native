@@ -1,6 +1,6 @@
-import moment from 'moment-timezone';
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
+import { datePathFromDate } from '../utils/helpers';
 
 const { getPost, getProfile, getTestAccount } = records;
 
@@ -15,9 +15,7 @@ describe('posts api', () => {
 	});
 
 	afterEach(async () => {
-		if (mockApi) {
-			await mockApi.resetAllDatabase();
-		}
+		await mockApi.resetAllDatabase();
 	});
 
 	test('creates a post', async () => {
@@ -46,7 +44,7 @@ describe('posts api', () => {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 			const createdPost = await mockApi.posts.getPostByPath({
-				postPath: `${moment().format('YYYY/M/D')}/public`,
+				postPath: `${datePathFromDate(new Date())}.public`,
 			});
 			// TODO: do a more strict comparison
 			expect(createdPost).toBeTruthy();
@@ -70,7 +68,17 @@ describe('posts api', () => {
 	});
 
 	test('get posts by user', async () => {
-		/**/
+		try {
+			const post = getPost();
+			await mockApi.posts.createPost(post);
+			const createdPost = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			// TODO: do a more strict comparison
+			expect(createdPost).toBeTruthy();
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
 	});
 
 	test('reject get posts by user', async () => {
