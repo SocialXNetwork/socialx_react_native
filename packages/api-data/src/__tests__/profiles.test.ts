@@ -159,12 +159,29 @@ describe('profiles api', () => {
 				mockApi.profiles.createProfile(friendProfile),
 			]);
 			await mockApi.profiles.addFriend({ username: 'bopybopy' });
-			const newProfile = await mockApi.profiles.getCurrentProfile();
-			expect(newProfile).toHaveProperty(
+
+			const thisProfile = await mockApi.profiles.getCurrentProfile();
+			const targetProfile = await mockApi.profiles.getProfileByUsername({
+				username: 'bopybopy',
+			});
+
+			expect(thisProfile).toHaveProperty(
 				['friends', 0, 'relation'],
 				FRIEND_TYPES.PENDING,
 			);
-			expect(newProfile).toHaveProperty(['friends', 0, 'username'], 'bopybopy');
+			expect(thisProfile).toHaveProperty(
+				['friends', 0, 'username'],
+				friendProfile.username,
+			);
+
+			expect(targetProfile).toHaveProperty(
+				['friends', 0, 'relation'],
+				FRIEND_TYPES.PENDING,
+			);
+			expect(targetProfile).toHaveProperty(
+				['friends', 0, 'username'],
+				mockProfile.username,
+			);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
@@ -182,31 +199,36 @@ describe('profiles api', () => {
 		}
 	});
 
-	// ! profiles.removeFriend uses .put(null) which doesnt work, we have to use unset on the setter
-	test.skip('removes friend', async () => {
+	test('removes friend', async () => {
 		try {
-			const friends = [
-				{
-					friendId: 'jmrzjcc101awINqWKVZDdRW',
-					relation: FRIEND_TYPES.PENDING,
-					timestamp: 1538500604977,
-					username: 'first_friend',
-				},
-			];
-			const mockProfileWithFriends = { ...mockProfile, friends };
+			const friendProfile = {
+				...mockProfile,
+				username: 'bopybopy',
+				pub: 'boop',
+			};
+			await Promise.all([
+				mockApi.profiles.createProfile(mockProfile),
+				mockApi.profiles.createProfile(friendProfile),
+			]);
+			await mockApi.profiles.addFriend({ username: 'bopybopy' });
 
-			await mockApi.profiles.createProfile(mockProfile);
-			// NOTE: this succeeds even if friend does not exist?
-			// NOTE: currently fails
-			// Needs some attention
-			// "TypeError: Cannot destructure property `_` of 'undefined' or 'null'"
-			// src/utils/helpers.ts:24:46
+			let thisProfile = await mockApi.profiles.getCurrentProfile();
+
 			await mockApi.profiles.removeFriend({
-				friendshipId: 'jmrzjcc101awINqWKVZDdRW',
-				username: 'first_friend',
+				friendshipId: thisProfile.friends[0].friendId,
+				username: 'bopybopy',
 			});
-			const newProfile = await mockApi.profiles.getCurrentProfile();
-			expect(newProfile).toHaveProperty('friends', []);
+
+			thisProfile = await mockApi.profiles.getCurrentProfile();
+			const targetProfile = await mockApi.profiles.getProfileByUsername({
+				username: 'bopybopy',
+			});
+
+			expect(thisProfile.friends).toBeTruthy();
+			expect(targetProfile.friends).toBeTruthy();
+
+			expect(thisProfile.friends.length).toEqual(0);
+			expect(targetProfile.friends.length).toEqual(0);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
@@ -229,7 +251,7 @@ describe('profiles api', () => {
 		}
 	});
 
-	test.skip('accepts friend', async () => {
+	test('accepts friend', async () => {
 		try {
 			const friendProfile = {
 				...mockProfile,
@@ -241,57 +263,61 @@ describe('profiles api', () => {
 				mockApi.profiles.createProfile(friendProfile),
 			]);
 
-			// fetch the profiles
-			let newFriendProfile = await mockApi.profiles.getCurrentProfile();
-			let newProfile = await mockApi.profiles.getCurrentProfile();
-
 			await mockApi.profiles.addFriend({
 				username: friendProfile.username,
 			});
 
-			// refetch the profiles for updates
-			// newFriendProfile = await mockApi.profiles.getCurrentProfile();
-			newProfile = await mockApi.profiles.getCurrentProfile();
+			// fetch the profiles
+			let newFriendProfile = await mockApi.profiles.getProfileByUsername({
+				username: 'bopybopy',
+			});
+			let newProfile = await mockApi.profiles.getCurrentProfile();
 
-			const relationshipId = newProfile.friends[0].friendId;
+			// switch the api to the second user
+			mockApi = dataApiFactory(testAccount2);
 
-			// NOTE: this succeeds even if friend does not exist?
-			// accept the reverse user of the adding
 			await mockApi.profiles.acceptFriend({
-				friendshipId: relationshipId,
-				username: mockProfile.username,
+				friendshipId: newProfile.friends[0].friendId,
+				username: 'blahblah',
 			});
 
-			// refetch the data
-			newFriendProfile = await mockApi.profiles.getCurrentProfile();
+			newFriendProfile = await mockApi.profiles.getProfileByUsername({
+				username: 'blahblah',
+			});
 			newProfile = await mockApi.profiles.getCurrentProfile();
 
-			// test for both cases on the friend
+			expect(newProfile).toHaveProperty(
+				['friends', 0, 'relation'],
+				FRIEND_TYPES.MUTUAL,
+			);
+			expect(newProfile).toHaveProperty(
+				['friends', 0, 'username'],
+				mockProfile.username,
+			);
+
 			expect(newFriendProfile).toHaveProperty(
 				['friends', 0, 'relation'],
 				FRIEND_TYPES.MUTUAL,
 			);
-			// expect(newFriendProfile).toHaveProperty(
-			// 	['friends', 0, 'username'],
-			// 	mockProfile.username,
-			// );
-
-			// test for both cases on the current user
-			// ? not working see setters
-			// expect(newProfile).toHaveProperty(
-			// 	['friends', 0, 'relation'],
-			// 	FRIEND_TYPES.MUTUAL,
-			// );
-			// expect(newProfile).toHaveProperty(
-			// 	['friends', 0, 'username'],
-			// 	friendProfile.username,
-			// );
+			expect(newFriendProfile).toHaveProperty(
+				['friends', 0, 'username'],
+				friendProfile.username,
+			);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
 	});
 
-	test('shouldnt add self as friend', () => {
-		//
+	test('shouldnt add self as friend', async () => {
+		let error: any;
+		try {
+			await mockApi.profiles.createProfile(mockProfile);
+			await mockApi.profiles.addFriend({
+				username: mockProfile.username,
+			});
+		} catch (e) {
+			error = e;
+		}
+		expect(error).toMatch('cannot add self as a friend');
 	});
 });

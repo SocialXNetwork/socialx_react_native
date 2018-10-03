@@ -51,6 +51,10 @@ export const addFriend = (
 	callback: IGunCallback<null>,
 ) => {
 	const { owner, timestamp } = getContextMeta(context);
+	if (owner === username) {
+		return callback('failed, cannot add self as a friend');
+	}
+
 	// dynamic username data builder
 	const setFriendData = (setUsername: string) => ({
 		username: setUsername,
