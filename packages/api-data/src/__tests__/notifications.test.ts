@@ -8,7 +8,7 @@ let mockApi: ReturnType<typeof dataApiFactory>;
 const testAccount = getTestAccount();
 const testProfile = getProfile();
 const testNotification = {
-	to: '123',
+	to: testAccount.is.alias,
 	type: NOTIFICATION_TYPES.RECENT_COMMENT,
 	from: {
 		alias: testAccount.is.alias,
@@ -32,6 +32,9 @@ describe('notifications api', () => {
 	test('creates a notification', async () => {
 		try {
 			await mockApi.notifications.createNotification(testNotification);
+			const notifs = await mockApi.notifications.getNotifications();
+			expect(notifs).toBeTruthy();
+			expect(notifs.length).toEqual(1);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
@@ -51,12 +54,15 @@ describe('notifications api', () => {
 		expect(error).toMatch('from.pub must be at least 1 characters');
 	});
 
-	test.skip('removes a notification', async () => {
+	test('removes a notification', async () => {
 		try {
 			await mockApi.notifications.createNotification(testNotification);
-			// TODO: fails to get notifications
-			const notifications = await mockApi.notifications.getNotifications();
-			// await mockApi.notifications.removeNotification(testNotification);
+			let notifications = await mockApi.notifications.getNotifications();
+			const { notificationId } = notifications[0];
+			await mockApi.notifications.removeNotification({ notificationId });
+			notifications = await mockApi.notifications.getNotifications();
+			expect(notifications).toBeTruthy();
+			expect(notifications.length).toEqual(0);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
@@ -72,11 +78,15 @@ describe('notifications api', () => {
 		expect(error).toEqual('notificationId must be at least 1 characters');
 	});
 
-	test.skip('get current notifications', async () => {
+	test('get current notifications', async () => {
 		try {
-			await mockApi.notifications.createNotification(testNotification);
-			// TODO: fails to get notifications
-			const notifications = await mockApi.notifications.getNotifications();
+			await Promise.all([
+				mockApi.notifications.createNotification(testNotification),
+				mockApi.notifications.createNotification(testNotification),
+			]);
+			const notifs = await mockApi.notifications.getNotifications();
+			expect(notifs).toBeTruthy();
+			expect(notifs.length).toEqual(2);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
@@ -85,11 +95,10 @@ describe('notifications api', () => {
 	test('reject get current notifications', async () => {
 		let error: any;
 		try {
-			await mockApi.notifications.createNotification(testNotification);
-			const notifications = await mockApi.notifications.getNotifications();
+			await mockApi.notifications.getNotifications();
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toBeTruthy();
+		expect(error).toMatch('no notifications found');
 	});
 });

@@ -28,6 +28,7 @@ const accountType = yup.object().shape({
 export const createNotification = yup
 	.object()
 	.shape({
+		to: stringType.required(),
 		type: notificationType.required(),
 		from: accountType.required(),
 		metaData: metaDataType,
