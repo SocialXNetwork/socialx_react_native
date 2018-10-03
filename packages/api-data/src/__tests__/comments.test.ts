@@ -3,7 +3,7 @@ import records from '../__testHelpers/records';
 
 const { getTestAccount, getProfile, getPost } = records;
 
-let mockApi: ReturnType<typeof dataApiFactory> | undefined;
+let mockApi: ReturnType<typeof dataApiFactory>;
 
 const profile = getProfile();
 const post = getPost();
@@ -14,26 +14,18 @@ const testComment = {
 
 describe('comments api', () => {
 	beforeEach(() => {
-		if (mockApi) {
-			throw new Error('mockApi is already defined');
-		}
 		jest.setTimeout(30 * 1000);
 		mockApi = dataApiFactory(getTestAccount());
 	});
 
 	afterEach(async () => {
-		if (!mockApi) {
-			throw new Error('mockApi is not defined');
+		if (mockApi) {
+			await mockApi.resetAllDatabase();
 		}
-		await mockApi.resetAllDatabase();
-		mockApi = undefined;
 	});
 
 	test.skip('creates a comment', async () => {
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.profiles.createProfile(profile);
 			await mockApi.posts.createPost(post);
 			// TODO: get post by username or path fails
@@ -51,9 +43,6 @@ describe('comments api', () => {
 	test('reject create comment', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			const postId = '12341234';
 			await mockApi.comments.createComment({
 				postId,
@@ -72,9 +61,6 @@ describe('comments api', () => {
 	test('reject like comment', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.comments.likeComment({
 				commentId: '12341234',
 			});
@@ -91,9 +77,6 @@ describe('comments api', () => {
 	test('reject unlike comment', async () => {
 		let error: any;
 		try {
-			if (!mockApi) {
-				throw new Error('mockApi is not defined');
-			}
 			await mockApi.comments.unlikeComment({
 				postPath: '',
 				commentId: '12341234',
