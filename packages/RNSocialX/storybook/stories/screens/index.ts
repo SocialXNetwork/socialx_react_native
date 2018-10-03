@@ -1,4 +1,4 @@
-import './myProfile/SendCoinsScreen';
+import './walletStack/WalletAccountScreen';
 
 import './commentsStack/CommentsScreen';
 
@@ -16,6 +16,7 @@ import './mainTabNav/TrendingScreen';
 import './mainTabNav/UserFeedScreen';
 
 import './myProfile/ReferralScreen';
+import './myProfile/SendCoinsScreen';
 import './myProfile/SettingsScreen';
 import './myProfile/SocialXAccountScreen';
 import './myProfile/WalletActivityScreen';

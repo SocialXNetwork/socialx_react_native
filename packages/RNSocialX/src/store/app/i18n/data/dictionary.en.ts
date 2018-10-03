@@ -13,6 +13,8 @@ export default {
 	'button.SEND': 'SEND',
 	'button.RECEIVE': 'RECEIVE',
 	'button.CONTINUE': 'CONTINUE',
+	'button.generate': 'Generate account name',
+	'button.next': 'Next',
 	'text.and': 'and',
 	'text.with': 'with',
 	'text.others': 'others',
@@ -229,4 +231,8 @@ export default {
 	'wall.post.menu.delete.post': 'Delete Post',
 	'wall.post.card.offensive.content.warning.text': 'This post may contain offensive material.',
 	'wall.post.card.offensive.content.button.view': 'View',
+	'wallet.account.title': 'Wallet account',
+	'wallet.account.input.placeholder': 'Account name',
+	'wallet.account.input.label': 'Unique blockchain account name',
+	'wallet.account.not.valid': 'Account name is already being used',
 };

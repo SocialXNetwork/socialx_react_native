@@ -99,4 +99,5 @@ export enum SCREENS {
 	ProfileAnalytics = 'ProfileAnalyticsScreen',
 	TabbedSearch = 'TabbedSearchScreen',
 	UserFeed = 'UserFeedTab',
+	WalletAccount = 'WalletAccountScreen',
 }
