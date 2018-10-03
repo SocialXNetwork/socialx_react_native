@@ -277,7 +277,7 @@ export class PrimaryTextInput extends React.Component<
 							customStyleProps.defaultUnderlineColorAndroid
 						}
 						autoCapitalize={autoCapitalize}
-						clearButtonMode={'while-editing'} // only works on iOS
+						clearButtonMode="while-editing" // only works on iOS
 						blurOnSubmit={blurOnSubmit}
 						numberOfLines={numberOfLines}
 						multiline={isMultiLine}

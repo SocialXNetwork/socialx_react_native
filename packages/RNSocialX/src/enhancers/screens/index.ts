@@ -1,5 +1,3 @@
-import { FormikProvider } from 'formik';
-
 export {
 	WithComments,
 	IWithCommentsEnhancedData,
@@ -121,5 +119,11 @@ export {
 	IWithMaintenanceEnhancedData,
 	IWithMaintenanceEnhancedActions,
 } from './primaryNav/WithMaintenance';
+
+export {
+	WithWalletAccount,
+	IWithWalletAccountEnhancedActions,
+	IWithWalletAccountEnhancedData,
+} from './walletStack/WithWalletAccount';
 
 export { WithCurrentUser, WithCurrentUserContent } from './intermediary';
