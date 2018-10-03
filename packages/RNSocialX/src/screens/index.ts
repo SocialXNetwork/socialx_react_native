@@ -32,3 +32,5 @@ export { ResetPasswordScreen } from './preAuth/ResetPasswordScreen';
 export { TermsAndConditionsScreen } from './preAuth/TermsAndConditionsScreen';
 
 export { MaintenanceScreen } from './primaryNav/MaintenanceScreen';
+
+export { WalletAccountScreen } from './walletStack/WalletAccount';
