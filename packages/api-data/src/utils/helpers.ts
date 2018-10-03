@@ -22,7 +22,7 @@ export const convertGunSetToArrayWithKey = (args: any = {}) => {
 	return Object.entries(data || {})
 		.map(
 			([k, v]): any => {
-				if (!k || typeof v !== 'object') {
+				if (!k || typeof v !== 'object' || v === null) {
 					return;
 				}
 				const { _: deepSoul, ...deepRest }: any = v;

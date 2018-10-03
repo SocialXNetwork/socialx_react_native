@@ -27,8 +27,8 @@ export interface ICreateNotification extends INotificationData {
 	to: string;
 }
 
-export interface INotificationsReturnData {
-	[key: string]: INotificationData;
+export interface INotificationsReturnData extends INotificationData {
+	notificationId: string;
 }
 
 export interface IRemoveNotificationInput {
