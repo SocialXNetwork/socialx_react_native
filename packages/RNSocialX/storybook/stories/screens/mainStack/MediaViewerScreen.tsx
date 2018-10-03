@@ -44,6 +44,9 @@ storiesOf('Screens/mainStack', module)
 				carouselContainerOnLayout={action('carouselContainerOnLayout')}
 				onExitFullScreen={action('onExitFullScreen')}
 				onClose={action('onClose')}
+				onCommentPress={action('onCommentPress')}
+				onLikePress={action('onLikePress')}
+				canReactOnPost={true}
 			/>
 		);
 	});
