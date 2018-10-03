@@ -40,9 +40,12 @@ export default function(context: IContext) {
 		}): Promise<IPostReturnData> {
 			let validatedInput: any;
 			try {
-				validatedInput = await schemas.getPostByPath.validate(postPath, {
-					stripUnknown: true,
-				});
+				validatedInput = await schemas.getPostByPath.validate(
+					{ postPath },
+					{
+						stripUnknown: true,
+					},
+				);
 			} catch (e) {
 				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
 			}

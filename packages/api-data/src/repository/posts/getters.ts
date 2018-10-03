@@ -73,6 +73,9 @@ export const getPostByPath = (
 	postHandles
 		.postByPath(context, postPath)
 		.docLoad((postData: IPostCallbackData) => {
+			if (!postData) {
+				return callback('no post found');
+			}
 			const { likes, comments, ...restPost } = postData;
 			// convert likes into an array with keys
 			const postLikes = convertLikesToArray(likes);
