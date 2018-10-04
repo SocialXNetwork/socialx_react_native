@@ -18,7 +18,7 @@ const idType = yup
 	.string()
 	.trim()
 	.min(8)
-	.max(32)
+	.max(100)
 	.required();
 
 const longTextType = yup
@@ -103,15 +103,14 @@ export const getPostLikes = yup
 export const removePost = yup
 	.object()
 	.shape({
-		postPath: longTextType.required(),
-		postMetaId: longTextType.required(),
+		postId: longTextType.required(),
 	})
 	.required();
 
 export const unlikePost = yup
 	.object()
 	.shape({
-		postPath: longTextType.required(),
+		postId: longTextType.required(),
 	})
 	.required();
 

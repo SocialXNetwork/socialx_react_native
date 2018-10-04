@@ -11,22 +11,17 @@ export const datePathFromDate = (date: Date) =>
 export const convertGunSetToArray = <T = {}>(
 	args: IMetasCallback | IMetasTypeCallback<T> = {},
 ) => {
-	const { _: parentSoul, ...data } = args;
-	return Object.values(data || {}).map(
-		({ _: deepSoul, ...deepRest }: any = {}) => deepRest,
-	);
+	return Object.values(args || {}).map((ob) => ob);
 };
 
 export const convertGunSetToArrayWithKey = (args: any = {}) => {
-	const { _: parentSoul, ...data } = args;
-	return Object.entries(data || {})
+	return Object.entries(args || {})
 		.map(
 			([k, v]): any => {
 				if (!k || typeof v !== 'object' || v === null) {
 					return;
 				}
-				const { _: deepSoul, ...deepRest }: any = v;
-				return { ...deepRest, k };
+				return { ...v, k };
 			},
 		)
 		.filter((v) => v !== undefined) as any;
@@ -39,8 +34,7 @@ export const getContextMeta = (context: IContext) => ({
 });
 
 export const cleanGunMetaFromObject = (args: any = {}) => {
-	const { _: parentSoul, ...data } = args;
-	return data || {};
+	return args || {};
 };
 
 export const resolveCallback = (resolve: any, reject: any) => (
