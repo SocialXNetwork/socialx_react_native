@@ -107,13 +107,22 @@ const updateCurrentProfileAction: ActionCreator<IUpdateProfileAction> = (
 export const updateCurrentProfile = (
 	updateProfileInput: IUpdateProfileInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(updateCurrentProfileAction(updateProfileInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.UPDATE_PROFILE,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.profiles.updateProfile(updateProfileInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -129,13 +138,22 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(addFriendAction(addFriendInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.ADD_FRIEND,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.profiles.addFriend(addFriendInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -149,13 +167,22 @@ const removeFriendAction: ActionCreator<IRemoveFriendAction> = (
 export const removeFriend = (
 	removeFriendInput: IRemoveFriendInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(removeFriendAction(removeFriendInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.REMOVE_FRIEND,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.profiles.removeFriend(removeFriendInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -169,12 +196,21 @@ const acceptFriendAction: ActionCreator<IAcceptFriendAction> = (
 export const acceptFriend = (
 	acceptFriendInput: IAcceptFriendInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(acceptFriendAction(acceptFriendInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.ACCEPT_FRIEND,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.profiles.acceptFriend(acceptFriendInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
