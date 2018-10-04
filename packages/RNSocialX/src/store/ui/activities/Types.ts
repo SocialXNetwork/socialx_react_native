@@ -1,6 +1,5 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
-import { ISetAuthAction } from '../../app/auth/Types';
 
 export interface IActivity {
 	uuid: string;
