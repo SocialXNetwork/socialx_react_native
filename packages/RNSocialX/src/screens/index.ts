@@ -1,3 +1,7 @@
+export {
+	AdsManagementOverviewScreen,
+} from './adsManagementStack/AdsManagementOverviewScreen';
+
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 
 export { IntroScreen } from './intro/IntroScreen';

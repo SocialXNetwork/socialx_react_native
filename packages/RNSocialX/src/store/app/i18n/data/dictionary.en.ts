@@ -245,6 +245,12 @@ export default {
 	'wallet.keys.owner.private': 'Owner private key',
 	'wallet.send.coins.title': 'Send coins',
 	'wallet.receive.coins.title': 'Receive coins',
-	'wallet.receive.coins.address': 'Your wallet address:'
-	
+	'wallet.receive.coins.address': 'Your wallet address:',
+	'ad.management.overview.screen.title': 'AD MANAGEMENT',
+	'ad.management.overview.screen.ads.list.title': 'All ads',
+	'ad.management.overview.screen.account.performance': 'Account Performance',
+	'ad.management.overview.screen.account.performance.spent': 'Spent',
+	'ad.management.overview.screen.account.performance.people.reached': 'People reached',
+	'ad.management.overview.screen.see.past.performance': 'SEE PAST PERFORMANCE',
+
 };

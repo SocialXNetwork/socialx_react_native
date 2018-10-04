@@ -1,3 +1,5 @@
+import './adsManagementStack/AdsManagementOverview';
+
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';
