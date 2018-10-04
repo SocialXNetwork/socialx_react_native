@@ -1,4 +1,5 @@
 import './adsManagementStack/AdsManagementOverview';
+import './adsManagementStack/AdsManagementScreen';
 
 import './commentsStack/CommentsScreen';
 
