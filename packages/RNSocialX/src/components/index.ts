@@ -113,6 +113,7 @@ export { MediaInfoModal } from './modals/MediaInfoModal';
 export { OfflineOverlayModal } from './modals/OfflineOverlayModal';
 export { ReportProblemModal } from './modals/ReportProblemModal';
 export { TagFriendsModal } from './modals/TagFriendsModal';
+export { WalletModal } from './modals/WalletModal';
 
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';
