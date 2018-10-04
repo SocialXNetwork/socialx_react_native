@@ -159,12 +159,21 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(createPostAction(createPostInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.CREATE_POST,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.posts.createPost(createPostInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -180,12 +189,21 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(likePostAction(likePostInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.LIKE_POST,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.posts.likePost(likePostInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -201,12 +219,21 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(removePostAction(removePostInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.REMOVE_POST,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.posts.removePost(removePostInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -222,12 +249,21 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(unlikePostAction(unlikePostInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.UNLIKE_POST,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.posts.unlikePost(unlikePostInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -242,12 +278,21 @@ const createCommentAction: ActionCreator<ICreateCommentAction> = (
 export const createComment = (
 	createCommentInput: ICreateCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(createCommentAction(createCommentInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.CREATE_COMMENT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.comments.createComment(createCommentInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -261,12 +306,21 @@ const likeCommentAction: ActionCreator<ILikeCommentAction> = (
 export const likeComment = (
 	likeCommentInput: ICommentIdInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(likeCommentAction(likeCommentInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.LIKE_COMMENT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.comments.likeComment(likeCommentInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -280,12 +334,21 @@ const removeCommentAction: ActionCreator<IRemoveCommentAction> = (
 export const removeComment = (
 	removeCommentInput: IRemoveCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(removeCommentAction(removeCommentInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.REMOVE_COMMENT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.comments.removeComment(removeCommentInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -299,11 +362,20 @@ const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
 export const unlikeComment = (
 	unlikeCommentInput: IUnlikeCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(unlikeCommentAction(unlikeCommentInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.UNLIKE_COMMENT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.comments.unlikeComment(unlikeCommentInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };

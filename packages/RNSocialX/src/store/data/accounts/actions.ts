@@ -70,13 +70,22 @@ const createAccountAction: ActionCreator<ICreateAccountAction> = (
 export const createAccount = (
 	createAccountInput: ICreateAccountInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(createAccountAction(createAccountInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.CREATE_ACCOUNT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.accounts.createAccount(createAccountInput);
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		/** */
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -90,14 +99,23 @@ const recoverAccountAction: ActionCreator<IRecoverAccountAction> = (
 export const recoverAccount = (
 	recoverAccountInput: IRecoverAccountInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(recoverAccountAction(recoverAccountInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.RECOVER_ACCOUNT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		const recoveryData = await dataApi.accounts.recoverAccount(
 			recoverAccountInput,
 		);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -113,13 +131,22 @@ export const login = (credentials: ICredentials): IThunk => async (
 	getState,
 	context,
 ) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(loginAction(credentials));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.LOGIN,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -129,12 +156,21 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 
 // TODO: @serkan reset whole redux on logout
 export const logout = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(logoutAction());
+		dispatch(
+			beginActivity({
+				type: ActionTypes.LOGOUT,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.accounts.logout();
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -148,12 +184,21 @@ const changePasswordAction: ActionCreator<IChangePasswordAction> = (
 export const changePassword = (
 	changePasswordInput: IChangePasswordInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(changePasswordAction(changePasswordInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.CHANGE_PASSWORD,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.accounts.changePassword(changePasswordInput);
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
