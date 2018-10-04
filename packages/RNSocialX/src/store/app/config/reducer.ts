@@ -20,7 +20,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case 'RESET_STORE': {
 			return {
-				...initialState,
+				...state,
 				customGunSuperPeers: initialState.customGunSuperPeers,
 			};
 		}
