@@ -242,6 +242,9 @@ export default {
 	'wallet.keys.creator.public': 'Creator public key',
 	'wallet.keys.creator.private': 'Creator private key',
 	'wallet.keys.owner.public': 'Owner public key',
-	'wallet.keys.owner.private': 'Owner private key'
+	'wallet.keys.owner.private': 'Owner private key',
+	'wallet.send.coins.title': 'Send coins',
+	'wallet.receive.coins.title': 'Receive coins',
+	'wallet.receive.coins.address': 'Your wallet address:'
 	
 };
