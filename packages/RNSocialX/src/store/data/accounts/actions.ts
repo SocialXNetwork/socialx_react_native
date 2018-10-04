@@ -10,7 +10,7 @@ import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { clearAuth, setAuth } from '../../app/auth';
 import { IThunk } from '../../types';
-import { beginActivity, endActivity } from '../../ui/activities';
+import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	IChangePasswordAction,
@@ -158,11 +158,12 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 
 export const logout = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
+	const actionType = ActionTypes.LOGOUT;
 	try {
 		dispatch(logoutAction());
 		dispatch(
 			beginActivity({
-				type: ActionTypes.LOGOUT,
+				type: actionType,
 				uuid: activityId,
 			}),
 		);
@@ -171,7 +172,17 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 
 		dispatch(clearAuth());
 	} catch (e) {
-		/**/
+		// if (e instanceof ValidationError ...
+		// you might want to dispatch different error information
+		// based on the error type, but make sure you pass a string
+		// to redux, don't pass error objects!
+		dispatch(
+			setError({
+				type: actionType, // this is string type, it does not have to be an action type!!!
+				error: e.message, // make sure this is a string
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
