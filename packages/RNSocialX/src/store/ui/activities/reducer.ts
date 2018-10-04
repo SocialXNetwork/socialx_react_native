@@ -20,9 +20,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				errors: action.payload.type
 					? [...state.errors, action.payload]
-					: state.errors.filter(
-							(error) => action.payload.uuid !== error.uuid,
-					  ), // tslint:disable-line indent (tslint bug!!!)
+					: state.errors.filter((error) => action.payload.uuid !== error.uuid),
 			};
 		}
 
