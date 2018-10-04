@@ -75,6 +75,7 @@ describe('notifications api', () => {
 		} catch (e) {
 			error = e;
 		}
+		console.log(error);
 		expect(error).toEqual('notificationId must be at least 1 characters');
 	});
 
