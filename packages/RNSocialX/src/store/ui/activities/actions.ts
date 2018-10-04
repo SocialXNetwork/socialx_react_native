@@ -51,6 +51,9 @@ export const setError = (error: IError): IThunk => async (
 ) => {
 	try {
 		dispatch(errorAction(error));
+		setTimeout(() => {
+			dispatch(clearError({ uuid: error.uuid }));
+		}, 3000); // parametrize this and also make it optional for manual dismissiability
 	} catch (e) {
 		/**/
 	}
