@@ -1,5 +1,6 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
+import { ApiError } from '../utils/errors';
 
 const {
 	getTestAccount,
@@ -67,7 +68,7 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('no post found by this id');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('removes comment', async () => {
@@ -116,7 +117,7 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('failed, comment doesnt exist');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('reject remove comment (user doesnt own the comment)', async () => {
@@ -149,7 +150,7 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('failed, user doesnt own this comment to remove it');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('like a comment', async () => {
@@ -199,7 +200,7 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('no comment found by this id');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('reject like comment (already liked)', async () => {
@@ -231,7 +232,7 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('failed, comment already liked');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('unlike a comment', async () => {
@@ -289,7 +290,7 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('failed, comment not found');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('reject unlike comment (not liked)', async () => {
@@ -318,6 +319,6 @@ describe('comments api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('failed, like has not been found to be removed');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 });

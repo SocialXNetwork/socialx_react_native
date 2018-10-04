@@ -1,6 +1,7 @@
 import { IContext, IGunCallback } from '../../types';
 import * as handles from './handles';
 
+import { ApiError } from '../../utils/errors';
 import { ICreateNotification, IRemoveNotificationInput } from './types';
 
 export const createNotification = (
@@ -13,7 +14,11 @@ export const createNotification = (
 		.notificationsByUsername(context, to)
 		.set(notification, (notificationCallback) => {
 			if (!notificationCallback) {
-				return callback('failed, couldnt create notification');
+				return callback(
+					new ApiError('failed to set a notification', {
+						initialRequestBody: createNotificationInput,
+					}),
+				);
 			}
 			return callback(null);
 		});
@@ -28,7 +33,11 @@ export const removeNotification = (
 		.notificationById(context, removeNotificationInput.notificationId)
 		.put(null, (discardCallback) => {
 			if (!discardCallback) {
-				return callback('failed, couldnt discard notification');
+				return callback(
+					new ApiError('failed to remove a notification', {
+						initialRequestBody: removeNotificationInput,
+					}),
+				);
 			}
 			return callback(null);
 		});

@@ -1,4 +1,5 @@
 import { IContext, IGunCallback, TABLES } from '../../types';
+import { ApiError } from '../../utils/errors';
 import * as profileHandles from './handles';
 
 import uuidv4 from 'uuid/v4';
@@ -23,7 +24,11 @@ export const createProfile = (
 		.profileByUsername(context, username)
 		.put({ ...rest }, (profileCallback) => {
 			if (profileCallback.err) {
-				return callback('failed, error => ' + profileCallback.err);
+				return callback(
+					new ApiError(`failed to create user profile ${profileCallback.err}`, {
+						initialRequestBody: createProfileInput,
+					}),
+				);
 			}
 
 			return callback(null);
@@ -39,7 +44,11 @@ export const updateProfile = (
 		.currentUserProfile(context)
 		.put(updateProfileInput, (updateCallback) => {
 			if (updateCallback.err) {
-				return callback('failed, error => ' + updateCallback.err);
+				return callback(
+					new ApiError(`failed to update user profile ${updateCallback.err}`, {
+						initialRequestBody: updateProfileInput,
+					}),
+				);
 			}
 			return callback(null);
 		});
@@ -51,8 +60,13 @@ export const addFriend = (
 	callback: IGunCallback<null>,
 ) => {
 	const { owner, timestamp } = getContextMeta(context);
+	const errPrefix = 'failed to add friend';
 	if (owner === username) {
-		return callback('failed, cannot add self as a friend');
+		return callback(
+			new ApiError(`${errPrefix}, can not add self`, {
+				initialRequestBody: { username },
+			}),
+		);
 	}
 
 	// dynamic username data builder
@@ -68,7 +82,16 @@ export const addFriend = (
 		.currentProfileFriendship(context, relationshipId)
 		.put(setFriendData(username), (addFriendCallback) => {
 			if (addFriendCallback.err) {
-				return callback('failed, error => ' + addFriendCallback.err);
+				return callback(
+					new ApiError(
+						`${errPrefix}, current user friendship not updated ${
+							addFriendCallback.err
+						}`,
+						{
+							initialRequestBody: { username },
+						},
+					),
+				);
 			}
 
 			// emulate a .set to achive mutual id, this will make accepting
@@ -77,7 +100,16 @@ export const addFriend = (
 				.userProfileFriendship(context, username, relationshipId)
 				.put(setFriendData(owner), (targetAddFriendCallback) => {
 					if (targetAddFriendCallback.err) {
-						return callback('failed, error => ' + targetAddFriendCallback.err);
+						return callback(
+							new ApiError(
+								`${errPrefix}, target user friendship not updated ${
+									targetAddFriendCallback.err
+								}`,
+								{
+									initialRequestBody: { username },
+								},
+							),
+						);
 					}
 					return callback(null);
 				});
@@ -88,12 +120,22 @@ export const removeFriend = (
 	{ friendshipId, username }: IRemoveFriendInput,
 	callback: IGunCallback<null>,
 ) => {
+	const errPrefix = 'failed to remove friend';
 	profileHandles
 		.currentProfileFriends(context)
 		.get(friendshipId)
 		.put(null, (removeFriendCallback) => {
 			if (removeFriendCallback.err) {
-				return callback('failed, error => ' + removeFriendCallback.err);
+				return callback(
+					new ApiError(
+						`${errPrefix}, failed to remove current user friendship ${
+							removeFriendCallback.err
+						}`,
+						{
+							initialRequestBody: { username, friendshipId },
+						},
+					),
+				);
 			}
 			profileHandles
 				.profileFriendsByUsername(context, username)
@@ -101,7 +143,14 @@ export const removeFriend = (
 				.put(null, (targetRemoveFriendCallback) => {
 					if (targetRemoveFriendCallback.err) {
 						return callback(
-							'failed, error => ' + targetRemoveFriendCallback.err,
+							new ApiError(
+								`${errPrefix}, failed to remove target relationship ${
+									targetRemoveFriendCallback.err
+								}`,
+								{
+									initialRequestBody: { username, friendshipId },
+								},
+							),
 						);
 					}
 					return callback(null);
@@ -114,18 +163,37 @@ export const acceptFriend = (
 	{ friendshipId, username }: IAcceptFriendInput,
 	callback: IGunCallback<null>,
 ) => {
+	const errPrefix = 'failed to accept friend';
 	profileHandles
 		.currentProfileFriendship(context, friendshipId)
 		.put({ relation: FRIEND_TYPES.MUTUAL }, (targetAcceptCallback) => {
 			if (targetAcceptCallback.err) {
-				return callback('failed, error => ' + targetAcceptCallback.err);
+				return callback(
+					new ApiError(
+						`${errPrefix}, failed to update current user friendship ${
+							targetAcceptCallback.err
+						}`,
+						{
+							initialRequestBody: { username, friendshipId },
+						},
+					),
+				);
 			}
 			// ! this is not working? its like the target is an empty object
 			profileHandles
 				.userProfileFriendship(context, username, friendshipId)
 				.put({ relation: FRIEND_TYPES.MUTUAL }, (acceptFriendCallback) => {
 					if (acceptFriendCallback.err) {
-						return callback('failed, error => ' + acceptFriendCallback.err);
+						return callback(
+							new ApiError(
+								`${errPrefix}, failed to update target user friendship ${
+									acceptFriendCallback.err
+								}`,
+								{
+									initialRequestBody: { username, friendshipId },
+								},
+							),
+						);
 					}
 					return callback(null);
 				});

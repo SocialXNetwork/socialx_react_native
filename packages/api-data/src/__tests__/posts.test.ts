@@ -1,6 +1,6 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
-import { ValidationError } from '../utils/errors';
+import { ApiError, ValidationError } from '../utils/errors';
 import { datePathFromDate } from '../utils/helpers';
 
 const {
@@ -71,7 +71,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('no post found');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('get posts by user', async () => {
@@ -99,7 +99,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('no posts found');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('get public posts by date', async () => {
@@ -127,7 +127,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('no posts found');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('likes a post', async () => {
@@ -161,7 +161,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('no post found');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('rejects unlike a post (already liked)', async () => {
@@ -181,7 +181,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('post already liked');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('removes a post', async () => {
@@ -213,7 +213,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('post does not exist');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('reject removes a post (user doesnt own the post)', async () => {
@@ -236,9 +236,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual(
-			'failed, current user does not own this post to remove it',
-		);
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('unlike a post', async () => {
@@ -274,7 +272,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('post does not exist');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('rejects unlike a post (cannot unlike)', async () => {
@@ -293,6 +291,6 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toEqual('failed, like has not been found to be removed');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 });
