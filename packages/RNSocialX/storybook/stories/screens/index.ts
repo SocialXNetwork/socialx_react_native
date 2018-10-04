@@ -1,5 +1,3 @@
-import './walletStack/WalletKeysScreen';
-
 import './commentsStack/CommentsScreen';
 
 import './intro/IntroScreen';
@@ -31,3 +29,4 @@ import './preAuth/TermsAndConditionsScreen';
 import './primaryNav/MaintenanceScreen';
 
 import './walletStack/WalletAccountScreen';
+import './walletStack/WalletKeysScreen';

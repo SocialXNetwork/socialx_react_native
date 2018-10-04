@@ -39,7 +39,7 @@ export const SendCoinsScreenView: React.SFC<ISendCoinsScreenViewProps> = ({
 }) => (
 	<SafeAreaView style={styles.container}>
 		<Header
-			title={getText('button.SEND')}
+			title={getText('wallet.send.coins.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<ScrollView
