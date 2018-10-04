@@ -18,6 +18,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case 'RESET_STORE': {
+			return {
+				...initialState,
+				customGunSuperPeers: initialState.customGunSuperPeers,
+			};
+		}
+
 		default: {
 			assertNever(action);
 			return state;

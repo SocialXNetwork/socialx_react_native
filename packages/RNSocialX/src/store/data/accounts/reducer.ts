@@ -1,5 +1,3 @@
-// todo @jake stop saying 100% finished
-
 import { assertNever } from '../../helpers';
 import initialState from './initialState';
 import { ActionTypes, IAction, IState } from './Types';
@@ -55,6 +53,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 					action.payload,
 				],
 			};
+		}
+
+		case 'RESET_STORE': {
+			return initialState;
 		}
 
 		default: {

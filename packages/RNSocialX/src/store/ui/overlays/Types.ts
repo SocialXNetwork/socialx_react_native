@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 import { IDotsMenuItem } from '../../../components';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export interface IMessage {
 	text: string;
@@ -76,7 +77,11 @@ export interface IHideOptionsMenuAction extends Action {
 	type: ActionTypes.HIDE_OPTIONS_MENU;
 }
 
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
 export type IAction =
+	| IResetStoreAction
 	| IShowMessageAction
 	| IHideMessageAction
 	| IShowModalAction

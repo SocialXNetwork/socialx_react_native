@@ -19,4 +19,7 @@ export interface ISetAuthAction extends Action {
 	payload: IAuthData | null;
 }
 
-export type IAction = ISetAuthAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction = IResetStoreAction | ISetAuthAction;

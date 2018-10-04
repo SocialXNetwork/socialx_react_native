@@ -86,6 +86,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case 'RESET_STORE': {
+			return initialState;
+		}
+
 		default: {
 			assertNever(action);
 			return state;

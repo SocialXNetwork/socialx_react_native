@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../auth/Types';
 
 export const enum AvailableLocales {
 	EN = 'en',
@@ -35,4 +36,7 @@ export interface ISetLocaleAction extends Action {
 	payload: ISetLocaleInput;
 }
 
-export type IAction = ISetLocaleAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction = IResetStoreAction | ISetLocaleAction;
