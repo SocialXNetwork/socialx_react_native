@@ -3,62 +3,53 @@
 import * as Gun from 'gun';
 import { AsyncStorage } from 'react-native';
 
-class Adapter {
-	public read = (context: any) => {
-		const { get, gun } = context;
-		const { '#': key } = get;
+const read = (context: any) => {
+	const { get, gun } = context;
+	const { '#': key } = get;
 
-		const done = (err: any, data?: any) => {
-			gun._.root.on('in', {
-				err,
-				'@': context['#'],
-				put: Gun.graph.node(data),
-			});
-		};
-
-		AsyncStorage.getItem(key, (err: any, result: any) => {
-			if (err) {
-				done(err);
-			} else if (result === null) {
-				// Nothing found
-				done(null);
-			} else {
-				done(null, JSON.parse(result as string));
-			}
+	const done = (err: any, data?: any) => {
+		gun._.root.on('in', {
+			err,
+			'@': context['#'],
+			put: Gun.graph.node(data),
 		});
 	};
 
-	public write = (context: any) => {
-		const { put: graph, gun } = context;
-		const keys = Object.keys(graph);
+	AsyncStorage.getItem(key, (err: any, result: any) => {
+		if (err) {
+			done(err);
+		} else if (result === null) {
+			// Nothing found
+			done(null);
+		} else {
+			done(null, JSON.parse(result as string));
+		}
+	});
+};
 
-		const instructions = keys.map((key: string) => [
-			key,
-			JSON.stringify(graph[key]),
-		]);
+const write = (context: any) => {
+	const { put: graph, gun } = context;
+	const keys = Object.keys(graph);
 
-		AsyncStorage.multiMerge(instructions, (err?: any[]) => {
-			gun._.root.on('in', {
-				err,
-				'@': context['#'],
-				ok: !err || err.length === 0,
-			});
+	const instructions = keys.map((key: string) => [
+		key,
+		JSON.stringify(graph[key]),
+	]);
+
+	AsyncStorage.multiMerge(instructions, (err?: any[]) => {
+		gun._.root.on('in', {
+			err,
+			'@': context['#'],
+			ok: !err || err.length === 0,
 		});
-	};
-}
+	});
+};
 
-Gun.on('opt', (context: any) => {
-	const adapter = new Adapter();
+// This returns a promise, it can be awaited!
+const reset = () => AsyncStorage.clear();
 
-	// Allows other plugins to respond concurrently.
-	const pluginInterop = (middleware: any) =>
-		function(ctx: any) {
-			// @ts-ignore
-			this.to.next(ctx);
-			return middleware(ctx);
-		};
-
-	// Register the adapter
-	Gun.on('get', pluginInterop(adapter.read));
-	Gun.on('put', pluginInterop(adapter.write));
-});
+export default {
+	read,
+	write,
+	reset,
+};

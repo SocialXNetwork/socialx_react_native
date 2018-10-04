@@ -18,6 +18,10 @@ import { IAction as IActivitiesActions } from './ui/activities/Types';
 import { IAction as IGlobalsActions } from './ui/globals/Types';
 import { IAction as IOverlaysActions } from './ui/overlays/Types';
 
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+
 type IApplicationAction =
 	| IAccountActions
 	| IProfilesActions
@@ -30,7 +34,8 @@ type IApplicationAction =
 	| IFilesActions
 	| IActivitiesActions
 	| IGlobalsActions
-	| IOverlaysActions;
+	| IOverlaysActions
+	| IResetStoreAction;
 
 export type IThunk = ThunkAction<
 	Promise<void>,

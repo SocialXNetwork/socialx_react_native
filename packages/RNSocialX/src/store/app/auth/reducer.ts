@@ -11,8 +11,11 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case 'RESET_STORE': {
+			return initialState;
+		}
+
 		default: {
-			// @ts-ignore // TODO: @Serkan better option to use `action as never` ?
 			assertNever(action);
 			return state;
 		}

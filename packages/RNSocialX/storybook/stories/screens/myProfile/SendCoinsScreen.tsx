@@ -3,6 +3,7 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { SendCoinsScreenView } from '../../../../src/screens/myProfile/SendCoinsScreen.view';
 
 storiesOf('Screens/myProfile', module)
@@ -22,7 +23,7 @@ storiesOf('Screens/myProfile', module)
 				onUserChange={action('onUserChange')}
 				onUserSubmit={action('onUserSubmit')}
 				onGoBack={action('onGoBack')}
-				getText={(value) => value}
+				getText={getTextMock}
 			/>
 		);
 	});
