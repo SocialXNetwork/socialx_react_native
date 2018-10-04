@@ -11,9 +11,12 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case 'RESET_STORE': {
+			return initialState;
+		}
+
 		default: {
-			// @ts-ignore
-			assertNever(action); // typescript bug?
+			assertNever(action);
 			return state;
 		}
 	}

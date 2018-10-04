@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../auth/Types';
 
 export interface INavigationParams {
 	[paramName: string]: any;
@@ -23,4 +24,7 @@ export interface ISetNavigationParamsAction extends Action {
 	payload: ISetNavigationParamsInput;
 }
 
-export type IAction = ISetNavigationParamsAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction = IResetStoreAction | ISetNavigationParamsAction;

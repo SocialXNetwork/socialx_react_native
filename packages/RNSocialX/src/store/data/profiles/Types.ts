@@ -7,6 +7,7 @@ import {
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
 	profiles: IProfileData[];
@@ -66,7 +67,11 @@ export interface IAcceptFriendAction extends Action {
 	payload: IAcceptFriendInput;
 }
 
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
 export type IAction =
+	| IResetStoreAction
 	| IGetProfileByUsernameAction
 	| ISyncGetProfileByUsernameAction
 	| IGetCurrentProfileAction

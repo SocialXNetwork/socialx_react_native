@@ -9,6 +9,7 @@ import {
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
 	posts: IPostArrayData;
@@ -138,7 +139,11 @@ export interface IUnlikeCommentAction extends Action {
 	payload: IUnlikeCommentInput;
 }
 
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
 export type IAction =
+	| IResetStoreAction
 	// getters
 	| IGetPostsByUsernameAction
 	| ISyncGetPostsByUserAction

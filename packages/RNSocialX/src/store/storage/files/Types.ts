@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
 	uploadProgress: {
@@ -21,4 +22,7 @@ export interface ISetUploadProgressAction extends Action {
 	payload: ISetUploadProgressInput;
 }
 
-export type IAction = ISetUploadProgressAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction = IResetStoreAction | ISetUploadProgressAction;
