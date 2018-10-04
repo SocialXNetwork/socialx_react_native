@@ -7,6 +7,7 @@ import {
 	TABLE_ENUMS,
 	TABLES,
 } from '../../types';
+import { ApiError } from '../../utils/errors';
 import { datePathFromDate, getContextMeta } from '../../utils/helpers';
 import * as postHandles from './handles';
 
@@ -24,7 +25,7 @@ export const createPost = (
 ) => {
 	const { account, gun } = context;
 	if (!account.is) {
-		return callback('a user needs to be logged in to proceed');
+		return callback(new ApiError('user not logged in'));
 	}
 
 	const { owner, ownerPub, timestamp } = getContextMeta(context);
@@ -39,6 +40,7 @@ export const createPost = (
 	const postId = uuidv4();
 	const postPath = (privatePost ? privatePath : publicPath) + `.${postId}`;
 
+	const errPrefix = 'failed to create post';
 	postHandles.postByPath(context, postPath).put(
 		{
 			...createPostInput,
@@ -52,7 +54,11 @@ export const createPost = (
 		},
 		(setPostCallback: IGunSetterCallback) => {
 			if (setPostCallback.err) {
-				return callback('failed, error => ' + setPostCallback.err);
+				return callback(
+					new ApiError(
+						`${errPrefix}, error creating post ${setPostCallback.err}`,
+					),
+				);
 			}
 			postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
 				{
@@ -66,7 +72,13 @@ export const createPost = (
 				},
 				(setPostMetaCallback) => {
 					if (setPostMetaCallback.err) {
-						return callback('failed, error => ' + setPostMetaCallback.err);
+						return callback(
+							new ApiError(
+								`${errPrefix}, error creating post meta of current account ${
+									setPostMetaCallback.err
+								}`,
+							),
+						);
 					}
 
 					postHandles.postMetaById(context, postId).put(
@@ -80,7 +92,13 @@ export const createPost = (
 						},
 						(putPostMetaCallback) => {
 							if (putPostMetaCallback.err) {
-								return callback('failed, error => ' + putPostMetaCallback.err);
+								return callback(
+									new ApiError(
+										`${errPrefix}, error creating post meta ${
+											setPostMetaCallback.err
+										}`,
+									),
+								);
 							}
 							return callback(null);
 						},
@@ -98,18 +116,27 @@ export const likePost = (
 ) => {
 	const { owner, ownerPub, timestamp } = getContextMeta(context);
 
+	const errPrefix = 'failed to like post';
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMeta: IPostMetasCallback) => {
 			if (!postMeta) {
-				return callback('no post found by this id');
+				return callback(
+					new ApiError(`${errPrefix}, no post found with id`, {
+						initialRequestBody: { postId },
+					}),
+				);
 			}
 
 			postHandles
 				.postLikesByCurrentUser(context, postMeta.postPath)
 				.docLoad((likePostCallback) => {
 					if (likePostCallback) {
-						return callback('failed, post already liked');
+						return callback(
+							new ApiError(`${errPrefix}, post already liked`, {
+								initialRequestBody: { postId },
+							}),
+						);
 					}
 					postHandles.postLikesByCurrentUser(context, postMeta.postPath).put(
 						{
@@ -121,7 +148,16 @@ export const likePost = (
 						},
 						(putPostLikeCallback) => {
 							if (putPostLikeCallback.err) {
-								return callback('failed, error => ' + putPostLikeCallback.err);
+								return callback(
+									new ApiError(
+										`${errPrefix}, failed to set like ${
+											putPostLikeCallback.err
+										}`,
+										{
+											initialRequestBody: { postId },
+										},
+									),
+								);
 							}
 
 							return callback(null);
@@ -136,11 +172,16 @@ export const removePost = (
 	{ postId }: IRemovePostInput,
 	callback: IGunCallback<null>,
 ) => {
+	const errPrefix = 'failed to remove post';
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMetaIdCallback: IPostMetasCallback) => {
 			if (!postMetaIdCallback) {
-				return callback('failed, post does not exist');
+				return callback(
+					new ApiError(`${errPrefix}, no post found by id`, {
+						initialRequestBody: { postId },
+					}),
+				);
 			}
 
 			const { owner } = getContextMeta(context);
@@ -152,7 +193,9 @@ export const removePost = (
 
 			if (owner !== alias) {
 				return callback(
-					'failed, current user does not own this post to remove it',
+					new ApiError(`${errPrefix}, user does not own this post`, {
+						initialRequestBody: { postId },
+					}),
 				);
 			}
 
@@ -160,20 +203,43 @@ export const removePost = (
 				.postByPath(context, postPath)
 				.put(null, (postRemoveCallback) => {
 					if (postRemoveCallback.err) {
-						return callback('failed, error => ' + postRemoveCallback.err);
+						return callback(
+							new ApiError(
+								`${errPrefix}, error removing post ${postRemoveCallback.err}`,
+								{
+									initialRequestBody: { postId },
+								},
+							),
+						);
 					}
 					postHandles
 						.postMetaById(context, postId)
 						.put(null, (metaRemoveCallback) => {
 							if (metaRemoveCallback.err) {
-								return callback('failed, error => ' + metaRemoveCallback.err);
+								return callback(
+									new ApiError(
+										`${errPrefix}, error removing post ${
+											metaRemoveCallback.err
+										}`,
+										{
+											initialRequestBody: { postId },
+										},
+									),
+								);
 							}
 							postHandles
 								.postMetasByPostIdOfCurrentAccount(context, postId)
 								.put(null, (postMetasRemoveCallback) => {
 									if (postMetasRemoveCallback.err) {
 										return callback(
-											'failed, error => ' + postMetasRemoveCallback.err,
+											new ApiError(
+												`${errPrefix}, error removing post meta ${
+													postMetasRemoveCallback.err
+												}`,
+												{
+													initialRequestBody: { postId },
+												},
+											),
 										);
 									}
 									return callback(null);
@@ -188,11 +254,16 @@ export const unlikePost = (
 	{ postId }: IUnlikePostInput,
 	callback: IGunCallback<null>,
 ) => {
+	const errPrefix = 'failed to unlike post';
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMetaCallback: IPostMetasCallback) => {
 			if (!postMetaCallback) {
-				return callback('failed, post does not exist');
+				return callback(
+					new ApiError(`${errPrefix}, no post found by id`, {
+						initialRequestBody: { postId },
+					}),
+				);
 			}
 
 			const { postPath } = postMetaCallback;
@@ -202,18 +273,33 @@ export const unlikePost = (
 				.postLikesByCurrentUser(context, postPath)
 				.docLoad((likeData: ILikeData) => {
 					if (!likeData) {
-						return callback('failed, like has not been found to be removed');
+						return callback(
+							new ApiError(`${errPrefix}, like was not removed`, {
+								initialRequestBody: { postId },
+							}),
+						);
 					}
 
 					if (likeData.owner.alias !== owner) {
-						return callback('failed, use does not own this like to remove it');
+						return callback(
+							new ApiError(`${errPrefix}, user does not own post`, {
+								initialRequestBody: { postId },
+							}),
+						);
 					}
 
 					postHandles
 						.postLikesByCurrentUser(context, postPath)
 						.put(null, (unlikePostCallback) => {
 							if (unlikePostCallback.err) {
-								return callback('failed, error => ' + unlikePostCallback.err);
+								return callback(
+									new ApiError(
+										`${errPrefix}, failed to put ${unlikePostCallback.err}`,
+										{
+											initialRequestBody: { postId },
+										},
+									),
+								);
 							}
 							return callback(null);
 						});

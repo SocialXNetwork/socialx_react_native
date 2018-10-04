@@ -1,7 +1,7 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
 import { NOTIFICATION_TYPES } from '../repository/notifications/types';
-import { ValidationError } from '../utils/errors';
+import { ApiError, ValidationError } from '../utils/errors';
 const { getProfile, getTestAccount } = records;
 
 let mockApi: ReturnType<typeof dataApiFactory>;
@@ -100,6 +100,6 @@ describe('notifications api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('no notifications found');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 });

@@ -1,4 +1,5 @@
 import { IContext, IGunCallback, ILikeData, TABLE_ENUMS } from '../../types';
+import { ApiError } from '../../utils/errors';
 import { getContextMeta } from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';
@@ -20,9 +21,9 @@ export const createComment = (
 	callback: IGunCallback<null>,
 ) => {
 	const { account } = context;
-
+	const errPrefix = 'failed to create comment';
 	if (!account.is) {
-		return callback('a user has to be logged in to proceed');
+		return callback(new ApiError(`${errPrefix}, user not logged in`));
 	}
 
 	const { postId, text } = createCommentInput;
@@ -31,7 +32,11 @@ export const createComment = (
 		.postMetaById(context, postId)
 		.docLoad((postMeta: IPostMetasCallback) => {
 			if (!postMeta) {
-				return callback('no post found by this id');
+				return callback(
+					new ApiError(`${errPrefix}, no post found by this id`, {
+						initialRequestBody: createCommentInput,
+					}),
+				);
 			}
 
 			const { postPath } = postMeta;
@@ -53,7 +58,12 @@ export const createComment = (
 					},
 					(commentCallback) => {
 						if (commentCallback.err) {
-							return callback('failed, error => ' + commentCallback.err);
+							return callback(
+								new ApiError(
+									`${errPrefix}, failed to put comment ${commentCallback.err}`,
+									{ initialRequestBody: createCommentInput },
+								),
+							);
 						}
 
 						commentHandles.commentMetaById(context, commentId).put(
@@ -69,7 +79,12 @@ export const createComment = (
 							(putCommentMetaCallback) => {
 								if (putCommentMetaCallback.err) {
 									return callback(
-										'failed, error => ' + putCommentMetaCallback.err,
+										new ApiError(
+											`${errPrefix}, failed to put comment meta ${
+												putCommentMetaCallback.err
+											}`,
+											{ initialRequestBody: createCommentInput },
+										),
 									);
 								}
 								return callback(null);
@@ -85,11 +100,17 @@ export const removeComment = (
 	{ commentId }: IRemoveCommentInput,
 	callback: IGunCallback<null>,
 ) => {
+	const errPrefix = 'failed to remove comment';
+
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentReturnCallback: ICommentMetasCallback) => {
 			if (!commentReturnCallback) {
-				return callback('failed, comment doesnt exist');
+				return callback(
+					new ApiError(`${errPrefix}, failed to find comment`, {
+						initialRequestBody: { commentId },
+					}),
+				);
 			}
 
 			const {
@@ -99,7 +120,11 @@ export const removeComment = (
 			const { owner } = getContextMeta(context);
 
 			if (owner !== alias) {
-				return callback('failed, user doesnt own this comment to remove it');
+				return callback(
+					new ApiError(`${errPrefix}, user does not own comment`, {
+						initialRequestBody: { commentId },
+					}),
+				);
 			}
 
 			commentHandles
@@ -107,14 +132,30 @@ export const removeComment = (
 				.get(commentId)
 				.put(null, (removeCommentCallback) => {
 					if (removeCommentCallback.err) {
-						return callback('failed, error => ' + removeCommentCallback.err);
+						return callback(
+							new ApiError(
+								`${errPrefix}, failed to put null comment record ${
+									removeCommentCallback.err
+								}`,
+								{
+									initialRequestBody: { commentId },
+								},
+							),
+						);
 					}
 					commentHandles
 						.commentMetaById(context, commentId)
 						.put(null, (removeCommentMetaCallback) => {
 							if (removeCommentMetaCallback.err) {
 								return callback(
-									'failed, error => ' + removeCommentMetaCallback.err,
+									new ApiError(
+										`${errPrefix}, failed to put null comment meta record ${
+											removeCommentMetaCallback.err
+										}`,
+										{
+											initialRequestBody: { commentId },
+										},
+									),
 								);
 							}
 							return callback(null);
@@ -129,16 +170,25 @@ export const likeComment = (
 	callback: IGunCallback<null>,
 ) => {
 	const { account } = context;
+	const errPrefix = 'failed to like comment';
 
 	if (!account.is) {
-		return callback('a user needs to be logged in to proceed');
+		return callback(
+			new ApiError(`${errPrefix}, user not logged in`, {
+				initialRequestBody: { commentId },
+			}),
+		);
 	}
 
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentMeta: ICommentMetasCallback) => {
 			if (!commentMeta) {
-				return callback('no comment found by this id');
+				return callback(
+					new ApiError(`${errPrefix}, no comment found by this id`, {
+						initialRequestBody: { commentId },
+					}),
+				);
 			}
 
 			const { owner, ownerPub, timestamp } = getContextMeta(context);
@@ -151,7 +201,11 @@ export const likeComment = (
 				.get(owner)
 				.docLoad((commentReturnCallback) => {
 					if (commentReturnCallback) {
-						return callback('failed, comment already liked');
+						return callback(
+							new ApiError(`${errPrefix}, this comment is already liked`, {
+								initialRequestBody: { commentId },
+							}),
+						);
 					}
 
 					commentHandles
@@ -170,7 +224,14 @@ export const likeComment = (
 							(setCommentLikeCallback) => {
 								if (setCommentLikeCallback.err) {
 									return callback(
-										'failed, error => ' + setCommentLikeCallback.err,
+										new ApiError(
+											`${errPrefix}, failed to put new comment record ${
+												setCommentLikeCallback.err
+											}`,
+											{
+												initialRequestBody: { commentId },
+											},
+										),
 									);
 								}
 
@@ -186,11 +247,16 @@ export const unlikeComment = (
 	{ commentId }: IUnlikeCommentInput,
 	callback: IGunCallback<null>,
 ) => {
+	const errPrefix = 'failed to unlike comment';
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentMetaCallback: ICommentMetasCallback) => {
 			if (!commentMetaCallback) {
-				return callback('failed, comment not found');
+				return callback(
+					new ApiError(`${errPrefix}, no comment by this id`, {
+						initialRequestBody: { commentId },
+					}),
+				);
 			}
 
 			const { postPath } = commentMetaCallback;
@@ -203,11 +269,19 @@ export const unlikeComment = (
 				.get(owner)
 				.docLoad((likeReturnCallback: ILikeData) => {
 					if (!likeReturnCallback) {
-						return callback('failed, like has not been found to be removed');
+						return callback(
+							new ApiError(`${errPrefix}, no like returned`, {
+								initialRequestBody: { commentId },
+							}),
+						);
 					}
 
 					if (likeReturnCallback.owner.alias !== owner) {
-						return callback('failed, use does not own this like to remove it');
+						return callback(
+							new ApiError(`${errPrefix}, user does not own this like`, {
+								initialRequestBody: { commentId },
+							}),
+						);
 					}
 
 					commentHandles
@@ -218,7 +292,14 @@ export const unlikeComment = (
 						.put(null, (unlikeCommentCallback) => {
 							if (unlikeCommentCallback.err) {
 								return callback(
-									'failed, error => ' + unlikeCommentCallback.err,
+									new ApiError(
+										`${errPrefix}, like was not removed ${
+											unlikeCommentCallback.err
+										}`,
+										{
+											initialRequestBody: { commentId },
+										},
+									),
 								);
 							}
 							return callback(null);
