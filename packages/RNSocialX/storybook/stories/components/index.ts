@@ -1,3 +1,5 @@
+import './modals/WalletModal';
+
 import './activityCards/ActivityFriendRequestCard';
 import './activityCards/ActivityGenericCard';
 import './activityCards/ActivityRecentCommentCard';

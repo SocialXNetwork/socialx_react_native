@@ -11,6 +11,7 @@ export { AvatarImage } from './avatar/AvatarImage';
 export { AvatarName } from './avatar/AvatarName';
 export { AvatarPicker } from './avatar/AvatarPicker';
 
+export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
 export { CommentsPostLikes } from './displayers/CommentsPostLikes';
@@ -113,6 +114,7 @@ export { MediaInfoModal } from './modals/MediaInfoModal';
 export { OfflineOverlayModal } from './modals/OfflineOverlayModal';
 export { ReportProblemModal } from './modals/ReportProblemModal';
 export { TagFriendsModal } from './modals/TagFriendsModal';
+export { WalletModal } from './modals/WalletModal';
 
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';

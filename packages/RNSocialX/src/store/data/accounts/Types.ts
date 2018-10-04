@@ -8,6 +8,7 @@ import {
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
 	accounts: IAccountData[];
@@ -69,7 +70,11 @@ export interface ISyncGetAccountByPubAction extends Action {
 	payload: IAccountData;
 }
 
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
 export type IAction =
+	| IResetStoreAction
 	| ICreateAccountAction
 	| IRecoverAccountAction
 	| ILoginAction
