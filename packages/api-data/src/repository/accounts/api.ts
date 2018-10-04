@@ -1,4 +1,6 @@
 import { IContext } from '../../types';
+import { ValidationError } from '../../utils/errors';
+import { resolveCallback } from '../../utils/helpers';
 import getters from './getters';
 import schemas from './schemas';
 import setters from './setters';
@@ -9,8 +11,6 @@ import {
 	ICredentials,
 	IRecoverAccountInput,
 } from './types';
-
-import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
 	changePassword: async (
@@ -25,7 +25,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: changePasswordInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -48,7 +51,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: createAccountInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -83,7 +89,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: recoverAccountInput },
+			);
 		}
 
 		return new Promise<{ hint: string }>((resolve, reject) => {
