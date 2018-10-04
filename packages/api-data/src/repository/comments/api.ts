@@ -2,6 +2,7 @@ import { IContext } from '../../types';
 import schemas from './schemas';
 import setters from './setters';
 
+import { ValidationError } from '../../utils/errors';
 import { resolveCallback } from '../../utils/helpers';
 import { IRemoveCommentInput, IUnlikeCommentInput } from './types';
 
@@ -19,7 +20,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: createCommentInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -39,7 +43,10 @@ export default (context: IContext) => ({
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: likeCommentInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -62,7 +69,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: removeCommentInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -85,7 +95,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: unlikeCommentInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {

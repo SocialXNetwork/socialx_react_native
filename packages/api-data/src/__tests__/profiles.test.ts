@@ -1,5 +1,6 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import { FRIEND_TYPES } from '../repository/profiles/types';
+import { ValidationError } from '../utils/errors';
 
 let mockApi: ReturnType<typeof dataApiFactory>;
 
@@ -79,7 +80,7 @@ describe('profiles api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch(/username must be/);
+		expect(error).toBeInstanceOf(ValidationError);
 	});
 
 	test('get profile by username', async () => {

@@ -11,6 +11,7 @@ import {
 	IUnlikePostInput,
 } from './types';
 
+import { ValidationError } from '../../utils/errors';
 import { resolveCallback } from '../../utils/helpers';
 
 export default function(context: IContext) {
@@ -22,7 +23,10 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: createPostInput },
+				);
 			}
 
 			return new Promise<null>((resolve, reject) => {
@@ -33,21 +37,22 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		async getPostByPath({
-			postPath,
-		}: {
+		async getPostByPath(getPostByPathInput: {
 			postPath: string;
 		}): Promise<IPostReturnData> {
 			let validatedInput: any;
 			try {
 				validatedInput = await schemas.getPostByPath.validate(
-					{ postPath },
+					getPostByPathInput,
 					{
 						stripUnknown: true,
 					},
 				);
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: getPostByPathInput },
+				);
 			}
 			return new Promise<IPostReturnData>(async (resolve, reject) => {
 				getters.getPostByPath(
@@ -57,22 +62,23 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		async getPostsByUser({
-			username,
-		}: {
+		async getPostsByUser(getPostByUserInput: {
 			username: string;
 		}): Promise<IPostReturnData[]> {
 			let validatedInput: any;
 			try {
 				// TODO: create a new schema validator for this
 				validatedInput = await schemas.getPostPathsByUser.validate(
-					{ username },
+					getPostByUserInput,
 					{
 						stripUnknown: true,
 					},
 				);
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: getPostByUserInput },
+				);
 			}
 
 			// ! keep an eye on this
@@ -98,21 +104,22 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		getPublicPostsByDate: async ({
-			date,
-		}: {
+		getPublicPostsByDate: async (getPublicPostsByDateInput: {
 			date: Date;
 		}): Promise<IPostArrayData> => {
 			let validatedInput: any;
 			try {
 				validatedInput = await schemas.getPublicPostsByDate.validate(
-					{ date },
+					getPublicPostsByDateInput,
 					{
 						stripUnknown: true,
 					},
 				);
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: getPublicPostsByDateInput },
+				);
 			}
 
 			return new Promise<IPostArrayData>((resolve, reject) => {
@@ -123,17 +130,17 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		likePost: async ({ postId }: { postId: string }): Promise<null> => {
+		likePost: async (likePostInput: { postId: string }): Promise<null> => {
 			let validatedInput: any;
 			try {
-				validatedInput = await schemas.likePost.validate(
-					{ postId },
-					{
-						stripUnknown: true,
-					},
-				);
+				validatedInput = await schemas.likePost.validate(likePostInput, {
+					stripUnknown: true,
+				});
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: likePostInput },
+				);
 			}
 
 			return new Promise<null>((resolve, reject) => {
@@ -151,7 +158,10 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: removePostInput },
+				);
 			}
 
 			return new Promise<null>((resolve, reject) => {
@@ -169,7 +179,10 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: unlikePostInput },
+				);
 			}
 
 			return new Promise<null>((resolve, reject) => {
