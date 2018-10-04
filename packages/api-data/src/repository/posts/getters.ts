@@ -32,13 +32,12 @@ export const getPostPathsByUser = (
 ) => {
 	postHandles
 		.postMetasByUsername(context, username)
-		.docLoad((postMeta: IPostUserMetasCallback) => {
-			if (!postMeta) {
+		.docLoad((postsMeta: IPostUserMetasCallback) => {
+			if (!postsMeta) {
 				return callback('failed, no posts found');
 			}
-
-			const paths = convertGunSetToArray(postMeta).map(
-				({ postPath }: any) => postPath,
+			const paths = convertGunSetToArray(postsMeta).map(
+				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
 			);
 
 			return callback(null, paths);
@@ -46,10 +45,10 @@ export const getPostPathsByUser = (
 };
 
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
-	convertGunSetToArrayWithKey(likes).map(({ k, postLike }: any) => ({
-		likeId: k,
-		...postLike,
-	}));
+	convertGunSetToArrayWithKey(likes).map((like: any) => {
+		const { k, ...rest } = like;
+		return rest;
+	});
 
 const convertCommentsToArray = (comments: ICommentsPostData): ICommentData =>
 	convertGunSetToArrayWithKey(comments).map(

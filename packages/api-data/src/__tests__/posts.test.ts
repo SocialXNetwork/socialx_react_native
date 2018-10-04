@@ -2,7 +2,13 @@ import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
 import { datePathFromDate } from '../utils/helpers';
 
-const { getPost, getProfile, getTestAccount } = records;
+const {
+	getPost,
+	getProfile,
+	getTestAccount,
+	getProfilealt,
+	getTestAccountalt,
+} = records;
 
 let mockApi: ReturnType<typeof dataApiFactory>;
 const profile = getProfile();
@@ -123,26 +129,29 @@ describe('posts api', () => {
 		expect(error).toMatch('no posts found');
 	});
 
-	test.skip('likes a post', async () => {
+	test('likes a post', async () => {
 		try {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
+
 			const posts = await mockApi.posts.getPostsByUser({
 				username: profile.username,
 			});
 			const { postId } = posts[0];
+
 			await mockApi.posts.likePost({ postId });
 			const updatedPosts = await mockApi.posts.getPostsByUser({
 				username: profile.username,
 			});
-			// NOTE: No like was added
-			// console.log(JSON.stringify(updatedPosts, null, 2));
+
+			const likes = updatedPosts[0].likes;
+			expect(likes).toHaveProperty([0, 'owner', 'alias'], profile.username);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
 	});
 
-	test('reject likes a post', async () => {
+	test('reject likes a post (post doesnt exist)', async () => {
 		let error: any;
 		try {
 			await mockApi.posts.likePost({
@@ -154,41 +163,27 @@ describe('posts api', () => {
 		expect(error).toMatch('no post found');
 	});
 
-	test.skip('removes a post', async () => {
-		// NOTE: need to provide postMetaId? if so how can we get it?
+	test('rejects unlike a post (already liked)', async () => {
+		let error: any;
 		try {
 			const post = getPost();
+
 			await mockApi.posts.createPost(post);
 			const posts = await mockApi.posts.getPostsByUser({
 				username: profile.username,
 			});
-			const { postId } = posts[0];
-			const userPosts = await mockApi.posts.removePost({
-				postPath: `${datePathFromDate(new Date())}.public.${postId}`,
-				postMetaId: '',
-			});
-		} catch (e) {
-			expect(e).toBeUndefined();
-		}
-	});
 
-	test('reject removes a post', async () => {
-		let error: any;
-		try {
-			await mockApi.posts.removePost({
-				postPath: 'some_inexistant_post_path',
-				postMetaId: '',
-			});
-			// NOTE: this succeeds even if post did not exist,
-			// should we allow someone set an non-existant post
-			// path to null
+			const { postId } = posts[0];
+
+			await mockApi.posts.likePost({ postId });
+			await mockApi.posts.likePost({ postId });
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('postMetaId must be at least 1 characters');
+		expect(error).toMatch('post already liked');
 	});
 
-	test.skip('unlike a post', async () => {
+	test('removes a post', async () => {
 		try {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
@@ -196,10 +191,69 @@ describe('posts api', () => {
 				username: profile.username,
 			});
 			const { postId } = posts[0];
-			await mockApi.posts.likePost({ postId });
-			await mockApi.posts.unlikePost({
-				postPath: `${datePathFromDate(new Date())}.public.${postId}`,
+			await mockApi.posts.removePost({
+				postId,
 			});
+			posts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			expect(posts.length).toEqual(0);
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
+	});
+
+	test('reject removes a post (doesnt exist)', async () => {
+		let error: any;
+		try {
+			await mockApi.posts.removePost({
+				postId: '123123',
+			});
+		} catch (e) {
+			error = e;
+		}
+		expect(error).toMatch('post does not exist');
+	});
+
+	test('reject removes a post (user doesnt own the post)', async () => {
+		let error: any;
+		try {
+			const post = getPost();
+			await mockApi.posts.createPost(post);
+			const posts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			const { postId } = posts[0];
+
+			// change user
+			mockApi = dataApiFactory(getTestAccountalt());
+			await mockApi.profiles.createProfile(getProfilealt());
+
+			await mockApi.posts.removePost({
+				postId,
+			});
+		} catch (e) {
+			error = e;
+		}
+		expect(error).toEqual(
+			'failed, current user does not own this post to remove it',
+		);
+	});
+
+	test('unlike a post', async () => {
+		try {
+			const post = getPost();
+
+			await mockApi.posts.createPost(post);
+			let posts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+
+			const { postId } = posts[0];
+			await mockApi.posts.likePost({ postId });
+
+			await mockApi.posts.unlikePost({ postId });
+
 			posts = await mockApi.posts.getPostsByUser({
 				username: profile.username,
 			});
@@ -210,16 +264,34 @@ describe('posts api', () => {
 		}
 	});
 
-	test('rejects unlike a post', async () => {
+	test('rejects unlike a post (doesnt exist)', async () => {
 		let error: any;
 		try {
-			// NOTE: this succeeds even if post did not exist
 			await mockApi.posts.unlikePost({
-				postPath: '',
+				postId: '1234',
 			});
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('postPath must be at least 1 characters');
+		expect(error).toMatch('post does not exist');
+	});
+
+	test('rejects unlike a post (cannot unlike)', async () => {
+		let error: any;
+		try {
+			const post = getPost();
+
+			await mockApi.posts.createPost(post);
+			const posts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+
+			const { postId } = posts[0];
+
+			await mockApi.posts.unlikePost({ postId });
+		} catch (e) {
+			error = e;
+		}
+		expect(error).toEqual('failed, like has not been found to be removed');
 	});
 });

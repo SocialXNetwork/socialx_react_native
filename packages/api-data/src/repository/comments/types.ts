@@ -57,11 +57,9 @@ export interface ICreateCommentInput {
 }
 
 export interface IRemoveCommentInput {
-	postPath: string;
 	commentId: string;
 }
 
 export interface IUnlikeCommentInput {
-	postPath: string;
 	commentId: string;
 }

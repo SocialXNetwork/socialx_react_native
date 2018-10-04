@@ -94,7 +94,10 @@ export interface IGunInstance {
 	// extended api
 	unset: (node: IGunInstance) => IGunInstance;
 	path: (path: string) => IGunInstance;
-	docLoad: <T>(callback: (data: T, key: string) => void) => IGunInstance;
+	docLoad: <T>(
+		callback: (data: T, key: string) => void,
+		old?: boolean,
+	) => IGunInstance;
 	encrypt: (
 		data: IGunInstance | object,
 		callback?: (data: IGunSetterCallback) => void,
@@ -103,6 +106,7 @@ export interface IGunInstance {
 		path: string,
 		callback?: (data: IGunSetterCallback) => void,
 	) => IGunInstance;
+	open: <T>(callback: (data: T) => void) => IGunInstance;
 
 	// subInstance api
 	user: (pub?: string) => IGunAccountInstance;
