@@ -11,5 +11,5 @@ export const commentMetaById = (context: IContext, commentId: string) => {
 
 export const likesByCommentPath = (context: IContext, commentPath: string) => {
 	const { gun } = context;
-	return gun.get(commentPath).get(TABLE_ENUMS.LIKES);
+	return gun.path(commentPath).get(TABLE_ENUMS.LIKES);
 };

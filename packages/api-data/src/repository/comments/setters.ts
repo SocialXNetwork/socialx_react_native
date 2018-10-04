@@ -1,7 +1,9 @@
-import { IContext, IGunCallback, TABLE_ENUMS, TABLES } from '../../types';
+import { IContext, IGunCallback, ILikeData, TABLE_ENUMS } from '../../types';
 import { getContextMeta } from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
 import * as commentHandles from './handles';
+
+import uuidv4 from 'uuid/v4';
 
 import { IPostMetasCallback } from '../posts';
 
@@ -35,48 +37,92 @@ export const createComment = (
 			const { postPath } = postMeta;
 			const { owner, ownerPub, timestamp } = getContextMeta(context);
 
-			commentHandles.commentsByPostPath(context, postPath).set(
-				{
-					text,
-					timestamp,
-					owner: {
-						alias: owner,
-						pub: ownerPub,
+			const commentId = uuidv4();
+
+			commentHandles
+				.commentsByPostPath(context, postPath)
+				.get(commentId)
+				.put(
+					{
+						text,
+						timestamp,
+						owner: {
+							alias: owner,
+							pub: ownerPub,
+						},
 					},
-				},
-				(commentCallback) => {
-					if (commentCallback.err) {
-						return callback('failed, error => ' + commentCallback.err);
-					}
+					(commentCallback) => {
+						if (commentCallback.err) {
+							return callback('failed, error => ' + commentCallback.err);
+						}
 
-					const commentId = commentCallback['#'];
-
-					commentHandles.commentMetaById(context, commentId).put(
-						{
-							owner: {
-								alias: owner,
-								pub: ownerPub,
+						commentHandles.commentMetaById(context, commentId).put(
+							{
+								owner: {
+									alias: owner,
+									pub: ownerPub,
+								},
+								postPath,
+								timestamp,
+								commentId,
 							},
-							postPath,
-							timestamp,
-							commentId,
-						},
-						(putCommentMetaCallback) => {
-							if (putCommentMetaCallback.err) {
-								return callback(
-									'failed, error => ' + putCommentMetaCallback.err,
-								);
-							}
-							return callback(null);
-						},
-					);
-				},
-			);
+							(putCommentMetaCallback) => {
+								if (putCommentMetaCallback.err) {
+									return callback(
+										'failed, error => ' + putCommentMetaCallback.err,
+									);
+								}
+								return callback(null);
+							},
+						);
+					},
+				);
 		});
 };
 
-// todo: properly fix this
-// to change - {commentId} to {postPath, commentId} instead of getting metas
+export const removeComment = (
+	context: IContext,
+	{ commentId }: IRemoveCommentInput,
+	callback: IGunCallback<null>,
+) => {
+	commentHandles
+		.commentMetaById(context, commentId)
+		.docLoad((commentReturnCallback: ICommentMetasCallback) => {
+			if (!commentReturnCallback) {
+				return callback('failed, comment doesnt exist');
+			}
+
+			const {
+				postPath,
+				owner: { alias },
+			} = commentReturnCallback;
+			const { owner } = getContextMeta(context);
+
+			if (owner !== alias) {
+				return callback('failed, user doesnt own this comment to remove it');
+			}
+
+			commentHandles
+				.commentsByPostPath(context, postPath)
+				.get(commentId)
+				.put(null, (removeCommentCallback) => {
+					if (removeCommentCallback.err) {
+						return callback('failed, error => ' + removeCommentCallback.err);
+					}
+					commentHandles
+						.commentMetaById(context, commentId)
+						.put(null, (removeCommentMetaCallback) => {
+							if (removeCommentMetaCallback.err) {
+								return callback(
+									'failed, error => ' + removeCommentMetaCallback.err,
+								);
+							}
+							return callback(null);
+						});
+				});
+		});
+};
+
 export const likeComment = (
 	context: IContext,
 	{ commentId }: { commentId: string },
@@ -96,67 +142,88 @@ export const likeComment = (
 			}
 
 			const { owner, ownerPub, timestamp } = getContextMeta(context);
-			const commentPath = `${TABLES.POSTS}/${commentMeta.postPath}/${
-				TABLE_ENUMS.COMMENTS
-			}/${commentId}`;
+			const { postPath } = commentMeta;
 
-			commentHandles.likesByCommentPath(context, commentPath).set(
-				{
-					owner: {
-						alias: owner,
-						pub: ownerPub,
-					},
-					timestamp,
-				},
-				(setCommentLikeCallback) => {
-					if (setCommentLikeCallback.err) {
-						return callback('failed, error => ' + setCommentLikeCallback.err);
-					}
-
-					return callback(null);
-				},
-			);
-		});
-};
-
-export const removeComment = (
-	context: IContext,
-	{ postPath, commentId }: IRemoveCommentInput,
-	callback: IGunCallback<null>,
-) => {
-	commentHandles
-		.commentsByPostPath(context, postPath)
-		.get(commentId)
-		.put(null, (removePostCallback) => {
-			if (removePostCallback.err) {
-				return callback('failed, error => ' + removePostCallback.err);
-			}
 			commentHandles
-				.commentMetaById(context, commentId)
-				.put(null, (removeCommentMetaCallback) => {
-					if (removeCommentMetaCallback.err) {
-						return callback(
-							'failed, error => ' + removeCommentMetaCallback.err,
-						);
+				.commentsByPostPath(context, postPath)
+				.get(commentId)
+				.get(TABLE_ENUMS.LIKES)
+				.get(owner)
+				.docLoad((commentReturnCallback) => {
+					if (commentReturnCallback) {
+						return callback('failed, comment already liked');
 					}
-					return callback(null);
+
+					commentHandles
+						.commentsByPostPath(context, postPath)
+						.get(commentId)
+						.get(TABLE_ENUMS.LIKES)
+						.get(owner)
+						.put(
+							{
+								owner: {
+									alias: owner,
+									pub: ownerPub,
+								},
+								timestamp,
+							},
+							(setCommentLikeCallback) => {
+								if (setCommentLikeCallback.err) {
+									return callback(
+										'failed, error => ' + setCommentLikeCallback.err,
+									);
+								}
+
+								return callback(null);
+							},
+						);
 				});
 		});
 };
 
 export const unlikeComment = (
 	context: IContext,
-	{ postPath, commentId }: IUnlikeCommentInput,
+	{ commentId }: IUnlikeCommentInput,
 	callback: IGunCallback<null>,
 ) => {
 	commentHandles
-		.likesByCommentPath(context, postPath)
-		.get(commentId)
-		.put(null, (unlikeCommentCallback) => {
-			if (unlikeCommentCallback.err) {
-				return callback('failed, error => ' + unlikeCommentCallback.err);
+		.commentMetaById(context, commentId)
+		.docLoad((commentMetaCallback: ICommentMetasCallback) => {
+			if (!commentMetaCallback) {
+				return callback('failed, comment not found');
 			}
-			return callback(null);
+
+			const { postPath } = commentMetaCallback;
+			const { owner } = getContextMeta(context);
+
+			commentHandles
+				.commentsByPostPath(context, postPath)
+				.get(commentId)
+				.get(TABLE_ENUMS.LIKES)
+				.get(owner)
+				.docLoad((likeReturnCallback: ILikeData) => {
+					if (!likeReturnCallback) {
+						return callback('failed, like has not been found to be removed');
+					}
+
+					if (likeReturnCallback.owner.alias !== owner) {
+						return callback('failed, use does not own this like to remove it');
+					}
+
+					commentHandles
+						.commentsByPostPath(context, postPath)
+						.get(commentId)
+						.get(TABLE_ENUMS.LIKES)
+						.get(owner)
+						.put(null, (unlikeCommentCallback) => {
+							if (unlikeCommentCallback.err) {
+								return callback(
+									'failed, error => ' + unlikeCommentCallback.err,
+								);
+							}
+							return callback(null);
+						});
+				});
 		});
 };
 

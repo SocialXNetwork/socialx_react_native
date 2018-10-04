@@ -3,8 +3,8 @@ import * as yup from 'yup';
 const idType = yup
 	.string()
 	.trim()
-	.min(8)
-	.max(32)
+	.min(1)
+	.max(50)
 	.required();
 
 const longTextType = yup
@@ -45,10 +45,6 @@ export const createComment = yup
 export const removeComment = yup
 	.object()
 	.shape({
-		postPath: yup
-			.string()
-			.trim()
-			.required(),
 		commentId: yup
 			.string()
 			.trim()
@@ -59,10 +55,6 @@ export const removeComment = yup
 export const unlikeComment = yup
 	.object()
 	.shape({
-		postPath: yup
-			.string()
-			.trim()
-			.required(),
 		commentId: yup
 			.string()
 			.trim()

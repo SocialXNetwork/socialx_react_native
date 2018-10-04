@@ -67,10 +67,9 @@ export interface IPostsDataCallback {
 }
 
 export interface IRemovePostInput {
-	postPath: string;
-	postMetaId: string;
+	postId: string;
 }
 
 export interface IUnlikePostInput {
-	postPath: string;
+	postId: string;
 }
