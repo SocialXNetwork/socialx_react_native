@@ -1,6 +1,7 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
 import { NOTIFICATION_TYPES } from '../repository/notifications/types';
+import { ValidationError } from '../utils/errors';
 const { getProfile, getTestAccount } = records;
 
 let mockApi: ReturnType<typeof dataApiFactory>;
@@ -51,7 +52,7 @@ describe('notifications api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('from.pub must be at least 1 characters');
+		expect(error).toBeInstanceOf(ValidationError);
 	});
 
 	test('removes a notification', async () => {
@@ -75,8 +76,7 @@ describe('notifications api', () => {
 		} catch (e) {
 			error = e;
 		}
-		console.log(error);
-		expect(error).toEqual('notificationId must be at least 1 characters');
+		expect(error).toBeInstanceOf(ValidationError);
 	});
 
 	test('get current notifications', async () => {

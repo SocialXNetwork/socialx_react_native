@@ -1,5 +1,6 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
+import { ValidationError } from '../utils/errors';
 import { datePathFromDate } from '../utils/helpers';
 
 const {
@@ -42,7 +43,7 @@ describe('posts api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('postText must be at least 5 characters');
+		expect(error).toBeInstanceOf(ValidationError);
 	});
 
 	test('gets a post by path', async () => {

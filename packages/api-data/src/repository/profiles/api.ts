@@ -15,6 +15,7 @@ import {
 	IUpdateProfileInput,
 } from './types';
 
+import { ValidationError } from '../../utils/errors';
 import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
@@ -30,7 +31,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: createProfileInput },
+			);
 		}
 		return new Promise<null>((resolve, reject) => {
 			setters.createProfile(
@@ -44,21 +48,22 @@ export default (context: IContext) => ({
 		new Promise((resolve, reject) => {
 			getters.getCurrentProfile(context, resolveCallback(resolve, reject));
 		}),
-	getProfileByUsername: async ({
-		username,
-	}: {
+	getProfileByUsername: async (getProfileByUsernameInput: {
 		username: string;
 	}): Promise<IProfileData> => {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfileByUsername.validate(
-				{ username },
+				getProfileByUsernameInput,
 				{
 					stripUnknown: true,
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: getProfileByUsernameInput },
+			);
 		}
 
 		return new Promise<IProfileData>((resolve, reject) => {
@@ -69,19 +74,22 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	getPublicKeyByUsername: async ({
-		username,
-	}: IGetPublicKeyInput): Promise<string> => {
+	getPublicKeyByUsername: async (
+		getPublicKeyByUsernameInput: IGetPublicKeyInput,
+	): Promise<string> => {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfileByUsername.validate(
-				{ username },
+				getPublicKeyByUsernameInput,
 				{
 					stripUnknown: true,
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: getPublicKeyByUsernameInput },
+			);
 		}
 
 		return new Promise<string>((resolve, reject) => {
@@ -104,7 +112,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: updateProfileInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -122,7 +133,10 @@ export default (context: IContext) => ({
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: addFriendInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -142,7 +156,10 @@ export default (context: IContext) => ({
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: removeFriendInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -162,7 +179,10 @@ export default (context: IContext) => ({
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: acceptFriendInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {

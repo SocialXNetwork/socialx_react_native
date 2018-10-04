@@ -9,6 +9,7 @@ import getters from './getters';
 import schemas from './schemas';
 import setters, { removeNotification } from './setters';
 
+import { ValidationError } from '../../utils/errors';
 import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
@@ -26,7 +27,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: createNotificationInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -49,7 +53,10 @@ export default (context: IContext) => ({
 				},
 			);
 		} catch (e) {
-			throw typeof e.errors === 'string' ? e.errors : e.errors.join();
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: removeNotifcationInput },
+			);
 		}
 
 		return new Promise<null>((resolve, reject) => {

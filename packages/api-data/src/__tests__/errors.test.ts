@@ -1,39 +1,8 @@
-import { ApiError, ExtensibleError, ValidationError } from '../utils/errors';
+import { ApiError, ValidationError } from '../utils/errors';
 
 describe('errors', () => {
 	beforeEach(() => {
 		delete process.env.DEBUG;
-	});
-
-	test('ExtensibleError istantiates correctly', () => {
-		const extErr = new ExtensibleError('something happened', {
-			details: { bleep: 'bloop' },
-			status: '420',
-		});
-		expect(extErr).toBeInstanceOf(ExtensibleError);
-		expect(extErr).toHaveProperty('name', 'ExtensibleError');
-		expect(extErr).toHaveProperty('message', 'something happened');
-		expect(extErr).toHaveProperty(['details', 'bleep'], 'bloop');
-		expect(extErr.loggedMessage.length).toEqual(1);
-		// console.log(JSON.stringify(extErr, null, 2));
-		// console.log(extErr.stack);
-		// extErr.log();
-	});
-
-	test('ExtensibleError logs details to debug', () => {
-		process.env.DEBUG = 'true';
-		const extErr = new ExtensibleError('something happened', {
-			details: { bleep: 'bloop' },
-			status: '420',
-		});
-		expect(extErr).toBeInstanceOf(ExtensibleError);
-		expect(extErr).toHaveProperty('name', 'ExtensibleError');
-		expect(extErr).toHaveProperty('message', 'something happened');
-		expect(extErr).toHaveProperty(['details', 'bleep'], 'bloop');
-		expect(extErr.loggedMessage.length).toEqual(2);
-		// console.log(JSON.stringify(extErr, null, 2));
-		// console.log(extErr.stack);
-		// extErr.log();
 	});
 
 	test('ApiError instantiates correctly', () => {
