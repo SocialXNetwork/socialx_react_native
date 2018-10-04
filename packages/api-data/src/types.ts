@@ -70,7 +70,7 @@ export interface IGunSetterCallback {
 	user?: IGunAccountInstance;
 }
 
-export type IGunCallback<T> = (err: string | null, result?: T) => void;
+export type IGunCallback<T> = (err: string | object | null, result?: T) => void;
 
 export interface IGunInstance {
 	// core api

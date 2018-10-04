@@ -6,6 +6,7 @@ import {
 	ILikesArray,
 	ILikesMetasCallback,
 } from '../../types';
+import { ApiError } from '../../utils/errors';
 import {
 	convertGunSetToArray,
 	convertGunSetToArrayWithKey,
@@ -34,7 +35,11 @@ export const getPostPathsByUser = (
 		.postMetasByUsername(context, username)
 		.docLoad((postsMeta: IPostUserMetasCallback) => {
 			if (!postsMeta) {
-				return callback('failed, no posts found');
+				return callback(
+					new ApiError('failed, no posts found', {
+						initialRequestBody: { username },
+					}),
+				);
 			}
 			const paths = convertGunSetToArray(postsMeta).map(
 				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
@@ -73,7 +78,11 @@ export const getPostByPath = (
 		.postByPath(context, postPath)
 		.docLoad((postData: IPostCallbackData) => {
 			if (!postData) {
-				return callback('no post found');
+				return callback(
+					new ApiError('failed, no posts found', {
+						initialRequestBody: { postPath },
+					}),
+				);
 			}
 			const { likes, comments, ...restPost } = postData;
 			// convert likes into an array with keys
@@ -102,7 +111,11 @@ export const getPublicPostsByDate = (
 		.postsByDate(context, datePath)
 		.docLoad(async (postsData: IPostsDataCallback) => {
 			if (!postsData) {
-				return callback('failed, no posts found by date');
+				return callback(
+					new ApiError('failed, no posts found', {
+						initialRequestBody: { datePath },
+					}),
+				);
 			}
 
 			const posts = convertGunSetToArrayWithKey(postsData).map(

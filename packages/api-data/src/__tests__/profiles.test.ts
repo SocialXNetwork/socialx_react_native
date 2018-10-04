@@ -1,6 +1,6 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import { FRIEND_TYPES } from '../repository/profiles/types';
-import { ValidationError } from '../utils/errors';
+import { ApiError, ValidationError } from '../utils/errors';
 
 let mockApi: ReturnType<typeof dataApiFactory>;
 
@@ -53,7 +53,7 @@ describe('profiles api', () => {
 			try {
 				await mockApi.profiles.createProfile(testProfile);
 			} catch (e) {
-				expect(e).toBeTruthy();
+				expect(e).toBeInstanceOf(ValidationError);
 			}
 		});
 	});
@@ -111,7 +111,7 @@ describe('profiles api', () => {
 				avatar: '12345',
 			});
 		} catch (e) {
-			expect(e).toBeTruthy();
+			expect(e).toBeInstanceOf(ValidationError);
 		}
 	});
 
@@ -144,7 +144,7 @@ describe('profiles api', () => {
 			await mockApi.profiles.createProfile(mockProfile);
 			await mockApi.profiles.addFriend({ username: '' });
 		} catch (e) {
-			expect(e).toBeTruthy();
+			expect(e).toBeInstanceOf(ValidationError);
 		}
 	});
 
@@ -196,7 +196,7 @@ describe('profiles api', () => {
 				username: 'first_friend',
 			});
 		} catch (e) {
-			expect(e).toBeTruthy();
+			expect(e).toBeInstanceOf(ValidationError);
 		}
 	});
 
@@ -248,7 +248,7 @@ describe('profiles api', () => {
 				username: friendProfile.username,
 			});
 		} catch (e) {
-			expect(e).toBeTruthy();
+			expect(e).toBeInstanceOf(ValidationError);
 		}
 	});
 
@@ -319,6 +319,6 @@ describe('profiles api', () => {
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toMatch('cannot add self as a friend');
+		expect(error).toBeInstanceOf(ApiError);
 	});
 });

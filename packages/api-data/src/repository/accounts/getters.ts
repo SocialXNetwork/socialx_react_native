@@ -1,5 +1,6 @@
 import { IContext, IGunCallback } from '../../types';
 
+import { ApiError } from '../../utils/errors';
 import { IAccountData, IGetAccountByPubInput } from './types';
 
 export const getIsAccountLoggedIn = (
@@ -16,12 +17,16 @@ export const getCurrentAccount = (
 ) => {
 	const { account } = context;
 	if (!account.is) {
-		return callback('a user need to be logged in to proceed');
+		return callback(
+			new ApiError('failed to get current account, user not logged in'),
+		);
 	}
 
 	account.docLoad((data: IAccountData) => {
 		if (!data) {
-			return callback('current user object not found');
+			return callback(
+				new ApiError('failed to get current account, user document not found'),
+			);
 		}
 		return callback(null, data);
 	});
@@ -36,7 +41,12 @@ export const getAccountByPub = (
 	const targetUser = gun.user(publicKey);
 	targetUser.docLoad((data: IAccountData) => {
 		if (!data) {
-			return callback('failed, no user object found for this public key');
+			return callback(
+				new ApiError(
+					'failed to get account, no object for provided public key',
+					{ initialRequestBody: publicKey },
+				),
+			);
 		}
 		return callback(null, data);
 	});

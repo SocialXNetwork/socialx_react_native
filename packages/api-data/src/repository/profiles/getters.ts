@@ -1,6 +1,7 @@
 import { IContext, IGunCallback } from '../../types';
 import * as profileHandles from './handles';
 
+import { ApiError } from '../../utils/errors';
 import {
 	cleanGunMetaFromObject,
 	convertGunSetToArrayWithKey,
@@ -41,14 +42,16 @@ export const getCurrentProfile = (
 ) => {
 	const { account } = context;
 	if (!account.is) {
-		return callback('a user needs to be logged in to proceed');
+		return callback(
+			new ApiError('failed to get current profile, user not logged in'),
+		);
 	}
 
 	profileHandles
 		.currentUserProfile(context)
 		.docLoad((profile: IProfileCallbackData) => {
 			if (!profile) {
-				return callback('no user profile found');
+				return callback(new ApiError('failed to find current profile'));
 			}
 			const { friends, username, ...profileRest } = profile;
 
@@ -71,7 +74,11 @@ export const getProfileByUsername = (
 		.profileByUsername(context, username)
 		.docLoad((profile: IProfileCallbackData) => {
 			if (!profile) {
-				return callback('no user profile found');
+				return callback(
+					new ApiError('failed to find profile', {
+						initialRequestBody: { username },
+					}),
+				);
 			}
 			const { friends, ...profileRest } = profile;
 
@@ -95,7 +102,7 @@ export const getCurrentProfileFriends = (
 		.currentProfileFriends(context)
 		.docLoad((friends: IFriendsCallbackData) => {
 			if (!friends) {
-				return callback('failed, no friends found :(');
+				return callback(new ApiError('failed to find friends of current user'));
 			}
 
 			const friendsData = friendsToArray(friends);

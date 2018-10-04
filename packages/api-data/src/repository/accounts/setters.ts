@@ -25,6 +25,7 @@
  */
 
 import { IContext, IGunCallback } from '../../types';
+import { ApiError } from '../../utils/errors';
 import { getPublicKeyByUsername } from '../profiles/getters';
 import { createProfile } from '../profiles/setters';
 import * as accountHandles from './handles';
@@ -55,20 +56,26 @@ export const createAccount = (
 		miningEnabled,
 		recover: { reminder, question1, question2 },
 	} = createAccountInput;
-
+	const errPrefix = 'failed to create a new account';
 	// start the creation process here
 	account.create(username, password, (createAccountCallback) => {
 		if (createAccountCallback.wait) {
 			// we wait? what do we do here
 		} else if (createAccountCallback.err) {
 			return callback(
-				`could'nt create a new user => ` + createAccountCallback.err,
+				new ApiError(`${errPrefix} ${createAccountCallback.err}`, {
+					initialRequestBody: createAccountInput,
+				}),
 			);
 		} else {
 			// we authenticate the user
 			account.auth(username, password, async (authAck) => {
 				if (authAck.err) {
-					return callback('failed, error => ' + authAck.err);
+					return callback(
+						new ApiError(`${errPrefix}, failed authentication ${authAck.err}`, {
+							initialRequestBody: createAccountInput,
+						}),
+					);
 				}
 				// after the user is authenticate we create their recovery setting
 				const encryptedReminder = await encrypt(
@@ -85,7 +92,16 @@ export const createAccount = (
 					},
 					(recoverCallback) => {
 						if (recoverCallback.err) {
-							return callback('failed, error => ' + recoverCallback.err);
+							return callback(
+								new ApiError(
+									`${errPrefix}, failed to create account recovery settings ${
+										recoverCallback.err
+									}`,
+									{
+										initialRequestBody: createAccountInput,
+									},
+								),
+							);
 						}
 
 						createProfile(
@@ -101,7 +117,12 @@ export const createAccount = (
 							},
 							(err) => {
 								if (err) {
-									return callback(err);
+									return callback(
+										new ApiError(
+											`${errPrefix}, failed to set created account ${err}`,
+											{ initialRequestBody: createAccountInput },
+										),
+									);
 								}
 
 								return callback(null);
@@ -122,7 +143,11 @@ export const login = (
 	const { account } = context;
 	account.auth(username, password, (authCallback) => {
 		if (authCallback.err) {
-			return callback('failed, error => ' + authCallback.err);
+			return callback(
+				new ApiError('failed to authenticate', {
+					initialRequestBody: { username },
+				}),
+			);
 		}
 
 		return callback(null);
@@ -150,7 +175,9 @@ export const changePassword = (
 	const { account } = context;
 
 	if (!account.is) {
-		return callback('a user needs to be logged in in-order to proceed');
+		return callback(
+			new ApiError('failed to change password, user not logged in'),
+		);
 	}
 
 	account.auth(
@@ -169,23 +196,35 @@ export const recoverAccount = (
 	callback: IGunCallback<{ hint: string }>,
 ) => {
 	const { decrypt, work } = context;
-
+	const errPrefix = 'failed to recover account';
 	getPublicKeyByUsername(context, { username }, (err, pub) => {
 		if (!pub) {
-			return callback('failed, no public key found');
+			return callback(
+				new ApiError(`${errPrefix}, public key not found ${err}`, {
+					initialRequestBody: { username },
+				}),
+			);
 		}
 		accountHandles
 			.accountByPub(context, pub)
 			.docLoad(async (recoverData: IRecoverData<string>) => {
 				if (!recoverData) {
-					return callback('user does not exist');
+					return callback(
+						new ApiError(`${errPrefix}, account not found`, {
+							initialRequestBody: { username },
+						}),
+					);
 				}
 				try {
 					const {
 						recover: { encryptedReminder },
 					} = recoverData;
 					if (!encryptedReminder) {
-						return callback('failed, no encrypted reminder found');
+						return callback(
+							new ApiError(`${errPrefix}, no encrypted reminder`, {
+								initialRequestBody: { username },
+							}),
+						);
 					}
 					const hint = await decrypt(
 						encryptedReminder,
@@ -194,7 +233,12 @@ export const recoverAccount = (
 					return callback(null, { hint });
 				} catch (e) {
 					return callback(
-						`could'nt capture the user's recovery key => ` + e.message,
+						new ApiError(
+							`${errPrefix}, recovery key not captured ${e.message}`,
+							{
+								initialRequestBody: { username },
+							},
+						),
 					);
 				}
 			});
@@ -210,7 +254,7 @@ export const trustAccount = async (
 	const { account } = context;
 
 	if (!account.is) {
-		return callback('a user needs to be logged in in-order to proceed');
+		return callback(new ApiError('user not logged in'));
 	}
 
 	// TODO: what to trust
