@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export interface IGlobal {
 	[name: string]: any;
@@ -16,4 +17,7 @@ export interface ISetGlobalAction extends Action {
 	payload: IGlobal;
 }
 
-export type IAction = ISetGlobalAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction = IResetStoreAction | ISetGlobalAction;

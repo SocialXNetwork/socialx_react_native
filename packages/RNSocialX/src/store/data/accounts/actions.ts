@@ -8,6 +8,7 @@ import {
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+import { clearAuth, setAuth } from '../../app/auth';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity } from '../../ui/activities';
 import {
@@ -53,6 +54,7 @@ export const getCurrentAccount = (): IThunk => async (
 		const { dataApi } = context;
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
+		dispatch(setAuth({ alias: account.alias, pub: account.pub }));
 	} catch (e) {
 		/**/
 	} finally {
@@ -154,7 +156,6 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 	type: ActionTypes.LOGOUT,
 });
 
-// TODO: @serkan reset whole redux on logout
 export const logout = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	try {
@@ -167,6 +168,8 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 		);
 		const { dataApi } = context;
 		await dataApi.accounts.logout();
+
+		dispatch(clearAuth());
 	} catch (e) {
 		/**/
 	} finally {

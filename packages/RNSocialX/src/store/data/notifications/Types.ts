@@ -5,6 +5,7 @@ import {
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
 	notifications: INotificationReturnData[];
@@ -36,7 +37,11 @@ export interface ISyncNotificationsAction extends Action {
 	payload: INotificationReturnData[];
 }
 
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
 export type IAction =
+	| IResetStoreAction
 	| ICreateNotificationAction
 	| IRemoveNotificationAction
 	| IGetNotificationsAction

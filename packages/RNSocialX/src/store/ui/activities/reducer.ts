@@ -15,8 +15,20 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.ERROR: {
+			return {
+				...state,
+				errors: action.payload.type
+					? [...state.errors, action.payload]
+					: state.errors.filter((error) => action.payload.uuid !== error.uuid),
+			};
+		}
+
+		case 'RESET_STORE': {
+			return state;
+		}
+
 		default: {
-			// @ts-ignore
 			assertNever(action);
 			return state;
 		}
