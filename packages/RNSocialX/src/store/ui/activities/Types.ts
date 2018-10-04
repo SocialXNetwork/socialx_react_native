@@ -6,12 +6,21 @@ export interface IActivity {
 	type: string | null;
 }
 
+export interface IError extends IActivity {
+	error: {
+		message: string;
+		type: string;
+	} | null;
+}
+
 export type IState = DeepReadonly<{
 	activities: IActivity[];
+	errors: IError[];
 }>;
 
 export const enum ActionTypes {
 	ACTIVITY = 'ui/activities/ACTIVITY',
+	ERROR = 'ui/activities/ERROR',
 }
 
 export interface IActivityAction extends Action {
@@ -19,4 +28,9 @@ export interface IActivityAction extends Action {
 	payload: IActivity;
 }
 
-export type IAction = IActivityAction;
+export interface IErrorAction extends Action {
+	type: ActionTypes.ERROR;
+	payload: IError;
+}
+
+export type IAction = IActivityAction | IErrorAction;
