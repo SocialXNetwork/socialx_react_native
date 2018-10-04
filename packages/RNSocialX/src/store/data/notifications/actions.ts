@@ -25,13 +25,22 @@ const createNotificationAction: ActionCreator<ICreateNotificationAction> = (
 export const createNotification = (
 	createNotificationInput: ICreateNotification,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(createNotificationAction(createNotificationInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.CREATE_NOTIFICATION,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.notifications.createNotification(createNotificationInput);
 		dispatch(getNotifications());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -45,13 +54,22 @@ const removeNotificationAction: ActionCreator<IRemoveNotificationAction> = (
 export const removeNotification = (
 	removeNotificationInput: IRemoveNotificationInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(removeNotificationAction(removeNotificationInput));
+		dispatch(
+			beginActivity({
+				type: ActionTypes.REMOVE_NOTIFICATION,
+				uuid: activityId,
+			}),
+		);
 		const { dataApi } = context;
 		await dataApi.notifications.removeNotification(removeNotificationInput);
 		dispatch(getNotifications());
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
