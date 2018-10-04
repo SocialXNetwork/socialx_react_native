@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../auth/Types';
 
 export interface IApplicationConfig {
 	gun: {
@@ -44,4 +45,10 @@ export interface ISetCustomGunSuperPeersAction extends Action {
 	payload: ISetCustomGunSuperPeersInput;
 }
 
-export type IAction = ISetAppConfigAction | ISetCustomGunSuperPeersAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction =
+	| IResetStoreAction
+	| ISetAppConfigAction
+	| ISetCustomGunSuperPeersAction;

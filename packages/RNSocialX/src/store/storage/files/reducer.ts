@@ -6,7 +6,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.SET_UPLOAD_PROGRESS: {
 			return {
-				...state,
 				uploadProgress: {
 					...state.uploadProgress,
 					[action.payload.hash]: action.payload.percentage,
@@ -14,8 +13,18 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case 'RESET_STORE': {
+			return {
+				uploadProgress: Object.entries(state.uploadProgress)
+					.filter(([id, progress]) => progress < 100)
+					.reduce(
+						(stateAcc, [id, progress]) => ({ ...stateAcc, [id]: progress }),
+						{},
+					),
+			};
+		}
+
 		default: {
-			// @ts-ignore
 			assertNever(action);
 			return state;
 		}

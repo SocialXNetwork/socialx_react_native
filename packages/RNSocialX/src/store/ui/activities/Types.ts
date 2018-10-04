@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+import { ISetAuthAction } from '../../app/auth/Types';
 
 export interface IActivity {
 	uuid: string;
@@ -33,4 +34,7 @@ export interface IErrorAction extends Action {
 	payload: IError;
 }
 
-export type IAction = IActivityAction | IErrorAction;
+interface IResetStoreAction {
+	type: 'RESET_STORE';
+}
+export type IAction = IResetStoreAction | IActivityAction | IErrorAction;
