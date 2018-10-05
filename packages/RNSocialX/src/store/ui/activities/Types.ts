@@ -20,13 +20,12 @@ export type IState = DeepReadonly<{
 }>;
 
 export const enum ActionTypes {
-	START_ACTIVITY = 'ui/activities/START_ACTIVITY',
-	END_ACTIVITY = 'ui/activities/END_ACTIVITY',
+	ACTIVITY = 'ui/activities/ACTIVITY',
 	ERROR = 'ui/activities/ERROR',
 }
 
 export interface IActivityAction extends Action {
-	type: ActionTypes.START_ACTIVITY;
+	type: ActionTypes.ACTIVITY;
 	payload: IActivity;
 }
 
