@@ -48,6 +48,32 @@ export default (context: IContext) => ({
 		new Promise((resolve, reject) => {
 			getters.getCurrentProfile(context, resolveCallback(resolve, reject));
 		}),
+	getProfilesByUsernames: async (getProfilesByUsernamesInput: {
+		usernames: string[];
+	}) => {
+		let validatedInput: any;
+		try {
+			validatedInput = await schemas.getProfilesByUsernames.validate(
+				getProfilesByUsernamesInput,
+				{
+					stripUnknown: true,
+				},
+			);
+		} catch (e) {
+			throw new ValidationError(
+				typeof e.errors === 'string' ? e.errors : e.errors.join(),
+				{ validationInput: getProfilesByUsernamesInput },
+			);
+		}
+
+		return new Promise<IProfileCallbackData[]>((resolve, reject) => {
+			getters.getProfilesByUsernames(
+				context,
+				validatedInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
 	getProfileByUsername: async (getProfileByUsernameInput: {
 		username: string;
 	}): Promise<IProfileData> => {
