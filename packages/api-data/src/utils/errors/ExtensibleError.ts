@@ -1,9 +1,9 @@
 export default class ExtensibleError extends Error {
 	name: string;
 	message: string;
-	code: number | undefined;
-	details: object | undefined;
-	loggedMessage: any;
+	code?: number;
+	details?: object;
+	loggedMessage: string[];
 	log: () => void;
 	constructor(message: string, additionalInformation: any = {}) {
 		super(message);
@@ -20,9 +20,8 @@ export default class ExtensibleError extends Error {
 		].filter((v: string) => v.length);
 
 		this.log = () => {
-			// Always log the stack
-			this.loggedMessage.push(this.stack);
-			console.log(this.loggedMessage.join('\n'));
+			// Always log the stack at the end
+			console.log([...this.loggedMessage, this.stack || ''].join('\n'));
 		};
 	}
 }
