@@ -320,27 +320,31 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 	context,
 ) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(likePostAction(likePostInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.LIKE_POST,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.posts.likePost(likePostInput);
-		dispatch(getPostById(likePostInput));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.LIKE_POST,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(likePostAction(likePostInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.LIKE_POST,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.posts.likePost(likePostInput);
+			dispatch(getPostById(likePostInput));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.LIKE_POST,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -357,30 +361,32 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	context,
 ) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(removePostAction(removePostInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.REMOVE_POST,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.posts.removePost(removePostInput);
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(removePostAction(removePostInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.REMOVE_POST,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.posts.removePost(removePostInput);
 
-		const storeState = getState();
-		const auth = storeState.app.auth.auth || { alias: '' };
-		dispatch(getPostsByUsername({ username: auth.alias }));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.REMOVE_POST,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+			dispatch(getPostsByUsername({ username: auth.alias }));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.REMOVE_POST,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -397,27 +403,31 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 	context,
 ) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(unlikePostAction(unlikePostInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.UNLIKE_POST,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.posts.unlikePost(unlikePostInput);
-		dispatch(getPostById(unlikePostInput));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.UNLIKE_POST,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(unlikePostAction(unlikePostInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.UNLIKE_POST,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.posts.unlikePost(unlikePostInput);
+			dispatch(getPostById(unlikePostInput));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.UNLIKE_POST,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -433,27 +443,31 @@ export const createComment = (
 	createCommentInput: ICreateCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(createCommentAction(createCommentInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.CREATE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.comments.createComment(createCommentInput);
-		dispatch(getPostById({ postId: createCommentInput.postId }));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.CREATE_COMMENT,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(createCommentAction(createCommentInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.CREATE_COMMENT,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.comments.createComment(createCommentInput);
+			dispatch(getPostById({ postId: createCommentInput.postId }));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.CREATE_COMMENT,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -476,29 +490,31 @@ export const likeComment = (
 				? true
 				: false,
 	);
-
-	const activityId = uuidv4();
-	try {
-		dispatch(likeCommentAction(likeCommentInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.LIKE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.comments.likeComment(likeCommentInput);
-		dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.LIKE_COMMENT,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		const activityId = uuidv4();
+		try {
+			dispatch(likeCommentAction(likeCommentInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.LIKE_COMMENT,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.comments.likeComment(likeCommentInput);
+			dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.LIKE_COMMENT,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -521,29 +537,31 @@ export const removeComment = (
 				? true
 				: false,
 	);
-
-	const activityId = uuidv4();
-	try {
-		dispatch(removeCommentAction(removeCommentInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.REMOVE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.comments.removeComment(removeCommentInput);
-		dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.REMOVE_COMMENT,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		const activityId = uuidv4();
+		try {
+			dispatch(removeCommentAction(removeCommentInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.REMOVE_COMMENT,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.comments.removeComment(removeCommentInput);
+			dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.REMOVE_COMMENT,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -566,28 +584,30 @@ export const unlikeComment = (
 				? true
 				: false,
 	);
-
-	const activityId = uuidv4();
-	try {
-		dispatch(unlikeCommentAction(unlikeCommentInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.UNLIKE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.comments.unlikeComment(unlikeCommentInput);
-		dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.UNLIKE_COMMENT,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		const activityId = uuidv4();
+		try {
+			dispatch(unlikeCommentAction(unlikeCommentInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.UNLIKE_COMMENT,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.comments.unlikeComment(unlikeCommentInput);
+			dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.UNLIKE_COMMENT,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
