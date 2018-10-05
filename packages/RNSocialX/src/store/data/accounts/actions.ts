@@ -183,28 +183,32 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 export const logout = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const actionType = ActionTypes.LOGOUT;
-	try {
-		dispatch(logoutAction());
-		dispatch(
-			beginActivity({
-				type: actionType,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.accounts.logout();
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(logoutAction());
+			dispatch(
+				beginActivity({
+					type: actionType,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.accounts.logout();
 
-		dispatch(clearAuth());
-	} catch (e) {
-		dispatch(
-			setError({
-				type: actionType,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+			dispatch(clearAuth());
+		} catch (e) {
+			dispatch(
+				setError({
+					type: actionType,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -219,26 +223,30 @@ export const changePassword = (
 	changePasswordInput: IChangePasswordInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(changePasswordAction(changePasswordInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.CHANGE_PASSWORD,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.accounts.changePassword(changePasswordInput);
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.CHANGE_PASSWORD,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(changePasswordAction(changePasswordInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.CHANGE_PASSWORD,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.accounts.changePassword(changePasswordInput);
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.CHANGE_PASSWORD,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
