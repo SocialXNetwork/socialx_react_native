@@ -22,6 +22,7 @@ import {
 	IUsernameInput,
 	likeComment,
 	likePost,
+	loadMorePosts,
 	removeComment,
 	removePost,
 	unlikeComment,
@@ -39,6 +40,7 @@ interface IActionProps {
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
+	loadMorePosts: () => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
 	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
 	likePost: (likePostInput: IPostIdInput) => void;
@@ -77,6 +79,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
 	getPostByPath: (getPostPathInput: IPostPathInput) =>
 		dispatch(getPostByPath(getPostPathInput)),
+	loadMorePosts: () => dispatch(loadMorePosts),
 	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>

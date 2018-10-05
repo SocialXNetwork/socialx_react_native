@@ -25,6 +25,7 @@ export {
 	getPostByPath,
 	getPostsByUsername,
 	getPublicPostsByDate,
+	loadMorePosts,
 	createPost,
 	likePost,
 	removePost,

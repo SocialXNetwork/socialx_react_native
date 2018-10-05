@@ -11,19 +11,23 @@ export const AnimatedFaIcon = Animatable.createAnimatableComponent(FontAwesome);
 export const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
 export const Animations = {
-	dragon: require('./assets/animations/dragonAnimation.json'),
-	globe: require('./assets/animations/globeAnimation.json'),
-	globe2: require('./assets/animations/globe2Animation.json'),
-	heart: require('./assets/animations/heartAnimation.json'),
-	pulsate: {
-		0: {
-			scale: 1,
-		},
-		0.5: {
-			scale: 1.2,
-		},
-		1: {
-			scale: 1,
+	lottie: {
+		dragon: require('./assets/animations/dragonAnimation.json'),
+		globe: require('./assets/animations/globeAnimation.json'),
+		globe2: require('./assets/animations/globe2Animation.json'),
+		heart: require('./assets/animations/heartAnimation.json'),
+	},
+	custom: {
+		pulsate: {
+			0: {
+				scale: 1,
+			},
+			0.5: {
+				scale: 1.2,
+			},
+			1: {
+				scale: 1,
+			},
 		},
 	},
 };

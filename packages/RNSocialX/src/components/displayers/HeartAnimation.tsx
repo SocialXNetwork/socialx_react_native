@@ -33,7 +33,7 @@ export class HeartAnimation extends React.Component<IHeartAnimationProps> {
 			<View style={style.container}>
 				<View style={style.animation}>
 					<LottieView
-						source={Animations.heart}
+						source={Animations.lottie.heart}
 						progress={this.animationProgress}
 						style={style.animation}
 					/>

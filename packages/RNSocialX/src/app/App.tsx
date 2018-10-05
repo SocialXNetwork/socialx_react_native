@@ -19,10 +19,12 @@ export default class App extends React.Component<{}> {
 						<Splash>
 							<Keyboard>
 								<Store>
-									<StatusBar />
-									<OfflineHandler>
-										<Navigation />
-									</OfflineHandler>
+									<React.Fragment>
+										<StatusBar />
+										<OfflineHandler>
+											<Navigation />
+										</OfflineHandler>
+									</React.Fragment>
 								</Store>
 							</Keyboard>
 						</Splash>

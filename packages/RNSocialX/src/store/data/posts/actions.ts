@@ -173,7 +173,11 @@ const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
 	type: ActionTypes.LOAD_MORE_POSTS,
 });
 
-const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
+export const loadMorePosts = (): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 
 	dispatch(loadMorePostsAction());
