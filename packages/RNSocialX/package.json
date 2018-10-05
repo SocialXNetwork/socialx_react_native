@@ -6,7 +6,7 @@
     "postinstall:compat:react-native-vector-icons": "rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json",
     "postinstall:compat:react-native-text-gradient": "node ./node_modules/react-native-text-gradient/patch-rn.js",
     "postinstall:cocoapods": "sh ./ios/install_pods.sh",
-    "_postinstall": "npm-run-all postinstall:*",
+    "postinstall:all:ios": "npm-run-all postinstall:*",
 		"test": "jest --onlyChanged",
 		"test:all": "jest",
     "bundle:ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bugsnag.bundle --sourcemap-output ios-release.bugsnag.bundle.map",
@@ -80,7 +80,7 @@
     "yup": "^0.26.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.1",
+    "@babel/core": "7.0.0-beta.47",
     "@storybook/addon-actions": "^4.0.0-alpha.21",
     "@storybook/addon-knobs": "^4.0.0-alpha.21",
     "@storybook/addon-links": "^4.0.0-alpha.21",

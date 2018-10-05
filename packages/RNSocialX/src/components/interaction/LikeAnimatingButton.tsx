@@ -90,7 +90,7 @@ export class LikeAnimatingButton extends React.Component<
 
 		onPress();
 		await this.animatedIconRef.current.animate(
-			Animations.pulsate,
+			Animations.custom.pulsate,
 			PULSATE_PERIOD,
 		);
 
