@@ -16,7 +16,11 @@ import {
 } from './types';
 
 import { ValidationError } from '../../utils/errors';
-import { resolveCallback } from '../../utils/helpers';
+import {
+	getRelatedUsernamesFromPosts,
+	resolveCallback,
+} from '../../utils/helpers';
+import { IPostArrayData } from '../posts/types';
 
 export default (context: IContext) => ({
 	createProfile: async (
@@ -48,9 +52,9 @@ export default (context: IContext) => ({
 		new Promise((resolve, reject) => {
 			getters.getCurrentProfile(context, resolveCallback(resolve, reject));
 		}),
-	getProfilesByUsernames: async (getProfilesByUsernamesInput: {
+	async getProfilesByUsernames(getProfilesByUsernamesInput: {
 		usernames: string[];
-	}) => {
+	}): Promise<IProfileData[]> {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfilesByUsernames.validate(
@@ -66,17 +70,38 @@ export default (context: IContext) => ({
 			);
 		}
 
-		return new Promise<IProfileCallbackData[]>((resolve, reject) => {
-			getters.getProfilesByUsernames(
-				context,
-				validatedInput,
-				resolveCallback(resolve, reject),
-			);
-		});
+		const { usernames } = getProfilesByUsernamesInput;
+		return Promise.all(
+			usernames.map((username) => this.getProfileByUsername({ username })),
+		);
 	},
-	getProfileByUsername: async (getProfileByUsernameInput: {
+	//
+	async getUserProfilesByPosts({
+		posts,
+	}: {
+		posts: IPostArrayData;
+	}): Promise<IProfileData[]> {
+		// TODO: finish
+		// let validatedInput: any;
+		// try {
+		// 	validatedInput = await schemas.createProfileInput.validate(
+		// 		createProfileInput,
+		// 		{
+		// 			stripUnknown: true,
+		// 		},
+		// 	);
+		// } catch (e) {
+		// 	throw new ValidationError(
+		// 		typeof e.errors === 'string' ? e.errors : e.errors.join(),
+		// 		{ validationInput: createProfileInput },
+		// 	);
+		// }
+		const usernames = getRelatedUsernamesFromPosts(posts);
+		return this.getProfilesByUsernames({ usernames });
+	},
+	async getProfileByUsername(getProfileByUsernameInput: {
 		username: string;
-	}): Promise<IProfileData> => {
+	}): Promise<IProfileData> {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfileByUsername.validate(

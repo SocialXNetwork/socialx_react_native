@@ -19,6 +19,26 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.GET_PROFILES_BY_POSTS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_GET_PROFILES_BY_POSTS: {
+			const finalProfiles = action.payload.reduce(
+				(updatedProfiles, newProfile) => [
+					...updatedProfiles.filter(
+						(updatedProfile: any) =>
+							updatedProfile.username !== newProfile.username,
+					),
+					newProfile,
+				],
+				[...state.profiles],
+			);
+			return {
+				profiles: finalProfiles,
+			};
+		}
+
 		case ActionTypes.GET_PROFILE_BY_USERNAME: {
 			return state;
 		}

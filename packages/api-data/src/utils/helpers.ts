@@ -54,8 +54,32 @@ export const resolveCallback = (resolve: any, reject: any) => (
 	resolve(typeof r !== 'undefined' ? JSON.parse(JSON.stringify(r)) : undefined);
 };
 
-export const getRelatedUsernamesFromPost = (
-	post: IPostReturnData,
-): string[] => {
-	return [''];
+const flatten: any = (arr: any[]) =>
+	arr.reduce(
+		(flatted: any[], toFlat: any[] | string) =>
+			flatted.concat(Array.isArray(toFlat) ? flatten(toFlat) : toFlat),
+		[],
+	);
+
+const getAliasFromLike = (like: any) => (like.owner ? like.owner.alias : '');
+const getAliasFromComment = (cmnt: any) => (cmnt.owner ? cmnt.owner.alias : '');
+const getLikesFromComment = (cmnt: any) =>
+	cmnt.likes ? cmnt.likes.map(getAliasFromLike) : [];
+const getUsersFromCommentLikes = (cmnts: any) =>
+	cmnts ? cmnts.map(getLikesFromComment) : [];
+const getUsersThatLiked = (likes: any) =>
+	likes.length ? likes.map(getAliasFromLike) : [];
+const getUsersThatCommented = (comments: any) =>
+	comments.length ? comments.map(getAliasFromComment) : [];
+
+const getRelatedUsernamesFromPost = (post: any) => {
+	return [
+		...getUsersThatLiked(post.likes || []),
+		...getUsersThatCommented(post.comments || []),
+		...getUsersFromCommentLikes(post.comments || []),
+	].filter((v) => v);
+};
+
+export const getRelatedUsernamesFromPosts = (posts: object[]) => {
+	return flatten(posts.map(getRelatedUsernamesFromPost));
 };

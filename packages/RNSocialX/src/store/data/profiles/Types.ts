@@ -1,6 +1,7 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IPostArrayData,
 	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
@@ -22,10 +23,22 @@ export const enum ActionTypes {
 	SYNC_GET_PROFILE_BY_USERNAME = 'app/data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
 	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
 	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
+	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
+	SYNC_GET_PROFILES_BY_POSTS = 'app/data/profiles/SYNC_GET_PROFILES_BY_POSTS',
 	UPDATE_PROFILE = 'app/data/profiles/UPDATE_PROFILE',
 	ADD_FRIEND = 'app/data/profiles/ADD_FRIEND',
 	REMOVE_FRIEND = 'app/data/profiles/REMOVE_FRIEND',
 	ACCEPT_FRIEND = 'app/data/profiles/ACCEPT_FRIEND',
+}
+
+export interface IGetProfilesByPostsAction extends Action {
+	type: ActionTypes.GET_PROFILES_BY_POSTS;
+	payload: IPostArrayData;
+}
+
+export interface ISyncGetProfilesByPostsAction extends Action {
+	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS;
+	payload: IProfileData[];
 }
 
 export interface IGetProfileByUsernameAction extends Action {
@@ -79,4 +92,6 @@ export type IAction =
 	| IUpdateProfileAction
 	| IAddFriendAction
 	| IRemoveFriendAction
+	| IGetProfilesByPostsAction
+	| ISyncGetProfilesByPostsAction
 	| IAcceptFriendAction;
