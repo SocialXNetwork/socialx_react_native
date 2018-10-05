@@ -56,7 +56,13 @@ export const getCurrentAccount = (): IThunk => async (
 		dispatch(syncGetCurrentAccountAction(account));
 		dispatch(setAuth({ alias: account.alias, pub: account.pub }));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.GET_CURRENT_ACCOUNT,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -85,7 +91,13 @@ export const createAccount = (
 		await dataApi.accounts.createAccount(createAccountInput);
 		dispatch(getCurrentAccount());
 	} catch (e) {
-		/** */
+		dispatch(
+			setError({
+				type: ActionTypes.CREATE_ACCOUNT,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -115,7 +127,13 @@ export const recoverAccount = (
 			recoverAccountInput,
 		);
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.RECOVER_ACCOUNT,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -146,7 +164,13 @@ export const login = (credentials: ICredentials): IThunk => async (
 		await dataApi.accounts.login(credentials);
 		dispatch(getCurrentAccount());
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.LOGIN,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -172,14 +196,10 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 
 		dispatch(clearAuth());
 	} catch (e) {
-		// if (e instanceof ValidationError ...
-		// you might want to dispatch different error information
-		// based on the error type, but make sure you pass a string
-		// to redux, don't pass error objects!
 		dispatch(
 			setError({
-				type: actionType, // this is string type, it does not have to be an action type!!!
-				error: e.message, // make sure this is a string
+				type: actionType,
+				error: e.message,
 				uuid: uuidv4(),
 			}),
 		);
@@ -210,7 +230,13 @@ export const changePassword = (
 		const { dataApi } = context;
 		await dataApi.accounts.changePassword(changePasswordInput);
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.CHANGE_PASSWORD,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -245,7 +271,13 @@ export const getAccountByPub = (
 		);
 		dispatch(syncGetAccountByPubAction(account));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.GET_ACCOUNT_BY_PUB,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}

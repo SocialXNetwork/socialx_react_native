@@ -1,5 +1,7 @@
 import { ActionCreator } from 'redux';
+import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
+import { setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	IAvailableLocales,
@@ -24,6 +26,12 @@ export const setLocale = (setLocaleInput: ISetLocaleInput): IThunk => async (
 	try {
 		dispatch(setLocaleAction(setLocaleInput));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.SET_LOCALE,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };

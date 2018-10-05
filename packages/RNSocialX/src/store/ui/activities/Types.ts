@@ -11,6 +11,7 @@ export interface IError extends IActivity {
 		message: string;
 		type: string;
 	} | null;
+	timeout?: number;
 }
 
 export type IState = DeepReadonly<{
@@ -19,12 +20,13 @@ export type IState = DeepReadonly<{
 }>;
 
 export const enum ActionTypes {
-	ACTIVITY = 'ui/activities/ACTIVITY',
+	START_ACTIVITY = 'ui/activities/START_ACTIVITY',
+	END_ACTIVITY = 'ui/activities/END_ACTIVITY',
 	ERROR = 'ui/activities/ERROR',
 }
 
 export interface IActivityAction extends Action {
-	type: ActionTypes.ACTIVITY;
+	type: ActionTypes.START_ACTIVITY;
 	payload: IActivity;
 }
 

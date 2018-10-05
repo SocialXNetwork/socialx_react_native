@@ -8,7 +8,7 @@ import {
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
-import { beginActivity, endActivity } from '../../ui/activities';
+import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
@@ -54,7 +54,13 @@ export const getProfileByUsername = (
 		);
 		dispatch(syncGetProfileByUsernameAction(profile));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.GET_PROFILE_BY_USERNAME,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -91,7 +97,13 @@ export const getCurrentProfile = (): IThunk => async (
 		const profile = await dataApi.profiles.getCurrentProfile();
 		dispatch(syncGetCurrentProfileAction(profile));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.GET_CURRENT_PROFILE,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -120,7 +132,13 @@ export const updateCurrentProfile = (
 		await dataApi.profiles.updateProfile(updateProfileInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.UPDATE_PROFILE,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -151,7 +169,13 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 		await dataApi.profiles.addFriend(addFriendInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.ADD_FRIEND,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -180,7 +204,13 @@ export const removeFriend = (
 		await dataApi.profiles.removeFriend(removeFriendInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.REMOVE_FRIEND,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -209,7 +239,13 @@ export const acceptFriend = (
 		await dataApi.profiles.acceptFriend(acceptFriendInput);
 		dispatch(getCurrentProfile());
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.ACCEPT_FRIEND,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
