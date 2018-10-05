@@ -5,6 +5,7 @@ import setters from './setters';
 
 import {
 	ICreatePostInput,
+	IGetPostByIdInput,
 	IPostArrayData,
 	IPostReturnData,
 	IRemovePostInput,
@@ -33,6 +34,29 @@ export default function(context: IContext) {
 				setters.createPost(
 					context,
 					validatedInput as ICreatePostInput,
+					resolveCallback(resolve, reject),
+				);
+			});
+		},
+		getPostById: async (
+			getPostById: IGetPostByIdInput,
+		): Promise<IPostReturnData> => {
+			let validatedInput: any;
+			try {
+				validatedInput = await schemas.postById.validate(getPostById, {
+					stripUnknown: true,
+				});
+			} catch (e) {
+				throw new ValidationError(
+					typeof e.errors === 'string' ? e.errors : e.errors.join(),
+					{ validationInput: validatedInput },
+				);
+			}
+
+			return new Promise<IPostReturnData>((resolve, reject) => {
+				getters.getPostById(
+					context,
+					validatedInput as IGetPostByIdInput,
 					resolveCallback(resolve, reject),
 				);
 			});

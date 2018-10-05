@@ -21,6 +21,7 @@ import {
 import {
 	IPostArrayData,
 	IPostCallbackData,
+	IPostMetasCallback,
 	IPostReturnData,
 	IPostsDataCallback,
 	IPostUserMetasCallback,
@@ -100,6 +101,27 @@ export const getPostByPath = (
 		});
 };
 
+export const getPostById = (
+	context: IContext,
+	{ postId }: { postId: string },
+	callback: IGunCallback<IPostReturnData>,
+) => {
+	postHandles
+		.postMetaById(context, postId)
+		.docLoad((postMeta: IPostMetasCallback) => {
+			if (!postMeta) {
+				return callback(
+					new ApiError('failed, no post was found with this id', {
+						initialRequestBody: { postId },
+					}),
+				);
+			}
+			const { postPath } = postMeta;
+
+			getPostByPath(context, { postPath }, callback);
+		});
+};
+
 export const getPublicPostsByDate = (
 	context: IContext,
 	{ date }: { date: Date },
@@ -140,6 +162,7 @@ export const getPublicPostsByDate = (
 
 export default {
 	getPostByPath,
+	getPostById,
 	getPostPathsByUser,
 	getPublicPostsByDate,
 };

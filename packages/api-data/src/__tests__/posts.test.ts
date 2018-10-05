@@ -74,6 +74,24 @@ describe('posts api', () => {
 		expect(error).toBeInstanceOf(ApiError);
 	});
 
+	test('get post by id', async () => {
+		try {
+			const cpost = getPost();
+			await mockApi.posts.createPost(cpost);
+			const createdPosts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+
+			const fetchPostById = await mockApi.posts.getPostById({
+				postId: createdPosts[0].postId,
+			});
+			expect(fetchPostById).toBeTruthy();
+			expect(fetchPostById.owner.alias).toEqual(profile.username);
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
+	});
+
 	test('get posts by user', async () => {
 		try {
 			const post = getPost();

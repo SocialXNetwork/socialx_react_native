@@ -73,3 +73,7 @@ export interface IRemovePostInput {
 export interface IUnlikePostInput {
 	postId: string;
 }
+
+export interface IGetPostByIdInput {
+	postId: string;
+}
