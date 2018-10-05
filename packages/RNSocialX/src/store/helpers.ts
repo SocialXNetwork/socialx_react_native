@@ -1,3 +1,3 @@
 export const assertNever = (never: never) => {
-	console.error('NEVER ACTION');
+	// console.error('NEVER ACTION');
 };

@@ -10,7 +10,7 @@ export default class Splash extends React.Component<{}> {
 		if (Platform.OS === OS_TYPES.Android) {
 			StatusBar.setBackgroundColor(Colors.pink);
 		}
-		Animatable.initializeRegistryWithDefinitions(Animations as any);
+		Animatable.initializeRegistryWithDefinitions(Animations.custom as any);
 		Orientation.lockToPortrait();
 	}
 

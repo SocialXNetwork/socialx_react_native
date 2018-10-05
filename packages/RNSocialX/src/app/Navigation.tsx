@@ -211,7 +211,7 @@ const PreAuthNavigator = createStackNavigator(
 	{
 		LaunchScreen: { screen: LaunchScreen },
 		LoginScreen: { screen: LoginScreen },
-		SignUpScreen: { screen: RegisterScreen },
+		RegisterScreen: { screen: RegisterScreen },
 		ForgotPasswordScreen: { screen: ForgotPasswordScreen },
 		ResetPasswordScreen: { screen: ResetPasswordScreen },
 		TermsAndConditionsScreen: { screen: TermsAndConditionsScreen },
