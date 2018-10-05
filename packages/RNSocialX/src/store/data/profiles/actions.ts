@@ -40,29 +40,33 @@ export const getProfileByUsername = (
 	getProfileByUsernameInput: IUsernameInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.GET_PROFILE_BY_USERNAME,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		const profile = await dataApi.profiles.getProfileByUsername(
-			getProfileByUsernameInput,
-		);
-		dispatch(syncGetProfileByUsernameAction(profile));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.GET_PROFILE_BY_USERNAME,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			const profile = await dataApi.profiles.getProfileByUsername(
+				getProfileByUsernameInput,
+			);
+			dispatch(syncGetProfileByUsernameAction(profile));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -85,27 +89,31 @@ export const getCurrentProfile = (): IThunk => async (
 	context,
 ) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(getCurrentProfileAction());
-		dispatch(
-			beginActivity({
-				type: ActionTypes.GET_CURRENT_PROFILE,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		const profile = await dataApi.profiles.getCurrentProfile();
-		dispatch(syncGetCurrentProfileAction(profile));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.GET_CURRENT_PROFILE,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(getCurrentProfileAction());
+			dispatch(
+				beginActivity({
+					type: ActionTypes.GET_CURRENT_PROFILE,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			const profile = await dataApi.profiles.getCurrentProfile();
+			dispatch(syncGetCurrentProfileAction(profile));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.GET_CURRENT_PROFILE,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -120,27 +128,31 @@ export const updateCurrentProfile = (
 	updateProfileInput: IUpdateProfileInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(updateCurrentProfileAction(updateProfileInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.UPDATE_PROFILE,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.profiles.updateProfile(updateProfileInput);
-		dispatch(getCurrentProfile());
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.UPDATE_PROFILE,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(updateCurrentProfileAction(updateProfileInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.UPDATE_PROFILE,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.updateProfile(updateProfileInput);
+			dispatch(getCurrentProfile());
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.UPDATE_PROFILE,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -157,27 +169,31 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 	context,
 ) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(addFriendAction(addFriendInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.ADD_FRIEND,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.profiles.addFriend(addFriendInput);
-		dispatch(getCurrentProfile());
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.ADD_FRIEND,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(addFriendAction(addFriendInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.ADD_FRIEND,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.addFriend(addFriendInput);
+			dispatch(getCurrentProfile());
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.ADD_FRIEND,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -192,27 +208,31 @@ export const removeFriend = (
 	removeFriendInput: IRemoveFriendInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(removeFriendAction(removeFriendInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.REMOVE_FRIEND,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.profiles.removeFriend(removeFriendInput);
-		dispatch(getCurrentProfile());
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.REMOVE_FRIEND,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(removeFriendAction(removeFriendInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.REMOVE_FRIEND,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.removeFriend(removeFriendInput);
+			dispatch(getCurrentProfile());
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.REMOVE_FRIEND,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
@@ -227,26 +247,30 @@ export const acceptFriend = (
 	acceptFriendInput: IAcceptFriendInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	try {
-		dispatch(acceptFriendAction(acceptFriendInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.ACCEPT_FRIEND,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.profiles.acceptFriend(acceptFriendInput);
-		dispatch(getCurrentProfile());
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.ACCEPT_FRIEND,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(acceptFriendAction(acceptFriendInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.ACCEPT_FRIEND,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.acceptFriend(acceptFriendInput);
+			dispatch(getCurrentProfile());
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.ACCEPT_FRIEND,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
