@@ -1,5 +1,4 @@
 import { ActionCreator } from 'redux';
-import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
 import { defaultClearErrorTimeout } from './constants';
 import {
@@ -13,7 +12,7 @@ import {
 const activityAction: ActionCreator<IActivityAction> = (
 	activity: IActivity,
 ) => ({
-	type: ActionTypes.START_ACTIVITY,
+	type: ActionTypes.ACTIVITY,
 	payload: activity,
 });
 
@@ -22,17 +21,7 @@ export const beginActivity = (activity: IActivity): IThunk => async (
 	getState,
 	context,
 ) => {
-	try {
-		dispatch(activityAction(activity));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.START_ACTIVITY,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
+	dispatch(activityAction(activity));
 };
 
 export const endActivity = ({ uuid }: { uuid: string }): IThunk => async (
@@ -40,17 +29,7 @@ export const endActivity = ({ uuid }: { uuid: string }): IThunk => async (
 	getState,
 	context,
 ) => {
-	try {
-		dispatch(activityAction({ uuid, type: null }));
-	} catch (e) {
-		dispatch(
-			setError({
-				type: ActionTypes.END_ACTIVITY,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
+	dispatch(activityAction({ uuid, type: null }));
 };
 
 const errorAction: ActionCreator<IErrorAction> = (error: IError) => ({
