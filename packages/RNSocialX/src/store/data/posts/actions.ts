@@ -163,7 +163,7 @@ const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
 	)[0];
 
 	const fetchDate = moment(latestPost.timestamp || new Date().getTime())
-		.add(1, 'd')
+		.subtract(1, 'd')
 		.toDate();
 
 	const activityId = uuidv4();
@@ -228,25 +228,27 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
-	try {
-		dispatch(createPostAction(createPostInput));
-		dispatch(
-			beginActivity({
-				type: ActionTypes.CREATE_POST,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.posts.createPost(createPostInput);
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		const activityId = uuidv4();
+		try {
+			dispatch(createPostAction(createPostInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.CREATE_POST,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.posts.createPost(createPostInput);
 
-		const storeState = getState();
-		const auth = storeState.app.auth.auth || { alias: '' };
-		dispatch(getPostsByUsername({ username: auth.alias }));
-	} catch (e) {
-		/**/
-	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+			dispatch(getPostsByUsername({ username: auth.alias }));
+		} catch (e) {
+			/**/
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
 	}
 };
 
