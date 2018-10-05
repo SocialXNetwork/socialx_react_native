@@ -18,15 +18,18 @@ import {
 	ICreateCommentInput,
 	ICreatePostAction,
 	IDateInput,
+	IGetPostByIdAction,
 	IGetPostByPathAction,
 	IGetPostsByUsernameAction,
 	IGetPublicPostsByDateAction,
 	ILikeCommentAction,
 	ILikePostAction,
+	ILoadMorePostsAction,
 	IPostIdInput,
 	IPostPathInput,
 	IRemoveCommentAction,
 	IRemovePostAction,
+	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
 	ISyncGetPublicPostsByDateAction,
@@ -34,6 +37,8 @@ import {
 	IUnlikePostAction,
 	IUsernameInput,
 } from './Types';
+
+import moment from 'moment';
 
 const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
 	getPostsByUsernameInput: IUsernameInput,
@@ -75,6 +80,41 @@ export const getPostsByUsername = (
 	}
 };
 
+const getPostByIdAction: ActionCreator<IGetPostByIdAction> = (
+	getPostByIdInput: IPostIdInput,
+) => ({
+	type: ActionTypes.GET_POST_BY_ID,
+	payload: getPostByIdInput,
+});
+
+const syncGetPostByIdAction: ActionCreator<ISyncGetPostByIdAction> = (
+	post: IPostReturnData,
+) => ({
+	type: ActionTypes.SYNC_GET_POST_BY_ID,
+	payload: post,
+});
+
+export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuidv4();
+	try {
+		dispatch(getPostByIdAction(getPostByIdInput));
+		dispatch(
+			beginActivity({ type: ActionTypes.GET_POST_BY_ID, uuid: activityId }),
+		);
+		const { dataApi } = context;
+		const post = await dataApi.posts.getPostById(getPostByIdInput);
+		dispatch(syncGetPostByIdAction(post));
+	} catch (e) {
+		//
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
 const getPostByPathAction: ActionCreator<IGetPostByPathAction> = (
 	getPostPathInput: IPostPathInput,
 ) => ({
@@ -106,6 +146,35 @@ export const getPostByPath = (
 		dispatch(syncGetPostByPathAction(post));
 	} catch (e) {
 		/**/
+	} finally {
+		dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
+const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
+	type: ActionTypes.LOAD_MORE_POSTS,
+});
+
+const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
+	const storeState = getState();
+	const storePosts = storeState.data.posts.posts;
+	const latestPost = [...storePosts].sort(
+		(x, t) => x.timestamp - t.timestamp,
+	)[0];
+
+	const fetchDate = moment(latestPost.timestamp || new Date().getTime())
+		.add(1, 'd')
+		.toDate();
+
+	const activityId = uuidv4();
+	try {
+		dispatch(loadMorePostsAction());
+		dispatch(
+			beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }),
+		);
+		dispatch(getPublicPostsByDate({ date: fetchDate }));
+	} catch (e) {
+		//
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -170,6 +239,10 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.posts.createPost(createPostInput);
+
+		const storeState = getState();
+		const auth = storeState.app.auth.auth || { alias: '' };
+		dispatch(getPostsByUsername({ username: auth.alias }));
 	} catch (e) {
 		/**/
 	} finally {
@@ -200,6 +273,7 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.posts.likePost(likePostInput);
+		dispatch(getPostById(likePostInput));
 	} catch (e) {
 		/**/
 	} finally {
@@ -230,6 +304,10 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.posts.removePost(removePostInput);
+
+		const storeState = getState();
+		const auth = storeState.app.auth.auth || { alias: '' };
+		dispatch(getPostsByUsername({ username: auth.alias }));
 	} catch (e) {
 		/**/
 	} finally {
@@ -260,6 +338,7 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.posts.unlikePost(unlikePostInput);
+		dispatch(getPostById(unlikePostInput));
 	} catch (e) {
 		/**/
 	} finally {
@@ -289,6 +368,7 @@ export const createComment = (
 		);
 		const { dataApi } = context;
 		await dataApi.comments.createComment(createCommentInput);
+		dispatch(getPostById({ postId: createCommentInput.postId }));
 	} catch (e) {
 		/**/
 	} finally {
@@ -306,6 +386,16 @@ const likeCommentAction: ActionCreator<ILikeCommentAction> = (
 export const likeComment = (
 	likeCommentInput: ICommentIdInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const { commentId } = likeCommentInput;
+
+	const storeState = getState();
+	const parentPost = [...storeState.data.posts.posts].find(
+		(post) =>
+			post.comments.find((comment) => comment.commentId === commentId)
+				? true
+				: false,
+	);
+
 	const activityId = uuidv4();
 	try {
 		dispatch(likeCommentAction(likeCommentInput));
@@ -317,6 +407,7 @@ export const likeComment = (
 		);
 		const { dataApi } = context;
 		await dataApi.comments.likeComment(likeCommentInput);
+		dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
 	} catch (e) {
 		/**/
 	} finally {
@@ -334,6 +425,16 @@ const removeCommentAction: ActionCreator<IRemoveCommentAction> = (
 export const removeComment = (
 	removeCommentInput: IRemoveCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const { commentId } = removeCommentInput;
+
+	const storeState = getState();
+	const parentPost = [...storeState.data.posts.posts].find(
+		(post) =>
+			post.comments.find((comment) => comment.commentId === commentId)
+				? true
+				: false,
+	);
+
 	const activityId = uuidv4();
 	try {
 		dispatch(removeCommentAction(removeCommentInput));
@@ -345,6 +446,7 @@ export const removeComment = (
 		);
 		const { dataApi } = context;
 		await dataApi.comments.removeComment(removeCommentInput);
+		dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
 	} catch (e) {
 		/**/
 	} finally {
@@ -362,6 +464,16 @@ const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
 export const unlikeComment = (
 	unlikeCommentInput: IUnlikeCommentInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const { commentId } = unlikeCommentInput;
+
+	const storeState = getState();
+	const parentPost = [...storeState.data.posts.posts].find(
+		(post) =>
+			post.comments.find((comment) => comment.commentId === commentId)
+				? true
+				: false,
+	);
+
 	const activityId = uuidv4();
 	try {
 		dispatch(unlikeCommentAction(unlikeCommentInput));
@@ -373,6 +485,7 @@ export const unlikeComment = (
 		);
 		const { dataApi } = context;
 		await dataApi.comments.unlikeComment(unlikeCommentInput);
+		dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
 	} catch (e) {
 		/**/
 	} finally {

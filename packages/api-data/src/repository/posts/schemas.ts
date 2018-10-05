@@ -114,6 +114,13 @@ export const unlikePost = yup
 	})
 	.required();
 
+export const postById = yup
+	.object()
+	.shape({
+		postId: longTextType.required(),
+	})
+	.required();
+
 export default {
 	getPostByPath,
 	getPostLikes,
@@ -123,4 +130,5 @@ export default {
 	postData,
 	removePost,
 	unlikePost,
+	postById,
 };

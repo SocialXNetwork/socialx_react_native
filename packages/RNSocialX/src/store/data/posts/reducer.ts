@@ -61,6 +61,25 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return { posts: updatedPosts };
 		}
 
+		case ActionTypes.GET_POST_BY_ID: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_GET_POST_BY_ID: {
+			return {
+				posts: [
+					...state.posts.filter(
+						(post) => post.postId !== action.payload.postId,
+					),
+					action.payload,
+				],
+			};
+		}
+
+		case ActionTypes.LOAD_MORE_POSTS: {
+			return state;
+		}
+
 		case ActionTypes.REMOVE_POST: {
 			return state;
 		}
