@@ -1,7 +1,7 @@
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
-import { beginActivity, endActivity } from '../../ui/activities';
+import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { ActionTypes, IAuthData, ISetAuthAction } from './Types';
 
 const setAuthAction: ActionCreator<ISetAuthAction> = (
@@ -19,7 +19,13 @@ export const setAuth = (authData: IAuthData): IThunk => async (
 	try {
 		dispatch(setAuthAction(authData));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.SET_AUTH,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };
 
@@ -30,7 +36,7 @@ export const clearAuth = (): IThunk => async (dispatch, getState, context) => {
 
 		dispatch(
 			beginActivity({
-				type: 'RESET_DATABASE_AND_STORE',
+				type: ActionTypes.RESET_DATABASE_AND_STORE,
 				uuid: activityId,
 			}),
 		);
@@ -38,7 +44,13 @@ export const clearAuth = (): IThunk => async (dispatch, getState, context) => {
 		const { dataApi } = context;
 		await dataApi.resetDatabase();
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.SET_AUTH,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(
 			endActivity({

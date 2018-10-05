@@ -1,5 +1,7 @@
 import { ActionCreator } from 'redux';
+import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
+import { setError } from '../../ui/activities';
 import { ActionTypes, IGlobal, ISetGlobalAction } from './Types';
 
 const setGlobalAction: ActionCreator<ISetGlobalAction> = (global: IGlobal) => ({
@@ -15,6 +17,12 @@ export const setGlobal = (global: IGlobal): IThunk => async (
 	try {
 		dispatch(setGlobalAction(global));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.SET_GLOBAL,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };
