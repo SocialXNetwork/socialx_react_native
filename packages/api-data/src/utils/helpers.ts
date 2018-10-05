@@ -1,3 +1,4 @@
+import { IPostReturnData } from '../repository/posts';
 import {
 	IContext,
 	ILikesMetasCallback,
@@ -51,4 +52,10 @@ export const resolveCallback = (resolve: any, reject: any) => (
 	// because this looks like the only place where all getters return their data
 	// through. Not architecturally the best place, though.
 	resolve(typeof r !== 'undefined' ? JSON.parse(JSON.stringify(r)) : undefined);
+};
+
+export const getRelatedUsernamesFromPost = (
+	post: IPostReturnData,
+): string[] => {
+	return [''];
 };
