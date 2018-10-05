@@ -174,23 +174,38 @@ const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
 });
 
 const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+
+	dispatch(loadMorePostsAction());
+	dispatch(
+		beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }),
+	);
+
+	const { dataApi } = context;
+
 	const storeState = getState();
 	const storePosts = storeState.data.posts.posts;
 	const latestPost = [...storePosts].sort(
 		(x, t) => x.timestamp - t.timestamp,
 	)[0];
 
-	const fetchDate = moment(latestPost.timestamp || new Date().getTime())
-		.subtract(1, 'd')
-		.toDate();
+	let lastPostDate = moment(
+		latestPost.timestamp || new Date().getTime(),
+	).toDate();
 
-	const activityId = uuidv4();
+	let days: number = 1;
+
+	let posts: IPostArrayData = [];
+
 	try {
-		dispatch(loadMorePostsAction());
-		dispatch(
-			beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }),
-		);
-		dispatch(getPublicPostsByDate({ date: fetchDate }));
+		while (!posts && days <= 30) {
+			lastPostDate = moment(lastPostDate)
+				.subtract(1, 'd')
+				.toDate();
+			posts = await dataApi.posts.getPublicPostsByDate({ date: lastPostDate });
+			days = days + 1;
+		}
+		dispatch(getPublicPostsByDate({ date: lastPostDate }));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -451,7 +466,7 @@ export const likeComment = (
 	const { commentId } = likeCommentInput;
 
 	const storeState = getState();
-	const parentPost = [...storeState.data.posts.posts].find(
+	const parentPost = storeState.data.posts.posts.find(
 		(post) =>
 			post.comments.find((comment) => comment.commentId === commentId)
 				? true
