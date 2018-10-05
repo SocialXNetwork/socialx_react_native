@@ -44,6 +44,9 @@ export const enum ActionTypes {
 	SYNC_GET_POST_BY_PATH = 'data/posts/SYNC_GET_POST_BY_PATH',
 	GET_PUBLIC_POSTS_BY_DATE = 'data/posts/GET_PUBLIC_POSTS_BY_DATE',
 	SYNC_GET_PUBLIC_POSTS_BY_DATE = 'data/posts/SYNC_GET_PUBLIC_POSTS_BY_DATE',
+	GET_POST_BY_ID = 'data/posts/GET_POST_BY_ID',
+	SYNC_GET_POST_BY_ID = 'data/posts/SYNC_GET_POST_BY_ID',
+	LOAD_MORE_POSTS = 'data/posts/LOAD_MORE_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
@@ -83,6 +86,20 @@ export interface IGetPublicPostsByDateAction extends Action {
 export interface ISyncGetPublicPostsByDateAction extends Action {
 	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE;
 	payload: IPostArrayData;
+}
+
+export interface IGetPostByIdAction extends Action {
+	type: ActionTypes.GET_POST_BY_ID;
+	payload: IPostIdInput;
+}
+
+export interface ISyncGetPostByIdAction extends Action {
+	type: ActionTypes.SYNC_GET_POST_BY_ID;
+	payload: IPostReturnData;
+}
+
+export interface ILoadMorePostsAction extends Action {
+	type: ActionTypes.LOAD_MORE_POSTS;
 }
 
 export interface ICreatePostAction extends Action {
@@ -151,6 +168,9 @@ export type IAction =
 	| ISyncGetPublicPostsByDateAction
 	| IGetPostByPathAction
 	| ISyncGetPostByPathAction
+	| IGetPostByIdAction
+	| ISyncGetPostByIdAction
+	| ILoadMorePostsAction
 	// setters
 	| ICreatePostAction
 	| ILikePostAction
