@@ -1,6 +1,7 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IPostArrayData,
 	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
@@ -15,12 +16,62 @@ import {
 	IAddFriendAction,
 	IGetCurrentProfileAction,
 	IGetProfileByUsernameAction,
+	IGetProfilesByPostsAction,
 	IRemoveFriendAction,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByUsernameAction,
+	ISyncGetProfilesByPostsAction,
 	IUpdateProfileAction,
 	IUsernameInput,
 } from './Types';
+
+const getProfilesByPostsAction: ActionCreator<IGetProfilesByPostsAction> = (
+	posts: IPostArrayData,
+) => ({
+	type: ActionTypes.GET_PROFILES_BY_POSTS,
+	payload: posts,
+});
+
+const syncGetProfilesByPostsAction: ActionCreator<
+	ISyncGetProfilesByPostsAction
+> = (profiles: IProfileData[]) => ({
+	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS,
+	payload: profiles,
+});
+
+export const getProfilesByPosts = (
+	getProfileByPostsInput: IPostArrayData,
+): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(getProfilesByPostsAction(getProfileByPostsInput));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.GET_PROFILES_BY_POSTS,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			const profiles = await dataApi.profiles.getProfilesByPosts(
+				getProfileByPostsInput,
+			);
+			dispatch(syncGetProfilesByPostsAction(profiles));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.GET_PROFILES_BY_POSTS,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
 
 const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
 	getProfileByUsernameInput: IUsernameInput,

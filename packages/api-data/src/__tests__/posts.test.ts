@@ -1,7 +1,10 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
 import { ApiError, ValidationError } from '../utils/errors';
-import { datePathFromDate } from '../utils/helpers';
+import {
+	datePathFromDate,
+	getRelatedUsernamesFromPosts,
+} from '../utils/helpers';
 
 const {
 	getPost,
@@ -13,6 +16,10 @@ const {
 
 let mockApi: ReturnType<typeof dataApiFactory>;
 const profile = getProfile();
+
+const testComment = {
+	text: 'Hey something really interesting happened',
+};
 
 describe('posts api', () => {
 	beforeEach(async () => {
@@ -53,7 +60,6 @@ describe('posts api', () => {
 			const createdPost = await mockApi.posts.getPostByPath({
 				postPath: `${datePathFromDate(new Date())}.public`,
 			});
-			// TODO: do a more strict comparison
 			expect(createdPost).toBeTruthy();
 		} catch (e) {
 			expect(e).toBeUndefined();
@@ -310,5 +316,44 @@ describe('posts api', () => {
 			error = e;
 		}
 		expect(error).toBeInstanceOf(ApiError);
+	});
+
+	test('gets profiles by list of usernames', async () => {
+		try {
+			const post = getPost();
+			await mockApi.posts.createPost(post);
+			const posts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+			const { postId } = posts[0];
+
+			await mockApi.posts.likePost({ postId });
+
+			await mockApi.comments.createComment({
+				postId,
+				...testComment,
+			});
+
+			let updatedPosts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+
+			const { commentId } = updatedPosts[0].comments[0];
+
+			await mockApi.comments.likeComment({
+				commentId,
+			});
+
+			updatedPosts = await mockApi.posts.getPostsByUser({
+				username: profile.username,
+			});
+
+			const userProfiles = await mockApi.profiles.getUserProfilesByPosts({
+				posts: updatedPosts,
+			});
+			expect(userProfiles.length).toEqual(3);
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
 	});
 });

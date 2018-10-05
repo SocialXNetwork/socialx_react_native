@@ -79,6 +79,9 @@ export const getPostPathsByUser = yup
 	})
 	.required();
 
+// TODO: finish
+// export const getUserProfilesByPosts
+
 export const getPostByPath = yup
 	.object()
 	.shape({
