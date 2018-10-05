@@ -1,5 +1,7 @@
 import { ActionCreator } from 'redux';
+import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
+import { setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	ISetAppConfigAction,
@@ -21,7 +23,13 @@ export const setAppConfig = (
 	try {
 		dispatch(setAppConfigAction(setAppConfigInput));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.SET_APP_CONFIG,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };
 
@@ -38,6 +46,12 @@ export const setCustomGunSuperPeers = (
 	try {
 		dispatch(setCustomGunSuperPeersAction(setCustomGunSuperPeersInput));
 	} catch (e) {
-		/**/
+		dispatch(
+			setError({
+				type: ActionTypes.SET_CUSTOM_GUN_SUPER_PEERS,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };

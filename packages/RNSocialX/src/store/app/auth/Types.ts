@@ -12,6 +12,7 @@ export type IState = DeepReadonly<{
 
 export const enum ActionTypes {
 	SET_AUTH = 'app/auth/SET_AUTH',
+	RESET_DATABASE_AND_STORE = 'app/auth/RESET_DATABASE_AND_STORE',
 }
 
 export interface ISetAuthAction extends Action {
