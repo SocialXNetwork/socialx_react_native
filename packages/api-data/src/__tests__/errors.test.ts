@@ -8,9 +8,7 @@ describe('errors', () => {
 	test('ApiError instantiates correctly', () => {
 		const extErr = new ApiError('something happened', {
 			details: { bleep: 'bloop' },
-			status: '420',
 			initialRequestBody: { username: 'username' },
-			statusReturned: 200,
 		});
 		expect(extErr).toBeInstanceOf(ApiError);
 		expect(extErr).toHaveProperty('name', 'ApiError');
@@ -31,9 +29,7 @@ describe('errors', () => {
 		process.env.DEBUG = 'true';
 		const apiErr = new ApiError('something happened', {
 			details: { bleep: 'bloop' },
-			status: '420',
 			initialRequestBody: { username: 'username' },
-			statusReturned: 200,
 		});
 		expect(apiErr).toBeInstanceOf(ApiError);
 		expect(apiErr).toHaveProperty('name', 'ApiError');
@@ -42,7 +38,7 @@ describe('errors', () => {
 			['initialRequestBody', 'username'],
 			'username',
 		);
-		expect(apiErr.loggedMessage.length).toEqual(4);
+		expect(apiErr.loggedMessage.length).toEqual(3);
 		// console.log(JSON.stringify(extErr, null, 2));
 		// console.log(extErr.stack);
 		// apiErr.log();
@@ -50,14 +46,14 @@ describe('errors', () => {
 
 	test('ValidationError instantiates correctly', () => {
 		const valErr = new ValidationError('something happened', {
-			details: { bleep: 'bloop' },
-			status: '420',
+			details: { blah: 'blah' },
 			validationInput: { bleep: 'bloop' },
 		});
 		expect(valErr).toBeInstanceOf(ValidationError);
 		expect(valErr).toHaveProperty('name', 'ValidationError');
 		expect(valErr).toHaveProperty('message', 'something happened');
 		expect(valErr).toHaveProperty(['validationInput', 'bleep'], 'bloop');
+		expect(valErr).toHaveProperty(['details', 'blah'], 'blah');
 		expect(valErr.loggedMessage.length).toEqual(1);
 		// console.log(JSON.stringify(extErr, null, 2));
 		// console.log(extErr.stack);
@@ -67,14 +63,14 @@ describe('errors', () => {
 	test('ValidationError logs details to debug', () => {
 		process.env.DEBUG = 'true';
 		const valErr = new ValidationError('something happened', {
-			details: { bleep: 'bloop' },
-			status: '420',
+			details: { blah: 'blah' },
 			validationInput: { bleep: 'bloop' },
 		});
 		expect(valErr).toBeInstanceOf(ValidationError);
 		expect(valErr).toHaveProperty('name', 'ValidationError');
 		expect(valErr).toHaveProperty('message', 'something happened');
 		expect(valErr).toHaveProperty(['validationInput', 'bleep'], 'bloop');
+		expect(valErr).toHaveProperty(['details', 'blah'], 'blah');
 		expect(valErr.loggedMessage.length).toEqual(3);
 		// console.log(JSON.stringify(extErr, null, 2));
 		// console.log(extErr.stack);
