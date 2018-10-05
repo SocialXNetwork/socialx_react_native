@@ -115,7 +115,13 @@ export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
 		const post = await dataApi.posts.getPostById(getPostByIdInput);
 		dispatch(syncGetPostByIdAction(post));
 	} catch (e) {
-		//
+		dispatch(
+			setError({
+				type: ActionTypes.SYNC_GET_POST_BY_ID,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
@@ -186,7 +192,13 @@ const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
 		);
 		dispatch(getPublicPostsByDate({ date: fetchDate }));
 	} catch (e) {
-		//
+		dispatch(
+			setError({
+				type: ActionTypes.LOAD_MORE_POSTS,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
 	}
