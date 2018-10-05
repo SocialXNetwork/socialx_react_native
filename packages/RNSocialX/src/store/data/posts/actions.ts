@@ -163,7 +163,7 @@ const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
 	)[0];
 
 	const fetchDate = moment(latestPost.timestamp || new Date().getTime())
-		.subtract(1, 'd')
+		.add(1, 'd')
 		.toDate();
 
 	const activityId = uuidv4();
