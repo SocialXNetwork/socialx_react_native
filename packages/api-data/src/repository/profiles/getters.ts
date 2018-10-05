@@ -65,14 +65,6 @@ export const getCurrentProfile = (
 		});
 };
 
-export const getProfilesByUsernames = (
-	context: IContext,
-	{ usernames }: { usernames: string[] },
-	callback: IGunCallback<Promise<IProfileCallbackData[]>>,
-) => {
-	//
-};
-
 export const getProfileByUsername = (
 	context: IContext,
 	{ username }: { username: string },
@@ -123,6 +115,5 @@ export default {
 	getCurrentProfile,
 	getProfileByUsername,
 	getPublicKeyByUsername,
-	getProfilesByUsernames,
 	getCurrentProfileFriends,
 };

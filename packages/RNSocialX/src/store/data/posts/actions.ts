@@ -1,4 +1,5 @@
 import {
+	ICommentsReturnData,
 	ICreatePostInput,
 	IPostArrayData,
 	IPostReturnData,
@@ -11,6 +12,7 @@ import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { getCurrentProfile, getProfilesByPosts } from '../profiles';
 import {
 	ActionTypes,
 	ICommentIdInput,
@@ -69,6 +71,7 @@ export const getPostsByUsername = (
 		const { dataApi } = context;
 		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
 		dispatch(syncGetPostsByUsernameAction(posts));
+		dispatch(getProfilesByPosts(posts));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -114,6 +117,7 @@ export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
 		const { dataApi } = context;
 		const post = await dataApi.posts.getPostById(getPostByIdInput);
 		dispatch(syncGetPostByIdAction(post));
+		dispatch(getProfilesByPosts([post]));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -156,6 +160,7 @@ export const getPostByPath = (
 		const { dataApi } = context;
 		const post = await dataApi.posts.getPostByPath(getPostPathInput);
 		dispatch(syncGetPostByPathAction(post));
+		dispatch(getProfilesByPosts([post]));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -210,6 +215,7 @@ export const loadMorePosts = (): IThunk => async (
 			days = days + 1;
 		}
 		dispatch(getPublicPostsByDate({ date: lastPostDate }));
+		dispatch(getProfilesByPosts(posts));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -252,6 +258,7 @@ export const getPublicPostsByDate = (
 		const { dataApi } = context;
 		const posts = await dataApi.posts.getPublicPostsByDate(getPostByDateInput);
 		dispatch(syncGetPublicPostsByDateAction(posts));
+		dispatch(getProfilesByPosts(posts));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -334,6 +341,7 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 			const { dataApi } = context;
 			await dataApi.posts.likePost(likePostInput);
 			dispatch(getPostById(likePostInput));
+			dispatch(getCurrentProfile());
 		} catch (e) {
 			dispatch(
 				setError({
@@ -485,8 +493,10 @@ export const likeComment = (
 
 	const storeState = getState();
 	const parentPost = storeState.data.posts.posts.find(
-		(post) =>
-			post.comments.find((comment) => comment.commentId === commentId)
+		(post: IPostReturnData) =>
+			post.comments.find(
+				(comment: ICommentsReturnData) => comment.commentId === commentId,
+			)
 				? true
 				: false,
 	);
@@ -533,7 +543,9 @@ export const removeComment = (
 	const storeState = getState();
 	const parentPost = [...storeState.data.posts.posts].find(
 		(post) =>
-			post.comments.find((comment) => comment.commentId === commentId)
+			post.comments.find(
+				(comment: ICommentsReturnData) => comment.commentId === commentId,
+			)
 				? true
 				: false,
 	);
@@ -580,7 +592,9 @@ export const unlikeComment = (
 	const storeState = getState();
 	const parentPost = [...storeState.data.posts.posts].find(
 		(post) =>
-			post.comments.find((comment) => comment.commentId === commentId)
+			post.comments.find(
+				(comment: ICommentsReturnData) => comment.commentId === commentId,
+			)
 				? true
 				: false,
 	);

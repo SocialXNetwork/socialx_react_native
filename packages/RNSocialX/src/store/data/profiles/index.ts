@@ -7,11 +7,13 @@ export {
 	IProfileData,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
+	IPostArrayData,
 } from '@socialx/api-data';
 export {
 	getCurrentProfile,
 	getProfileByUsername,
 	acceptFriend,
 	addFriend,
+	getProfilesByPosts,
 	removeFriend,
 } from './actions';
