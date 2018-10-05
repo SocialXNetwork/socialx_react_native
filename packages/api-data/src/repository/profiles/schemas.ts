@@ -89,6 +89,13 @@ export const updateProfile = yup
 	})
 	.required();
 
+export const getProfilesByUsernames = yup.object().shape({
+	usernames: yup
+		.array()
+		.of(yup.string())
+		.required(),
+});
+
 export const addFriend = yup
 	.object()
 	.shape({
@@ -120,4 +127,5 @@ export default {
 	addFriend,
 	removeFriend,
 	acceptFriend,
+	getProfilesByUsernames,
 };
