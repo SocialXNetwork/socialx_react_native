@@ -12,7 +12,7 @@ import { WithAccounts } from '../../connectors/data/WithAccounts';
 const mock: IWithLoginEnhancedProps = {
 	data: {},
 	actions: {
-		doLogin: (userName: string, password: string) => {
+		login: (userName: string, password: string) => {
 			/**/
 		},
 		// This is now implemented with the WithI18n connector enhancer
@@ -23,7 +23,7 @@ const mock: IWithLoginEnhancedProps = {
 export interface IWithLoginEnhancedData {}
 
 export interface IWithLoginEnhancedActions extends ITranslatedProps {
-	doLogin: (userName: string, password: string) => void;
+	login: (userName: string, password: string) => void;
 }
 
 interface IWithLoginEnhancedProps {
@@ -42,19 +42,17 @@ export class WithLogin extends React.Component<
 	IWithLoginState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
 				{(i18nProps) => (
 					<WithAccounts>
 						{(accountsProps) =>
-							children({
-								data: mock.data,
+							this.props.children({
+								data: {},
 								actions: {
-									...mock.actions,
-									getText: i18nProps.getText,
-									doLogin: (userName: string, password: string) =>
+									login: (userName: string, password: string) =>
 										accountsProps.login({ username: userName, password }),
+									getText: i18nProps.getText,
 								},
 							})
 						}

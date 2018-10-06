@@ -6,7 +6,6 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 const mock: IWithMaintenanceEnhancedProps = {
 	data: {},
 	actions: {
-		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -36,8 +35,8 @@ export class WithMaintenance extends React.Component<
 			<WithI18n>
 				{(i18nProps) =>
 					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+						data: {},
+						actions: { getText: i18nProps.getText },
 					})
 				}
 			</WithI18n>

@@ -29,7 +29,7 @@ class Screen extends React.Component<IRegisterScreenProps> {
 			smsCodeErrorMessage,
 			validateSMSCode,
 			resendSMSCode,
-			doRegister,
+			register,
 		} = this.props;
 		return (
 			<RegisterScreenView
@@ -40,7 +40,7 @@ class Screen extends React.Component<IRegisterScreenProps> {
 				onSmsCodeConfirmed={validateSMSCode}
 				onSmsCodeDeclined={() => this.toggleVisibleModalSMS(false)}
 				onSmsCodeResend={resendSMSCode}
-				onStartRegister={doRegister}
+				onStartRegister={register}
 				onAlreadyHaveCode={this.toggleVisibleModalSMS}
 				onNavigateToTermsAndConditions={
 					this.onNavigateToTermsAndConditionsHandler

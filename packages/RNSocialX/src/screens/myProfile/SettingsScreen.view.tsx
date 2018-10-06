@@ -27,7 +27,7 @@ export interface ISettingsData {
 	lastName: string;
 	email: string;
 	miningEnabled: boolean;
-	avatarURL: string | null;
+	avatarURL: string;
 	userName: string;
 }
 
@@ -100,10 +100,8 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				{
 					<Header
 						title={getText('settings.screen.title')}
-						left={
-							<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />
-						}
-						right={<HeaderButton iconName={'ios-log-out'} onPress={onLogout} />}
+						left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+						right={<HeaderButton iconName="ios-log-out" onPress={onLogout} />}
 					/>
 				}
 				<KeyboardAwareScrollView
@@ -111,7 +109,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					contentContainerStyle={style.container}
 					alwaysBounceVertical={false}
 					enableOnAndroid={true}
-					keyboardShouldPersistTaps={'handled'}
+					keyboardShouldPersistTaps="handled"
 				>
 					<View style={style.pickerContainer}>
 						<AvatarPicker
@@ -135,7 +133,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					/>
 					<View style={style.aboutContainer}>
 						<PrimaryTextInput
-							autoCapitalize={'sentences'}
+							autoCapitalize="sentences"
 							autoCorrect={true}
 							value={aboutMeTextValue}
 							placeholder={getText('settings.screen.about.text.placeholder')}
@@ -156,7 +154,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						style={[style.textInputContainer, style.textInputContainerFirst]}
 					>
 						<PrimaryTextInput
-							autoCapitalize={'words'}
+							autoCapitalize="words"
 							autoCorrect={true}
 							value={firstNameValue}
 							iconColor={customStyleProps.userDataInputIconColor}
@@ -177,7 +175,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					</View>
 					<View style={[style.textInputContainer]}>
 						<PrimaryTextInput
-							autoCapitalize={'words'}
+							autoCapitalize="words"
 							autoCorrect={true}
 							value={lastNameValue}
 							iconColor={customStyleProps.userDataInputIconColor}
@@ -196,7 +194,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					</View>
 					<View style={[style.textInputContainer]}>
 						<PrimaryTextInput
-							autoCapitalize={'words'}
+							autoCapitalize="words"
 							value={emailValue}
 							iconColor={customStyleProps.userDataInputIconColor}
 							placeholder={getText('settings.screen.email.placeholder')}
@@ -230,7 +228,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							<Text style={style.saveButtonText}>
 								{getText('settings.screen.save.button')}
 							</Text>
-							<Icon name={'check'} style={style.checkIcon} />
+							<Icon name="check" style={style.checkIcon} />
 						</TouchableOpacity>
 					</View>
 				)}

@@ -1,15 +1,17 @@
 /**
  * TODO list:
- * 1. Action props: updateUserProfile, logout
- * 1.1 @Serkan: for logout check how can we include resetNavigationToRoute from helpers? Or do it as in WithMyProfile?
+ * 1. @Serkan: for logout check how can we include resetNavigationToRoute from helpers? Or do it as in WithMyProfile?
  */
 
 import * as React from 'react';
+
 import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
 import { ICurrentUser, ITranslatedProps } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithSettingsEnhancedProps = {
@@ -68,21 +70,31 @@ export class WithSettings extends React.Component<
 				{(i18nProps) => (
 					<WithAccounts>
 						{(accountsProps) => (
-							<WithCurrentUser>
-								{(currentUserProps) =>
-									this.props.children({
-										data: {
-											...mock.data,
-											currentUser: currentUserProps.currentUser!,
-										},
-										actions: {
-											...mock.actions,
-											getText: i18nProps.getText,
-											logout: accountsProps.logout,
-										},
-									})
-								}
-							</WithCurrentUser>
+							<WithProfiles>
+								{(profilesProps) => (
+									<WithCurrentUser>
+										{(currentUserProps) =>
+											this.props.children({
+												data: {
+													currentUser: currentUserProps.currentUser!,
+												},
+												actions: {
+													updateUserProfile: (saveData) =>
+														profilesProps.updateProfile({
+															aboutMeText: saveData.aboutMeText,
+															avatar: saveData.avatarURL,
+															email: saveData.email,
+															fullName:
+																saveData.firstName + ' ' + saveData.lastName,
+														}),
+													logout: accountsProps.logout,
+													getText: i18nProps.getText,
+												},
+											})
+										}
+									</WithCurrentUser>
+								)}
+							</WithProfiles>
 						)}
 					</WithAccounts>
 				)}

@@ -1,10 +1,13 @@
 import * as React from 'react';
 
+import { Images } from '../../../environment/theme';
 import { ICurrentUser } from '../../../types';
 
 import { WithAuth } from '../../connectors/app/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+
+const USER_AVATAR_PLACEHOLDER = Images.user_avatar_placeholder;
 
 interface IWithCurrentUserProps {
 	children({
@@ -43,7 +46,10 @@ export class WithCurrentUser extends React.Component<
 												email: foundProfile.email,
 												fullName: foundProfile.fullName,
 												userName: auth.alias,
-												avatarURL: foundProfile.avatar,
+												avatarURL:
+													foundProfile.avatar.length > 0
+														? foundProfile.avatar
+														: USER_AVATAR_PLACEHOLDER,
 												aboutMeText: foundProfile.aboutMeText,
 												numberOfLikes: 0,
 												numberOfPhotos: 0,

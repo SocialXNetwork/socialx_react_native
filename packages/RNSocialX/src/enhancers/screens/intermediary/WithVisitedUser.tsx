@@ -1,11 +1,14 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
+import { Images } from '../../../environment/theme';
 import { IVisitedUser, SearchResultKind } from '../../../types';
 
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+
+const USER_AVATAR_PLACEHOLDER = Images.user_avatar_placeholder;
 
 interface IWithVisitedUserProps {
 	children({
@@ -46,7 +49,10 @@ export class WithVisitedUser extends React.Component<
 											userId: foundAccount!.alias,
 											fullName: foundProfile.fullName,
 											userName: foundAccount!.alias,
-											avatarURL: foundProfile.avatar,
+											avatarURL:
+												foundProfile.avatar.length > 0
+													? foundProfile.avatar
+													: USER_AVATAR_PLACEHOLDER,
 											aboutMeText: foundProfile.aboutMeText,
 											numberOfLikes: 0,
 											numberOfPhotos: 0,

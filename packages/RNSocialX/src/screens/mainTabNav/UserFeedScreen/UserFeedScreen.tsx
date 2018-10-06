@@ -2,7 +2,6 @@
  * TODO list:
  * 1. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
  * 1.1 we can do this at the top level, without navigation
- * 2. Implement getAvatarImage (check IPFS)
  */
 
 import * as React from 'react';
@@ -14,17 +13,13 @@ import {
 	IWithUserFeedEnhancedData,
 } from '../../../enhancers/screens';
 
-// import {ipfsConfig as base} from 'configuration';
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import {
 	IMediaProps,
 	INavigationProps,
 	IWallPostCardData,
 } from '../../../types';
-import {
-	SHARE_SECTION_HEIGHT,
-	USER_PLACEHOLDER_AVATAR,
-} from './UserFeedScreen.style';
+import { SHARE_SECTION_HEIGHT } from './UserFeedScreen.style';
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
 const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -74,7 +69,7 @@ export class Screen extends React.Component<
 
 		return (
 			<UserFeedScreenView
-				avatarImage={this.getAvatarImage()}
+				avatarImage={currentUser.avatarURL}
 				wallPosts={posts}
 				refreshing={refreshingFeed}
 				onRefresh={this.onRefreshHandler}
@@ -103,23 +98,11 @@ export class Screen extends React.Component<
 		);
 	}
 
-	private getAvatarImage = () => {
-		// let ret = USER_PLACEHOLDER_AVATAR;
-		// const {data} = this.props;
-		// if (!data.loading) {
-		// 	const avatarHash = data ? (data.user.avatar ? data.user.avatar.hash : null) : null;
-		// 	if (avatarHash) {
-		// 		ret = {uri: base.ipfs_URL + avatarHash};
-		// 	}
-		// }
-		return USER_PLACEHOLDER_AVATAR;
-	};
-
 	private onLoadMorePostsHandler = async () => {
-		const { loadPosts, feedType } = this.props;
+		const { loadMorePosts, feedType } = this.props;
 
 		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
-			loadPosts(feedType);
+			loadMorePosts(feedType);
 		}
 	};
 
@@ -129,7 +112,7 @@ export class Screen extends React.Component<
 			screenName: SCREENS.CreateWallPost,
 			params: {
 				fullName: currentUser.fullName,
-				avatarImage: this.getAvatarImage(),
+				avatarImage: currentUser.avatarURL,
 				afterPostCreate: this.onRefreshHandler,
 			},
 		});

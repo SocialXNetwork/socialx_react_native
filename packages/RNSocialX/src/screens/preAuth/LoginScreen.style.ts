@@ -58,7 +58,7 @@ const style: any = {
 	fullWidth: {
 		width: '100%',
 	},
-	safeAreaContainer: {
+	screenContainer: {
 		flex: 1,
 		backgroundColor: Colors.white,
 	},

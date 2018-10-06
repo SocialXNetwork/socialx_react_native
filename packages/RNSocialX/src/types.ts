@@ -236,7 +236,7 @@ export interface IWallet {
 
 export interface ICurrentUser {
 	userId: string;
-	avatarURL?: string;
+	avatarURL: string;
 	email: string;
 	fullName: string;
 	userName: string;

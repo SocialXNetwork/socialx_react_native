@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 2. Props actions: doRegister
+ * 2. Props actions: register
  * 2.1  We need to upload profile photo before createAccount
  * 3. LATER - data props: showModalForSMSCode, resendingCode, smsCodeErrorMessage (KEEP MOCK DATA FOR NOW!)
  * 3. LATER - actions props: resendSMSCode, validateSMSCode (KEEP MOCK ACTIONS FOR NOW!)
@@ -26,7 +26,7 @@ const mock: IWithRegisterEnhancedProps = {
 		resendSMSCode: () => {
 			/**/
 		},
-		doRegister: (registerData: IRegisterData) => {
+		register: (registerData: IRegisterData) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -42,7 +42,7 @@ export interface IWithRegisterEnhancedData {
 export interface IWithRegisterEnhancedActions extends ITranslatedProps {
 	validateSMSCode: (code: string) => void;
 	resendSMSCode: () => void;
-	doRegister: (registerData: IRegisterData) => void;
+	register: (registerData: IRegisterData) => void;
 }
 
 interface IWithRegisterEnhancedProps {
@@ -70,8 +70,7 @@ export class WithRegister extends React.Component<
 								data: mock.data,
 								actions: {
 									...mock.actions,
-									getText: i18nProps.getText,
-									doRegister: (registerData: IRegisterData) =>
+									register: (registerData: IRegisterData) =>
 										accountsProps.createAccount({
 											recover: {
 												question1: '',
@@ -86,6 +85,7 @@ export class WithRegister extends React.Component<
 											miningEnabled: false,
 											aboutMeText: '',
 										}),
+									getText: i18nProps.getText,
 								},
 							})
 						}
