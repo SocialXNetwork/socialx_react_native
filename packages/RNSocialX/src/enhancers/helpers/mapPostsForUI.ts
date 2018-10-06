@@ -7,6 +7,7 @@ import {
 	MediaTypeImage,
 	MediaTypeVideo,
 } from '../../types';
+import { getActivity } from './getActivity';
 
 export const mapPostsForUI = (
 	posts: IPostArrayData,
@@ -74,9 +75,7 @@ export const mapPostsForUI = (
 						},
 					};
 				}),
-				listLoading:
-					activities.filter((activity) => activity.type === activityType)
-						.length > 0,
+				listLoading: getActivity(activities, activityType),
 				suggested: undefined,
 				noInput: true,
 				contentOffensive: false,

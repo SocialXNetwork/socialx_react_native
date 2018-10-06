@@ -1,7 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: refreshingFeed, loadingMorePosts, loadingFeed
- * 2. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
+ * 1. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
  */
 
 import * as React from 'react';
@@ -14,11 +13,12 @@ import {
 	ITranslatedProps,
 	IWallPostCardData,
 } from '../../../types';
-import { mapPostsForUI } from '../../helpers';
+import { getActivity, mapPostsForUI } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser } from '../intermediary';
@@ -30,7 +30,7 @@ const mock: IWithUserFeedEnhancedProps = {
 		hasMorePosts: false,
 		refreshingFeed: false,
 		loadingMorePosts: false,
-		loadingFeed: false,
+		loadingFeed: true,
 	},
 	actions: {
 		loadPosts: (feed: FEED_TYPES) => {
@@ -57,10 +57,10 @@ const mock: IWithUserFeedEnhancedProps = {
 		deletePost: (postId: string) => {
 			/**/
 		},
-		getText: (value: string, ...args: any[]) => value,
 		setNavigationParams: () => {
 			/**/
 		},
+		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
@@ -107,40 +107,70 @@ export class WithUserFeed extends React.Component<
 				{(i18nProps) => (
 					<WithConfig>
 						{({ appConfig }) => (
-							<WithActivities>
-								{({ activities }) => (
-									<WithPosts>
-										{(postsProps) => (
-											<WithCurrentUser>
-												{(currentUserProps) => {
-													const feedPosts = mapPostsForUI(
-														postsProps.posts,
-														10,
-														currentUser!,
-														activities,
-														ActionTypes.GET_POSTS_BY_USER,
-														appConfig,
-													);
+							<WithNavigationParams>
+								{({ setNavigationParams }) => (
+									<WithActivities>
+										{({ activities }) => (
+											<WithPosts>
+												{(postsProps) => (
+													<WithCurrentUser>
+														{(currentUserProps) => {
+															const feedPosts = mapPostsForUI(
+																postsProps.posts,
+																10,
+																currentUser!,
+																activities,
+																ActionTypes.GET_POSTS_BY_USER,
+																appConfig,
+															);
 
-													return this.props.children({
-														data: {
-															...mock.data,
-															currentUser: currentUserProps.currentUser!,
-															posts: feedPosts,
-															hasMorePosts:
-																postsProps.posts.length - feedPosts.length > 0,
-														},
-														actions: {
-															...mock.actions,
-															getText: i18nProps.getText,
-														},
-													});
-												}}
-											</WithCurrentUser>
+															return this.props.children({
+																data: {
+																	currentUser: currentUserProps.currentUser!,
+																	posts: feedPosts,
+																	hasMorePosts:
+																		postsProps.posts.length - feedPosts.length >
+																		0,
+																	loadingMorePosts: getActivity(
+																		activities,
+																		ActionTypes.LOAD_MORE_POSTS,
+																	),
+																	refreshingFeed: getActivity(
+																		activities,
+																		ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																	),
+																	loadingFeed: true,
+																},
+																actions: {
+																	...mock.actions,
+																	loadPosts: (feed) =>
+																		postsProps.getPublicPostsByDate({
+																			date: new Date(Date.now()),
+																		}),
+																	refreshFeed: (feed) =>
+																		postsProps.getPublicPostsByDate({
+																			date: new Date(Date.now()),
+																		}),
+																	likePost: (postId) =>
+																		postsProps.likePost({ postId }),
+																	unlikePost: (postId) =>
+																		postsProps.unlikePost({ postId }),
+																	deletePost: (postId) =>
+																		postsProps.removePost({ postId }),
+																	postComment: (text, postId) =>
+																		postsProps.createComment({ text, postId }),
+																	setNavigationParams,
+																	getText: i18nProps.getText,
+																},
+															});
+														}}
+													</WithCurrentUser>
+												)}
+											</WithPosts>
 										)}
-									</WithPosts>
+									</WithActivities>
 								)}
-							</WithActivities>
+							</WithNavigationParams>
 						)}
 					</WithConfig>
 				)}

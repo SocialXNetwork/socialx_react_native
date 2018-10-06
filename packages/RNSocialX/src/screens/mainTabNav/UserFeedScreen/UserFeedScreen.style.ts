@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 import { Colors, Images, Sizes } from '../../../environment/theme';
 
 export const SHARE_SECTION_HEIGHT = Sizes.smartVerticalScale(80);
-export const USER_PLACEHOLDER_AVATAR = Images.user_avatar_placeholder;
 
 const styles: any = {
 	container: {

@@ -35,8 +35,8 @@ export class WithTermsAndConditions extends React.Component<
 			<WithI18n>
 				{(i18nProps) =>
 					this.props.children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+						data: {},
+						actions: { getText: i18nProps.getText },
 					})
 				}
 			</WithI18n>

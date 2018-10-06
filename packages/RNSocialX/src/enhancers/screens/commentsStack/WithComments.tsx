@@ -1,13 +1,12 @@
 /**
  * TODO list:
- * 1. Props data: postUser, postComments, loadingComments,
- * 2. Props actions: reloadComments, sendComment, likeComment, removeCommentLike, deleteComment, likePost, unlikePost
+ * 1. Props data: postComments
  */
 
 import * as React from 'react';
+
 import { SCREENS } from '../../../environment/consts';
 import {
-	CommentsSortingOptions,
 	ILike,
 	IMediaProps,
 	INavigationParamsActions,
@@ -15,8 +14,11 @@ import {
 	IWallPostComment,
 	MediaTypeImage,
 } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
@@ -24,7 +26,7 @@ const mock: IWithCommentsEnhancedProps = {
 		startComment: false,
 		postId: '232362sgdxh',
 		commentId: 'atw3yhsxz',
-		postUser: {
+		postOwner: {
 			userId: 'userId_0',
 			avatarURL: 'https://placeimg.com/200/200/people',
 			fullName: 'Willetta Winsor',
@@ -88,23 +90,20 @@ const mock: IWithCommentsEnhancedProps = {
 		loadingComments: false,
 	},
 	actions: {
-		reloadComments: (sortOption: CommentsSortingOptions) => {
-			/**/
-		},
 		sendComment: (
 			text: string,
-			targetPostId: string | undefined,
+			targetPostId: string,
 			targetCommentId: string | undefined,
 		) => {
+			/**/
+		},
+		deleteComment: (commentId: string) => {
 			/**/
 		},
 		likeComment: (commentId: string) => {
 			/**/
 		},
-		removeCommentLike: (commentId: string) => {
-			/**/
-		},
-		deleteComment: (commentId: string) => {
+		unlikeComment: (commentId: string) => {
 			/**/
 		},
 		likePost: (postId: string) => {
@@ -122,7 +121,7 @@ const mock: IWithCommentsEnhancedProps = {
 };
 
 export interface IWithCommentsEnhancedData {
-	postUser: {
+	postOwner: {
 		userId: string;
 		avatarURL?: string;
 		fullName: string;
@@ -140,21 +139,20 @@ export interface IWithCommentsEnhancedData {
 	postComments: IWallPostComment[];
 	loadingComments: boolean;
 	commentId?: string; // only available for replies
-	postId?: string; // only for main comments screen
+	postId: string; // only for main comments screen
 	startComment: boolean;
 }
 
 export interface IWithCommentsEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions {
-	reloadComments: (sortOption: CommentsSortingOptions) => void;
 	sendComment: (
 		text: string,
-		targetPostId: string | undefined,
+		targetPostId: string,
 		targetCommentId: string | undefined,
 	) => void;
 	likeComment: (commentId: string) => void;
-	removeCommentLike: (commentId: string) => void;
+	unlikeComment: (commentId: string) => void;
 	deleteComment: (commentId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
@@ -179,39 +177,74 @@ export class WithComments extends React.Component<
 	IWithCommentsState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
 				{(i18nProps) => (
 					<WithNavigationParams>
-						{(navigationParamsProps) => (
-							<WithCurrentUser>
-								{(currentUserProps) =>
-									children({
-										data: {
-											...mock.data,
-											currentUser: {
-												userId: currentUserProps.currentUser!.userId,
-											},
-											startComment:
-												navigationParamsProps.navigationParams[SCREENS.Comments]
-													.startComment,
-											commentId:
-												navigationParamsProps.navigationParams[SCREENS.Comments]
-													.commentId,
-											postId:
-												navigationParamsProps.navigationParams[SCREENS.Comments]
-													.postId,
-										},
-										actions: {
-											...mock.actions,
-											getText: i18nProps.getText,
-											setNavigationParams:
-												navigationParamsProps.setNavigationParams,
-										},
-									})
-								}
-							</WithCurrentUser>
+						{({ setNavigationParams, navigationParams }) => (
+							<WithPosts>
+								{(postProps) => (
+									<WithProfiles>
+										{({ profiles }) => (
+											<WithCurrentUser>
+												{(currentUserProps) => {
+													const currentPost = postProps.posts.find(
+														(post) =>
+															post.postId ===
+															navigationParams[SCREENS.Comments].postId,
+													);
+													const ownerProfile = profiles.find(
+														(profile) => profile.pub === currentPost!.owner.pub,
+													);
+
+													return this.props.children({
+														data: {
+															...mock.data,
+															currentUser: {
+																userId: currentUserProps.currentUser!.userId,
+															},
+															startComment:
+																navigationParams[SCREENS.Comments].startComment,
+															commentId:
+																navigationParams[SCREENS.Comments].commentId,
+															postId: navigationParams[SCREENS.Comments].postId,
+															postOwner: {
+																userId: currentPost!.owner.alias,
+																fullName: ownerProfile!.fullName,
+																avatarURL: ownerProfile!.avatar,
+															},
+														},
+														actions: {
+															sendComment: (
+																text,
+																targetPostId,
+																targetCommentId,
+															) =>
+																postProps.createComment({
+																	text,
+																	postId: targetPostId,
+																}),
+															deleteComment: (commentId) =>
+																postProps.removeComment({ commentId }),
+															likeComment: (commentId) =>
+																postProps.likeComment({ commentId }),
+															unlikeComment: (commentId) =>
+																postProps.unlikeComment({ commentId }),
+															likePost: (postId) =>
+																postProps.likePost({ postId }),
+															unlikePost: (postId) =>
+																postProps.unlikePost({ postId }),
+
+															getText: i18nProps.getText,
+															setNavigationParams,
+														},
+													});
+												}}
+											</WithCurrentUser>
+										)}
+									</WithProfiles>
+								)}
+							</WithPosts>
 						)}
 					</WithNavigationParams>
 				)}

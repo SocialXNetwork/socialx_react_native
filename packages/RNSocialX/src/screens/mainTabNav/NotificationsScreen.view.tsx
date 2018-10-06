@@ -10,17 +10,13 @@ import {
 	ActivitySuperLikedCard,
 	Header,
 } from '../../components';
-import {
-	IWithLoaderProps,
-	WithInlineLoader,
-} from '../../components/inlineLoader';
 import { NOTIFICATION_TYPES } from '../../environment/consts';
 import { IConfirmActions, ITranslatedProps } from '../../types';
+
 import styles, { emptyListIcon } from './NotificationsScreen.style';
 
 interface INotificationsScreenViewProps
-	extends IWithLoaderProps,
-		ITranslatedProps,
+	extends ITranslatedProps,
 		IConfirmActions {
 	notifications: any[];
 	refreshing: boolean;
@@ -141,35 +137,32 @@ export const NotificationsScreenView: React.SFC<
 	onViewUserProfile,
 	showConfirm,
 	hideConfirm,
-	isLoading,
 	getText,
 }) => (
-	<WithInlineLoader isLoading={isLoading}>
-		<View style={styles.container}>
-			<Header title={getText('notifications.screen.title')} />
-			<FlatList
-				data={notifications}
-				keyExtractor={(item: any) => item.requestId}
-				renderItem={(data) => (
-					<ActivityCard
-						getText={getText}
-						data={data.item}
-						onPostThumbPressed={onPostThumbPressed}
-						onFriendRequestApproved={onFriendRequestApproved}
-						onFriendRequestDeclined={onFriendRequestDeclined}
-						onViewUserProfile={onViewUserProfile}
-						onCheckNotification={onCheckNotification}
-						onSuperLikedPhotoPressed={onSuperLikedPhotoPressed}
-						hideConfirm={hideConfirm}
-						showConfirm={showConfirm}
-						// onGroupRequestConfirmed={onGroupRequestConfirmed}
-						// onGroupRequestDeclined={onGroupRequestDeclined}
-					/>
-				)}
-				ListEmptyComponent={<EmptyListComponent getText={getText} />}
-				refreshing={refreshing}
-				onRefresh={onRefresh}
-			/>
-		</View>
-	</WithInlineLoader>
+	<View style={styles.container}>
+		<Header title={getText('notifications.screen.title')} />
+		<FlatList
+			data={notifications}
+			keyExtractor={(item: any) => item.requestId}
+			renderItem={(data) => (
+				<ActivityCard
+					getText={getText}
+					data={data.item}
+					onPostThumbPressed={onPostThumbPressed}
+					onFriendRequestApproved={onFriendRequestApproved}
+					onFriendRequestDeclined={onFriendRequestDeclined}
+					onViewUserProfile={onViewUserProfile}
+					onCheckNotification={onCheckNotification}
+					onSuperLikedPhotoPressed={onSuperLikedPhotoPressed}
+					hideConfirm={hideConfirm}
+					showConfirm={showConfirm}
+					// onGroupRequestConfirmed={onGroupRequestConfirmed}
+					// onGroupRequestDeclined={onGroupRequestDeclined}
+				/>
+			)}
+			ListEmptyComponent={<EmptyListComponent getText={getText} />}
+			refreshing={refreshing}
+			onRefresh={onRefresh}
+		/>
+	</View>
 );

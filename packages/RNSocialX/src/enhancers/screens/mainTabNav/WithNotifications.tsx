@@ -1,7 +1,7 @@
 /**
  * TODO list:
- * 1. Props actions: loadNotifications, checkNotification, acceptFriendRequest, declineFriendRequest, hideConfirm,
- * 2. LATER - Props data: loading, refreshing, @Serkan: check if still needed?
+ * 1. Props actions: checkNotification, acceptFriendRequest, declineFriendRequest, showConfirm, hideConfirm,
+ * 2. LATER - Props data: refreshing, @Serkan: check if still needed?
  * 3. OBS: Only FRIEND_REQUEST and FRIEND_REQUEST_RESPONSE are implemented right now
  */
 
@@ -15,6 +15,7 @@ import {
 } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 
@@ -101,12 +102,9 @@ const mock: IWithNotificationsEnhancedProps = {
 				groupName: 'MfMJAkkAs2jLISYyv',
 			},
 		],
-		loading: false,
 		refreshing: false,
 	},
 	actions: {
-		// This is now implemented with the WithI18n connector enhancer
-		getText: (value: string, ...args: any[]) => value,
 		showConfirm: (confirmationOptions: IConfirmationModalProps) => {
 			/**/
 		},
@@ -128,6 +126,7 @@ const mock: IWithNotificationsEnhancedProps = {
 		setNavigationParams: () => {
 			/**/
 		},
+		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
@@ -148,7 +147,6 @@ interface INotificationData {
 
 export interface IWithNotificationsEnhancedData {
 	notifications: INotificationData[];
-	loading: boolean;
 	refreshing: boolean;
 }
 
@@ -181,34 +179,47 @@ export class WithNotifications extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithProfiles>
-						{({ profiles }) => (
-							<WithNotificationsData>
-								{({ notifications }) => {
-									return this.props.children({
-										data: {
-											...mock.data,
-											notifications: notifications.map((notification) => {
-												const profile = profiles.find(
-													(prof) => prof.pub === notification.from.pub,
-												);
+					<WithNavigationParams>
+						{({ setNavigationParams }) => (
+							<WithProfiles>
+								{({ profiles }) => (
+									<WithNotificationsData>
+										{(notifcationsProps) => {
+											return this.props.children({
+												data: {
+													...mock.data,
+													notifications: notifcationsProps.notifications.map(
+														(notification) => {
+															const profile = profiles.find(
+																(prof) => prof.pub === notification.from.pub,
+															);
 
-												return {
-													requestId: notification.notificationId,
-													type: notification.type,
-													fullName: profile!.fullName,
-													userName: notification.from.alias,
-													avatarURL: profile!.avatar,
-													timestamp: new Date(notification.timestamp * 1000),
-												};
-											}),
-										},
-										actions: { ...mock.actions, getText: i18nProps.getText },
-									});
-								}}
-							</WithNotificationsData>
+															return {
+																requestId: notification.notificationId,
+																type: notification.type,
+																fullName: profile!.fullName,
+																userName: notification.from.alias,
+																avatarURL: profile!.avatar,
+																timestamp: new Date(
+																	notification.timestamp * 1000,
+																),
+															};
+														},
+													),
+												},
+												actions: {
+													...mock.actions,
+													loadNotifications: notifcationsProps.getNotifications,
+													setNavigationParams,
+													getText: i18nProps.getText,
+												},
+											});
+										}}
+									</WithNotificationsData>
+								)}
+							</WithProfiles>
 						)}
-					</WithProfiles>
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);

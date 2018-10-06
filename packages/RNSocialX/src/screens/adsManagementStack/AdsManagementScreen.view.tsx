@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-	AvatarImage,
-	Header,
-	HeaderButton,
-	Option,
-	PrimaryButton,
-} from '../../components';
+import { AvatarImage, Header, HeaderButton, Option } from '../../components';
 import { Icons } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 
@@ -36,32 +30,27 @@ export const AdsManagementScreenView: React.SFC<
 		<View style={styles.separator} />
 		<Option
 			icon={Icons.shareIconGradient}
-			text="Boost a post"
+			text={getText('ad.management.option.post')}
 			onPress={() => {
 				/**/
 			}}
 		/>
+		<View style={styles.separator} />
 		<Option
 			icon={Icons.shareIconGradient}
-			text="Get video views"
+			text={getText('ad.management.option.video')}
 			onPress={() => {
 				/**/
 			}}
 		/>
+		<View style={styles.separator} />
 		<Option
 			icon={Icons.shareIconGradient}
-			text="Drive traffic to your website"
+			text={getText('ad.management.option.traffic')}
 			onPress={() => {
 				/**/
 			}}
 		/>
-		<View style={styles.button}>
-			<PrimaryButton
-				label="Create a new add"
-				onPress={() => {
-					/**/
-				}}
-			/>
-		</View>
+		<View style={styles.separator} />
 	</View>
 );
