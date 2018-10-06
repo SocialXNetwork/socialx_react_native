@@ -79,15 +79,14 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	public render() {
 		const {
 			getText,
-			navigation,
-			postUser,
+			postOwner,
 			currentUser,
 			postComments,
-			loadingComments,
 			postData,
 			startComment,
 			commentId,
 		} = this.props;
+
 		const optionsProps = {
 			sortOption: this.state.sortOption,
 			onSelectionChange: this.updateSortingHandler,
@@ -96,7 +95,6 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 
 		return (
 			<CommentsScreenView
-				isLoading={loadingComments}
 				comments={postComments}
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentReply={this.onCommentReplyHandler}
@@ -108,7 +106,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				showSendButton={showSendButton}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
 				postData={postData}
-				postOwner={postUser}
+				postOwner={postOwner}
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
@@ -142,16 +140,16 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentLikeHandler = (comment: IWallPostComment) => {
-		const { removeCommentLike, likeComment } = this.props;
+		const { unlikeComment, likeComment } = this.props;
 		if (comment.likedByMe) {
-			removeCommentLike(comment.id);
+			unlikeComment(comment.id);
 		} else {
 			likeComment(comment.id);
 		}
 	};
 
 	private onCommentSendHandler = () => {
-		const { sendComment, navigation, postId, commentId } = this.props;
+		const { sendComment, postId, commentId } = this.props;
 		const escapedComment = this.state.commentText.replace(/\n/g, '\\n');
 		sendComment(escapedComment, postId, commentId);
 		this.setState({

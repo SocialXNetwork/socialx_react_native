@@ -50,7 +50,7 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 		lastName={currentUser.fullName.split(' ')[1]}
 		email={currentUser.email}
 		miningEnabled={currentUser.miningEnabled}
-		avatarURL={currentUser.avatarURL || null}
+		avatarURL={currentUser.avatarURL}
 		userName={currentUser.userName}
 		onSaveChanges={(saveData: ISettingsData) =>
 			saveChanges(saveData, { currentUser, updateUserProfile })

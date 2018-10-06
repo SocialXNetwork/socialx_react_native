@@ -1,7 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: refreshingProfile, loadingProfile
- * 2. Props actions: addFriend, likePost, unlikePost, loadMorePosts, loadMorePhotos, postComment, blockUser, reportProblem
+ * 1. Props actions: loadMorePhotos, blockUser, reportProblem
  */
 
 import * as React from 'react';
@@ -14,7 +13,14 @@ import {
 	MediaTypeImage,
 	SearchResultKind,
 } from '../../../types';
+import { getActivity } from '../../helpers';
+
+import { ActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
 const mock = {
@@ -120,24 +126,60 @@ export class WithUserProfile extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithCurrentUser>
-						{(currentUserProps) => (
-							<WithVisitedUserContent>
-								{({ visitedUser }) => {
-									return this.props.children({
-										data: {
-											...mock.data,
-											// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
-											// @Ionut, check similar use cases if any changes are to be done here.
-											currentUser: currentUserProps.currentUser!,
-											visitedUser: visitedUser!,
-										},
-										actions: { ...mock.actions, getText: i18nProps.getText },
-									});
-								}}
-							</WithVisitedUserContent>
+					<WithNavigationParams>
+						{({ setNavigationParams }) => (
+							<WithProfiles>
+								{(profilesProps) => (
+									<WithPosts>
+										{(postsProps) => (
+											<WithActivities>
+												{({ activities }) => (
+													<WithCurrentUser>
+														{(currentUserProps) => (
+															<WithVisitedUserContent>
+																{({ visitedUser }) => {
+																	return this.props.children({
+																		data: {
+																			// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
+																			// @Ionut, check similar use cases if any changes are to be done here.
+																			currentUser: currentUserProps.currentUser!,
+																			visitedUser: visitedUser!,
+																			refreshingProfile: getActivity(
+																				activities,
+																				ActionTypes.SYNC_GET_CURRENT_PROFILE,
+																			),
+																			loadingProfile: true,
+																		},
+																		actions: {
+																			...mock.actions,
+																			addFriend: (username) =>
+																				profilesProps.addFriend({ username }),
+																			likePost: (postId) =>
+																				postsProps.likePost({ postId }),
+																			unlikePost: (postId) =>
+																				postsProps.unlikePost({ postId }),
+																			postComment: (text, postId) =>
+																				postsProps.createComment({
+																					text,
+																					postId,
+																				}),
+																			loadMorePosts: postsProps.loadMorePosts,
+																			setNavigationParams,
+																			getText: i18nProps.getText,
+																		},
+																	});
+																}}
+															</WithVisitedUserContent>
+														)}
+													</WithCurrentUser>
+												)}
+											</WithActivities>
+										)}
+									</WithPosts>
+								)}
+							</WithProfiles>
 						)}
-					</WithCurrentUser>
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);

@@ -41,12 +41,6 @@ const styles: any = {
 		height: Sizes.smartVerticalScale(10),
 		marginVertical: Sizes.smartVerticalScale(10),
 	},
-	button: {
-		flex: 1,
-		width: '100%',
-		backgroundColor: Colors.wildSand,
-		padding: Sizes.smartHorizontalScale(20),
-	},
 };
 
 export default StyleSheet.create(styles);

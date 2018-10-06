@@ -23,10 +23,10 @@ type ILoginScreenProps = INavigationProps &
 
 class Screen extends React.Component<ILoginScreenProps> {
 	public render() {
-		const { getText, doLogin } = this.props;
+		const { getText, login } = this.props;
 		return (
 			<LoginScreenView
-				onStartLogin={doLogin}
+				onStartLogin={login}
 				onNavigateToPasswordForgot={() =>
 					this.safeNavigateToScreen(SCREENS.ForgotPassword)
 				}

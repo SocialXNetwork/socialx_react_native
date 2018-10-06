@@ -9,6 +9,7 @@ import {
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { resetNavigationToRoute } from '../../helpers';
@@ -19,23 +20,22 @@ const mock: IWithMyProfileEnhancedProps = {
 		currentUser,
 	},
 	actions: {
-		// This is now implemented with the WithI18n connector enhancer
-		getText: (value: string, ...args: any[]) => value,
-		resetNavigationToRoute: (
-			screenName: string,
-			navigation: NavigationScreenProp<any>,
-		) => {
-			/**/
-		},
 		showDotsMenuModal: (items: IDotsMenuItem[]) => {
 			/**/
 		},
 		logout: () => {
 			/**/
 		},
+		resetNavigationToRoute: (
+			screenName: string,
+			navigation: NavigationScreenProp<any>,
+		) => {
+			/**/
+		},
 		setNavigationParams: () => {
 			/**/
 		},
+		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
@@ -73,32 +73,35 @@ export class WithMyProfile extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithOverlays>
-						{(overlayProps) => (
-							<WithAccounts>
-								{(accountsProps) => (
-									<WithCurrentUserContent>
-										{(currentUserProps) =>
-											this.props.children({
-												data: {
-													...mock.data,
-													currentUser: currentUserProps.currentUser!,
-												},
-												actions: {
-													...mock.actions,
-													getText: i18nProps.getText,
-													logout: accountsProps.logout,
-													resetNavigationToRoute,
-													showDotsMenuModal: (items: IDotsMenuItem[]) =>
-														overlayProps.showOptionsMenu({ items }),
-												},
-											})
-										}
-									</WithCurrentUserContent>
+					<WithNavigationParams>
+						{({ setNavigationParams }) => (
+							<WithOverlays>
+								{(overlayProps) => (
+									<WithAccounts>
+										{(accountsProps) => (
+											<WithCurrentUserContent>
+												{(currentUserProps) =>
+													this.props.children({
+														data: {
+															currentUser: currentUserProps.currentUser!,
+														},
+														actions: {
+															showDotsMenuModal: (items: IDotsMenuItem[]) =>
+																overlayProps.showOptionsMenu({ items }),
+															logout: accountsProps.logout,
+															resetNavigationToRoute,
+															setNavigationParams,
+															getText: i18nProps.getText,
+														},
+													})
+												}
+											</WithCurrentUserContent>
+										)}
+									</WithAccounts>
 								)}
-							</WithAccounts>
+							</WithOverlays>
 						)}
-					</WithOverlays>
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);

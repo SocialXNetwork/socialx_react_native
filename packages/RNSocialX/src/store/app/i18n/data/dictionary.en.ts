@@ -252,5 +252,8 @@ export default {
 	'ad.management.overview.screen.account.performance.spent': 'Spent',
 	'ad.management.overview.screen.account.performance.people.reached': 'People reached',
 	'ad.management.overview.screen.see.past.performance': 'SEE PAST PERFORMANCE',
-	'ad.management.screen.title': 'Ad management'
+	'ad.management.screen.title': 'Ad management',
+	'ad.management.option.post': 'Boost a post',
+	'ad.management.option.video': 'Get video views',
+	'ad.management.option.traffic': 'Drive traffic to your website'
 };

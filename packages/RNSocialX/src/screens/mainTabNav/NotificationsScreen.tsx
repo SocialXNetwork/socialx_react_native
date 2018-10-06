@@ -18,11 +18,10 @@ class Screen extends React.Component<INotificationsScreenProps> {
 	public render() {
 		const {
 			notifications,
-			loading,
+			refreshing,
 			getText,
 			showConfirm,
 			hideConfirm,
-			refreshing,
 			loadNotifications,
 			acceptFriendRequest,
 			declineFriendRequest,
@@ -31,7 +30,6 @@ class Screen extends React.Component<INotificationsScreenProps> {
 
 		return (
 			<NotificationsScreenView
-				isLoading={loading}
 				notifications={notifications}
 				refreshing={refreshing}
 				onRefresh={loadNotifications}

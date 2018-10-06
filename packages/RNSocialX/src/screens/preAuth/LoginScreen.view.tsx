@@ -1,12 +1,6 @@
 import { Formik, FormikErrors, FormikProps } from 'formik';
 import * as React from 'react';
-import {
-	Keyboard,
-	SafeAreaView,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
@@ -35,7 +29,7 @@ interface ILoginScreenData {
 
 const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 	<KeyboardContext.Consumer>
-		{({ marginBottom, safeRunAfterKeyboardHide }) => (
+		{({ safeRunAfterKeyboardHide }) => (
 			<Formik
 				initialValues={{
 					userName: '',
@@ -60,7 +54,6 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 				render={({
 					values: { userName, password },
 					errors,
-					handleBlur,
 					handleSubmit,
 					isValid,
 					touched,
@@ -144,17 +137,17 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 	onGoBack,
 	getText,
 }) => (
-	<SafeAreaView style={style.safeAreaContainer}>
+	<View style={style.screenContainer}>
 		<Header
 			title={getText('login.screen.title')}
-			left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<KeyboardAwareScrollView
 			style={style.keyboardView}
 			contentContainerStyle={style.container}
 			alwaysBounceVertical={false}
-			keyboardDismissMode={'interactive'}
-			keyboardShouldPersistTaps={'handled'}
+			keyboardDismissMode="interactive"
+			keyboardShouldPersistTaps="handled"
 		>
 			{/*<InputSMSCodeModal
 				visible={showModalForSMSCode}
@@ -190,5 +183,5 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 				</TouchableOpacity>
 			</View>
 		</KeyboardAwareScrollView>
-	</SafeAreaView>
+	</View>
 );
