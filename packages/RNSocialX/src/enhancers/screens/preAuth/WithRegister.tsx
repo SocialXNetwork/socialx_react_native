@@ -73,17 +73,17 @@ export class WithRegister extends React.Component<
 									register: (registerData: IRegisterData) =>
 										accountsProps.createAccount({
 											recover: {
-												question1: '',
-												question2: '',
-												reminder: '',
+												question1: 'question1',
+												question2: 'questions2',
+												reminder: 'password',
 											},
 											username: registerData.userName,
 											password: registerData.password,
 											email: registerData.email,
 											avatar: registerData.avatarImage as string,
 											fullName: registerData.name,
-											miningEnabled: false,
-											aboutMeText: '',
+											miningEnabled: true,
+											aboutMeText: 'about me text',
 										}),
 									getText: i18nProps.getText,
 								},
