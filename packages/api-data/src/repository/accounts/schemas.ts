@@ -41,6 +41,15 @@ export const createAccountInput = yup
 			.min(4)
 			.max(128)
 			.required(),
+		aboutMeText: yup
+			.string()
+			.trim()
+			.min(0)
+			.max(180),
+		miningEnabled: yup
+			.bool()
+			.default(false)
+			.required(),
 		password: usernameOrPasswordType,
 		recover: recoverType,
 		username: usernameOrPasswordType,
