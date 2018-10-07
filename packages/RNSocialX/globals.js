@@ -1,32 +1,19 @@
-if (typeof __dirname === "undefined") global.__dirname = "/";
-if (typeof __filename === "undefined") global.__filename = "";
-if (typeof process === "undefined") {
-  global.process = require("process");
-  console.log(`loaded global.process=`, global.process);
-} else {
-  console.log(`process existed =`, process);
+// Inject node globals into React Native global scope.
+global.Buffer = require('buffer').Buffer;
+global.process = require('process');
+global.process.env.NODE_ENV = __DEV__ ? 'development' : 'production';
 
-  const bProcess = require("process");
-  for (var p in bProcess) {
-    if (!(p in process)) {
-      process[p] = bProcess[p];
-    }
-  }
-}
+// Needed so that 'stream-http' and gun chooses the right default protocol.
+global.location = {
+  protocol: 'file:',
+  host: '',
+};
 
-process.browser = false;
+const { randomBytes } = require('randombytes');
 
-if (typeof Buffer === "undefined") global.Buffer = require("buffer").Buffer;
-
-const isDev = typeof __DEV__ === "boolean" && __DEV__;
-process.env["NODE_ENV"] = isDev ? "development" : "production";
-if (typeof localStorage !== "undefined") {
-  localStorage.debug = isDev ? "*" : "";
-}
-
-if (!process.version) {
-  process.version = "";
-  console.log(`[shim] hacking process.version`);
-}
-
-require("crypto");
+// Patch the crypto into global so gun can handle the sea cryptography
+global.crypto = {
+  getRandomValues(byteArray) {
+    randomBytes(byteArray);
+  },
+};

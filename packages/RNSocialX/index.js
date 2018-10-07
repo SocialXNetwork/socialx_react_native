@@ -1,4 +1,4 @@
-// import './globals'; // watch https://github.com/facebook/react-native/issues/20415 or find an alternative
+import './globals';
 import React from 'react';
 import { AppRegistry } from 'react-native';
 
