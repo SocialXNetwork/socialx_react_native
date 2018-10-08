@@ -27,8 +27,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const finalProfiles = action.payload.reduce(
 				(updatedProfiles, newProfile) => [
 					...updatedProfiles.filter(
-						(updatedProfile: any) =>
-							updatedProfile.username !== newProfile.username,
+						(updatedProfile) => updatedProfile.pub !== newProfile.pub,
 					),
 					newProfile,
 				],

@@ -55,9 +55,9 @@ export const getProfilesByPosts = (
 				}),
 			);
 			const { dataApi } = context;
-			const profiles = await dataApi.profiles.getProfilesByPosts(
-				getProfileByPostsInput,
-			);
+			const profiles = await dataApi.profiles.getUserProfilesByPosts({
+				posts: getProfileByPostsInput,
+			});
 			dispatch(syncGetProfilesByPostsAction(profiles));
 		} catch (e) {
 			dispatch(
