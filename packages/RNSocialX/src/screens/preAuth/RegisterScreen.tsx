@@ -5,8 +5,9 @@
  */
 
 import * as React from 'react';
-import { Keyboard, View } from 'react-native';
+import { Keyboard } from 'react-native';
 
+import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { RegisterScreenView } from './RegisterScreen.view';
 
@@ -40,18 +41,22 @@ class Screen extends React.Component<IRegisterScreenProps> {
 				onSmsCodeConfirmed={validateSMSCode}
 				onSmsCodeDeclined={() => this.toggleVisibleModalSMS(false)}
 				onSmsCodeResend={resendSMSCode}
-				onStartRegister={register}
+				onStartRegister={(userData) => {
+					register(userData);
+					// this.safeNavigateToScreen(NAVIGATION.Intro);
+				}}
 				onAlreadyHaveCode={this.toggleVisibleModalSMS}
-				onNavigateToTermsAndConditions={
-					this.onNavigateToTermsAndConditionsHandler
+				onNavigateToTermsAndConditions={() =>
+					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
 				}
 				onGoBack={this.onGoBackHandler}
 			/>
 		);
 	}
 
-	private onNavigateToTermsAndConditionsHandler = () => {
-		this.props.navigation.navigate('TermsAndConditionsScreen');
+	private safeNavigateToScreen = (screenName: string) => {
+		Keyboard.dismiss();
+		this.props.navigation.navigate(screenName);
 	};
 
 	private toggleVisibleModalSMS = (visible = true) => {

@@ -25,7 +25,7 @@ import styles from './UserFeedScreen.style';
 interface IUserFeedScreenViewProps
 	extends IWithLoaderProps,
 		IWallPostCardActions {
-	avatarImage: any;
+	avatarImage: string | undefined;
 	wallPosts: IWallPostCardData[];
 	refreshing: boolean;
 	onRefresh: () => void;
@@ -90,7 +90,7 @@ export class UserFeedScreenView extends React.Component<
 							onEndReached={onLoadMorePosts}
 							onEndReachedThreshold={0.5}
 							alwaysBounceVertical={false}
-							keyboardShouldPersistTaps={'handled'}
+							keyboardShouldPersistTaps="handled"
 							ListFooterComponent={<LoadingFooter hasMore={hasMorePosts} />}
 							onScrollToIndexFailed={() => {
 								/**/

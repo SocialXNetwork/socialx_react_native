@@ -1,6 +1,7 @@
 /**
  * TODO list:
  * 1. handle sendMessageToUser prop
+ * 2. Add icons instead of text for profile statistics
  */
 
 import * as React from 'react';
@@ -94,7 +95,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 						value={numberOfFriends}
 					/>
 					<Statistics
-						text={getText('profile.statistics.view.count')}
+						text={getText('profile.statistics.comments')}
 						value={numberOfComments}
 					/>
 				</View>
