@@ -9534,6 +9534,11 @@ react-native-app-intro-slider@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-1.0.1.tgz#712bf3dc1d66b3432bf4092971db4dfc01b916bd"
   integrity sha512-5Gzg5FG2uP/RHkSDFB5+2df4vQ2FpyUJ5PGYd23lLEISsEOJe0Zredh1hHMJj+fB5D9B7ZoL0IlR+SNn8iFxHg==
 
+react-native-background-upload@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-background-upload/-/react-native-background-upload-5.0.0.tgz#5bd752a005b0a21b4cdd56aad206dd64889d0145"
+  integrity sha512-dGRgB9KrDXgNNtLyL4K1Oxm4tG82mahwa+vbPCGFQIegAD04LJKY0fxDKaxS16CQi2QzBPEZcbYfRtLcfzemZg==
+
 react-native-blur@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/react-native-blur/-/react-native-blur-3.2.2.tgz#5bfb50638d148982c9560436554ed01d77d6d07d"
