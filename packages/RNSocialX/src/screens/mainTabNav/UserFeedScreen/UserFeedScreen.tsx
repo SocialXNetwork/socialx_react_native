@@ -99,10 +99,10 @@ export class Screen extends React.Component<
 	}
 
 	private onLoadMorePostsHandler = async () => {
-		const { loadMorePosts, feedType } = this.props;
+		const { loadPosts, feedType } = this.props;
 
 		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
-			loadMorePosts(feedType);
+			loadPosts(feedType);
 		}
 	};
 

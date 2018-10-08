@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props actions: loadPosts, refreshFeed, likePost, unlikePost, deletePost, postComment, blockUser, reportProblem
+ * 1. Props actions: blockUser, reportProblem
  */
 
 import * as React from 'react';

@@ -46,10 +46,7 @@ export class WithCurrentUser extends React.Component<
 												email: foundProfile.email,
 												fullName: foundProfile.fullName,
 												userName: auth.alias,
-												avatarURL:
-													foundProfile.avatar.length > 0
-														? foundProfile.avatar
-														: USER_AVATAR_PLACEHOLDER,
+												avatarURL: foundProfile.avatar,
 												aboutMeText: foundProfile.aboutMeText,
 												numberOfLikes: 0,
 												numberOfPhotos: 0,

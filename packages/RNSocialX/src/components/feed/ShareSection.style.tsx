@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
 
 const USER_AVATAR_SIZE = Sizes.smartHorizontalScale(40);
+export const USER_AVATAR_PLACEHOLDER = Images.user_avatar_placeholder;
 
 const styles: any = {
 	container: {

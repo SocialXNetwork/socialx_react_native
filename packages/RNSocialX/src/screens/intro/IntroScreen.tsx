@@ -4,13 +4,15 @@
 
 import * as React from 'react';
 
+import { NAVIGATION } from '../../environment/consts';
+import { INavigationProps } from '../../types';
+import { IntroScreenView } from './IntroScreen.view';
+
 import {
 	IWithIntroEnhancedActions,
 	IWithIntroEnhancedData,
 	WithIntro,
 } from '../../enhancers/screens';
-import { INavigationProps } from '../../types';
-import { IntroScreenView } from './IntroScreen.view';
 
 type IIntroScreenProps = IWithIntroEnhancedData &
 	IWithIntroEnhancedActions &
@@ -22,8 +24,12 @@ const Screen: React.SFC<IIntroScreenProps> = ({
 	getText,
 }) => (
 	<IntroScreenView
-		doneButtonHandler={() => resetNavigationToRoute('MainScreen', navigation)}
-		skipButtonHandler={() => resetNavigationToRoute('MainScreen', navigation)}
+		doneButtonHandler={() =>
+			resetNavigationToRoute(NAVIGATION.Main, navigation)
+		}
+		skipButtonHandler={() =>
+			resetNavigationToRoute(NAVIGATION.Main, navigation)
+		}
 		getText={getText}
 	/>
 );

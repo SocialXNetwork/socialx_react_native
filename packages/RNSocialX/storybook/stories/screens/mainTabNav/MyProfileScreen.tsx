@@ -20,17 +20,18 @@ class MyProfileScreenViewStory extends React.Component {
 		const userAvatar =
 			'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
 
-		const refreshing = boolean('refreshing', false);
-		const isLoading = boolean('isLoading', false);
 		const hasPhotos = boolean('hasPhotos', true);
 		const fullName = text('fullName', 'Alex Sirbu');
 		const userName = text('userName', 'alexsirbu');
-		const numberOfPhotos = number('numberOfPhotos', 2);
-		const numberOfLikes = number('numberOfLikes', 65);
-		const numberOfFriends = number('numberOfFriends', 78);
-		const numberOfComments = number('numberOfComments', 100);
+		const numberOfPhotos = number('numberOfPhotos', 7850);
+		const numberOfLikes = number('numberOfLikes', 500000);
+		const numberOfFriends = number('numberOfFriends', 25990);
+		const numberOfComments = number('numberOfComments', 152087);
 
-		const aboutMeText = text('aboutMeText', 'This is me.');
+		const aboutMeText = text(
+			'aboutMeText',
+			'This is me fjkasfbasdifbasbdiasbdkabdksabdkabdfkl abflidblifbjlEbdabjILDBNAEDNASDALSNDLANLSDLADNKASDKBAKSDBAKBFK`FLSABdbla.bsdasbj.',
+		);
 
 		return (
 			<MyProfileScreenView

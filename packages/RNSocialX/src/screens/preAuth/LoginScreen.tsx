@@ -6,14 +6,14 @@
  */
 
 import * as React from 'react';
-import { Keyboard, View } from 'react-native';
+import { Keyboard } from 'react-native';
 
 import {
 	IWithLoginEnhancedActions,
 	IWithLoginEnhancedData,
 	WithLogin,
 } from '../../enhancers/screens';
-import { SCREENS } from '../../environment/consts';
+import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { LoginScreenView } from './LoginScreen.view';
 
@@ -26,7 +26,9 @@ class Screen extends React.Component<ILoginScreenProps> {
 		const { getText, login } = this.props;
 		return (
 			<LoginScreenView
-				onStartLogin={login}
+				onStartLogin={(userName, password) => {
+					login(userName, password);
+				}}
 				onNavigateToPasswordForgot={() =>
 					this.safeNavigateToScreen(SCREENS.ForgotPassword)
 				}
