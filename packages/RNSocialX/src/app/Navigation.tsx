@@ -22,6 +22,7 @@ import { IStackDefaultConfig } from '../types';
 import { tabStyles } from './Navigation.style';
 
 import {
+	AdsManagementScreen,
 	CommentsScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,

@@ -1,4 +1,10 @@
 export {
+	IWithAdsManagementEnhancedActions,
+	IWithAdsManagementEnhancedData,
+	WithAdsManagement,
+} from './adsManagementStack/WithAdsManagement';
+
+export {
 	WithComments,
 	IWithCommentsEnhancedData,
 	IWithCommentsEnhancedActions,

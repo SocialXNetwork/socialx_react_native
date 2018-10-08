@@ -101,6 +101,7 @@ export enum SCREENS {
 	UserFeed = 'UserFeedTab',
 	WalletAccount = 'WalletAccountScreen',
 	WalletKeys = 'WalletKeysScreen',
+	AdsManagement = 'AdsManagementScreen',
 }
 
 export enum NAVIGATION {

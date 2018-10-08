@@ -253,5 +253,6 @@ export default {
 	'ad.management.screen.title': 'Ad management',
 	'ad.management.option.post': 'Boost a post',
 	'ad.management.option.video': 'Get video views',
-	'ad.management.option.traffic': 'Drive traffic to your website'
+	'ad.management.option.traffic': 'Drive traffic to your website',
+	'ad.management.create': 'Create a new add'
 };

@@ -11,17 +11,17 @@ const style: any = {
 	},
 	containerNormal: {
 		height: Sizes.smartVerticalScale(50),
-		borderRadius: Sizes.smartVerticalScale(50) / 2,
+		borderRadius: Sizes.smartVerticalScale(5),
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
 	},
 	containerSmall: {
 		height: Sizes.smartVerticalScale(36),
-		borderRadius: Sizes.smartVerticalScale(36) / 2,
+		borderRadius: Sizes.smartVerticalScale(5),
 		paddingHorizontal: Sizes.smartHorizontalScale(13),
 	},
 	containerLarge: {
 		height: Sizes.smartVerticalScale(60),
-		borderRadius: Sizes.smartVerticalScale(60) / 2,
+		borderRadius: Sizes.smartVerticalScale(5),
 		paddingHorizontal: Sizes.smartHorizontalScale(25),
 	},
 	text: {
