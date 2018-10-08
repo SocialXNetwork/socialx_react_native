@@ -8,7 +8,7 @@ const styles: any = {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		paddingVertical: Sizes.smartVerticalScale(5),
+		paddingVertical: Sizes.smartVerticalScale(15),
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	optionContainer: {

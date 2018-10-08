@@ -35,17 +35,17 @@ class Screen extends React.Component<IRegisterScreenProps> {
 		return (
 			<RegisterScreenView
 				getText={getText}
-				resendingCode={resendingCode}
-				showModalForSMSCode={showModalForSMSCode}
-				smsCodeErrorMessage={smsCodeErrorMessage}
-				onSmsCodeConfirmed={validateSMSCode}
-				onSmsCodeDeclined={() => this.toggleVisibleModalSMS(false)}
-				onSmsCodeResend={resendSMSCode}
+				// resendingCode={resendingCode}
+				// showModalForSMSCode={showModalForSMSCode}
+				// smsCodeErrorMessage={smsCodeErrorMessage}
+				// onSmsCodeConfirmed={validateSMSCode}
+				// onSmsCodeDeclined={() => this.toggleVisibleModalSMS(false)}
+				// onSmsCodeResend={resendSMSCode}
+				// onAlreadyHaveCode={this.toggleVisibleModalSMS}
 				onStartRegister={(userData) => {
 					register(userData);
 					// this.safeNavigateToScreen(NAVIGATION.Intro);
 				}}
-				onAlreadyHaveCode={this.toggleVisibleModalSMS}
 				onNavigateToTermsAndConditions={() =>
 					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
 				}

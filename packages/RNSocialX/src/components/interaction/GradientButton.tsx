@@ -39,7 +39,7 @@ export const GradientButton: React.SFC<IGradientButtonProps> = (props) => {
 
 const styles: any = StyleSheet.create({
 	container: {
-		borderRadius: Sizes.smartVerticalScale(50) / 2,
+		borderRadius: Sizes.smartVerticalScale(5),
 	},
 	disabledButton: {
 		opacity: 0.5,

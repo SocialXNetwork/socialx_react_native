@@ -33,13 +33,19 @@ const styles: any = {
 		lineHeight: Sizes.smartHorizontalScale(20),
 		color: Colors.pink,
 		textAlign: 'center',
-		paddingBottom: Sizes.smartVerticalScale(5),
+		paddingBottom: Sizes.smartVerticalScale(15),
 	},
 	separator: {
 		width: '100%',
 		backgroundColor: Colors.wildSand,
 		height: Sizes.smartVerticalScale(10),
-		marginVertical: Sizes.smartVerticalScale(10),
+	},
+	button: {
+		flex: 1,
+		width: '100%',
+		backgroundColor: Colors.wildSand,
+		paddingHorizontal: Sizes.smartHorizontalScale(20),
+		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 };
 
