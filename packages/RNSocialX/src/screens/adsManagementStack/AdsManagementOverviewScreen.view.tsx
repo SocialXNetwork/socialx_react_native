@@ -3,8 +3,12 @@ import * as React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { CloseButton as CloseModal, Header } from '../../components';
-import { ITranslatedProps } from '../../types';
+import {
+	ChartAccountPerformance,
+	CloseButton as CloseModal,
+	Header,
+} from '../../components';
+import { IAdsAccountPerformanceValues, ITranslatedProps } from '../../types';
 import styles from './AdsManagementOverviewScreen.style';
 
 interface IAdCard {
@@ -49,8 +53,10 @@ interface IAdsManagementOverviewScreenViewProps
 	extends IAdCardActions,
 		ITranslatedProps {
 	currentDate: string;
+	currentWeek: string;
 	lastSevenDays: string;
 	adCards: IAdCard[];
+	spentValues: IAdsAccountPerformanceValues[];
 	onClose: () => void;
 	onCreateAd: () => void;
 	onSeePastPerformance: () => void;
@@ -67,6 +73,8 @@ export const AdsManagementOverviewScreenView: React.SFC<
 	onEditAd,
 	lastSevenDays,
 	onSeePastPerformance,
+	currentWeek,
+	spentValues,
 }) => {
 	return (
 		<View style={styles.rootView}>
@@ -101,7 +109,10 @@ export const AdsManagementOverviewScreenView: React.SFC<
 								'ad.management.overview.screen.account.performance.spent',
 							)}
 						>
-							<Text>{'Tab spend content'}</Text>
+							<ChartAccountPerformance
+								week={currentWeek}
+								performanceValues={spentValues}
+							/>
 						</Tab>
 						<Tab
 							tabStyle={styles.tabStyle}
@@ -113,6 +124,17 @@ export const AdsManagementOverviewScreenView: React.SFC<
 							)}
 						>
 							<Text>{'Tab people content'}</Text>
+						</Tab>
+						<Tab
+							tabStyle={styles.tabStyle}
+							activeTabStyle={styles.tabStyle}
+							textStyle={styles.tabTitleTextInactive}
+							activeTextStyle={styles.tabTitleTextActive}
+							heading={getText(
+								'ad.management.overview.screen.account.performance.impressions',
+							)}
+						>
+							<Text>{'Tab impressions'}</Text>
 						</Tab>
 					</Tabs>
 				</View>
