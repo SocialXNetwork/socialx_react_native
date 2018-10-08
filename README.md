@@ -29,12 +29,12 @@ For compatibility with [image crop lib](https://github.com/ivpusic/react-native-
 ```
  maven {
             url "https://jitpack.io"
-        } 
+        }
 ```
 in RNSocialX/android/build.gradle to allprojects.repositories
 
 The following RN packages are linked:
-1. react-native-randombytes 
+1. react-native-randombytes
 2. react-native-fast-image
 3. react-native-vector-icons
 4. react-native-fs
@@ -59,7 +59,7 @@ Before you begin, make sure you have installed the following tooling
 
 - node >=8.11
 - npm >=6.3
-- yarn >=1.9 
+- yarn >=1.9
 
 Make sure you have a valid `packages/RNSocialX/src/app/app.config.json` file,
 you can copy `packages/RNSocialX/src/app/app.config.example.json` if you don't
@@ -69,8 +69,8 @@ computer's local lan IP address.
 To begin development, run the following commands
 
 ```
-$ yarn run install
-$ yarn run build
+$ yarn install
+$ yarn build
 ```
 
 The build step must be repeated if modules have changed.
@@ -78,10 +78,16 @@ The build step must be repeated if modules have changed.
 To run the app on the emulator/simulator, run the the following
 
 ```
-$ yarn run start:database
-$ yarn run start:js
-$ yarn run start:android
-$ yarn run start:ios
+$ yarn start:database
+$ yarn start:js
+$ yarn run:android
+$ yarn run:ios
+```
+
+If you have build errors try running the following commands from the root of RNSocialX package
+```
+$ cd node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
+$ cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-configure-glog.sh && cd ../../../../
 ```
 
 Use the latest [RN Debugger](https://github.com/jhen0409/react-native-debugger/releases)

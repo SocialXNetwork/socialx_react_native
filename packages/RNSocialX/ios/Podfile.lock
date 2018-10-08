@@ -1,8 +1,8 @@
 PODS:
-  - BugsnagReactNative (2.10.3):
-    - BugsnagReactNative/Core (= 2.10.3)
+  - BugsnagReactNative (2.11.0):
+    - BugsnagReactNative/Core (= 2.11.0)
     - React
-  - BugsnagReactNative/Core (2.10.3):
+  - BugsnagReactNative/Core (2.11.0):
     - React
   - QBImagePickerController (3.4.0)
   - React (0.56.1):
