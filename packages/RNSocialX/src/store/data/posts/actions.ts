@@ -493,10 +493,8 @@ export const likeComment = (
 
 	const storeState = getState();
 	const parentPost = storeState.data.posts.posts.find(
-		(post: IPostReturnData) =>
-			post.comments.find(
-				(comment: ICommentsReturnData) => comment.commentId === commentId,
-			)
+		(post) =>
+			post.comments.find((comment) => comment.commentId === commentId)
 				? true
 				: false,
 	);
@@ -543,9 +541,7 @@ export const removeComment = (
 	const storeState = getState();
 	const parentPost = [...storeState.data.posts.posts].find(
 		(post) =>
-			post.comments.find(
-				(comment: ICommentsReturnData) => comment.commentId === commentId,
-			)
+			post.comments.find((comment) => comment.commentId === commentId)
 				? true
 				: false,
 	);
@@ -592,9 +588,7 @@ export const unlikeComment = (
 	const storeState = getState();
 	const parentPost = [...storeState.data.posts.posts].find(
 		(post) =>
-			post.comments.find(
-				(comment: ICommentsReturnData) => comment.commentId === commentId,
-			)
+			post.comments.find((comment) => comment.commentId === commentId)
 				? true
 				: false,
 	);
