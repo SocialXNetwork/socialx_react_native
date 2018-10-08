@@ -13,7 +13,7 @@ export const MaintenanceScreenView: React.SFC<IMaintenanceScreenViewProps> = ({
 	<View style={styles.container}>
 		<LottieView
 			style={styles.icon}
-			source={animations.dragon}
+			source={animations.lottie.dragon}
 			ref={(ani: any) => {
 				if (ani) {
 					ani.play();

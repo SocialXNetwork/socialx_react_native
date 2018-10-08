@@ -93,11 +93,9 @@ const NOTIFICATION_CARDS = [
 storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
 	.add('NotificationsScreen', () => {
-		const isLoading = boolean('isLoading', false);
 		const refreshing = boolean('refreshing', false);
 		return (
 			<NotificationsScreenView
-				isLoading={isLoading}
 				getText={getTextMock}
 				notifications={NOTIFICATION_CARDS}
 				refreshing={refreshing}
