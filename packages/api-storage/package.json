@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-		"test": "jest --onlyChanged",
-		"test:all": "jest"
+    "test": "jest --onlyChanged",
+    "test:all": "jest"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@socialx/commons": "^0.0.1",
+    "react-native-background-upload": "^5.0.0",
     "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
