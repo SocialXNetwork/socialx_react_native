@@ -12,7 +12,7 @@ import {
 	IWithLaunchEnhancedData,
 	WithLaunch,
 } from '../../enhancers/screens';
-import { SCREENS } from '../../environment/consts';
+import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 
 type ILaunchScreenProps = INavigationProps &
@@ -28,12 +28,12 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 		} = this.props;
 		if (currentUser) {
 			if (__DEV__) {
-				resetNavigationToRoute('MainScreen', this.props.navigation);
+				resetNavigationToRoute(NAVIGATION.Main, this.props.navigation);
 			} else {
 				if (applicationInMaintenanceMode) {
-					resetNavigationToRoute('Maintenance', this.props.navigation);
+					resetNavigationToRoute(NAVIGATION.Maintenance, this.props.navigation);
 				} else {
-					resetNavigationToRoute('MainScreen', this.props.navigation);
+					resetNavigationToRoute(NAVIGATION.Main, this.props.navigation);
 				}
 			}
 		}

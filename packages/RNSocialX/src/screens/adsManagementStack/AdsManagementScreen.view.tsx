@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import { AvatarImage, Header, HeaderButton, Option } from '../../components';
+import {
+	AvatarImage,
+	Header,
+	HeaderButton,
+	Option,
+	PrimaryButton,
+} from '../../components';
 import { Icons } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 
@@ -52,5 +58,13 @@ export const AdsManagementScreenView: React.SFC<
 			}}
 		/>
 		<View style={styles.separator} />
+		<View style={styles.button}>
+			<PrimaryButton
+				label={getText('ad.management.create')}
+				onPress={() => {
+					/**/
+				}}
+			/>
+		</View>
 	</View>
 );

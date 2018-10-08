@@ -19,7 +19,7 @@ export const LaunchScreenView: React.SFC<ILaunchScreenViewProps> = ({
 		<Image
 			source={customStylesProps.launchScreenBackground}
 			style={style.background}
-			resizeMode={'cover'}
+			resizeMode="cover"
 		/>
 		<View style={style.topPaddingContainer}>
 			<TextGradient

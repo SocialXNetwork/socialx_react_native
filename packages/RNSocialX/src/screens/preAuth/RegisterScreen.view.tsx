@@ -36,7 +36,7 @@ import {
 } from '../../components';
 import { KeyboardContext } from '../../environment/consts';
 import { ITranslatedProps } from '../../types';
-import style, { colors, defaultStyles } from './RegisterScreen.style';
+import style, { colors } from './RegisterScreen.style';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -44,7 +44,7 @@ export interface IRegisterData {
 	email: string;
 	name: string;
 	userName: string;
-	phoneNumber: string;
+	// phoneNumber: string;
 	password: string;
 	avatarImage: string | ImageSourcePropType;
 }
@@ -52,44 +52,44 @@ export interface IRegisterData {
 interface IRegisterFormData extends IRegisterData {
 	confirmPassword: string;
 	termsAccepted: boolean;
-	countryCCA2: string;
-	countryCallingCode: string;
+	// countryCCA2: string;
+	// countryCallingCode: string;
 }
 
 interface IRegisterScreenViewProps extends ITranslatedProps {
-	showModalForSMSCode: boolean;
-	smsCodeErrorMessage: string | null;
-	resendingCode: boolean;
-	onSmsCodeConfirmed: (code: string) => void;
-	onSmsCodeDeclined: () => void;
-	onSmsCodeResend: () => void;
+	// showModalForSMSCode: boolean;
+	// smsCodeErrorMessage: string | null;
+	// resendingCode: boolean;
+	// onSmsCodeConfirmed: (code: string) => void;
+	// onSmsCodeDeclined: () => void;
+	// onSmsCodeResend: () => void;
+	// onAlreadyHaveCode: () => void;
 	onStartRegister: (userData: IRegisterData) => void;
-	onAlreadyHaveCode: () => void;
 	onNavigateToTermsAndConditions: () => void;
 	onGoBack: () => void;
 }
 
-interface ICountryData {
-	cca2: string;
-	callingCode: string;
-}
+// interface ICountryData {
+// 	cca2: string;
+// 	callingCode: string;
+// }
 
 const nameRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
-const phoneNumberRef: React.RefObject<TextInput> = React.createRef();
+// const phoneNumberRef: React.RefObject<TextInput> = React.createRef();
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const confirmPasswordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 const EMAIL_SCHEMA = string().email();
 
-const DEVICE_COUNTRY = DeviceInfo.getDeviceCountry();
-const ALL_COUNTRIES = getAllCountries();
-const COUNTRY_LIST = ALL_COUNTRIES.map((country: ICountryData) => country.cca2);
-const DEVICE_COUNTRY_CALLING_CODE = ALL_COUNTRIES.reduce(
-	(value: string, country: ICountryData) =>
-		country.cca2 === DEVICE_COUNTRY ? country.callingCode : value,
-	'',
-);
+// const DEVICE_COUNTRY = DeviceInfo.getDeviceCountry();
+// const ALL_COUNTRIES = getAllCountries();
+// const COUNTRY_LIST = ALL_COUNTRIES.map((country: ICountryData) => country.cca2);
+// const DEVICE_COUNTRY_CALLING_CODE = ALL_COUNTRIES.reduce(
+// 	(value: string, country: ICountryData) =>
+// 		country.cca2 === DEVICE_COUNTRY ? country.callingCode : value,
+// 	'',
+// );
 
 const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({
 	text,
@@ -105,14 +105,14 @@ const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({
 );
 
 export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
-	showModalForSMSCode,
-	smsCodeErrorMessage,
-	resendingCode,
-	onSmsCodeConfirmed,
-	onSmsCodeDeclined,
-	onSmsCodeResend,
+	// showModalForSMSCode,
+	// smsCodeErrorMessage,
+	// resendingCode,
+	// onSmsCodeConfirmed,
+	// onSmsCodeDeclined,
+	// onSmsCodeResend,
+	// onAlreadyHaveCode,
 	onStartRegister,
-	onAlreadyHaveCode,
 	onNavigateToTermsAndConditions,
 	onGoBack,
 	getText,
@@ -141,19 +141,19 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							confirmPassword: '',
 							avatarImage: '',
 							termsAccepted: false,
-							countryCCA2: DEVICE_COUNTRY,
-							countryCallingCode: DEVICE_COUNTRY_CALLING_CODE,
+							// countryCCA2: DEVICE_COUNTRY,
+							// countryCallingCode: DEVICE_COUNTRY_CALLING_CODE,
 						}}
 						validate={({
 							email,
 							name,
 							userName,
-							phoneNumber,
 							password,
 							confirmPassword,
-							countryCallingCode,
-							countryCCA2,
-						}: IRegisterFormData) => {
+						}: // phoneNumber,
+						// countryCallingCode,
+						// countryCCA2,
+						IRegisterFormData) => {
 							const errors: FormikErrors<IRegisterFormData> = {};
 							if (!email) {
 								errors.email = getText('register.screen.email.required');
@@ -166,31 +166,31 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							if (!userName) {
 								errors.userName = getText('register.screen.userName.required');
 							}
-							if (!phoneNumber) {
-								errors.phoneNumber = getText(
-									'register.screen.phone.number.required',
-								);
-							} else {
-								try {
-									const rawPhoneNumber = phoneUtil.parse(
-										`+${countryCallingCode}${phoneNumber}`,
-										countryCCA2,
-									);
-									const isPhoneNumberValid = phoneUtil.isValidNumberForRegion(
-										rawPhoneNumber,
-										countryCCA2,
-									);
-									if (!isPhoneNumberValid) {
-										errors.phoneNumber = getText(
-											'register.screen.phone.number.invalid',
-										);
-									}
-								} catch (e) {
-									errors.phoneNumber = getText(
-										'register.screen.phone.number.invalid',
-									);
-								}
-							}
+							// if (!phoneNumber) {
+							// 	errors.phoneNumber = getText(
+							// 		'register.screen.phone.number.required',
+							// 	);
+							// } else {
+							// 	try {
+							// 		const rawPhoneNumber = phoneUtil.parse(
+							// 			`+${countryCallingCode}${phoneNumber}`,
+							// 			countryCCA2,
+							// 		);
+							// 		const isPhoneNumberValid = phoneUtil.isValidNumberForRegion(
+							// 			rawPhoneNumber,
+							// 			countryCCA2,
+							// 		);
+							// 		if (!isPhoneNumberValid) {
+							// 			errors.phoneNumber = getText(
+							// 				'register.screen.phone.number.invalid',
+							// 			);
+							// 		}
+							// 	} catch (e) {
+							// 		errors.phoneNumber = getText(
+							// 			'register.screen.phone.number.invalid',
+							// 		);
+							// 	}
+							// }
 							if (!password) {
 								errors.password = getText(
 									'register.screen.confirm.password.required',
@@ -221,25 +221,25 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							email,
 							name,
 							userName,
-							phoneNumber,
-							countryCallingCode,
 							password,
 							avatarImage,
-							countryCCA2,
-						}: IRegisterFormData) => {
+						}: // phoneNumber,
+						// countryCallingCode,
+						// countryCCA2,
+						IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
-								const rawPhoneNumber = phoneUtil.parse(
-									`+${countryCallingCode}${phoneNumber}`,
-									countryCCA2,
-								);
+								// const rawPhoneNumber = phoneUtil.parse(
+								// 	`+${countryCallingCode}${phoneNumber}`,
+								// 	countryCCA2,
+								// );
 								onStartRegister({
 									email,
 									name,
 									userName,
-									phoneNumber: phoneUtil.format(
-										rawPhoneNumber,
-										PhoneNumberFormat.E164,
-									),
+									// phoneNumber: phoneUtil.format(
+									// 	rawPhoneNumber,
+									// 	PhoneNumberFormat.E164,
+									// ),
 									password,
 									avatarImage,
 								});
@@ -251,16 +251,15 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								email,
 								name,
 								userName,
-								phoneNumber,
 								password,
 								confirmPassword,
 								termsAccepted,
 								avatarImage,
-								countryCCA2,
-								countryCallingCode,
+								// phoneNumber,
+								// countryCCA2,
+								// countryCallingCode,
 							},
 							errors,
-							handleBlur,
 							handleSubmit,
 							isValid,
 							touched,
@@ -268,7 +267,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							setFieldTouched,
 						}: FormikProps<IRegisterFormData>) => (
 							<React.Fragment>
-								<InputSMSCodeModal
+								{/* <InputSMSCodeModal
 									errorMessage={smsCodeErrorMessage}
 									visible={showModalForSMSCode}
 									confirmHandler={onSmsCodeConfirmed}
@@ -278,7 +277,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									resendingCode={resendingCode}
 									getText={getText}
 									marginBottom={0}
-								/>
+								/> */}
 								<View style={style.avatarPickerContainer}>
 									<AvatarPicker
 										getText={getText}
@@ -364,11 +363,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldTouched('userName');
 										}}
 										onSubmitPressed={() =>
-											phoneNumberRef.current && phoneNumberRef.current.focus()
+											passwordRef.current && passwordRef.current.focusInput()
 										}
 									/>
 								</View>
-								<View style={style.textInputContainer}>
+								{/* <View style={style.textInputContainer}>
 									<ErrorMessage
 										text={errors.phoneNumber}
 										visible={!!touched.phoneNumber && !!errors.phoneNumber}
@@ -418,7 +417,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											}
 										/>
 									</View>
-								</View>
+								</View> */}
 								<View style={style.textInputContainer}>
 									<ErrorMessage
 										text={errors.password}
@@ -495,14 +494,14 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										borderColor={colors.transparent}
 									/>
 								</View>
-								<View style={style.buttonContainer}>
+								{/* <View style={style.buttonContainer}>
 									<PrimaryButton
 										label={getText('register.button.have.code')}
 										onPress={onAlreadyHaveCode}
 										disabled={userName === '' || !!errors.userName}
 										borderColor={colors.transparent}
 									/>
-								</View>
+								</View> */}
 							</React.Fragment>
 						)}
 					/>

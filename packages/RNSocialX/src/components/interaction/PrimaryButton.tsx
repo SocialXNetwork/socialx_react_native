@@ -71,7 +71,7 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 			style={containerWidth}
 		>
 			<View style={containerStyles}>
-				<Text style={textStyles}>{label}</Text>
+				<Text style={textStyles}>{label.toUpperCase()}</Text>
 				{loading && (
 					<ActivityIndicator
 						size="small"
