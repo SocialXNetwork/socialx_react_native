@@ -1,1 +1,1 @@
-export default () => 'index';
+export { storageApiFactory } from './api';
