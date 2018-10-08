@@ -46,7 +46,7 @@ export interface IRegisterData {
 	userName: string;
 	phoneNumber: string;
 	password: string;
-	avatarImage: ImageSourcePropType;
+	avatarImage: string | ImageSourcePropType;
 }
 
 interface IRegisterFormData extends IRegisterData {
@@ -122,13 +122,13 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 			<View style={{ flex: 1 }}>
 				<Header
 					title={getText('register.screen.title')}
-					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 				/>
 				<KeyboardAwareScrollView
 					style={style.keyboardView}
 					contentContainerStyle={style.container}
 					alwaysBounceVertical={false}
-					keyboardShouldPersistTaps={'handled'}
+					keyboardShouldPersistTaps="handled"
 					enableOnAndroid={true}
 				>
 					<Formik
@@ -139,7 +139,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							phoneNumber: '',
 							password: '',
 							confirmPassword: '',
-							avatarImage: defaultStyles.defaultAvatarImage,
+							avatarImage: '',
 							termsAccepted: false,
 							countryCCA2: DEVICE_COUNTRY,
 							countryCallingCode: DEVICE_COUNTRY_CALLING_CODE,
@@ -304,7 +304,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 									<PrimaryTextInput
 										iconColor={colors.iron}
-										icon={'envelope'}
+										icon="envelope"
 										placeholder={getText('register.email')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -326,10 +326,10 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										visible={!!touched.name && !!errors.name}
 									/>
 									<PrimaryTextInput
-										autoCapitalize={'words'}
+										autoCapitalize="words"
 										autoCorrect={true}
 										iconColor={colors.iron}
-										icon={'user'}
+										icon="user"
 										placeholder={getText('register.name')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -352,7 +352,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 									<PrimaryTextInput
 										iconColor={colors.iron}
-										icon={'user'}
+										icon="user"
 										placeholder={getText('register.username')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -375,12 +375,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 									<View style={style.directionRow}>
 										<View style={style.phoneInputIconContainer}>
-											<Icon name={'phone'} style={style.phoneIcon} />
+											<Icon name="phone" style={style.phoneIcon} />
 										</View>
 										<View style={style.countryPickerContainer}>
 											<CountryPicker
 												countryList={COUNTRY_LIST}
-												translation={'eng'}
+												translation="eng"
 												cca2={countryCCA2}
 												onChange={(country: ICountryData) => {
 													setFieldValue('countryCCA2', country.cca2);
@@ -427,7 +427,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<PrimaryTextInput
 										isPassword={true}
 										iconColor={colors.iron}
-										icon={'lock'}
+										icon="lock"
 										placeholder={getText('register.password')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -454,7 +454,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<PrimaryTextInput
 										isPassword={true}
 										iconColor={colors.iron}
-										icon={'lock'}
+										icon="lock"
 										placeholder={getText('register.confirm.password')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}

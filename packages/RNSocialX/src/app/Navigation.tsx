@@ -221,9 +221,9 @@ const PreAuthNavigator = createStackNavigator(
 
 const AppNavigation = createStackNavigator(
 	{
-		PreAuthScreen: { screen: PreAuthNavigator },
-		IntroScreen: { screen: IntroScreen },
-		MainScreen: { screen: MainScreenWithModal },
+		PreAuth: { screen: PreAuthNavigator },
+		Intro: { screen: IntroScreen },
+		Main: { screen: MainScreenWithModal },
 		Maintenance: { screen: MaintenanceScreen },
 	},
 	{

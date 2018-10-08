@@ -102,3 +102,10 @@ export enum SCREENS {
 	WalletAccount = 'WalletAccountScreen',
 	WalletKeys = 'WalletKeysScreen',
 }
+
+export enum NAVIGATION {
+	PreAuth = 'PreAuth',
+	Intro = 'Intro',
+	Main = 'Main',
+	Maintenance = 'Maintenance',
+}

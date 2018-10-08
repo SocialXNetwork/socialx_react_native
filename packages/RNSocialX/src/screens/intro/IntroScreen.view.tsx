@@ -45,13 +45,13 @@ const SkipButton: React.SFC<ITranslatedProps> = ({ getText }) => (
 
 const NextButton: React.SFC = () => (
 	<View style={style.buttonCircle}>
-		<Icon name={'ios-arrow-forward'} style={style.pinkIcon} />
+		<Icon name="ios-arrow-forward" style={style.pinkIcon} />
 	</View>
 );
 
 const DoneButton: React.SFC = () => (
 	<View style={style.buttonCircle}>
-		<Icon name={'md-checkmark'} style={style.pinkIcon} />
+		<Icon name="md-checkmark" style={style.pinkIcon} />
 	</View>
 );
 

@@ -2,6 +2,7 @@ import { Formik, FormikErrors, FormikProps } from 'formik';
 import * as React from 'react';
 import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SafeAreaView } from 'react-navigation';
 
 import {
 	Header,
@@ -137,7 +138,7 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 	onGoBack,
 	getText,
 }) => (
-	<View style={style.screenContainer}>
+	<SafeAreaView forceInset={{ top: 'never' }} style={style.screenContainer}>
 		<Header
 			title={getText('login.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
@@ -183,5 +184,5 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 				</TouchableOpacity>
 			</View>
 		</KeyboardAwareScrollView>
-	</View>
+	</SafeAreaView>
 );
