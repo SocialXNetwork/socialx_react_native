@@ -249,6 +249,7 @@ export default {
 	'ad.management.overview.screen.account.performance': 'Account Performance',
 	'ad.management.overview.screen.account.performance.spent': 'Spent',
 	'ad.management.overview.screen.account.performance.people.reached': 'People reached',
+	'ad.management.overview.screen.account.performance.impressions': 'Impressions',
 	'ad.management.overview.screen.see.past.performance': 'SEE PAST PERFORMANCE',
 	'ad.management.screen.title': 'Ad management',
 	'ad.management.option.post': 'Boost a post',

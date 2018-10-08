@@ -309,6 +309,10 @@ export interface ITrendingContentItem {
 	content: Array<ITrendingContentImage | ITrendingContentImageWithVideo[]>;
 }
 
+export interface IAdsAccountPerformanceValues {
+	value: number;
+	date: Date;
+}
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.
