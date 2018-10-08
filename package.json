@@ -72,7 +72,7 @@
     "test:changed:all:database": "cd packages/database/ && yarn run test && cd ../../",
     "test:changed:all:RNSocialX": "cd packages/RNSocialX/ && yarn run test && cd ../../",
     "test": "npm-run-all test:changed:*",
-    "start:database": "cd packages/database/ && yarn run start && cd ../../",
+    "start:database": "cd packages/database/ && NODE_ENV=development yarn run start && cd ../../",
     "start:storybook": "cd packages/RNSocialX/ && yarn run start:storybook && cd ../../",
     "start:js": "cd packages/RNSocialX/ && yarn run start:js && cd ../../",
     "start:android:emulator": "${ANDROID_HOME}/emulator/emulator -avd $(${ANDROID_HOME}/emulator/emulator -list-avds | head -n 1)",
