@@ -10,7 +10,6 @@ import { CommentsSortingOptions } from '../../../../src/types';
 storiesOf('Screens/commentsStack', module)
 	.addDecorator(withKnobs)
 	.add('CommentsScreen', () => {
-		const isLoading = boolean('isLoading', false);
 		const marginBottom = number('marginBottom', 0);
 
 		const likedByMe = boolean('likedByMe', false);
@@ -70,7 +69,6 @@ storiesOf('Screens/commentsStack', module)
 
 		return (
 			<CommentsScreenView
-				isLoading={isLoading}
 				getText={getTextMock}
 				marginBottom={marginBottom}
 				comments={[

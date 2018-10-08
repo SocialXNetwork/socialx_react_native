@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { ConnectionInfo, ConnectionType, NetInfo } from 'react-native';
+import {
+	ConnectionInfo,
+	ConnectionType,
+	NetInfo,
+	Platform,
+} from 'react-native';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
+import { OS_TYPES } from '../environment/consts';
 
 interface IOfflineHandlers {
 	connectionStatusUpdated: (offline: boolean) => void;
@@ -10,8 +16,10 @@ class OfflineHandler extends React.Component<IOfflineHandlers> {
 	CONNECTION_EVENT_NAME = 'connectionChange';
 
 	async componentDidMount() {
-		const connectionInfo = await NetInfo.getConnectionInfo();
-		this.connectionStatusUpdated(connectionInfo);
+		if (Platform.OS === OS_TYPES.Android) {
+			const connectionInfo = await NetInfo.getConnectionInfo();
+			this.connectionStatusUpdated(connectionInfo);
+		}
 
 		NetInfo.addEventListener(
 			this.CONNECTION_EVENT_NAME,
