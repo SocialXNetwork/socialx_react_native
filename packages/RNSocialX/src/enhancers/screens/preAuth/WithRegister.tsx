@@ -80,7 +80,7 @@ export class WithRegister extends React.Component<
 											username: registerData.userName,
 											password: registerData.password,
 											email: registerData.email,
-											avatar: registerData.avatarImage as string,
+											avatar: 'avatar',
 											fullName: registerData.name,
 											miningEnabled: true,
 											aboutMeText: 'about me text',
