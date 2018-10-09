@@ -2,6 +2,7 @@ import { Application, default as express } from 'express';
 import { Server } from 'http';
 
 import Gun from 'gun';
+import 'gun/lib/store';
 import 'gun/nts';
 
 import path from 'path';
