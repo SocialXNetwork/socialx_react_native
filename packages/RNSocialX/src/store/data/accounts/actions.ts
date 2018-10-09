@@ -8,6 +8,7 @@ import {
 import { IListenerProgess } from 'react-native-background-upload';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+import { getCurrentProfile } from '../profiles';
 
 import { clearAuth, setAuth } from '../../app/auth';
 import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
@@ -155,7 +156,30 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
+		const account = await dataApi.accounts.getCurrentAccount();
+		const {
+			username,
+			aboutMeText,
+			miningEnabled,
+			fullName,
+			email,
+		} = createAccountInput;
+		const { pub } = account;
+		await dataApi.profiles.createProfile({
+			username,
+			aboutMeText,
+			miningEnabled,
+			fullName,
+			email,
+			avatar: avatar.uri,
+			pub,
+		});
 		dispatch(getCurrentAccount());
+		// TODO: We need to figure out a how to programmatically wait
+		// for the database changes to be reflected before dispatching
+		// these errors, the database is not atomic right now
+		// Here we need auth to be set before fetching current profile.
+		setTimeout(() => dispatch(getCurrentProfile()), 500);
 	} catch (e) {
 		dispatch(
 			setError({

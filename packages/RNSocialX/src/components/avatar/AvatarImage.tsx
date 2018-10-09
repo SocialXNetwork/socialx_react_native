@@ -22,7 +22,11 @@ export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 	style = styles.avatarImage,
 }) => (
 	<Image
-		source={image.uri.length > 0 ? image : Images.user_avatar_placeholder}
+		source={
+			image && image.uri && image.uri.length > 0
+				? image
+				: Images.user_avatar_placeholder
+		}
 		resizeMode="cover"
 		style={style}
 	/>
