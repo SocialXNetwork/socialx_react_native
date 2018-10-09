@@ -270,14 +270,10 @@ const Navigation = () => (
 													<ActivityIndicatorModal
 														showActivityIndicator={activities.length > 0}
 														activityIndicatorTitle={
-															activities.length > 0
-																? globals.activity.title
-																: ''
+															globals.activity ? globals.activity.title : ''
 														}
 														activityIndicatorMessage={
-															activities.length > 0
-																? globals.activity.message
-																: ''
+															globals.activity ? globals.activity.message : ''
 														}
 													/>
 													<ConfirmationModal

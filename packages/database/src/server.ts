@@ -22,4 +22,4 @@ const server: Server = app.listen(PORT, HOST);
 
 Gun({ file: path.resolve(__dirname, '../data'), web: server });
 
-console.log(`Gun server listening on http://${HOST}:${PORT}/gun`);
+console.log(`socialx database node is listening on http://${HOST}:${PORT}/gun`);
