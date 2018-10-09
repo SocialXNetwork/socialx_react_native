@@ -28,7 +28,7 @@ export const createAccountInput = yup
 		avatar: yup
 			.string()
 			.trim()
-			.required(),
+			.default(''),
 		email: yup
 			.string()
 			.trim()
