@@ -1,7 +1,8 @@
 {
   "gun": {
     "superPeers": [
-      "http://10.0.2.2:8765/gun"
+      "http://10.0.2.2:8765/gun",
+      "http://207.154.246.128:8765/gun"
     ],
     "rootdb": "dev/xxxx"
   },
