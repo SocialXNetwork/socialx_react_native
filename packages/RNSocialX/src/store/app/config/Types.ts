@@ -9,7 +9,7 @@ export interface IApplicationConfig {
 	ipfsConfig: {
 		ipfs_URL: string;
 		ipfs_server: string;
-		ipfs_port: number;
+		ipfs_port: string;
 		opts: {
 			root: string;
 			protocol: 'http' | 'https';

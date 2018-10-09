@@ -2,7 +2,9 @@ export { default as reducer } from './reducer';
 export {
 	IState,
 	IAction,
-	ISetUploadProgressAction,
-	ISetUploadProgressInput,
+	ISetUploadStatusAction,
+	ISetUploadStatusInput,
+	IUploadFileAction,
+	IUploadFileInput,
 } from './Types';
-export { setUploadProgress } from './actions';
+export { setUploadStatus, uploadFile } from './actions';
