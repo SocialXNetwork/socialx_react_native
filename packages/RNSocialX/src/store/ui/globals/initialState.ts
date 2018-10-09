@@ -1,10 +1,11 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	tabBarBottomHeight: 0,
 	offline: false,
-	foo: 'bar',
-	baz: true,
+	activity: {
+		title: '',
+		message: '',
+	},
 };
 
 export default initialState;

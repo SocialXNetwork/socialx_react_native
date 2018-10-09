@@ -59,6 +59,7 @@ export const getCurrentAccount = (): IThunk => async (
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
 		dispatch(setAuth({ alias: account.alias, pub: account.pub }));
+		dispatch(getCurrentProfile());
 	} catch (e) {
 		dispatch(
 			setError({
@@ -156,9 +157,7 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
-
 		dispatch(getCurrentAccount());
-		dispatch(getCurrentProfile());
 	} catch (e) {
 		dispatch(
 			setError({
