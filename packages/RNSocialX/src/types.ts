@@ -52,6 +52,10 @@ export interface ITranslatedProps {
 	getText: getTextSignature;
 }
 
+export interface IGlobal {
+	[name: string]: any;
+}
+
 export interface IHeaderProps {
 	onGoBack: () => void;
 }

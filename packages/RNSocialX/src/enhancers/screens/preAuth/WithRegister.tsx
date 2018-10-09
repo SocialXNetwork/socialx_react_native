@@ -9,22 +9,26 @@
 
 import * as React from 'react';
 import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import { ITranslatedProps } from '../../../types';
+import { IGlobal, ITranslatedProps } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/accounts/Types';
 import { IError } from '../../../store/ui/activities';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { getActivity } from '../../helpers/';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
 		errors: [],
-		creatingAccount: false,
+		loading: false,
 	},
 	actions: {
 		register: (registerData: IRegisterData) => {
+			/**/
+		},
+		setGlobal: (global: IGlobal) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -32,12 +36,13 @@ const mock: IWithRegisterEnhancedProps = {
 };
 
 export interface IWithRegisterEnhancedData {
-	creatingAccount: boolean;
+	loading: boolean;
 	errors: IError[];
 }
 
 export interface IWithRegisterEnhancedActions extends ITranslatedProps {
 	register: (registerData: IRegisterData) => void;
+	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithRegisterEnhancedProps {
@@ -59,43 +64,48 @@ export class WithRegister extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithActivities>
-						{({ activities, errors }) => (
-							<WithAccounts>
-								{(accountsProps) =>
-									this.props.children({
-										data: {
-											...mock.data,
-											creatingAccount: getActivity(
-												activities,
-												ActionTypes.CREATE_ACCOUNT,
-											),
-											errors,
-										},
-										actions: {
-											...mock.actions,
-											register: (registerData: IRegisterData) =>
-												accountsProps.createAccount({
-													recover: {
-														question1: 'question1',
-														question2: 'questions2',
-														reminder: 'password',
-													},
-													username: registerData.userName,
-													password: registerData.password,
-													email: registerData.email,
-													avatar: registerData.avatar,
-													fullName: registerData.name,
-													miningEnabled: true,
-													aboutMeText: 'about me text',
-												}),
-											getText: i18nProps.getText,
-										},
-									})
-								}
-							</WithAccounts>
+					<WithGlobals>
+						{({ setGlobal }) => (
+							<WithActivities>
+								{({ activities, errors }) => (
+									<WithAccounts>
+										{(accountsProps) =>
+											this.props.children({
+												data: {
+													...mock.data,
+													loading: getActivity(
+														activities,
+														ActionTypes.CREATE_ACCOUNT,
+													),
+													errors,
+												},
+												actions: {
+													...mock.actions,
+													register: (registerData: IRegisterData) =>
+														accountsProps.createAccount({
+															recover: {
+																question1: 'question1',
+																question2: 'questions2',
+																reminder: 'password',
+															},
+															username: registerData.userName,
+															password: registerData.password,
+															email: registerData.email,
+															avatar: registerData.avatar,
+															fullName: registerData.name,
+															miningEnabled: true,
+															aboutMeText: 'about me text',
+														}),
+													setGlobal,
+													getText: i18nProps.getText,
+												},
+											})
+										}
+									</WithAccounts>
+								)}
+							</WithActivities>
 						)}
-					</WithActivities>
+					</WithGlobals>
 				)}
 			</WithI18n>
 		);

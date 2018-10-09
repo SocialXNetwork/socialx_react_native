@@ -247,30 +247,28 @@ const Navigation = () => (
 					)}
 				</WithNavigationParams>
 				<WithGlobals>
-					{(globalsProps) => (
+					{({ globals }) => (
 						<WithActivities>
-							{(activitiesProps) => (
+							{({ activities }) => (
 								<WithOverlays>
 									{(overlayProps) => (
 										<WithI18n>
 											{(i18nProps) => (
 												<React.Fragment>
 													<OfflineOverlayModal
-														visible={!!globalsProps.globals.offline}
+														visible={!!globals.offline}
 														getText={i18nProps.getText}
 													/>
 													<ActivityIndicatorModal
-														showActivityIndicator={
-															activitiesProps.activities.length > 0
-														}
+														showActivityIndicator={activities.length > 0}
 														activityIndicatorTitle={
-															activitiesProps.activities.length > 0
-																? activitiesProps.activities[0].type
+															activities.length > 0
+																? globals.activity.title
 																: ''
 														}
 														activityIndicatorMessage={
-															activitiesProps.activities.length > 0
-																? activitiesProps.activities[0].uuid
+															activities.length > 0
+																? globals.activity.message
 																: ''
 														}
 													/>
