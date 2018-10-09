@@ -76,30 +76,25 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 		}: IListenerProgess & { uploadId: string }) => {
 			dispatch(
 				setUploadStatus({
-					path,
 					uploadId: uploadIdUpdated,
 					progress,
-					aborting: false,
-					done: false,
 				}),
 			);
 		};
 
-		const { uploadId, ...data } = await storageApi.uploadFile(
+		const { uploadId, responseBody } = await storageApi.uploadFile(
 			path,
 			bootstrapStatus,
 			updateStatus,
 		);
 		dispatch(
 			setUploadStatus({
-				path,
 				uploadId,
 				progress: 100,
-				aborting: false,
 				done: true,
 			}),
 		);
-		// TODO: extract the hash from 'data.responseBody' and store it somewhere
+		// TODO: extract the hash from 'responseBody' and store it somewhere
 	} catch (e) {
 		// TODO: add proper error handling here
 	}
