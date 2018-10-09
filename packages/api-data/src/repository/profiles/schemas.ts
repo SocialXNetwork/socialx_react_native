@@ -40,7 +40,7 @@ export const createProfileInput = yup
 			.trim()
 			.min(5)
 			.max(50)
-			.required(),
+			.default(''),
 		email: yup
 			.string()
 			.trim()

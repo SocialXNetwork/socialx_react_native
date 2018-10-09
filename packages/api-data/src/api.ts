@@ -47,16 +47,19 @@ export const dataApiFactory = (config: IApiOptions) => {
 
 	const time = () => new Date(Gun.state());
 
+	// const rootGun: IGunInstance = new Gun({
+	// 	peers: peers.reduce(
+	// 		(peersObject, peer) => ({
+	// 			...peersObject,
+	// 			[peer]: {},
+	// 		}),
+	// 		{},
+	// 	),
+	// });
 	const rootGun: IGunInstance = new Gun({
-		peers: peers.reduce(
-			(peersObject, peer) => ({
-				...peersObject,
-				[peer]: {},
-			}),
-			{},
-		),
+		localStorage: true,
+		radix: false,
 	});
-
 	const gun = rootGun.get(rootdb);
 
 	const account = rootGun.user();

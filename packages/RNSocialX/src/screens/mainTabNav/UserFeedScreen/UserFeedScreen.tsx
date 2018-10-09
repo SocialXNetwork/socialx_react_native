@@ -48,7 +48,7 @@ export class Screen extends React.Component<
 
 	public render() {
 		const {
-			currentUser,
+			currentUser = {},
 			posts,
 			shareSectionPlaceholder,
 			hasMorePosts,
