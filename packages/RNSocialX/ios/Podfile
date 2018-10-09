@@ -30,6 +30,8 @@ target 'RNSocialX' do
 
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
 
+  pod 'react-native-background-upload', :path => '../node_modules/react-native-background-upload'
+
   target 'RNSocialXTests' do
     inherit! :search_paths
     # Pods for testing

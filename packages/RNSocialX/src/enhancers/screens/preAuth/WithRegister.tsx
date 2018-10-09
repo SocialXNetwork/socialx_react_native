@@ -12,6 +12,7 @@ import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
+import { WithFiles } from '../../connectors/storage/WithFiles';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
@@ -65,30 +66,38 @@ export class WithRegister extends React.Component<
 			<WithI18n>
 				{(i18nProps) => (
 					<WithAccounts>
-						{(accountsProps) =>
-							this.props.children({
-								data: mock.data,
-								actions: {
-									...mock.actions,
-									register: (registerData: IRegisterData) =>
-										accountsProps.createAccount({
-											recover: {
-												question1: 'question1',
-												question2: 'questions2',
-												reminder: 'password',
-											},
-											username: registerData.userName,
-											password: registerData.password,
-											email: registerData.email,
-											avatar: 'avatar',
-											fullName: registerData.name,
-											miningEnabled: true,
-											aboutMeText: 'about me text',
-										}),
-									getText: i18nProps.getText,
-								},
-							})
-						}
+						{(accountsProps) => (
+							<WithFiles>
+								{(filesProps) =>
+									this.props.children({
+										// TODO: we also have the avatar upload progress here if we need it
+										// filesProps.uploads -> each object contains 'path' string to identify what is being uploaded
+										data: mock.data,
+										actions: {
+											...mock.actions,
+											// TODO: add the avatar uploader function here
+											// filesProps.uploadFile({path: 'file path here'});
+											register: (registerData: IRegisterData) =>
+												accountsProps.createAccount({
+													recover: {
+														question1: 'question1',
+														question2: 'questions2',
+														reminder: 'password',
+													},
+													username: registerData.userName,
+													password: registerData.password,
+													email: registerData.email,
+													avatar: 'avatar', // this needs to change based on what we get from the uploader... (discuss this further)
+													fullName: registerData.name,
+													miningEnabled: true,
+													aboutMeText: 'about me text',
+												}),
+											getText: i18nProps.getText,
+										},
+									})
+								}
+							</WithFiles>
+						)}
 					</WithAccounts>
 				)}
 			</WithI18n>

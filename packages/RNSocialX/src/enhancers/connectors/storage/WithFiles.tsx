@@ -3,20 +3,26 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
-	ISetUploadProgressAction,
-	ISetUploadProgressInput,
-	setUploadProgress,
+	ISetUploadStatusAction,
+	ISetUploadStatusInput,
+	IUploadFileInput,
+	setUploadStatus,
+	uploadFile,
 } from '../../../store/storage/files';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	uploadProgress: {
-		[hash: string]: number;
+	uploads: {
+		[uploadId: string]: {
+			progress: number;
+			aborting: boolean;
+			done: boolean;
+		};
 	};
 }
 
 interface IActionProps {
-	setUploadProgress: (setUploadProgressInput: ISetUploadProgressInput) => void;
+	uploadFile: (uploadFileInput: IUploadFileInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -32,18 +38,18 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectUploadProgress = createSelector(
-	(state: IApplicationState) => state.storage.files.uploadProgress,
-	(uploadProgress) => uploadProgress,
+const selectUploadStatus = createSelector(
+	(state: IApplicationState) => state.storage.files.uploads,
+	(uploads) => uploads,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	uploadProgress: selectUploadProgress(state),
+	uploads: selectUploadStatus(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	setUploadProgress: (setUploadProgressInput: ISetUploadProgressInput) =>
-		dispatch(setUploadProgress(setUploadProgressInput)),
+	uploadFile: (uploadFileInput: IUploadFileInput) =>
+		dispatch(uploadFile(uploadFileInput)),
 });
 
 export const WithFiles: ConnectedComponentClass<

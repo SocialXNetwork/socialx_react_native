@@ -1,6 +1,10 @@
-import { IListenerProgess } from 'react-native-background-upload';
 import { Ipfslib } from './ipfslib';
-import { IProviderParams } from './types';
+import {
+	IListenerCompleted,
+	IListenerProgess,
+	IProviderParams,
+	IUploader,
+} from './types';
 
 export const storageApiFactory = (
 	config: IProviderParams = {
@@ -9,16 +13,20 @@ export const storageApiFactory = (
 		protocol: 'http',
 		root: '/api/v0',
 	},
+	uploader: IUploader,
 ) => {
-	const ipfs = new Ipfslib(config);
+	const ipfs = new Ipfslib(config, uploader);
 
 	return {
 		uploadFile: (
 			path: string,
 			onStart?: (uploadId: string) => void,
-			onProgress?: (data: IListenerProgess) => void,
-		) => ipfs.addFileBN(path, onStart, onProgress),
+			onProgress?: (data: IListenerProgess & { uploadId: string }) => void,
+		): Promise<IListenerCompleted & { uploadId: string }> =>
+			ipfs.addFileBN(path, onStart, onProgress),
 		getFileInfo: (path: string) => ipfs.getFileInfo(path),
 		abortUpload: (uploadId: string) => ipfs.cancelUpload(uploadId),
 	};
 };
+
+export type IStorageApiFactory = ReturnType<typeof storageApiFactory>;

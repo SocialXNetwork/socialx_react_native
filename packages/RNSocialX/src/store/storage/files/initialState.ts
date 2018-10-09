@@ -1,7 +1,7 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	uploadProgress: {},
+	uploads: {},
 };
 
 export default initialState;

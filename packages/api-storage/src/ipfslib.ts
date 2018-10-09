@@ -1,20 +1,15 @@
-import Upload, {
+import {
+	IGetFileInfo,
 	IListenerCompleted,
 	IListenerError,
 	IListenerProgess,
-} from 'react-native-background-upload';
-
-import { IProviderParams } from './types';
-
-const promisifyReturn = <T>(returnData: T, returnError: any): Promise<T> =>
-	new Promise((resolve, reject) => {
-		if (returnError) {
-			reject(returnError);
-		}
-		resolve(returnData);
-	});
+	IProviderParams,
+	IUploader,
+} from './types';
 
 export class Ipfslib {
+	Upload: IUploader;
+
 	private config: IProviderParams = {
 		host: '0.0.0.0',
 		port: '8080',
@@ -22,7 +17,8 @@ export class Ipfslib {
 		root: '/api/v0',
 	};
 
-	constructor(params: IProviderParams) {
+	constructor(params: IProviderParams, uploader: IUploader) {
+		this.Upload = uploader;
 		if (params) {
 			if (!params.protocol || !params.root) {
 				this.config.host = params.host;
@@ -36,8 +32,8 @@ export class Ipfslib {
 	public addFileBN = async (
 		path: string,
 		onStart?: (uploadId: string) => void,
-		onProgress?: (progress: IListenerProgess) => void,
-	): Promise<IListenerCompleted> => {
+		onProgress?: (progress: IListenerProgess & { uploadId: string }) => void,
+	): Promise<IListenerCompleted & { uploadId: string }> => {
 		const opts = {
 			url: this.apiUrl('/add'),
 			path: path.replace('file://', ''),
@@ -50,29 +46,30 @@ export class Ipfslib {
 			},
 		};
 		try {
-			const uploadId = await Upload.startUpload(opts);
+			const uploadId = await this.Upload.startUpload(opts);
 			if (onStart) {
 				onStart(uploadId);
 			}
 
-			Upload.addListener('progress', uploadId, (data: IListenerProgess) => {
-				if (onProgress) {
-					onProgress(data);
-				}
-			});
+			this.Upload.addListener(
+				'progress',
+				uploadId,
+				(data: IListenerProgess) => {
+					if (onProgress) {
+						onProgress({ ...data, uploadId });
+					}
+				},
+			);
 
-			return new Promise<any>((_, reject) => {
-				Upload.addListener('error', uploadId, (data: IListenerError) => {
+			return new Promise<any>((resolve, reject) => {
+				this.Upload.addListener('error', uploadId, (data: IListenerError) => {
 					reject(data);
 				});
-			});
-
-			return new Promise<any>((resolve) => {
-				Upload.addListener(
+				this.Upload.addListener(
 					'completed',
 					uploadId,
-					(data: IListenerCompleted) => {
-						resolve(data);
+					(data: IListenerCompleted & { uploadId: string }) => {
+						resolve({ ...data, uploadId });
 					},
 				);
 			});
@@ -83,8 +80,10 @@ export class Ipfslib {
 		}
 	};
 
-	public getFileInfo = (path: string) => Upload.getFileInfo(path);
-	public cancelUpload = (uploadId: string) => Upload.cancelUpload(uploadId);
+	public getFileInfo = (path: string): Promise<IGetFileInfo> =>
+		this.Upload.getFileInfo(path);
+	public cancelUpload = (uploadId: string) =>
+		this.Upload.cancelUpload(uploadId);
 
 	private apiUrl = (path: string): string => {
 		return `${this.config.protocol}://${this.config.host}${
