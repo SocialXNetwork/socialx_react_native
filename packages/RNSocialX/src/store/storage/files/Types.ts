@@ -20,10 +20,10 @@ export const enum ActionTypes {
 
 export interface ISetUploadStatusInput {
 	uploadId: string;
-	progress: number;
-	aborting: boolean;
-	done: boolean;
-	path: string;
+	progress?: number;
+	aborting?: boolean;
+	done?: boolean;
+	path?: string;
 }
 
 export interface IUploadFileInput {
