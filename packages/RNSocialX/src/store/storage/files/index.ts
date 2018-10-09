@@ -7,4 +7,4 @@ export {
 	IUploadFileAction,
 	IUploadFileInput,
 } from './Types';
-export { setUploadStatus, uploadFile } from './actions';
+export { setUploadStatus, uploadFile, removeUploadedFiles } from './actions';

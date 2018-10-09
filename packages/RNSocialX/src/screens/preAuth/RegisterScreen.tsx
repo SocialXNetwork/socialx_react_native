@@ -44,7 +44,7 @@ class Screen extends React.Component<
 	// }
 
 	public render() {
-		const { getText, uploadFile, register, uploads } = this.props;
+		const { getText, register } = this.props;
 		return (
 			<RegisterScreenView
 				onStartRegister={(userData) => {

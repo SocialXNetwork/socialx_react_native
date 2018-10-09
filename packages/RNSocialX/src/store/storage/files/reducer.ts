@@ -19,14 +19,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.REMOVE_UPLOADED_FILES: {
+			return {
+				uploads: [...state.uploads.filter((upload) => upload.done)],
+			};
+		}
+
 		case 'RESET_STORE': {
-			return state;
-			// uploads: Object.entries(state.uploads)
-			// 	.filter(([id, file]) => file.done)
-			// 	.reduce(
-			// 		(stateAcc, [id, file]) => ({ ...stateAcc, [id]: file.progress }),
-			// 		{},
-			// 	),
+			return initialState;
 		}
 
 		default: {
