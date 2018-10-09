@@ -1,11 +1,6 @@
 import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import {
-	ImageSourcePropType,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Colors, Sizes } from '../../environment/theme';
@@ -31,7 +26,7 @@ const AVATAR_CAMERA_OPTIONS = {
 };
 
 interface IAvatarPickerProps extends ITranslatedProps {
-	avatarImage: ImageSourcePropType | string;
+	avatarImage: { uri: string };
 	afterImagePick: (image: string) => void;
 	avatarSize?: number;
 }
@@ -95,7 +90,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 				onPress={() => pickUserAvatar(afterImagePick, getText)}
 				style={style.editIcon}
 			>
-				<Icon name={'camera'} size={iconSize} color={Colors.postFullName} />
+				<Icon name="camera" size={iconSize} color={Colors.postFullName} />
 			</TouchableOpacity>
 		</View>
 	);

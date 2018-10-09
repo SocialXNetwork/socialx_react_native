@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithAccounts } from '../../connectors/data/WithAccounts';
 
 const mock: IWithAdsManagementEnhancedProps = {
 	data: {
@@ -41,20 +40,16 @@ export class WithAdsManagement extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
-					<WithAccounts>
-						{(accountsProps) =>
-							this.props.children({
-								data: {
-									...mock.data,
-								},
-								actions: {
-									getText: i18nProps.getText,
-								},
-							})
-						}
-					</WithAccounts>
-				)}
+				{(i18nProps) =>
+					this.props.children({
+						data: {
+							...mock.data,
+						},
+						actions: {
+							getText: i18nProps.getText,
+						},
+					})
+				}
 			</WithI18n>
 		);
 	}

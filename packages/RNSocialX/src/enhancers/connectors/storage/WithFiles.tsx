@@ -12,13 +12,16 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	uploads: {
-		[uploadId: string]: {
+	uploads: [
+		{
+			uploadId: string;
+			path: string;
+			hash: string;
 			progress: number;
 			aborting: boolean;
 			done: boolean;
-		};
-	};
+		}
+	];
 }
 
 interface IActionProps {

@@ -1,7 +1,7 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	uploads: {},
+	uploads: [],
 };
 
 export default initialState;

@@ -65,7 +65,7 @@ export default {
 	'register.country.select': 'Search your country..',
 	'register.password': 'Password',
 	'register.confirm.password': 'Confirm Password',
-	'register.button.label': 'REGISTER NOW!',
+	'register.button.label': 'Register',
 	'register.button.have.code': 'Already have the code? Click here!',
 	'register.accept.part1': 'Accept our',
 	'register.accept.part2': 'Terms and Conditions',
@@ -88,6 +88,7 @@ export default {
 	'register.screen.password.required': 'Password is required',
 	'register.screen.confirm.password.required': 'Confirm password is required',
 	'register.screen.confirm.password.mismatch': 'Confirm password does not match',
+	'register.screen.terms.accepted': 'You need to accept our terms and conditions',
 	'terms.and.conditions.screen.title': 'Terms and Conditions',
 	'reset.password.screen.title': 'RESET PASSWORD',
 	'reset.password.description':

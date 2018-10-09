@@ -21,27 +21,32 @@ type IRegisterScreenProps = IWithRegisterEnhancedActions &
 	IWithRegisterEnhancedData &
 	INavigationProps;
 
-class Screen extends React.Component<IRegisterScreenProps> {
+interface IRegisterScreenState {
+	uploadFinished: boolean;
+}
+
+class Screen extends React.Component<
+	IRegisterScreenProps,
+	IRegisterScreenState
+> {
+	// public state = {
+	// 	uploadFinished: false,
+	// };
+
+	// public componentDidUpdate() {
+	// 	if (this.props.uploads[0].done && !this.state.uploadFinished) {
+	// 		this.setState((prevState) => {
+	// 			return {
+	// 				uploadFinished: !prevState.uploadFinished,
+	// 			};
+	// 		});
+	// 	}
+	// }
+
 	public render() {
-		const {
-			getText,
-			showModalForSMSCode,
-			resendingCode,
-			smsCodeErrorMessage,
-			validateSMSCode,
-			resendSMSCode,
-			register,
-		} = this.props;
+		const { getText, uploadFile, register, uploads } = this.props;
 		return (
 			<RegisterScreenView
-				getText={getText}
-				// resendingCode={resendingCode}
-				// showModalForSMSCode={showModalForSMSCode}
-				// smsCodeErrorMessage={smsCodeErrorMessage}
-				// onSmsCodeConfirmed={validateSMSCode}
-				// onSmsCodeDeclined={() => this.toggleVisibleModalSMS(false)}
-				// onSmsCodeResend={resendSMSCode}
-				// onAlreadyHaveCode={this.toggleVisibleModalSMS}
 				onStartRegister={(userData) => {
 					register(userData);
 					// this.safeNavigateToScreen(NAVIGATION.Intro);
@@ -50,6 +55,7 @@ class Screen extends React.Component<IRegisterScreenProps> {
 					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
 				}
 				onGoBack={this.onGoBackHandler}
+				getText={getText}
 			/>
 		);
 	}
@@ -57,13 +63,6 @@ class Screen extends React.Component<IRegisterScreenProps> {
 	private safeNavigateToScreen = (screenName: string) => {
 		Keyboard.dismiss();
 		this.props.navigation.navigate(screenName);
-	};
-
-	private toggleVisibleModalSMS = (visible = true) => {
-		Keyboard.dismiss();
-		this.setState({
-			showModalForSMSCode: visible,
-		});
 	};
 
 	private onGoBackHandler = () => {

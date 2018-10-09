@@ -3,14 +3,16 @@ import { DeepReadonly } from 'utility-types-fixme-todo';
 import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
-	uploads: {
-		[uploadId: string]: {
+	uploads: [
+		{
+			uploadId: string;
 			progress: number;
 			path: string;
 			aborting: boolean;
 			done: boolean;
-		};
-	};
+			hash: string;
+		}
+	];
 }>;
 
 export const enum ActionTypes {
@@ -20,10 +22,11 @@ export const enum ActionTypes {
 
 export interface ISetUploadStatusInput {
 	uploadId: string;
-	progress?: number;
-	aborting?: boolean;
-	done?: boolean;
-	path?: string;
+	progress: number;
+	aborting: boolean;
+	done: boolean;
+	path: string;
+	hash: string;
 }
 
 export interface IUploadFileInput {

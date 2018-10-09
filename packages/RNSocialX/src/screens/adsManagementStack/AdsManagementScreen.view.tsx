@@ -9,12 +9,11 @@ import {
 	PrimaryButton,
 } from '../../components';
 import { Icons } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
+import { IHeaderProps, ITranslatedProps } from '../../types';
 
 import styles from './AdsManagementScreen.style';
 
-interface IAdsManagementScreenViewProps extends ITranslatedProps {
-	onGoBack: () => void;
+interface IAdsManagementScreenViewProps extends ITranslatedProps, IHeaderProps {
 	avatarURL: string;
 	fullName: string;
 	userName: string;
