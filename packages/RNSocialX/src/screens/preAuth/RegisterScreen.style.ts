@@ -95,8 +95,7 @@ const style: any = {
 	errorContainer: {
 		zIndex: 1,
 		marginHorizontal: '5%',
-		marginTop: Sizes.smartVerticalScale(5),
-		marginBottom: -Sizes.smartVerticalScale(5),
+		marginBottom: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 		width: '90%',
 	},

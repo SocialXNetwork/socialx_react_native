@@ -8,21 +8,24 @@
  */
 
 import * as React from 'react';
-import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import { IGlobal, ITranslatedProps } from '../../../types';
+import { NavigationScreenProp } from 'react-navigation';
 
-import { ActionTypes } from '../../../store/data/accounts/Types';
-import { IError } from '../../../store/ui/activities';
+import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
+import { IError, IGlobal, ITranslatedProps } from '../../../types';
+
+import { ActionTypes as AcountActionTypes } from '../../../store/data/accounts/Types';
+import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
-import { getActivity } from '../../helpers/';
+import { getActivity, resetNavigationToRoute } from '../../helpers/';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
 		errors: [],
-		loading: false,
+		loadingAccount: false,
+		loadingProfile: false,
 	},
 	actions: {
 		register: (registerData: IRegisterData) => {
@@ -31,18 +34,29 @@ const mock: IWithRegisterEnhancedProps = {
 		setGlobal: (global: IGlobal) => {
 			/**/
 		},
+		resetNavigationToRoute: (
+			screenName: string,
+			navigation: NavigationScreenProp<any>,
+		) => {
+			/**/
+		},
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
 export interface IWithRegisterEnhancedData {
-	loading: boolean;
+	loadingAccount: boolean;
+	loadingProfile: boolean;
 	errors: IError[];
 }
 
 export interface IWithRegisterEnhancedActions extends ITranslatedProps {
 	register: (registerData: IRegisterData) => void;
 	setGlobal: (global: IGlobal) => void;
+	resetNavigationToRoute: (
+		screenName: string,
+		navigation: NavigationScreenProp<any>,
+	) => void;
 }
 
 interface IWithRegisterEnhancedProps {
@@ -73,9 +87,13 @@ export class WithRegister extends React.Component<
 											this.props.children({
 												data: {
 													...mock.data,
-													loading: getActivity(
+													loadingAccount: getActivity(
 														activities,
-														ActionTypes.CREATE_ACCOUNT,
+														AcountActionTypes.GET_CURRENT_ACCOUNT,
+													),
+													loadingProfile: getActivity(
+														activities,
+														ProfileActionTypes.GET_CURRENT_PROFILE,
 													),
 													errors,
 												},
@@ -97,6 +115,7 @@ export class WithRegister extends React.Component<
 															aboutMeText: 'about me text',
 														}),
 													setGlobal,
+													resetNavigationToRoute,
 													getText: i18nProps.getText,
 												},
 											})

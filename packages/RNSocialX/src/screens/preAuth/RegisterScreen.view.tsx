@@ -9,9 +9,6 @@ import { Formik, FormikErrors, FormikProps } from 'formik';
 import { CheckBox } from 'native-base';
 import * as React from 'react';
 import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
-import CountryPicker, {
-	getAllCountries,
-} from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { string } from 'yup';
 
@@ -82,6 +79,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					title={getText('register.screen.title')}
 					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 				/>
+
 				<KeyboardAwareScrollView
 					style={style.keyboardView}
 					contentContainerStyle={style.container}
@@ -117,32 +115,26 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							}
 							if (!name) {
 								errors.name = getText('register.screen.name.required');
+							} else if (name.length < 4) {
+								errors.name = getText('register.screen.name.length');
 							}
 							if (!userName) {
-								errors.userName = getText('register.screen.userName.required');
+								errors.userName = getText('register.screen.username.required');
+							} else if (userName.length < 6) {
+								errors.userName = getText('register.screen.username.length');
 							}
 							if (!password) {
-								errors.password = getText(
-									'register.screen.confirm.password.required',
-								);
-							} else {
-								// const passwordErrors = PASSWORD_VALIDATOR_SCHEMA.validate(password, {list: true});
-								// if (passwordErrors.length > 0) {
-								// 	errors.password = (
-								// 		<React.Fragment>
-								// 			<Text style={style.boldText}>{`${getText('register.password.invalid.policy')}: `}</Text>
-								// 			{passwordErrors.map((error: string) => getText(PASSWORD_ERROR_MESSAGES[error])).join(', ')}
-								// 		</React.Fragment>
-								// 	);
-								// }
+								errors.password = getText('register.screen.password.required');
+							} else if (password.length < 6) {
+								errors.password = getText('register.screen.password.length');
 							}
 							if (!confirmPassword) {
 								errors.confirmPassword = getText(
-									'register.screen.confirm.password.required',
+									'register.screen.password.required',
 								);
 							} else if (!errors.password && confirmPassword !== password) {
 								errors.confirmPassword = getText(
-									'register.screen.confirm.password.mismatch',
+									'register.screen.password.mismatch',
 								);
 							}
 							if (!termsAccepted) {
@@ -194,10 +186,6 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										style.textInputContainerFirst,
 									]}
 								>
-									<ErrorMessage
-										text={errors.email}
-										visible={!!touched.email && !!errors.email}
-									/>
 									<PrimaryTextInput
 										iconColor={colors.iron}
 										icon="envelope"
@@ -215,12 +203,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										}
 										keyboardType={TKeyboardKeys.emailAddress}
 									/>
+									<ErrorMessage
+										text={errors.email}
+										visible={!!touched.email && !!errors.email}
+									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage
-										text={errors.name}
-										visible={!!touched.name && !!errors.name}
-									/>
 									<PrimaryTextInput
 										autoCapitalize="words"
 										autoCorrect={true}
@@ -240,12 +228,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											usernameRef.current && usernameRef.current.focusInput()
 										}
 									/>
+									<ErrorMessage
+										text={errors.name}
+										visible={!!touched.name && !!errors.name}
+									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage
-										text={errors.userName}
-										visible={!!touched.userName && !!errors.userName}
-									/>
 									<PrimaryTextInput
 										iconColor={colors.iron}
 										icon="user"
@@ -263,12 +251,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											passwordRef.current && passwordRef.current.focusInput()
 										}
 									/>
+									<ErrorMessage
+										text={errors.userName}
+										visible={!!touched.userName && !!errors.userName}
+									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage
-										text={errors.password}
-										visible={!!touched.password && !!errors.password}
-									/>
 									<PrimaryTextInput
 										isPassword={true}
 										iconColor={colors.iron}
@@ -288,14 +276,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											confirmPasswordRef.current.focusInput()
 										}
 									/>
+									<ErrorMessage
+										text={errors.password}
+										visible={!!touched.password && !!errors.password}
+									/>
 								</View>
 								<View style={style.textInputContainer}>
-									<ErrorMessage
-										text={errors.confirmPassword}
-										visible={
-											!!touched.confirmPassword && !!errors.confirmPassword
-										}
-									/>
 									<PrimaryTextInput
 										isPassword={true}
 										iconColor={colors.iron}
@@ -311,6 +297,12 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldTouched('confirmPassword');
 										}}
 										blurOnSubmit={true}
+									/>
+									<ErrorMessage
+										text={errors.confirmPassword}
+										visible={
+											!!touched.confirmPassword && !!errors.confirmPassword
+										}
 									/>
 								</View>
 								<View style={style.termsContainer}>
