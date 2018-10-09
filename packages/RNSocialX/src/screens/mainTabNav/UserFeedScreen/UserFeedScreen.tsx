@@ -48,7 +48,7 @@ export class Screen extends React.Component<
 
 	public render() {
 		const {
-			currentUser = {},
+			currentUser,
 			posts,
 			shareSectionPlaceholder,
 			hasMorePosts,
@@ -69,7 +69,7 @@ export class Screen extends React.Component<
 
 		return (
 			<UserFeedScreenView
-				avatarImage={currentUser.avatarURL}
+				avatarImage={currentUser ? currentUser.avatarURL : ''}
 				wallPosts={posts}
 				refreshing={refreshingFeed}
 				onRefresh={this.onRefreshHandler}

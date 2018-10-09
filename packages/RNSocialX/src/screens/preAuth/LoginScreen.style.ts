@@ -23,7 +23,7 @@ const style: any = {
 	},
 	passwordContainer: {
 		paddingTop: Sizes.smartVerticalScale(16),
-		paddingBottom: Sizes.smartVerticalScale(34),
+		paddingBottom: Sizes.smartVerticalScale(20),
 	},
 	forgotPassword: {
 		marginTop: Sizes.smartVerticalScale(25),
@@ -70,6 +70,17 @@ const style: any = {
 		paddingVertical: Sizes.smartVerticalScale(3),
 		alignSelf: 'flex-start',
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
+	},
+	authErrorContainer: {
+		width: '100%',
+		marginBottom: Sizes.smartVerticalScale(20),
+	},
+	authError: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		lineHeight: Sizes.smartHorizontalScale(16),
+		color: Colors.monza,
+		textAlign: 'center',
 	},
 };
 

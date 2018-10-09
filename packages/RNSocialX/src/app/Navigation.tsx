@@ -14,6 +14,7 @@ import {
 	ActivityIndicatorModal,
 	ConfirmationModal,
 	DotsMenuModal,
+	Header,
 	NavigationTabBar,
 	OfflineOverlayModal,
 } from '../components';
@@ -139,9 +140,16 @@ const UserFeedStackNavigator = createStackNavigator(
 	{
 		TabbedFeedScreen: {
 			screen: TabbedFeedNavigator,
+			navigationOptions: () => ({
+				header: <Header logo={true} />,
+			}),
 		},
 	},
-	defaultConfig,
+	{
+		navigationOptions: {
+			gesturesEnabled: true,
+		},
+	},
 );
 
 const TabbedSearchNavigator = createMaterialTopTabNavigator(

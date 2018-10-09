@@ -1,15 +1,8 @@
-/**
- * old screen -> screens/SignUpScreen/index.tsx
- * TODO list:
- * 1. @Serkan: might be that we need to make some flow logic changes here.
- */
-
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 
-import { resetNavigationToRoute } from '../../enhancers/helpers';
 import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
+import { IError, INavigationProps } from '../../types';
 import { RegisterScreenView } from './RegisterScreen.view';
 
 import {
@@ -23,7 +16,9 @@ type IRegisterScreenProps = IWithRegisterEnhancedActions &
 	INavigationProps;
 
 interface IRegisterScreenState {
-	loading: boolean | null;
+	loadingAccount: boolean | null;
+	loadingProfile: boolean | null;
+	errors: IError[];
 }
 
 class Screen extends React.Component<
@@ -34,16 +29,35 @@ class Screen extends React.Component<
 		nextProps: IRegisterScreenProps,
 		currentState: IRegisterScreenState,
 	) {
-		if (nextProps.loading) {
+		if (nextProps.errors.length > 0) {
 			return {
-				loading: true,
+				errors: nextProps.errors,
 			};
 		}
 
-		if (!nextProps.loading && currentState.loading) {
-			resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+		if (nextProps.loadingAccount) {
 			return {
-				loading: false,
+				loadingAccount: true,
+			};
+		}
+
+		if (nextProps.loadingProfile) {
+			return {
+				loadingProfile: true,
+			};
+		}
+
+		if (
+			currentState.errors.length === 0 &&
+			!nextProps.loadingAccount &&
+			!nextProps.loadingProfile &&
+			currentState.loadingAccount &&
+			currentState.loadingProfile
+		) {
+			nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+			return {
+				loadingAccount: false,
+				loadingProfile: false,
 			};
 		}
 
@@ -51,7 +65,9 @@ class Screen extends React.Component<
 	}
 
 	public state = {
-		loading: null,
+		loadingAccount: null,
+		loadingProfile: null,
+		errors: [],
 	};
 
 	public componentDidMount() {

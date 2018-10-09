@@ -139,7 +139,10 @@ export class WithUserFeed extends React.Component<
 																		activities,
 																		ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
 																	),
-																	loadingFeed: true,
+																	loadingFeed: getActivity(
+																		activities,
+																		ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																	),
 																},
 																actions: {
 																	...mock.actions,

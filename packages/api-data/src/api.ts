@@ -56,10 +56,7 @@ export const dataApiFactory = (config: IApiOptions) => {
 	// 		{},
 	// 	),
 	// });
-	const rootGun: IGunInstance = new Gun({
-		localStorage: true,
-		radix: false,
-	});
+	const rootGun: IGunInstance = new Gun(peers[1]);
 	const gun = rootGun.get(rootdb);
 
 	const account = rootGun.user();

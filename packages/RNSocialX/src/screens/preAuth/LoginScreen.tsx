@@ -8,24 +8,87 @@
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 
+import { NAVIGATION, SCREENS } from '../../environment/consts';
+import { IError, INavigationProps } from '../../types';
+import { LoginScreenView } from './LoginScreen.view';
+
 import {
 	IWithLoginEnhancedActions,
 	IWithLoginEnhancedData,
 	WithLogin,
 } from '../../enhancers/screens';
-import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
-import { LoginScreenView } from './LoginScreen.view';
 
 type ILoginScreenProps = INavigationProps &
 	IWithLoginEnhancedData &
 	IWithLoginEnhancedActions;
 
-class Screen extends React.Component<ILoginScreenProps> {
+interface ILoginScreenState {
+	loadingAccount: boolean | null;
+	loadingProfile: boolean | null;
+	errors: IError[];
+}
+
+class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
+	public static getDerivedStateFromProps(
+		nextProps: ILoginScreenProps,
+		currentState: ILoginScreenState,
+	) {
+		if (nextProps.errors.length > 0) {
+			return {
+				errors: nextProps.errors,
+			};
+		}
+
+		if (nextProps.loadingAccount) {
+			return {
+				loadingAccount: true,
+			};
+		}
+
+		if (nextProps.loadingProfile) {
+			return {
+				loadingProfile: true,
+			};
+		}
+
+		if (
+			currentState.errors.length === 0 &&
+			!nextProps.loadingAccount &&
+			!nextProps.loadingProfile &&
+			currentState.loadingAccount &&
+			currentState.loadingProfile
+		) {
+			nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+			return {
+				loadingAccount: false,
+				loadingProfile: false,
+			};
+		}
+
+		return null;
+	}
+
+	public state = {
+		loadingAccount: null,
+		loadingProfile: null,
+		errors: [],
+	};
+
+	public componentDidMount() {
+		const { setGlobal, getText } = this.props;
+
+		setGlobal({
+			activity: {
+				title: getText('login.progress.message'),
+			},
+		});
+	}
+
 	public render() {
 		const { getText, login } = this.props;
 		return (
 			<LoginScreenView
+				errors={this.state.errors}
 				onStartLogin={(userName, password) => {
 					login(userName, password);
 				}}

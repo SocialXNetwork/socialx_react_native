@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, SafeAreaView, TouchableOpacity, View } from 'react-native';
 
 import { Icons, Sizes } from '../../../environment/theme';
 import { NotificationsWithBadge, TabButton } from './';
@@ -88,7 +88,7 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 	showPhotoOptionsMenu,
 	tabChange,
 }) => (
-	<View style={styles.container}>
+	<SafeAreaView style={styles.container}>
 		{MENU_ITEMS.map((item, index) => {
 			if (item.type === MENU_BUTTON_TYPE.MENU_BUTTON_CAMERA) {
 				return (
@@ -127,5 +127,5 @@ export const NavigationItems: React.SFC<INavigationItemsProps> = ({
 				);
 			}
 		})}
-	</View>
+	</SafeAreaView>
 );

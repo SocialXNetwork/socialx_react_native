@@ -38,7 +38,6 @@ export const createProfileInput = yup
 		avatar: yup
 			.string()
 			.trim()
-			.max(200)
 			.default(''),
 		email: yup
 			.string()

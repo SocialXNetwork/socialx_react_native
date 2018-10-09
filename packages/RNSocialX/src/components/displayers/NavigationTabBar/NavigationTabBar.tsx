@@ -1,7 +1,7 @@
 import { ActionSheet } from 'native-base';
 import * as React from 'react';
-import { SafeAreaView } from 'react-native';
-import { LayoutEvent, NavigationScreenProp } from 'react-navigation';
+import { View } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 
 import { SCREENS } from '../../../environment/consts';
 import { INavigationParamsActions, ITranslatedProps } from '../../../types';
@@ -25,7 +25,6 @@ interface ITabBarBottomProps
 	extends ITranslatedProps,
 		INavigationParamsActions {
 	navigation: NavigationScreenProp<any>;
-	updateTabBarHeight: (value: number) => void;
 	notifications: number;
 }
 
@@ -34,9 +33,6 @@ export class NavigationTabBar extends React.Component<
 	ITabBarBottomState
 > {
 	public static defaultProps = {
-		updateTabBarHeight: () => {
-			/**/
-		},
 		notifications: 0,
 	};
 
@@ -47,21 +43,16 @@ export class NavigationTabBar extends React.Component<
 
 	public render() {
 		return (
-			<SafeAreaView onLayout={this.layoutHandler}>
+			<View>
 				<NavigationItems
 					notifications={this.props.notifications}
 					selectedTab={this.state.selectedTab}
 					showPhotoOptionsMenu={this.showPhotoOptionsMenu}
 					tabChange={this.tabChangeHandler}
 				/>
-			</SafeAreaView>
+			</View>
 		);
 	}
-
-	private layoutHandler = (event: LayoutEvent) => {
-		const viewHeight = event.nativeEvent.layout.height;
-		this.props.updateTabBarHeight(viewHeight);
-	};
 
 	private tabChangeHandler = (screenName: string) => {
 		if (this.state.selectedTab !== screenName && !this.state.changeInProgress) {
