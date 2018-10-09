@@ -8,13 +8,7 @@
  */
 
 import * as React from 'react';
-import {
-	Image,
-	ImageSourcePropType,
-	ImageStyle,
-	StyleProp,
-	StyleSheet,
-} from 'react-native';
+import { Image, ImageStyle, StyleProp, StyleSheet } from 'react-native';
 
 import { Images, Sizes } from '../../environment/theme';
 
