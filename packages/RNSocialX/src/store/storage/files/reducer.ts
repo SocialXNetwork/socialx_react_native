@@ -10,6 +10,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 				uploads: {
 					...state.uploads,
 					[uploadId]: {
+						...state.uploads[uploadId],
 						...fileStatus,
 					},
 				},
