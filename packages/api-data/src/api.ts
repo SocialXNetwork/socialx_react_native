@@ -47,7 +47,9 @@ export const dataApiFactory = (config: IApiOptions) => {
 
 	const time = () => new Date(Gun.state());
 
-	const rootGun: IGunInstance = new Gun(peers[1]);
+	const rootGun: IGunInstance = new Gun({
+		peers,
+	});
 
 	const gun = rootGun.get(rootdb);
 
