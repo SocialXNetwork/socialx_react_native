@@ -1,1 +1,1 @@
-export { storageApiFactory } from './api';
+export { storageApiFactory, IStorageApiFactory } from './api';

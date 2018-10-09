@@ -1,4 +1,6 @@
 import { IApiOptions, IDataApiFactory } from '@socialx/api-data';
+import { IStorageApiFactory } from '@socialx/api-storage';
+
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IApplicationState } from './rootReducer';
 
@@ -56,4 +58,5 @@ export interface IContextConfig {
 
 export interface IContext {
 	dataApi: IDataApiFactory;
+	storageApi: IStorageApiFactory;
 }

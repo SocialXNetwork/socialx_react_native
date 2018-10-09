@@ -4,21 +4,28 @@ import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
-		case ActionTypes.SET_UPLOAD_PROGRESS: {
+		case ActionTypes.SET_UPLOAD_STATUS: {
+			const { uploadId, ...fileStatus } = action.payload;
 			return {
-				uploadProgress: {
-					...state.uploadProgress,
-					[action.payload.hash]: action.payload.percentage,
+				uploads: {
+					...state.uploads,
+					[uploadId]: {
+						...fileStatus,
+					},
 				},
 			};
 		}
 
+		case ActionTypes.UPLOAD_FILE: {
+			return state;
+		}
+
 		case 'RESET_STORE': {
 			return {
-				uploadProgress: Object.entries(state.uploadProgress)
-					.filter(([id, progress]) => progress < 100)
+				uploads: Object.entries(state.uploads)
+					.filter(([id, file]) => file.done)
 					.reduce(
-						(stateAcc, [id, progress]) => ({ ...stateAcc, [id]: progress }),
+						(stateAcc, [id, file]) => ({ ...stateAcc, [id]: file.progress }),
 						{},
 					),
 			};
