@@ -7,6 +7,7 @@
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 
+import { resetNavigationToRoute } from '../../enhancers/helpers';
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { RegisterScreenView } from './RegisterScreen.view';
@@ -22,26 +23,46 @@ type IRegisterScreenProps = IWithRegisterEnhancedActions &
 	INavigationProps;
 
 interface IRegisterScreenState {
-	uploadFinished: boolean;
+	loading: boolean | null;
 }
 
 class Screen extends React.Component<
 	IRegisterScreenProps,
 	IRegisterScreenState
 > {
-	// public state = {
-	// 	uploadFinished: false,
-	// };
+	public static getDerivedStateFromProps(
+		nextProps: IRegisterScreenProps,
+		currentState: IRegisterScreenState,
+	) {
+		if (nextProps.loading) {
+			return {
+				loading: true,
+			};
+		}
 
-	// public componentDidUpdate() {
-	// 	if (this.props.uploads[0].done && !this.state.uploadFinished) {
-	// 		this.setState((prevState) => {
-	// 			return {
-	// 				uploadFinished: !prevState.uploadFinished,
-	// 			};
-	// 		});
-	// 	}
-	// }
+		if (!nextProps.loading && currentState.loading) {
+			resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+			return {
+				loading: false,
+			};
+		}
+
+		return null;
+	}
+
+	public state = {
+		loading: null,
+	};
+
+	public componentDidMount() {
+		const { setGlobal, getText } = this.props;
+
+		setGlobal({
+			activity: {
+				title: getText('register.signingUp'),
+			},
+		});
+	}
 
 	public render() {
 		const { getText, register } = this.props;
@@ -49,7 +70,6 @@ class Screen extends React.Component<
 			<RegisterScreenView
 				onStartRegister={(userData) => {
 					register(userData);
-					// this.safeNavigateToScreen(NAVIGATION.Intro);
 				}}
 				onNavigateToTermsAndConditions={() =>
 					this.safeNavigateToScreen(SCREENS.TermsAndConditions)

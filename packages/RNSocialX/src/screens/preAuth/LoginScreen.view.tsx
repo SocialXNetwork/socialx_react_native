@@ -150,15 +150,6 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			keyboardDismissMode="interactive"
 			keyboardShouldPersistTaps="handled"
 		>
-			{/*<InputSMSCodeModal
-				visible={showModalForSMSCode}
-				confirmHandler={onSmsCodeConfirmed}
-				declineHandler={onSmsCodeDeclined}
-				resendHandler={onSmsCodeResend}
-				phoneNumber={phoneNumber}
-				errorMessage={'Test123'}
-				getText={getText}
-			/>*/}
 			<Text style={style.welcomeText}>{getText('login.welcome.message')}</Text>
 			<LoginForm getText={getText} onStartLogin={onStartLogin} />
 			<TouchableOpacity
