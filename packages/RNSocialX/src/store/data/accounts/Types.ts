@@ -1,7 +1,6 @@
 import {
 	IAccountData,
 	IChangePasswordInput,
-	ICreateAccountInput,
 	ICredentials,
 	IGetAccountByPubInput,
 	IRecoverAccountInput,
@@ -25,6 +24,22 @@ export const enum ActionTypes {
 	SYNC_GET_CURRENT_ACCOUNT = 'data/accounts/SYNC_GET_CURRENT_ACCOUNT',
 	GET_ACCOUNT_BY_PUB = 'data/accounts/GET_ACCOUNT_BY_PUB',
 	SYNC_GET_ACCOUNT_BY_PUB = 'data/accounts/SYNC_GET_ACCOUNT_BY_PUB',
+}
+
+export interface ICreateAccountInput {
+	username: string;
+	password: string;
+	email: string;
+	avatar: { uri: string };
+	fullName: string;
+	miningEnabled: boolean;
+	aboutMeText: string;
+	recover: {
+		question1: string;
+		question2: string;
+		reminder: string;
+		encryptedReminder?: string;
+	};
 }
 
 export interface ICreateAccountAction extends Action {

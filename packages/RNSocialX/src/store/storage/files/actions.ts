@@ -12,6 +12,7 @@ import { IThunk } from '../../types';
 import { setError } from '../../ui/activities';
 import {
 	ActionTypes,
+	IRemoveUploadedFilesAction,
 	ISetUploadStatusAction,
 	ISetUploadStatusInput,
 	IUploadFileAction,
@@ -38,6 +39,24 @@ export const setUploadStatus = (
 				uuid: uuidv4(),
 			}),
 		);
+	}
+};
+
+const removeUploadedFilesAction: ActionCreator<
+	IRemoveUploadedFilesAction
+> = () => ({
+	type: ActionTypes.REMOVE_UPLOADED_FILES,
+});
+
+export const removeUploadedFiles = (): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	try {
+		dispatch(removeUploadedFilesAction());
+	} catch (e) {
+		// Will never happen
 	}
 };
 

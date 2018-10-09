@@ -2,7 +2,7 @@
  * TODO list:
  * 1. @Serkan, check password validation. Did not import the old helper because you mentioned it will be handled different.
  * 2. Decide where how prop marginBottom for InputSMSCodeModal should be implemented.
- * 3. Add validation for passwords less than 6 chars
+ * 3. Add validation for passwords (> 6), fullName (> 4), userName (> 6)
  */
 
 import { Formik, FormikErrors, FormikProps } from 'formik';
@@ -25,7 +25,7 @@ import {
 	TRKeyboardKeys,
 } from '../../components';
 import { KeyboardContext } from '../../environment/consts';
-import { ITranslatedProps, IUploadFileInput, IUploads } from '../../types';
+import { ITranslatedProps } from '../../types';
 import style, { colors } from './RegisterScreen.style';
 
 export interface IRegisterData {
@@ -33,7 +33,7 @@ export interface IRegisterData {
 	name: string;
 	userName: string;
 	password: string;
-	avatarImage: {
+	avatar: {
 		uri: string;
 	};
 }
@@ -96,7 +96,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							userName: '',
 							password: '',
 							confirmPassword: '',
-							avatarImage: {
+							avatar: {
 								uri: '',
 							},
 							termsAccepted: false,
@@ -158,7 +158,6 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 						}: IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
 								onStartRegister(registerData);
-								// onUploadFile({ path: registerData.avatarImage.uri });
 							});
 							Keyboard.dismiss();
 						}}
@@ -170,7 +169,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								password,
 								confirmPassword,
 								termsAccepted,
-								avatarImage,
+								avatar,
 							},
 							errors,
 							handleSubmit,
@@ -183,13 +182,9 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<View style={style.avatarPickerContainer}>
 									<AvatarPicker
 										getText={getText}
-										avatarImage={avatarImage}
+										avatarImage={avatar}
 										afterImagePick={(localPhotoPath: string) =>
-											setFieldValue(
-												'avatarImage',
-												{ uri: localPhotoPath },
-												false,
-											)
+											setFieldValue('avatar', { uri: localPhotoPath }, false)
 										}
 									/>
 								</View>

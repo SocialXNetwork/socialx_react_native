@@ -9,21 +9,22 @@
 
 import * as React from 'react';
 import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import { ITranslatedProps, IUploadFileInput, IUploads } from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
+import { ActionTypes } from '../../../store/data/accounts/Types';
+import { IError } from '../../../store/ui/activities';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
-import { WithFiles } from '../../connectors/storage/WithFiles';
+import { WithActivities } from '../../connectors/ui/WithActivities';
+import { getActivity } from '../../helpers/';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
-		uploads: [],
+		errors: [],
+		creatingAccount: false,
 	},
 	actions: {
 		register: (registerData: IRegisterData) => {
-			/**/
-		},
-		uploadFile: (file: IUploadFileInput) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -31,11 +32,11 @@ const mock: IWithRegisterEnhancedProps = {
 };
 
 export interface IWithRegisterEnhancedData {
-	uploads: IUploads[];
+	creatingAccount: boolean;
+	errors: IError[];
 }
 
 export interface IWithRegisterEnhancedActions extends ITranslatedProps {
-	uploadFile: (file: IUploadFileInput) => void;
 	register: (registerData: IRegisterData) => void;
 }
 
@@ -58,53 +59,43 @@ export class WithRegister extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithAccounts>
-						{(accountsProps) => (
-							<WithFiles>
-								{(filesProps) => {
-									return this.props.children({
-										// TODO: we also have the avatar upload progress here if we need it
-										// filesProps.uploads -> each object contains 'path' string to identify what is being uploaded
+					<WithActivities>
+						{({ activities, errors }) => (
+							<WithAccounts>
+								{(accountsProps) =>
+									this.props.children({
 										data: {
-											uploads: filesProps.uploads,
+											...mock.data,
+											creatingAccount: getActivity(
+												activities,
+												ActionTypes.CREATE_ACCOUNT,
+											),
+											errors,
 										},
 										actions: {
 											...mock.actions,
-											// TODO: add the avatar uploader function here
-											// filesProps.uploadFile({path: 'file path here'});
-											register: (registerData: IRegisterData) => {
-												if (registerData.avatarImage.uri.length > 0) {
-													filesProps.uploadFile({
-														path: registerData.avatarImage.uri,
-													});
-
-													if (filesProps.uploads[0].done) {
-														accountsProps.createAccount({
-															recover: {
-																question1: 'question1',
-																question2: 'questions2',
-																reminder: 'password',
-															},
-															username: registerData.userName,
-															password: registerData.password,
-															email: registerData.email,
-															avatar: filesProps.uploads[0].hash,
-															fullName: registerData.name,
-															miningEnabled: true,
-															aboutMeText: 'about me text',
-														});
-													}
-												}
-											},
-											uploadFile: (file: IUploadFileInput) =>
-												filesProps.uploadFile(file),
+											register: (registerData: IRegisterData) =>
+												accountsProps.createAccount({
+													recover: {
+														question1: 'question1',
+														question2: 'questions2',
+														reminder: 'password',
+													},
+													username: registerData.userName,
+													password: registerData.password,
+													email: registerData.email,
+													avatar: registerData.avatar,
+													fullName: registerData.name,
+													miningEnabled: true,
+													aboutMeText: 'about me text',
+												}),
 											getText: i18nProps.getText,
 										},
-									});
-								}}
-							</WithFiles>
+									})
+								}
+							</WithAccounts>
 						)}
-					</WithAccounts>
+					</WithActivities>
 				)}
 			</WithI18n>
 		);

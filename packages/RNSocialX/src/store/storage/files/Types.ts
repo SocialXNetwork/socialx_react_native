@@ -18,6 +18,7 @@ export type IState = DeepReadonly<{
 export const enum ActionTypes {
 	SET_UPLOAD_STATUS = 'storage/files/SET_UPLOAD_STATUS',
 	UPLOAD_FILE = 'storage/files/UPLOAD_FILE',
+	REMOVE_UPLOADED_FILES = 'storage/files/REMOVE_UPLOADED_FILES',
 }
 
 export interface ISetUploadStatusInput {
@@ -38,6 +39,10 @@ export interface ISetUploadStatusAction extends Action {
 	payload: ISetUploadStatusInput;
 }
 
+export interface IRemoveUploadedFilesAction extends Action {
+	type: ActionTypes.REMOVE_UPLOADED_FILES;
+}
+
 export interface IUploadFileAction extends Action {
 	type: ActionTypes.UPLOAD_FILE;
 	payload: IUploadFileInput;
@@ -49,4 +54,5 @@ interface IResetStoreAction {
 export type IAction =
 	| IResetStoreAction
 	| ISetUploadStatusAction
-	| IUploadFileAction;
+	| IUploadFileAction
+	| IRemoveUploadedFilesAction;
