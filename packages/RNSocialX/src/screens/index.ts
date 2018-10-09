@@ -2,6 +2,7 @@ export {
 	AdsManagementOverviewScreen,
 } from './adsManagementStack/AdsManagementOverviewScreen';
 export { AdsManagementScreen } from './adsManagementStack/AdsManagementScreen';
+export { AdsStatisticsScreen } from './adsManagementStack/AdsStatisticsScreen';
 
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 

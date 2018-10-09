@@ -5,15 +5,13 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.SET_UPLOAD_STATUS: {
-			const { uploadId, ...fileStatus } = action.payload;
 			return {
-				uploads: {
-					...state.uploads,
-					[uploadId]: {
-						...state.uploads[uploadId],
-						...fileStatus,
-					},
-				},
+				uploads: [
+					...state.uploads.filter(
+						(upload) => upload.uploadId !== action.payload.uploadId,
+					),
+					action.payload,
+				],
 			};
 		}
 
@@ -22,14 +20,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case 'RESET_STORE': {
-			return {
-				uploads: Object.entries(state.uploads)
-					.filter(([id, file]) => file.done)
-					.reduce(
-						(stateAcc, [id, file]) => ({ ...stateAcc, [id]: file.progress }),
-						{},
-					),
-			};
+			return state;
+			// uploads: Object.entries(state.uploads)
+			// 	.filter(([id, file]) => file.done)
+			// 	.reduce(
+			// 		(stateAcc, [id, file]) => ({ ...stateAcc, [id]: file.progress }),
+			// 		{},
+			// 	),
 		}
 
 		default: {

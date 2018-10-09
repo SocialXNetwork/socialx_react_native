@@ -17,7 +17,7 @@ export const TermsAndConditionsScreenView: React.SFC<
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
 			title={getText('terms.and.conditions.screen.title')}
-			left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<WebView source={localSource} />
 	</SafeAreaView>

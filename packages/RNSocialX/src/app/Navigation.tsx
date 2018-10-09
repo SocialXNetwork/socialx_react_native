@@ -23,6 +23,7 @@ import { tabStyles } from './Navigation.style';
 
 import {
 	AdsManagementScreen,
+	AdsStatisticsScreen,
 	CommentsScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,

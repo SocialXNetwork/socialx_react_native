@@ -66,6 +66,7 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 					progress: 0,
 					aborting: false,
 					done: false,
+					hash: '',
 				}),
 			);
 		};
@@ -78,6 +79,10 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 				setUploadStatus({
 					uploadId: uploadIdUpdated,
 					progress,
+					path,
+					aborting: false,
+					done: false,
+					hash: '',
 				}),
 			);
 		};
@@ -87,11 +92,16 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 			bootstrapStatus,
 			updateStatus,
 		);
+		const { Hash: hash } = JSON.parse(responseBody);
+
 		dispatch(
 			setUploadStatus({
 				uploadId,
 				progress: 100,
+				path,
+				aborting: false,
 				done: true,
+				hash,
 			}),
 		);
 		// TODO: extract the hash from 'responseBody' and store it somewhere
