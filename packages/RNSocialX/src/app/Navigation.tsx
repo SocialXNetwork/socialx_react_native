@@ -265,12 +265,12 @@ const Navigation = () => (
 														}
 														activityIndicatorTitle={
 															activitiesProps.activities.length > 0
-																? activitiesProps.activities[0].uuid
+																? activitiesProps.activities[0].type
 																: ''
 														}
 														activityIndicatorMessage={
 															activitiesProps.activities.length > 0
-																? activitiesProps.activities[0].type
+																? activitiesProps.activities[0].uuid
 																: ''
 														}
 													/>

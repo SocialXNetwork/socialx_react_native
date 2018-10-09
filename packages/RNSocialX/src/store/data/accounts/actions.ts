@@ -1,20 +1,23 @@
 import {
 	IAccountData,
 	IChangePasswordInput,
-	ICreateAccountInput,
 	ICredentials,
 	IGetAccountByPubInput,
 	IRecoverAccountInput,
 } from '@socialx/api-data';
+import { IListenerProgess } from 'react-native-background-upload';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+
 import { clearAuth, setAuth } from '../../app/auth';
+import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	IChangePasswordAction,
 	ICreateAccountAction,
+	ICreateAccountInput,
 	IGetAccountByPubAction,
 	IGetCurrentAccountAction,
 	ILoginAction,
@@ -79,6 +82,7 @@ export const createAccount = (
 	createAccountInput: ICreateAccountInput,
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
+
 	try {
 		dispatch(createAccountAction(createAccountInput));
 		dispatch(
@@ -87,8 +91,70 @@ export const createAccount = (
 				uuid: activityId,
 			}),
 		);
-		const { dataApi } = context;
-		await dataApi.accounts.createAccount(createAccountInput);
+		const { dataApi, storageApi } = context;
+
+		const { avatar, ...createAccountRest } = createAccountInput;
+		if (avatar.uri.length > 0) {
+			const bootstrapStatus = (uploadIdStarted: string) => {
+				dispatch(
+					setUploadStatus({
+						path: avatar.uri,
+						uploadId: uploadIdStarted,
+						progress: 0,
+						aborting: false,
+						done: false,
+						hash: '',
+					}),
+				);
+			};
+
+			const updateStatus = ({
+				uploadId: uploadIdUpdated,
+				progress,
+			}: IListenerProgess & { uploadId: string }) => {
+				dispatch(
+					setUploadStatus({
+						uploadId: uploadIdUpdated,
+						progress,
+						path: avatar.uri,
+						aborting: false,
+						done: false,
+						hash: '',
+					}),
+				);
+			};
+
+			const { uploadId, responseBody } = await storageApi.uploadFile(
+				avatar.uri,
+				bootstrapStatus,
+				updateStatus,
+			);
+			const { Hash: hash } = JSON.parse(responseBody);
+
+			dispatch(
+				setUploadStatus({
+					uploadId,
+					progress: 100,
+					path: avatar.uri,
+					aborting: false,
+					done: true,
+					hash,
+				}),
+			);
+
+			const createAccountFinal = {
+				...createAccountRest,
+				avatar: hash,
+			};
+			await dataApi.accounts.createAccount(createAccountFinal);
+		} else {
+			const createAccountFinal = {
+				...createAccountRest,
+				avatar: '',
+			};
+
+			await dataApi.accounts.createAccount(createAccountFinal);
+		}
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
@@ -100,6 +166,7 @@ export const createAccount = (
 		);
 	} finally {
 		dispatch(endActivity({ uuid: activityId }));
+		dispatch(removeUploadedFiles());
 	}
 };
 

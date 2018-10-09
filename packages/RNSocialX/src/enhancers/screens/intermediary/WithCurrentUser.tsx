@@ -1,13 +1,10 @@
 import * as React from 'react';
 
-import { Images } from '../../../environment/theme';
 import { ICurrentUser } from '../../../types';
 
 import { WithAuth } from '../../connectors/app/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
-
-const USER_AVATAR_PLACEHOLDER = Images.user_avatar_placeholder;
 
 interface IWithCurrentUserProps {
 	children({
