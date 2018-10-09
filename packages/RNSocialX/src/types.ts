@@ -56,6 +56,16 @@ export interface IGlobal {
 	[name: string]: any;
 }
 
+export interface IError {
+	uuid: string;
+	type: string | null;
+	error: {
+		message: string;
+		type: string;
+	} | null;
+	timeout?: number;
+}
+
 export interface IHeaderProps {
 	onGoBack: () => void;
 }

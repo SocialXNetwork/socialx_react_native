@@ -13,13 +13,15 @@ import {
 	TRKeyboardKeys,
 } from '../../components';
 import { KeyboardContext } from '../../environment/consts';
-import { ITranslatedProps } from '../../types';
+import { IError, ITranslatedProps } from '../../types';
+
 import style, { customStyleProps } from './LoginScreen.style';
 
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 interface ILoginFormProps extends ITranslatedProps {
+	authErrors: IError[];
 	onStartLogin: (userName: string, password: string) => void;
 }
 
@@ -28,7 +30,11 @@ interface ILoginScreenData {
 	password: string;
 }
 
-const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
+const LoginForm: React.SFC<ILoginFormProps> = ({
+	getText,
+	onStartLogin,
+	authErrors,
+}) => (
 	<KeyboardContext.Consumer>
 		{({ safeRunAfterKeyboardHide }) => (
 			<Formik
@@ -39,7 +45,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 				validate={({ userName, password }: ILoginScreenData) => {
 					const errors: FormikErrors<ILoginScreenData> = {};
 					if (!userName) {
-						errors.userName = getText('login.userName.required');
+						errors.userName = getText('login.username.required');
 					}
 					if (!password) {
 						errors.password = getText('login.password.required');
@@ -107,6 +113,13 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 									<Text style={style.errorText}>{errors.password}</Text>
 								)}
 						</View>
+						<View style={style.authErrorContainer}>
+							{authErrors.map((error) => (
+								<Text style={style.authError} key={error.uuid}>
+									{getText(`error.${error.type}`)}
+								</Text>
+							))}
+						</View>
 						<View style={style.fullWidth}>
 							<PrimaryButton
 								label={getText('login.login.button')}
@@ -123,6 +136,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onStartLogin }) => (
 );
 
 interface ILoginScreenViewProps extends ITranslatedProps {
+	errors: IError[];
 	onStartLogin: (userName: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
@@ -131,6 +145,7 @@ interface ILoginScreenViewProps extends ITranslatedProps {
 }
 
 export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
+	errors,
 	onStartLogin,
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
@@ -151,7 +166,11 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			keyboardShouldPersistTaps="handled"
 		>
 			<Text style={style.welcomeText}>{getText('login.welcome.message')}</Text>
-			<LoginForm getText={getText} onStartLogin={onStartLogin} />
+			<LoginForm
+				authErrors={errors}
+				getText={getText}
+				onStartLogin={onStartLogin}
+			/>
 			<TouchableOpacity
 				onPress={onNavigateToPasswordForgot}
 				style={style.forgotPassword}

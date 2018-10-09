@@ -4,7 +4,6 @@ import { AnimatedValue } from 'react-navigation';
 
 import {
 	FeedWithNoPosts,
-	Header,
 	LoadingFooter,
 	ShareSection,
 	SuggestionsCarousel,
@@ -65,7 +64,6 @@ export class UserFeedScreenView extends React.Component<
 		return (
 			<WithInlineLoader isLoading={isLoading}>
 				<View style={styles.container}>
-					<Header logo={true} />
 					{noPosts ? (
 						<FeedWithNoPosts />
 					) : (

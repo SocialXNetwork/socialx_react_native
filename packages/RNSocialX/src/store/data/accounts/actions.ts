@@ -156,30 +156,9 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
-		const account = await dataApi.accounts.getCurrentAccount();
-		const {
-			username,
-			aboutMeText,
-			miningEnabled,
-			fullName,
-			email,
-		} = createAccountInput;
-		const { pub } = account;
-		await dataApi.profiles.createProfile({
-			username,
-			aboutMeText,
-			miningEnabled,
-			fullName,
-			email,
-			avatar: avatar.uri,
-			pub,
-		});
+
 		dispatch(getCurrentAccount());
-		// TODO: We need to figure out a how to programmatically wait
-		// for the database changes to be reflected before dispatching
-		// these errors, the database is not atomic right now
-		// Here we need auth to be set before fetching current profile.
-		setTimeout(() => dispatch(getCurrentProfile()), 500);
+		dispatch(getCurrentProfile());
 	} catch (e) {
 		dispatch(
 			setError({
