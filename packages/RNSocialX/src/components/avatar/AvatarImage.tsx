@@ -19,7 +19,7 @@ import {
 import { Images, Sizes } from '../../environment/theme';
 
 interface IAvatarImageProps {
-	image: ImageSourcePropType | string | null | undefined;
+	image: { uri: string };
 	style: StyleProp<ImageStyle>;
 }
 
@@ -28,14 +28,8 @@ export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 	style = styles.avatarImage,
 }) => (
 	<Image
-		source={
-			image
-				? typeof image === 'string'
-					? { uri: image }
-					: image
-				: Images.user_avatar_placeholder
-		}
-		resizeMode={'cover'}
+		source={image.uri.length > 0 ? image : Images.user_avatar_placeholder}
+		resizeMode="cover"
 		style={style}
 	/>
 );

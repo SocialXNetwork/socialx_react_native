@@ -9,25 +9,21 @@
 
 import * as React from 'react';
 import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import { ITranslatedProps } from '../../../types';
+import { ITranslatedProps, IUploadFileInput, IUploads } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
-		showModalForSMSCode: false,
-		resendingCode: false,
-		smsCodeErrorMessage: null,
+		uploads: [],
 	},
 	actions: {
-		validateSMSCode: (code: string) => {
-			/**/
-		},
-		resendSMSCode: () => {
-			/**/
-		},
 		register: (registerData: IRegisterData) => {
+			/**/
+		},
+		uploadFile: (file: IUploadFileInput) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -35,14 +31,11 @@ const mock: IWithRegisterEnhancedProps = {
 };
 
 export interface IWithRegisterEnhancedData {
-	showModalForSMSCode: boolean;
-	resendingCode: boolean;
-	smsCodeErrorMessage: string | null;
+	uploads: IUploads[];
 }
 
 export interface IWithRegisterEnhancedActions extends ITranslatedProps {
-	validateSMSCode: (code: string) => void;
-	resendSMSCode: () => void;
+	uploadFile: (file: IUploadFileInput) => void;
 	register: (registerData: IRegisterData) => void;
 }
 
@@ -68,34 +61,47 @@ export class WithRegister extends React.Component<
 					<WithAccounts>
 						{(accountsProps) => (
 							<WithFiles>
-								{(filesProps) =>
-									this.props.children({
+								{(filesProps) => {
+									return this.props.children({
 										// TODO: we also have the avatar upload progress here if we need it
 										// filesProps.uploads -> each object contains 'path' string to identify what is being uploaded
-										data: mock.data,
+										data: {
+											uploads: filesProps.uploads,
+										},
 										actions: {
 											...mock.actions,
 											// TODO: add the avatar uploader function here
 											// filesProps.uploadFile({path: 'file path here'});
-											register: (registerData: IRegisterData) =>
-												accountsProps.createAccount({
-													recover: {
-														question1: 'question1',
-														question2: 'questions2',
-														reminder: 'password',
-													},
-													username: registerData.userName,
-													password: registerData.password,
-													email: registerData.email,
-													avatar: 'avatar', // this needs to change based on what we get from the uploader... (discuss this further)
-													fullName: registerData.name,
-													miningEnabled: true,
-													aboutMeText: 'about me text',
-												}),
+											register: (registerData: IRegisterData) => {
+												if (registerData.avatarImage.uri.length > 0) {
+													filesProps.uploadFile({
+														path: registerData.avatarImage.uri,
+													});
+
+													if (filesProps.uploads[0].done) {
+														accountsProps.createAccount({
+															recover: {
+																question1: 'question1',
+																question2: 'questions2',
+																reminder: 'password',
+															},
+															username: registerData.userName,
+															password: registerData.password,
+															email: registerData.email,
+															avatar: filesProps.uploads[0].hash,
+															fullName: registerData.name,
+															miningEnabled: true,
+															aboutMeText: 'about me text',
+														});
+													}
+												}
+											},
+											uploadFile: (file: IUploadFileInput) =>
+												filesProps.uploadFile(file),
 											getText: i18nProps.getText,
 										},
-									})
-								}
+									});
+								}}
 							</WithFiles>
 						)}
 					</WithAccounts>

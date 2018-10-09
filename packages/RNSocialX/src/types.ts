@@ -52,6 +52,22 @@ export interface ITranslatedProps {
 	getText: getTextSignature;
 }
 
+export interface IUploadFileInput {
+	path: string;
+}
+
+export interface IUploads {
+	progress: number;
+	path: string;
+	aborting: boolean;
+	done: boolean;
+	hash: string;
+}
+
+export interface IHeaderProps {
+	onGoBack: () => void;
+}
+
 export interface INavigationParamsActions {
 	setNavigationParams: (
 		setNavigationParamsInput: ISetNavigationParamsInput,

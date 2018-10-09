@@ -77,9 +77,9 @@ const style: any = {
 		color: Colors.postFullName,
 	},
 	acceptTextLink: {
-		...Fonts.centuryGothic,
+		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postHour,
+		color: Colors.black,
 		padding: Sizes.smartHorizontalScale(5),
 	},
 	acceptCheckbox: {
@@ -111,9 +111,6 @@ const style: any = {
 
 export default StyleSheet.create(style);
 
-export const defaultStyles = {
-	defaultAvatarImage: Images.user_avatar_placeholder,
-};
 export const colors = {
 	iron: Colors.iron,
 	postText: Colors.postText,

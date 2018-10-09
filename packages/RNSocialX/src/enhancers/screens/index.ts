@@ -3,6 +3,11 @@ export {
 	IWithAdsManagementEnhancedData,
 	WithAdsManagement,
 } from './adsManagementStack/WithAdsManagement';
+export {
+	IWithAdsStatisticsEnhancedActions,
+	IWithAdsStatisticsEnhancedData,
+	WithAdsStatistics,
+} from './adsManagementStack/WithAdsStatistics';
 
 export {
 	WithComments,
