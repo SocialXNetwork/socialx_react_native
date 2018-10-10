@@ -5,6 +5,7 @@ import {
 	IGunCallback,
 	ILikesArray,
 	ILikesMetasCallback,
+	IMetasCallback,
 } from '../../types';
 import { ApiError } from '../../utils/errors';
 import {
@@ -19,6 +20,7 @@ import {
 	ICommentsPostData,
 } from '../comments';
 import {
+	IMedia,
 	IPostArrayData,
 	IPostCallbackData,
 	IPostMetasCallback,
@@ -56,6 +58,9 @@ const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
 		return rest;
 	});
 
+const convertMediaToArray = (media: any): IMedia[] =>
+	convertGunSetToArray(media).map((m: any) => m);
+
 const convertCommentsToArray = (comments: ICommentsPostData): ICommentData =>
 	convertGunSetToArrayWithKey(comments).map(
 		({ k, ...postComment }: ICommentCallbackData & { k: string }) => {
@@ -85,16 +90,19 @@ export const getPostByPath = (
 					}),
 				);
 			}
-			const { likes, comments, ...restPost } = postData;
+			const { likes, comments, media, ...restPost } = postData;
 			// convert likes into an array with keys
 			const postLikes = convertLikesToArray(likes);
 			// convert comments and their likes into an array with keys
 			const postComments: any = convertCommentsToArray(comments);
+			// convert media to an array
+			const mediaReturn = convertMediaToArray(media as any);
 
 			const post: IPostReturnData = {
 				postId: postPath.split('.').reverse()[0],
 				likes: postLikes,
 				comments: postComments,
+				media: mediaReturn,
 				...restPost,
 			};
 			return callback(null, post);
@@ -146,11 +154,15 @@ export const getPublicPostsByDate = (
 					const postLikes = convertLikesToArray(post.likes);
 					// convert comments and their likes into an array with keys
 					const postComments = convertCommentsToArray(post.comments);
+					// convert media to an array
+					const mediaReturn = convertMediaToArray(post.media ? post.media : {});
+
 					const { likes, comments, ...postRest } = post;
 					return {
 						postId,
 						likes: postLikes,
 						comments: postComments,
+						media: mediaReturn,
 						...postRest,
 					};
 				},
