@@ -28,7 +28,7 @@ export const AdsManagementScreenView: React.SFC<
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.avatarContainer}>
-			<AvatarImage image={avatarURL} style={styles.avatar} />
+			<AvatarImage image={{ uri: avatarURL }} style={styles.avatar} />
 		</View>
 		<Text style={styles.name}>{fullName}</Text>
 		{userName && <Text style={styles.userName}>@{userName}</Text>}
