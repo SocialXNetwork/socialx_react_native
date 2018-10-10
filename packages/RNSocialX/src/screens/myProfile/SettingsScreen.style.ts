@@ -84,7 +84,7 @@ export default StyleSheet.create(style);
 export const customStyleProps = {
 	avatarPickerSize: Sizes.smartHorizontalScale(103),
 	avatarFullNameColor: Colors.postFullName,
-	avatarUserNameColor: Colors.postHour,
+	avatarUserNameColor: Colors.pink,
 	aboutMeTextBorderColor: Colors.dustWhite,
 	userDataInputIconColor: Colors.iron,
 	userDataInputPlaceholderColor: Colors.postText,

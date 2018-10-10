@@ -1,24 +1,21 @@
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { SettingCheckbox } from '../../../../src/components/';
+import { Checkbox } from '../../../../src/components/';
 import CenterView from '../../../helpers/CenterView';
 
-interface ISettingCheckboxStoryState {
+interface ICheckboxStoryState {
 	value: boolean;
 }
 
-class SettingCheckboxStory extends React.Component<
-	{},
-	ISettingCheckboxStoryState
-> {
+class CheckboxStory extends React.Component<{}, ICheckboxStoryState> {
 	public state = {
 		value: false,
 	};
 
 	public render() {
 		return (
-			<SettingCheckbox
+			<Checkbox
 				title="Are you a vegetarian?"
 				description={false}
 				value={this.state.value}
@@ -38,4 +35,4 @@ class SettingCheckboxStory extends React.Component<
 
 storiesOf('Components/inputs', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	.add('SettingCheckbox', () => <SettingCheckboxStory />);
+	.add('Checkbox', () => <CheckboxStory />);

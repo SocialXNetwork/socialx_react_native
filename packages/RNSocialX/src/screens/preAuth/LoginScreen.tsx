@@ -91,6 +91,7 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 				errors={this.state.errors}
 				onStartLogin={(userName, password) => {
 					login(userName, password);
+					this.setState({ errors: [] });
 				}}
 				onNavigateToPasswordForgot={() =>
 					this.safeNavigateToScreen(SCREENS.ForgotPassword)

@@ -39,6 +39,6 @@ const style: any = {
 export default StyleSheet.create(style);
 
 export const customStyleProps = {
-	onTintColor: Colors.postFullName,
+	onTintColor: Colors.pink,
 	thumbTintColor: Colors.white,
 };

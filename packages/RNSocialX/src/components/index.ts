@@ -66,7 +66,7 @@ export {
 } from './inlineLoader';
 
 export { CommentTextInput } from './inputs/CommentTextInput';
-export { SettingCheckbox } from './inputs/SettingCheckbox';
+export { Checkbox } from './inputs/Checkbox';
 export { SharePostInput } from './inputs/SharePostInput';
 export {
 	PrimaryTextInput,

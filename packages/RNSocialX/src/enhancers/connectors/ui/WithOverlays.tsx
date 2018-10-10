@@ -98,7 +98,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	hideConfirmation: () => dispatch(hideConfirmation()),
 	showOptionsMenu: (optionsMenu: IOptionsMenu) =>
 		dispatch(showOptionsMenu(optionsMenu)),
-	hideOptionsMenu: () => dispatch(hideOptionsMenu),
+	hideOptionsMenu: () => dispatch(hideOptionsMenu()),
 });
 
 export const WithOverlays: ConnectedComponentClass<

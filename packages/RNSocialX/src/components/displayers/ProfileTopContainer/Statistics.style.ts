@@ -3,20 +3,20 @@ import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const styles: any = {
 	container: {
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginHorizontal: Sizes.smartHorizontalScale(10),
+		height: Sizes.smartVerticalScale(50),
 	},
 	value: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.white,
-		marginBottom: Sizes.smartVerticalScale(7.5),
+		color: Colors.pink,
 	},
-	text: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postFullName,
+
+	icon: {
+		fontSize: Sizes.smartHorizontalScale(20),
+		color: Colors.white,
 	},
 };
 
