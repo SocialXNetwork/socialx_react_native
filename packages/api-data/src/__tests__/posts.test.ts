@@ -133,6 +133,7 @@ describe('posts api', () => {
 			const publicPosts = await mockApi.posts.getPublicPostsByDate({
 				date: new Date(),
 			});
+			console.log(JSON.stringify(publicPosts, null, 2));
 			expect(publicPosts).toBeTruthy();
 			expect(publicPosts.length).toEqual(1);
 		} catch (e) {
