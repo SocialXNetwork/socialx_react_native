@@ -33,7 +33,9 @@ export const configureStore = (
 
 	const store = createStore(
 		rootReducer,
-		applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi })),
+		composeWithDevTools(
+			applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi })),
+		),
 	);
 
 	if (module.hot) {
@@ -44,7 +46,7 @@ export const configureStore = (
 		});
 	}
 
-	store.dispatch(setAppConfig({ appConfig as any }));
+	store.dispatch(setAppConfig({ appConfig }));
 
 	return store;
 };

@@ -88,10 +88,7 @@ export const updateProfile = yup
 	.required();
 
 export const getProfilesByUsernames = yup.object().shape({
-	usernames: yup
-		.array()
-		.of(yup.string())
-		.required(),
+	usernames: yup.array().of(yup.string()),
 });
 
 export const addFriend = yup
