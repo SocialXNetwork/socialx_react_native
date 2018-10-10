@@ -3,6 +3,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { SearchScreenView } from '../../../../src/screens/mainTabNav/SearchScreen/SearchScreen.view';
 import { ISearchResultData, SearchResultKind } from '../../../../src/types';
 
@@ -41,12 +42,12 @@ storiesOf('Screens/mainTabNav', module)
 		const hasMoreResults = boolean('hasMoreResults', false);
 		return (
 			<SearchScreenView
+				getText={getTextMock}
 				searching={searching}
 				onAddFriend={action('onAddFriend')}
 				searchResults={items}
 				suggestions={items}
 				searchTermValue={searchTermValue}
-				onSearchTermChange={action('onSearchTermChange')}
 				onResultPress={action('onResultPress')}
 				onLoadMoreResults={action('onLoadMoreResults')}
 				hasMoreResults={hasMoreResults}

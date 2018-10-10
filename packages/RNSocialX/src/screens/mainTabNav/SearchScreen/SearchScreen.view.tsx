@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
 
-import {
-	SearchHeader,
-	SearchResults,
-	SuggestedSearches,
-} from '../../../components';
+import { SearchResults, SuggestedSearches } from '../../../components';
 import { ISearchResultData, ITranslatedProps } from '../../../types';
 import styles from './SearchScreen.style';
 
@@ -18,9 +13,7 @@ interface ISearchScreenViewProps extends ITranslatedProps {
 	searching: boolean;
 	onLoadMoreResults: () => void;
 	hasMoreResults: boolean;
-	onSearchTermChange: (term: string) => void;
 	searchTermValue: string;
-	navigation: NavigationScreenProp<any>;
 }
 
 export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
@@ -31,18 +24,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 	searching,
 	onLoadMoreResults,
 	hasMoreResults,
-	onSearchTermChange,
 	searchTermValue,
-	navigation,
 	getText,
 }) => (
 	<View style={styles.container}>
-		<SearchHeader
-			navigation={navigation}
-			onSearchTermChange={onSearchTermChange}
-			searchTermValue={searchTermValue}
-			cancel={true}
-		/>
 		{searchTermValue.length === 0 && (
 			<SuggestedSearches
 				items={suggestions}

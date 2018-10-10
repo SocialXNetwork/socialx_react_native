@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { debounce } from 'throttle-debounce';
 
 import {
 	IWithSearchEnhancedActions,
@@ -10,59 +9,42 @@ import {
 	INavigationProps,
 	ISearchResultData,
 	SearchResultKind,
-	SearchTabs,
 } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
-const SEARCH_DEBOUNCE_TIME_MS = 300;
-
-export interface ISearchProps {
-	tab: SearchTabs;
+interface IWithSearchTerm {
+	searchTermValue: string;
 }
 
 type ISearchScreenProps = INavigationProps &
-	ISearchProps &
+	IWithSearchTerm &
 	IWithSearchEnhancedActions &
 	IWithSearchEnhancedData;
 
-interface ISearchScreenState {
-	term: string;
-}
-
-export class Screen extends React.Component<
-	ISearchScreenProps,
-	ISearchScreenState
-> {
-	public state = {
-		term: '',
-	};
-
-	private debounceSearch = debounce(SEARCH_DEBOUNCE_TIME_MS, (term: string) => {
-		this.props.search(term, this.props.tab);
-	});
-
+export class SearchScreen extends React.Component<ISearchScreenProps> {
 	public render() {
+		const {
+			searchTermValue,
+			searchResults,
+			suggestions,
+			searching,
+			hasMoreResults,
+			getText,
+		} = this.props;
 		return (
 			<SearchScreenView
 				onAddFriend={this.onAddFriendHandler}
-				searchResults={this.props.searchResults}
-				suggestions={this.props.suggestions}
+				searchResults={searchResults}
+				suggestions={suggestions}
 				onResultPress={this.onResultPressHandler}
-				searching={this.props.searching}
-				hasMoreResults={this.props.hasMoreResults}
+				searching={searching}
+				hasMoreResults={hasMoreResults}
 				onLoadMoreResults={this.onLoadMoreResultsHandler}
-				onSearchTermChange={this.onSearchTermChangeHandler}
-				searchTermValue={this.state.term}
-				navigation={this.props.navigation}
-				getText={this.props.getText}
+				searchTermValue={searchTermValue}
+				getText={getText}
 			/>
 		);
 	}
-
-	private onSearchTermChangeHandler = (term: string) => {
-		this.debounceSearch(term);
-		this.setState({ term });
-	};
 
 	private onAddFriendHandler = (userId: string) => {
 		this.props.addFriend(userId);

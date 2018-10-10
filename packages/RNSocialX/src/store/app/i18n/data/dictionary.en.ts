@@ -260,5 +260,9 @@ export default {
 	'ad.management.option.post': 'Boost a post',
 	'ad.management.option.video': 'Get video views',
 	'ad.management.option.traffic': 'Drive traffic to your website',
-	'ad.management.create': 'Create a new add'
+	'ad.management.create': 'Create a new add',
+	'search.screen.results.tab.top.title': 'Top',
+	'search.screen.results.tab.people.title': 'People',
+	'search.screen.results.tab.tags.title': 'Tags',
+	'search.screen.results.tab.places.title': 'Places',
 };

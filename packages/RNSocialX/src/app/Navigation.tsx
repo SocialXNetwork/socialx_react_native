@@ -41,20 +41,14 @@ import {
 	ReferralScreen,
 	RegisterScreen,
 	ResetPasswordScreen,
+	SearchResultsScreen,
 	SettingsScreen,
 	SocialXAccountScreen,
 	TermsAndConditionsScreen,
+	TrendingScreen,
 	UserProfileScreen,
 	WalletActivityScreen,
 } from '../screens';
-
-import {
-	PeopleTab,
-	PlacesTab,
-	TagsTab,
-	TopTab,
-	TrendingScreen,
-} from '../screens/mainTabNav/SearchScreen';
 
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
@@ -152,33 +146,20 @@ const UserFeedStackNavigator = createStackNavigator(
 	},
 );
 
-const TabbedSearchNavigator = createMaterialTopTabNavigator(
-	{
-		Top: TopTab,
-		People: PeopleTab,
-		Tags: TagsTab,
-		Places: PlacesTab,
-	},
-	{
-		animationEnabled: true,
-		swipeEnabled: true,
-		tabBarOptions: tabStyles,
-	},
-);
-
 const UserSearchStackNavigator = createStackNavigator(
 	{
 		Trending: {
 			screen: TrendingScreen,
 		},
 		TabbedSearchScreen: {
-			screen: TabbedSearchNavigator,
+			screen: SearchResultsScreen,
 		},
 	},
 	{
 		navigationOptions: {
 			gesturesEnabled: false,
 		},
+		headerMode: 'none',
 		transitionConfig: fadeIn,
 	},
 );
