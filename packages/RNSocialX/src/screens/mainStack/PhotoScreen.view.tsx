@@ -128,13 +128,13 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 			<Header
 				title={getText('photo.screen.title')}
 				left={<CloseButton onClose={onClose} />}
-				right={<HeaderButton iconName={'md-checkmark'} onPress={sendPost} />}
+				right={<HeaderButton iconName="md-checkmark" onPress={sendPost} />}
 			/>
 		}
 		<KeyboardAwareScrollView
 			style={style.scrollView}
 			alwaysBounceVertical={true}
-			keyboardShouldPersistTaps={'handled'}
+			keyboardShouldPersistTaps="handled"
 		>
 			<SharePostInput
 				avatarSource={avatarURL}
@@ -150,7 +150,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 					<Image
 						source={customStyleProps.iconNewPostAddMedia}
 						style={style.photoIcon}
-						resizeMode={'contain'}
+						resizeMode="contain"
 					/>
 					<Text style={style.addMediaText}>
 						{getText('photo.screen.add.media')}

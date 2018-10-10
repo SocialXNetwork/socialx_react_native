@@ -36,6 +36,11 @@ const style: any = {
 		width: '100%',
 		height: Sizes.smartHorizontalScale(130),
 	},
+	buttonContainer: {
+		paddingHorizontal: Sizes.smartHorizontalScale(30),
+		marginTop: Sizes.smartVerticalScale(10),
+	},
 };
 
+export const buttonWidth = Sizes.smartHorizontalScale(100);
 export default StyleSheet.create(style);

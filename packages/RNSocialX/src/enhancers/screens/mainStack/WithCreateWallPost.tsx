@@ -7,12 +7,17 @@ import * as React from 'react';
 
 import { KeyboardContext } from '../../../environment/consts';
 import {
+	IGlobal,
 	IResizeProps,
 	ITranslatedProps,
+	IUploadFileInput,
 	IWallPostPhotoOptimized,
 } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithFiles } from '../../connectors/storage/WithFiles';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCreateWallPostEnhancedProps = {
@@ -24,6 +29,12 @@ const mock: IWithCreateWallPostEnhancedProps = {
 		createPost: (wallPostData: IWallPostData) => {
 			/**/
 		},
+		uploadFile: (input: IUploadFileInput) => {
+			/**/
+		},
+		setGlobal: (global: IGlobal) => {
+			/**/
+		},
 		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 	},
@@ -31,6 +42,10 @@ const mock: IWithCreateWallPostEnhancedProps = {
 
 interface IWallPostData {
 	mediaObjects: IWallPostPhotoOptimized[];
+	taggedFriends?: Array<{
+		fullName: string;
+	}>;
+	location?: string;
 	text: string;
 }
 
@@ -40,6 +55,8 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps {
 	createPost: (wallPostData: IWallPostData) => void;
+	uploadFile: (input: IUploadFileInput) => void;
+	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithCreateWallPostEnhancedProps {
@@ -62,47 +79,57 @@ export class WithCreateWallPost extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<KeyboardContext.Consumer>
-						{(keyboardProps) => (
-							<WithCurrentUser>
-								{(currentUserProps) => (
-									<WithPosts>
-										{(postsProps) =>
-											children({
-												data: {
-													...mock.data,
-													marginBottom: keyboardProps.marginBottom,
-													currentUserAvatarURL: currentUserProps.currentUser!
-														.avatarURL,
-												},
-												actions: {
-													...mock.actions,
-													getText: i18nProps.getText,
-													// createPost: (wallPostData: IWallPostData) =>
-													// 	postsProps.createPost({
-													// 		postText: wallPostData.text,
-													// 		privatePost: false,
-													// 		media: wallPostData.mediaObjects.map(
-													// 			(mediaObject) => ({
-													// 				hash: 'TBD',
-													// 				type: {
-													// 					key: 'TBD',
-													// 					name: 'Photo',
-													// 					category: 'TBD',
-													// 				},
-													// 				extension: 'TBD',
-													// 				size: 1234,
-													// 			}),
-													// 		),
-													// 	}),
-												},
-											})
-										}
-									</WithPosts>
+					<WithGlobals>
+						{({ setGlobal }) => (
+							<WithFiles>
+								{({ uploadFile, uploads }) => (
+									<KeyboardContext.Consumer>
+										{({ marginBottom }) => (
+											<WithCurrentUser>
+												{({ currentUser }) => (
+													<WithPosts>
+														{(postsProps) =>
+															children({
+																data: {
+																	...mock.data,
+																	marginBottom,
+																	currentUserAvatarURL: currentUser!.avatarURL,
+																},
+																actions: {
+																	...mock.actions,
+																	uploadFile,
+																	createPost: (wallPostData: IWallPostData) =>
+																		postsProps.createPost({
+																			postText: wallPostData.text,
+																			// location: wallPostData.location,
+																			location: 'Timisoara',
+																			taggedFriends: wallPostData.taggedFriends,
+																			// media: uploads.map((upload) => ({
+																			// 	hash: upload.hash,
+																			// 	type: {
+																			// 		key: 'TBD',
+																			// 		name: 'Photo',
+																			// 		category: 'TBD',
+																			// 	},
+																			// 	extension: 'TBD',
+																			// 	size: 1234,
+																			// })),
+																			privatePost: false,
+																		}),
+																	setGlobal,
+																	getText: i18nProps.getText,
+																},
+															})
+														}
+													</WithPosts>
+												)}
+											</WithCurrentUser>
+										)}
+									</KeyboardContext.Consumer>
 								)}
-							</WithCurrentUser>
+							</WithFiles>
 						)}
-					</KeyboardContext.Consumer>
+					</WithGlobals>
 				)}
 			</WithI18n>
 		);
