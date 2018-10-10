@@ -131,9 +131,8 @@ describe('posts api', () => {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 			const publicPosts = await mockApi.posts.getPublicPostsByDate({
-				date: new Date(),
+				date: new Date(Date.now()),
 			});
-			console.log(JSON.stringify(publicPosts, null, 2));
 			expect(publicPosts).toBeTruthy();
 			expect(publicPosts.length).toEqual(1);
 		} catch (e) {
