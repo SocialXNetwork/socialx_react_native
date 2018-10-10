@@ -2,6 +2,7 @@
  * TODO list:
  * 1. Props data: searchResults, suggestions, searching, hasMoreResults
  * 2. Props actions: search, searchForMoreResults, addFriend
+ * 3. We will have to use separate enhancers for each search tab!
  */
 
 import * as React from 'react';
@@ -11,7 +12,6 @@ import {
 	INavigationParamsActions,
 	ISearchResultData,
 	ITranslatedProps,
-	SearchTabs,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
@@ -24,9 +24,6 @@ const mock: IWithSearchEnhancedProps = {
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
-		search: (term: string, tab: SearchTabs) => {
-			/**/
-		},
 		searchForMoreResults: () => {
 			/**/
 		},
@@ -49,7 +46,6 @@ export interface IWithSearchEnhancedData {
 export interface IWithSearchEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions {
-	search: (term: string, tab: SearchTabs) => void;
 	searchForMoreResults: () => void;
 	addFriend: (userId: string) => void;
 }

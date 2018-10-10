@@ -257,6 +257,11 @@ export interface IWallet {
 	refreshing: boolean;
 }
 
+export interface ISearchTabResultsProps {
+	navigation: NavigationScreenProp<any>;
+	searchTermValue: string;
+}
+
 // =====================================================
 // ENHANCER DATA TYPES
 // =====================================================

@@ -12,6 +12,7 @@ interface ISearchHeaderProps {
 	cancel: boolean;
 	onSearchTermChange?: (term: string) => void;
 	searchTermValue?: string;
+	autoFocus?: boolean;
 }
 
 interface ISearchHeaderState {
@@ -25,6 +26,7 @@ export class SearchHeader extends Component<
 > {
 	public static defaultProps = {
 		cancel: false,
+		autoFocus: false,
 	};
 
 	public state = {
@@ -80,6 +82,8 @@ export class SearchHeader extends Component<
 							// focusUpdateHandler={this.onSearchFocusUpdatedHandler}
 							persistCancel={this.props.cancel}
 							onPressCancel={this.onBackHandler}
+							cancelButtonTextColor={colors.iosInputCancel}
+							autoFocus={this.props.autoFocus}
 						/>
 
 						{!this.props.cancel ? (
@@ -106,6 +110,7 @@ export class SearchHeader extends Component<
 	};
 
 	private onPressInput = () => {
+		// TODO: check how this works!
 		const { navigation } = this.props;
 		if (navigation.state.routeName === 'Trending') {
 			navigation.navigate(SCREENS.TabbedSearch);
