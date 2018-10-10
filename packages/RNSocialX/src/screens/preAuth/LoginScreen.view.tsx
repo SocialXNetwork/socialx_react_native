@@ -39,8 +39,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 		{({ safeRunAfterKeyboardHide }) => (
 			<Formik
 				initialValues={{
-					userName: '',
-					password: '',
+					userName: 'alexsirbu',
+					password: 'password',
 				}}
 				validate={({ userName, password }: ILoginScreenData) => {
 					const errors: FormikErrors<ILoginScreenData> = {};
@@ -69,6 +69,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 				}: FormikProps<ILoginScreenData>) => (
 					<React.Fragment>
 						<PrimaryTextInput
+							icon="md-person"
 							placeholder={getText('login.username.input')}
 							placeholderColor={customStyleProps.inputPlaceholderColor}
 							returnKeyType={TRKeyboardKeys.next}
@@ -92,6 +93,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 							)}
 						<View style={style.passwordContainer}>
 							<PrimaryTextInput
+								icon="ios-lock"
 								placeholder={getText('login.password.input')}
 								placeholderColor={customStyleProps.inputPlaceholderColor}
 								returnKeyType={TRKeyboardKeys.go}

@@ -52,7 +52,7 @@ export const ForgotPasswordScreenView: React.SFC<
 				<ScrollView
 					contentContainerStyle={style.contentContainer}
 					alwaysBounceVertical={false}
-					keyboardShouldPersistTaps={'handled'}
+					keyboardShouldPersistTaps="handled"
 				>
 					<Text style={style.descriptionText}>
 						{getText('forgot.password.instructions')}
@@ -61,7 +61,7 @@ export const ForgotPasswordScreenView: React.SFC<
 						<PrimaryTextInput
 							placeholder={getText('forgot.password.userName')}
 							iconColor={customStyleProps.usernameInputIconColor}
-							icon={'user'}
+							icon="md-person"
 							blurOnSubmit={true}
 							returnKeyType={TRKeyboardKeys.go}
 							value={userName}

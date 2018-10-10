@@ -34,7 +34,7 @@ const style: any = {
 		letterSpacing: Sizes.smartHorizontalScale(2),
 	},
 	textSmall: {
-		fontSize: Sizes.smartHorizontalScale(14),
+		fontSize: Sizes.smartHorizontalScale(12),
 	},
 	textLarge: {
 		fontSize: Sizes.smartHorizontalScale(16),

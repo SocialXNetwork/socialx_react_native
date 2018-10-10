@@ -58,7 +58,7 @@ export class SearchHeader extends Component<
 					{this.props.cancel &&
 						Platform.OS === OS_TYPES.Android && (
 							<TouchableOpacity onPress={this.onBackHandler}>
-								<Icon name={'md-arrow-back'} style={styles.backIcon} />
+								<Icon name="md-arrow-back" style={styles.backIcon} />
 							</TouchableOpacity>
 						)}
 					<View style={{ flex: 1 }}>
@@ -71,8 +71,8 @@ export class SearchHeader extends Component<
 							}
 							onChangeText={this.searchInputUpdated}
 							onSubmitPressed={Keyboard.dismiss}
-							placeholder={'Search'}
-							icon={'search'}
+							placeholder="Search"
+							icon="search"
 							canCancel={true}
 							size={InputSizes.Small}
 							borderColor={colors.border}
@@ -112,7 +112,7 @@ export class SearchHeader extends Component<
 	private onPressInput = () => {
 		// TODO: check how this works!
 		const { navigation } = this.props;
-		if (navigation.state.routeName === 'Trending') {
+		if (navigation.state.routeName === SCREENS.Trending) {
 			navigation.navigate(SCREENS.TabbedSearch);
 		}
 	};

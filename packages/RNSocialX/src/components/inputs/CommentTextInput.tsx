@@ -38,14 +38,14 @@ export const CommentTextInput = React.forwardRef<
 				multiline={true}
 				autoCorrect={false}
 				underlineColorAndroid={customStyleProps.underlineColorAndroid}
-				autoCapitalize={'none'}
+				autoCapitalize="none"
 				value={commentText}
 				placeholderTextColor={customStyleProps.placeholderTextColor}
 			/>
 			{showSendButton && (
 				<View style={style.sendButtonContainer}>
 					<TouchableOpacity onPress={onCommentSend} style={style.sendButton}>
-						<Icon name={'md-send'} style={style.sendIcon} />
+						<Icon name="md-send" style={style.sendIcon} />
 					</TouchableOpacity>
 				</View>
 			)}

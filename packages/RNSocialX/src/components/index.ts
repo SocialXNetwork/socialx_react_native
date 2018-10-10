@@ -45,6 +45,7 @@ export {
 } from './displayers/SocialXAccountCurrencyItem';
 export { SocialXAccountTitleCard } from './displayers/SocialXAccountTitleCard';
 export { RichText } from './displayers/RichText/RichText';
+export { Notification } from './displayers/Notification';
 export { SearchHeader } from './displayers/SearchHeader';
 export { SearchResults } from './displayers/SearchResults';
 export { SearchResultsItem } from './displayers/SearchResultsItem';

@@ -7,7 +7,7 @@ import { Image as PickerImage } from 'react-native-image-crop-picker';
 import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 
 import { IAccountCurrencyData } from './components';
-import { CoinSymbol } from './environment/consts';
+import { CoinSymbol, NOTIFICATION_TYPES } from './environment/consts';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 
 export interface IFriendsSearchResult {
@@ -73,6 +73,23 @@ export interface IError {
 
 export interface IUploadFileInput {
 	path: string;
+}
+
+export interface IFriendshipInput {
+	friendshipId: string;
+	username: string;
+}
+
+export interface INotificationData {
+	notificationId: string;
+	userId: string;
+	type: NOTIFICATION_TYPES;
+	fullName: string;
+	avatarURL: string;
+	userName?: string;
+	timestamp?: Date;
+	groupName?: string;
+	friendshipId?: string;
 }
 
 export interface IHeaderProps {
@@ -169,7 +186,6 @@ export interface IWallPostComment {
 	numberOfLikes: number;
 	likes: ILike[];
 	likedByMe: boolean;
-	replies: IWallPostComment[];
 }
 
 export enum CommentsSortingOptions {

@@ -7,10 +7,10 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { OS_TYPES } from '../../environment/consts';
-import style, { customStyleProps } from './PrimaryTextInput.style';
+import style, { defaultStyles } from './PrimaryTextInput.style';
 
 export enum TKeyboardKeys {
 	default = 'default',
@@ -70,6 +70,7 @@ interface IPrimaryTextInputProps {
 
 interface IPrimaryTextInputState {
 	hasFocus: boolean;
+	iconColor: string;
 }
 
 const InputIcon: React.SFC<{
@@ -77,11 +78,11 @@ const InputIcon: React.SFC<{
 	icon: string;
 	iconColor: string;
 }> = ({ size, icon, iconColor }) => {
-	let iconHeight = customStyleProps.iconHeightNormal;
+	let iconHeight = defaultStyles.iconHeightNormal;
 	if (size === InputSizes.Small) {
-		iconHeight = customStyleProps.iconHeightSmall;
+		iconHeight = defaultStyles.iconHeightSmall;
 	} else if (size === InputSizes.Large) {
-		iconHeight = customStyleProps.iconHeightLarge;
+		iconHeight = defaultStyles.iconHeightLarge;
 	}
 	return (
 		<View style={[style.iconContainer, style['iconContainer' + size]]}>
@@ -162,22 +163,22 @@ export class PrimaryTextInput extends React.Component<
 		onChangeText: () => {
 			/**/
 		},
-		iconColor: customStyleProps.defaultIconColor,
+		iconColor: defaultStyles.defaultIconColor,
 		placeholder: '',
-		placeholderColor: customStyleProps.defaultPlaceholderColor,
+		placeholderColor: defaultStyles.defaultPlaceholderColor,
 		disabled: false,
 		isPassword: false,
 		keyboardType: TKeyboardKeys.default,
 		returnKeyType: TRKeyboardKeys.default,
-		cancelButtonTextColor: customStyleProps.defaultCancelTextColor,
+		cancelButtonTextColor: defaultStyles.defaultCancelTextColor,
 		canCancel: false,
 		hasFocus: false,
 		blurOnSubmit: false,
-		borderColor: customStyleProps.defaultBorderColor,
+		borderColor: defaultStyles.defaultBorderColor,
 		numberOfLines: 1,
 		autoFocus: false,
 		size: InputSizes.Normal,
-		borderWidth: customStyleProps.defaultBorderWidth,
+		borderWidth: defaultStyles.defaultBorderWidth,
 		multiline: false,
 		autoCorrect: false,
 		autoCapitalize: 'none',
@@ -192,7 +193,7 @@ export class PrimaryTextInput extends React.Component<
 			/**/
 		},
 		canPost: false,
-		postButtonTextColor: customStyleProps.defaultPostTextColor,
+		postButtonTextColor: defaultStyles.defaultPostTextColor,
 		onPressPost: () => {
 			/**/
 		},
@@ -203,6 +204,7 @@ export class PrimaryTextInput extends React.Component<
 
 	public state = {
 		hasFocus: false,
+		iconColor: defaultStyles.defaultIconColor,
 	};
 
 	private inputRef: React.RefObject<TextInput> = React.createRef();
@@ -214,7 +216,6 @@ export class PrimaryTextInput extends React.Component<
 	public render() {
 		const {
 			icon,
-			iconColor,
 			size,
 			width,
 			disabled,
@@ -265,7 +266,11 @@ export class PrimaryTextInput extends React.Component<
 			>
 				<View style={inputContainerStyles}>
 					{icon !== '' && (
-						<InputIcon icon={icon} iconColor={iconColor} size={size} />
+						<InputIcon
+							icon={icon}
+							iconColor={this.state.iconColor}
+							size={size}
+						/>
 					)}
 					<TextInput
 						allowFontScaling={false}
@@ -284,9 +289,7 @@ export class PrimaryTextInput extends React.Component<
 						placeholder={placeholder}
 						placeholderTextColor={placeholderColor}
 						autoCorrect={autoCorrect}
-						underlineColorAndroid={
-							customStyleProps.defaultUnderlineColorAndroid
-						}
+						underlineColorAndroid={defaultStyles.defaultUnderlineColorAndroid}
 						autoCapitalize={autoCapitalize}
 						clearButtonMode="while-editing" // only works on iOS
 						blurOnSubmit={blurOnSubmit}
@@ -320,6 +323,9 @@ export class PrimaryTextInput extends React.Component<
 	private updateFocusHandler = (value: boolean) => {
 		this.setState({
 			hasFocus: value,
+			iconColor: value
+				? defaultStyles.defaultIconActiveColor
+				: this.props.iconColor,
 		});
 		this.props.focusUpdateHandler(value);
 	};

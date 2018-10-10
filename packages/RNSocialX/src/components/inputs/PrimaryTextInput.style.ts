@@ -12,6 +12,7 @@ const style: any = {
 		alignItems: 'center',
 		backgroundColor: Colors.white,
 		borderRadius: Sizes.smartHorizontalScale(6),
+		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	inputContainer: {
 		flexDirection: 'row',
@@ -74,8 +75,9 @@ const style: any = {
 
 export default StyleSheet.create(style);
 
-export const customStyleProps = {
-	defaultIconColor: Colors.shuttleGray,
+export const defaultStyles = {
+	defaultIconColor: Colors.iron,
+	defaultIconActiveColor: Colors.pink,
 	defaultPlaceholderColor: Colors.grayText,
 	defaultPostTextColor: Colors.white,
 	defaultCancelTextColor: Colors.pink,

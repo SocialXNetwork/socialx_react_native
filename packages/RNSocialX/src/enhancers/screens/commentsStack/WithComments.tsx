@@ -69,22 +69,6 @@ const mock: IWithCommentsEnhancedProps = {
 				numberOfLikes: 10,
 				likes: [], // not used by component
 				likedByMe: false,
-				replies: [
-					{
-						id: 'comm_2',
-						text: 'One line text reply.',
-						user: {
-							fullName: 'Rosaline Finger',
-							avatarURL: undefined,
-							id: 'user_22',
-						},
-						timestamp: new Date('April 25, 2018 19:25:00'),
-						numberOfLikes: 2,
-						likes: [], // not used by component
-						likedByMe: false,
-						replies: [],
-					},
-				],
 			},
 		],
 		loadingComments: false,
@@ -187,7 +171,7 @@ export class WithComments extends React.Component<
 									<WithProfiles>
 										{({ profiles }) => (
 											<WithCurrentUser>
-												{(currentUserProps) => {
+												{({ currentUser }) => {
 													const currentPost = postProps.posts.find(
 														(post) =>
 															post.postId ===
@@ -201,7 +185,7 @@ export class WithComments extends React.Component<
 														data: {
 															...mock.data,
 															currentUser: {
-																userId: currentUserProps.currentUser!.userId,
+																userId: currentUser!.userId,
 															},
 															startComment:
 																navigationParams[SCREENS.Comments].startComment,
@@ -213,6 +197,37 @@ export class WithComments extends React.Component<
 																fullName: ownerProfile!.fullName,
 																avatarURL: ownerProfile!.avatar,
 															},
+															postComments: currentPost!.comments.map(
+																(comment) => {
+																	const commentOwnerProfile = profiles.find(
+																		(profile) =>
+																			profile.pub === comment.owner.pub,
+																	);
+
+																	return {
+																		id: comment.commentId,
+																		text: comment.text,
+																		user: {
+																			id: comment.owner.alias,
+																			fullName: commentOwnerProfile!.fullName,
+																			avatarURL: commentOwnerProfile!.avatar,
+																		},
+																		timestamp: new Date(comment.timestamp),
+																		numberOfLikes: comment.likes.length,
+																		likes: comment.likes.map((like) => {
+																			return {
+																				userId: like.owner.alias,
+																				userName: like.owner.alias,
+																			};
+																		}),
+																		likedByMe: !!comment.likes.find(
+																			(like) =>
+																				like.owner.alias ===
+																				currentUser!.userId,
+																		),
+																	};
+																},
+															),
 														},
 														actions: {
 															sendComment: (
