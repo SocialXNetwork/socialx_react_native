@@ -18,7 +18,7 @@ export const ShareSection: React.SFC<IShareSectionProps> = ({
 }) => (
 	<Animated.View style={[styles.container, { opacity }]}>
 		<Animated.Image
-			source={avatarImage ? avatarImage : USER_AVATAR_PLACEHOLDER}
+			source={avatarImage ? { uri: avatarImage } : USER_AVATAR_PLACEHOLDER}
 			resizeMode="cover"
 			style={[styles.avatar, { opacity }]}
 		/>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
 	Image,
 	Platform,
-	SafeAreaView,
 	ScrollView,
 	Text,
 	TouchableOpacity,
@@ -20,7 +19,8 @@ import {
 import { OS_TYPES } from '../../environment/consts';
 import { Colors, Icons } from '../../environment/theme';
 import { IResizeProps, ITranslatedProps } from '../../types';
-import style from './CreateWallPostScreen.style';
+
+import style, { buttonWidth } from './CreateWallPostScreen.style';
 
 interface ICreateWallPostScreenViewProps
 	extends ITranslatedProps,
@@ -59,7 +59,7 @@ export const CreateWallPostScreenView: React.SFC<
 		/>
 		<ScrollView
 			contentContainerStyle={style.container}
-			keyboardShouldPersistTaps={'handled'}
+			keyboardShouldPersistTaps="handled"
 		>
 			<SharePostInput
 				avatarSource={avatarImage}
@@ -71,7 +71,7 @@ export const CreateWallPostScreenView: React.SFC<
 				<Image
 					source={Icons.iconNewPostAddMedia}
 					style={style.photoIcon}
-					resizeMode={'contain'}
+					resizeMode="contain"
 				/>
 				<Text style={style.addMediaText}>
 					{getText('new.wall.post.screen.attach.media.button')}
@@ -82,13 +82,15 @@ export const CreateWallPostScreenView: React.SFC<
 					<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
 				</View>
 			)}
-			<PrimaryButton
-				label={getText('new.wall.post.screen.send.button')}
-				size={ButtonSizes.Small}
-				autoWidth={true}
-				onPress={onPostSend}
-				borderColor={Colors.transparent}
-			/>
+			<View style={style.buttonContainer}>
+				<PrimaryButton
+					label={getText('new.wall.post.screen.send.button')}
+					size={ButtonSizes.Small}
+					width={buttonWidth}
+					onPress={onPostSend}
+					borderColor={Colors.transparent}
+				/>
+			</View>
 		</ScrollView>
 	</View>
 );

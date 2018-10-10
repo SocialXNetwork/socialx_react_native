@@ -62,7 +62,6 @@ class Screen extends React.Component<
 			aboutMeText,
 			mediaObjects,
 		} = currentUser;
-		console.log(currentUser);
 
 		return (
 			<MyProfileScreenView

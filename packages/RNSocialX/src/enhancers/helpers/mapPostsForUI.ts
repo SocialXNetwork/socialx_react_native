@@ -30,7 +30,7 @@ export const mapPostsForUI = (
 				postText: post.postText,
 				location: post.location,
 				taggedFriends: post.taggedFriends,
-				timestamp: new Date(post.timestamp * 1000),
+				timestamp: new Date(post.timestamp),
 				owner: {
 					userId: post.owner.alias,
 					fullName: user!.fullName,

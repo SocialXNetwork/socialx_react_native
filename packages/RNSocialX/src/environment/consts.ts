@@ -98,6 +98,7 @@ export enum SCREENS {
 	WalletActivity = 'WalletActivityScreen',
 	ProfileAnalytics = 'ProfileAnalyticsScreen',
 	TabbedSearch = 'TabbedSearchScreen',
+	Trending = 'TrendingScreen',
 	UserFeed = 'UserFeedTab',
 	WalletAccount = 'WalletAccountScreen',
 	WalletKeys = 'WalletKeysScreen',

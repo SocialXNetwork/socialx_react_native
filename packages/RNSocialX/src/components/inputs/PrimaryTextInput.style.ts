@@ -64,8 +64,7 @@ const style: any = {
 		opacity: 0.5,
 	},
 	cancelButton: {
-		paddingHorizontal: Sizes.smartHorizontalScale(6),
-		paddingLeft: Sizes.smartHorizontalScale(12),
+		paddingRight: Sizes.smartHorizontalScale(10),
 	},
 	cancelButtonText: {
 		...Fonts.centuryGothic,
@@ -78,7 +77,8 @@ export default StyleSheet.create(style);
 export const customStyleProps = {
 	defaultIconColor: Colors.shuttleGray,
 	defaultPlaceholderColor: Colors.grayText,
-	defaultButtonTextColor: Colors.white,
+	defaultPostTextColor: Colors.white,
+	defaultCancelTextColor: Colors.pink,
 	defaultBorderColor: Colors.pink,
 	defaultBorderWidth: Sizes.smartHorizontalScale(2),
 	defaultUnderlineColorAndroid: Colors.transparent,

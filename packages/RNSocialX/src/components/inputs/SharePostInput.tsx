@@ -14,19 +14,19 @@ interface ISharePostInputProps {
 }
 
 export const SharePostInput: React.SFC<ISharePostInputProps> = ({
-	avatarSource,
+	avatarSource = '',
 	placeholder,
 	text,
 	onTextUpdate,
 }) => (
 	<View style={style.shareMessageContainer}>
-		<AvatarImage image={avatarSource} style={style.avatarImage} />
+		<AvatarImage image={{ uri: avatarSource }} style={style.avatarImage} />
 		<View style={style.captionContainer}>
 			<TextInput
 				style={style.textInput}
 				autoFocus={true}
 				autoCorrect={true}
-				autoCapitalize={'sentences'}
+				autoCapitalize="sentences"
 				underlineColorAndroid={customStyleProps.underlineColorAndroid}
 				numberOfLines={1}
 				multiline={true}
