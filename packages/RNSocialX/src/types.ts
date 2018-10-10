@@ -1,3 +1,8 @@
+/**
+ * TODO list:
+ * 1. Remove all type imports from components!
+ */
+
 import { Image as PickerImage } from 'react-native-image-crop-picker';
 import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 
