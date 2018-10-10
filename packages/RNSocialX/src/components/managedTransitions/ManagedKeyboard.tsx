@@ -18,7 +18,7 @@ export class ManagedKeyboard extends React.Component<
 > {
 	public state = {
 		marginBottom: 0,
-		keyboardIsHidden: false,
+		keyboardIsHidden: true,
 	};
 
 	private onHideHandlers: Array<() => void> = [];
