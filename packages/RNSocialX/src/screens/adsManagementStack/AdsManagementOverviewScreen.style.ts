@@ -127,4 +127,4 @@ const style: any = {
 	},
 };
 
-export default StyleSheet.create(style);
+export default StyleSheet.create(style) as any;

@@ -55,6 +55,7 @@ import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigation
 import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
+import { getActivitiesForIndicator } from '../enhancers/helpers';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -148,7 +149,7 @@ const UserFeedStackNavigator = createStackNavigator(
 
 const UserSearchStackNavigator = createStackNavigator(
 	{
-		Trending: {
+		TrendingScreen: {
 			screen: TrendingScreen,
 		},
 		TabbedSearchScreen: {
@@ -249,7 +250,9 @@ const Navigation = () => (
 														getText={i18nProps.getText}
 													/>
 													<ActivityIndicatorModal
-														showActivityIndicator={activities.length > 0}
+														showActivityIndicator={getActivitiesForIndicator(
+															activities,
+														)}
 														activityIndicatorTitle={
 															globals.activity ? globals.activity.title : ''
 														}

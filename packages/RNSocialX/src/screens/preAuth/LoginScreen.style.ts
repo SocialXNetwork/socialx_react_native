@@ -31,10 +31,10 @@ const style: any = {
 		marginBottom: Sizes.smartVerticalScale(25),
 	},
 	forgotPasswordText: {
-		...Fonts.centuryGothic,
+		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(17),
-		color: Colors.postHour,
+		color: Colors.black,
 	},
 	noAccountContainer: {
 		position: 'absolute',
@@ -49,8 +49,8 @@ const style: any = {
 		lineHeight: Sizes.smartHorizontalScale(17),
 	},
 	signUpText: {
-		...Fonts.centuryGothic,
-		color: Colors.postHour,
+		...Fonts.centuryGothicBold,
+		color: Colors.black,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(17),
 		padding: Sizes.smartHorizontalScale(4),

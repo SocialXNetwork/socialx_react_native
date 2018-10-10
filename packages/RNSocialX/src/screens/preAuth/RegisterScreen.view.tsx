@@ -187,8 +187,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									]}
 								>
 									<PrimaryTextInput
-										iconColor={colors.iron}
-										icon="envelope"
+										icon="ios-mail"
 										placeholder={getText('register.email')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -212,8 +211,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									<PrimaryTextInput
 										autoCapitalize="words"
 										autoCorrect={true}
-										iconColor={colors.iron}
-										icon="user"
+										icon="md-person"
 										placeholder={getText('register.name')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -235,8 +233,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								</View>
 								<View style={style.textInputContainer}>
 									<PrimaryTextInput
-										iconColor={colors.iron}
-										icon="user"
+										icon="md-person"
 										placeholder={getText('register.username')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -259,8 +256,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<View style={style.textInputContainer}>
 									<PrimaryTextInput
 										isPassword={true}
-										iconColor={colors.iron}
-										icon="lock"
+										icon="ios-lock"
 										placeholder={getText('register.password')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
@@ -284,8 +280,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<View style={style.textInputContainer}>
 									<PrimaryTextInput
 										isPassword={true}
-										iconColor={colors.iron}
-										icon="lock"
+										icon="ios-lock"
 										placeholder={getText('register.confirm.password')}
 										placeholderColor={colors.postText}
 										borderColor={colors.transparent}
