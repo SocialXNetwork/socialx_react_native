@@ -1,3 +1,5 @@
+import { ICreatePostInput } from '../repository/posts';
+
 // TODO: use faker or another lib to randomize values
 
 const getTestAccount = () => ({ is: { pub: 'bleep', alias: 'blahblah' } });
@@ -23,11 +25,22 @@ const getProfilealt = () => ({
 	username: 'blopyblopy',
 });
 
-const getPost = () => ({
+const getPost = (): ICreatePostInput => ({
 	postText: 'This is a new post',
 	location: 'Somewhere',
 	// taggedFriends: [],
-	// media: [],
+	media: [
+		{
+			hash: '123',
+			type: {
+				key: '123',
+				name: 'Photo',
+				category: '123',
+			},
+			extension: '123',
+			size: 123,
+		},
+	],
 	privatePost: false,
 });
 
