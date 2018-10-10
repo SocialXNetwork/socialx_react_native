@@ -41,12 +41,16 @@ export const postData = yup
 				.object()
 				.shape({
 					hash: longTextType.required(),
-					optimized_hash: longTextType.required(),
 					type: yup.object().shape({
 						key: longTextType.required(),
 						name: longTextType.required(),
 						category: longTextType.required(),
 					}),
+					extension: yup
+						.string()
+						.trim()
+						.required(),
+					size: yup.number().required(),
 				})
 				.required(),
 		),

@@ -90,13 +90,14 @@ export const getPostByPath = (
 					}),
 				);
 			}
+			// const keys = Object.keys()
 			const { likes, comments, media, ...restPost } = postData;
 			// convert likes into an array with keys
 			const postLikes = convertLikesToArray(likes);
 			// convert comments and their likes into an array with keys
 			const postComments: any = convertCommentsToArray(comments);
 			// convert media to an array
-			const mediaReturn = convertMediaToArray(media as any);
+			const mediaReturn = convertMediaToArray(media) || [];
 
 			const post: IPostReturnData = {
 				postId: postPath.split('.').reverse()[0],
@@ -139,7 +140,7 @@ export const getPublicPostsByDate = (
 
 	postHandles
 		.postsByDate(context, datePath)
-		.docLoad(async (postsData: IPostsDataCallback) => {
+		.docLoad((postsData: IPostsDataCallback) => {
 			if (!postsData) {
 				return callback(
 					new ApiError('failed, no posts found', {
@@ -155,15 +156,15 @@ export const getPublicPostsByDate = (
 					// convert comments and their likes into an array with keys
 					const postComments = convertCommentsToArray(post.comments);
 					// convert media to an array
-					const mediaReturn = convertMediaToArray(post.media ? post.media : {});
+					const mediaReturn = convertMediaToArray(post.media) || [];
 
-					const { likes, comments, ...postRest } = post;
+					const { likes, comments, media, ...postRest } = post;
 					return {
+						...postRest,
 						postId,
 						likes: postLikes,
 						comments: postComments,
 						media: mediaReturn,
-						...postRest,
 					};
 				},
 			);
