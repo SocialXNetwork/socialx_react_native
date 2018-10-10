@@ -24,4 +24,4 @@ const styles: any = {
 	},
 };
 
-export default StyleSheet.create(styles);
+export default StyleSheet.create(styles) as any;

@@ -19,13 +19,11 @@ class Screen extends React.Component<INotificationsScreenProps> {
 		const {
 			notifications,
 			refreshing,
-			getText,
-			showConfirm,
-			hideConfirm,
 			loadNotifications,
 			acceptFriendRequest,
 			declineFriendRequest,
-			checkNotification,
+			removeNotification,
+			getText,
 		} = this.props;
 
 		return (
@@ -33,36 +31,37 @@ class Screen extends React.Component<INotificationsScreenProps> {
 				notifications={notifications}
 				refreshing={refreshing}
 				onRefresh={loadNotifications}
-				onPostThumbPressed={this.postThumbPressedHandler}
 				onSuperLikedPhotoPressed={this.superLikedPhotoPressedHandler}
-				onCheckNotification={checkNotification}
-				onFriendRequestApproved={acceptFriendRequest}
-				onFriendRequestDeclined={declineFriendRequest}
-				// onGroupRequestApproved={this.groupRequestApprovedHandler}
-				// onGroupRequestDeclined={this.onGroupRequestDeclinedHandler}
+				onFriendRequestApprove={(friendshipId, username) =>
+					acceptFriendRequest({ friendshipId, username })
+				}
+				onFriendRequestDecline={(
+					friendshipId: string,
+					username: string,
+					notificationId: string,
+				) => {
+					declineFriendRequest({ friendshipId, username });
+					removeNotification(notificationId);
+				}}
+				onGroupRequestApprove={this.onGroupRequestApprovedHandler}
+				onGroupRequestDecline={this.onGroupRequestDeclinedHandler}
 				onViewUserProfile={this.onViewUserProfile}
 				getText={getText}
-				showConfirm={showConfirm}
-				hideConfirm={hideConfirm}
 			/>
 		);
 	}
-
-	private postThumbPressedHandler = (postId: string) => {
-		Alert.alert('postThumbPressedHandler: ' + postId);
-	};
 
 	private superLikedPhotoPressedHandler = (postId: string) => {
 		Alert.alert('superLikedPhotoPressedHandler: ' + postId);
 	};
 
-	// private groupRequestApprovedHandler = (requestId: string) => {
-	// 	Alert.alert('groupRequestApprovedHandler: ' + requestId);
-	// };
+	private onGroupRequestApprovedHandler = (notificationId: string) => {
+		Alert.alert('groupRequestApprovedHandler: ' + notificationId);
+	};
 
-	// private onGroupRequestDeclinedHandler = (requestId: string) => {
-	// 	Alert.alert('onGroupRequestDeclinedHandler: ' + requestId);
-	// };
+	private onGroupRequestDeclinedHandler = (notificationId: string) => {
+		Alert.alert('onGroupRequestDeclinedHandler: ' + notificationId);
+	};
 
 	private onViewUserProfile = (userId: string) => {
 		const { navigation, setNavigationParams } = this.props;

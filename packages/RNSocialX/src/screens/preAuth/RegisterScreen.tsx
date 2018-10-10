@@ -54,7 +54,7 @@ class Screen extends React.Component<
 			currentState.loadingAccount &&
 			currentState.loadingProfile
 		) {
-			nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+			nextProps.resetNavigationToRoute(NAVIGATION.Intro, nextProps.navigation);
 			return {
 				loadingAccount: false,
 				loadingProfile: false,

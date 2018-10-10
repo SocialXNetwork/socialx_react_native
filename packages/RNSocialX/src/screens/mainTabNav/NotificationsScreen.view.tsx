@@ -1,45 +1,24 @@
-// TODO: @Alex fix any typings
-
 import * as React from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
 
-import {
-	ActivityFriendRequestCard,
-	ActivityGenericCard,
-	ActivityRecentCommentCard,
-	ActivitySuperLikedCard,
-	Header,
-} from '../../components';
-import { NOTIFICATION_TYPES } from '../../environment/consts';
-import { IConfirmActions, ITranslatedProps } from '../../types';
+import { Header, Notification } from '../../components';
+import { INotificationData, ITranslatedProps } from '../../types';
 
 import styles, { emptyListIcon } from './NotificationsScreen.style';
 
-interface INotificationsScreenViewProps
-	extends ITranslatedProps,
-		IConfirmActions {
-	notifications: any[];
+interface INotificationsScreenViewProps extends ITranslatedProps {
+	notifications: INotificationData[];
 	refreshing: boolean;
 	onRefresh: () => void;
-	onPostThumbPressed: (postId: string) => void;
 	onSuperLikedPhotoPressed: (postId: string) => void;
-	onFriendRequestApproved: (requestId: string) => void;
-	onFriendRequestDeclined: (requestId: string) => void;
-	// onGroupRequestConfirmed: (requestId: string) => void;
-	// onGroupRequestDeclined: (requestId: string) => void;
-	onCheckNotification: (requestId: string) => void;
-	onViewUserProfile: (userId: string) => void;
-}
-
-interface IActivityCardsProps extends ITranslatedProps, IConfirmActions {
-	data: any;
-	onPostThumbPressed: (postId: string) => void;
-	onSuperLikedPhotoPressed: (postId: string) => void;
-	onFriendRequestApproved: (requestId: string) => void;
-	onFriendRequestDeclined: (requestId: string) => void;
-	// onGroupRequestConfirmed: (requestId: string) => void;
-	// onGroupRequestDeclined: (requestId: string) => void;
-	onCheckNotification: (requestId: string) => void;
+	onFriendRequestApprove: (friendshipId: string, userName: string) => void;
+	onFriendRequestDecline: (
+		friendshipId: string,
+		userName: string,
+		notificationId: string,
+	) => void;
+	onGroupRequestApprove: (notificationId: string) => void;
+	onGroupRequestDecline: (notificationId: string) => void;
 	onViewUserProfile: (userId: string) => void;
 }
 
@@ -48,7 +27,7 @@ const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
 		<Image
 			style={styles.noNotificationsIcon}
 			source={emptyListIcon}
-			resizeMode={'contain'}
+			resizeMode="contain"
 		/>
 		<Text style={styles.noNotificationsText}>
 			{getText('notifications.empty.list')}
@@ -56,108 +35,34 @@ const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
 	</View>
 );
 
-const ActivityCard: React.SFC<IActivityCardsProps> = ({
-	data,
-	onPostThumbPressed,
-	onFriendRequestApproved,
-	onFriendRequestDeclined,
-	onViewUserProfile,
-	onCheckNotification,
-	onSuperLikedPhotoPressed,
-	showConfirm,
-	hideConfirm,
-	getText,
-	// onGroupRequestConfirmed,
-	// onGroupRequestDeclined,
-}) => {
-	const { requestId } = data;
-
-	if (data.type === NOTIFICATION_TYPES.RECENT_COMMENT) {
-		return (
-			<ActivityRecentCommentCard
-				{...data}
-				onThumbPress={onPostThumbPressed}
-				getText={getText}
-			/>
-		);
-	} else if (data.type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
-		return (
-			<ActivityFriendRequestCard
-				{...data}
-				onRequestConfirmed={() => onFriendRequestApproved(requestId)}
-				onRequestDeclined={() => onFriendRequestDeclined(requestId)}
-				onViewUserProfile={onViewUserProfile}
-				getText={getText}
-			/>
-		);
-	} else if (data.type === NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE) {
-		return (
-			<ActivityGenericCard
-				{...data}
-				onCheckNotification={onCheckNotification}
-				onViewUserProfile={onViewUserProfile}
-				getText={getText}
-				showConfirm={showConfirm}
-				hideConfirm={hideConfirm}
-			/>
-		);
-		/*} else if (data.type === NOTIFICATION_TYPES.GROUP_REQUEST) {
-			return (
-				<GroupRequest
-					{...data}
-					onGroupConfirmed={() => onGroupRequestConfirmed(requestId)}
-					onGroupDeclined={() => onGroupRequestDeclined(requestId)}
-				/>
-			);*/
-	} else if (data.type === NOTIFICATION_TYPES.SUPER_LIKED) {
-		return (
-			<ActivitySuperLikedCard
-				{...data}
-				onThumbPress={onSuperLikedPhotoPressed}
-				getText={getText}
-			/>
-		);
-	}
-	return null;
-};
-
 export const NotificationsScreenView: React.SFC<
 	INotificationsScreenViewProps
 > = ({
 	notifications,
 	refreshing,
 	onRefresh,
-	onPostThumbPressed,
 	onSuperLikedPhotoPressed,
-	onFriendRequestApproved,
-	onFriendRequestDeclined,
-	// onGroupRequestConfirmed,
-	// onGroupRequestDeclined,
-	onCheckNotification,
+	onFriendRequestApprove,
+	onFriendRequestDecline,
+	onGroupRequestApprove,
+	onGroupRequestDecline,
 	onViewUserProfile,
-	showConfirm,
-	hideConfirm,
 	getText,
 }) => (
 	<View style={styles.container}>
 		<Header title={getText('notifications.screen.title')} />
 		<FlatList
 			data={notifications}
-			keyExtractor={(item: any) => item.requestId}
+			keyExtractor={(item: any) => item.notificationId}
 			renderItem={(data) => (
-				<ActivityCard
-					getText={getText}
-					data={data.item}
-					onPostThumbPressed={onPostThumbPressed}
-					onFriendRequestApproved={onFriendRequestApproved}
-					onFriendRequestDeclined={onFriendRequestDeclined}
+				<Notification
+					notification={data.item}
+					onFriendRequestApprove={onFriendRequestApprove}
+					onFriendRequestDecline={onFriendRequestDecline}
 					onViewUserProfile={onViewUserProfile}
-					onCheckNotification={onCheckNotification}
-					onSuperLikedPhotoPressed={onSuperLikedPhotoPressed}
-					hideConfirm={hideConfirm}
-					showConfirm={showConfirm}
-					// onGroupRequestConfirmed={onGroupRequestConfirmed}
-					// onGroupRequestDeclined={onGroupRequestDeclined}
+					onGroupRequestApprove={onGroupRequestApprove}
+					onGroupRequestDecline={onGroupRequestDecline}
+					getText={getText}
 				/>
 			)}
 			ListEmptyComponent={<EmptyListComponent getText={getText} />}

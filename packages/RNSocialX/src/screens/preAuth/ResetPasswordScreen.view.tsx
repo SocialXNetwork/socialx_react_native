@@ -99,14 +99,14 @@ export const ResetPasswordScreenView: React.SFC<
 			<View style={styles.container}>
 				<Header
 					title={getText('reset.password.screen.title')}
-					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 				/>
 
 				<KeyboardAwareScrollView
 					style={styles.scrollView}
 					contentContainerStyle={styles.scrollContent}
 					alwaysBounceVertical={false}
-					keyboardShouldPersistTaps={'handled'}
+					keyboardShouldPersistTaps="handled"
 					enableOnAndroid={true}
 				>
 					<Text style={styles.descriptionText}>
@@ -116,7 +116,7 @@ export const ResetPasswordScreenView: React.SFC<
 						<PrimaryTextInput
 							placeholder={getText('reset.password.reset.code')}
 							iconColor={defaultColors.iron}
-							icon={'key'}
+							icon="key"
 							keyboardType={TKeyboardKeys.numeric}
 							blurOnSubmit={false}
 							returnKeyType={TRKeyboardKeys.next}
@@ -138,7 +138,7 @@ export const ResetPasswordScreenView: React.SFC<
 						<PrimaryTextInput
 							placeholder={getText('reset.password.new.password')}
 							iconColor={defaultColors.iron}
-							icon={'eye-slash'}
+							icon="eye-slash"
 							blurOnSubmit={false}
 							isPassword={true}
 							returnKeyType={TRKeyboardKeys.next}
@@ -162,7 +162,7 @@ export const ResetPasswordScreenView: React.SFC<
 						<PrimaryTextInput
 							placeholder={getText('reset.password.confirm.password')}
 							iconColor={defaultColors.iron}
-							icon={'eye-slash'}
+							icon="eye-slash"
 							blurOnSubmit={true}
 							isPassword={true}
 							returnKeyType={TRKeyboardKeys.go}
