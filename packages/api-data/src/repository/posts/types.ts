@@ -55,6 +55,7 @@ export interface IPostReturnData extends ICreatePostInput {
 	timestamp: number;
 	likes: ILikesArray;
 	comments: ICommentsArray;
+	media: IMedia[];
 }
 
 export type IPostArrayData = IPostReturnData[];

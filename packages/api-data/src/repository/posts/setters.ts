@@ -35,10 +35,22 @@ export const createPost = (
 	const publicPath = `${datePath}.${TABLE_ENUMS.PUBLIC}`;
 	const privatePath = `${datePath}.${TABLE_ENUMS.PRIVATE}.${owner}`;
 
-	const { privatePost } = createPostInput;
+	const { privatePost, media } = createPostInput;
 
 	const postId = uuidv4();
 	const postPath = (privatePost ? privatePath : publicPath) + `.${postId}`;
+
+	const mediaSetData = media
+		? media.reduce((res, item, i) => {
+				res = {
+					...res,
+					[i]: item,
+				};
+				return res;
+				// tslint bug here???????? pls halp
+				// tslint:disable-next-line
+		    }, {})
+		: {};
 
 	const errPrefix = 'failed to create post';
 	postHandles.postByPath(context, postPath).put(
@@ -51,6 +63,7 @@ export const createPost = (
 			timestamp,
 			likes: {},
 			comments: {},
+			media: mediaSetData,
 		},
 		(setPostCallback: IGunSetterCallback) => {
 			if (setPostCallback.err) {
