@@ -10,9 +10,8 @@ const usernameOrPasswordType = yup
 const mediumLongTextType = yup
 	.string()
 	.trim()
-	.min(5)
-	.max(300)
-	.required();
+	.min(0)
+	.max(300);
 
 const idType = yup
 	.string()
@@ -51,10 +50,7 @@ export const postData = yup
 				})
 				.required(),
 		),
-		governanceVersion: yup
-			.boolean()
-			.default(false)
-			.required(),
+		governanceVersion: yup.boolean().default(false),
 		privatePost: yup
 			.boolean()
 			.default(false)
