@@ -1,13 +1,21 @@
 import React from 'react';
 
 import { WithSearch } from '../../../enhancers/screens';
-import { INavigationProps, SearchTabs } from '../../../types';
-import { Screen } from './SearchScreen';
+import { ISearchTabResultsProps } from '../../../types';
+import { SearchScreen } from './SearchScreen';
 
-export const PlacesTab = (navProps: INavigationProps) => (
+export const PlacesTab: React.SFC<ISearchTabResultsProps> = ({
+	navigation,
+	searchTermValue,
+}) => (
 	<WithSearch>
 		{({ data, actions }) => (
-			<Screen tab={SearchTabs.Places} {...navProps} {...data} {...actions} />
+			<SearchScreen
+				searchTermValue={searchTermValue}
+				navigation={navigation}
+				{...data}
+				{...actions}
+			/>
 		)}
 	</WithSearch>
 );

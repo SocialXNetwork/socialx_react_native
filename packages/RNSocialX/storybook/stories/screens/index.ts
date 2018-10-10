@@ -33,3 +33,6 @@ import './primaryNav/MaintenanceScreen';
 
 import './walletStack/WalletAccountScreen';
 import './walletStack/WalletKeysScreen';
+
+// can't test this with Storybook because of inner enhancers for Tabs!
+// import './mainTabNav/SearchResultsScreen';
