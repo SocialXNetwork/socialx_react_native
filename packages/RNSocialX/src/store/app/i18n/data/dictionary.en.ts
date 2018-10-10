@@ -143,7 +143,7 @@ export default {
 	'profile.statistics.likes': 'likes',
 	'profile.statistics.friends': 'friends',
 	'profile.statistics.comments': 'comments',
-	'my.profile.screen.title': 'PROFILE',
+	'my.profile.screen.title': 'profile',
 	'my.profile.screen.menu.profile.analytics': 'Profile Analytics',
 	'my.profile.screen.menu.wallet': 'Wallet',
 	'my.profile.screen.menu.settings': 'Settings',

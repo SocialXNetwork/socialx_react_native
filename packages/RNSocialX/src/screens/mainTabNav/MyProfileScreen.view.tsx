@@ -14,7 +14,7 @@ import { ITranslatedProps } from '../../types';
 import styles, { icons } from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends ITranslatedProps {
-	avatarURL: any;
+	avatarURL: string;
 	fullName: string;
 	userName: false | string;
 	numberOfPhotos: number;
@@ -58,11 +58,11 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	return (
 		<View style={styles.container}>
 			<Header
-				title={'profile'}
+				title={getText('my.profile.screen.title')}
 				left={
 					<IconButton
 						iconSource={icons.shareIconWhite}
-						iconType={'image'}
+						iconType="image"
 						iconStyle={styles.icon}
 						onPress={onSharePress}
 					/>

@@ -37,7 +37,7 @@ const styles: any = {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		transform: [{ translateY: -Sizes.smartHorizontalScale(55) }],
+		transform: [{ translateY: -Sizes.smartHorizontalScale(60) }],
 	},
 	leftStatistics: {
 		flexDirection: 'row',
@@ -60,7 +60,7 @@ const styles: any = {
 	},
 	userName: {
 		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
+		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(20),
 		color: Colors.pink,
 		textAlign: 'center',

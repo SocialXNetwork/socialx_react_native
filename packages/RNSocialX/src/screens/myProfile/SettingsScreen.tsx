@@ -1,12 +1,6 @@
-/**
- * old screen -> screens/SettingsScreen/index.tsx
- * TODO list:
- * 1. Get rid of navigation workaround for passing doLogout, then we can have this as SFC - Done @Alex
- * 2. Check proper data structure: currentUser.name or split with firstName and lastName? - Done @Alex
- */
-
 import * as React from 'react';
 
+import { NAVIGATION } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { ISettingsData, SettingsScreenView } from './SettingsScreen.view';
 
@@ -29,8 +23,13 @@ const saveChanges = (
 	updateUserProfile(saveData, avatarHasChanged);
 };
 
-const onLogoutHandler = (logout: () => void) => {
+const onLogoutHandler = (
+	logout: () => void,
+	resetNavigationToRoute: (screenName: string, navigation: any) => void,
+	navigation: any,
+) => {
 	logout();
+	resetNavigationToRoute(NAVIGATION.PreAuth, navigation);
 };
 
 const onGoBackHandler = (navigation: any) => {
@@ -42,6 +41,7 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 	updateUserProfile,
 	logout,
 	navigation,
+	resetNavigationToRoute,
 	getText,
 }) => (
 	<SettingsScreenView
@@ -55,7 +55,7 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 		onSaveChanges={(saveData: ISettingsData) =>
 			saveChanges(saveData, { currentUser, updateUserProfile })
 		}
-		onLogout={() => onLogoutHandler(logout)}
+		onLogout={() => onLogoutHandler(logout, resetNavigationToRoute, navigation)}
 		onGoBack={() => onGoBackHandler(navigation)}
 		getText={getText}
 	/>
