@@ -71,6 +71,10 @@ export interface IError {
 	timeout?: number;
 }
 
+export interface IUploadFileInput {
+	path: string;
+}
+
 export interface IHeaderProps {
 	onGoBack: () => void;
 }

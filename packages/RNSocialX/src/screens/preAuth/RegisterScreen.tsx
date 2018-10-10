@@ -86,6 +86,7 @@ class Screen extends React.Component<
 			<RegisterScreenView
 				onStartRegister={(userData) => {
 					register(userData);
+					this.setState({ errors: [] });
 				}}
 				onNavigateToTermsAndConditions={() =>
 					this.safeNavigateToScreen(SCREENS.TermsAndConditions)

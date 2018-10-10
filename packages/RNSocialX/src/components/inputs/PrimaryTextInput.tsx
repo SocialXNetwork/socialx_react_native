@@ -65,6 +65,7 @@ interface IPrimaryTextInputProps {
 	canPost: boolean;
 	onPressPost: () => void;
 	postButtonTextColor: string;
+	getRef: (ref: React.RefObject<TextInput>) => void;
 }
 
 interface IPrimaryTextInputState {
@@ -168,7 +169,7 @@ export class PrimaryTextInput extends React.Component<
 		isPassword: false,
 		keyboardType: TKeyboardKeys.default,
 		returnKeyType: TRKeyboardKeys.default,
-		cancelButtonTextColor: customStyleProps.defaultButtonTextColor,
+		cancelButtonTextColor: customStyleProps.defaultCancelTextColor,
 		canCancel: false,
 		hasFocus: false,
 		blurOnSubmit: false,
@@ -191,8 +192,11 @@ export class PrimaryTextInput extends React.Component<
 			/**/
 		},
 		canPost: false,
-		postButtonTextColor: customStyleProps.defaultButtonTextColor,
+		postButtonTextColor: customStyleProps.defaultPostTextColor,
 		onPressPost: () => {
+			/**/
+		},
+		getRef: () => {
 			/**/
 		},
 	};
@@ -202,6 +206,10 @@ export class PrimaryTextInput extends React.Component<
 	};
 
 	private inputRef: React.RefObject<TextInput> = React.createRef();
+
+	public componentDidMount() {
+		this.props.getRef(this.inputRef);
+	}
 
 	public render() {
 		const {

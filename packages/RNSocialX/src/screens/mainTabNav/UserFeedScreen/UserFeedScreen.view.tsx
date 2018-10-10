@@ -65,7 +65,11 @@ export class UserFeedScreenView extends React.Component<
 			<WithInlineLoader isLoading={isLoading}>
 				<View style={styles.container}>
 					{noPosts ? (
-						<FeedWithNoPosts />
+						<FeedWithNoPosts
+							// onShowNewWallPostPress={onShowNewWallPostPress}
+							onShowNewWallPostPress={onRefresh}
+							getText={getText}
+						/>
 					) : (
 						<FlatList
 							ListHeaderComponent={

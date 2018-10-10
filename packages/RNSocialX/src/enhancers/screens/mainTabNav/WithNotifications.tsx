@@ -200,9 +200,7 @@ export class WithNotifications extends React.Component<
 																fullName: profile!.fullName,
 																userName: notification.from.alias,
 																avatarURL: profile!.avatar,
-																timestamp: new Date(
-																	notification.timestamp * 1000,
-																),
+																timestamp: new Date(notification.timestamp),
 															};
 														},
 													),

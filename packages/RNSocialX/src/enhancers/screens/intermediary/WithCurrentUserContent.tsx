@@ -28,15 +28,15 @@ export class WithCurrentUserContent extends React.Component<
 			<WithConfig>
 				{({ appConfig }) => (
 					<WithPosts>
-						{(postsProps) => (
+						{({ posts }) => (
 							<WithCurrentUser>
 								{(currentUserProps) => (
 									<WithActivities>
 										{({ activities }) => {
 											const user = currentUserProps.currentUser;
 
-											if (user) {
-												const userPosts = postsProps.posts.filter(
+											if (user && posts.length > 0) {
+												const userPosts = posts.filter(
 													(post) => post.owner.alias === user!.userId,
 												);
 
@@ -49,24 +49,24 @@ export class WithCurrentUserContent extends React.Component<
 													appConfig,
 												);
 
-												user.numberOfLikes = postsProps.posts.reduce(
+												user.numberOfLikes = posts.reduce(
 													(acc, post) => acc + post.likes.length,
 													0,
 												);
 
-												user.numberOfPhotos = postsProps.posts.reduce(
+												user.numberOfPhotos = posts.reduce(
 													(acc, post) =>
 														post.media ? acc + post.media.length : 0,
 													0,
 												);
 
-												user.numberOfComments = postsProps.posts.reduce(
+												user.numberOfComments = posts.reduce(
 													(acc, post) => acc + post.comments.length,
 													0,
 												);
 
 												user.mediaObjects = extractMediaFromPosts(
-													postsProps.posts,
+													posts,
 													appConfig,
 												);
 

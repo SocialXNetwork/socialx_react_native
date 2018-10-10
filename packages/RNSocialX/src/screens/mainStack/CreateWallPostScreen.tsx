@@ -40,6 +40,16 @@ class Screen extends React.Component<
 		shareText: '',
 	};
 
+	public componentDidMount() {
+		const { setGlobal, getText } = this.props;
+
+		setGlobal({
+			activity: {
+				title: getText('new.wall.post.screen.progress.message'),
+			},
+		});
+	}
+
 	public render() {
 		const { getText, marginBottom, currentUserAvatarURL } = this.props;
 		const { shareText, mediaObjects } = this.state;
@@ -53,9 +63,9 @@ class Screen extends React.Component<
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onPostSend={this.onSendPostHandler}
-				getText={getText}
-				marginBottom={marginBottom}
 				onClose={this.onCloseHandler}
+				marginBottom={marginBottom}
+				getText={getText}
 			/>
 		);
 	}

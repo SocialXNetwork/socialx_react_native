@@ -9,6 +9,7 @@ import { FEED_TYPES } from '../../../environment/consts';
 import { currentUser, posts } from '../../../mocks';
 import {
 	ICurrentUser,
+	IGlobal,
 	INavigationParamsActions,
 	ITranslatedProps,
 	IWallPostCardData,
@@ -21,6 +22,7 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithUserFeedEnhancedProps = {
@@ -57,6 +59,9 @@ const mock: IWithUserFeedEnhancedProps = {
 		deletePost: (postId: string) => {
 			/**/
 		},
+		setGlobal: (global: IGlobal) => {
+			/**/
+		},
 		setNavigationParams: () => {
 			/**/
 		},
@@ -84,6 +89,7 @@ export interface IWithUserFeedEnhancedActions
 	postComment: (escapedComment: string, postId: string) => void;
 	blockUser: (userId: string) => void;
 	reportProblem: (reason: string, description: string) => void;
+	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithUserFeedEnhancedProps {
@@ -109,69 +115,81 @@ export class WithUserFeed extends React.Component<
 						{({ appConfig }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
-									<WithActivities>
-										{({ activities }) => (
-											<WithPosts>
-												{(postsProps) => (
-													<WithCurrentUser>
-														{(currentUserProps) => {
-															const feedPosts = mapPostsForUI(
-																postsProps.posts,
-																10,
-																currentUser!,
-																activities,
-																ActionTypes.GET_POSTS_BY_USER,
-																appConfig,
-															);
+									<WithGlobals>
+										{({ setGlobal }) => (
+											<WithActivities>
+												{({ activities }) => (
+													<WithPosts>
+														{(postsProps) => (
+															<WithCurrentUser>
+																{(currentUserProps) => {
+																	let feedPosts: any = [];
+																	if (postsProps.posts.length > 0) {
+																		feedPosts = mapPostsForUI(
+																			postsProps.posts,
+																			10,
+																			currentUser!,
+																			activities,
+																			ActionTypes.GET_POSTS_BY_USER,
+																			appConfig,
+																		);
+																	}
 
-															return this.props.children({
-																data: {
-																	currentUser: currentUserProps.currentUser!,
-																	posts: feedPosts,
-																	hasMorePosts:
-																		postsProps.posts.length - feedPosts.length >
-																		0,
-																	loadingMorePosts: getActivity(
-																		activities,
-																		ActionTypes.LOAD_MORE_POSTS,
-																	),
-																	refreshingFeed: getActivity(
-																		activities,
-																		ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																	),
-																	loadingFeed: getActivity(
-																		activities,
-																		ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																	),
-																},
-																actions: {
-																	...mock.actions,
-																	loadPosts: (feed) =>
-																		postsProps.getPublicPostsByDate({
-																			date: new Date(Date.now()),
-																		}),
-																	refreshFeed: (feed) =>
-																		postsProps.getPublicPostsByDate({
-																			date: new Date(Date.now()),
-																		}),
-																	likePost: (postId) =>
-																		postsProps.likePost({ postId }),
-																	unlikePost: (postId) =>
-																		postsProps.unlikePost({ postId }),
-																	deletePost: (postId) =>
-																		postsProps.removePost({ postId }),
-																	postComment: (text, postId) =>
-																		postsProps.createComment({ text, postId }),
-																	setNavigationParams,
-																	getText: i18nProps.getText,
-																},
-															});
-														}}
-													</WithCurrentUser>
+																	return this.props.children({
+																		data: {
+																			currentUser: currentUserProps.currentUser!,
+																			posts: feedPosts,
+																			hasMorePosts:
+																				postsProps.posts.length -
+																					feedPosts.length >
+																				0,
+																			loadingMorePosts: getActivity(
+																				activities,
+																				ActionTypes.LOAD_MORE_POSTS,
+																			),
+																			refreshingFeed: getActivity(
+																				activities,
+																				ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																			),
+																			loadingFeed: getActivity(
+																				activities,
+																				ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																			),
+																		},
+																		actions: {
+																			...mock.actions,
+																			// loadPosts: () =>
+																			// 	postsProps.getPublicPostsByDate({
+																			// 		date: new Date(Date.now()),
+																			// 	}),
+																			refreshFeed: () =>
+																				postsProps.getPublicPostsByDate({
+																					date: new Date(Date.now()),
+																				}),
+																			likePost: (postId) =>
+																				postsProps.likePost({ postId }),
+																			unlikePost: (postId) =>
+																				postsProps.unlikePost({ postId }),
+																			deletePost: (postId) =>
+																				postsProps.removePost({ postId }),
+																			postComment: (text, postId) =>
+																				postsProps.createComment({
+																					text,
+																					postId,
+																				}),
+																			setNavigationParams,
+																			setGlobal,
+																			getText: i18nProps.getText,
+																		},
+																	});
+																}}
+															</WithCurrentUser>
+														)}
+													</WithPosts>
 												)}
-											</WithPosts>
+											</WithActivities>
 										)}
-									</WithActivities>
+									</WithGlobals>
 								)}
 							</WithNavigationParams>
 						)}

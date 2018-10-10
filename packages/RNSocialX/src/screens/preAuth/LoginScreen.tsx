@@ -25,6 +25,7 @@ type ILoginScreenProps = INavigationProps &
 interface ILoginScreenState {
 	loadingAccount: boolean | null;
 	loadingProfile: boolean | null;
+	loadingPosts: boolean | null;
 	errors: IError[];
 }
 
@@ -51,6 +52,14 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 			};
 		}
 
+		if (nextProps.loadingPosts) {
+			return {
+				loadingPosts: true,
+			};
+		}
+		// console.log('nextProps: ', nextProps.loadingPosts);
+		// console.log('state: ', currentState.loadingPosts);
+
 		if (
 			currentState.errors.length === 0 &&
 			!nextProps.loadingAccount &&
@@ -58,7 +67,17 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 			currentState.loadingAccount &&
 			currentState.loadingProfile
 		) {
+			// nextProps.getPosts();
 			nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+
+			// if (!nextProps.loadingPosts && currentState.loadingPosts) {
+			// 	nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
+
+			// 	return {
+			// 		loadingPosts: false,
+			// 	};
+			// }
+
 			return {
 				loadingAccount: false,
 				loadingProfile: false,
@@ -71,6 +90,7 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	public state = {
 		loadingAccount: null,
 		loadingProfile: null,
+		loadingPosts: null,
 		errors: [],
 	};
 

@@ -52,12 +52,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	private addedFriends: IFriendsSearchResult[] = [];
 
 	public render() {
-		const {
-			currentUserAvatarURL,
-			marginBottom,
-			navigation,
-			getText,
-		} = this.props;
+		const { currentUserAvatarURL, marginBottom, getText } = this.props;
 		const {
 			locationEnabled,
 			location,
