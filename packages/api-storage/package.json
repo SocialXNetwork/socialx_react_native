@@ -11,11 +11,13 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@socialx/commons": "^0.0.1",
+    "@types/sinon": "^5.0.5",
     "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",
     "jest": "^23.5.0",
+    "sinon": "^6.3.5",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
   },
