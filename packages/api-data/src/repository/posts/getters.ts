@@ -149,25 +149,29 @@ export const getPublicPostsByDate = (
 				);
 			}
 
-			const posts = convertGunSetToArrayWithKey(postsData).map(
-				({ k: postId, ...post }: IPostCallbackData & { k: string }) => {
-					// convert likes into an array with keys
-					const postLikes = convertLikesToArray(post.likes);
-					// convert comments and their likes into an array with keys
-					const postComments = convertCommentsToArray(post.comments);
-					// convert media to an array
-					const mediaReturn = convertMediaToArray(post.media) || [];
+			const allPosts: any = Object.entries(postsData).map(([key, value]) => {
+				return {
+					...value,
+					postId: key,
+				};
+			});
 
-					const { likes, comments, media, ...postRest } = post;
-					return {
-						...postRest,
-						postId,
-						likes: postLikes,
-						comments: postComments,
-						media: mediaReturn,
-					};
-				},
-			);
+			const posts = allPosts.map((post: IPostCallbackData & { k: string }) => {
+				// convert likes into an array with keys
+				const postLikes = convertLikesToArray(post.likes);
+				// convert comments and their likes into an array with keys
+				const postComments = convertCommentsToArray(post.comments);
+				// convert media to an array
+				const mediaReturn = convertMediaToArray(post.media) || [];
+
+				const { likes, comments, media, ...postRest } = post;
+				return {
+					...postRest,
+					likes: postLikes,
+					comments: postComments,
+					media: mediaReturn,
+				};
+			});
 
 			return callback(null, posts);
 		});
