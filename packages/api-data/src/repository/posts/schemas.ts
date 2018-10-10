@@ -33,12 +33,9 @@ export const postData = yup
 		postText: mediumLongTextType.required(),
 		location: mediumLongTextType,
 		taggedFriends: yup.array().of(
-			yup
-				.object()
-				.shape({
-					fullName: usernameOrPasswordType.required(),
-				})
-				.required(),
+			yup.object().shape({
+				fullName: usernameOrPasswordType.required(),
+			}),
 		),
 		media: yup.array().of(
 			yup
