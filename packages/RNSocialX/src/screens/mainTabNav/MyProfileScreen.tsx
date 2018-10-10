@@ -13,7 +13,7 @@ import {
 	IWithMyProfileEnhancedData,
 	WithMyProfile,
 } from '../../enhancers/screens';
-import { SCREENS } from '../../environment/consts';
+import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { icons } from './MyProfileScreen.style';
 import { MyProfileScreenView } from './MyProfileScreen.view';
@@ -62,6 +62,7 @@ class Screen extends React.Component<
 			aboutMeText,
 			mediaObjects,
 		} = currentUser;
+		console.log(currentUser);
 
 		return (
 			<MyProfileScreenView
@@ -93,17 +94,17 @@ class Screen extends React.Component<
 		return [
 			{
 				label: getText('my.profile.screen.menu.profile.analytics'),
-				icon: icons.iconProfileAnalytics,
+				icon: 'ios-analytics',
 				actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
 			},
 			{
 				label: getText('my.profile.screen.menu.wallet'),
-				icon: icons.iconWallet2,
+				icon: 'ios-wallet',
 				actionHandler: () => navigation.navigate(SCREENS.WalletActivity),
 			},
 			{
 				label: getText('my.profile.screen.menu.settings'),
-				icon: 'ios-settings-outline',
+				icon: 'ios-settings',
 				actionHandler: () => navigation.navigate(SCREENS.Settings),
 			},
 			{
@@ -111,7 +112,7 @@ class Screen extends React.Component<
 				icon: 'ios-log-out',
 				actionHandler: () => {
 					logout();
-					resetNavigationToRoute('PreAuthScreen', navigation);
+					resetNavigationToRoute(NAVIGATION.PreAuth, navigation);
 				},
 			},
 		];

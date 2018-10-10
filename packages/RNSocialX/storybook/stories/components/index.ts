@@ -43,9 +43,9 @@ import './displayers/WallPostCard/WallPostMedia';
 
 import './hocs/WithInlineLoader';
 
+import './inputs/Checkbox';
 import './inputs/CommentTextInput';
 import './inputs/PrimaryTextInput';
-import './inputs/SettingCheckbox';
 import './inputs/SharePostInput';
 
 import './interaction/CloseButton';

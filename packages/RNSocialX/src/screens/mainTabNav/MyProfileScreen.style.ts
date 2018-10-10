@@ -28,12 +28,10 @@ const styles: any = {
 		height: SCREEN_HEIGHT / 2,
 		bottom: 0,
 	},
-	titleBarLeftButton: {
-		marginLeft: Sizes.smartHorizontalScale(10),
-	},
 	icon: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 };
 

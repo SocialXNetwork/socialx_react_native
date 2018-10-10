@@ -14,7 +14,7 @@ import { Statistics, Tabs } from './';
 import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 
 interface IProfileTopContainerProps extends ITranslatedProps {
-	avatarURL: any;
+	avatarURL: string;
 	fullName: string;
 	userName: false | string;
 	numberOfPhotos: number;
@@ -76,28 +76,16 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 				onPress={onViewProfilePhoto}
 				style={styles.avatarContainer}
 			>
-				<AvatarImage image={avatarURL} style={styles.avatar} />
+				<AvatarImage image={{ uri: avatarURL }} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.statisticsContainer}>
 				<View style={styles.leftStatistics}>
-					<Statistics
-						text={getText('profile.statistics.photos')}
-						value={numberOfPhotos}
-					/>
-					<Statistics
-						text={getText('profile.statistics.likes')}
-						value={numberOfLikes}
-					/>
+					<Statistics icon="image" value={numberOfPhotos} />
+					<Statistics icon="heart" value={numberOfLikes} />
 				</View>
 				<View style={styles.rightStatistics}>
-					<Statistics
-						text={getText('profile.statistics.friends')}
-						value={numberOfFriends}
-					/>
-					<Statistics
-						text={getText('profile.statistics.comments')}
-						value={numberOfComments}
-					/>
+					<Statistics icon="users" value={numberOfFriends} />
+					<Statistics icon="comments" value={numberOfComments} />
 				</View>
 			</View>
 			<View style={styles.textContainer}>

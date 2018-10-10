@@ -8,11 +8,11 @@ import { string } from 'yup';
 import {
 	AvatarName,
 	AvatarPicker,
+	Checkbox,
 	Header,
 	HeaderButton,
 	InputSizes,
 	PrimaryTextInput,
-	SettingCheckbox,
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
@@ -212,7 +212,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						)}
 					</View>
 					<View style={style.miningContainer}>
-						<SettingCheckbox
+						<Checkbox
 							title={getText('settings.screen.mining.title')}
 							description={getText('settings.screen.mining.description')}
 							value={miningEnabledValue}

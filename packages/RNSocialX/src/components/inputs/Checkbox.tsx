@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Platform, Switch, Text, View } from 'react-native';
 
-import style, { customStyleProps } from './SettingCheckbox.style';
+import style, { customStyleProps } from './Checkbox.style';
 
-interface ISettingCheckboxProps {
+interface ICheckboxProps {
 	title: string;
 	value: boolean;
 	description: string | false;
 	onValueUpdated: () => void;
 }
 
-export const SettingCheckbox: React.SFC<ISettingCheckboxProps> = ({
+export const Checkbox: React.SFC<ICheckboxProps> = ({
 	title,
 	description = false,
 	value,

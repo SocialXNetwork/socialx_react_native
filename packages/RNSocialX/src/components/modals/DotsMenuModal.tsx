@@ -37,7 +37,10 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 				onBackdropPress={onBackdropPress}
 				style={styles.container}
 			>
-				<SafeAreaView style={styles.innerContainer}>
+				<SafeAreaView
+					forceInset={{ bottom: 'always' }}
+					style={styles.innerContainer}
+				>
 					{items.map(
 						({ icon, label, actionHandler }: IDotsMenuItem, index: number) => {
 							const itemStyles = [
@@ -50,7 +53,10 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 								<TouchableOpacity
 									style={itemStyles}
 									key={index}
-									onPress={actionHandler}
+									onPress={() => {
+										onBackdropPress();
+										actionHandler();
+									}}
 								>
 									<View style={styles.iconContainer}>
 										<Icon name={icon} style={styles.icon} />
