@@ -54,6 +54,7 @@ The following RN packages are linked:
 18. react-native-smart-splash-screen
 19. react-native-orientation (Podfile)
 20. native-base
+21. react-native-background-upload (Podfile)
 
 Before you begin, make sure you have installed the following tooling
 

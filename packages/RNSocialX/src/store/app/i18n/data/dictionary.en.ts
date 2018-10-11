@@ -267,4 +267,7 @@ export default {
 	'search.screen.results.tab.people.title': 'People',
 	'search.screen.results.tab.tags.title': 'Tags',
 	'search.screen.results.tab.places.title': 'Places',
+	'search.screen.results.coming.soon': 'Stay close, this feature is coming soon!',
+	'searching.loader.text': 'Searching',
+	'search.no.results.text': 'No results found',
 };

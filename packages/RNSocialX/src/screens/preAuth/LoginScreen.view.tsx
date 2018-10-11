@@ -126,7 +126,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 							<PrimaryButton
 								label={getText('login.login.button')}
 								onPress={handleSubmit}
-								disabled={!isValid}
+								// disabled={!isValid}
 								borderColor={customStyleProps.borderTransparent}
 							/>
 						</View>

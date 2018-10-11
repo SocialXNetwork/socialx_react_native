@@ -1,57 +1,33 @@
 import { action } from '@storybook/addon-actions';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { getTextMock } from '../../../../src/mocks';
+import { getTextMock, suggestedItems } from '../../../../src/mocks';
 import { SearchScreenView } from '../../../../src/screens/mainTabNav/SearchScreen/SearchScreen.view';
-import { ISearchResultData, SearchResultKind } from '../../../../src/types';
-
-const items: ISearchResultData[] = [
-	{
-		userId: '1',
-		relationship: SearchResultKind.NotFriend,
-		fullName: 'Alex Sirbu',
-		userName: 'alexsirbu',
-		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
-	},
-	{
-		userId: '2',
-		relationship: SearchResultKind.Friend,
-		fullName: 'Alex Sirbu',
-		userName: 'alexsirbu',
-		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
-	},
-	{
-		userId: '3',
-		relationship: SearchResultKind.Friend,
-		fullName: 'Alex Sirbu',
-		userName: 'alexsirbu',
-		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
-	},
-];
 
 storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
-	.add('SearchScreen', () => {
-		const searchTermValue = text('searchTermValue', '');
-		const searching = boolean('searching', false);
-		const hasMoreResults = boolean('hasMoreResults', false);
+	.add('SearchScreenView', () => {
+		const topSearching = boolean('topSearching', false);
+		const topHasMoreResults = boolean('topHasMoreResults', false);
 		return (
 			<SearchScreenView
 				getText={getTextMock}
-				searching={searching}
-				onAddFriend={action('onAddFriend')}
-				searchResults={items}
-				suggestions={items}
-				searchTermValue={searchTermValue}
-				onResultPress={action('onResultPress')}
-				onLoadMoreResults={action('onLoadMoreResults')}
-				hasMoreResults={hasMoreResults}
-				// @ts-ignore
+				setNavigationParams={() => {
+					/**/
+				}}
+				loadedTabs={[0, 1, 2, 3]}
+				searchTermValue={''}
+				topSearchResults={suggestedItems}
+				topSuggestions={suggestedItems}
+				topSearching={topSearching}
+				topHasMoreResults={topHasMoreResults}
+				onTabIndexChanged={action('onTabIndexChanged')}
+				onSearchTermChange={action('onSearchTermChange')}
+				searchForMoreResults={action('searchForMoreResults')}
+				addFriend={action('addFriend')}
+				// @ts-ignore // This is actually ignoring all props!
 				navigation={null}
 			/>
 		);
