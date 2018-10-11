@@ -14,18 +14,16 @@ interface ISearchResultsProps extends ITranslatedProps {
 	hasMore: boolean;
 }
 
-// TODO: Add 'Searching' to the dictionary
-const SearchingLoader: React.SFC<ITranslatedProps> = ({ getText }) => (
+const SearchingLoader: React.SFC<{ message: string }> = ({ message }) => (
 	<View style={styles.searchContainer}>
 		<ActivityIndicator size={'small'} style={styles.spinner} />
-		<Text style={styles.shortMessage}>Searching</Text>
+		<Text style={styles.shortMessage}>{message}</Text>
 	</View>
 );
 
-// TODO: Add 'No results found' to the dictionary
-const SearchNoResults: React.SFC<ITranslatedProps> = ({ getText }) => (
+const SearchNoResults: React.SFC<{ message: string }> = ({ message }) => (
 	<View style={styles.messageContainer}>
-		<Text style={styles.shortMessage}>No results found</Text>
+		<Text style={styles.shortMessage}>{message}</Text>
 	</View>
 );
 
@@ -39,9 +37,13 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 	getText,
 }) => (
 	<View style={styles.container}>
-		{searching && <SearchingLoader getText={getText} />}
+		{searching && (
+			<SearchingLoader message={getText('searching.loader.text')} />
+		)}
 		{!searching &&
-			searchResults.length === 0 && <SearchNoResults getText={getText} />}
+			searchResults.length === 0 && (
+				<SearchNoResults message={'search.no.results.text'} />
+			)}
 		{!searching &&
 			searchResults.length > 0 && (
 				<SearchResultsList

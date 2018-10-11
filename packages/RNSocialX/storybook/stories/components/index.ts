@@ -26,6 +26,7 @@ import './displayers/RichText';
 import './displayers/SearchResults';
 import './displayers/SearchResultsItem';
 import './displayers/SearchResultsList';
+import './displayers/SearchTabResults';
 import './displayers/SendCoinsHeader';
 import './displayers/SuggestedSearches';
 import './displayers/TextGradient';

@@ -14,7 +14,7 @@ export { PhotoScreen } from './mainStack/PhotoScreen';
 export { UserProfileScreen } from './mainStack/UserProfileScreen';
 
 export { MyProfileScreen } from './mainTabNav/MyProfileScreen';
-export { TrendingScreen, SearchResultsScreen } from './mainTabNav/SearchScreen';
+export { TrendingScreen, SearchScreen } from './mainTabNav/SearchScreen';
 export { FriendsUserFeed } from './mainTabNav/UserFeedScreen/FriendsUserFeed';
 export { GlobalUserFeed } from './mainTabNav/UserFeedScreen/GlobalUserFeed';
 export { NotificationsScreen } from './mainTabNav/NotificationsScreen';

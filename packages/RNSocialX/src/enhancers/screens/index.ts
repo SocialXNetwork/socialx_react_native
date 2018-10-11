@@ -58,11 +58,6 @@ export {
 	IWithSearchEnhancedData,
 } from './mainTabNav/WithSearch';
 export {
-	WithSearchResults,
-	IWithSearchResultsEnhancedActions,
-	IWithSearchResultsEnhancedData,
-} from './mainTabNav/WithSearchResults';
-export {
 	WithTrending,
 	IWithTrendingEnhancedData,
 } from './mainTabNav/WithTrending';

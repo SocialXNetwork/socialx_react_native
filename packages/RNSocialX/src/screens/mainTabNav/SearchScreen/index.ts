@@ -1,2 +1,2 @@
 export { TrendingScreen } from './TrendingScreen';
-export { SearchResultsScreen } from './SearchResultsScreen';
+export { SearchScreen } from './SearchScreen';

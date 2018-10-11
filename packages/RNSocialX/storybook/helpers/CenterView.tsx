@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 
 export interface ICenterViewProps {
 	children?: object;
@@ -7,7 +7,11 @@ export interface ICenterViewProps {
 }
 
 export default function CenterView(props: ICenterViewProps) {
-	return <View style={[styles.main, props.style]}>{props.children}</View>;
+	return (
+		<SafeAreaView style={[styles.main, props.style]}>
+			{props.children}
+		</SafeAreaView>
+	);
 }
 
 const styles = StyleSheet.create({
