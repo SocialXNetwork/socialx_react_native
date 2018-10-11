@@ -33,31 +33,31 @@ const mockAdCards = [
 const spentValues = [
 	{
 		value: 12,
-		date: new Date(2018, 7, 14),
+		date: new Date(2018, 3, 10),
 	},
 	{
 		value: 13,
-		date: new Date(2018, 7, 15),
+		date: new Date(2018, 3, 11),
 	},
 	{
 		value: 11,
-		date: new Date(2018, 7, 16),
+		date: new Date(2018, 3, 12),
 	},
 	{
 		value: 16,
-		date: new Date(2018, 7, 17),
+		date: new Date(2018, 3, 13),
 	},
 	{
 		value: 9,
-		date: new Date(2018, 7, 18),
+		date: new Date(2018, 3, 14),
 	},
 	{
 		value: 3,
-		date: new Date(2018, 7, 19),
+		date: new Date(2018, 3, 15),
 	},
 	{
 		value: 17,
-		date: new Date(2018, 7, 20),
+		date: new Date(2018, 3, 16),
 	},
 ];
 
@@ -67,6 +67,8 @@ storiesOf('Screens/adsManagementStack', module).add(
 		return (
 			<AdsManagementOverviewScreenView
 				spentValues={spentValues}
+				impressionsValues={spentValues}
+				peopleReachedValues={spentValues}
 				currentWeek={'Mar 10, 2018 - Mar 16,2018'}
 				currentDate={'Mar 17, 2018'}
 				adCards={mockAdCards}

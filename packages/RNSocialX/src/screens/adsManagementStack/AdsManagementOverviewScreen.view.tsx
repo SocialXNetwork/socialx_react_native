@@ -57,6 +57,8 @@ interface IAdsManagementOverviewScreenViewProps
 	lastSevenDays: string;
 	adCards: IAdCard[];
 	spentValues: IAdsAccountPerformanceValues[];
+	peopleReachedValues: IAdsAccountPerformanceValues[];
+	impressionsValues: IAdsAccountPerformanceValues[];
 	onClose: () => void;
 	onCreateAd: () => void;
 	onSeePastPerformance: () => void;
@@ -75,6 +77,8 @@ export const AdsManagementOverviewScreenView: React.SFC<
 	onSeePastPerformance,
 	currentWeek,
 	spentValues,
+	impressionsValues,
+	peopleReachedValues,
 }) => {
 	return (
 		<View style={styles.rootView}>
@@ -123,7 +127,10 @@ export const AdsManagementOverviewScreenView: React.SFC<
 								'ad.management.overview.screen.account.performance.people.reached',
 							)}
 						>
-							<Text>{'Tab people content'}</Text>
+							<ChartAccountPerformance
+								week={currentWeek}
+								performanceValues={peopleReachedValues}
+							/>
 						</Tab>
 						<Tab
 							tabStyle={styles.tabStyle}
@@ -134,7 +141,10 @@ export const AdsManagementOverviewScreenView: React.SFC<
 								'ad.management.overview.screen.account.performance.impressions',
 							)}
 						>
-							<Text>{'Tab impressions'}</Text>
+							<ChartAccountPerformance
+								week={currentWeek}
+								performanceValues={impressionsValues}
+							/>
 						</Tab>
 					</Tabs>
 				</View>

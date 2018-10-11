@@ -1,5 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import {
+	Colors,
+	colorWithAlpha,
+	Fonts,
+	Sizes,
+} from '../../../environment/theme';
 
 const HORIZONTAL_PADDING = Sizes.smartHorizontalScale(18);
 
@@ -22,20 +27,23 @@ const style: any = {
 	chartWithYAxis: {
 		flexDirection: 'row',
 	},
+	chartYAxis: {
+		marginBottom: Sizes.smartHorizontalScale(16),
+	},
 };
 
 export default StyleSheet.create(style);
 
 export const customStyleProps = {
 	chartLineColor: Colors.pink,
-	chartFillColor: Colors.pink,
+	chartFillColor: colorWithAlpha(Colors.pink, 0.1),
 	chartXAxisContentInset: HORIZONTAL_PADDING,
 	chartXAxisSvgStyle: {
 		fontSize: Sizes.smartHorizontalScale(12),
 		fill: Colors.postText,
 	},
 	chartYAxisSvgStyle: {
-		fontSize: Sizes.smartHorizontalScale(12),
+		fontSize: Sizes.smartHorizontalScale(16),
 		fill: Colors.postText,
 	},
 };
