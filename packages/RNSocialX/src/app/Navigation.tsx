@@ -41,7 +41,7 @@ import {
 	ReferralScreen,
 	RegisterScreen,
 	ResetPasswordScreen,
-	SearchResultsScreen,
+	SearchScreen,
 	SettingsScreen,
 	SocialXAccountScreen,
 	TermsAndConditionsScreen,
@@ -153,7 +153,7 @@ const UserSearchStackNavigator = createStackNavigator(
 			screen: TrendingScreen,
 		},
 		TabbedSearchScreen: {
-			screen: SearchResultsScreen,
+			screen: SearchScreen,
 		},
 	},
 	{

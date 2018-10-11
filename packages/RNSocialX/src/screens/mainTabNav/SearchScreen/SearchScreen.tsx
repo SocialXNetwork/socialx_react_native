@@ -1,73 +1,93 @@
 import * as React from 'react';
+import { debounce } from 'throttle-debounce';
 
 import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,
+	WithSearch,
 } from '../../../enhancers/screens';
-import { SCREENS } from '../../../environment/consts';
-import {
-	INavigationProps,
-	ISearchResultData,
-	SearchResultKind,
-} from '../../../types';
+import { INavigationProps, SearchTabs } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
-interface IWithSearchTerm {
-	searchTermValue: string;
-}
+const SEARCH_DEBOUNCE_TIME_MS = 300;
+
+const TabsByIndex = [
+	SearchTabs.Top,
+	SearchTabs.People,
+	SearchTabs.Tags,
+	SearchTabs.Places,
+];
 
 type ISearchScreenProps = INavigationProps &
-	IWithSearchTerm &
-	IWithSearchEnhancedActions &
-	IWithSearchEnhancedData;
+	IWithSearchEnhancedData &
+	IWithSearchEnhancedActions;
 
-export class SearchScreen extends React.Component<ISearchScreenProps> {
+interface IISearchScreenState {
+	loadedTabs: number[];
+	term: string;
+	selectedTab: number;
+}
+
+class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
+	public state = {
+		loadedTabs: [0],
+		term: '',
+		selectedTab: 0,
+	};
+
+	private debounceSearch = debounce(SEARCH_DEBOUNCE_TIME_MS, (term: string) => {
+		this.props.search(term, TabsByIndex[this.state.selectedTab]);
+	});
+
 	public render() {
 		const {
-			searchTermValue,
-			searchResults,
-			suggestions,
-			searching,
-			hasMoreResults,
+			navigation,
 			getText,
+			setNavigationParams,
+			topSearchResults,
+			topSuggestions,
+			topSearching,
+			topHasMoreResults,
+			searchForMoreResults,
+			addFriend,
 		} = this.props;
+		const { loadedTabs, term } = this.state;
 		return (
 			<SearchScreenView
-				onAddFriend={this.onAddFriendHandler}
-				searchResults={searchResults}
-				suggestions={suggestions}
-				onResultPress={this.onResultPressHandler}
-				searching={searching}
-				hasMoreResults={hasMoreResults}
-				onLoadMoreResults={this.onLoadMoreResultsHandler}
-				searchTermValue={searchTermValue}
+				navigation={navigation}
 				getText={getText}
+				setNavigationParams={setNavigationParams}
+				loadedTabs={loadedTabs}
+				topSearchResults={topSearchResults}
+				topSuggestions={topSuggestions}
+				topSearching={topSearching}
+				topHasMoreResults={topHasMoreResults}
+				searchForMoreResults={searchForMoreResults}
+				addFriend={addFriend}
+				onTabIndexChanged={this.onTabIndexChangedHandler}
+				onSearchTermChange={this.onSearchTermChangeHandler}
+				searchTermValue={term}
 			/>
 		);
 	}
 
-	private onAddFriendHandler = (userId: string) => {
-		this.props.addFriend(userId);
-	};
-
-	private onResultPressHandler = (result: ISearchResultData) => {
-		if (
-			result.relationship === SearchResultKind.Friend ||
-			result.relationship === SearchResultKind.NotFriend ||
-			result.relationship === SearchResultKind.FriendRequestSent
-		) {
-			const { navigation, setNavigationParams } = this.props;
-			setNavigationParams({
-				screenName: SCREENS.UserProfile,
-				params: { userId: result.userId },
+	private onTabIndexChangedHandler = (value: { i: number }) => {
+		if (!this.state.loadedTabs.includes(value.i)) {
+			this.setState({
+				selectedTab: value.i,
+				loadedTabs: [...this.state.loadedTabs, value.i],
 			});
-			navigation.navigate(SCREENS.UserProfile);
 		}
 	};
 
-	private onLoadMoreResultsHandler = () => {
-		if (!this.props.searching && this.props.hasMoreResults) {
-			this.props.searchForMoreResults();
-		}
+	private onSearchTermChangeHandler = (term: string) => {
+		this.debounceSearch(term);
+		this.setState({ term });
 	};
 }
+
+export const SearchScreen = (navProps: INavigationProps) => (
+	<WithSearch>
+		{({ data, actions }) => <Screen {...data} {...actions} {...navProps} />}
+	</WithSearch>
+);

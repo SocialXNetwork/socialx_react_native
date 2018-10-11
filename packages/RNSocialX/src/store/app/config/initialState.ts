@@ -8,7 +8,7 @@ const initialState: IState = {
 		ipfsConfig: {
 			ipfs_URL: '',
 			ipfs_server: '',
-			ipfs_port: 0,
+			ipfs_port: '0',
 			opts: {
 				root: '',
 				protocol: 'https',

@@ -6,7 +6,6 @@ import {
 	trendingContentItems,
 } from '../../../../src/mocks';
 import { TrendingScreenView } from '../../../../src/screens/mainTabNav/SearchScreen/TrendingScreen.view';
-import CenterView from '../../../helpers/CenterView';
 
 class TrendingScreenStory extends React.Component {
 	public state = {
@@ -31,6 +30,6 @@ class TrendingScreenStory extends React.Component {
 	};
 }
 
-storiesOf('Screens/mainTabNav', module)
-	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	.add('TrendingScreen', () => <TrendingScreenStory />);
+storiesOf('Screens/mainTabNav', module).add('TrendingScreen', () => (
+	<TrendingScreenStory />
+));
