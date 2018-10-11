@@ -11,8 +11,8 @@ Dir.chdir("../ios") do
 end
 
 before_all do
-  ensure_git_branch(branch: 'beta/*') # here can have a regex
-  ensure_git_status_clean
+  # ensure_git_branch(branch: 'beta/*') # here can have a regex
+  # ensure_git_status_clean
   git_pull
 end
 
@@ -20,6 +20,9 @@ desc 'Project install: yarn + pods'
 private_lane :install_dev do
   Dir.chdir("../../../") do
     sh('yarn reset && yarn install && yarn build')
+  end
+  Dir.chdir("../") do
+    sh('yarn postinstall')
   end
 end
 
