@@ -12,10 +12,22 @@ import { IApplicationConfig, setAppConfig } from './app/config';
 
 import Uploader from 'react-native-background-upload';
 
+import { AsyncStorage } from 'react-native'; // defaults to localStorage for web and AsyncStorage for react-native
+import { persistReducer } from 'redux-persist';
+
+const persistConfig = {
+	key: 'root',
+	storage: AsyncStorage,
+	// NOTE: takes an array of strings
+	// blacklist: [],
+	// whitelist: [],
+};
+
 export const configureStore = (
 	depsConfig: IContextConfig,
 	appConfig: IApplicationConfig,
 ) => {
+	const persistedReducer = persistReducer(persistConfig, rootReducer);
 	const dataApi = dataApiFactory({
 		peers: depsConfig.dataApi.peers,
 		rootdb: depsConfig.dataApi.rootdb,
@@ -32,7 +44,7 @@ export const configureStore = (
 	);
 
 	const store = createStore(
-		rootReducer,
+		persistedReducer,
 		composeWithDevTools(
 			applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi })),
 		),

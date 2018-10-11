@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
+import { persistStore } from 'redux-persist';
+// tslint:disable-next-line:no-submodule-imports
+import { PersistGate } from 'redux-persist/integration/react';
 import { configureStore } from '../store';
 
 import appConfig from './app.config.json';
@@ -14,8 +17,16 @@ const store = configureStore(
 	appConfig,
 );
 
+const persistor = persistStore(store);
+
 export default class Store extends React.Component<{}, {}> {
 	render() {
-		return <Provider store={store}>{this.props.children}</Provider>;
+		return (
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					{this.props.children}
+				</PersistGate>
+			</Provider>
+		);
 	}
 }
