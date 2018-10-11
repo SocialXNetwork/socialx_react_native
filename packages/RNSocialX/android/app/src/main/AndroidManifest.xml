@@ -5,14 +5,26 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
     <uses-sdk tools:overrideLibrary="org.webkit.androidjsc"/>
 
     <application
             android:name=".MainApplication"
             android:label="@string/app_name"
             android:icon="@mipmap/icon"
-            android:allowBackup="false"
             android:theme="@style/AppTheme"
+            android:allowBackup="false"
             tools:replace="android:allowBackup">
         <activity
                 android:name=".MainActivity"
@@ -25,6 +37,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+        <meta-data android:name="com.bugsnag.android.API_KEY"
+            android:value="73245fce110f157e3c5ba0c2ac7154ae"/>
     </application>
 
 </manifest>

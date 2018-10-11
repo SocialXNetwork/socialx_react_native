@@ -1,7 +1,6 @@
-### Todo
-- [ ] Fix RN postinstall scripts (check if postinstall:compat:react-native-vector-icons is needed!)
-- [ ] Add fastlane
-- [ ] Add bugsnag
+### After upgrade to RN 0.57
+- [ ] Check and update libs for android: bugsnag-react-native, lottie-react-native, react-native-fs, react-native-fast-image.
+Related to https://github.com/react-native-community/react-native-releases/blob/master/CHANGELOG.md#tooling-updates 
 
 ---
 
