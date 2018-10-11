@@ -17,6 +17,7 @@ const style: any = {
 	inputContainer: {
 		flexDirection: 'row',
 		flex: 1,
+		alignItems: 'center',
 		backgroundColor: Colors.white,
 		borderRadius: Sizes.smartHorizontalScale(6),
 		height: '100%',
@@ -56,7 +57,7 @@ const style: any = {
 		width: Sizes.smartHorizontalScale(40),
 	},
 	iconContainerSmall: {
-		width: Sizes.smartHorizontalScale(20),
+		width: Sizes.smartHorizontalScale(30),
 	},
 	iconContainerLarge: {
 		width: Sizes.smartHorizontalScale(50),
@@ -84,7 +85,7 @@ export const defaultStyles = {
 	defaultBorderColor: Colors.pink,
 	defaultBorderWidth: Sizes.smartHorizontalScale(2),
 	defaultUnderlineColorAndroid: Colors.transparent,
-	iconHeightSmall: Sizes.smartHorizontalScale(15),
+	iconHeightSmall: Sizes.smartHorizontalScale(20),
 	iconHeightNormal: Sizes.smartHorizontalScale(30),
 	iconHeightLarge: Sizes.smartHorizontalScale(30),
 };

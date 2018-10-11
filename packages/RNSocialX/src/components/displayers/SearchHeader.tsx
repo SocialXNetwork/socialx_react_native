@@ -72,7 +72,7 @@ export class SearchHeader extends Component<
 							onChangeText={this.searchInputUpdated}
 							onSubmitPressed={Keyboard.dismiss}
 							placeholder="Search"
-							icon="search"
+							icon="ios-search"
 							canCancel={true}
 							size={InputSizes.Small}
 							borderColor={colors.border}
