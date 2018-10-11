@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -2223,7 +2224,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = socialxnetwork;
 				PRODUCT_NAME = RNSocialX;
-				PROVISIONING_PROFILE = "13d9a073-ce69-42ff-ba72-b9a73f642640";
+				PROVISIONING_PROFILE = "68c0b4a2-aea5-4a31-a3f8-f5e181171d96";
 				PROVISIONING_PROFILE_SPECIFIER = "SocialX Dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
