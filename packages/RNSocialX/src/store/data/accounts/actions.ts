@@ -157,6 +157,7 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
+		dispatch(setAuth({ password: createAccountInput.password }));
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
@@ -231,6 +232,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
+		dispatch(setAuth({ password: credentials.password }));
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
