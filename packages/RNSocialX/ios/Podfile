@@ -32,6 +32,8 @@ target 'RNSocialX' do
 
   pod 'react-native-background-upload', :path => '../node_modules/react-native-background-upload'
 
+  pod 'Picker', :path => '../node_modules/react-native-picker'
+
   target 'RNSocialXTests' do
     inherit! :search_paths
     # Pods for testing
