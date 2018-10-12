@@ -3,15 +3,15 @@
 import * as Gun from 'gun';
 import { AsyncStorage } from 'react-native';
 
-const read = (context: any) => {
-	const { get, gun } = context;
+const read = (request: any, db: any) => {
+	const { get, gun } = request;
 	const { '#': key } = get;
 
 	const done = (err: any, data?: any) => {
-		gun._.root.on('in', {
-			err,
-			'@': context['#'],
+		db.on('in', {
+			'@': request['#'],
 			put: Gun.graph.node(data),
+			err,
 		});
 	};
 
@@ -27,9 +27,10 @@ const read = (context: any) => {
 	});
 };
 
-const write = (context: any) => {
-	const { put: graph, gun } = context;
+const write = (request: any, db: any) => {
+	const { put: graph, gun } = request;
 	const keys = Object.keys(graph);
+	const dedupid = graph['#'];
 
 	const instructions = keys.map((key: string) => [
 		key,
@@ -37,10 +38,10 @@ const write = (context: any) => {
 	]);
 
 	AsyncStorage.multiMerge(instructions, (err?: any[]) => {
-		gun._.root.on('in', {
-			err,
-			'@': context['#'],
+		db.on('in', {
+			'#': dedupid,
 			ok: !err || err.length === 0,
+			err,
 		});
 	});
 };

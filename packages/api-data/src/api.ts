@@ -1,3 +1,4 @@
+// tslint:disable
 import Gun from 'gun/gun';
 
 import 'gun/lib/path';
@@ -23,18 +24,20 @@ import { IContext, IGunInstance } from './types';
 // more easily testable and also importable into the server for api reuse
 import adapter from './extensions/asyncStorageAdapter';
 
-Gun.on('opt', (context: any) => {
+Gun.on('create', function(db: any) {
+	// @ts-ignore
+	this.to.next(db);
 	// Allows other plugins to respond concurrently.
 	const pluginInterop = (middleware: any) =>
-		function(ctx: any) {
+		function(request: any) {
 			// @ts-ignore
-			this.to.next(ctx);
-			return middleware(ctx);
+			this.to.next(request);
+			return middleware(request, db);
 		};
 
 	// Register the adapter
-	Gun.on('get', pluginInterop(adapter.read));
-	Gun.on('put', pluginInterop(adapter.write));
+	db.on('get', pluginInterop(adapter.read));
+	db.on('put', pluginInterop(adapter.write));
 });
 
 export interface IApiOptions {
