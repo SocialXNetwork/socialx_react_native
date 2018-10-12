@@ -19,6 +19,7 @@ export const Colors = {
 	userAvatarFullName: '#006BFF',
 	dustWhite: '#EEEEEE',
 	grayText: '#9B9B9B',
+	manatee: '#8F9095',
 	fuchsiaBlue: '#814FBE',
 	iron: '#D3D6DA',
 	iron2: '#D6D9DE',
@@ -54,4 +55,9 @@ export const Colors = {
 export const colorWithAlpha = (color: string, alpha: number) => {
 	const rgbValue = hexRgb(color);
 	return `rgba(${rgbValue.red},${rgbValue.green},${rgbValue.blue},${alpha})`;
+};
+
+export const colorWithAlphaArray = (color: string, alpha: number) => {
+	const rgbValue = hexRgb(color);
+	return [rgbValue.red, rgbValue.green, rgbValue.blue, alpha];
 };
