@@ -1,5 +1,8 @@
 import { IContext, TABLE_ENUMS, TABLES } from '../../types';
 
+export const allProfiles = (context: IContext) =>
+	context.gun.get(TABLES.PROFILES);
+
 export const currentUserProfile = (context: IContext) => {
 	const { account, gun } = context;
 	return gun.get(TABLES.PROFILES).get(account.is.alias);

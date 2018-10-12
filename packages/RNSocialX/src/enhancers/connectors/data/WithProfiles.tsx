@@ -11,9 +11,12 @@ import {
 	IAddFriendInput,
 	IProfileData,
 	IRemoveFriendInput,
+	ISearchProfilesByFullNameInput,
+	ISearchProfilesInput,
 	IUpdateProfileInput,
 	IUsernameInput,
 	removeFriend,
+	searchProfilesByFullName,
 } from '../../../store/data/profiles';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -27,6 +30,9 @@ interface IActionProps {
 	updateProfile: (updateProfileInput: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
+	searchProfilesByFullName: (
+		searchProfilesByFullNameInput: ISearchProfilesByFullNameInput,
+	) => void;
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 }
 
@@ -60,6 +66,9 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(addFriend(addFriendInput)),
 	removeFriend: (removeFriendInput: IRemoveFriendInput) =>
 		dispatch(removeFriend(removeFriendInput)),
+	searchProfilesByFullName: (
+		searchProfilesByFullNameInput: ISearchProfilesByFullNameInput,
+	) => dispatch(searchProfilesByFullName(searchProfilesByFullNameInput)),
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
 		dispatch(acceptFriend(acceptFriendInput)),
 });
