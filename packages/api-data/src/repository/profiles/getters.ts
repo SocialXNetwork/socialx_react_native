@@ -1,4 +1,4 @@
-import { IContext, IGunCallback } from '../../types';
+import { IContext, IGunCallback, TABLES } from '../../types';
 import * as profileHandles from './handles';
 
 import { ApiError } from '../../utils/errors';

@@ -4,7 +4,7 @@ import * as Gun from 'gun';
 import { AsyncStorage } from 'react-native';
 
 const read = (request: any, db: any) => {
-	const { get, gun } = request;
+	const { get } = request;
 	const { '#': key } = get;
 
 	const done = (err: any, data?: any) => {
@@ -28,14 +28,13 @@ const read = (request: any, db: any) => {
 };
 
 const write = (request: any, db: any) => {
-	const { put: graph, gun } = request;
+	const { put: graph } = request;
 	const keys = Object.keys(graph);
 	const dedupid = graph['#'];
 
-	const instructions = keys.map((key: string) => [
-		key,
-		JSON.stringify(graph[key]),
-	]);
+	const instructions = keys.map((key: string) => {
+		return [key, JSON.stringify(graph[key] ? graph[key] : {})];
+	});
 
 	AsyncStorage.multiMerge(instructions, (err?: any[]) => {
 		db.on('in', {
