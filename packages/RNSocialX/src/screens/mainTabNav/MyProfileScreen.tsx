@@ -8,6 +8,7 @@ import * as React from 'react';
 import { DataProvider } from 'recyclerlistview';
 import uuidv4 from 'uuid/v4';
 
+import { resetNavigationToRoute } from '../../enhancers/helpers';
 import {
 	IWithMyProfileEnhancedActions,
 	IWithMyProfileEnhancedData,
@@ -15,7 +16,6 @@ import {
 } from '../../enhancers/screens';
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
-import { icons } from './MyProfileScreen.style';
 import { MyProfileScreenView } from './MyProfileScreen.view';
 
 const GRID_PAGE_SIZE = 20;
@@ -89,7 +89,7 @@ class Screen extends React.Component<
 	}
 
 	private getDotsModalItems = () => {
-		const { navigation, getText, logout, resetNavigationToRoute } = this.props;
+		const { navigation, getText, logout, setGlobal } = this.props;
 		return [
 			{
 				label: getText('my.profile.screen.menu.profile.analytics'),
@@ -110,8 +110,9 @@ class Screen extends React.Component<
 				label: getText('my.profile.screen.menu.logout'),
 				icon: 'ios-log-out',
 				actionHandler: () => {
-					logout();
+					setGlobal({ logout: true });
 					resetNavigationToRoute(NAVIGATION.PreAuth, navigation);
+					logout();
 				},
 			},
 		];

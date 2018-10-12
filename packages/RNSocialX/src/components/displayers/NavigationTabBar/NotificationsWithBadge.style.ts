@@ -11,7 +11,7 @@ const styles: any = {
 	},
 	badge: {
 		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(14),
+		fontSize: Sizes.smartHorizontalScale(12),
 		lineHeight: BADGE_HEIGHT,
 		color: Colors.white,
 	},
