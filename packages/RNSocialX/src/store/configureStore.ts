@@ -19,7 +19,7 @@ const persistConfig = {
 	key: 'root',
 	storage: AsyncStorage,
 	// NOTE: takes an array of strings
-	// blacklist: [],
+	blacklist: ['ui'],
 	// whitelist: [],
 };
 
