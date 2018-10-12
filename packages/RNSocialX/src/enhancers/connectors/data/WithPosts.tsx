@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
 	getPostByPath: (getPostPathInput: IPostPathInput) =>
 		dispatch(getPostByPath(getPostPathInput)),
-	loadMorePosts: () => dispatch(loadMorePosts),
+	loadMorePosts: () => dispatch(loadMorePosts()),
 	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>

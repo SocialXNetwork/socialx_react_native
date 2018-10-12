@@ -25,15 +25,22 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 			currentUser,
 			applicationInMaintenanceMode,
 			resetNavigationToRoute,
+			globals,
+			navigation,
 		} = this.props;
+
 		if (currentUser) {
-			if (__DEV__) {
-				resetNavigationToRoute(NAVIGATION.Main, this.props.navigation);
+			// @Jake Hydrate gun authentication because we have user here
+			// gun.user.recall
+			if (__DEV__ && !globals.logout) {
+				resetNavigationToRoute(NAVIGATION.Main, navigation);
 			} else {
 				if (applicationInMaintenanceMode) {
-					resetNavigationToRoute(NAVIGATION.Maintenance, this.props.navigation);
+					resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
 				} else {
-					resetNavigationToRoute(NAVIGATION.Main, this.props.navigation);
+					if (!globals.logout) {
+						resetNavigationToRoute(NAVIGATION.Main, navigation);
+					}
 				}
 			}
 		}

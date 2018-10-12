@@ -38,6 +38,9 @@ const mock: IWithUserFeedEnhancedProps = {
 		loadPosts: (feed: FEED_TYPES) => {
 			/**/
 		},
+		loadMorePosts: () => {
+			/**/
+		},
 		refreshFeed: (feed: FEED_TYPES) => {
 			/**/
 		},
@@ -82,6 +85,7 @@ export interface IWithUserFeedEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions {
 	loadPosts: (feed: FEED_TYPES) => void;
+	loadMorePosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
@@ -162,6 +166,7 @@ export class WithUserFeed extends React.Component<
 																			// 	postsProps.getPublicPostsByDate({
 																			// 		date: new Date(Date.now()),
 																			// 	}),
+																			loadMorePosts: postsProps.loadMorePosts,
 																			refreshFeed: () =>
 																				postsProps.getPublicPostsByDate({
 																					date: new Date(Date.now()),

@@ -7,14 +7,17 @@ import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { currentUser } from '../../../mocks';
-import { ICurrentUser, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IGlobal, ITranslatedProps } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { resetNavigationToRoute } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithLaunchEnhancedProps = {
 	data: {
 		currentUser,
+		globals: {},
 		applicationInMaintenanceMode: false,
 	},
 	actions: {
@@ -31,6 +34,7 @@ const mock: IWithLaunchEnhancedProps = {
 
 export interface IWithLaunchEnhancedData {
 	currentUser?: ICurrentUser; // we only care about the existence here!
+	globals: IGlobal;
 	applicationInMaintenanceMode: boolean;
 }
 
@@ -61,21 +65,26 @@ export class WithLaunch extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithCurrentUser>
-						{(currentUserProps) =>
-							children({
-								data: {
-									...mock.data,
-									currentUser: currentUserProps.currentUser,
-								},
-								actions: {
-									...mock.actions,
-									getText: i18nProps.getText,
-									resetNavigationToRoute,
-								},
-							})
-						}
-					</WithCurrentUser>
+					<WithGlobals>
+						{({ globals }) => (
+							<WithCurrentUser>
+								{(currentUserProps) =>
+									children({
+										data: {
+											...mock.data,
+											currentUser: currentUserProps.currentUser,
+											globals,
+										},
+										actions: {
+											...mock.actions,
+											getText: i18nProps.getText,
+											resetNavigationToRoute,
+										},
+									})
+								}
+							</WithCurrentUser>
+						)}
+					</WithGlobals>
 				)}
 			</WithI18n>
 		);
