@@ -1,18 +1,11 @@
 import { dataApiFactory } from '../__testHelpers/mockApi';
+import records from '../__testHelpers/records';
 import { FRIEND_TYPES } from '../repository/profiles/types';
 import { ApiError, ValidationError } from '../utils/errors';
 
 let mockApi: ReturnType<typeof dataApiFactory>;
 
-const mockProfile = {
-	aboutMeText: 'Hello there, I have been here',
-	avatar: '123456',
-	email: 'a@b.com',
-	fullName: 'Neil de Grasse Tyson',
-	miningEnabled: true,
-	pub: 'bleep',
-	username: 'blahblah',
-};
+const { getProfile, getProfilealt } = records;
 
 const testAccount = { is: { pub: 'bleep', alias: 'blahblah' } };
 const testAccount2 = { is: { pub: 'boop', alias: 'bopybopy' } };
@@ -23,6 +16,10 @@ const testAccount2 = { is: { pub: 'boop', alias: 'bopybopy' } };
 // * Public key does not exist! (comes through as the error from the reject/catch)
 //
 // https://github.com/amark/gun/issues/579 seems to be very relevant
+
+const mockProfile = getProfile();
+const mockProfile2 = getProfilealt();
+
 describe('profiles api', () => {
 	beforeEach(() => {
 		jest.setTimeout(30 * 1000);
@@ -68,6 +65,27 @@ describe('profiles api', () => {
 			const profileUnderTest = { ...profileData, friends: [] };
 
 			expect(currentProfile).toEqual(profileUnderTest);
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
+	});
+
+	test('searches by full name existing profiles', async () => {
+		try {
+			mockProfile.fullName = 'Neil Patrick Harris';
+			mockProfile2.fullName = 'Neil de Grasse';
+			await mockApi.profiles.createProfile(mockProfile);
+			await mockApi.profiles.createProfile(mockProfile2);
+
+			let profiles = await mockApi.profiles.searchByFullName({
+				textSearch: 'Neil',
+			});
+			expect(profiles.length).toEqual(2);
+			profiles = await mockApi.profiles.searchByFullName({
+				// make sure case insensitive works
+				textSearch: 'grasse',
+			});
+			expect(profiles.length).toEqual(1);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}

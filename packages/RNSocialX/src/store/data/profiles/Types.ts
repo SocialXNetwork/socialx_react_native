@@ -4,6 +4,7 @@ import {
 	IPostArrayData,
 	IProfileData,
 	IRemoveFriendInput,
+	ISearchProfilesInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
@@ -17,9 +18,16 @@ export interface IUsernameInput {
 	username: string;
 }
 
+export interface ISearchProfilesByFullNameInput {
+	textSearch: string;
+	maxResults: number;
+}
+
 export const enum ActionTypes {
 	GET_PROFILE_BY_USERNAME = 'app/data/profiles/GET_PROFILE_BY_USERNAME',
 	SYNC_GET_PROFILE_BY_USERNAME = 'app/data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
+	SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/SEARCH_PROFILES_BY_FULLNAME',
+	SYNC_SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/SYNC_SEARCH_PROFILES_BY_FULLNAME',
 	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
 	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
 	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
@@ -43,6 +51,16 @@ export interface ISyncGetProfilesByPostsAction extends Action {
 export interface IGetProfileByUsernameAction extends Action {
 	type: ActionTypes.GET_PROFILE_BY_USERNAME;
 	payload: IUsernameInput;
+}
+
+export interface ISearchProfilesByFullNameAction extends Action {
+	type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME;
+	payload: ISearchProfilesInput;
+}
+
+export interface ISyncSearchProfilesByFullNameAction extends Action {
+	type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME;
+	payload: IProfileData[];
 }
 
 export interface ISyncGetProfileByUsernameAction extends Action {
@@ -93,4 +111,6 @@ export type IAction =
 	| IRemoveFriendAction
 	| IGetProfilesByPostsAction
 	| ISyncGetProfilesByPostsAction
+	| ISyncSearchProfilesByFullNameAction
+	| ISearchProfilesByFullNameAction
 	| IAcceptFriendAction;
