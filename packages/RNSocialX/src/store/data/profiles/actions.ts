@@ -18,9 +18,12 @@ import {
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
 	IRemoveFriendAction,
+	ISearchProfilesByFullNameAction,
+	ISearchProfilesByFullNameInput,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByUsernameAction,
 	ISyncGetProfilesByPostsAction,
+	ISyncSearchProfilesByFullNameAction,
 	IUpdateProfileAction,
 	IUsernameInput,
 } from './Types';
@@ -63,6 +66,60 @@ export const getProfilesByPosts = (
 			dispatch(
 				setError({
 					type: ActionTypes.GET_PROFILES_BY_POSTS,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
+
+export const searchProfilesByFullNameAction: ActionCreator<
+	ISearchProfilesByFullNameAction
+> = (searchProfilesByFullNameInput: any) => ({
+	type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
+	payload: searchProfilesByFullNameInput,
+});
+
+export const syncSearchProfilesByFullNameAction: ActionCreator<
+	ISyncSearchProfilesByFullNameAction
+> = (profiles: IProfileData[]) => ({
+	type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME,
+	payload: profiles,
+});
+
+export const searchProfilesByFullName = ({
+	textSearch,
+	maxResults,
+}: ISearchProfilesByFullNameInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.app.auth.auth;
+	if (auth && auth.alias) {
+		try {
+			dispatch(searchProfilesByFullNameAction({ textSearch, maxResults }));
+			dispatch(
+				beginActivity({
+					type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			const profiles = await dataApi.profiles.searchByFullName({
+				textSearch,
+				maxResults,
+			});
+			dispatch(syncSearchProfilesByFullNameAction(profiles));
+		} catch (e) {
+			dispatch(
+				setError({
+					type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME,
 					error: e.message,
 					uuid: uuidv4(),
 				}),

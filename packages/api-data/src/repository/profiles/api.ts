@@ -12,6 +12,7 @@ import {
 	IProfileCallbackData,
 	IProfileData,
 	IRemoveFriendInput,
+	ISearchProfilesInput,
 	IUpdateProfileInput,
 } from './types';
 
@@ -250,5 +251,18 @@ export default (context: IContext) => ({
 				context,
 				resolveCallback(resolve, reject),
 			);
+		}),
+	searchByFullName: ({
+		textSearch,
+		maxResults,
+	}: ISearchProfilesInput): Promise<IProfileData[]> =>
+		new Promise((resolve, reject) => {
+			!textSearch || !textSearch.length || typeof textSearch !== 'string'
+				? resolve()
+				: getters.findProfilesByFullName(
+						context,
+						{ textSearch, maxResults },
+						resolveCallback(resolve, reject),
+				  ); // tslint:disable-line
 		}),
 });

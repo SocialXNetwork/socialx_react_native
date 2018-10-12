@@ -4,6 +4,25 @@ import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
+		case ActionTypes.SEARCH_PROFILES_BY_FULLNAME: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME: {
+			const finalProfiles = action.payload.reduce(
+				(updatedProfiles, newProfile) => [
+					...updatedProfiles.filter(
+						(updatedProfile) => updatedProfile.pub !== newProfile.pub,
+					),
+					newProfile,
+				],
+				[...state.profiles],
+			);
+			return {
+				profiles: finalProfiles,
+			};
+		}
+
 		case ActionTypes.GET_CURRENT_PROFILE: {
 			return state;
 		}

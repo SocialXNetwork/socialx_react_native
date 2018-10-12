@@ -27,6 +27,11 @@ export interface IProfileData {
 	friends: IFriendReturnData[];
 }
 
+export interface ISearchProfilesInput {
+	textSearch: string;
+	maxResults?: number;
+}
+
 export interface ICreateProfileInput {
 	username: string;
 	aboutMeText: string;
