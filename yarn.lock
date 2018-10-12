@@ -5999,10 +5999,10 @@ gud@^1.0.0:
   resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
   integrity sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw==
 
-gun@latest:
-  version "0.9.99996"
-  resolved "https://registry.yarnpkg.com/gun/-/gun-0.9.99996.tgz#184c16800f08fed7913d15ddb832a9230ad6eb91"
-  integrity sha512-2hUCZKl9f4yegmmkKvCPQuXC67VcozZl/GuQ2li7okYQ985dqip8YbOjEfSWI/OnJmq0z7wHyxJCxK2xYextug==
+gun@^0.9.99997, gun@latest:
+  version "0.9.99997"
+  resolved "https://registry.yarnpkg.com/gun/-/gun-0.9.99997.tgz#303f09e34ad57e2b65671841e2bcbf4791c3d0bc"
+  integrity sha512-WGRi5ETnEq3iX7/TP3qZgTc4D7nEhP+PDrwSYJ6yBOHg8XrjSkS/V+iC1SicWAjsKrnHf9a+MsgJW+EUPpI3ZA==
   dependencies:
     ws "~>5.2.0"
 
@@ -10265,7 +10265,7 @@ redux-devtools-extension@^2.13.5:
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.5.tgz#3ff34f7227acfeef3964194f5f7fc2765e5c5a39"
   integrity sha512-QQ9BRy77oURHMdGys9rfQcCQDzXZ1T4oW+eUyE5Cg7DNVau69HJzc4YNDMOmpi0Dzpi1zOQgQ2rUpgJta4Lfqg==
 
-redux-persist@^5.7.0:
+redux-persist@^5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"
   integrity sha512-sSJAzNq7zka3qVHKce1hbvqf0Vf5DuTVm7dr4GtsqQVOexnrvbV47RWFiPxQ8fscnyiuWyD2O92DOxPl0tGCRg==

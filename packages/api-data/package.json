@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --runInBand --onlyChanged --detectOpenHandles",
-		"test:all": "jest --runInBand --detectOpenHandles",
+    "test:all": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watch --silent"
   },
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@socialx/commons": "^0.0.1",
-    "gun": "latest",
+    "gun": "^0.9.99997",
     "utility-types-fixme-todo": "latest",
     "uuid": "^3.3.2",
     "yup": "^0.26.6"
