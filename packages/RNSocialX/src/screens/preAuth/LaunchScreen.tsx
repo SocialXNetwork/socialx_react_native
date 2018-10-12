@@ -27,11 +27,14 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 			resetNavigationToRoute,
 			globals,
 			navigation,
+			auth,
+			recall,
 		} = this.props;
 
 		if (currentUser) {
-			// @Jake Hydrate gun authentication because we have user here
-			// gun.user.recall
+			if (auth && !globals.logout) {
+				recall({ username: auth.alias || '', password: auth.password || '' });
+			}
 			if (__DEV__ && !globals.logout) {
 				resetNavigationToRoute(NAVIGATION.Main, navigation);
 			} else {

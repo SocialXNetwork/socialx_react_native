@@ -5,9 +5,13 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.SET_AUTH: {
+			const prevAuth: any = state.auth ? state.auth : {};
 			return {
 				...state,
-				auth: action.payload,
+				auth: {
+					...prevAuth,
+					...action.payload,
+				},
 			};
 		}
 
