@@ -1,3 +1,4 @@
+import './adsManagementStack/AdsManagementConfigBudgetScreen';
 import './adsManagementStack/AdsManagementOverview';
 import './adsManagementStack/AdsManagementScreen';
 
