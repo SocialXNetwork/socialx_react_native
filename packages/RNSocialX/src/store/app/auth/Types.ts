@@ -2,8 +2,9 @@ import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export interface IAuthData {
-	alias: string;
-	pub: string;
+	alias?: string;
+	pub?: string;
+	password?: string; // TEMP: should be removed, find a better way?
 }
 
 export type IState = DeepReadonly<{

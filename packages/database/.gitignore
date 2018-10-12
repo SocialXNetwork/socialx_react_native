@@ -1,0 +1,4 @@
+# for docker purposes
+data
+dist
+node_modules
