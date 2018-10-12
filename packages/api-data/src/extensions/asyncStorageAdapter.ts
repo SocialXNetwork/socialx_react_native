@@ -3,28 +3,50 @@
 import * as Gun from 'gun';
 import { AsyncStorage } from 'react-native';
 
+const readNode = (key: string, cb: (err: any, result: any) => void) => {
+	AsyncStorage.getItem(key || '', cb);
+};
+
 const read = (request: any, db: any) => {
 	const { get } = request;
-	const { '#': key } = get;
+
+	const dedupid = request['#'];
+	const key = get['#'];
+	const field = get['.'];
 
 	const done = (err: any, data?: any) => {
-		db.on('in', {
-			'@': request['#'],
-			put: Gun.graph.node(data),
-			err,
-		});
+		if (!data && !err) {
+			db.on('in', {
+				'@': dedupid,
+				put: null,
+				err: null,
+			});
+		} else {
+			db.on('in', {
+				'@': dedupid,
+				put: Gun.graph.node(data),
+				err,
+			});
+		}
 	};
 
-	AsyncStorage.getItem(key, (err: any, result: any) => {
+	const acknowledgeRet = (err: any, result: any) => {
 		if (err) {
 			done(err);
 		} else if (result === null) {
 			// Nothing found
 			done(null);
 		} else {
-			done(null, JSON.parse(result as string));
+			const temp = JSON.parse(result);
+			if (field) {
+				done(null, temp[field] || null);
+			} else {
+				done(null, temp);
+			}
 		}
-	});
+	};
+
+	readNode(key || '', acknowledgeRet);
 };
 
 const write = (request: any, db: any) => {
@@ -33,7 +55,7 @@ const write = (request: any, db: any) => {
 	const dedupid = graph['#'];
 
 	const instructions = keys.map((key: string) => {
-		return [key, JSON.stringify(graph[key] ? graph[key] : {})];
+		return [key, JSON.stringify(graph[key] || {})];
 	});
 
 	AsyncStorage.multiMerge(instructions, (err?: any[]) => {
