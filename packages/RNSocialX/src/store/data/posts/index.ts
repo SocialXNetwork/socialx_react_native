@@ -25,6 +25,7 @@ export {
 	getPostByPath,
 	getPostsByUsername,
 	getPublicPostsByDate,
+	resetPostsAndRefetch,
 	loadMorePosts,
 	createPost,
 	likePost,

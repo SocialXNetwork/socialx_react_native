@@ -25,6 +25,7 @@ import {
 	loadMorePosts,
 	removeComment,
 	removePost,
+	resetPostsAndRefetch,
 	unlikeComment,
 	unlikePost,
 } from '../../../store/data/posts';
@@ -40,6 +41,7 @@ interface IActionProps {
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
+	resetPostsAndRefetch: () => void;
 	loadMorePosts: () => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
 	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
@@ -84,6 +86,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
+	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
 	removePost: (removePostInput: IRemovePostInput) =>
 		dispatch(removePost(removePostInput)),
 	unlikePost: (unlikePostInput: IUnlikePostInput) =>
