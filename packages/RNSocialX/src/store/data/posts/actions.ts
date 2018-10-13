@@ -213,13 +213,12 @@ export const loadMorePosts = (): IThunk => async (
 
 	const storeState = getState();
 	const storePosts = storeState.data.posts.posts;
-	const latestPost = [...storePosts].sort(
-		(x, t) => x.timestamp - t.timestamp,
-	)[0];
+	const latestPost =
+		storePosts.length !== 0
+			? [...storePosts].sort((x, t) => x.timestamp - t.timestamp)[0]
+			: { timestamp: new Date(Date.now()) };
 
-	let lastPostDate = moment(
-		latestPost.timestamp || new Date().getTime(),
-	).toDate();
+	let lastPostDate = moment(latestPost.timestamp).toDate();
 
 	let days: number = 1;
 
