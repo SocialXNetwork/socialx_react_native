@@ -118,12 +118,12 @@ describe('posts api', () => {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 			await mockApi.posts.getPostsByUser({
-				username: 'abcdef',
+				username: '',
 			});
 		} catch (e) {
 			error = e;
 		}
-		expect(error).toBeInstanceOf(ApiError);
+		expect(error).toBeInstanceOf(ValidationError);
 	});
 
 	test('get public posts by date', async () => {
@@ -138,20 +138,6 @@ describe('posts api', () => {
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
-	});
-
-	test('reject get public posts by date', async () => {
-		let error: any;
-		try {
-			const post = getPost();
-			await mockApi.posts.createPost(post);
-			await mockApi.posts.getPublicPostsByDate({
-				date: new Date('1234'),
-			});
-		} catch (e) {
-			error = e;
-		}
-		expect(error).toBeInstanceOf(ApiError);
 	});
 
 	test('likes a post', async () => {
