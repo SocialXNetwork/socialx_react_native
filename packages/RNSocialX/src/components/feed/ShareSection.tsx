@@ -6,14 +6,14 @@ import styles, { USER_AVATAR_PLACEHOLDER } from './ShareSection.style';
 interface IShareSectionProps {
 	sharePlaceholder: string;
 	avatarImage: string | number | undefined;
-	onShowNewWallPostPress: () => void;
+	onCreateWallPost: () => void;
 	opacity: number;
 }
 
 export const ShareSection: React.SFC<IShareSectionProps> = ({
 	sharePlaceholder,
 	avatarImage,
-	onShowNewWallPostPress,
+	onCreateWallPost,
 	opacity,
 }) => (
 	<Animated.View style={[styles.container, { opacity }]}>
@@ -22,7 +22,7 @@ export const ShareSection: React.SFC<IShareSectionProps> = ({
 			resizeMode="cover"
 			style={[styles.avatar, { opacity }]}
 		/>
-		<TouchableWithoutFeedback onPress={onShowNewWallPostPress}>
+		<TouchableWithoutFeedback onPress={onCreateWallPost}>
 			<View style={styles.textContainer}>
 				<Animated.Text style={[styles.placeholder, { opacity }]}>
 					{sharePlaceholder}

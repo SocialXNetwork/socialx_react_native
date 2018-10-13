@@ -29,7 +29,7 @@ interface IUserFeedScreenViewProps
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
-	onShowNewWallPostPress: () => void;
+	onCreateWallPost: () => void;
 	currentUser: ICurrentUser;
 	noPosts: boolean;
 	shareSectionPlaceholder: string | null;
@@ -51,7 +51,7 @@ export class UserFeedScreenView extends React.Component<
 			onRefresh,
 			refreshing,
 			hasMorePosts,
-			onShowNewWallPostPress,
+			onCreateWallPost,
 			shareSectionPlaceholder,
 			noPosts,
 			isLoading,
@@ -66,8 +66,8 @@ export class UserFeedScreenView extends React.Component<
 				<View style={styles.container}>
 					{noPosts ? (
 						<FeedWithNoPosts
-							// onShowNewWallPostPress={onShowNewWallPostPress}
-							onShowNewWallPostPress={onLoadMorePosts}
+							onCreateWallPost={onCreateWallPost}
+							// onCreateWallPost={onLoadMorePosts}
 							getText={getText}
 						/>
 					) : (
@@ -76,7 +76,7 @@ export class UserFeedScreenView extends React.Component<
 								shareSectionPlaceholder ? (
 									<ShareSection
 										avatarImage={avatarImage}
-										onShowNewWallPostPress={onShowNewWallPostPress}
+										onCreateWallPost={onCreateWallPost}
 										sharePlaceholder={shareSectionPlaceholder}
 										opacity={shareSectionOpacityInterpolation}
 									/>
@@ -89,9 +89,8 @@ export class UserFeedScreenView extends React.Component<
 							data={wallPosts}
 							keyExtractor={this.keyExtractor}
 							renderItem={(data) => this.renderWallPosts(data, getText)}
-							// onEndReached={wallPosts.length > 1 ? onLoadMorePosts : null}
+							onEndReached={hasMorePosts ? onLoadMorePosts : null}
 							onEndReachedThreshold={0.5}
-							alwaysBounceVertical={false}
 							keyboardShouldPersistTaps="handled"
 							ListFooterComponent={<LoadingFooter hasMore={hasMorePosts} />}
 							onScrollToIndexFailed={() => {

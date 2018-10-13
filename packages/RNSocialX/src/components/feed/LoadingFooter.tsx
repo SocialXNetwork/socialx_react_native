@@ -7,7 +7,7 @@ export const LoadingFooter: React.SFC<{ hasMore: boolean }> = ({ hasMore }) => {
 	if (hasMore) {
 		return (
 			<View style={styles.container}>
-				<ActivityIndicator size={'large'} />
+				<ActivityIndicator size="large" />
 			</View>
 		);
 	}

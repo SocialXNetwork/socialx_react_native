@@ -29,15 +29,37 @@ type ICreateWallPostScreenProps = INavigationProps &
 interface ICreateWallPostScreenState {
 	mediaObjects: IWallPostPhotoOptimized[];
 	shareText: string;
+	creatingPost: boolean | null;
 }
 
 class Screen extends React.Component<
 	ICreateWallPostScreenProps,
 	ICreateWallPostScreenState
 > {
+	public static getDerivedStateFromProps(
+		nextProps: ICreateWallPostScreenProps,
+		currentState: ICreateWallPostScreenState,
+	) {
+		if (currentState.creatingPost === null && nextProps.creatingPost) {
+			return {
+				creatingPost: true,
+			};
+		}
+
+		if (currentState.creatingPost && !nextProps.creatingPost) {
+			nextProps.navigation.goBack();
+			return {
+				creatingPost: false,
+			};
+		}
+
+		return null;
+	}
+
 	public state = {
 		mediaObjects: [],
 		shareText: '',
+		creatingPost: null,
 	};
 
 	public componentDidMount() {
@@ -62,7 +84,7 @@ class Screen extends React.Component<
 				)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
-				onPostSend={this.onSendPostHandler}
+				onCreatePost={this.onCreatePostHandler}
 				onClose={this.onCloseHandler}
 				marginBottom={marginBottom}
 				getText={getText}
@@ -112,8 +134,8 @@ class Screen extends React.Component<
 		);
 	};
 
-	private onSendPostHandler = () => {
-		const { mediaObjects, shareText } = this.state;
+	private onCreatePostHandler = () => {
+		const { mediaObjects, shareText, creatingPost } = this.state;
 		const { createPost, getText } = this.props;
 
 		if (mediaObjects.length < 1 && !shareText) {
@@ -122,10 +144,12 @@ class Screen extends React.Component<
 				getText('new.wall.post.screen.post.not.allowed.message'),
 			);
 		} else {
-			createPost({
-				mediaObjects,
-				text: shareText,
-			});
+			if (creatingPost === null) {
+				createPost({
+					mediaObjects,
+					text: shareText,
+				});
+			}
 		}
 	};
 
