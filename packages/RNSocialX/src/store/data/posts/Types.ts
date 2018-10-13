@@ -51,11 +51,16 @@ export const enum ActionTypes {
 	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
+	RESET_POSTS = 'data/posts/RESET_POSTS',
 	// <================= comments =================>
 	CREATE_COMMENT = 'data/posts/CREATE_COMMENT',
 	LIKE_COMMENT = 'data/posts/LIKE_COMMENT',
 	REMOVE_COMMENT = 'data/posts/REMOVE_COMMENT',
 	UNLIKE_COMMENT = 'data/posts/UNLIKE_COMMENT',
+}
+
+export interface IResetPostsAction extends Action {
+	type: ActionTypes.RESET_POSTS;
 }
 
 export interface IGetPostsByUsernameAction extends Action {
@@ -161,6 +166,7 @@ interface IResetStoreAction {
 }
 export type IAction =
 	| IResetStoreAction
+	| IResetPostsAction
 	// getters
 	| IGetPostsByUsernameAction
 	| ISyncGetPostsByUserAction

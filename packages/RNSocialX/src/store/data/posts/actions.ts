@@ -31,6 +31,7 @@ import {
 	IPostPathInput,
 	IRemoveCommentAction,
 	IRemovePostAction,
+	IResetPostsAction,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
@@ -42,6 +43,23 @@ import {
 
 import moment from 'moment';
 import { setGlobal } from '../../ui/globals';
+
+const resetPostsAction: ActionCreator<IResetPostsAction> = () => ({
+	type: ActionTypes.RESET_POSTS,
+});
+
+export const resetPostsAndRefetch = (): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	dispatch(resetPostsAction);
+	dispatch(
+		getPublicPostsByDate({
+			date: new Date(Date.now()),
+		}),
+	);
+};
 
 const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
 	getPostsByUsernameInput: IUsernameInput,

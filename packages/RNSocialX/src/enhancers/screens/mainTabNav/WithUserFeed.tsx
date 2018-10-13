@@ -120,7 +120,7 @@ export class WithUserFeed extends React.Component<
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
 									<WithGlobals>
-										{({ setGlobal }) => (
+										{({ setGlobal, globals }) => (
 											<WithActivities>
 												{({ activities }) => (
 													<WithPosts>
@@ -143,10 +143,7 @@ export class WithUserFeed extends React.Component<
 																		data: {
 																			currentUser: currentUserProps.currentUser!,
 																			posts: feedPosts,
-																			hasMorePosts:
-																				postsProps.posts.length -
-																					feedPosts.length >
-																				0,
+																			hasMorePosts: globals.canLoadMorePosts,
 																			loadingMorePosts: getActivity(
 																				activities,
 																				ActionTypes.LOAD_MORE_POSTS,
@@ -167,10 +164,10 @@ export class WithUserFeed extends React.Component<
 																			// 		date: new Date(Date.now()),
 																			// 	}),
 																			loadMorePosts: postsProps.loadMorePosts,
-																			refreshFeed: () =>
-																				postsProps.getPublicPostsByDate({
-																					date: new Date(Date.now()),
-																				}),
+																			refreshFeed: () => {
+																				// reset the store here, before refreshing
+																				postsProps.resetPostsAndRefetch();
+																			},
 																			likePost: (postId) =>
 																				postsProps.likePost({ postId }),
 																			unlikePost: (postId) =>

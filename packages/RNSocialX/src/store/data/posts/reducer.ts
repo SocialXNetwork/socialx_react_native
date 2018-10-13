@@ -105,6 +105,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.RESET_POSTS: {
+			return initialState;
+		}
+
 		case 'RESET_STORE': {
 			return initialState;
 		}
