@@ -1,18 +1,14 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
 import { IPostArrayData } from '../../store/data/posts';
 import { IActivity } from '../../store/ui/activities';
-import {
-	ICurrentUser,
-	IVisitedUser,
-	MediaTypeImage,
-	MediaTypeVideo,
-} from '../../types';
+import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
 import { getActivity } from './getActivity';
 
 export const mapPostsForUI = (
 	posts: IPostArrayData,
 	returnLength: number,
-	user: ICurrentUser | IVisitedUser,
+	currentUser: ICurrentUser,
+	profiles: any,
 	activities: IActivity[],
 	activityType: string | null,
 	appConfig: IApplicationConfig,
@@ -21,8 +17,13 @@ export const mapPostsForUI = (
 		.sort((x: any, y: any) => y.timestamp - x.timestamp)
 		.slice(0, returnLength)
 		.map((post) => {
+			// @Alex Fix typing later
+			const postOwnerProfile = profiles.find(
+				(profile: any) => profile.pub === post.owner.pub,
+			);
+
 			const foundLike = post.likes.find(
-				(like) => like.owner.alias === user!.userId,
+				(like) => like.owner.alias === currentUser!.userId,
 			);
 
 			return {
@@ -33,8 +34,8 @@ export const mapPostsForUI = (
 				timestamp: new Date(post.timestamp),
 				owner: {
 					userId: post.owner.alias,
-					fullName: user!.fullName,
-					avatarURL: user!.avatarURL,
+					fullName: postOwnerProfile.fullName,
+					avatarURL: postOwnerProfile.avatar,
 				},
 				governanceVersion: false,
 				// TODO: add this later when data is available
@@ -59,6 +60,7 @@ export const mapPostsForUI = (
 						userName: like.owner.alias,
 					};
 				}),
+				// @Alex replace this with a check for likes length
 				bestComments: post.comments.slice(0, 2).map((comment) => {
 					return {
 						id: String(comment.timestamp),
@@ -77,7 +79,8 @@ export const mapPostsForUI = (
 				}),
 				listLoading: getActivity(activities, activityType),
 				suggested: undefined,
-				noInput: true,
+				// @Alex find a good way of passing noInput
+				noInput: false,
 				contentOffensive: false,
 				marginBottom: 0,
 			};

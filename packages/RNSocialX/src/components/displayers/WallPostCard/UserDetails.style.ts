@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import { Colors, Fonts, Images, Sizes } from '../../../environment/theme';
 
 const SIDE_PADDING = Sizes.smartHorizontalScale(16);
 
@@ -36,7 +36,7 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
-
-export const customStyleProps = {
+export const images = Images;
+export const defaultStyles = {
 	advancedMenuButtonColor: Colors.postFullName,
 };

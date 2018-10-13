@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 // tslint:disable-next-line:no-submodule-imports

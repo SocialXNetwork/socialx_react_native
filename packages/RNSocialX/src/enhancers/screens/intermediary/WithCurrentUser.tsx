@@ -42,13 +42,15 @@ export class WithCurrentUser extends React.Component<
 
 												if (foundProfile) {
 													currentUser = {
-														userId: auth.alias,
+														userId: auth.alias || '',
 														email: foundProfile.email,
 														fullName: foundProfile.fullName,
-														userName: auth.alias,
+														userName: auth.alias || '',
 														avatarURL:
-															appConfig.ipfsConfig.ipfs_URL +
-															foundProfile.avatar,
+															foundProfile.avatar.length > 0
+																? appConfig.ipfsConfig.ipfs_URL +
+																  foundProfile.avatar // tslint:disable-line
+																: '',
 														aboutMeText: foundProfile.aboutMeText,
 														numberOfLikes: 0,
 														numberOfPhotos: 0,

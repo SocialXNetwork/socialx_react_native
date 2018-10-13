@@ -9,7 +9,7 @@ global.location = {
   host: '',
 };
 
-const { randomBytes } = require('randombytes');
+const { randomBytes } = require('react-native-randombytes');
 
 // Patch the crypto into global so gun can handle the sea cryptography
 global.crypto = {
