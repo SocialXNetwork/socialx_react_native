@@ -30,7 +30,7 @@ interface ICreateWallPostScreenViewProps
 	mediaObjects: string[];
 	onShareTextUpdate: (value: string) => void;
 	onAddMedia: () => void;
-	onPostSend: () => void;
+	onCreatePost: () => void;
 	onClose: () => void;
 }
 
@@ -41,7 +41,7 @@ export const CreateWallPostScreenView: React.SFC<
 	shareText,
 	onShareTextUpdate,
 	onAddMedia,
-	onPostSend,
+	onCreatePost,
 	mediaObjects,
 	getText,
 	marginBottom,
@@ -87,7 +87,7 @@ export const CreateWallPostScreenView: React.SFC<
 					label={getText('new.wall.post.screen.send.button')}
 					size={ButtonSizes.Small}
 					width={buttonWidth}
-					onPress={onPostSend}
+					onPress={onCreatePost}
 					borderColor={Colors.transparent}
 				/>
 			</View>

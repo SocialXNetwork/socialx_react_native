@@ -28,7 +28,7 @@ interface ICommentInputProps {
 	noInput: boolean;
 	comment: string;
 	disabled: boolean;
-	avatarURL?: string | ImageRequireSource;
+	avatarURL: string;
 	animationValues: IAnimationValues;
 	onCommentInputChange: (comment: string) => void;
 	onCommentInputPress: () => void;
@@ -39,7 +39,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	noInput,
 	comment,
 	disabled,
-	avatarURL = Images.user_avatar_placeholder,
+	avatarURL,
 	animationValues,
 	onCommentInputChange,
 	onCommentInputPress,
@@ -56,7 +56,9 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 			>
 				<AnimatedImage
 					source={
-						typeof avatarURL === 'string' ? { uri: avatarURL } : avatarURL
+						avatarURL.length > 0
+							? { uri: avatarURL }
+							: Images.user_avatar_placeholder
 					}
 					style={[
 						styles.commentInputAvatar,

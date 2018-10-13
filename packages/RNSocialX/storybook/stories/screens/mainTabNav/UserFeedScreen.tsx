@@ -30,7 +30,7 @@ storiesOf('Screens/mainTabNav', module)
 				refreshing={refreshing}
 				onRefresh={action('onRefresh')}
 				onLoadMorePosts={action('onLoadMorePosts')}
-				onShowNewWallPostPress={action('onShowNewWallPostPress')}
+				onCreateWallPost={action('onCreateWallPost')}
 				onImagePress={action('onImagePress')}
 				onCommentPress={action('onCommentPress')}
 				noPosts={noPosts}

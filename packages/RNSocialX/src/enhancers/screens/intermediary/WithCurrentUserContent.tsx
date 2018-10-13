@@ -6,6 +6,7 @@ import { extractMediaFromPosts, mapPostsForUI } from '../../helpers';
 import { ActionTypes } from '../../../store/data/posts/Types';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser } from './WithCurrentUser';
 
@@ -29,57 +30,61 @@ export class WithCurrentUserContent extends React.Component<
 				{({ appConfig }) => (
 					<WithPosts>
 						{({ posts }) => (
-							<WithCurrentUser>
-								{(currentUserProps) => (
-									<WithActivities>
-										{({ activities }) => {
-											const user = currentUserProps.currentUser;
+							<WithProfiles>
+								{({ profiles }) => (
+									<WithCurrentUser>
+										{({ currentUser }) => (
+											<WithActivities>
+												{({ activities }) => {
+													if (currentUser && posts.length > 0) {
+														const userPosts = posts.filter(
+															(post) =>
+																post.owner.alias === currentUser!.userId,
+														);
 
-											if (user && posts.length > 0) {
-												const userPosts = posts.filter(
-													(post) => post.owner.alias === user!.userId,
-												);
+														const recentPosts = mapPostsForUI(
+															userPosts,
+															5,
+															currentUser,
+															profiles,
+															activities,
+															ActionTypes.GET_POSTS_BY_USER,
+															appConfig,
+														);
 
-												const recentPosts = mapPostsForUI(
-													userPosts,
-													5,
-													user,
-													activities,
-													ActionTypes.GET_POSTS_BY_USER,
-													appConfig,
-												);
+														currentUser.numberOfLikes = posts.reduce(
+															(acc, post) => acc + post.likes.length,
+															0,
+														);
 
-												user.numberOfLikes = posts.reduce(
-													(acc, post) => acc + post.likes.length,
-													0,
-												);
+														currentUser.numberOfPhotos = posts.reduce(
+															(acc, post) =>
+																post.media ? acc + post.media.length : 0,
+															0,
+														);
 
-												user.numberOfPhotos = posts.reduce(
-													(acc, post) =>
-														post.media ? acc + post.media.length : 0,
-													0,
-												);
+														currentUser.numberOfComments = posts.reduce(
+															(acc, post) => acc + post.comments.length,
+															0,
+														);
 
-												user.numberOfComments = posts.reduce(
-													(acc, post) => acc + post.comments.length,
-													0,
-												);
+														currentUser.mediaObjects = extractMediaFromPosts(
+															posts,
+															appConfig,
+														);
 
-												user.mediaObjects = extractMediaFromPosts(
-													posts,
-													appConfig,
-												);
+														currentUser.recentPosts = recentPosts;
+													}
 
-												user.recentPosts = recentPosts;
-											}
-
-											return this.props.children({
-												currentUser: user,
-											});
-										}}
-									</WithActivities>
+													return this.props.children({
+														currentUser,
+													});
+												}}
+											</WithActivities>
+										)}
+									</WithCurrentUser>
 								)}
-							</WithCurrentUser>
+							</WithProfiles>
 						)}
 					</WithPosts>
 				)}

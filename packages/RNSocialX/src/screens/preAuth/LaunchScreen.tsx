@@ -1,26 +1,30 @@
-/**
- * TODO list:
- * 1. @Serkan, refactor logic in componentDidMount to select correct screen after app launch
- */
-
 import * as React from 'react';
+import { View } from 'react-native';
+
+import { Header } from '../../components';
+import { NAVIGATION, SCREENS } from '../../environment/consts';
+import { INavigationProps } from '../../types';
 import { LaunchScreenView } from './LaunchScreen.view';
 
-import SplashScreen from 'react-native-smart-splash-screen';
 import {
 	IWithLaunchEnhancedActions,
 	IWithLaunchEnhancedData,
 	WithLaunch,
 } from '../../enhancers/screens';
-import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
 
 type ILaunchScreenProps = INavigationProps &
 	IWithLaunchEnhancedData &
 	IWithLaunchEnhancedActions;
 
-class Screen extends React.Component<ILaunchScreenProps, any> {
-	public componentDidMount() {
+interface ILaunchScreenState {
+	loggingIn: boolean | null;
+}
+
+class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
+	public static getDerivedStateFromProps(
+		nextProps: ILaunchScreenProps,
+		currentState: ILaunchScreenState,
+	) {
 		const {
 			currentUser,
 			applicationInMaintenanceMode,
@@ -29,37 +33,62 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 			navigation,
 			auth,
 			recall,
-		} = this.props;
+			loggingIn,
+		} = nextProps;
 
-		if (currentUser) {
-			if (auth && !globals.logout) {
-				recall({ username: auth.alias || '', password: auth.password || '' });
-			}
+		if (auth && currentState.loggingIn === null && !globals.logout) {
+			recall({ username: auth.alias || '', password: auth.password || '' });
+			return {
+				loggingIn: true,
+			};
+		}
+
+		if (auth && currentState.loggingIn && !loggingIn && !globals.logout) {
+			return {
+				loggingIn: false,
+			};
+		}
+
+		if (!currentState.loggingIn && currentUser) {
 			if (__DEV__ && !globals.logout) {
 				resetNavigationToRoute(NAVIGATION.Main, navigation);
+				return null;
 			} else {
 				if (applicationInMaintenanceMode) {
 					resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
+					return null;
 				} else {
 					if (!globals.logout) {
 						resetNavigationToRoute(NAVIGATION.Main, navigation);
+						return null;
 					}
 				}
 			}
 		}
 
-		this.closeSplashScreen();
+		return null;
 	}
 
+	public state = {
+		loggingIn: null,
+	};
+
 	public render() {
-		const { getText } = this.props;
-		return (
-			<LaunchScreenView
-				getText={getText}
-				navigateToLoginScreen={this.navigateToLoginScreen}
-				navigateToRegisterScreen={this.navigateToRegisterScreen}
-			/>
-		);
+		if (this.props.auth) {
+			return (
+				<View style={{ flex: 1, backgroundColor: '#fff' }}>
+					<Header />
+				</View>
+			);
+		} else {
+			return (
+				<LaunchScreenView
+					navigateToLoginScreen={this.navigateToLoginScreen}
+					navigateToRegisterScreen={this.navigateToRegisterScreen}
+					getText={this.props.getText}
+				/>
+			);
+		}
 	}
 
 	private navigateToLoginScreen = () => {
@@ -68,14 +97,6 @@ class Screen extends React.Component<ILaunchScreenProps, any> {
 
 	private navigateToRegisterScreen = () => {
 		this.props.navigation.navigate(SCREENS.Register);
-	};
-
-	private closeSplashScreen = () => {
-		SplashScreen.close({
-			animationType: SplashScreen.animationType.fade,
-			duration: 1000,
-			delay: 100,
-		});
 	};
 }
 

@@ -211,7 +211,7 @@ export interface IWallPostCardData extends IResizeProps {
 	taggedFriends: Array<{ fullName: string }> | undefined;
 	timestamp: Date;
 	owner: IPostOwner;
-	currentUserAvatarURL?: string;
+	currentUserAvatarURL: string;
 	governanceVersion: boolean;
 	numberOfSuperLikes: number;
 	numberOfComments: number;

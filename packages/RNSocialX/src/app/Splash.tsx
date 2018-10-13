@@ -8,7 +8,6 @@ import SplashScreen from 'react-native-smart-splash-screen';
 
 export default class Splash extends React.Component<{}> {
 	public componentDidMount() {
-		console.log(SplashScreen);
 		SplashScreen.close({
 			animationType: SplashScreen.animationType.fade,
 			duration: 1000,

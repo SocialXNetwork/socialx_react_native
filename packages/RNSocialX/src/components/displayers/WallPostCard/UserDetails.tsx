@@ -5,7 +5,8 @@ import FastImage from 'react-native-fast-image';
 import { ITranslatedProps } from '../../../types';
 import { DotsMenuButton } from '../DotsMenuButton';
 import { Location, TaggedFriends } from './';
-import styles, { customStyleProps } from './UserDetails.style';
+
+import styles, { defaultStyles, images } from './UserDetails.style';
 
 interface IUserDetailsProps extends ITranslatedProps {
 	user: any; // IUserQuery; // TODO: @Alex fix typing after backend is ready
@@ -37,7 +38,11 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 		disabled={hideGoToUserProfile}
 	>
 		<FastImage
-			source={{ uri: user.avatarURL }}
+			source={
+				user.avatarURL.length > 0
+					? { uri: user.avatarURL }
+					: images.user_avatar_placeholder
+			}
 			style={styles.smallAvatarImage}
 		/>
 		<View style={styles.topRightContainer}>
@@ -52,7 +57,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 		</View>
 		{!hideAdvancedMenu && (
 			<DotsMenuButton
-				iconColor={customStyleProps.advancedMenuButtonColor}
+				iconColor={defaultStyles.advancedMenuButtonColor}
 				onPress={onShowAdvancedMenu}
 			/>
 		)}

@@ -7,11 +7,11 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 
 interface IFeedWithNoPosts extends ITranslatedProps {
-	onShowNewWallPostPress: () => void;
+	onCreateWallPost: () => void;
 }
 
 export const FeedWithNoPosts: React.SFC<IFeedWithNoPosts> = ({
-	onShowNewWallPostPress,
+	onCreateWallPost,
 	getText,
 }) => (
 	<View style={styles.container}>
@@ -25,7 +25,7 @@ export const FeedWithNoPosts: React.SFC<IFeedWithNoPosts> = ({
 			<PrimaryButton
 				label={getText('feed.screen.no.posts.create')}
 				size={ButtonSizes.Small}
-				onPress={onShowNewWallPostPress}
+				onPress={onCreateWallPost}
 			/>
 		</View>
 	</View>

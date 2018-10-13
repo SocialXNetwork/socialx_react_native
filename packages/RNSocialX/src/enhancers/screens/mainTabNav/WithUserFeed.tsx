@@ -21,6 +21,7 @@ import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithCurrentUser } from '../intermediary';
@@ -123,71 +124,80 @@ export class WithUserFeed extends React.Component<
 										{({ setGlobal, globals }) => (
 											<WithActivities>
 												{({ activities }) => (
-													<WithPosts>
-														{(postsProps) => (
-															<WithCurrentUser>
-																{(currentUserProps) => {
-																	let feedPosts: any = [];
-																	if (postsProps.posts.length > 0) {
-																		feedPosts = mapPostsForUI(
-																			postsProps.posts,
-																			10,
-																			currentUser!,
-																			activities,
-																			ActionTypes.GET_POSTS_BY_USER,
-																			appConfig,
-																		);
-																	}
+													<WithProfiles>
+														{({ profiles }) => (
+															<WithPosts>
+																{(postsProps) => (
+																	<WithCurrentUser>
+																		{(currentUserProps) => {
+																			const user = currentUserProps.currentUser!;
 
-																	return this.props.children({
-																		data: {
-																			currentUser: currentUserProps.currentUser!,
-																			posts: feedPosts,
-																			hasMorePosts: globals.canLoadMorePosts,
-																			loadingMorePosts: getActivity(
-																				activities,
-																				ActionTypes.LOAD_MORE_POSTS,
-																			),
-																			refreshingFeed: getActivity(
-																				activities,
-																				ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																			),
-																			loadingFeed: getActivity(
-																				activities,
-																				ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																			),
-																		},
-																		actions: {
-																			...mock.actions,
-																			// loadPosts: () =>
-																			// 	postsProps.getPublicPostsByDate({
-																			// 		date: new Date(Date.now()),
-																			// 	}),
-																			loadMorePosts: postsProps.loadMorePosts,
-																			refreshFeed: () => {
-																				// reset the store here, before refreshing
-																				postsProps.resetPostsAndRefetch();
-																			},
-																			likePost: (postId) =>
-																				postsProps.likePost({ postId }),
-																			unlikePost: (postId) =>
-																				postsProps.unlikePost({ postId }),
-																			deletePost: (postId) =>
-																				postsProps.removePost({ postId }),
-																			postComment: (text, postId) =>
-																				postsProps.createComment({
-																					text,
-																					postId,
-																				}),
-																			setNavigationParams,
-																			setGlobal,
-																			getText: i18nProps.getText,
-																		},
-																	});
-																}}
-															</WithCurrentUser>
+																			let feedPosts: any = [];
+																			if (postsProps.posts.length > 0) {
+																				feedPosts = mapPostsForUI(
+																					postsProps.posts,
+																					10,
+																					user,
+																					profiles,
+																					activities,
+																					ActionTypes.GET_POSTS_BY_USER,
+																					appConfig,
+																				);
+																			}
+
+																			return this.props.children({
+																				data: {
+																					currentUser: user,
+																					posts: feedPosts,
+																					hasMorePosts:
+																						globals.canLoadMorePosts,
+																					loadingMorePosts: getActivity(
+																						activities,
+																						ActionTypes.LOAD_MORE_POSTS,
+																					),
+																					refreshingFeed: getActivity(
+																						activities,
+																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																					),
+																					loadingFeed: getActivity(
+																						activities,
+																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																					),
+																				},
+																				actions: {
+																					...mock.actions,
+																					// loadPosts: () =>
+																					// 	postsProps.getPublicPostsByDate({
+																					// 		date: new Date(Date.now()),
+																					// 	}),
+																					loadMorePosts:
+																						postsProps.loadMorePosts,
+																					refreshFeed: () => {
+																						// reset the store here, before refreshing
+																						postsProps.resetPostsAndRefetch();
+																					},
+																					likePost: (postId) =>
+																						postsProps.likePost({ postId }),
+																					unlikePost: (postId) =>
+																						postsProps.unlikePost({ postId }),
+																					deletePost: (postId) =>
+																						postsProps.removePost({ postId }),
+																					postComment: (text, postId) =>
+																						postsProps.createComment({
+																							text,
+																							postId,
+																						}),
+																					setNavigationParams,
+																					setGlobal,
+																					getText: i18nProps.getText,
+																				},
+																			});
+																		}}
+																	</WithCurrentUser>
+																)}
+															</WithPosts>
 														)}
-													</WithPosts>
+													</WithProfiles>
 												)}
 											</WithActivities>
 										)}

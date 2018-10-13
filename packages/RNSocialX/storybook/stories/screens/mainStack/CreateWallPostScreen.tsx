@@ -18,7 +18,7 @@ storiesOf('Screens/mainStack', module).add('CreateWallPostScreen', () => {
 			]}
 			onShareTextUpdate={action('onShareTextUpdate')}
 			onAddMedia={action('onAddMedia')}
-			onPostSend={action('onPostMedia')}
+			onCreatePost={action('onPostMedia')}
 			onClose={action('onClose')}
 		/>
 	);

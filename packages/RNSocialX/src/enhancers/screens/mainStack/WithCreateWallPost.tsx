@@ -14,14 +14,18 @@ import {
 	IWallPostPhotoOptimized,
 } from '../../../types';
 
+import { ActionTypes } from '../../../store/data/posts/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
+import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
+import { getActivity } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCreateWallPostEnhancedProps = {
 	data: {
+		creatingPost: false,
 		marginBottom: 0,
 		currentUserAvatarURL: 'https://placeimg.com/200/200/people',
 	},
@@ -51,6 +55,7 @@ interface IWallPostData {
 
 export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 	currentUserAvatarURL?: string;
+	creatingPost: boolean;
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps {
@@ -85,45 +90,57 @@ export class WithCreateWallPost extends React.Component<
 								{({ uploadFile, uploads }) => (
 									<KeyboardContext.Consumer>
 										{({ marginBottom }) => (
-											<WithCurrentUser>
-												{({ currentUser }) => (
-													<WithPosts>
-														{(postsProps) =>
-															children({
-																data: {
-																	...mock.data,
-																	marginBottom,
-																	currentUserAvatarURL: currentUser!.avatarURL,
-																},
-																actions: {
-																	...mock.actions,
-																	uploadFile,
-																	createPost: (wallPostData: IWallPostData) =>
-																		postsProps.createPost({
-																			postText: wallPostData.text,
-																			// location: wallPostData.location,
-																			location: 'Timisoara',
-																			taggedFriends: wallPostData.taggedFriends,
-																			// media: uploads.map((upload) => ({
-																			// 	hash: upload.hash,
-																			// 	type: {
-																			// 		key: 'TBD',
-																			// 		name: 'Photo',
-																			// 		category: 'TBD',
-																			// 	},
-																			// 	extension: 'TBD',
-																			// 	size: 1234,
-																			// })),
-																			privatePost: false,
-																		}),
-																	setGlobal,
-																	getText: i18nProps.getText,
-																},
-															})
-														}
-													</WithPosts>
+											<WithActivities>
+												{({ activities }) => (
+													<WithCurrentUser>
+														{({ currentUser }) => (
+															<WithPosts>
+																{(postsProps) =>
+																	children({
+																		data: {
+																			...mock.data,
+																			creatingPost: getActivity(
+																				activities,
+																				ActionTypes.CREATE_POST,
+																			),
+																			marginBottom,
+																			currentUserAvatarURL: currentUser!
+																				.avatarURL,
+																		},
+																		actions: {
+																			...mock.actions,
+																			uploadFile,
+																			createPost: (
+																				wallPostData: IWallPostData,
+																			) =>
+																				postsProps.createPost({
+																					postText: wallPostData.text,
+																					// location: wallPostData.location,
+																					location: 'Timisoara',
+																					taggedFriends:
+																						wallPostData.taggedFriends,
+																					// media: uploads.map((upload) => ({
+																					// 	hash: upload.hash,
+																					// 	type: {
+																					// 		key: 'TBD',
+																					// 		name: 'Photo',
+																					// 		category: 'TBD',
+																					// 	},
+																					// 	extension: 'TBD',
+																					// 	size: 1234,
+																					// })),
+																					privatePost: false,
+																				}),
+																			setGlobal,
+																			getText: i18nProps.getText,
+																		},
+																	})
+																}
+															</WithPosts>
+														)}
+													</WithCurrentUser>
 												)}
-											</WithCurrentUser>
+											</WithActivities>
 										)}
 									</KeyboardContext.Consumer>
 								)}

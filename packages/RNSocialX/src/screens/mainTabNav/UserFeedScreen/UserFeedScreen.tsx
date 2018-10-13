@@ -76,7 +76,7 @@ export class Screen extends React.Component<
 				hasMorePosts={hasMorePosts}
 				loadingMorePosts={loadingMorePosts}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
-				onShowNewWallPostPress={this.showNewWallPostPage}
+				onCreateWallPost={this.onCreateWallPostHandler}
 				currentUser={currentUser}
 				noPosts={posts.length === 0}
 				shareSectionPlaceholder={shareSectionPlaceholder}
@@ -87,7 +87,7 @@ export class Screen extends React.Component<
 				getText={getText}
 				onImagePress={this.onMediaObjectPressHandler}
 				onLikeButtonPress={this.onLikePressHandler}
-				onUserPress={this.gotoUserProfile}
+				onUserPress={this.onUserPressHandler}
 				onSubmitComment={this.onSubmitCommentHandler}
 				onCommentPress={this.onCommentsButtonPressHandler}
 				onAddComment={this.onAddCommentPressHandler}
@@ -106,7 +106,7 @@ export class Screen extends React.Component<
 		}
 	};
 
-	private showNewWallPostPage = () => {
+	private onCreateWallPostHandler = () => {
 		const { currentUser, navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.CreateWallPost,
@@ -139,7 +139,7 @@ export class Screen extends React.Component<
 		return !likedByMe;
 	};
 
-	private gotoUserProfile = (userId: string) => {
+	private onUserPressHandler = (userId: string) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.UserProfile,
