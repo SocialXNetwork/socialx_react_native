@@ -92,7 +92,7 @@ export class WithSettings extends React.Component<
 												},
 												actions: {
 													updateUserProfile: (saveData) =>
-														profilesProps.updateProfile({
+														profilesProps.updateCurrentProfile({
 															aboutMeText: saveData.aboutMeText,
 															avatar: saveData.avatarURL,
 															email: saveData.email,

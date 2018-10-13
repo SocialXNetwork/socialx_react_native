@@ -21,6 +21,7 @@ export {
 	acceptFriend,
 	searchProfilesByFullName,
 	addFriend,
+	updateCurrentProfile,
 	getProfilesByPosts,
 	removeFriend,
 } from './actions';

@@ -38,11 +38,7 @@ export const getPostPathsByUser = (
 		.postMetasByUsername(context, username)
 		.docLoad((postsMeta: IPostUserMetasCallback) => {
 			if (!postsMeta) {
-				return callback(
-					new ApiError('failed, no posts found', {
-						initialRequestBody: { username },
-					}),
-				);
+				return callback([]);
 			}
 			const paths = convertGunSetToArray(postsMeta).map(
 				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
@@ -85,7 +81,7 @@ export const getPostByPath = (
 		.docLoad((postData: IPostCallbackData) => {
 			if (!postData) {
 				return callback(
-					new ApiError('failed, no posts found', {
+					new ApiError('failed, no post found', {
 						initialRequestBody: { postPath },
 					}),
 				);
@@ -142,11 +138,7 @@ export const getPublicPostsByDate = (
 		.postsByDate(context, datePath)
 		.docLoad((postsData: IPostsDataCallback) => {
 			if (!postsData) {
-				return callback(
-					new ApiError('failed, no posts found', {
-						initialRequestBody: { datePath },
-					}),
-				);
+				return callback(null, []);
 			}
 
 			const allPosts: any = Object.entries(postsData).map(([key, value]) => {

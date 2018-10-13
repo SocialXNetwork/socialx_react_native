@@ -17,6 +17,7 @@ import {
 	IUsernameInput,
 	removeFriend,
 	searchProfilesByFullName,
+	updateCurrentProfile,
 } from '../../../store/data/profiles';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -27,7 +28,7 @@ interface IDataProps {
 interface IActionProps {
 	getCurrentProfile: () => void;
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) => void;
-	updateProfile: (updateProfileInput: IUpdateProfileInput) => void;
+	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
 	searchProfilesByFullName: (
@@ -71,6 +72,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	) => dispatch(searchProfilesByFullName(searchProfilesByFullNameInput)),
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
 		dispatch(acceptFriend(acceptFriendInput)),
+	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) =>
+		dispatch(updateCurrentProfile(updateProfileInput)),
 });
 
 export const WithProfiles: ConnectedComponentClass<
