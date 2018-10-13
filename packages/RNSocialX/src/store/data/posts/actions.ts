@@ -41,6 +41,7 @@ import {
 } from './Types';
 
 import moment from 'moment';
+import { setGlobal } from '../../ui/globals';
 
 const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
 	getPostsByUsernameInput: IUsernameInput,
@@ -207,7 +208,7 @@ export const loadMorePosts = (): IThunk => async (
 	let posts: IPostArrayData = [];
 
 	try {
-		while (!posts && days <= 30) {
+		while (posts.length <= 0 && days <= 30) {
 			lastPostDate = moment(lastPostDate)
 				.subtract(1, 'd')
 				.toDate();
@@ -216,12 +217,10 @@ export const loadMorePosts = (): IThunk => async (
 		}
 		dispatch(getPublicPostsByDate({ date: lastPostDate }));
 		dispatch(getProfilesByPosts(posts));
-	} catch (e) {
+
 		dispatch(
-			setError({
-				type: ActionTypes.LOAD_MORE_POSTS,
-				error: e.message,
-				uuid: uuidv4(),
+			setGlobal({
+				canLoadMorePosts: days < 30,
 			}),
 		);
 	} finally {
