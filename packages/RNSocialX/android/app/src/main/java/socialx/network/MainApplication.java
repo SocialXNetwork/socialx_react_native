@@ -3,6 +3,7 @@ package socialx.network;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 import com.vydia.RNUploader.UploaderReactPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
@@ -42,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AndroidKeyboardAdjustPackage(),
             new UploaderReactPackage(),
             new OrientationPackage(),
             new RCTSplashScreenPackage(),
