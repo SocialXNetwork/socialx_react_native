@@ -2,6 +2,8 @@
 
 const path = require("path");
 
+const getMod = (module) => path.resolve(__dirname, `./node_modules/${module}`);
+
 const config = {
   getProjectRoots() {
     return [
@@ -18,10 +20,13 @@ const config = {
     ];
   },
   extraNodeModules: {
-    crypto: path.resolve(__dirname, "./node_modules/react-native-crypto"),
-    stream: path.resolve(__dirname, "./node_modules/react-native-stream"),
-    randombytes: path.resolve(__dirname, "./node_modules/react-native-randombytes"),
-    vm: path.resolve(__dirname, "./node_modules/vm-browserify")
+    crypto: getMod('react-native-crypto'),
+    stream: getMod('react-native-stream'),
+    randombytes: getMod('react-native-randombytes'),
+    vm: getMod('vm-browserify'),
+    'node-webcrypto-ossl': getMod('node-webcrypto-ossl'),
+    'text-encoding': getMod('text-encoding'),
+    '@trust/webcrypto': getMod('@trust/webcrypto'),
   },
   getTransformModulePath() {
     return require.resolve('react-native-typescript-transformer');

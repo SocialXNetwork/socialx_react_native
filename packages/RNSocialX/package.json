@@ -65,6 +65,7 @@
     "react-native-text-gradient": "^0.0.15",
     "react-native-vector-icons": "^5.0.0",
     "react-native-video": "^3.2.0",
+    "react-native-webview-bridge": "^0.40.1",
     "react-navigation": "^2.12.1",
     "react-redux": "^5.0.7",
     "recompose": "^0.30.0",
@@ -74,10 +75,12 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
+    "sjcl": "^1.0.7",
     "throttle-debounce": "^2.0.1",
     "utility-types-fixme-todo": "latest",
     "uuid": "^3.3.2",
     "vm-browserify": "^1.1.0",
+    "webview-crypto": "^0.1.10",
     "yup": "^0.26.3"
   },
   "devDependencies": {
@@ -126,6 +129,7 @@
     "react-dom": "^16.4.2",
     "react-native-typescript-transformer": "^1.2.10",
     "react-test-renderer": "^16.4.2",
+    "rn-nodeify": "^10.0.0",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.1"
   },

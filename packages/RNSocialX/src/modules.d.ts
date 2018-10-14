@@ -81,3 +81,22 @@ declare module 'react-native-background-upload' {
     const Upload: IUploader;
     export default Upload;
 }
+
+declare module 'react-native-webview' {
+    export const WebView: any;
+}
+
+declare module 'react-native-webview-bridge' {
+    const WebViewBridge: any;
+    export default WebViewBridge;
+}
+
+
+declare module 'webview-crypto' {
+    export const MainWorker: any;
+    export const webViewWorkerString: any;
+}
+
+declare module 'react-native-randombytes' {
+    export const randomBytes: (size: number) => any;
+}
