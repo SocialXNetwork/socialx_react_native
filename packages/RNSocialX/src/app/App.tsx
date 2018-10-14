@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
 import BugSnag from './BugSnag';
 import ErrorBoundary from './ErrorBoundary';
@@ -10,6 +11,8 @@ import Splash from './Splash';
 import StatusBar from './StatusBar';
 import Store from './Store';
 
+import PolyfillCrypto from './PolyfillCrypto';
+
 export default class App extends React.Component<{}> {
 	public render() {
 		return (
@@ -18,6 +21,7 @@ export default class App extends React.Component<{}> {
 					<Init>
 						<Splash>
 							<Keyboard>
+								<PolyfillCrypto />
 								<Store>
 									<React.Fragment>
 										<StatusBar />
