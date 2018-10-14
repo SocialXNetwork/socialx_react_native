@@ -52,9 +52,6 @@ export default class PolyfillCrypto extends React.Component<
 								// @ts-ignore
 								(window as any).crypto = worker.crypto;
 							}
-
-							// @ts-ignore
-							console.log('*** crypto now', window.crypto);
 						}
 					}}
 					onBridgeMessage={

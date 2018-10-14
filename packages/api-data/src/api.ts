@@ -24,21 +24,21 @@ import { IContext, IGunInstance } from './types';
 // more easily testable and also importable into the server for api reuse
 import adapter from './extensions/asyncStorageAdapter';
 
-// Gun.on('create', function(db: any) {
-// 	// @ts-ignore
-// 	this.to.next(db);
-// 	// Allows other plugins to respond concurrently.
-// 	const pluginInterop = (middleware: any) =>
-// 		function(request: any) {
-// 			// @ts-ignore
-// 			this.to.next(request);
-// 			return middleware(request, db);
-// 		};
+Gun.on('create', function(db: any) {
+	// @ts-ignore
+	this.to.next(db);
+	// Allows other plugins to respond concurrently.
+	const pluginInterop = (middleware: any) =>
+		function(request: any) {
+			// @ts-ignore
+			this.to.next(request);
+			return middleware(request, db);
+		};
 
-// 	// Register the adapter
-// 	db.on('get', pluginInterop(adapter.read));
-// 	db.on('put', pluginInterop(adapter.write));
-// });
+	// Register the adapter
+	db.on('get', pluginInterop(adapter.read));
+	db.on('put', pluginInterop(adapter.write));
+});
 
 export interface IApiOptions {
 	peers: string[];
