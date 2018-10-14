@@ -166,6 +166,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-android-keyboard-adjust')
     compile project(':react-native-background-upload')
     compile project(':react-native-orientation')
     compile project(':react-native-smart-splash-screen')
