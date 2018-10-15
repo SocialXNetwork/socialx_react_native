@@ -39,8 +39,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 		{({ safeRunAfterKeyboardHide }) => (
 			<Formik
 				initialValues={{
-					userName: 'testggg',
-					password: 'password',
+					userName: '',
+					password: '',
 				}}
 				validate={({ userName, password }: ILoginScreenData) => {
 					const errors: FormikErrors<ILoginScreenData> = {};

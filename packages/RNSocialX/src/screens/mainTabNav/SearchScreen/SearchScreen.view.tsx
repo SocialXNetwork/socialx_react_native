@@ -10,9 +10,10 @@ import {
 	ISearchResultData,
 	ITranslatedProps,
 } from '../../../types';
+
 import styles from './SearchScreen.style';
 
-const ComingSoon: React.SFC<{ message: string }> = ({ message }) => (
+export const ComingSoon: React.SFC<{ message: string }> = ({ message }) => (
 	<View style={styles.comingSoonContainer}>
 		<Icon name="md-stopwatch" style={styles.comingSoonIcon} />
 		<Text style={styles.comingSoonText}>{message}</Text>
@@ -32,12 +33,10 @@ interface ISearchScreenViewProps
 	onTabIndexChanged: (value: { i: number }) => void;
 	onSearchTermChange: (value: string) => void;
 	searchForMoreResults: () => void;
-	addFriend: (userId: string) => void;
 }
 
 export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 	navigation,
-	getText,
 	loadedTabs,
 	searchTermValue,
 	onTabIndexChanged,
@@ -47,8 +46,8 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 	topHasMoreResults,
 	topSearching,
 	searchForMoreResults,
-	addFriend,
 	setNavigationParams,
+	getText,
 }) => (
 	<View style={styles.container}>
 		<SearchHeader
@@ -78,10 +77,9 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 						suggestions={topSuggestions}
 						searching={topSearching}
 						hasMoreResults={topHasMoreResults}
-						addFriend={addFriend}
 						searchForMoreResults={searchForMoreResults}
-						getText={getText}
 						setNavigationParams={setNavigationParams}
+						getText={getText}
 					/>
 				)}
 			</Tab>

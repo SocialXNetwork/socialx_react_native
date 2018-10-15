@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import { SearchResultsItem } from '../../components';
 import { ISearchResultData } from '../../types';
+
 import styles from './SearchResultsList.style';
 
 interface IPaginatedList {
@@ -11,7 +12,6 @@ interface IPaginatedList {
 
 interface ISearchResultsListProps extends IPaginatedList {
 	searchResults: ISearchResultData[];
-	onAddFriend: (value: string) => void;
 	onResultPress: (result: ISearchResultData) => void;
 	onLoadMore: () => void;
 }
@@ -20,7 +20,7 @@ const LoadingFooter: React.SFC<IPaginatedList> = ({ hasMore }) => {
 	if (hasMore) {
 		return (
 			<View style={styles.bottomLoadingContainer}>
-				<ActivityIndicator size={'large'} />
+				<ActivityIndicator size="large" />
 			</View>
 		);
 	}
@@ -29,13 +29,11 @@ const LoadingFooter: React.SFC<IPaginatedList> = ({ hasMore }) => {
 
 const renderItem = (
 	item: ISearchResultData,
-	onAddFriend: (value: string) => void,
 	onResultPress: (result: ISearchResultData) => void,
 ) => (
 	<SearchResultsItem
 		key={item.userId}
 		item={item}
-		onAddFriend={() => onAddFriend(item.userId)}
 		onResultPress={() => onResultPress(item)}
 	/>
 );
@@ -44,16 +42,15 @@ const keyExtractor = (item: ISearchResultData) => item.userId; // TODO: enable l
 
 export const SearchResultsList: React.SFC<ISearchResultsListProps> = ({
 	searchResults,
-	onAddFriend,
 	onResultPress,
 	onLoadMore,
 	hasMore,
 }) => (
 	<FlatList
 		data={searchResults}
-		renderItem={({ item }) => renderItem(item, onAddFriend, onResultPress)}
+		renderItem={({ item }) => renderItem(item, onResultPress)}
 		style={styles.resultsContainer}
-		keyboardShouldPersistTaps={'handled'}
+		keyboardShouldPersistTaps="handled"
 		keyExtractor={keyExtractor}
 		onEndReachedThreshold={0.5}
 		alwaysBounceVertical={false}

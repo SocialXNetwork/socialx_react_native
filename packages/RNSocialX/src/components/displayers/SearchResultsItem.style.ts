@@ -7,8 +7,7 @@ const styles: any = {
 	card: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		paddingTop: Sizes.smartVerticalScale(10),
+		marginVertical: Sizes.smartVerticalScale(5),
 	},
 	avatar: {
 		width: AVATAR_SIZE,
@@ -16,7 +15,7 @@ const styles: any = {
 		borderRadius: AVATAR_SIZE / 2,
 	},
 	textContainer: {
-		paddingLeft: Sizes.smartHorizontalScale(10),
+		paddingLeft: Sizes.smartHorizontalScale(15),
 		justifyContent: 'center',
 	},
 	name: {
@@ -27,15 +26,6 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		color: Colors.grayText,
-	},
-	iconContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'flex-end',
-	},
-	icon: {
-		fontSize: Sizes.smartHorizontalScale(30),
-		color: Colors.pink,
 	},
 };
 

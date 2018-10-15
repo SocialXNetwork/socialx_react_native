@@ -8,11 +8,13 @@ import {
 } from '../../../components';
 import {
 	INavigationProps,
+	ITranslatedProps,
 	ITrendingCategoriesItem,
 	ITrendingContentItem,
 } from '../../../types';
+import { ComingSoon } from './SearchScreen.view';
 
-interface ITrendingScreenViewProps extends INavigationProps {
+interface ITrendingScreenViewProps extends INavigationProps, ITranslatedProps {
 	trendingCategoriesItems: ITrendingCategoriesItem[];
 	trendingContentItems: ITrendingContentItem[];
 	contentRef: React.RefObject<any>;
@@ -25,10 +27,12 @@ export const TrendingScreenView: React.SFC<ITrendingScreenViewProps> = ({
 	trendingContentItems,
 	contentRef,
 	passContentRef,
+	getText,
 }) => (
 	<View style={{ flex: 1 }}>
 		<SearchHeader navigation={navigation} />
-		<TrendingCategoriesCarousel
+		<ComingSoon message={getText('search.screen.results.coming.soon')} />
+		{/* <TrendingCategoriesCarousel
 			items={trendingCategoriesItems}
 			contentRef={contentRef}
 		/>
@@ -36,6 +40,6 @@ export const TrendingScreenView: React.SFC<ITrendingScreenViewProps> = ({
 			items={trendingContentItems}
 			passContentRef={passContentRef}
 			navigation={navigation}
-		/>
+		/> */}
 	</View>
 );

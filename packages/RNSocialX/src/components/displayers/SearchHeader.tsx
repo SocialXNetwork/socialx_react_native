@@ -73,13 +73,12 @@ export class SearchHeader extends Component<
 							onSubmitPressed={Keyboard.dismiss}
 							placeholder="Search"
 							icon="ios-search"
-							canCancel={true}
 							size={InputSizes.Small}
 							borderColor={colors.border}
 							iconColor={colors.icon}
 							returnKeyType={TRKeyboardKeys.done}
 							autoCorrect={true}
-							// focusUpdateHandler={this.onSearchFocusUpdatedHandler}
+							canCancel={true}
 							persistCancel={this.props.cancel}
 							onPressCancel={this.onBackHandler}
 							cancelButtonTextColor={colors.iosInputCancel}

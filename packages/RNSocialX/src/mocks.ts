@@ -62,57 +62,43 @@ const bestComments: ISimpleComment[] = [
 export const suggestedItems: ISearchResultData[] = [
 	{
 		userId: '101',
-		fullName: 'test user 1',
-		userName: 'testname',
-		location: 'Timisoara',
 		avatarURL:
-			'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		relationship: SearchResultKind.NotFriend,
+			'https://i.kinja-img.com/gawker-media/image/upload/s--_DBGLHVf--/c_scale,f_auto,fl_progressive,q_80,w_800/eibgv7kctah62iddzywm.jpg',
+		fullName: 'Seth Saunders',
+		userName: 'sethsaunders',
+		location: 'New York',
 	},
 	{
 		userId: '102',
-		fullName: 'test user 2',
-		userName: 'testname',
-		location: 'Timisoara',
 		avatarURL:
-			'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		relationship: SearchResultKind.NotFriend,
+			'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
+		fullName: 'Teresa Lamb',
+		userName: 'terlamb',
+		location: 'London',
 	},
 	{
 		userId: '103',
-		fullName: 'test user 3',
-		userName: 'testname',
-		location: 'Timisoara',
 		avatarURL:
-			'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		relationship: SearchResultKind.Friend,
+			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhxxOvVEmfKWgIxdz1Xvd0zTKY4oHlC8E709FF91o5FMTirI2T',
+		fullName: 'Sophie Smith',
+		userName: 'sophsmt',
+		location: 'San Francisco',
 	},
 	{
 		userId: '104',
-		fullName: 'test user 4',
-		userName: 'testname',
-		location: 'Timisoara',
 		avatarURL:
-			'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		relationship: SearchResultKind.Friend,
+			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlhQDjvfpOkYBNz_sFX6egUWv-tKgr9iwb9S0ECK5Ll8C-I9Oj',
+		fullName: 'Cory Maxwell',
+		userName: 'corymaxwell',
+		location: 'London',
 	},
 	{
 		userId: '105',
-		fullName: 'test user 5',
-		userName: 'testname',
-		location: 'Timisoara',
 		avatarURL:
-			'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		relationship: SearchResultKind.NotFriend,
-	},
-	{
-		userId: '106',
-		fullName: 'test user 6',
-		userName: 'testname',
-		location: 'Timisoara',
-		avatarURL:
-			'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png',
-		relationship: SearchResultKind.NotFriend,
+			'https://yt3.ggpht.com/a-/AN66SAyxvKvpstRZN6-LzcuggRm6kEQs-lKW5cOg6g=s900-mo-c-c0xffffffff-rj-k-no',
+		fullName: 'Claudia Kulmitzer',
+		userName: 'claudiam',
+		location: 'Berlin',
 	},
 ];
 
