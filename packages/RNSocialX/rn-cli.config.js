@@ -23,7 +23,7 @@ const config = {
     // crypto: getMod('react-native-crypto'),
     // stream: getMod('react-native-stream'),
     // randombytes: getMod('react-native-randombytes'),
-    // vm: getMod('vm-browserify'),
+    vm: getMod('vm-browserify'),
     'node-webcrypto-ossl': getMod('node-webcrypto-ossl'),
     'text-encoding': getMod('text-encoding'),
     '@trust/webcrypto': getMod('@trust/webcrypto'),
