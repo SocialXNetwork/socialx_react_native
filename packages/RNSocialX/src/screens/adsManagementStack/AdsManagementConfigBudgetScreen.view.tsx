@@ -1,6 +1,6 @@
-import { Button, CheckBox } from 'native-base';
+import { CheckBox } from 'native-base';
 import * as React from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -14,7 +14,7 @@ import styles, {
 interface IAdsManagementConfigBudgetScreenViewProps
 	extends ITranslatedProps,
 		IHeaderProps {
-	currencyButtonPressed: void;
+	currencyButtonPressed: () => void;
 	selectedCurrencyValue: string;
 	returnKeyAction: () => void;
 	onChangeBudget: () => void;
@@ -63,13 +63,9 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 			<Text style={styles.darkColorText}>
 				{getText('ad.management.budget.currency.text')}
 			</Text>
-			<Button
-				// @ts-ignore
+			<TouchableOpacity
 				style={styles.currencyButton}
-				// @ts-ignore
 				onPress={currencyButtonPressed}
-				transparent={true}
-				iconRight={true}
 			>
 				<Text style={styles.currencyText}>{selectedCurrencyValue}</Text>
 				<Icon
@@ -77,7 +73,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 					name={'md-arrow-dropdown'}
 					style={styles.caretDownIcon}
 				/>
-			</Button>
+			</TouchableOpacity>
 		</View>
 		<View style={styles.budgetContainer}>
 			<View style={styles.optionContainer}>
@@ -141,18 +137,15 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 					{getText('ad.management.budget.start.text')}
 				</Text>
 				<View style={styles.datePickerContainer}>
-					<Button
-						// @ts-ignore
+					<TouchableOpacity
 						style={styles.datePickerButton}
 						onPress={showDatePicker}
-						transparent={true}
 					>
 						<Text style={styles.datePickerDefaultText}>{defaultDate}</Text>
-					</Button>
+					</TouchableOpacity>
 					<DateTimePicker
 						isVisible={isStartDatePickerVisible}
 						titleIOS={getText('ad.management.budget.start.datePicker')}
-						// @ts-ignore
 						confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
 						cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
 						onConfirm={confirmDatePicker}
@@ -166,18 +159,15 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 					{getText('ad.management.budget.stop.text')}
 				</Text>
 				<View style={styles.datePickerContainer}>
-					<Button
-						// @ts-ignore
+					<TouchableOpacity
 						style={styles.datePickerButton}
 						onPress={showDatePicker}
-						transparent={true}
 					>
 						<Text style={styles.datePickerDefaultText}>{defaultDate}</Text>
-					</Button>
+					</TouchableOpacity>
 					<DateTimePicker
 						isVisible={isStopDatePickerVisible}
 						titleIOS={getText('ad.management.budget.stop.datePicker')}
-						// @ts-ignore
 						confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
 						cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
 						onConfirm={confirmDatePicker}

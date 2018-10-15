@@ -14,8 +14,7 @@ const styles: any = {
 		color: Colors.postFullName,
 		textAlign: 'left',
 		paddingLeft: Sizes.smartVerticalScale(24),
-		paddingTop: Sizes.smartHorizontalScale(20),
-		paddingBottom: Sizes.smartHorizontalScale(19),
+		paddingVertical: Sizes.smartVerticalScale(20),
 		backgroundColor: 'white',
 	},
 	currencyContainer: {
@@ -23,10 +22,8 @@ const styles: any = {
 		justifyContent: 'space-between',
 		backgroundColor: 'white',
 		marginTop: Sizes.smartVerticalScale(29),
-		paddingLeft: Sizes.smartVerticalScale(24),
-		paddingTop: Sizes.smartHorizontalScale(12),
-		paddingBottom: Sizes.smartHorizontalScale(14),
-		paddingRight: Sizes.smartVerticalScale(24.4),
+		paddingHorizontal: Sizes.smartHorizontalScale(24),
+		paddingVertical: Sizes.smartVerticalScale(13),
 	},
 	currencyText: {
 		...Fonts.centuryGothic,
@@ -36,9 +33,9 @@ const styles: any = {
 		textAlign: 'left',
 	},
 	currencyButton: {
+		flexDirection: 'row',
 		height: Sizes.smartHorizontalScale(18),
-		paddingTop: Sizes.smartHorizontalScale(0),
-		paddingBottom: Sizes.smartHorizontalScale(0),
+		paddingVertical: 0,
 	},
 	caretDownIcon: {
 		color: Colors.pink,
@@ -56,10 +53,8 @@ const styles: any = {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingLeft: Sizes.smartVerticalScale(24),
-		paddingRight: Sizes.smartVerticalScale(27.4),
-		paddingTop: Sizes.smartHorizontalScale(15),
-		paddingBottom: Sizes.smartHorizontalScale(11),
+		paddingVertical: Sizes.smartVerticalScale(15),
+		paddingHorizontal: Sizes.smartHorizontalScale(27),
 	},
 	separator: {
 		borderWidth: 1,
@@ -92,16 +87,13 @@ const styles: any = {
 		borderWidth: 1,
 		borderRadius: 6,
 		borderColor: Colors.dustWhite,
-		paddingLeft: Sizes.smartVerticalScale(7.5),
-		paddingRight: Sizes.smartVerticalScale(7.5),
-		paddingTop: Sizes.smartHorizontalScale(6.5),
-		paddingBottom: Sizes.smartHorizontalScale(7.5),
+		paddingVertical: Sizes.smartVerticalScale(7),
+		paddingHorizontal: Sizes.smartHorizontalScale(7),
 	},
 	datePickerButton: {
 		height: Sizes.smartHorizontalScale(18),
 		width: Sizes.smartVerticalScale(86),
-		paddingTop: Sizes.smartHorizontalScale(0),
-		paddingBottom: Sizes.smartHorizontalScale(0),
+		paddingVertical: 0,
 	},
 	datePickerDefaultText: {
 		...Fonts.centuryGothic,
@@ -113,15 +105,14 @@ const styles: any = {
 	},
 	buttonContainer: {
 		marginTop: Sizes.smartVerticalScale(20),
-		paddingLeft: Sizes.smartHorizontalScale(28),
-		paddingRight: Sizes.smartHorizontalScale(28),
+		paddingHorizontal: Sizes.smartHorizontalScale(28),
 	},
 	button: {
 		borderColor: 'transparent',
 	},
 };
 
-export default StyleSheet.create(styles);
+export default StyleSheet.create(styles) as any;
 
 export const customStyleProps = {
 	checkboxColor: Colors.pink,
