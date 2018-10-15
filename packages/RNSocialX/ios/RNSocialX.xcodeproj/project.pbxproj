@@ -2228,6 +2228,7 @@
 			baseConfigurationReference = 0826E53ACC3E2EB2573110E4 /* Pods-RNSocialX.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Christian Josephs (BK72Q8YHQR)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -2272,7 +2273,8 @@
 			baseConfigurationReference = 0EA72DFD49D18E7FF9E21070 /* Pods-RNSocialX.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: SocialX Pte. Ltd (WJ7HBS2562)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SocialX Pte. Ltd (WJ7HBS2562)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WJ7HBS2562;
