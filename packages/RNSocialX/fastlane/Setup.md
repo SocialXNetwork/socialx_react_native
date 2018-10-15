@@ -5,12 +5,13 @@ Please DO NOT install FastLane as described in there, rather see no. 2 in next s
 
 ##One time setup for FastLane
 
-1. From folder fastlane run `sudo bundle update`. This will install FastLane and CocoaPods using Gemfile and Gemfile.lock
-2. The next steps are iOS specific and require macOS machine and Xcode 9.2+ installed. If not just skip steps 3 to 5.
-3. You need to install dev. and app store certificates and profiles.
-4. Go to folder `fastlane/ios_signing_files`.
+1. First install bundler by running: `sudo gem install bundler`
+2. From folder fastlane run `sudo bundle update`. This will install FastLane and CocoaPods using Gemfile and Gemfile.lock
+3. The next steps are iOS specific and require macOS machine and Xcode 9.2+ installed. If not just skip steps 3 to 5.
+4. You need to install dev. and app store certificates and profiles.
+5. Go to folder `fastlane/ios_signing_files`.
 Now drag the files with extension `.mobileprovision` over opened Xcode icon in Dock. This will install the profiles.
-5. In the same folder double click to install `.p12` files, with password `SocialX2018`. 
+6. In the same folder double click to install `.p12` files, with password `SocialX2018`. 
 The certificates along with private keys will get into `Keychain` app. 
 
 ## Building and distribution for iOS via TestFlight
@@ -47,4 +48,3 @@ The logic of the lanes is very similar with lanes for iOS.
 3. After build: you can commit the changes with the new version, on the beta branch.
 
 ## Build and distribute both iOS and Android at once: TODO
- 
