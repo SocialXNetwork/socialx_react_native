@@ -19,7 +19,7 @@ export interface IUsernameInput {
 }
 
 export interface ISearchProfilesByFullNameInput {
-	textSearch: string;
+	term: string;
 	maxResults: number;
 }
 

@@ -4,11 +4,14 @@ import { INavigationProps } from '../../../types';
 import { TrendingScreenView } from './TrendingScreen.view';
 
 import {
+	IWithTrendingEnhancedActions,
 	IWithTrendingEnhancedData,
 	WithTrending,
 } from '../../../enhancers/screens';
 
-type ITrendingScreenProps = INavigationProps & IWithTrendingEnhancedData;
+type ITrendingScreenProps = INavigationProps &
+	IWithTrendingEnhancedData &
+	IWithTrendingEnhancedActions;
 
 interface ITrendingScreenState {
 	contentRef: React.RefObject<any>;
@@ -34,6 +37,7 @@ class Screen extends React.Component<
 				passContentRef={(ref: React.RefObject<any>) =>
 					this.setState({ contentRef: ref })
 				}
+				getText={this.props.getText}
 			/>
 		);
 	}
@@ -41,6 +45,8 @@ class Screen extends React.Component<
 
 export const TrendingScreen = ({ navigation }: INavigationProps) => (
 	<WithTrending>
-		{({ data }) => <Screen navigation={navigation} {...data} />}
+		{({ data, actions }) => (
+			<Screen navigation={navigation} {...data} {...actions} />
+		)}
 	</WithTrending>
 );

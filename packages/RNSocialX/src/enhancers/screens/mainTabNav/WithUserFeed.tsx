@@ -33,7 +33,6 @@ const mock: IWithUserFeedEnhancedProps = {
 		hasMorePosts: false,
 		refreshingFeed: false,
 		loadingMorePosts: false,
-		loadingFeed: true,
 	},
 	actions: {
 		loadPosts: (feed: FEED_TYPES) => {
@@ -79,7 +78,6 @@ export interface IWithUserFeedEnhancedData {
 	hasMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
-	loadingFeed: boolean;
 }
 
 export interface IWithUserFeedEnhancedActions
@@ -147,8 +145,9 @@ export class WithUserFeed extends React.Component<
 
 																			return this.props.children({
 																				data: {
+																					...mock.data,
 																					currentUser: user,
-																					posts: feedPosts,
+																					// posts: feedPosts,
 																					hasMorePosts:
 																						globals.canLoadMorePosts,
 																					loadingMorePosts: getActivity(
@@ -156,10 +155,6 @@ export class WithUserFeed extends React.Component<
 																						ActionTypes.LOAD_MORE_POSTS,
 																					),
 																					refreshingFeed: getActivity(
-																						activities,
-																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																					),
-																					loadingFeed: getActivity(
 																						activities,
 																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
 																					),

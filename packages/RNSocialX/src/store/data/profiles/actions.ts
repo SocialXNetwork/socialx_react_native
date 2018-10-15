@@ -91,7 +91,7 @@ export const syncSearchProfilesByFullNameAction: ActionCreator<
 });
 
 export const searchProfilesByFullName = ({
-	textSearch,
+	term,
 	maxResults,
 }: ISearchProfilesByFullNameInput): IThunk => async (
 	dispatch,
@@ -103,7 +103,7 @@ export const searchProfilesByFullName = ({
 	const auth = storeState.app.auth.auth;
 	if (auth && auth.alias) {
 		try {
-			dispatch(searchProfilesByFullNameAction({ textSearch, maxResults }));
+			dispatch(searchProfilesByFullNameAction({ term, maxResults }));
 			dispatch(
 				beginActivity({
 					type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
@@ -112,7 +112,7 @@ export const searchProfilesByFullName = ({
 			);
 			const { dataApi } = context;
 			const profiles = await dataApi.profiles.searchByFullName({
-				textSearch,
+				textSearch: term,
 				maxResults,
 			});
 			dispatch(syncSearchProfilesByFullNameAction(profiles));

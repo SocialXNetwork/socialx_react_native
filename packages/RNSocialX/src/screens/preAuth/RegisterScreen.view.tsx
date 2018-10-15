@@ -89,11 +89,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 				>
 					<Formik
 						initialValues={{
-							email: 'test@ggg.gg',
-							name: 'Test GGG',
-							userName: 'testggg',
-							password: 'password',
-							confirmPassword: 'password',
+							email: '',
+							name: '',
+							userName: '',
+							password: '',
+							confirmPassword: '',
 							avatar: {
 								uri: '',
 							},

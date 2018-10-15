@@ -1,8 +1,9 @@
 /**
  * TODO list:
- * 1. Props data: topSearchResults, topSuggestions, topSearching, topHasMoreResults
- * 2. Props actions: search, searchForMoreResults, addFriend
+ * 1. Props data: topSearchResults, topSuggestions, topHasMoreResults
+ * 2. Props actions: searchForMoreResults
  * 3. LATER - add more enhancers to support other tabs: People, Tags, Places
+ * 4. Talk with Jake to simplify this
  */
 
 import * as React from 'react';
@@ -14,8 +15,13 @@ import {
 	ITranslatedProps,
 	SearchTabs,
 } from '../../../types';
+
+import { ActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithActivities } from '../../connectors/ui/WithActivities';
+import { getActivity } from '../../helpers';
 
 const mock: IWithSearchEnhancedProps = {
 	data: {
@@ -30,9 +36,6 @@ const mock: IWithSearchEnhancedProps = {
 			/**/
 		},
 		searchForMoreResults: () => {
-			/**/
-		},
-		addFriend: (userId: string) => {
 			/**/
 		},
 		setNavigationParams: () => {
@@ -52,7 +55,6 @@ export interface IWithSearchEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions {
 	searchForMoreResults: () => void;
-	addFriend: (userId: string) => void;
 	search: (term: string, tab: SearchTabs) => void;
 }
 
@@ -76,17 +78,36 @@ export class WithSearch extends React.Component<
 			<WithNavigationParams>
 				{(navigationParamsProps) => (
 					<WithI18n>
-						{(i18nProps) =>
-							this.props.children({
-								data: mock.data,
-								actions: {
-									...mock.actions,
-									getText: i18nProps.getText,
-									setNavigationParams:
-										navigationParamsProps.setNavigationParams,
-								},
-							})
-						}
+						{(i18nProps) => (
+							<WithActivities>
+								{({ activities }) => (
+									<WithProfiles>
+										{(profilesProps) =>
+											this.props.children({
+												data: {
+													...mock.data,
+													topSearching: getActivity(
+														activities,
+														ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
+													),
+												},
+												actions: {
+													...mock.actions,
+													search: (term: string, tab: SearchTabs) =>
+														profilesProps.searchProfilesByFullName({
+															term,
+															maxResults: 10,
+														}),
+													getText: i18nProps.getText,
+													setNavigationParams:
+														navigationParamsProps.setNavigationParams,
+												},
+											})
+										}
+									</WithProfiles>
+								)}
+							</WithActivities>
+						)}
 					</WithI18n>
 				)}
 			</WithNavigationParams>

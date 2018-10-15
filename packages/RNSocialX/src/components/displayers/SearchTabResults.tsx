@@ -7,11 +7,11 @@ import {
 	INavigationProps,
 	ISearchResultData,
 	ITranslatedProps,
-	SearchResultKind,
 } from '../../types';
 import { SearchResults } from './SearchResults';
-import styles from './SearchTabResults.style';
 import { SuggestedSearches } from './SuggestedSearches';
+
+import styles from './SearchTabResults.style';
 
 interface ISearchTabResultsProps
 	extends INavigationProps,
@@ -23,7 +23,6 @@ interface ISearchTabResultsProps
 	searching: boolean;
 	hasMoreResults: boolean;
 	searchForMoreResults: () => void;
-	addFriend: (userId: string) => void;
 }
 
 const onResultPressHandler = (
@@ -31,17 +30,11 @@ const onResultPressHandler = (
 	navigation: any,
 	setNavigationParams: any,
 ) => {
-	if (
-		result.relationship === SearchResultKind.Friend ||
-		result.relationship === SearchResultKind.NotFriend ||
-		result.relationship === SearchResultKind.FriendRequestSent
-	) {
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: { userId: result.userId },
-		});
-		navigation.navigate(SCREENS.UserProfile);
-	}
+	setNavigationParams({
+		screenName: SCREENS.UserProfile,
+		params: { userId: result.userId },
+	});
+	navigation.navigate(SCREENS.UserProfile);
 };
 
 const onLoadMoreResultsHandler = (
@@ -60,7 +53,6 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 	suggestions,
 	searching,
 	hasMoreResults,
-	addFriend,
 	searchForMoreResults,
 	getText,
 	navigation,
@@ -70,7 +62,6 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 		{searchTermValue.length === 0 && (
 			<SuggestedSearches
 				items={suggestions}
-				onAddFriend={addFriend}
 				onResultPress={(result) =>
 					onResultPressHandler(result, navigation, setNavigationParams)
 				}
@@ -81,7 +72,6 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 			<SearchResults
 				searchResults={searchResults}
 				searching={searching}
-				onAddFriend={addFriend}
 				onResultPress={(result) =>
 					onResultPressHandler(result, navigation, setNavigationParams)
 				}

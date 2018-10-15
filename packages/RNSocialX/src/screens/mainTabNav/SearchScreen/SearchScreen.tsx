@@ -42,20 +42,18 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	public render() {
 		const {
 			navigation,
-			getText,
 			setNavigationParams,
 			topSearchResults,
 			topSuggestions,
 			topSearching,
 			topHasMoreResults,
 			searchForMoreResults,
-			addFriend,
+			getText,
 		} = this.props;
 		const { loadedTabs, term } = this.state;
 		return (
 			<SearchScreenView
 				navigation={navigation}
-				getText={getText}
 				setNavigationParams={setNavigationParams}
 				loadedTabs={loadedTabs}
 				topSearchResults={topSearchResults}
@@ -63,10 +61,10 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 				topSearching={topSearching}
 				topHasMoreResults={topHasMoreResults}
 				searchForMoreResults={searchForMoreResults}
-				addFriend={addFriend}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
 				searchTermValue={term}
+				getText={getText}
 			/>
 		);
 	}
