@@ -60,6 +60,7 @@ export {
 export {
 	WithTrending,
 	IWithTrendingEnhancedData,
+	IWithTrendingEnhancedActions,
 } from './mainTabNav/WithTrending';
 export {
 	WithUserFeed,

@@ -54,7 +54,6 @@ export class Screen extends React.Component<
 			hasMorePosts,
 			refreshingFeed,
 			loadingMorePosts,
-			loadingFeed,
 			getText,
 			deletePost,
 			blockUser,
@@ -83,7 +82,6 @@ export class Screen extends React.Component<
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
-				isLoading={loadingFeed}
 				getText={getText}
 				onImagePress={this.onMediaObjectPressHandler}
 				onLikeButtonPress={this.onLikePressHandler}
@@ -101,9 +99,9 @@ export class Screen extends React.Component<
 	private onLoadMorePostsHandler = async () => {
 		const { loadMorePosts } = this.props;
 
-		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
-			loadMorePosts();
-		}
+		// if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
+		// 	loadMorePosts();
+		// }
 	};
 
 	private onCreateWallPostHandler = () => {
@@ -122,9 +120,9 @@ export class Screen extends React.Component<
 	private onRefreshHandler = async () => {
 		const { refreshFeed, feedType } = this.props;
 
-		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
-			refreshFeed(feedType);
-		}
+		// if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
+		// 	refreshFeed(feedType);
+		// }
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {

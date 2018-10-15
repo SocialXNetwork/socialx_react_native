@@ -33,7 +33,6 @@ export enum SearchTabs {
 
 export interface ISearchResultPeople {
 	userId: string;
-	relationship: SearchResultKind;
 	fullName: string;
 	userName: string;
 	location: string;

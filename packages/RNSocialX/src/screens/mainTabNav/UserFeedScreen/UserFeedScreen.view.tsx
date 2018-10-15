@@ -10,10 +10,6 @@ import {
 	WallPostCard,
 } from '../../../components';
 import {
-	IWithLoaderProps,
-	WithInlineLoader,
-} from '../../../components/inlineLoader';
-import {
 	getTextSignature,
 	ICurrentUser,
 	IWallPostCardActions,
@@ -21,9 +17,7 @@ import {
 } from '../../../types';
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps
-	extends IWithLoaderProps,
-		IWallPostCardActions {
+interface IUserFeedScreenViewProps extends IWallPostCardActions {
 	avatarImage: string | undefined;
 	wallPosts: IWallPostCardData[];
 	refreshing: boolean;
@@ -54,7 +48,6 @@ export class UserFeedScreenView extends React.Component<
 			onCreateWallPost,
 			shareSectionPlaceholder,
 			noPosts,
-			isLoading,
 			shareSectionOpacityInterpolation,
 			scrollRef,
 			scrollY,
@@ -62,49 +55,47 @@ export class UserFeedScreenView extends React.Component<
 		} = this.props;
 
 		return (
-			<WithInlineLoader isLoading={isLoading}>
-				<View style={styles.container}>
-					{noPosts ? (
-						<FeedWithNoPosts
-							onCreateWallPost={onCreateWallPost}
-							// onCreateWallPost={onLoadMorePosts}
-							getText={getText}
-						/>
-					) : (
-						<FlatList
-							ListHeaderComponent={
-								shareSectionPlaceholder ? (
-									<ShareSection
-										avatarImage={avatarImage}
-										onCreateWallPost={onCreateWallPost}
-										sharePlaceholder={shareSectionPlaceholder}
-										opacity={shareSectionOpacityInterpolation}
-									/>
-								) : null
-							}
-							ref={scrollRef}
-							windowSize={10}
-							refreshing={refreshing}
-							onRefresh={onRefresh}
-							data={wallPosts}
-							keyExtractor={this.keyExtractor}
-							renderItem={(data) => this.renderWallPosts(data, getText)}
-							onEndReached={hasMorePosts ? onLoadMorePosts : null}
-							onEndReachedThreshold={0.5}
-							keyboardShouldPersistTaps="handled"
-							ListFooterComponent={<LoadingFooter hasMore={hasMorePosts} />}
-							onScrollToIndexFailed={() => {
-								/**/
-							}}
-							onScroll={Animated.event([
-								{ nativeEvent: { contentOffset: { y: scrollY } } },
-							])}
-							scrollEventThrottle={16}
-							showsVerticalScrollIndicator={false}
-						/>
-					)}
-				</View>
-			</WithInlineLoader>
+			<View style={styles.container}>
+				{noPosts ? (
+					<FeedWithNoPosts
+						onCreateWallPost={onCreateWallPost}
+						// onCreateWallPost={onLoadMorePosts}
+						getText={getText}
+					/>
+				) : (
+					<FlatList
+						ListHeaderComponent={
+							shareSectionPlaceholder ? (
+								<ShareSection
+									avatarImage={avatarImage}
+									onCreateWallPost={onCreateWallPost}
+									sharePlaceholder={shareSectionPlaceholder}
+									opacity={shareSectionOpacityInterpolation}
+								/>
+							) : null
+						}
+						ref={scrollRef}
+						windowSize={10}
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						data={wallPosts}
+						keyExtractor={this.keyExtractor}
+						renderItem={(data) => this.renderWallPosts(data, getText)}
+						onEndReached={hasMorePosts ? onLoadMorePosts : null}
+						onEndReachedThreshold={0.5}
+						keyboardShouldPersistTaps="handled"
+						ListFooterComponent={<LoadingFooter hasMore={hasMorePosts} />}
+						onScrollToIndexFailed={() => {
+							/**/
+						}}
+						onScroll={Animated.event([
+							{ nativeEvent: { contentOffset: { y: scrollY } } },
+						])}
+						scrollEventThrottle={16}
+						showsVerticalScrollIndicator={false}
+					/>
+				)}
+			</View>
 		);
 	}
 

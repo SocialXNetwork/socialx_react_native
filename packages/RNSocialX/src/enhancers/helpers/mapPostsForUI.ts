@@ -1,13 +1,18 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
 import { IPostArrayData } from '../../store/data/posts';
 import { IActivity } from '../../store/ui/activities';
-import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
+import {
+	ICurrentUser,
+	IVisitedUser,
+	MediaTypeImage,
+	MediaTypeVideo,
+} from '../../types';
 import { getActivity } from './getActivity';
 
 export const mapPostsForUI = (
 	posts: IPostArrayData,
 	returnLength: number,
-	currentUser: ICurrentUser,
+	user: ICurrentUser | IVisitedUser,
 	profiles: any,
 	activities: IActivity[],
 	activityType: string | null,
@@ -22,9 +27,10 @@ export const mapPostsForUI = (
 				(profile: any) => profile.pub === post.owner.pub,
 			);
 
-			const foundLike = post.likes.find(
-				(like) => like.owner.alias === currentUser!.userId,
-			);
+			// console.log(postOwnerProfile);
+			// const foundLike = post.likes.find(
+			// 	(like) => like.owner.alias === user!.userId,
+			// );
 
 			return {
 				id: post.postId,
@@ -43,46 +49,50 @@ export const mapPostsForUI = (
 				numberOfComments: post.comments.length,
 				// TODO: add this later when data is available
 				numberOfWalletCoins: 0,
-				likedByMe: !!foundLike,
+				likedByMe: false,
 				canDelete: true,
-				media: post.media!.map((media) => ({
-					url: appConfig.ipfsConfig.ipfs_URL + media.hash,
-					hash: media.hash,
-					type: media.type.name === 'Photo' ? MediaTypeImage : MediaTypeVideo,
-					extension: media.extension,
-					size: media.size,
-					numberOfLikes: post.likes.length,
-					numberOfComments: post.comments.length,
-				})),
-				likes: post.likes.map((like) => {
-					return {
-						userId: like.owner.alias,
-						userName: like.owner.alias,
-					};
-				}),
+				// media: post.media!.map((media) => ({
+				// 	url: appConfig.ipfsConfig.ipfs_URL + media.hash,
+				// 	hash: media.hash,
+				// 	type: media.type.name === 'Photo' ? MediaTypeImage : MediaTypeVideo,
+				// 	extension: media.extension,
+				// 	size: media.size,
+				// 	numberOfLikes: post.likes.length,
+				// 	numberOfComments: post.comments.length,
+				// })),
+				media: [],
+				// likes: post.likes.map((like) => {
+				// 	return {
+				// 		userId: like.owner.alias,
+				// 		userName: like.owner.alias,
+				// 	};
+				// }),
+				likes: [],
 				// @Alex replace this with a check for likes length
-				bestComments: post.comments.slice(0, 2).map((comment) => {
-					return {
-						id: String(comment.timestamp),
-						text: comment.text,
-						likes: comment.likes.map((like) => {
-							return {
-								userId: like.owner.alias,
-								userName: like.owner.alias,
-							};
-						}),
-						owner: {
-							userId: comment.owner.alias,
-							userName: comment.owner.alias,
-						},
-					};
-				}),
+				// bestComments: post.comments.slice(0, 2).map((comment) => {
+				// 	return {
+				// 		id: String(comment.timestamp),
+				// 		text: comment.text,
+				// 		likes: comment.likes.map((like) => {
+				// 			return {
+				// 				userId: like.owner.alias,
+				// 				userName: like.owner.alias,
+				// 			};
+				// 		}),
+				// 		owner: {
+				// 			userId: comment.owner.alias,
+				// 			userName: comment.owner.alias,
+				// 		},
+				// 	};
+				// }),
+				bestComments: [],
 				listLoading: getActivity(activities, activityType),
 				suggested: undefined,
 				// @Alex find a good way of passing noInput
 				noInput: false,
 				contentOffensive: false,
 				marginBottom: 0,
+				currentUserAvatarURL: user.avatarURL,
 			};
 		});
 };

@@ -3,18 +3,16 @@ import { Text, View } from 'react-native';
 
 import { SearchResultsItem } from '../';
 import { ISearchResultData, ITranslatedProps } from '../../types';
+
 import styles from './SuggestedSearches.style';
 
 interface ISuggestedProps extends ITranslatedProps {
 	items: ISearchResultData[];
-	onAddFriend: (userId: string) => void;
 	onResultPress: (result: ISearchResultData) => void;
 }
 
-// Add 'Suggested' to dictionary
 export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 	items,
-	onAddFriend,
 	onResultPress,
 	getText,
 }) => {
@@ -23,11 +21,11 @@ export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 			<SearchResultsItem
 				item={item}
 				key={item.userId}
-				onAddFriend={onAddFriend}
 				onResultPress={onResultPress}
 			/>
 		));
 
+		// Strange getText bug, check later
 		return (
 			<View style={styles.container}>
 				<Text style={styles.title}>Suggested</Text>

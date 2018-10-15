@@ -7,12 +7,21 @@
 import * as React from 'react';
 
 import { trendingCategoriesItems, trendingContentItems } from '../../../mocks';
-import { ITrendingCategoriesItem, ITrendingContentItem } from '../../../types';
+import {
+	ITranslatedProps,
+	ITrendingCategoriesItem,
+	ITrendingContentItem,
+} from '../../../types';
+
+import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithTrendingEnhancedProps = {
 	data: {
 		trendingCategoriesItems,
 		trendingContentItems,
+	},
+	actions: {
+		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
@@ -21,8 +30,11 @@ export interface IWithTrendingEnhancedData {
 	trendingContentItems: ITrendingContentItem[];
 }
 
+export interface IWithTrendingEnhancedActions extends ITranslatedProps {}
+
 interface IWithTrendingEnhancedProps {
 	data: IWithTrendingEnhancedData;
+	actions: IWithTrendingEnhancedActions;
 }
 
 interface IWithTrendingProps {
@@ -36,7 +48,17 @@ export class WithTrending extends React.Component<
 	IWithTrendingState
 > {
 	render() {
-		const { children } = this.props;
-		return children({ data: mock.data });
+		return (
+			<WithI18n>
+				{({ getText }) =>
+					this.props.children({
+						data: mock.data,
+						actions: {
+							getText,
+						},
+					})
+				}
+			</WithI18n>
+		);
 	}
 }

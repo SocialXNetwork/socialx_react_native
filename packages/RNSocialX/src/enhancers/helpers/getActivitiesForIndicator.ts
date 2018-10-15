@@ -10,7 +10,6 @@ export const getActivitiesForIndicator = (activities: IActivity[]) => {
 			activity.type === AccountActionTypes.CREATE_ACCOUNT ||
 			activity.type === AccountActionTypes.LOGIN ||
 			activity.type === ProfileActionTypes.GET_CURRENT_PROFILE ||
-			activity.type === PostActionTypes.GET_PUBLIC_POSTS_BY_DATE ||
 			activity.type === PostActionTypes.CREATE_POST
 		) {
 			return true;
