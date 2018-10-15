@@ -10294,13 +10294,12 @@ react-native-mime-types@^2.2.1:
   dependencies:
     mime-db "~1.25.0"
 
-react-native-modal-datetime-picker@^6.0.0:
+"react-native-modal-datetime-picker@https://github.com/mmazzarolo/react-native-modal-datetime-picker":
   version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-6.0.0.tgz#8018994524122ad48fd6bc66f26f623c75a49fb3"
-  integrity sha512-O8brvSXgvRtfHzAyCNSrPcylE05cyK30D8/7rM0kjXLnlDcoiXtEl62qDQw8wnJOAL6kQFGn/iQ8H4mGXptiHw==
+  resolved "https://github.com/mmazzarolo/react-native-modal-datetime-picker#24f33ab041f7bfd0354c38a56de0aa12dfb18fab"
   dependencies:
-    prop-types "^15.6.1"
-    react-native-modal "^6.2.0"
+    prop-types "^15.6.2"
+    react-native-modal "^6.5.0"
 
 react-native-modal-dropdown@^0.6.2:
   version "0.6.2"
@@ -10309,7 +10308,7 @@ react-native-modal-dropdown@^0.6.2:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-modal@^6.2.0, react-native-modal@^6.5.0:
+react-native-modal@^6.5.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
   integrity sha512-ewchdETAGd32xLGLK93NETEGkRcePtN7ZwjmLSQnNW1Zd0SRUYE8NqftjamPyfKvK0i2DZjX4YAghGZTqaRUbA==
