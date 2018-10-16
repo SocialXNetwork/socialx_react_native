@@ -23,6 +23,7 @@ import { IStackDefaultConfig } from '../types';
 import { tabStyles } from './Navigation.style';
 
 import {
+	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
 	CommentsScreen,
@@ -211,8 +212,20 @@ const PreAuthNavigator = createStackNavigator(
 	defaultConfig,
 );
 
+const HomelessNavigator = createStackNavigator(
+	{
+		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
+		AdsManagementScreen: { screen: AdsManagementScreen },
+		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
+	},
+	{
+		headerMode: 'none',
+	},
+);
+
 const AppNavigation = createStackNavigator(
 	{
+		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthNavigator },
 		Intro: { screen: IntroScreen },
 		Main: { screen: MainScreenWithModal },
