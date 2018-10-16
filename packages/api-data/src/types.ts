@@ -107,7 +107,10 @@ export interface IGunInstance {
 		callback?: (data: IGunSetterCallback) => void,
 	) => IGunInstance;
 	open: <T>(callback: (data: T) => void) => IGunInstance;
-
+	find: <T>(
+		query: object,
+		callback: (data: T, key: string) => void,
+	) => IGunInstance;
 	// subInstance api
 	user: (pub?: string) => IGunAccountInstance;
 }

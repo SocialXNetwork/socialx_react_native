@@ -116,20 +116,11 @@ export const findProfilesByFullName = (
 	{ textSearch, maxResults }: { textSearch: string; maxResults?: number },
 	callback: IGunCallback<any[]>,
 ) => {
-	profileHandles.allProfiles(context).docLoad((data: any) => {
-		const filteredData = Object.entries(data)
-			.map(
-				([username, profile]) =>
-					data[username].fullName.match(new RegExp(textSearch, 'i'))
-						? profile
-						: null,
-			)
-			.filter((v) => v);
-		if (maxResults && maxResults > 0) {
-			return callback(null, filteredData.slice(0, maxResults));
-		}
-		return callback(null, filteredData);
-	});
+	profileHandles
+		.allProfiles(context)
+		.find({ fullName: new RegExp(textSearch, 'i') }, (data: any) => {
+			return callback(null, data);
+		});
 };
 
 export default {
