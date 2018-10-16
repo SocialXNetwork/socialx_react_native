@@ -7,7 +7,7 @@ export const HeaderLogo = () => (
 	<Image source={Images.IntroWalkThrough1Logo} style={styles.logo} />
 );
 
-const styles = StyleSheet.create({
+const styles: any = StyleSheet.create({
 	logo: {
 		width: '100%',
 		height: Sizes.smartVerticalScale(25),

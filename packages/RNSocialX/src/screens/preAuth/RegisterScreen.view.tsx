@@ -210,7 +210,6 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								<View style={style.textInputContainer}>
 									<PrimaryTextInput
 										autoCapitalize="words"
-										autoCorrect={true}
 										icon="md-person"
 										placeholder={getText('register.name')}
 										placeholderColor={colors.postText}

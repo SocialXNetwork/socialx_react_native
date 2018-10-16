@@ -121,7 +121,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				options: [
 					getText('new.wall.post.screen.menu.pick.from.gallery'),
 					getText('new.wall.post.screen.menu.take.photo'),
-					getText('button.CANCEL'),
+					getText('button.cancel'),
 				],
 				cancelButtonIndex: 2,
 				title: getText('new.wall.post.screen.menu.title'),

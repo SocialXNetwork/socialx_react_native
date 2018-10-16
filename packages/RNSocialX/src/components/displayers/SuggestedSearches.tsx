@@ -25,10 +25,9 @@ export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 			/>
 		));
 
-		// Strange getText bug, check later
 		return (
 			<View style={styles.container}>
-				<Text style={styles.title}>Suggested</Text>
+				<Text style={styles.title}>{getText('search.suggested')}</Text>
 				{rows}
 			</View>
 		);

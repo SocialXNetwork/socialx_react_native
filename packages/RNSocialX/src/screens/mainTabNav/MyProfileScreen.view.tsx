@@ -11,6 +11,7 @@ import {
 	ProfileTopContainer,
 } from '../../components';
 import { ITranslatedProps } from '../../types';
+
 import styles, { icons } from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends ITranslatedProps {
@@ -107,7 +108,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						/>
 					</View>
 				)}
-				{!hasPhotos && <NoPhotos getText={getText} />}
+				{!hasPhotos && <NoPhotos owner={true} getText={getText} />}
 			</ScrollView>
 		</View>
 	);

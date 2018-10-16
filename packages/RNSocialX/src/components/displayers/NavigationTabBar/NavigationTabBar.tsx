@@ -80,7 +80,7 @@ export class NavigationTabBar extends React.Component<
 				options: [
 					getText('tab.bar.bottom.photo.picker.use.gallery'),
 					getText('tab.bar.bottom.photo.picker.take.use.camera'),
-					getText('button.CANCEL'),
+					getText('button.cancel'),
 				],
 				cancelButtonIndex: 2,
 				title: getText('tab.bar.bottom.photo.picker.title'),
