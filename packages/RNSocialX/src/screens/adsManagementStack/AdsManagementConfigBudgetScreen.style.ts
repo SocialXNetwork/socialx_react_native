@@ -17,11 +17,13 @@ const styles: any = {
 		paddingVertical: Sizes.smartVerticalScale(20),
 		backgroundColor: 'white',
 	},
+	marginBetweenTitleAndCurrency: {
+		marginBottom: Sizes.smartVerticalScale(29),
+	},
 	currencyContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		backgroundColor: 'white',
-		marginTop: Sizes.smartVerticalScale(29),
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
 		paddingVertical: Sizes.smartVerticalScale(13),
 	},
@@ -44,6 +46,11 @@ const styles: any = {
 	budgetContainer: {
 		backgroundColor: 'white',
 		marginTop: Sizes.smartVerticalScale(30),
+	},
+	inputBudget: {
+		flex: 1,
+		padding: 0,
+		textAlign: 'right',
 	},
 	scheduleContainer: {
 		backgroundColor: 'white',
@@ -79,11 +86,12 @@ const styles: any = {
 		color: Colors.pink,
 	},
 	checkbox: {
-		marginRight: Sizes.smartVerticalScale(10),
+		left: 0,
 	},
 	datePickerContainer: {
 		height: Sizes.smartHorizontalScale(31),
-		width: Sizes.smartVerticalScale(97),
+		alignItems: 'center',
+		justifyContent: 'center',
 		borderWidth: 1,
 		borderRadius: 6,
 		borderColor: Colors.dustWhite,
@@ -91,8 +99,8 @@ const styles: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(7),
 	},
 	datePickerButton: {
-		height: Sizes.smartHorizontalScale(18),
-		width: Sizes.smartVerticalScale(86),
+		flex: 1,
+		alignItems: 'center',
 		paddingVertical: 0,
 	},
 	datePickerDefaultText: {
@@ -115,6 +123,7 @@ const styles: any = {
 export default StyleSheet.create(styles) as any;
 
 export const customStyleProps = {
+	highlightButton: Colors.pinkLace,
 	checkboxColor: Colors.pink,
 	pickerTitleColor: colorWithAlphaArray(Colors.alabaster, 1),
 	pickerToolbarAndBgColor: colorWithAlphaArray(Colors.alabaster, 1),

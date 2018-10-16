@@ -1,6 +1,13 @@
 import { CheckBox } from 'native-base';
 import * as React from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+	Keyboard,
+	ScrollView,
+	Text,
+	TextInput,
+	TouchableHighlight,
+	View,
+} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -16,17 +23,19 @@ interface IAdsManagementConfigBudgetScreenViewProps
 		IHeaderProps {
 	currencyButtonPressed: () => void;
 	selectedCurrencyValue: string;
-	returnKeyAction: () => void;
-	onChangeBudget: () => void;
+	budgetValue: string;
+	submitBudget: (text: string) => void;
 	perDayPressed: boolean;
 	lifetimePressed: boolean;
 	runAdContinuouslyPressed: boolean;
+	handleCheckboxChange: (text: string) => void;
 	isStartDatePickerVisible: boolean;
 	isStopDatePickerVisible: boolean;
-	showDatePicker: () => void;
-	confirmDatePicker: () => void;
-	cancelDatePicker: () => void;
-	defaultDate: string;
+	handleDatePicker: (text: string) => void;
+	handleStartDatePicked: (date: Date) => void;
+	handleStopDatePicked: (date: Date) => void;
+	selectedStartDate: string;
+	selectedStopDate: string;
 	nextButtonPressed: () => void;
 }
 
@@ -37,17 +46,19 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 	getText,
 	currencyButtonPressed,
 	selectedCurrencyValue,
-	returnKeyAction,
-	onChangeBudget,
+	budgetValue,
+	submitBudget,
 	perDayPressed,
 	lifetimePressed,
 	runAdContinuouslyPressed,
+	handleCheckboxChange,
 	isStartDatePickerVisible,
 	isStopDatePickerVisible,
-	showDatePicker,
-	confirmDatePicker,
-	cancelDatePicker,
-	defaultDate,
+	handleDatePicker,
+	handleStartDatePicked,
+	handleStopDatePicked,
+	selectedStartDate,
+	selectedStopDate,
 	nextButtonPressed,
 }) => (
 	<View style={styles.container}>
@@ -59,129 +70,169 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 			{getText('ad.management.budget.title').toUpperCase()}
 		</Text>
 		<View style={styles.separator} />
-		<View style={styles.currencyContainer}>
-			<Text style={styles.darkColorText}>
-				{getText('ad.management.budget.currency.text')}
-			</Text>
-			<TouchableOpacity
-				style={styles.currencyButton}
+		<View style={styles.marginBetweenTitleAndCurrency} />
+		<ScrollView
+			alwaysBounceVertical={false}
+			keyboardShouldPersistTaps={'handled'}
+		>
+			<TouchableHighlight
+				underlayColor={customStyleProps.checkboxColor}
 				onPress={currencyButtonPressed}
 			>
-				<Text style={styles.currencyText}>{selectedCurrencyValue}</Text>
-				<Icon
-					size={20}
-					name={'md-arrow-dropdown'}
-					style={styles.caretDownIcon}
-				/>
-			</TouchableOpacity>
-		</View>
-		<View style={styles.budgetContainer}>
-			<View style={styles.optionContainer}>
-				<Text style={styles.darkColorText}>
-					{getText('ad.management.budget.budget.text')}
-				</Text>
-				<TextInput
-					autoCorrect={false}
-					defaultValue={getText('ad.management.budget.budget.initialvalue')}
-					clearTextOnFocus={true}
-					keyboardType={'numeric'}
-					onChangeText={onChangeBudget}
-					onSubmitEditing={returnKeyAction}
-					blurOnSubmit={true}
-				/>
-			</View>
-			<View style={styles.separator} />
-			<View style={styles.optionContainer}>
-				<Text style={styles.lightColorText}>
-					{getText('ad.management.budget.perday')}
-				</Text>
-				<CheckBox
-					checked={perDayPressed}
-					color={customStyleProps.checkboxColor}
-					style={styles.checkbox}
-				/>
-			</View>
-			<View style={styles.separator} />
-			<View style={styles.optionContainer}>
-				<Text style={styles.lightColorText}>
-					{getText('ad.management.budget.lifetime')}
-				</Text>
-				<CheckBox
-					checked={lifetimePressed}
-					color={customStyleProps.checkboxColor}
-					style={styles.checkbox}
-				/>
-			</View>
-		</View>
-		<View style={styles.separator} />
-		<View style={styles.scheduleContainer}>
-			<View style={styles.optionContainer}>
-				<Text style={styles.darkColorText}>
-					{getText('ad.management.budget.schedule')}
-				</Text>
-			</View>
-			<View style={styles.separator} />
-			<View style={styles.optionContainer}>
-				<Text style={styles.lightColorText}>
-					{getText('ad.management.budget.runadcontinuously')}
-				</Text>
-				<CheckBox
-					checked={runAdContinuouslyPressed}
-					color={customStyleProps.checkboxColor}
-					style={styles.checkbox}
-				/>
-			</View>
-			<View style={styles.separator} />
-			<View style={styles.optionContainer}>
-				<Text style={styles.lightColorText}>
-					{getText('ad.management.budget.start.text')}
-				</Text>
-				<View style={styles.datePickerContainer}>
-					<TouchableOpacity
-						style={styles.datePickerButton}
-						onPress={showDatePicker}
-					>
-						<Text style={styles.datePickerDefaultText}>{defaultDate}</Text>
-					</TouchableOpacity>
-					<DateTimePicker
-						isVisible={isStartDatePickerVisible}
-						titleIOS={getText('ad.management.budget.start.datePicker')}
-						confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
-						cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
-						onConfirm={confirmDatePicker}
-						onCancel={cancelDatePicker}
+				<View style={styles.currencyContainer}>
+					<Text style={styles.darkColorText}>
+						{getText('ad.management.budget.currency.text')}
+					</Text>
+					<View style={styles.currencyButton}>
+						<Text style={styles.currencyText}>{selectedCurrencyValue}</Text>
+						<Icon
+							size={20}
+							name={'md-arrow-dropdown'}
+							style={styles.caretDownIcon}
+						/>
+					</View>
+				</View>
+			</TouchableHighlight>
+			<View style={styles.budgetContainer}>
+				<View style={styles.optionContainer}>
+					<Text style={styles.darkColorText}>
+						{getText('ad.management.budget.budget.text')}
+					</Text>
+					<TextInput
+						style={styles.inputBudget}
+						placeholder={getText(
+							'ad.management.budget.budget.textinput.placeholder',
+						)}
+						autoCorrect={false}
+						value={budgetValue}
+						defaultValue={getText(
+							'ad.management.budget.budget.textinput.initialvalue',
+						)}
+						clearTextOnFocus={true}
+						keyboardType={'numeric'}
+						onChangeText={submitBudget}
+						onSubmitEditing={Keyboard.dismiss}
+						blurOnSubmit={true}
+						underlineColorAndroid={'transparent'}
 					/>
 				</View>
+				<View style={styles.separator} />
+				<TouchableHighlight
+					underlayColor={customStyleProps.highlightButton}
+					onPress={() => handleCheckboxChange('perday')}
+				>
+					<View style={styles.optionContainer}>
+						<Text style={styles.lightColorText}>
+							{getText('ad.management.budget.perday')}
+						</Text>
+						<CheckBox
+							checked={perDayPressed}
+							color={customStyleProps.checkboxColor}
+							style={styles.checkbox}
+							onPress={() => handleCheckboxChange('perday')}
+						/>
+					</View>
+				</TouchableHighlight>
+				<View style={styles.separator} />
+				<TouchableHighlight
+					underlayColor={customStyleProps.highlightButton}
+					onPress={() => handleCheckboxChange('lifetime')}
+				>
+					<View style={styles.optionContainer}>
+						<Text style={styles.lightColorText}>
+							{getText('ad.management.budget.lifetime')}
+						</Text>
+						<CheckBox
+							checked={lifetimePressed}
+							color={customStyleProps.checkboxColor}
+							style={styles.checkbox}
+							onPress={() => handleCheckboxChange('lifetime')}
+						/>
+					</View>
+				</TouchableHighlight>
 			</View>
 			<View style={styles.separator} />
-			<View style={styles.optionContainer}>
-				<Text style={styles.lightColorText}>
-					{getText('ad.management.budget.stop.text')}
-				</Text>
-				<View style={styles.datePickerContainer}>
-					<TouchableOpacity
-						style={styles.datePickerButton}
-						onPress={showDatePicker}
-					>
-						<Text style={styles.datePickerDefaultText}>{defaultDate}</Text>
-					</TouchableOpacity>
-					<DateTimePicker
-						isVisible={isStopDatePickerVisible}
-						titleIOS={getText('ad.management.budget.stop.datePicker')}
-						confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
-						cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
-						onConfirm={confirmDatePicker}
-						onCancel={cancelDatePicker}
-					/>
+			<View style={styles.scheduleContainer}>
+				<View style={styles.optionContainer}>
+					<Text style={styles.darkColorText}>
+						{getText('ad.management.budget.schedule')}
+					</Text>
 				</View>
+				<View style={styles.separator} />
+				<TouchableHighlight
+					underlayColor={customStyleProps.highlightButton}
+					onPress={() => handleCheckboxChange('runAdContinuously')}
+				>
+					<View style={styles.optionContainer}>
+						<Text style={styles.lightColorText}>
+							{getText('ad.management.budget.runadcontinuously')}
+						</Text>
+						<CheckBox
+							checked={runAdContinuouslyPressed}
+							color={customStyleProps.checkboxColor}
+							style={styles.checkbox}
+							onPress={() => handleCheckboxChange('runAdContinuously')}
+						/>
+					</View>
+				</TouchableHighlight>
+				<View style={styles.separator} />
+				<TouchableHighlight
+					underlayColor={customStyleProps.highlightButton}
+					onPress={() => handleDatePicker('startDatePicker')}
+					disabled={runAdContinuouslyPressed}
+				>
+					<View style={styles.optionContainer}>
+						<Text style={styles.lightColorText}>
+							{getText('ad.management.budget.start.text')}
+						</Text>
+						<View style={styles.datePickerContainer}>
+							<Text style={styles.datePickerDefaultText}>
+								{selectedStartDate}
+							</Text>
+							<DateTimePicker
+								isVisible={isStartDatePickerVisible}
+								titleIOS={getText('ad.management.budget.start.datePicker')}
+								confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
+								cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
+								onConfirm={handleStartDatePicked}
+								onCancel={() => handleDatePicker('hidePicker')}
+							/>
+						</View>
+					</View>
+				</TouchableHighlight>
+				<View style={styles.separator} />
+				<TouchableHighlight
+					underlayColor={customStyleProps.highlightButton}
+					onPress={() => handleDatePicker('stopDatePicker')}
+					disabled={runAdContinuouslyPressed}
+				>
+					<View style={styles.optionContainer}>
+						<Text style={styles.lightColorText}>
+							{getText('ad.management.budget.stop.text')}
+						</Text>
+						<View style={styles.datePickerContainer}>
+							<Text style={styles.datePickerDefaultText}>
+								{selectedStopDate}
+							</Text>
+							<DateTimePicker
+								isVisible={isStopDatePickerVisible}
+								titleIOS={getText('ad.management.budget.stop.datePicker')}
+								confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
+								cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
+								onConfirm={handleStopDatePicked}
+								onCancel={() => handleDatePicker('hidePicker')}
+							/>
+						</View>
+					</View>
+				</TouchableHighlight>
 			</View>
-		</View>
-		<View style={styles.buttonContainer}>
-			<PrimaryButton
-				label={getText('button.next')}
-				onPress={nextButtonPressed}
-				containerStyle={styles.button}
-			/>
-		</View>
+			<View style={styles.buttonContainer}>
+				<PrimaryButton
+					label={getText('button.next')}
+					onPress={nextButtonPressed}
+					containerStyle={styles.button}
+				/>
+			</View>
+		</ScrollView>
 	</View>
 );
