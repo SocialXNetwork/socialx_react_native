@@ -25,6 +25,7 @@ export type IState = DeepReadonly<{
 
 export const enum ActionTypes {
 	SET_LOCALE = 'app/i18n/SET_LOCALE',
+	REHYDRATE = 'persist/REHYDRATE', // just to keep TS clean we redefine this here, originally in "redux-persist"
 }
 
 export interface ISetLocaleInput {
@@ -39,4 +40,10 @@ export interface ISetLocaleAction extends Action {
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
-export type IAction = IResetStoreAction | ISetLocaleAction;
+
+interface IRehydrateAction {
+	type: ActionTypes.REHYDRATE;
+	payload: any;
+}
+
+export type IAction = IResetStoreAction | ISetLocaleAction | IRehydrateAction;
