@@ -13,6 +13,11 @@ export {
 	IWithAdsStatisticsEnhancedData,
 	WithAdsStatistics,
 } from './adsManagementStack/WithAdsStatistics';
+export {
+	IWithNewAdSetupPostEnhancedActions,
+	IWithNewAdSetupPostEnhancedData,
+	WithNewAdSetupPost,
+} from './adsManagementStack/WithNewAdSetupPost';
 
 export {
 	WithComments,

@@ -11,10 +11,11 @@ export { AvatarImage } from './avatar/AvatarImage';
 export { AvatarName } from './avatar/AvatarName';
 export { AvatarPicker } from './avatar/AvatarPicker';
 
-export { Option } from './displayers/Ads/Option';
 export {
 	ChartAccountPerformance,
 } from './displayers/Ads/ChartAccountPerformance';
+export { CreateAdSteps } from './displayers/Ads/CreateAdSteps';
+export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
 export { CommentsPostLikes } from './displayers/CommentsPostLikes';
