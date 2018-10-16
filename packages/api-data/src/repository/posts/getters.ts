@@ -14,6 +14,7 @@ import {
 	datePathFromDate,
 } from '../../utils/helpers';
 
+import moment from 'moment';
 import {
 	ICommentCallbackData,
 	ICommentData,
@@ -169,7 +170,47 @@ export const getPublicPostsByDate = (
 		});
 };
 
+const recursiveSearchForPosts = (
+	context: IContext,
+	{ startTimestamp, daysBack }: { startTimestamp: number; daysBack: number },
+	callback: IGunCallback<IPostArrayData>,
+) => {
+	if (daysBack > 30) {
+		return callback(null, []);
+	}
+	const nextDate = moment(startTimestamp)
+		.subtract(daysBack, 'days')
+		.toDate();
+
+	getPublicPostsByDate(context, { date: nextDate }, (err, posts) => {
+		if (err) {
+			return callback(err);
+		}
+		if (posts && posts.length) {
+			return callback(null, posts);
+		}
+		return recursiveSearchForPosts(
+			context,
+			{ startTimestamp, daysBack: daysBack + 1 },
+			callback,
+		);
+	});
+};
+
+export const getMostRecentPosts = (
+	context: IContext,
+	{ timestamp }: { timestamp: number },
+	callback: IGunCallback<IPostArrayData>,
+) => {
+	return recursiveSearchForPosts(
+		context,
+		{ startTimestamp: timestamp, daysBack: 1 },
+		callback,
+	);
+};
+
 export default {
+	getMostRecentPosts,
 	getPostByPath,
 	getPostById,
 	getPostPathsByUser,

@@ -47,6 +47,7 @@ export const enum ActionTypes {
 	GET_POST_BY_ID = 'data/posts/GET_POST_BY_ID',
 	SYNC_GET_POST_BY_ID = 'data/posts/SYNC_GET_POST_BY_ID',
 	LOAD_MORE_POSTS = 'data/posts/LOAD_MORE_POSTS',
+	SYNC_LOAD_MORE_POSTS = 'data/posts/SYNC_LOAD_MORE_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
@@ -105,6 +106,11 @@ export interface ISyncGetPostByIdAction extends Action {
 
 export interface ILoadMorePostsAction extends Action {
 	type: ActionTypes.LOAD_MORE_POSTS;
+}
+
+export interface ISyncLoadMorePostsAction extends Action {
+	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
+	payload: IPostArrayData;
 }
 
 export interface ICreatePostAction extends Action {
@@ -176,6 +182,7 @@ export type IAction =
 	| ISyncGetPostByPathAction
 	| IGetPostByIdAction
 	| ISyncGetPostByIdAction
+	| ISyncLoadMorePostsAction
 	| ILoadMorePostsAction
 	// setters
 	| ICreatePostAction

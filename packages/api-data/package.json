@@ -28,6 +28,7 @@
     "@types/react-native": "^0.56.24",
     "@types/yup": "^0.24.9",
     "jest": "^23.5.0",
+    "moment": "^2.22.2",
     "node-webcrypto-ossl": "^1.0.38",
     "text-encoding": "^0.7.0",
     "ts-jest": "^23.1.4",
