@@ -99,9 +99,9 @@ export class Screen extends React.Component<
 	private onLoadMorePostsHandler = async () => {
 		const { loadMorePosts } = this.props;
 
-		// if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
-		// 	loadMorePosts();
-		// }
+		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
+			loadMorePosts();
+		}
 	};
 
 	private onCreateWallPostHandler = () => {
