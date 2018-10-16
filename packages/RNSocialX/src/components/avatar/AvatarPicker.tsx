@@ -9,6 +9,7 @@ import { getCameraMediaObject, getGalleryMediaObject } from '../../utilities';
 import { AvatarImage } from './AvatarImage';
 
 const IMAGE_CROP_SIZE = 300;
+const ICON_SIZE = Sizes.smartHorizontalScale(30);
 
 const AVATAR_PICKER_OPTIONS = {
 	width: IMAGE_CROP_SIZE,
@@ -56,9 +57,9 @@ const pickUserAvatar = (
 			options: [
 				getText('avatar.picker.pick.from.gallery'),
 				getText('avatar.picker.take.photo'),
+				getText('button.cancel'),
 			],
 			cancelButtonIndex: 2,
-			title: getText('avatar.picker.title'),
 		},
 		(buttonIndex: number) => {
 			if (buttonIndex === 0) {
@@ -81,25 +82,27 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 		height: avatarSize,
 		borderRadius: avatarSize / 2,
 	};
-	const iconSize = Math.min(35, Math.round(avatarSize / 5));
+	const iconSize = Math.min(30, Math.round(avatarSize / 6));
 
 	return (
-		<View>
+		<TouchableOpacity onPress={() => pickUserAvatar(afterImagePick, getText)}>
 			<AvatarImage image={avatarImage} style={avatarSizeStyle} />
-			<TouchableOpacity
-				onPress={() => pickUserAvatar(afterImagePick, getText)}
-				style={style.editIcon}
-			>
+			<View style={style.editIcon}>
 				<Icon name="camera" size={iconSize} color={Colors.postFullName} />
-			</TouchableOpacity>
-		</View>
+			</View>
+		</TouchableOpacity>
 	);
 };
 
 const style = StyleSheet.create({
 	editIcon: {
+		backgroundColor: Colors.white,
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: ICON_SIZE,
+		width: ICON_SIZE,
+		borderRadius: ICON_SIZE / 2,
 		position: 'absolute',
-		padding: Sizes.smartHorizontalScale(5),
 		bottom: 0,
 		right: 0,
 	},

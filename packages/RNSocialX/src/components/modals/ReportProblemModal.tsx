@@ -132,7 +132,7 @@ const ReportProblemModalComponent: React.SFC<
 								onPress={declineHandler}
 							>
 								<Text style={[style.buttonText, style.buttonTextCancel]}>
-									{getText('button.CANCEL')}
+									{getText('button.cancel')}
 								</Text>
 							</TouchableOpacity>
 							<TouchableOpacity

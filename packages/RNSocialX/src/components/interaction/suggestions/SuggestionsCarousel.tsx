@@ -42,7 +42,9 @@ export class SuggestionsCarousel extends React.Component<
 	public render() {
 		return (
 			<View style={styles.container}>
-				<Text style={styles.header}>Suggestions for you</Text>
+				<Text style={styles.header}>
+					{this.props.getText('feed.screen.suggestions')}
+				</Text>
 				<Carousel
 					data={this.state.items}
 					renderItem={this.renderItem}

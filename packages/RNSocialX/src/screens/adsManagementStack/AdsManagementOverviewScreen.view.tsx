@@ -7,52 +7,45 @@ import {
 	ChartAccountPerformance,
 	CloseButton as CloseModal,
 	Header,
+	PrimaryButton,
 } from '../../components';
 import {
-	IAdCard,
+	IAd,
 	IAdsAccountPerformanceValues,
 	ITranslatedProps,
 } from '../../types';
-import styles from './AdsManagementOverviewScreen.style';
 
-interface IAdCardActions {
+import styles, { BUTTON_WIDTH } from './AdsManagementOverviewScreen.style';
+
+interface IAdActions {
 	onEditAd: () => void;
 }
 
-interface IAdCardProps extends IAdCard, IAdCardActions {}
+interface IAdProps extends IAd, IAdActions {}
 
-const AdCard: React.SFC<IAdCardProps> = ({
-	thumbURL,
-	title,
-	description,
-	onEditAd,
-}) => (
-	<View style={styles.adCardContainer}>
-		<Image
-			source={{ uri: thumbURL }}
-			style={styles.adCardThumbnail}
-			resizeMode={'cover'}
-		/>
-		<View style={styles.adCardTitleRow}>
-			<Text style={styles.adCardTitle}>{title}</Text>
+const AdCard: React.SFC<IAdProps> = ({ url, title, description, onEditAd }) => (
+	<View style={styles.card}>
+		<Image source={{ uri: url }} style={styles.image} resizeMode="cover" />
+		<View style={styles.cardHeader}>
+			<Text style={styles.title}>{title}</Text>
 			<TouchableOpacity
 				onPress={onEditAd}
 				hitSlop={{ top: 10, bottom: 10, left: 15, right: 10 }}
 			>
-				<Icon name={'md-create'} style={styles.editAdIcon} />
+				<Icon name="md-create" style={styles.editIcon} />
 			</TouchableOpacity>
 		</View>
-		<Text style={styles.adCardDescription}>{description}</Text>
+		<Text style={styles.description}>{description}</Text>
 	</View>
 );
 
 interface IAdsManagementOverviewScreenViewProps
-	extends IAdCardActions,
+	extends IAdActions,
 		ITranslatedProps {
 	currentDate: string;
 	currentWeek: string;
 	lastSevenDays: string;
-	adCards: IAdCard[];
+	ads: IAd[];
 	spentValues: IAdsAccountPerformanceValues[];
 	peopleReachedValues: IAdsAccountPerformanceValues[];
 	impressionsValues: IAdsAccountPerformanceValues[];
@@ -68,9 +61,8 @@ export const AdsManagementOverviewScreenView: React.SFC<
 	getText,
 	currentDate,
 	onCreateAd,
-	adCards,
+	ads,
 	onEditAd,
-	lastSevenDays,
 	onSeePastPerformance,
 	currentWeek,
 	spentValues,
@@ -78,34 +70,34 @@ export const AdsManagementOverviewScreenView: React.SFC<
 	peopleReachedValues,
 }) => {
 	return (
-		<View style={styles.rootView}>
+		<View style={styles.container}>
 			<Header
 				title={getText('ad.management.overview.screen.title')}
 				left={<CloseModal onClose={onClose} />}
+				right={<Icon name="ios-add" onPress={onCreateAd} style={styles.icon} />}
 			/>
-			<ScrollView style={styles.contentView}>
+			<ScrollView style={styles.content}>
 				<Text style={styles.currentDate}>{currentDate}</Text>
-				<Text style={styles.adsListTitle}>
-					{getText('ad.management.overview.screen.ads.list.title')}
-				</Text>
-				{adCards.map((adCard) => (
-					<AdCard {...adCard} onEditAd={onEditAd} key={adCard.id} />
-				))}
-				<View style={styles.performanceContainer}>
-					<View style={styles.accountPerformanceTitleBorder}>
-						<Text style={styles.accountPerformanceTitle}>
+				<View style={styles.section}>
+					<Text style={styles.heading}>
+						{getText('ad.management.overview.screen.ads.list.title')}
+					</Text>
+					{ads.map((ad) => (
+						<AdCard {...ad} onEditAd={onEditAd} key={ad.id} />
+					))}
+				</View>
+				<View style={styles.section}>
+					<View style={styles.headingContainer}>
+						<Text style={styles.heading}>
 							{getText('ad.management.overview.screen.account.performance')}
 						</Text>
 					</View>
-					<Tabs
-						locked={true}
-						tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-					>
+					<Tabs tabBarUnderlineStyle={styles.activeTab}>
 						<Tab
-							tabStyle={styles.tabStyle}
-							activeTabStyle={styles.tabStyle}
-							textStyle={styles.tabTitleTextInactive}
-							activeTextStyle={styles.tabTitleTextActive}
+							tabStyle={styles.tab}
+							activeTabStyle={styles.tab}
+							textStyle={styles.tabText}
+							activeTextStyle={styles.activeTabText}
 							heading={getText(
 								'ad.management.overview.screen.account.performance.spent',
 							)}
@@ -116,10 +108,10 @@ export const AdsManagementOverviewScreenView: React.SFC<
 							/>
 						</Tab>
 						<Tab
-							tabStyle={styles.tabStyle}
-							activeTabStyle={styles.tabStyle}
-							textStyle={styles.tabTitleTextInactive}
-							activeTextStyle={styles.tabTitleTextActive}
+							tabStyle={styles.tab}
+							activeTabStyle={styles.tab}
+							textStyle={styles.tabText}
+							activeTextStyle={styles.activeTabText}
 							heading={getText(
 								'ad.management.overview.screen.account.performance.people.reached',
 							)}
@@ -130,10 +122,10 @@ export const AdsManagementOverviewScreenView: React.SFC<
 							/>
 						</Tab>
 						<Tab
-							tabStyle={styles.tabStyle}
-							activeTabStyle={styles.tabStyle}
-							textStyle={styles.tabTitleTextInactive}
-							activeTextStyle={styles.tabTitleTextActive}
+							tabStyle={styles.tab}
+							activeTabStyle={styles.tab}
+							textStyle={styles.tabText}
+							activeTextStyle={styles.activeTabText}
 							heading={getText(
 								'ad.management.overview.screen.account.performance.impressions',
 							)}
@@ -144,21 +136,17 @@ export const AdsManagementOverviewScreenView: React.SFC<
 							/>
 						</Tab>
 					</Tabs>
-				</View>
-				<View style={styles.seePastPerformanceContainer}>
-					<TouchableOpacity onPress={onSeePastPerformance}>
-						<Text style={styles.seePastPerformanceButton}>
-							{getText('ad.management.overview.screen.see.past.performance')}
-						</Text>
-					</TouchableOpacity>
+					<View style={styles.button}>
+						<PrimaryButton
+							label={getText(
+								'ad.management.overview.screen.see.past.performance',
+							)}
+							width={BUTTON_WIDTH}
+							onPress={onSeePastPerformance}
+						/>
+					</View>
 				</View>
 			</ScrollView>
-			<TouchableOpacity
-				style={styles.createAdButtonContainer}
-				onPress={onCreateAd}
-			>
-				<Icon name={'ios-add'} style={styles.createAdButtonIcon} />
-			</TouchableOpacity>
 		</View>
 	);
 };

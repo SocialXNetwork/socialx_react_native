@@ -44,9 +44,10 @@ const styles: any = {
 		flex: 1,
 		width: '100%',
 		backgroundColor: Colors.wildSand,
-		paddingHorizontal: Sizes.smartHorizontalScale(20),
 		paddingVertical: Sizes.smartVerticalScale(10),
+		alignItems: 'center',
 	},
 };
 
 export default StyleSheet.create(styles);
+export const BUTTON_WIDTH = Sizes.smartHorizontalScale(250);

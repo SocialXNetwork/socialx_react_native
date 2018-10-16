@@ -361,8 +361,8 @@ export interface IAdsAccountPerformanceValues {
 	date: Date;
 }
 
-export interface IAdCard {
-	thumbURL: string;
+export interface IAd {
+	url: string;
 	title: string;
 	description: string;
 	id: string;

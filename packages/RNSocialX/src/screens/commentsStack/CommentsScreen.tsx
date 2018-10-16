@@ -185,7 +185,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		const menuOptions = [
 			getText('comments.screen.advanced.menu.copy'),
 			getText('comments.screen.advanced.menu.delete'),
-			getText('button.CANCEL'),
+			getText('button.cancel'),
 		];
 		ActionSheet.show(
 			{
