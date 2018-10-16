@@ -1,20 +1,20 @@
 /**
  * TODO list:
- * 1. Props data: currentDate, currentWeek, lastSevenDays, adCards, spentValues, peopleReachedValues, impressionsValues,
+ * 1. Props data: currentDate, currentWeek, lastSevenDays, ads, spentValues, peopleReachedValues, impressionsValues,
  * 2. Props actions: onSeePastPerformance (TBD, this might be a nav. action!)
  */
 
 import * as React from 'react';
 import {
-	IAdCard,
+	IAd,
 	IAdsAccountPerformanceValues,
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
-const adCards = [
+const ads = [
 	{
-		thumbURL: 'https://placeimg.com/300/300/any',
+		url: 'https://placeimg.com/300/300/any',
 		title: 'Lorem ipsum dolor 1',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipi. And some more text on first paragraph\n' +
@@ -22,7 +22,7 @@ const adCards = [
 		id: '1',
 	},
 	{
-		thumbURL: 'https://placeimg.com/301/301/any',
+		url: 'https://placeimg.com/301/301/any',
 		title: 'Using SOCX within our Ecosystem',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipi.\n' +
@@ -30,7 +30,7 @@ const adCards = [
 		id: '2',
 	},
 	{
-		thumbURL: 'https://placeimg.com/302/302/any',
+		url: 'https://placeimg.com/302/302/any',
 		title: 'Lorem ipsum dolor 2',
 		description: 'Our token will allow you to interact within your friends.',
 		id: '3',
@@ -73,7 +73,7 @@ const mock: IWithAdsManagementOverviewEnhancedProps = {
 		currentDate: 'Mar 17, 2018',
 		currentWeek: 'Mar 10, 2018 - Mar 16,2018',
 		lastSevenDays: 'Mar 10, 2018 - Mar 16,2018',
-		adCards,
+		ads,
 		spentValues: chartSampleValues,
 		peopleReachedValues: chartSampleValues,
 		impressionsValues: chartSampleValues,
@@ -90,7 +90,7 @@ export interface IWithAdsManagementOverviewEnhancedData {
 	currentDate: string;
 	currentWeek: string;
 	lastSevenDays: string;
-	adCards: IAdCard[];
+	ads: IAd[];
 	spentValues: IAdsAccountPerformanceValues[];
 	peopleReachedValues: IAdsAccountPerformanceValues[];
 	impressionsValues: IAdsAccountPerformanceValues[];

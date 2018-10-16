@@ -11,7 +11,7 @@ import {
 import { Icons } from '../../environment/theme';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
-import styles from './AdsManagementScreen.style';
+import styles, { BUTTON_WIDTH } from './AdsManagementScreen.style';
 
 interface IAdsManagementScreenViewProps extends ITranslatedProps, IHeaderProps {
 	avatarURL: string;
@@ -60,6 +60,7 @@ export const AdsManagementScreenView: React.SFC<
 		<View style={styles.button}>
 			<PrimaryButton
 				label={getText('ad.management.create')}
+				width={BUTTON_WIDTH}
 				onPress={() => {
 					/**/
 				}}

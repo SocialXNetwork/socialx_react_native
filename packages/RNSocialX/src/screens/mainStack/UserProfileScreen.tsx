@@ -280,7 +280,7 @@ class Screen extends React.Component<
 		const { getText } = this.props;
 		const menuOptions = [
 			getText('friendship.menu.option.remove'),
-			getText('button.CANCEL'),
+			getText('button.cancel'),
 		];
 		ActionSheet.show(
 			{

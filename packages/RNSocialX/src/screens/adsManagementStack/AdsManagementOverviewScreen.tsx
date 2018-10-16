@@ -18,7 +18,7 @@ class Screen extends React.Component<IAdsManagementOverviewScreenProps> {
 			currentWeek,
 			currentDate,
 			lastSevenDays,
-			adCards,
+			ads,
 			spentValues,
 			peopleReachedValues,
 			impressionsValues,
@@ -30,7 +30,7 @@ class Screen extends React.Component<IAdsManagementOverviewScreenProps> {
 				currentDate={currentDate}
 				currentWeek={currentWeek}
 				lastSevenDays={lastSevenDays}
-				adCards={adCards}
+				ads={ads}
 				spentValues={spentValues}
 				peopleReachedValues={peopleReachedValues}
 				impressionsValues={impressionsValues}
