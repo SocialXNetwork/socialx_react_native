@@ -4,8 +4,8 @@ import { Colors, Fonts, Sizes } from '../../../environment/theme';
 const styles: any = {
 	container: {
 		flex: 1,
-		borderBottomColor: Colors.geyser,
-		borderBottomWidth: Sizes.smartVerticalScale(8),
+		borderTopColor: Colors.geyser,
+		borderTopWidth: Sizes.smartVerticalScale(8),
 		paddingLeft: Sizes.smartHorizontalScale(16),
 		paddingVertical: Sizes.smartVerticalScale(16),
 	},

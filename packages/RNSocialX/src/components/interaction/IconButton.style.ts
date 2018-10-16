@@ -6,8 +6,6 @@ const ICON_DEFAULT_SIZE = Sizes.smartHorizontalScale(24);
 const styles: any = {
 	container: {
 		flexDirection: 'row',
-		paddingHorizontal: Sizes.smartHorizontalScale(5),
-		marginHorizontal: Sizes.smartHorizontalScale(5),
 		paddingVertical: Sizes.smartVerticalScale(5),
 		alignItems: 'center',
 	},

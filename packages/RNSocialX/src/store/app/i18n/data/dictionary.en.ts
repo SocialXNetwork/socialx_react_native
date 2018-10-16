@@ -233,6 +233,7 @@ export default {
 	'notifications.screen.title':'ACTIVITY',
 	'feed.screen.no.posts': 'Your feed is empty. Create your first post!',
 	'feed.screen.no.posts.create': 'Create a post',
+	'feed.screen.suggestions': 'Sugggestions for you',
 	'wall.post.menu.block.user': 'Block',
 	'wall.post.menu.report.problem': 'Report a Problem',
 	'wall.post.menu.delete.post': 'Delete Post',

@@ -113,7 +113,7 @@ export class WithUserFeed extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithConfig>
 						{({ appConfig }) => (
 							<WithNavigationParams>
@@ -184,7 +184,7 @@ export class WithUserFeed extends React.Component<
 																						}),
 																					setNavigationParams,
 																					setGlobal,
-																					getText: i18nProps.getText,
+																					getText,
 																				},
 																			});
 																		}}

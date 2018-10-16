@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 
 import { SafeAreaView } from 'react-navigation';
 import { HeaderLogo } from '../';
+
 import styles from './Header.style';
 
 interface IHeaderProps {

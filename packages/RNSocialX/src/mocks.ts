@@ -11,7 +11,6 @@ import {
 	IWallPostCardData,
 	MediaTypeImage,
 	MediaTypeVideo,
-	SearchResultKind,
 	TransactionType,
 } from './types';
 

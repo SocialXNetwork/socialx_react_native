@@ -43,7 +43,7 @@ const getGridProvider = (
 	lastKnownGridHeight = header && header.height;
 	if (!gridProviderInstance) {
 		gridProviderInstance = new LayoutProvider(
-			(index: any) => {
+			(index: number) => {
 				if (header && index === 0) {
 					return ViewTypes.HEADER_LAYOUT;
 				}

@@ -38,6 +38,7 @@ export class SuggestionsCarousel extends React.Component<
 		items: [],
 	};
 
+	/* Wierd getText bug here as well */
 	public render() {
 		return (
 			<View style={styles.container}>
@@ -50,7 +51,7 @@ export class SuggestionsCarousel extends React.Component<
 					enableSnap={false}
 					enableMomentum={true}
 					decelerationRate={0.9}
-					activeSlideAlignment={'start'}
+					activeSlideAlignment="start"
 					inactiveSlideScale={1}
 					inactiveSlideOpacity={1}
 					containerCustomStyle={styles.carouselContainer}

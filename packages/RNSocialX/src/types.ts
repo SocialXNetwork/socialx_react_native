@@ -170,7 +170,7 @@ export interface ISimpleComment {
 export interface IPostOwner {
 	userId: string;
 	fullName: string;
-	avatarURL: string | undefined;
+	avatarURL: string;
 }
 
 export interface IWallPostComment {
