@@ -360,6 +360,13 @@ export interface IAdsAccountPerformanceValues {
 	value: number;
 	date: Date;
 }
+
+export interface IAdCard {
+	thumbURL: string;
+	title: string;
+	description: string;
+	id: string;
+}
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.
