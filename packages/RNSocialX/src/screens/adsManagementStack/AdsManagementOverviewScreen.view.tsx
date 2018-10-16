@@ -8,15 +8,12 @@ import {
 	CloseButton as CloseModal,
 	Header,
 } from '../../components';
-import { IAdsAccountPerformanceValues, ITranslatedProps } from '../../types';
+import {
+	IAdCard,
+	IAdsAccountPerformanceValues,
+	ITranslatedProps,
+} from '../../types';
 import styles from './AdsManagementOverviewScreen.style';
-
-interface IAdCard {
-	thumbURL: string;
-	title: string;
-	description: string;
-	id: string;
-}
 
 interface IAdCardActions {
 	onEditAd: () => void;

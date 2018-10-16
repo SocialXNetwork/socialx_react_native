@@ -14,20 +14,20 @@ const mockAdCards = [
 			'Elit, sed do eiusmod tempor incididunt ut labore',
 		id: '1',
 	},
-	// {
-	// 	thumbURL: 'https://placeimg.com/301/301/any',
-	// 	title: 'Using SOCX within our Ecosystem',
-	// 	description:
-	// 		'Lorem ipsum dolor sit amet, consectetur adipi.\n' +
-	// 		'Second line text goes here',
-	// 	id: '2',
-	// },
-	// {
-	// 	thumbURL: 'https://placeimg.com/302/302/any',
-	// 	title: 'Lorem ipsum dolor 2',
-	// 	description: 'Our token will allow you to interact within your friends.',
-	// 	id: '3',
-	// },
+	{
+		thumbURL: 'https://placeimg.com/301/301/any',
+		title: 'Using SOCX within our Ecosystem',
+		description:
+			'Lorem ipsum dolor sit amet, consectetur adipi.\n' +
+			'Second line text goes here',
+		id: '2',
+	},
+	{
+		thumbURL: 'https://placeimg.com/302/302/any',
+		title: 'Lorem ipsum dolor 2',
+		description: 'Our token will allow you to interact within your friends.',
+		id: '3',
+	},
 ];
 
 const spentValues = [
