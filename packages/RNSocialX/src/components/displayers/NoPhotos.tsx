@@ -7,7 +7,7 @@ import styles from './NoPhotos.style';
 
 export const NoPhotos: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.container}>
-		<Icon name={'th'} style={styles.icon} />
+		<Icon name="th" style={styles.icon} />
 		<Text style={styles.text}>
 			{getText('user.profile.screen.empty.gallery')}
 		</Text>

@@ -62,7 +62,6 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 					values: { userName, password },
 					errors,
 					handleSubmit,
-					isValid,
 					touched,
 					setFieldValue,
 					setFieldTouched,

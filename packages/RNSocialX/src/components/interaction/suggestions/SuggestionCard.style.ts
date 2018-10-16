@@ -18,9 +18,10 @@ const styles: any = {
 	avatar: {
 		width: AVATAR_SIZE,
 		height: AVATAR_SIZE,
+		borderRadius: AVATAR_SIZE / 2,
 	},
 	name: {
-		...Fonts.centuryGothicBold,
+		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(18),
 		paddingTop: Sizes.smartVerticalScale(10),
 		paddingBottom: Sizes.smartVerticalScale(5),
@@ -29,6 +30,7 @@ const styles: any = {
 	reason: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
+		color: Colors.grayText,
 		paddingBottom: Sizes.smartVerticalScale(10),
 		textAlign: 'center',
 	},

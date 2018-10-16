@@ -12,9 +12,11 @@ import {
 import {
 	getTextSignature,
 	ICurrentUser,
+	ILike,
 	IWallPostCardActions,
 	IWallPostCardData,
 } from '../../../types';
+
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends IWallPostCardActions {
@@ -106,15 +108,6 @@ export class UserFeedScreenView extends React.Component<
 		getText: getTextSignature,
 	) => {
 		const postData = data.item;
-		if (postData.suggested) {
-			return (
-				<SuggestionsCarousel
-					items={postData.suggested}
-					getText={this.props.getText}
-				/>
-			);
-		}
-
 		const canDelete = this.props.currentUser.userId === postData.owner.userId;
 		const likedByMe = !!postData.likes.find(
 			(like: any) => like.userId === this.props.currentUser.userId,
@@ -142,6 +135,12 @@ export class UserFeedScreenView extends React.Component<
 					onBlockUser={this.props.onBlockUser}
 					onReportProblem={this.props.onReportProblem}
 				/>
+				{postData.suggested && (
+					<SuggestionsCarousel
+						items={postData.suggested}
+						getText={this.props.getText}
+					/>
+				)}
 			</View>
 		);
 	};

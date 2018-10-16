@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Images, Sizes } from '../../../environment/theme';
+import { Colors, Sizes } from '../../../environment/theme';
 
 export const SHARE_SECTION_HEIGHT = Sizes.smartVerticalScale(80);
 
@@ -10,7 +10,7 @@ const styles: any = {
 		backgroundColor: Colors.white,
 	},
 	wallPostContainer: {
-		paddingTop: Sizes.smartVerticalScale(25),
+		paddingTop: Sizes.smartVerticalScale(16),
 		borderBottomColor: Colors.geyser,
 		borderBottomWidth: Sizes.smartHorizontalScale(8),
 	},

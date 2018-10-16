@@ -54,10 +54,10 @@ export class Screen extends React.Component<
 			hasMorePosts,
 			refreshingFeed,
 			loadingMorePosts,
-			getText,
 			deletePost,
 			blockUser,
 			reportProblem,
+			getText,
 		} = this.props;
 
 		const shareSectionOpacityInterpolation = this.scrollY.interpolate({
@@ -80,9 +80,6 @@ export class Screen extends React.Component<
 				noPosts={posts.length === 0}
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
-				scrollRef={this.scrollRef}
-				scrollY={this.scrollY}
-				getText={getText}
 				onImagePress={this.onMediaObjectPressHandler}
 				onLikeButtonPress={this.onLikePressHandler}
 				onUserPress={this.onUserPressHandler}
@@ -92,6 +89,9 @@ export class Screen extends React.Component<
 				onDeletePress={deletePost}
 				onBlockUser={blockUser}
 				onReportProblem={reportProblem}
+				scrollRef={this.scrollRef}
+				scrollY={this.scrollY}
+				getText={getText}
 			/>
 		);
 	}

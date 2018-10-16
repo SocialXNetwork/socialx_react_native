@@ -16,7 +16,6 @@ storiesOf('Screens/mainTabNav', module)
 		const noPosts = boolean('noPosts', false);
 		const loadingMorePosts = boolean('loadingMorePosts', false);
 		const hasMorePosts = boolean('hasMorePosts', false);
-		const isLoading = boolean('isLoading', false);
 		const shareSectionPlaceholder = text(
 			'shareSectionPlaceholder',
 			'Lorem ipsum dolor sit amet.',
@@ -45,7 +44,6 @@ storiesOf('Screens/mainTabNav', module)
 				shareSectionOpacityInterpolation={1}
 				scrollRef={React.createRef()}
 				scrollY={new Animated.Value(0)}
-				isLoading={isLoading}
 				getText={getTextMock}
 				onBlockUser={action('onBlockUser')}
 				onReportProblem={action('onReportProblem')}

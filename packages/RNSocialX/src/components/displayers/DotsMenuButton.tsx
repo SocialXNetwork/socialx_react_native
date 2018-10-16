@@ -17,10 +17,7 @@ export const DotsMenuButton: React.SFC<IDotsMenuButtonProps> = ({
 		/**/
 	},
 }) => (
-	<TouchableOpacity
-		onPress={onPress}
-		style={{ marginRight: Sizes.smartHorizontalScale(16) }}
-	>
+	<TouchableOpacity onPress={onPress}>
 		<Icon name={iconName} color={iconColor} style={styles.icon} />
 	</TouchableOpacity>
 );
