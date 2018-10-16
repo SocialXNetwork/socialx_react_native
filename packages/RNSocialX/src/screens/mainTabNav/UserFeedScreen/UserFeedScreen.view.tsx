@@ -60,8 +60,8 @@ export class UserFeedScreenView extends React.Component<
 			<View style={styles.container}>
 				{noPosts ? (
 					<FeedWithNoPosts
-						onCreateWallPost={onCreateWallPost}
-						// onCreateWallPost={onLoadMorePosts}
+						// onCreateWallPost={onCreateWallPost}
+						onCreateWallPost={onLoadMorePosts}
 						getText={getText}
 					/>
 				) : (
@@ -83,7 +83,7 @@ export class UserFeedScreenView extends React.Component<
 						data={wallPosts}
 						keyExtractor={this.keyExtractor}
 						renderItem={(data) => this.renderWallPosts(data, getText)}
-						onEndReached={hasMorePosts ? onLoadMorePosts : null}
+						onEndReached={onLoadMorePosts}
 						onEndReachedThreshold={0.5}
 						keyboardShouldPersistTaps="handled"
 						ListFooterComponent={<LoadingFooter hasMore={hasMorePosts} />}

@@ -17,7 +17,7 @@ const persistConfig = {
 	key: 'root',
 	storage,
 	// NOTE: takes an array of strings
-	blacklist: ['ui', 'data'],
+	blacklist: ['ui', 'data', 'app'],
 	// whitelist: [],
 };
 
