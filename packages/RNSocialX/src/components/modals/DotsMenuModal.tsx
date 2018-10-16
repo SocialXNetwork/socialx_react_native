@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
-import { WithManagedTransitions } from '../managedTransitions';
+import { ModalManager, WithManagedTransitions } from '../managedTransitions';
 import styles from './DotsMenuModal.style';
 
 export interface IDotsMenuItem {
@@ -38,7 +38,7 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 				style={styles.container}
 			>
 				<SafeAreaView
-					forceInset={{ bottom: 'always' }}
+					forceInset={{ bottom: 'always', top: 'never' }}
 					style={styles.innerContainer}
 				>
 					{items.map(
@@ -55,7 +55,7 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 									key={index}
 									onPress={() => {
 										onBackdropPress();
-										actionHandler();
+										ModalManager.safeRunAfterModalClosed(actionHandler);
 									}}
 								>
 									<View style={styles.iconContainer}>

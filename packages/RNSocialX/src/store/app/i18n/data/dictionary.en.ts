@@ -271,4 +271,9 @@ export default {
 	'search.screen.results.coming.soon': 'Stay close, this feature is coming soon!',
 	'searching.loader.text': 'Searching',
 	'search.no.results.text': 'No results found',
+	'new.ad.setup.post.screen.title': 'Create Ad',
+	'new.ad.setup.post.header.title': 'Create a post',
+	'new.ad.setup.post.header.headline.input.placeholder': 'Headline',
+	'new.ad.setup.post.header.description.input.placeholder': 'Description',
+	'new.ad.setup.post.headline.required': 'You need to set a headline',
 };

@@ -34,13 +34,14 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 const getMimeType = (
 	uri: string,
 	type: IMediaTypes | undefined,
-	extension: string,
+	extension?: string,
 ) => {
 	if (type) {
 		return type.key;
-	} else if (mime.extensions[extension]) {
-		return extension;
 	} else if (extension) {
+		if (mime.extensions[extension]) {
+			return extension;
+		}
 		return mime.lookup('.' + extension);
 	}
 	return mime.lookup(uri);
@@ -50,7 +51,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	uri,
 	style: customStyle,
 	resizeMode = 'cover',
-	extension = 'jpg',
+	extension,
 	type,
 	getText,
 	canZoom = false,
