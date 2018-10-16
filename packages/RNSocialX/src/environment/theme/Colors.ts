@@ -10,6 +10,7 @@ export const Colors = {
 		return 'rgba(0, 0, 0, ' + alpha + ')';
 	},
 	pink: '#ff0099',
+	pinkLace: '#fecdec',
 	background: '#4a5963',
 	shuttleGray: '#54646e',
 	postText: '#6D7886',
