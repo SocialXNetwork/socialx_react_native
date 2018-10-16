@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { dataApiFactory } from '../__testHelpers/mockApi';
 import records from '../__testHelpers/records';
 import { ApiError, ValidationError } from '../utils/errors';
@@ -338,6 +339,42 @@ describe('posts api', () => {
 				posts: updatedPosts,
 			});
 			expect(userProfiles.length).toEqual(3);
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
+	});
+
+	test('loads more posts that are within 30 days', async () => {
+		try {
+			const post = getPost();
+			await mockApi.posts.createPost(post);
+			await mockApi.posts.createPost(post);
+
+			const loadMorePosts = await mockApi.posts.loadMorePosts({
+				timestamp: moment()
+					.add(29, 'days')
+					.valueOf(),
+			});
+
+			expect(loadMorePosts.length).toEqual(2);
+		} catch (e) {
+			expect(e).toBeUndefined();
+		}
+	});
+
+	test('does not load more posts beyond 30 days', async () => {
+		try {
+			const post = getPost();
+			await mockApi.posts.createPost(post);
+			await mockApi.posts.createPost(post);
+
+			const loadMorePosts = await mockApi.posts.loadMorePosts({
+				timestamp: moment()
+					.add(31, 'days')
+					.valueOf(),
+			});
+
+			expect(loadMorePosts.length).toEqual(0);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}

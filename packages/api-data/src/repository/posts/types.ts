@@ -14,6 +14,10 @@ export interface IMedia {
 	size: number;
 }
 
+export interface ILoadMorePostsInput {
+	timestamp: number;
+}
+
 export interface IPostMetasCallback {
 	owner: {
 		alias: string;

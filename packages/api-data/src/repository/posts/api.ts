@@ -1,11 +1,12 @@
+import moment from 'moment';
 import { IContext, ILikesMetasCallback } from '../../types';
 import getters from './getters';
 import schemas from './schemas';
 import setters from './setters';
-
 import {
 	ICreatePostInput,
 	IGetPostByIdInput,
+	ILoadMorePostsInput,
 	IPostArrayData,
 	IPostReturnData,
 	IRemovePostInput,
@@ -192,6 +193,17 @@ export default function(context: IContext) {
 				setters.removePost(
 					context,
 					validatedInput as IRemovePostInput,
+					resolveCallback(resolve, reject),
+				);
+			});
+		},
+		loadMorePosts: async (
+			loadMorePostsInput: ILoadMorePostsInput,
+		): Promise<IPostArrayData> => {
+			return new Promise<IPostArrayData>((resolve, reject) => {
+				getters.getMostRecentPosts(
+					context,
+					loadMorePostsInput,
 					resolveCallback(resolve, reject),
 				);
 			});
