@@ -5,11 +5,17 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.REHYDRATE: {
-			const { dictionary, ...others } = action.payload.app.i18n;
-			return {
-				...state,
-				...others,
-			};
+			if (action.payload && action.payload.app) {
+				const { dictionary, ...others } = action.payload.app.i18n;
+				return {
+					...state,
+					...others,
+				};
+			} else {
+				return {
+					...state,
+				};
+			}
 		}
 		case ActionTypes.SET_LOCALE: {
 			return {

@@ -3,6 +3,9 @@ export {
 } from './adsManagementStack/AdsManagementOverviewScreen';
 export { AdsManagementScreen } from './adsManagementStack/AdsManagementScreen';
 export { AdsStatisticsScreen } from './adsManagementStack/AdsStatisticsScreen';
+export {
+	NewAdSetupPostScreen,
+} from './adsManagementStack/NewAdSetupPostScreen';
 
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 
