@@ -88,9 +88,9 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					aboutMeText={aboutMeText}
 					onEditProfile={onEditProfile}
 					getText={getText}
-					onAddFriend={() =>
-						console.log('Add friend on my profile page does nothing')
-					}
+					onAddFriend={() => {
+						/**/
+					}}
 				/>
 				{hasPhotos && (
 					<View style={styles.gridContainer}>

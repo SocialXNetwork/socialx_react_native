@@ -31,7 +31,6 @@ const styles: any = {
 	icon: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
-		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 };
 

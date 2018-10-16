@@ -11,7 +11,10 @@ interface IProfilePhotoGridProps extends ITranslatedProps {
 	gridMediaProvider: DataProvider;
 	loadMorePhotosHandler: () => void;
 	onViewMediaFullScreen: (index: number) => void;
-	header: any;
+	header: {
+		element: JSX.Element;
+		height: number;
+	};
 	disabled: boolean;
 }
 

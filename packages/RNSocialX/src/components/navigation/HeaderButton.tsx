@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { defaultColor, HEADER_BUTTON_SIZE, styles } from './HeaderButton.style';
+import styles, { defaultColor, HEADER_BUTTON_SIZE } from './HeaderButton.style';
 
 interface IHeaderButtonProps {
 	onPress: () => void;
@@ -20,16 +20,10 @@ export const HeaderButton: React.SFC<IHeaderButtonProps> = ({
 	iconSize = HEADER_BUTTON_SIZE,
 }) => {
 	return (
-		<TouchableOpacity onPress={onPress} style={styles.iconContainer}>
-			{iconName ? (
-				<Icon name={iconName} size={iconSize} color={iconColor} />
-			) : null}
+		<TouchableOpacity onPress={onPress}>
+			{iconName && <Icon name={iconName} size={iconSize} color={iconColor} />}
 			{iconSource ? (
-				<Image
-					source={iconSource}
-					style={styles.headerButtonIcon}
-					resizeMode={'contain'}
-				/>
+				<Image source={iconSource} style={styles.icon} resizeMode="contain" />
 			) : null}
 		</TouchableOpacity>
 	);

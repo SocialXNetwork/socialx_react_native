@@ -4,13 +4,14 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AvatarImage, CommentsHeaderMenuButton } from '../';
-import { ITranslatedProps } from '../../types';
+import { IPostOwner, ITranslatedProps } from '../../types';
 import styles from './CommentsPostOwner.style';
 
 interface IPostOwnerProps extends ITranslatedProps {
-	owner: any;
+	owner: IPostOwner;
 	timestamp: Date;
 	onBackPress: () => void;
+	// @Alex fix typing
 	optionsProps: any;
 	showUserProfile: (userId: string) => void;
 }
@@ -28,7 +29,7 @@ export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={onBackPress}>
-				<Icon name={'md-close'} style={styles.arrow} />
+				<Icon name="md-close" style={styles.arrow} />
 			</TouchableOpacity>
 			<TouchableOpacity onPress={() => showUserProfile(owner.userId)}>
 				<AvatarImage image={{ uri: owner.avatarURL }} style={styles.avatar} />

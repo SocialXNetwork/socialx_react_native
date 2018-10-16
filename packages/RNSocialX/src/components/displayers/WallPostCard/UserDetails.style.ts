@@ -4,7 +4,7 @@ import { Colors, Fonts, Images, Sizes } from '../../../environment/theme';
 const SIDE_PADDING = Sizes.smartHorizontalScale(16);
 
 const styles: any = {
-	topContainer: {
+	container: {
 		flexDirection: 'row',
 		paddingHorizontal: Sizes.smartHorizontalScale(SIDE_PADDING),
 		paddingBottom: Sizes.smartHorizontalScale(14),
@@ -15,8 +15,8 @@ const styles: any = {
 		height: Sizes.smartHorizontalScale(40),
 		borderRadius: Sizes.smartHorizontalScale(40) / 2,
 	},
-	topRightContainer: {
-		flex: 1,
+	details: {
+		flex: 6,
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		justifyContent: 'center',
 	},
@@ -32,6 +32,10 @@ const styles: any = {
 		lineHeight: Sizes.smartHorizontalScale(14),
 		color: Colors.postText,
 		paddingTop: Sizes.smartVerticalScale(3),
+	},
+	dotsContainer: {
+		flex: 1,
+		alignItems: 'center',
 	},
 };
 

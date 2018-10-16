@@ -8,7 +8,8 @@ const styles: any = {
 	searchContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: Sizes.smartVerticalScale(10),
+		marginVertical: Sizes.smartVerticalScale(16),
+		marginLeft: Sizes.smartHorizontalScale(16),
 	},
 	spinner: {
 		paddingHorizontal: Sizes.smartHorizontalScale(10),

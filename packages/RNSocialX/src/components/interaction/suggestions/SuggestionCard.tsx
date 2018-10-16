@@ -16,11 +16,11 @@ export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({
 	getText,
 }) => (
 	<View style={styles.container}>
-		<AvatarImage image={item.avatarURL} style={styles.avatar} />
+		<AvatarImage image={{ uri: item.avatarURL }} style={styles.avatar} />
 		<Text style={styles.name}>{item.fullName}</Text>
 		<Text style={styles.reason}>Friends with placeholder</Text>
 		<PrimaryButton
-			label={getText('button.add.friend')}
+			label={getText('button.add')}
 			size={ButtonSizes.Small}
 			borderColor={colors.pink}
 			textColor={colors.white}
@@ -31,8 +31,8 @@ export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({
 		/>
 		<View style={styles.iconContainer}>
 			<IconButton
-				iconSource={'ios-close'}
-				iconType={'io'}
+				iconSource="ios-close"
+				iconType="io"
 				onPress={deleteCard}
 				iconStyle={styles.icon}
 			/>

@@ -3,15 +3,12 @@ import { Colors, Sizes } from '../../environment/theme';
 
 export const HEADER_BUTTON_SIZE = Sizes.smartHorizontalScale(30);
 
-const style: any = {
-	iconContainer: {
-		marginHorizontal: Sizes.smartHorizontalScale(15),
-	},
-	headerButtonIcon: {
+const styles: any = {
+	icon: {
 		width: HEADER_BUTTON_SIZE,
 		height: HEADER_BUTTON_SIZE,
 	},
 };
 
 export const defaultColor = Colors.white;
-export const styles = StyleSheet.create(style);
+export default StyleSheet.create(styles);
