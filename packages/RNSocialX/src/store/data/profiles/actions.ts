@@ -209,9 +209,7 @@ export const getCurrentProfile = (): IThunk => async (
 				}),
 			);
 			const { dataApi } = context;
-			const profile = await dataApi.profiles.getProfileByUsername({
-				username: auth.alias,
-			});
+			const profile = await dataApi.profiles.getCurrentProfile();
 			dispatch(syncGetCurrentProfileAction(profile));
 		} catch (e) {
 			console.log(e);

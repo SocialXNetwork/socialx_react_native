@@ -36,6 +36,7 @@ import {
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
 	ISyncGetPublicPostsByDateAction,
+	ISyncLoadMorePostsAction,
 	IUnlikeCommentAction,
 	IUnlikePostAction,
 	IUsernameInput,
@@ -197,6 +198,13 @@ const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
 	type: ActionTypes.LOAD_MORE_POSTS,
 });
 
+const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (
+	posts: IPostArrayData,
+) => ({
+	type: ActionTypes.SYNC_LOAD_MORE_POSTS,
+	payload: posts,
+});
+
 export const loadMorePosts = (): IThunk => async (
 	dispatch,
 	getState,
@@ -218,26 +226,16 @@ export const loadMorePosts = (): IThunk => async (
 			? [...storePosts].sort((x, t) => x.timestamp - t.timestamp)[0]
 			: { timestamp: new Date(Date.now()) };
 
-	let lastPostDate = moment(latestPost.timestamp).toDate();
-
-	let days: number = 1;
-
-	let posts: IPostArrayData = [];
-
+	const lastPostTimestamp = moment(latestPost.timestamp).valueOf();
 	try {
-		while (posts.length <= 0 && days <= 30) {
-			lastPostDate = moment(lastPostDate)
-				.subtract(1, 'd')
-				.toDate();
-			posts = await dataApi.posts.getPublicPostsByDate({ date: lastPostDate });
-			days = days + 1;
-		}
-		dispatch(getPublicPostsByDate({ date: lastPostDate }));
+		const posts = await dataApi.posts.loadMorePosts({
+			timestamp: lastPostTimestamp,
+		});
+		dispatch(syncLoadMorePostsAction(posts));
 		dispatch(getProfilesByPosts(posts));
-
 		dispatch(
 			setGlobal({
-				canLoadMorePosts: days < 30,
+				canLoadMorePosts: !!posts.length,
 			}),
 		);
 	} finally {
