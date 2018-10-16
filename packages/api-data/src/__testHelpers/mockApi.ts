@@ -8,6 +8,7 @@ import 'gun/sea';
 import '../extensions/docload';
 import '../extensions/encrypt';
 import '../extensions/erase';
+import '../extensions/find';
 
 import { api as accountsApi } from '../repository/accounts';
 import { api as commentsApi } from '../repository/comments';
