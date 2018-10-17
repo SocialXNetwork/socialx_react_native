@@ -14,6 +14,7 @@ storiesOf('Screens/preAuth', module).add('LoginScreen', () => {
 			onNavigateToRegister={action('onNavigateToRegister')}
 			onNavigateToUploadKey={action('onNavigateToUploadKey')}
 			onGoBack={action('onGoBack')}
+			errors={[]}
 		/>
 	);
 });

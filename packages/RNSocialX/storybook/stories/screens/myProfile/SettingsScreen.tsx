@@ -10,8 +10,7 @@ storiesOf('Screens/myProfile', module)
 	.addDecorator(withKnobs)
 	.add('SettingsScreen', () => {
 		const aboutMeText = text('aboutMeText', 'Lorem ipsum dolor sit amet.');
-		const firstName = text('firstName', 'Alex');
-		const lastName = text('lastName', 'Sirbu');
+		const fullName = text('fullName', 'Alex Sirbu');
 		const userName = text('userName', 'alexsirbu');
 		const email = text('email', 'alex@test.com');
 		const mining = boolean('mining', false);
@@ -22,16 +21,15 @@ storiesOf('Screens/myProfile', module)
 		return (
 			<SettingsScreenView
 				onSaveChanges={action('onSaveChanges')}
-				onLogout={action('onLogout')}
 				onGoBack={action('onGoBack')}
 				getText={getTextMock}
-				aboutMeText={aboutMeText}
-				firstName={firstName}
-				lastName={lastName}
+				bio={aboutMeText}
 				userName={userName}
 				email={email}
 				miningEnabled={mining}
 				avatarURL={userAvatar}
+				showDotsMenuModal={action('showDotsMenuModal')}
+				fullName={fullName}
 			/>
 		);
 	});

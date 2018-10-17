@@ -15,7 +15,7 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { ITranslatedProps } from '../../types';
+import { IDotsMenuProps, ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './SettingsScreen.style';
 
@@ -30,7 +30,10 @@ export interface ISettingsData {
 	userName: string;
 }
 
-interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps {
+interface ISettingsScreenViewProps
+	extends ISettingsData,
+		ITranslatedProps,
+		IDotsMenuProps {
 	onSaveChanges: (values: ISettingsData) => void;
 	onGoBack: () => void;
 }
@@ -45,6 +48,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	getText,
 	onSaveChanges,
 	onGoBack,
+	showDotsMenuModal,
 }) => (
 	<Formik
 		initialValues={{
@@ -124,6 +128,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							}
 							avatarSize={defaultStyles.avatarPickerSize}
 							getText={getText}
+							showDotsMenuModal={showDotsMenuModal}
 						/>
 					</View>
 					<AvatarName

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { IDotsMenuItem } from '../../../components';
 import { currentUser } from '../../../mocks';
 import {
 	ICurrentUser,
+	IDotsMenuProps,
 	IGlobal,
 	INavigationParamsActions,
 	ITranslatedProps,
@@ -22,7 +22,7 @@ const mock: IWithMyProfileEnhancedProps = {
 		currentUser,
 	},
 	actions: {
-		showDotsMenuModal: (items: IDotsMenuItem[]) => {
+		showDotsMenuModal: (items) => {
 			/**/
 		},
 		logout: () => {
@@ -50,12 +50,12 @@ export interface IWithMyProfileEnhancedData {
 
 export interface IWithMyProfileEnhancedActions
 	extends ITranslatedProps,
+		IDotsMenuProps,
 		INavigationParamsActions {
 	resetNavigationToRoute: (
 		screenName: string,
 		navigation: NavigationScreenProp<any>,
 	) => void;
-	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
 	logout: () => void;
 	setGlobal: (input: IGlobal) => void;
 }
@@ -94,7 +94,7 @@ export class WithMyProfile extends React.Component<
 																	currentUser: currentUserProps.currentUser!,
 																},
 																actions: {
-																	showDotsMenuModal: (items: IDotsMenuItem[]) =>
+																	showDotsMenuModal: (items) =>
 																		overlayProps.showOptionsMenu({ items }),
 																	logout: accountsProps.logout,
 																	resetNavigationToRoute,

@@ -1,7 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
-import { IDotsMenuItem } from '../../../components';
-import { ISetAuthAction } from '../../app/auth/Types';
+import { IDotsMenuItem } from '../../../types';
 
 export interface IMessage {
 	text: string;

@@ -14,5 +14,6 @@ storiesOf('Screens/preAuth', module)
 			onNavigateToTermsAndConditions={action('onNavigateToTermsAndCond')}
 			onGoBack={action('onGoBack')}
 			getText={getTextMock}
+			showDotsMenuModal={action('showDotsMenuModal')}
 		/>
 	));

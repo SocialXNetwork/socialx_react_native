@@ -2,11 +2,12 @@ import * as React from 'react';
 
 import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
-import { ICurrentUser, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IDotsMenuProps, ITranslatedProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithSettingsEnhancedProps = {
@@ -21,6 +22,9 @@ const mock: IWithSettingsEnhancedProps = {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
+		showDotsMenuModal: (items) => {
+			/**/
+		},
 	},
 };
 
@@ -36,7 +40,9 @@ export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;
 }
 
-export interface IWithSettingsEnhancedActions extends ITranslatedProps {
+export interface IWithSettingsEnhancedActions
+	extends ITranslatedProps,
+		IDotsMenuProps {
 	updateUserProfile: (
 		saveData: ISettingsData,
 		avatarHasChanged: boolean,
@@ -63,34 +69,40 @@ export class WithSettings extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithAccounts>
-						{(accountsProps) => (
-							<WithProfiles>
-								{(profilesProps) => (
-									<WithCurrentUser>
-										{(currentUserProps) =>
-											this.props.children({
-												data: {
-													currentUser: currentUserProps.currentUser!,
-												},
-												actions: {
-													updateUserProfile: (saveData) =>
-														profilesProps.updateCurrentProfile({
-															aboutMeText: saveData.bio,
-															avatar: saveData.avatarURL,
-															email: saveData.email,
-															fullName: saveData.fullName,
-														}),
-													logout: accountsProps.logout,
-													getText: i18nProps.getText,
-												},
-											})
-										}
-									</WithCurrentUser>
+					<WithOverlays>
+						{(overlayProps) => (
+							<WithAccounts>
+								{(accountsProps) => (
+									<WithProfiles>
+										{(profilesProps) => (
+											<WithCurrentUser>
+												{(currentUserProps) =>
+													this.props.children({
+														data: {
+															currentUser: currentUserProps.currentUser!,
+														},
+														actions: {
+															updateUserProfile: (saveData) =>
+																profilesProps.updateCurrentProfile({
+																	aboutMeText: saveData.bio,
+																	avatar: saveData.avatarURL,
+																	email: saveData.email,
+																	fullName: saveData.fullName,
+																}),
+															logout: accountsProps.logout,
+															getText: i18nProps.getText,
+															showDotsMenuModal: (items) =>
+																overlayProps.showOptionsMenu({ items }),
+														},
+													})
+												}
+											</WithCurrentUser>
+										)}
+									</WithProfiles>
 								)}
-							</WithProfiles>
+							</WithAccounts>
 						)}
-					</WithAccounts>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

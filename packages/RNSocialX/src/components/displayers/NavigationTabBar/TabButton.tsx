@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
 		top: ICON_PADDING,
 		left: ICON_PADDING,
 	},
-});
+} as any);

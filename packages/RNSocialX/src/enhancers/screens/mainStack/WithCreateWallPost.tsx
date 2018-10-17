@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { KeyboardContext } from '../../../environment/consts';
 import {
+	IDotsMenuProps,
 	IGlobal,
 	IResizeProps,
 	ITranslatedProps,
@@ -20,6 +21,7 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { getActivity } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
@@ -41,6 +43,10 @@ const mock: IWithCreateWallPostEnhancedProps = {
 		},
 		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
+		// This is now implemented with the WithOverlays connector enhancer
+		showDotsMenuModal: (items) => {
+			/**/
+		},
 	},
 };
 
@@ -58,7 +64,9 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 	creatingPost: boolean;
 }
 
-export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps {
+export interface IWithCreateWallPostEnhancedActions
+	extends ITranslatedProps,
+		IDotsMenuProps {
 	createPost: (wallPostData: IWallPostData) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
@@ -84,69 +92,77 @@ export class WithCreateWallPost extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithGlobals>
-						{({ setGlobal }) => (
-							<WithFiles>
-								{({ uploadFile, uploads }) => (
-									<KeyboardContext.Consumer>
-										{({ marginBottom }) => (
-											<WithActivities>
-												{({ activities }) => (
-													<WithCurrentUser>
-														{({ currentUser }) => (
-															<WithPosts>
-																{(postsProps) =>
-																	children({
-																		data: {
-																			...mock.data,
-																			creatingPost: getActivity(
-																				activities,
-																				ActionTypes.CREATE_POST,
-																			),
-																			marginBottom,
-																			currentUserAvatarURL: currentUser!
-																				.avatarURL,
-																		},
-																		actions: {
-																			...mock.actions,
-																			uploadFile,
-																			createPost: (
-																				wallPostData: IWallPostData,
-																			) =>
-																				postsProps.createPost({
-																					postText: wallPostData.text,
-																					// location: wallPostData.location,
-																					location: 'Timisoara',
-																					taggedFriends:
-																						wallPostData.taggedFriends,
-																					// media: uploads.map((upload) => ({
-																					// 	hash: upload.hash,
-																					// 	type: {
-																					// 		key: 'TBD',
-																					// 		name: 'Photo',
-																					// 		category: 'TBD',
-																					// 	},
-																					// 	extension: 'TBD',
-																					// 	size: 1234,
-																					// })),
-																					privatePost: false,
-																				}),
-																			setGlobal,
-																			getText: i18nProps.getText,
-																		},
-																	})
-																}
-															</WithPosts>
+					<WithOverlays>
+						{(overlayProps) => (
+							<WithGlobals>
+								{({ setGlobal }) => (
+									<WithFiles>
+										{({ uploadFile, uploads }) => (
+											<KeyboardContext.Consumer>
+												{({ marginBottom }) => (
+													<WithActivities>
+														{({ activities }) => (
+															<WithCurrentUser>
+																{({ currentUser }) => (
+																	<WithPosts>
+																		{(postsProps) =>
+																			children({
+																				data: {
+																					...mock.data,
+																					creatingPost: getActivity(
+																						activities,
+																						ActionTypes.CREATE_POST,
+																					),
+																					marginBottom,
+																					currentUserAvatarURL: currentUser!
+																						.avatarURL,
+																				},
+																				actions: {
+																					...mock.actions,
+																					uploadFile,
+																					createPost: (
+																						wallPostData: IWallPostData,
+																					) =>
+																						postsProps.createPost({
+																							postText: wallPostData.text,
+																							// location: wallPostData.location,
+																							location: 'Timisoara',
+																							taggedFriends:
+																								wallPostData.taggedFriends,
+																							// media: uploads.map((upload) => ({
+																							// 	hash: upload.hash,
+																							// 	type: {
+																							// 		key: 'TBD',
+																							// 		name: 'Photo',
+																							// 		category: 'TBD',
+																							// 	},
+																							// 	extension: 'TBD',
+																							// 	size: 1234,
+																							// })),
+																							privatePost: false,
+																						}),
+																					setGlobal,
+																					getText: i18nProps.getText,
+																					showDotsMenuModal: (items) =>
+																						overlayProps.showOptionsMenu({
+																							items,
+																						}),
+																				},
+																			})
+																		}
+																	</WithPosts>
+																)}
+															</WithCurrentUser>
 														)}
-													</WithCurrentUser>
+													</WithActivities>
 												)}
-											</WithActivities>
+											</KeyboardContext.Consumer>
 										)}
-									</KeyboardContext.Consumer>
+									</WithFiles>
 								)}
-							</WithFiles>
+							</WithGlobals>
 						)}
-					</WithGlobals>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

@@ -1,10 +1,14 @@
-import { ActionSheet } from 'native-base';
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Colors, Sizes } from '../../environment/theme';
-import { getTextSignature, ITranslatedProps } from '../../types';
+import {
+	getTextSignature,
+	IDotsMenuItem,
+	IDotsMenuProps,
+	ITranslatedProps,
+} from '../../types';
 import { getCameraMediaObject, getGalleryMediaObject } from '../../utilities';
 import { AvatarImage } from './AvatarImage';
 
@@ -26,7 +30,7 @@ const AVATAR_CAMERA_OPTIONS = {
 	useFrontCamera: true,
 };
 
-interface IAvatarPickerProps extends ITranslatedProps {
+interface IAvatarPickerProps extends ITranslatedProps, IDotsMenuProps {
 	avatarImage: { uri: string };
 	afterImagePick: (image: string) => void;
 	avatarSize?: number;
@@ -51,24 +55,21 @@ const takeCameraPhoto = async (afterImagePick: (image: string) => void) => {
 const pickUserAvatar = (
 	afterImagePick: (image: string) => void,
 	getText: getTextSignature,
+	showDotsMenuModal: (items: IDotsMenuItem[]) => void,
 ) => {
-	ActionSheet.show(
+	const menuItems = [
 		{
-			options: [
-				getText('avatar.picker.pick.from.gallery'),
-				getText('avatar.picker.take.photo'),
-				getText('button.cancel'),
-			],
-			cancelButtonIndex: 2,
+			label: getText('avatar.picker.pick.from.gallery'),
+			icon: 'md-photos',
+			actionHandler: () => showGalleryPhotoPicker(afterImagePick),
 		},
-		(buttonIndex: number) => {
-			if (buttonIndex === 0) {
-				showGalleryPhotoPicker(afterImagePick);
-			} else if (buttonIndex === 1) {
-				takeCameraPhoto(afterImagePick);
-			}
+		{
+			label: getText('avatar.picker.take.photo'),
+			icon: 'md-camera',
+			actionHandler: () => takeCameraPhoto(afterImagePick),
 		},
-	);
+	];
+	showDotsMenuModal(menuItems);
 };
 
 export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
@@ -76,6 +77,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 	avatarSize = Sizes.smartHorizontalScale(80),
 	afterImagePick,
 	getText,
+	showDotsMenuModal,
 }) => {
 	const avatarSizeStyle = {
 		width: avatarSize,
@@ -85,7 +87,9 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 	const iconSize = Math.min(30, Math.round(avatarSize / 6));
 
 	return (
-		<TouchableOpacity onPress={() => pickUserAvatar(afterImagePick, getText)}>
+		<TouchableOpacity
+			onPress={() => pickUserAvatar(afterImagePick, getText, showDotsMenuModal)}
+		>
 			<AvatarImage image={avatarImage} style={avatarSizeStyle} />
 			<View style={style.editIcon}>
 				<Icon name="camera" size={iconSize} color={Colors.postFullName} />
