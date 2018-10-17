@@ -12,7 +12,7 @@ export const getNotifications = (
 	handles
 		.notifications(context)
 		.docLoad((notifications: INotificationsReturnData) => {
-			if (!notifications) {
+			if (!Object.keys(notifications).length) {
 				return callback(new ApiError('failed to find notification'));
 			}
 			const notifcationsReturnData = convertGunSetToArrayWithKey(
