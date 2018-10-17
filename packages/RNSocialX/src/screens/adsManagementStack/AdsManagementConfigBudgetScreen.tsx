@@ -36,7 +36,9 @@ const pickerData = [
 ];
 
 const dateFormatMomentJS = 'DD/MM/YYYY';
-const dateNow = new Date();
+const currentDate = new Date();
+const nextDayFromNow = new Date();
+nextDayFromNow.setDate(currentDate.getDate() + 1);
 
 class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 	public state = {
@@ -75,6 +77,8 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 				isStartDatePickerVisible={this.state.isStartDatePickerVisible}
 				isStopDatePickerVisible={this.state.isStopDatePickerVisible}
 				handleDatePicker={this.handleDatePicker}
+				currentDate={currentDate}
+				nextDayFromNow={nextDayFromNow}
 				handleStartDatePicked={this.handleStartDatePicked}
 				handleStopDatePicked={this.handleStopDatePicked}
 				nextButtonPressed={this.nextButtonPressed}
@@ -139,8 +143,8 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 				} else {
 					this.setState({
 						runAdContinuouslyPressed: true,
-						selectedStartDatePlaceholder: 'DD/MM/JJJJ',
-						selectedStopDatePlaceholder: 'DD/MM/JJJJ',
+						selectedStartDate: 'DD/MM/JJJJ',
+						selectedStopDate: 'DD/MM/JJJJ',
 					});
 				}
 				break;
