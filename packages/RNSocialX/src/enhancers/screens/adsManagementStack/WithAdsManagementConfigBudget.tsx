@@ -5,15 +5,22 @@
 
 import * as React from 'react';
 
+import { IConfirmation } from '../../../store/ui/overlays';
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 
 const mock: IWithAdsManagementConfigBudgetEnhancedProps = {
 	data: {},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
 		onCreateAdSetBudget: (budgetConfig: IBudgetConfigData) => {
-			/* */
+			/*
+			 */
+		},
+		showConfirmation: (confirmation: IConfirmation) => {
+			/*
+            */
 		},
 	},
 };
@@ -33,6 +40,7 @@ export interface IWithAdsManagementConfigBudgetEnhancedData {}
 export interface IWithAdsManagementConfigBudgetEnhancedActions
 	extends ITranslatedProps {
 	onCreateAdSetBudget: (budgetConfig: IBudgetConfigData) => void;
+	showConfirmation: (confirmation: IConfirmation) => void;
 }
 
 interface IWithAdsManagementConfigBudgetEnhancedProps {
@@ -52,19 +60,24 @@ export class WithAdsManagementConfigBudget extends React.Component<
 > {
 	render() {
 		return (
-			<WithI18n>
-				{(i18nProps) =>
-					this.props.children({
-						data: {
-							...mock.data,
-						},
-						actions: {
-							...mock.actions,
-							getText: i18nProps.getText,
-						},
-					})
-				}
-			</WithI18n>
+			<WithOverlays>
+				{(overlayProps) => (
+					<WithI18n>
+						{(i18nProps) =>
+							this.props.children({
+								data: {
+									...mock.data,
+								},
+								actions: {
+									...mock.actions,
+									getText: i18nProps.getText,
+									showConfirmation: overlayProps.showConfirmation,
+								},
+							})
+						}
+					</WithI18n>
+				)}
+			</WithOverlays>
 		);
 	}
 }
