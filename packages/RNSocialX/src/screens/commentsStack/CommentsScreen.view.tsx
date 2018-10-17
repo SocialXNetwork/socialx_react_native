@@ -1,5 +1,11 @@
 import React from 'react';
-import { Platform, SafeAreaView, ScrollView, TextInput } from 'react-native';
+import {
+	KeyboardAvoidingView,
+	Platform,
+	SafeAreaView,
+	ScrollView,
+	TextInput,
+} from 'react-native';
 
 import {
 	CommentCard,
@@ -8,17 +14,17 @@ import {
 	CommentsPostOwner,
 	CommentsPostText,
 	CommentTextInput,
-	NoComments,
 } from '../../components';
 import { WallPostMedia } from '../../components/displayers/WallPostCard';
 import {
 	IMediaProps,
+	IPostForComment,
 	IResizeProps,
 	ITranslatedProps,
 	IWallPostComment,
 } from '../../types';
 
-import style from './CommentsScreen.style';
+import styles from './CommentsScreen.style';
 
 const onStartCommentHandler = (commentInputRef: React.RefObject<TextInput>) => {
 	if (commentInputRef.current) {
@@ -37,93 +43,80 @@ const onCommentSendHandler = (
 };
 
 interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
-	comments: IWallPostComment[];
+	post: IPostForComment;
 	onCommentLike: (comment: IWallPostComment) => void;
 	onCommentReply: (comment: IWallPostComment, startReply: boolean) => void;
 	onCommentSend: () => void;
 	onCommentTextChange: (commentText: string) => void;
 	startComment: boolean;
 	onViewUserProfile: (userId: string) => void;
-	commentText: string;
-	showSendButton: boolean;
+	comment: string;
 	onShowOptionsMenu: (comment: IWallPostComment) => void;
-	postData: any;
-	postOwner: object;
 	onCommentsBackPress: () => void;
-	onImagePress: (index: any, medias: IMediaProps[]) => void;
+	onImagePress: (index: number, medias: IMediaProps[]) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
-	currentUser: any;
 	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: object;
 	optionsProps: object;
-	isReplyScreen: boolean;
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
-	comments,
+	post,
 	onCommentLike,
 	onCommentReply,
 	onCommentSend,
 	startComment,
 	onViewUserProfile,
-	commentText,
-	showSendButton,
+	comment,
 	onCommentTextChange,
 	onShowOptionsMenu,
-	postData,
-	postOwner,
 	onCommentsBackPress,
 	onImagePress,
 	onLikePress,
-	currentUser,
 	getText,
 	onCommentContainerWidthChange,
 	commentLikesPosition,
 	optionsProps,
 	marginBottom,
-	isReplyScreen,
 }) => {
-	const { id, likes, media, text, timestamp } = postData;
-	const likedByMe = !!likes.find(
-		(like: any) => like.userId === currentUser.userId,
-	);
-
-	const noCommentsText = isReplyScreen
-		? getText('replies.screen.no.comments')
-		: getText('comments.screen.no.comments');
-	const commentInputPlaceholder = isReplyScreen
-		? getText('replies.screen.comment.input.placeholder')
-		: getText('comments.screen.comment.input.placeholder');
+	const {
+		id,
+		likes,
+		media,
+		postText,
+		timestamp,
+		owner,
+		comments,
+		likedByMe,
+	} = post;
 
 	const scrollRef: React.RefObject<ScrollView> = React.createRef();
 	const commentInputRef: React.RefObject<TextInput> = React.createRef();
 
 	return (
 		<SafeAreaView
-			style={[style.container, Platform.select({ ios: { marginBottom } })]}
+			style={[styles.container, Platform.select({ ios: { marginBottom } })]}
 		>
 			<ScrollView
-				style={style.commentsList}
-				keyboardShouldPersistTaps={'handled'}
+				style={styles.commentsList}
+				keyboardShouldPersistTaps="handled"
 				ref={scrollRef}
 				onLayout={() => scrollRef.current && scrollRef.current.scrollToEnd()}
 			>
 				<CommentsPostOwner
-					owner={postOwner}
+					owner={owner}
 					timestamp={timestamp}
 					onBackPress={onCommentsBackPress}
 					optionsProps={optionsProps}
 					getText={getText}
 					showUserProfile={onViewUserProfile}
 				/>
-				{text ? <CommentsPostText text={text} /> : null}
+				<CommentsPostText text={postText} />
 				{media && (
 					<WallPostMedia
 						mediaObjects={media}
 						onMediaObjectView={(index: number) => onImagePress(index, media)}
-						onLikeButtonPressed={() => {
-							/**/
-						}}
+						onLikeButtonPressed={() => undefined}
 						// onLikeButtonPressed={this.onDoubleTapLikeHandler}
 						noInteraction={false}
 						getText={getText}
@@ -140,39 +133,37 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					getText={getText}
 					onStartComment={() => onStartCommentHandler(commentInputRef)}
 				/>
-				{comments.length === 0 ? (
-					<NoComments text={noCommentsText} />
-				) : (
-					comments.map((comment) => (
+				{comments.length > 0 &&
+					comments.map((comm) => (
 						<CommentCard
-							key={comment.id}
-							comment={comment}
-							onCommentLike={() => onCommentLike(comment)}
+							key={comm.id}
+							comment={comm}
+							onCommentLike={() => onCommentLike(comm)}
 							onCommentReply={(startReply: boolean) =>
-								onCommentReply(comment, startReply)
+								onCommentReply(comm, startReply)
 							}
 							onViewUserProfile={onViewUserProfile}
-							onShowOptionsMenu={() => onShowOptionsMenu(comment)}
+							onShowOptionsMenu={() => onShowOptionsMenu(comm)}
 							onCommentContainerWidthChange={(width: number) =>
 								onCommentContainerWidthChange(width)
 							}
 							commentLikesPosition={commentLikesPosition}
 							getText={getText}
 						/>
-					))
-				)}
+					))}
 			</ScrollView>
-			<CommentTextInput
-				ref={commentInputRef}
-				autoFocus={startComment}
-				onCommentSend={() =>
-					onCommentSendHandler(commentInputRef, onCommentSend)
-				}
-				placeholder={commentInputPlaceholder}
-				showSendButton={showSendButton}
-				commentText={commentText}
-				onCommentTextChange={onCommentTextChange}
-			/>
+			<KeyboardAvoidingView behavior="padding">
+				<CommentTextInput
+					ref={commentInputRef}
+					autoFocus={startComment}
+					onCommentSend={() =>
+						onCommentSendHandler(commentInputRef, onCommentSend)
+					}
+					placeholder={getText('comments.screen.comment.input.placeholder')}
+					commentText={comment}
+					onCommentTextChange={onCommentTextChange}
+				/>
+			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);
 };

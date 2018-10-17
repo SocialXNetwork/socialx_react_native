@@ -4,9 +4,8 @@
  */
 
 import * as React from 'react';
-import { currentUser, posts } from '../../../mocks';
+import { posts } from '../../../mocks';
 import {
-	ICurrentUser,
 	IDotsMenuProps,
 	INavigationParamsActions,
 	ITranslatedProps,
@@ -27,7 +26,8 @@ import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
 const mock: IUserProfileEnhancedProps = {
 	data: {
-		currentUser,
+		currentUserAvatarURL:
+			'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
 		visitedUser: {
 			userId: '999',
 			avatarURL:
@@ -55,7 +55,6 @@ const mock: IUserProfileEnhancedProps = {
 			relationship: SearchResultKind.NotFriend,
 		},
 		refreshingProfile: false,
-		loadingProfile: false,
 	},
 	actions: {
 		addFriend: (userId: string) => {
@@ -93,10 +92,9 @@ const mock: IUserProfileEnhancedProps = {
 };
 
 export interface IWithUserProfileEnhancedData {
-	currentUser: ICurrentUser;
+	currentUserAvatarURL: string;
 	visitedUser: IVisitedUser;
 	refreshingProfile: boolean;
-	loadingProfile: boolean;
 }
 
 export interface IWithUserProfileEnhancedActions
@@ -143,20 +141,18 @@ export class WithUserProfile extends React.Component<
 													<WithActivities>
 														{({ activities }) => (
 															<WithCurrentUser>
-																{(currentUserProps) => (
+																{({ currentUser }) => (
 																	<WithVisitedUserContent>
 																		{({ visitedUser }) => {
 																			return this.props.children({
 																				data: {
-																					// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
-																					// @Ionut, check similar use cases if any changes are to be done here.
-																					currentUser: currentUserProps.currentUser!,
+																					currentUserAvatarURL: currentUser!
+																						.avatarURL,
 																					visitedUser: visitedUser!,
 																					refreshingProfile: getActivity(
 																						activities,
 																						ActionTypes.SYNC_GET_CURRENT_PROFILE,
 																					),
-																					loadingProfile: true,
 																				},
 																				actions: {
 																					...mock.actions,

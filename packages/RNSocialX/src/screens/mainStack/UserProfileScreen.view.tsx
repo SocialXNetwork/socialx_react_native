@@ -17,14 +17,8 @@ import {
 	ProfileTopContainer,
 	WallPostCard,
 } from '../../components';
-import {
-	IWithLoaderProps,
-	WithInlineLoader,
-} from '../../components/inlineLoader';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import {
-	ICurrentUser,
-	ILike,
 	IWallPostCardActions,
 	IWallPostCardData,
 	SearchResultKind,
@@ -34,9 +28,7 @@ import styles, { colors } from './UserProfileScreen.style';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-interface IUserProfileScreenViewProps
-	extends IWithLoaderProps,
-		IWallPostCardActions {
+interface IUserProfileScreenViewProps extends IWallPostCardActions {
 	avatarURL: any;
 	fullName: string;
 	userName: false | string;
@@ -49,7 +41,7 @@ interface IUserProfileScreenViewProps
 	recentPosts: IWallPostCardData[];
 	refreshing: boolean;
 	gridMediaProvider: DataProvider;
-	currentUser: ICurrentUser;
+	currentUserAvatarURL: string;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
 	activeTab: string;
@@ -87,14 +79,13 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onLikeButtonPress,
 	aboutMeText,
 	numberOfComments,
-	currentUser,
+	currentUserAvatarURL,
 	onIconPress,
 	listTranslate,
 	gridTranslate,
 	activeTab,
 	containerHeight,
 	onLayoutChange,
-	isLoading,
 	getText,
 	onClose,
 	onUserPress,
@@ -121,95 +112,88 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 		: [styles.scrollContainer, { flex: 1 }];
 
 	return (
-		<WithInlineLoader isLoading={isLoading}>
-			<View style={styles.container}>
-				<Header title={'profile'} left={<CloseButton onClose={onClose} />} />
-				<View style={styles.whiteBottomView} />
-				<ScrollView
-					contentContainerStyle={scrollContainerStyles}
-					showsVerticalScrollIndicator={false}
-					refreshControl={
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={onRefresh}
-							tintColor={colors.white}
-						/>
-					}
-					scrollEnabled={hasPhotos}
-				>
-					<ProfileTopContainer
-						avatarURL={avatarURL}
-						fullName={fullName}
-						userName={userName}
-						numberOfFriends={numberOfFriends}
-						numberOfLikes={numberOfLikes}
-						numberOfPhotos={numberOfPhotos}
-						numberOfComments={numberOfComments}
-						onViewProfilePhoto={onViewProfilePhoto}
-						onAddFriend={onAddFriend}
-						onShowFriendshipOptions={onShowFriendshipOptions}
-						relationship={relationship}
-						isCurrentUser={false}
-						onIconPress={onIconPress}
-						aboutMeText={aboutMeText}
-						tabs={true}
-						activeTab={activeTab}
-						getText={getText}
+		<View style={styles.container}>
+			<Header
+				title={getText('user.profile.screen.title')}
+				left={<CloseButton onClose={onClose} />}
+			/>
+			<View style={styles.whiteBottomView} />
+			<ScrollView
+				contentContainerStyle={scrollContainerStyles}
+				showsVerticalScrollIndicator={false}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={onRefresh}
+						tintColor={colors.white}
 					/>
-					{hasPhotos && (
-						<View style={contentContainerStyle}>
-							<Animated.View
-								style={[
-									styles.postsContainer,
-									{ transform: [{ translateX: listTranslate }] },
-								]}
-							>
-								{recentPosts.map((post: IWallPostCardData, index: number) => {
-									let likedByMe = false;
-									if (post.likes.length > 0) {
-										likedByMe = !!post.likes.find(
-											(like: ILike) => like.userId === currentUser.userId,
-										);
-									}
-
-									return (
-										<View style={styles.wallPostContainer} key={post.id}>
-											<WallPostCard
-												{...post}
-												likedByMe={likedByMe}
-												canDelete={false}
-												getText={getText}
-												onCommentPress={onCommentPress}
-												onImagePress={onImagePress}
-												onUserPress={onUserPress}
-												/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
-												onAddComment={(
-													dummyIndex: number,
-													cardHeight: number,
-												) => onAddComment(index, cardHeight)}
-												onSubmitComment={onSubmitComment}
-												onLikeButtonPress={onLikeButtonPress}
-												noInput={true}
-												currentUserAvatarURL={currentUser.avatarURL}
-												onDeletePress={onDeletePress}
-												onBlockUser={onBlockUser}
-												onReportProblem={onReportProblem}
-											/>
-										</View>
-									);
-								})}
-							</Animated.View>
-							<Animated.View
-								onLayout={(event: any) => {
-									if (containerHeight !== event.nativeEvent.layout.height) {
-										onLayoutChange(event.nativeEvent.layout.height);
-									}
-								}}
-								style={[
-									styles.gridContainer,
-									{ transform: [{ translateX: gridTranslate }] },
-								]}
-							>
+				}
+				scrollEnabled={hasPhotos}
+			>
+				<ProfileTopContainer
+					avatarURL={avatarURL}
+					fullName={fullName}
+					userName={userName}
+					numberOfFriends={numberOfFriends}
+					numberOfLikes={numberOfLikes}
+					numberOfPhotos={numberOfPhotos}
+					numberOfComments={numberOfComments}
+					onViewProfilePhoto={onViewProfilePhoto}
+					onAddFriend={onAddFriend}
+					onShowFriendshipOptions={onShowFriendshipOptions}
+					relationship={relationship}
+					isCurrentUser={false}
+					onIconPress={onIconPress}
+					aboutMeText={aboutMeText}
+					tabs={true}
+					activeTab={activeTab}
+					getText={getText}
+				/>
+				{hasPhotos && (
+					<View style={contentContainerStyle}>
+						<Animated.View
+							style={[
+								styles.postsContainer,
+								{ transform: [{ translateX: listTranslate }] },
+							]}
+						>
+							{recentPosts.map((post: IWallPostCardData, index: number) => (
+								<View style={styles.wallPostContainer} key={post.id}>
+									<WallPostCard
+										{...post}
+										likedByMe={post.likedByMe}
+										canDelete={false}
+										getText={getText}
+										onCommentPress={onCommentPress}
+										onImagePress={onImagePress}
+										onUserPress={onUserPress}
+										/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
+										onAddComment={(dummyIndex: number, cardHeight: number) =>
+											onAddComment(index, cardHeight)
+										}
+										onSubmitComment={onSubmitComment}
+										onLikeButtonPress={onLikeButtonPress}
+										noInput={true}
+										currentUserAvatarURL={currentUserAvatarURL}
+										onDeletePress={onDeletePress}
+										onBlockUser={onBlockUser}
+										onReportProblem={onReportProblem}
+									/>
+								</View>
+							))}
+						</Animated.View>
+						<Animated.View
+							onLayout={(event: any) => {
+								if (containerHeight !== event.nativeEvent.layout.height) {
+									onLayoutChange(event.nativeEvent.layout.height);
+								}
+							}}
+							style={[
+								styles.gridContainer,
+								{ transform: [{ translateX: gridTranslate }] },
+							]}
+						>
+							{hasPhotos ? (
 								<ProfilePhotoGrid
 									loadMorePhotosHandler={loadMorePhotosHandler}
 									gridMediaProvider={gridMediaProvider}
@@ -221,12 +205,13 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 									disabled={hasPhotos}
 									getText={getText}
 								/>
-							</Animated.View>
-						</View>
-					)}
-					{!hasPhotos && <NoPhotos getText={getText} />}
-				</ScrollView>
-			</View>
-		</WithInlineLoader>
+							) : (
+								<NoPhotos getText={getText} />
+							)}
+						</Animated.View>
+					</View>
+				)}
+			</ScrollView>
+		</View>
 	);
 };

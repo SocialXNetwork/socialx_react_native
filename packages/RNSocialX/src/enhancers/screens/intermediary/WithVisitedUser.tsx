@@ -34,11 +34,12 @@ export class WithVisitedUser extends React.Component<
 								{({ profiles }) => {
 									const { navigationParams } = navigationProps;
 
-									const params = navigationParams[SCREENS.UserProfile];
+									const { userId } = navigationParams[SCREENS.UserProfile];
 
 									const foundAccount = accounts.find(
-										(account) => account.alias === params.userId,
+										(account) => account.alias === userId,
 									);
+
 									const foundProfile = profiles.find(
 										(profile) => profile.pub === foundAccount!.pub,
 									);
@@ -63,6 +64,7 @@ export class WithVisitedUser extends React.Component<
 											relationship: SearchResultKind.NotFriend,
 										};
 									}
+									console.log(visitedUser);
 
 									return this.props.children({
 										visitedUser,

@@ -203,11 +203,11 @@ export class WallPostCard extends React.Component<
 				<PostText
 					text={postText}
 					fullTextVisible={fullTextVisible}
-					getText={getText}
 					toggleShowFullText={this.toggleShowFullText}
 					handleHashTag={this.handleHashTag}
 					handleUserTag={this.handleUserTag}
 					launchExternalUrl={this.launchExternalURL}
+					getText={getText}
 				/>
 				<View>
 					{heartAnimation && (

@@ -11,10 +11,12 @@ import { currentUser } from '../../../mocks';
 import { ICurrentUser, IGlobal, ITranslatedProps } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
-import { ActionTypes } from '../../../store/data/accounts/Types';
+import { ActionTypes as AccountActionTypes } from '../../../store/data/accounts/Types';
+import { ActionTypes as PostActionTypes } from '../../../store/data/posts/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
+import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { getActivity, resetNavigationToRoute } from '../../helpers';
@@ -27,12 +29,16 @@ const mock: IWithLaunchEnhancedProps = {
 		applicationInMaintenanceMode: false,
 		auth: {},
 		loggingIn: false,
+		loadingPosts: false,
 	},
 	actions: {
 		resetNavigationToRoute: (
 			screenName: string,
 			navigation: NavigationScreenProp<any>,
 		) => {
+			/**/
+		},
+		loadPosts: () => {
 			/**/
 		},
 		recall: (creds: ICredentials) => {
@@ -49,6 +55,7 @@ export interface IWithLaunchEnhancedData {
 	applicationInMaintenanceMode: boolean;
 	auth: IAuthData | null;
 	loggingIn: boolean;
+	loadingPosts: boolean;
 }
 
 export interface IWithLaunchEnhancedActions extends ITranslatedProps {
@@ -56,6 +63,7 @@ export interface IWithLaunchEnhancedActions extends ITranslatedProps {
 		screenName: string,
 		navigation: NavigationScreenProp<any>,
 	) => void;
+	loadPosts: () => void;
 	recall: (creds: ICredentials) => void;
 }
 
@@ -85,35 +93,44 @@ export class WithLaunch extends React.Component<
 								{({ auth }) => (
 									<WithAccounts>
 										{({ login }) => (
-											<WithActivities>
-												{({ activities }) => (
-													<WithCurrentUser>
-														{(currentUserProps) =>
-															children({
-																data: {
-																	...mock.data,
-																	currentUser: currentUserProps.currentUser,
-																	globals,
-																	loggingIn: getActivity(
-																		activities,
-																		ActionTypes.LOGIN,
-																	),
-																	auth,
-																},
-																actions: {
-																	...mock.actions,
-																	getText: i18nProps.getText,
-																	resetNavigationToRoute,
-																	recall: (creds) => {
-																		// has to be done, otherwise we will recall login when there is no gun instance
-																		setTimeout(() => login(creds), 1000);
-																	},
-																},
-															})
-														}
-													</WithCurrentUser>
+											<WithPosts>
+												{(postsProps) => (
+													<WithActivities>
+														{({ activities }) => (
+															<WithCurrentUser>
+																{(currentUserProps) =>
+																	children({
+																		data: {
+																			...mock.data,
+																			currentUser: currentUserProps.currentUser,
+																			globals,
+																			loggingIn: getActivity(
+																				activities,
+																				AccountActionTypes.LOGIN,
+																			),
+																			loadingPosts: getActivity(
+																				activities,
+																				PostActionTypes.LOAD_MORE_POSTS,
+																			),
+																			auth,
+																		},
+																		actions: {
+																			...mock.actions,
+																			getText: i18nProps.getText,
+																			resetNavigationToRoute,
+																			loadPosts: postsProps.loadMorePosts,
+																			recall: (creds) => {
+																				// has to be done, otherwise we will recall login when there is no gun instance
+																				setTimeout(() => login(creds), 1000);
+																			},
+																		},
+																	})
+																}
+															</WithCurrentUser>
+														)}
+													</WithActivities>
 												)}
-											</WithActivities>
+											</WithPosts>
 										)}
 									</WithAccounts>
 								)}

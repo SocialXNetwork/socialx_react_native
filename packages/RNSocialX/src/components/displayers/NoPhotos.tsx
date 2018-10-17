@@ -7,7 +7,7 @@ import { ITranslatedProps } from '../../types';
 import styles from './NoPhotos.style';
 
 interface INoPhotosProps extends ITranslatedProps {
-	owner: boolean;
+	owner?: boolean;
 }
 
 export const NoPhotos: React.SFC<INoPhotosProps> = ({

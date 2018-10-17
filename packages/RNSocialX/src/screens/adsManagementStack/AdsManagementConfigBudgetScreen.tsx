@@ -3,7 +3,8 @@ import * as React from 'react';
 import Picker from 'react-native-picker';
 
 import { INavigationProps } from '../../types';
-import { customStyleProps } from './AdsManagementConfigBudgetScreen.style';
+
+import { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
 import { AdsManagementConfigBudgetScreenView } from './AdsManagementConfigBudgetScreen.view';
 
 import {
@@ -26,6 +27,7 @@ interface IAdsManagementConfigBudgetScreenState {
 	isStopDatePickerVisible: boolean;
 	selectedStartDate: string;
 	selectedStopDate: string;
+	nextDayFromStartDate: Date;
 }
 
 const pickerData = [
@@ -37,7 +39,10 @@ const pickerData = [
 
 const dateFormatMomentJS = 'DD/MM/YYYY';
 
-class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
+class Screen extends React.Component<
+	IAdsManagementConfigBudgetScreenProps,
+	IAdsManagementConfigBudgetScreenState
+> {
 	public state = {
 		budgetValue: this.props.getText(
 			'ad.management.budget.budget.textinput.initialvalue',
@@ -108,11 +113,11 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 			pickerData: pickerData.map((value: string) =>
 				getText(value).toUpperCase(),
 			),
-			pickerTitleColor: customStyleProps.pickerTitleColor,
-			pickerConfirmBtnColor: customStyleProps.pickerConfirmAndCancelBtnColor,
-			pickerCancelBtnColor: customStyleProps.pickerConfirmAndCancelBtnColor,
-			pickerBg: customStyleProps.pickerToolbarAndBgColor,
-			pickerToolBarBg: customStyleProps.pickerToolbarAndBgColor,
+			pickerTitleColor: defaultStyles.pickerTitleColor,
+			pickerConfirmBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
+			pickerCancelBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
+			pickerBg: defaultStyles.pickerToolbarAndBgColor,
+			pickerToolBarBg: defaultStyles.pickerToolbarAndBgColor,
 			selectedValue: [1],
 			pickerTitleText: getText('ad.management.budget.currency.picker.select'),
 			pickerConfirmBtnText: getText('button.confirm'),

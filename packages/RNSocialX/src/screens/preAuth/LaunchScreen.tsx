@@ -18,6 +18,7 @@ type ILaunchScreenProps = INavigationProps &
 
 interface ILaunchScreenState {
 	loggingIn: boolean | null;
+	loadingPosts: boolean | null;
 }
 
 class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
@@ -33,6 +34,7 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 			navigation,
 			auth,
 			recall,
+			loadPosts,
 			loggingIn,
 		} = nextProps;
 
@@ -49,7 +51,20 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 			};
 		}
 
-		if (!currentState.loggingIn && currentUser) {
+		if (auth && currentState.loadingPosts === null) {
+			loadPosts();
+			return {
+				loadingPosts: true,
+			};
+		}
+
+		if (auth && currentState.loadingPosts && !nextProps.loadingPosts) {
+			return {
+				loadingPosts: false,
+			};
+		}
+
+		if (!currentState.loggingIn && !currentState.loadingPosts && currentUser) {
 			if (__DEV__ && !globals.logout) {
 				resetNavigationToRoute(NAVIGATION.Main, navigation);
 				return null;
@@ -71,24 +86,25 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 
 	public state = {
 		loggingIn: null,
+		loadingPosts: null,
 	};
 
 	public render() {
-		// if (this.props.auth) {
-		// 	return (
-		// 		<View style={{ flex: 1, backgroundColor: '#fff' }}>
-		// 			<Header />
-		// 		</View>
-		// 	);
-		// } else {
-		return (
-			<LaunchScreenView
-				navigateToLoginScreen={this.navigateToLoginScreen}
-				navigateToRegisterScreen={this.navigateToRegisterScreen}
-				getText={this.props.getText}
-			/>
-		);
-		// }
+		if (this.props.auth) {
+			return (
+				<View style={{ flex: 1, backgroundColor: '#fff' }}>
+					<Header />
+				</View>
+			);
+		} else {
+			return (
+				<LaunchScreenView
+					navigateToLoginScreen={this.navigateToLoginScreen}
+					navigateToRegisterScreen={this.navigateToRegisterScreen}
+					getText={this.props.getText}
+				/>
+			);
+		}
 	}
 
 	private navigateToLoginScreen = () => {

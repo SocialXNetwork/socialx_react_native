@@ -6,7 +6,7 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 const INPUT_MIN_HEIGHT = Sizes.smartHorizontalScale(35);
 const INPUT_CONTAINER_VERTICAL_PADDING = Sizes.smartVerticalScale(5);
 
-const style: any = {
+const styles: any = {
 	inputContainer: {
 		flexDirection: 'row',
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
@@ -48,9 +48,9 @@ const style: any = {
 	},
 };
 
-export default StyleSheet.create(style);
+export default StyleSheet.create(styles);
 
-export const customStyleProps = {
+export const defaultStyles = {
 	placeholderTextColor: Colors.postFullName,
 	underlineColorAndroid: Colors.transparent,
 };
