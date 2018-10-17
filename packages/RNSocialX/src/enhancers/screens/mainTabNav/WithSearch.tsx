@@ -82,13 +82,22 @@ export class WithSearch extends React.Component<
 							<WithActivities>
 								{({ activities }) => (
 									<WithProfiles>
-										{(profilesProps) =>
-											this.props.children({
+										{(profilesProps) => {
+											return this.props.children({
 												data: {
 													...mock.data,
 													topSearching: getActivity(
 														activities,
 														ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
+													),
+													topSearchResults: profilesProps.profiles.map(
+														(profileData) => ({
+															userId: profileData.pub,
+															fullName: profileData.fullName,
+															userName: '',
+															location: '',
+															avatarURL: profileData.avatar,
+														}),
 													),
 												},
 												actions: {
@@ -102,8 +111,8 @@ export class WithSearch extends React.Component<
 													setNavigationParams:
 														navigationParamsProps.setNavigationParams,
 												},
-											})
-										}
+											});
+										}}
 									</WithProfiles>
 								)}
 							</WithActivities>
