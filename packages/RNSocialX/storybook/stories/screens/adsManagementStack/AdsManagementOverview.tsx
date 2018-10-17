@@ -7,7 +7,7 @@ import { AdsManagementOverviewScreenView } from '../../../../src/screens/adsMana
 
 const mockAdCards = [
 	{
-		thumbURL: 'https://placeimg.com/300/300/any',
+		url: 'https://placeimg.com/300/300/any',
 		title: 'Lorem ipsum dolor 1',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipi. And some more text on first paragraph\n' +
@@ -15,7 +15,7 @@ const mockAdCards = [
 		id: '1',
 	},
 	{
-		thumbURL: 'https://placeimg.com/301/301/any',
+		url: 'https://placeimg.com/301/301/any',
 		title: 'Using SOCX within our Ecosystem',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipi.\n' +
@@ -23,7 +23,7 @@ const mockAdCards = [
 		id: '2',
 	},
 	{
-		thumbURL: 'https://placeimg.com/302/302/any',
+		url: 'https://placeimg.com/302/302/any',
 		title: 'Lorem ipsum dolor 2',
 		description: 'Our token will allow you to interact within your friends.',
 		id: '3',
@@ -71,7 +71,7 @@ storiesOf('Screens/adsManagementStack', module).add(
 				peopleReachedValues={spentValues}
 				currentWeek={'Mar 10, 2018 - Mar 16,2018'}
 				currentDate={'Mar 17, 2018'}
-				adCards={mockAdCards}
+				ads={mockAdCards}
 				getText={getTextMock}
 				onClose={action('onClose')}
 				onCreateAd={action('onCreateAd')}
