@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
+import com.beefe.picker.PickerViewPackage;
 import com.vydia.RNUploader.UploaderReactPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
@@ -46,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new WebViewBridgePackage(),
             new AndroidKeyboardAdjustPackage(),
+            new PickerViewPackage(),
             new UploaderReactPackage(),
             new OrientationPackage(),
             new RCTSplashScreenPackage(),
