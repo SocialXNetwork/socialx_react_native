@@ -10,7 +10,6 @@ const style: any = {
 	},
 	boxContainer: {
 		backgroundColor: Colors.white,
-		alignItems: 'center',
 		borderRadius: Sizes.smartHorizontalScale(9),
 		maxWidth: 500,
 		width: '80%',
@@ -19,13 +18,19 @@ const style: any = {
 		shadowOpacity: 0.3,
 		shadowRadius: 8,
 	},
+	titleContainer: {
+		width: '100%',
+		backgroundColor: Colors.pink,
+		borderTopLeftRadius: Sizes.smartHorizontalScale(9),
+		borderTopRightRadius: Sizes.smartHorizontalScale(9),
+		paddingTop: Sizes.smartVerticalScale(14),
+		paddingBottom: Sizes.smartVerticalScale(17),
+		paddingHorizontal: Sizes.smartHorizontalScale(24),
+	},
 	title: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.rhino,
-		paddingHorizontal: Sizes.smartHorizontalScale(24),
-		paddingTop: Sizes.smartVerticalScale(14),
-		paddingBottom: Sizes.smartVerticalScale(21),
+		color: Colors.white,
 		textAlign: 'center',
 	},
 	message: {
@@ -33,16 +38,12 @@ const style: any = {
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(21),
 		color: Colors.cloudBurst,
-		paddingHorizontal: Sizes.smartHorizontalScale(24),
-		paddingVertical: Sizes.smartVerticalScale(37),
-		textAlign: 'center',
+		paddingLeft: Sizes.smartHorizontalScale(19),
+		paddingRight: Sizes.smartHorizontalScale(32),
+		paddingVertical: Sizes.smartVerticalScale(19),
+		textAlign: 'left',
 	},
-	titleBorder: {
-		width: '100%',
-		borderBottomWidth: Sizes.smartVerticalScale(1),
-		borderBottomColor: Colors.mercury,
-	},
-	messageBorder: {
+	messageContainer: {
 		width: '100%',
 		borderBottomWidth: Sizes.smartVerticalScale(1),
 		borderBottomColor: Colors.mercury,
@@ -68,7 +69,7 @@ const style: any = {
 		lineHeight: Sizes.smartHorizontalScale(18),
 	},
 	buttonTextConfirm: {
-		color: Colors.postHour,
+		color: Colors.pink,
 	},
 	buttonTextCancel: {
 		color: Colors.cloudBurst,
