@@ -111,19 +111,15 @@ export default function(context: IContext) {
 				getters.getPostPathsByUser(
 					context,
 					validatedInput as { username: string },
-					(err, paths) => {
+					async (err, paths) => {
 						if (err) {
 							reject(err);
 						}
-						const posts =
-							paths &&
-							Promise.all(
-								paths
-									.filter((v) => v)
-									.map((path: string) =>
-										this.getPostByPath({ postPath: path }),
-									),
-							);
+						const posts = await Promise.all(
+							(paths || [])
+								.filter((v) => v)
+								.map((path: string) => this.getPostByPath({ postPath: path })),
+						);
 						resolve(posts);
 					},
 				);
@@ -167,7 +163,6 @@ export default function(context: IContext) {
 					{ validationInput: likePostInput },
 				);
 			}
-
 			return new Promise<null>((resolve, reject) => {
 				setters.likePost(
 					context,

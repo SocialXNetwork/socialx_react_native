@@ -219,7 +219,7 @@ export const recoverAccount = (
 		accountHandles
 			.accountByPub(context, pub)
 			.docLoad(async (recoverData: IRecoverData<string>) => {
-				if (!recoverData) {
+				if (!Object.keys(recoverData).length) {
 					return callback(
 						new ApiError(`${errPrefix}, account not found`, {
 							initialRequestBody: { username },

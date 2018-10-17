@@ -150,7 +150,6 @@ describe('posts api', () => {
 				username: profile.username,
 			});
 			const { postId } = posts[0];
-
 			await mockApi.posts.likePost({ postId });
 			const updatedPosts = await mockApi.posts.getPostsByUser({
 				username: profile.username,
@@ -305,7 +304,7 @@ describe('posts api', () => {
 		expect(error).toBeInstanceOf(ApiError);
 	});
 
-	test('gets profiles by list of usernames', async () => {
+	test('gets profiles by list of posts', async () => {
 		try {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
@@ -349,13 +348,11 @@ describe('posts api', () => {
 			const post = getPost();
 			await mockApi.posts.createPost(post);
 			await mockApi.posts.createPost(post);
-
 			const loadMorePosts = await mockApi.posts.loadMorePosts({
 				timestamp: moment()
-					.add(29, 'days')
+					.add(5, 'days')
 					.valueOf(),
 			});
-
 			expect(loadMorePosts.length).toEqual(2);
 		} catch (e) {
 			expect(e).toBeUndefined();
@@ -363,6 +360,7 @@ describe('posts api', () => {
 	});
 
 	test('does not load more posts beyond 30 days', async () => {
+		jest.setTimeout(120 * 1000);
 		try {
 			const post = getPost();
 			await mockApi.posts.createPost(post);

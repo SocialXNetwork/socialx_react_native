@@ -38,13 +38,12 @@ export const getPostPathsByUser = (
 	postHandles
 		.postMetasByUsername(context, username)
 		.docLoad((postsMeta: IPostUserMetasCallback) => {
-			if (!postsMeta) {
+			if (!Object.keys(postsMeta).length) {
 				return callback([]);
 			}
 			const paths = convertGunSetToArray(postsMeta).map(
 				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
 			);
-
 			return callback(null, paths);
 		});
 };
@@ -80,7 +79,7 @@ export const getPostByPath = (
 	postHandles
 		.postByPath(context, postPath)
 		.docLoad((postData: IPostCallbackData) => {
-			if (!postData) {
+			if (!Object.keys(postData).length) {
 				return callback(
 					new ApiError('failed, no post found', {
 						initialRequestBody: { postPath },
@@ -115,7 +114,7 @@ export const getPostById = (
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMeta: IPostMetasCallback) => {
-			if (!postMeta) {
+			if (!Object.keys(postMeta).length) {
 				return callback(
 					new ApiError('failed, no post was found with this id', {
 						initialRequestBody: { postId },
@@ -138,7 +137,7 @@ export const getPublicPostsByDate = (
 	postHandles
 		.postsByDate(context, datePath)
 		.docLoad((postsData: IPostsDataCallback) => {
-			if (!postsData) {
+			if (!Object.keys(postsData).length) {
 				return callback(null, []);
 			}
 
