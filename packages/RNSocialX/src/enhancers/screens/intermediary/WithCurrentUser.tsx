@@ -37,7 +37,10 @@ export class WithCurrentUser extends React.Component<
 											(profile) => profile.pub === auth.pub,
 										);
 
-										if (foundProfile) {
+										if (
+											Object.keys(foundProfile || {}).length &&
+											foundProfile
+										) {
 											currentUser = {
 												userId: auth.alias || '',
 												email: foundProfile.email,
