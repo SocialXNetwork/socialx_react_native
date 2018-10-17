@@ -33,7 +33,7 @@ interface IAdsManagementConfigBudgetScreenViewProps
 	isStopDatePickerVisible: boolean;
 	handleDatePicker: (text: string) => void;
 	currentDate: Date;
-	nextDayFromNow: Date;
+	nextDayFromStartDate: Date;
 	handleStartDatePicked: (date: Date) => void;
 	handleStopDatePicked: (date: Date) => void;
 	selectedStartDate: string;
@@ -58,7 +58,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 	isStopDatePickerVisible,
 	handleDatePicker,
 	currentDate,
-	nextDayFromNow,
+	nextDayFromStartDate,
 	handleStartDatePicked,
 	handleStopDatePicked,
 	selectedStartDate,
@@ -221,7 +221,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 							</Text>
 							<DateTimePicker
 								isVisible={isStopDatePickerVisible}
-								minimumDate={nextDayFromNow}
+								minimumDate={nextDayFromStartDate}
 								titleIOS={getText('ad.management.budget.stop.datePicker')}
 								confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
 								cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
