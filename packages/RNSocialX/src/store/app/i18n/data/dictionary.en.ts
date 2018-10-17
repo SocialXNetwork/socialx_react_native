@@ -3,7 +3,8 @@
 export default {
 	'error.data/accounts/LOGIN': 'Username or password is incorrect',
 	'app.name': 'SocialX',
-	'button.OK': 'OK',
+    'button.OK': 'OK',
+    'button.confirm': 'Confirm',
 	'button.back': 'Back',
 	'button.done': 'Done',
 	'button.cancel': 'Cancel',
@@ -282,8 +283,6 @@ export default {
 	'ad.management.budget.currency.usd': 'USD',
 	'ad.management.budget.currency.euro': 'EUR',
 	'ad.management.budget.currency.picker.select': 'Select currency',
-	'ad.management.budget.currency.picker.confirm': 'Confirm',
-	'ad.management.budget.currency.picker.cancel': 'Cancel',
     'ad.management.budget.budget.text': 'Budget',
     'ad.management.budget.budget.textinput.placeholder': 'Enter Budget',
 	'ad.management.budget.budget.textinput.initialvalue': '458',

@@ -6,6 +6,7 @@ import { INavigationProps } from '../../types';
 import { customStyleProps } from './AdsManagementConfigBudgetScreen.style';
 import { AdsManagementConfigBudgetScreenView } from './AdsManagementConfigBudgetScreen.view';
 
+import { select } from '@storybook/addon-knobs';
 import {
 	IWithAdsManagementConfigBudgetEnhancedActions,
 	IWithAdsManagementConfigBudgetEnhancedData,
@@ -35,11 +36,6 @@ const pickerData = [
 	'ad.management.budget.currency.euro',
 ];
 
-const dateFormatMomentJS = 'DD/MM/YYYY';
-const currentDate = new Date();
-const nextDayFromNow = new Date();
-nextDayFromNow.setDate(currentDate.getDate() + 1);
-
 class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 	public state = {
 		budgetValue: this.props.getText(
@@ -55,30 +51,46 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 		isStopDatePickerVisible: false,
 		selectedStartDate: 'DD/MM/JJJJ',
 		selectedStopDate: 'DD/MM/JJJJ',
+		nextDayFromStartDate: new Date(),
 	};
+
+	private dateFormatMomentJS = 'DD/MM/YYYY';
+	private currentDate = new Date();
 
 	public render() {
 		const { getText } = this.props;
+		const {
+			selectedCurrencyValue,
+			budgetValue,
+			perDayPressed,
+			lifetimePressed,
+			runAdContinuouslyPressed,
+			selectedStartDate,
+			selectedStopDate,
+			isStartDatePickerVisible,
+			isStopDatePickerVisible,
+			nextDayFromStartDate,
+		} = this.state;
 
 		return (
 			<AdsManagementConfigBudgetScreenView
 				onGoBack={this.onGoBackHandler}
 				getText={getText}
 				currencyButtonPressed={this.currencyButtonPressed}
-				selectedCurrencyValue={this.state.selectedCurrencyValue}
-				budgetValue={this.state.budgetValue}
+				selectedCurrencyValue={selectedCurrencyValue}
+				budgetValue={budgetValue}
 				submitBudget={this.submitBudget}
-				perDayPressed={this.state.perDayPressed}
-				lifetimePressed={this.state.lifetimePressed}
-				runAdContinuouslyPressed={this.state.runAdContinuouslyPressed}
-				selectedStartDate={this.state.selectedStartDate}
-				selectedStopDate={this.state.selectedStopDate}
+				perDayPressed={perDayPressed}
+				lifetimePressed={lifetimePressed}
+				runAdContinuouslyPressed={runAdContinuouslyPressed}
+				selectedStartDate={selectedStartDate}
+				selectedStopDate={selectedStopDate}
 				handleCheckboxChange={this.handleCheckboxChange}
-				isStartDatePickerVisible={this.state.isStartDatePickerVisible}
-				isStopDatePickerVisible={this.state.isStopDatePickerVisible}
+				isStartDatePickerVisible={isStartDatePickerVisible}
+				isStopDatePickerVisible={isStopDatePickerVisible}
 				handleDatePicker={this.handleDatePicker}
-				currentDate={currentDate}
-				nextDayFromNow={nextDayFromNow}
+				currentDate={this.currentDate}
+				nextDayFromStartDate={nextDayFromStartDate}
 				handleStartDatePicked={this.handleStartDatePicked}
 				handleStopDatePicked={this.handleStopDatePicked}
 				nextButtonPressed={this.nextButtonPressed}
@@ -103,12 +115,8 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 			pickerToolBarBg: customStyleProps.pickerToolbarAndBgColor,
 			selectedValue: [1],
 			pickerTitleText: getText('ad.management.budget.currency.picker.select'),
-			pickerConfirmBtnText: getText(
-				'ad.management.budget.currency.picker.confirm',
-			),
-			pickerCancelBtnText: getText(
-				'ad.management.budget.currency.picker.cancel',
-			),
+			pickerConfirmBtnText: getText('button.confirm'),
+			pickerCancelBtnText: getText('button.cancel'),
 			onPickerConfirm: (data) => {
 				this.setState({ selectedCurrencyValue: data[0] });
 				Picker.hide();
@@ -124,20 +132,20 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 
 	private handleCheckboxChange = (checkboxName: string) => {
 		Picker.hide();
-		switch (checkboxName) {
-			case 'perday':
+		if (checkboxName) {
+			if (checkboxName === 'perday') {
 				this.setState({
 					lifetimePressed: false,
 					perDayPressed: true,
 				});
-				break;
-			case 'lifetime':
+			}
+			if (checkboxName === 'lifetime') {
 				this.setState({
 					perDayPressed: false,
 					lifetimePressed: true,
 				});
-				break;
-			case 'runAdContinuously':
+			}
+			if (checkboxName === 'runAdContinuously') {
 				if (this.state.runAdContinuouslyPressed) {
 					this.setState({ runAdContinuouslyPressed: false });
 				} else {
@@ -147,54 +155,76 @@ class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 						selectedStopDate: 'DD/MM/JJJJ',
 					});
 				}
-				break;
+			}
 		}
 	};
 
 	private handleDatePicker = (datePicker: string) => {
-		switch (datePicker) {
-			case 'startDatePicker':
+		if (datePicker) {
+			if (datePicker === 'startDatePicker') {
 				this.setState({
 					isStartDatePickerVisible: true,
 					isStopDatePickerVisible: false,
 				});
-				break;
-			case 'stopDatePicker':
+			}
+			if (datePicker === 'stopDatePicker') {
 				this.setState({
 					isStartDatePickerVisible: false,
 					isStopDatePickerVisible: true,
 				});
-				break;
-			case 'hidePicker':
+			}
+			if (datePicker === 'hidePicker') {
 				this.setState({
 					isStartDatePickerVisible: false,
 					isStopDatePickerVisible: false,
 				});
-				break;
+			}
 		}
 	};
 
 	private handleStartDatePicked = (date: Date) => {
-		const formattedStartDate = moment(date).format(dateFormatMomentJS);
+		const formattedStartDate = moment(date).format(this.dateFormatMomentJS);
 		this.setState({ selectedStartDate: formattedStartDate });
+		this.calculateStopDateFromStartDate(date);
 		this.handleDatePicker('hidePicker');
 	};
 
 	private handleStopDatePicked = (date: Date) => {
-		const formattedStopDate = moment(date).format(dateFormatMomentJS);
+		const formattedStopDate = moment(date).format(this.dateFormatMomentJS);
 		this.setState({ selectedStopDate: formattedStopDate });
 		this.handleDatePicker('hidePicker');
 	};
 
+	private calculateStopDateFromStartDate = (selectedStartDate: Date) => {
+		const newDate = new Date(selectedStartDate);
+		newDate.setDate(selectedStartDate.getDate() + 1);
+
+		const formattedNewDate = moment(newDate).format(this.dateFormatMomentJS);
+		this.setState({
+			selectedStopDate: formattedNewDate,
+			nextDayFromStartDate: newDate,
+		});
+	};
+
 	private nextButtonPressed = () => {
+		const {
+			selectedCurrencyValue,
+			budgetValue,
+			perDayPressed,
+			lifetimePressed,
+			runAdContinuouslyPressed,
+			selectedStartDate,
+			selectedStopDate,
+		} = this.state;
+
 		const budgetObject = {
-			currency: this.state.selectedCurrencyValue,
-			budget: parseInt(this.state.budgetValue, 10),
-			perDay: this.state.perDayPressed,
-			lifetime: this.state.lifetimePressed,
-			runAdContinuously: this.state.runAdContinuouslyPressed,
-			start: this.state.selectedStartDate,
-			stop: this.state.selectedStopDate,
+			currency: selectedCurrencyValue,
+			budget: parseInt(budgetValue, 10),
+			perDay: perDayPressed,
+			lifetime: lifetimePressed,
+			runAdContinuously: runAdContinuouslyPressed,
+			start: selectedStartDate,
+			stop: selectedStopDate,
 		};
 
 		this.props.onCreateAdSetBudget(budgetObject);
