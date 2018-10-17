@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 
-const style: any = {
+const styles: any = {
 	container: {
 		flex: 1,
 		width: '100%',
@@ -10,23 +10,11 @@ const style: any = {
 	commentsList: {
 		flex: 1,
 	},
-	noCommentsContainer: {
-		paddingTop: Sizes.smartVerticalScale(30),
-		alignItems: 'center',
-	},
-	noCommentsText: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postText,
-		paddingTop: Sizes.smartVerticalScale(20),
-		textAlign: 'center',
-		paddingHorizontal: Sizes.smartHorizontalScale(20),
-	},
 };
 
-export default StyleSheet.create(style);
+export default StyleSheet.create(styles);
 
-export const customStyleProps = {
+export const defaultStyles = {
 	commentWidthThreshold: Sizes.smartHorizontalScale(150),
 	commentsLikeBottomStartPosition: Sizes.smartHorizontalScale(-18),
 	commentsLikeBottomAdaptivePosition: Sizes.smartHorizontalScale(10),

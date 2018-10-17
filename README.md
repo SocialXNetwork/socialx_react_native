@@ -76,6 +76,16 @@ $ yarn build
 
 The build step must be repeated if modules have changed.
 
+Find app.config.json and replace your current value with this one:
+
+"gun": {
+    "superPeers": [
+      "http://127.0.0.1:8765/gun",
+      "http://139.59.130.248:8765/gun"
+    ],
+    "rootdb": "dev/testgg"
+},
+
 To run the app on the emulator/simulator, run the the following
 
 ```

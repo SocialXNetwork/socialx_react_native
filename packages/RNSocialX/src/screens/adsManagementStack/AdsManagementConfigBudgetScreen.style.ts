@@ -120,9 +120,9 @@ const styles: any = {
 	},
 };
 
-export default StyleSheet.create(styles) as any;
+export default StyleSheet.create(styles);
 
-export const customStyleProps = {
+export const defaultStyles: any = {
 	highlightButton: Colors.pinkLace,
 	checkboxColor: Colors.pink,
 	pickerTitleColor: colorWithAlphaArray(Colors.alabaster, 1),

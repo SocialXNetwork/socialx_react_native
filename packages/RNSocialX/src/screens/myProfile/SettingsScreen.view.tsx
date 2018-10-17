@@ -102,9 +102,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						right={
 							<HeaderButton
 								iconName="md-checkmark"
-								onPress={() => {
-									/** */
-								}}
+								onPress={isValid ? handleSubmit : () => undefined}
 							/>
 						}
 					/>

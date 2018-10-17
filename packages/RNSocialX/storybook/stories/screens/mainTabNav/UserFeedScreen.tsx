@@ -15,7 +15,7 @@ storiesOf('Screens/mainTabNav', module)
 		const refreshing = boolean('refreshing', false);
 		const noPosts = boolean('noPosts', false);
 		const loadingMorePosts = boolean('loadingMorePosts', false);
-		const hasMorePosts = boolean('hasMorePosts', false);
+		const canLoadMorePosts = boolean('canLoadMorePosts', false);
 		const shareSectionPlaceholder = text(
 			'shareSectionPlaceholder',
 			'Lorem ipsum dolor sit amet.',
@@ -38,7 +38,7 @@ storiesOf('Screens/mainTabNav', module)
 				onDeletePress={action('onDeletePress')}
 				onUserPress={action('onUserPress')}
 				loadingMorePosts={loadingMorePosts}
-				hasMorePosts={hasMorePosts}
+				canLoadMorePosts={canLoadMorePosts}
 				onAddComment={action('onAddComment')}
 				onSubmitComment={action('onSubmitComment')}
 				shareSectionOpacityInterpolation={1}

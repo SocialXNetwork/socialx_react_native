@@ -68,10 +68,12 @@ export class WithCurrentUserContent extends React.Component<
 															0,
 														);
 
-														currentUser.mediaObjects = extractMediaFromPosts(
-															posts,
-															appConfig,
-														);
+														// currentUser.mediaObjects = extractMediaFromPosts(
+														// 	posts,
+														// 	appConfig,
+														// );
+
+														currentUser.mediaObjects = [];
 
 														currentUser.recentPosts = recentPosts;
 													}

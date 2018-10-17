@@ -101,6 +101,10 @@ export interface IHeaderProps {
 	onGoBack: () => void;
 }
 
+export interface IDotsMenuProps {
+	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
+}
+
 export interface INavigationParamsActions {
 	setNavigationParams: (
 		setNavigationParamsInput: ISetNavigationParamsInput,
@@ -188,13 +192,24 @@ export interface IWallPostComment {
 	text: string;
 	user: {
 		fullName: string;
-		avatarURL?: string;
+		avatarURL: string;
 		id: string;
 	};
 	timestamp: Date;
 	numberOfLikes: number;
 	likes: ILike[];
 	likedByMe: boolean;
+}
+
+export interface IPostForComment {
+	id: string;
+	postText: string;
+	owner: IPostOwner;
+	likedByMe: boolean;
+	timestamp: Date;
+	media: IMediaProps[];
+	likes: ILike[];
+	comments: IWallPostComment[];
 }
 
 export enum CommentsSortingOptions {

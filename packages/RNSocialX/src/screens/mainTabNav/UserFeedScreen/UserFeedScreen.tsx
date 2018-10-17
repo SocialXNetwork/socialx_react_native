@@ -1,9 +1,3 @@
-/**
- * TODO list:
- * 1. resetNavigationToRoute, old repo. Internals/backend/actions/navigation.ts
- * 1.1 we can do this at the top level, without navigation
- */
-
 import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
@@ -51,7 +45,7 @@ export class Screen extends React.Component<
 			currentUser,
 			posts,
 			shareSectionPlaceholder,
-			hasMorePosts,
+			canLoadMorePosts,
 			refreshingFeed,
 			loadingMorePosts,
 			deletePost,
@@ -69,15 +63,14 @@ export class Screen extends React.Component<
 		return (
 			<UserFeedScreenView
 				avatarImage={currentUser ? currentUser.avatarURL : ''}
-				wallPosts={posts}
+				posts={posts}
+				currentUser={currentUser}
 				refreshing={refreshingFeed}
 				onRefresh={this.onRefreshHandler}
-				hasMorePosts={hasMorePosts}
+				canLoadMorePosts={canLoadMorePosts}
 				loadingMorePosts={loadingMorePosts}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
-				currentUser={currentUser}
-				noPosts={posts.length === 0}
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				onImagePress={this.onMediaObjectPressHandler}
@@ -120,9 +113,9 @@ export class Screen extends React.Component<
 	private onRefreshHandler = async () => {
 		const { refreshFeed, feedType } = this.props;
 
-		// if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
-		// 	refreshFeed(feedType);
-		// }
+		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
+			refreshFeed(feedType);
+		}
 	};
 
 	private onLikePressHandler = (likedByMe: boolean, postId: string) => {

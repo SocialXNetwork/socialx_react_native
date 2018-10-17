@@ -8,79 +8,53 @@ import * as React from 'react';
 import { SCREENS } from '../../../environment/consts';
 import {
 	IDotsMenuProps,
-	ILike,
-	IMediaProps,
 	INavigationParamsActions,
+	IPostForComment,
 	ITranslatedProps,
-	IWallPostComment,
 	MediaTypeImage,
 } from '../../../types';
 
+import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
+import { extractMediaFromPosts } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
 	data: {
 		startComment: false,
-		postId: '232362sgdxh',
-		commentId: 'atw3yhsxz',
-		postOwner: {
-			userId: 'userId_0',
-			avatarURL: 'https://placeimg.com/200/200/people',
-			fullName: 'Willetta Winsor',
-		},
-		postData: {
-			id: 'post_id_1',
+		post: {
+			id: '2',
+			postText: 'Lorem ipsum dolor sit amet.',
+			timestamp: new Date(Date.now()),
+			owner: {
+				userId: 'testgggg',
+				fullName: 'Test GGGG',
+				avatarURL:
+					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
+			},
 			media: [
 				{
-					url: 'https://placeimg.com/1000/800/any',
-					hash: '218y357u09k920q3ut',
+					url:
+						'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
+					hash: '131289fsdf03yr9hehdiwb32',
 					type: MediaTypeImage,
 					extension: 'jpg',
-					size: 993377,
-					numberOfComments: 2,
-					numberOfLikes: 11,
+					size: 51231,
+					numberOfLikes: 0,
+					numberOfComments: 0,
 				},
 			],
-			likes: [
-				{
-					userId: 'user_id_1',
-					userName: 'im.12',
-				},
-			],
-			text: 'Sample post text.\nCan go on multiple lines.',
-			timestamp: new Date('February 12, 2018 11:49:00'),
+			likedByMe: false,
+			likes: [],
+			comments: [],
 		},
-		currentUser: {
-			userId: 'userId_1',
-		},
-		postComments: [
-			{
-				id: 'comm_1',
-				text: 'Sample comment text here.\nGoing on the second line',
-				user: {
-					fullName: 'Sharell Watchman',
-					avatarURL: 'https://avatars2.githubusercontent.com/u/212',
-					id: 'user_11',
-				},
-				timestamp: new Date('February 23, 2018 09:45:00'),
-				numberOfLikes: 10,
-				likes: [], // not used by component
-				likedByMe: false,
-			},
-		],
-		loadingComments: false,
 	},
 	actions: {
-		sendComment: (
-			text: string,
-			targetPostId: string,
-			targetCommentId: string | undefined,
-		) => {
+		sendComment: (text: string, postId: string) => {
 			/**/
 		},
 		deleteComment: (commentId: string) => {
@@ -110,25 +84,7 @@ const mock: IWithCommentsEnhancedProps = {
 };
 
 export interface IWithCommentsEnhancedData {
-	postOwner: {
-		userId: string;
-		avatarURL?: string;
-		fullName: string;
-	};
-	postData: {
-		id: string;
-		likes: ILike[];
-		media: IMediaProps[];
-		text: string;
-		timestamp: Date;
-	};
-	currentUser: {
-		userId: string;
-	};
-	postComments: IWallPostComment[];
-	loadingComments: boolean;
-	commentId?: string; // only available for replies
-	postId: string; // only for main comments screen
+	post: IPostForComment;
 	startComment: boolean;
 }
 
@@ -136,11 +92,7 @@ export interface IWithCommentsEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions,
 		IDotsMenuProps {
-	sendComment: (
-		text: string,
-		targetPostId: string,
-		targetCommentId: string | undefined,
-	) => void;
+	sendComment: (text: string, postId: string) => void;
 	likeComment: (commentId: string) => void;
 	unlikeComment: (commentId: string) => void;
 	deleteComment: (commentId: string) => void;
@@ -159,9 +111,6 @@ interface IWithCommentsProps {
 
 interface IWithCommentsState {}
 
-// This is a class because we might want to do transformations and optimizations here
-// Also, this will import individual connectors/enhancers and compose them to
-// pass the real data and actions instead of the mocks
 export class WithComments extends React.Component<
 	IWithCommentsProps,
 	IWithCommentsState
@@ -172,112 +121,134 @@ export class WithComments extends React.Component<
 				{(i18nProps) => (
 					<WithOverlays>
 						{(overlayProps) => (
-							<WithNavigationParams>
-								{({ setNavigationParams, navigationParams }) => (
-									<WithPosts>
-										{(postProps) => (
-											<WithProfiles>
-												{({ profiles }) => (
-													<WithCurrentUser>
-														{({ currentUser }) => {
-															const currentPost = postProps.posts.find(
-																(post) =>
-																	post.postId ===
-																	navigationParams[SCREENS.Comments].postId,
-															);
-															const ownerProfile = profiles.find(
-																(profile) =>
-																	profile.pub === currentPost!.owner.pub,
-															);
+							<WithConfig>
+								{({ appConfig }) => (
+									<WithNavigationParams>
+										{({ setNavigationParams, navigationParams }) => (
+											<WithPosts>
+												{(postProps) => (
+													<WithProfiles>
+														{({ profiles }) => (
+															<WithCurrentUser>
+																{({ currentUser }) => {
+																	const currentPost = postProps.posts.find(
+																		(post) =>
+																			post.postId ===
+																			navigationParams[SCREENS.Comments].postId,
+																	);
 
-															return this.props.children({
-																data: {
-																	...mock.data,
-																	currentUser: {
-																		userId: currentUser!.userId,
-																	},
-																	startComment:
-																		navigationParams[SCREENS.Comments]
-																			.startComment,
-																	commentId:
-																		navigationParams[SCREENS.Comments]
-																			.commentId,
-																	postId:
-																		navigationParams[SCREENS.Comments].postId,
-																	postOwner: {
-																		userId: currentPost!.owner.alias,
-																		fullName: ownerProfile!.fullName,
-																		avatarURL: ownerProfile!.avatar,
-																	},
-																	postComments: currentPost!.comments.map(
-																		(comment) => {
-																			const commentOwnerProfile = profiles.find(
-																				(profile) =>
-																					profile.pub === comment.owner.pub,
-																			);
+																	const ownerProfile = profiles.find(
+																		(profile) =>
+																			profile.pub === currentPost!.owner.pub,
+																	);
 
-																			return {
-																				id: comment.commentId,
-																				text: comment.text,
-																				user: {
-																					id: comment.owner.alias,
-																					fullName: commentOwnerProfile!
-																						.fullName,
-																					avatarURL: commentOwnerProfile!
-																						.avatar,
-																				},
-																				timestamp: new Date(comment.timestamp),
-																				numberOfLikes: comment.likes.length,
-																				likes: comment.likes.map((like) => {
-																					return {
-																						userId: like.owner.alias,
-																						userName: like.owner.alias,
-																					};
-																				}),
-																				likedByMe: !!comment.likes.find(
+																	return this.props.children({
+																		data: {
+																			...mock.data,
+																			startComment:
+																				navigationParams[SCREENS.Comments]
+																					.startComment,
+																			post: {
+																				id: currentPost!.postId,
+																				postText: currentPost!.postText,
+																				timestamp: new Date(
+																					currentPost!.timestamp,
+																				),
+																				media: extractMediaFromPosts(
+																					[currentPost!],
+																					appConfig,
+																				),
+																				likes: currentPost!.likes.map(
+																					(like) => {
+																						return {
+																							userId: like.owner.alias,
+																							userName: like.owner.alias,
+																						};
+																					},
+																				),
+																				likedByMe: !!currentPost!.likes.find(
 																					(like) =>
 																						like.owner.alias ===
 																						currentUser!.userId,
 																				),
-																			};
-																		},
-																	),
-																},
-																actions: {
-																	sendComment: (
-																		text,
-																		targetPostId,
-																		targetCommentId,
-																	) =>
-																		postProps.createComment({
-																			text,
-																			postId: targetPostId,
-																		}),
-																	deleteComment: (commentId) =>
-																		postProps.removeComment({ commentId }),
-																	likeComment: (commentId) =>
-																		postProps.likeComment({ commentId }),
-																	unlikeComment: (commentId) =>
-																		postProps.unlikeComment({ commentId }),
-																	likePost: (postId) =>
-																		postProps.likePost({ postId }),
-																	unlikePost: (postId) =>
-																		postProps.unlikePost({ postId }),
+																				comments: currentPost!.comments.map(
+																					(comment) => {
+																						const commentOwner = profiles.find(
+																							(profile) =>
+																								profile.pub ===
+																								comment.owner.pub,
+																						);
 
-																	getText: i18nProps.getText,
-																	showDotsMenuModal: (items) =>
-																		overlayProps.showOptionsMenu({ items }),
-																	setNavigationParams,
-																},
-															});
-														}}
-													</WithCurrentUser>
+																						return {
+																							id: comment.commentId,
+																							text: comment.text,
+																							user: {
+																								id: comment.owner.alias,
+																								fullName: commentOwner!
+																									.fullName,
+																								avatarURL: commentOwner!.avatar,
+																							},
+																							timestamp: new Date(
+																								comment.timestamp,
+																							),
+																							numberOfLikes:
+																								comment.likes.length,
+																							likes: comment.likes.map(
+																								(like) => {
+																									return {
+																										userId: like.owner.alias,
+																										userName: like.owner.alias,
+																									};
+																								},
+																							),
+																							likedByMe: !!comment.likes.find(
+																								(like) =>
+																									like.owner.alias ===
+																									currentUser!.userId,
+																							),
+																						};
+																					},
+																				),
+																				owner: {
+																					userId: currentPost!.owner.alias,
+																					fullName: ownerProfile!.fullName,
+																					avatarURL: ownerProfile!.avatar,
+																				},
+																			},
+																		},
+																		actions: {
+																			sendComment: (text, postId) =>
+																				postProps.createComment({
+																					text,
+																					postId,
+																				}),
+																			deleteComment: (commentId) =>
+																				postProps.removeComment({ commentId }),
+																			likeComment: (commentId) =>
+																				postProps.likeComment({ commentId }),
+																			unlikeComment: (commentId) =>
+																				postProps.unlikeComment({ commentId }),
+																			likePost: (postId) =>
+																				postProps.likePost({ postId }),
+																			unlikePost: (postId) =>
+																				postProps.unlikePost({ postId }),
+
+																			getText: i18nProps.getText,
+																			showDotsMenuModal: (items) =>
+																				overlayProps.showOptionsMenu({ items }),
+																			setNavigationParams,
+																		},
+																	});
+																}}
+															</WithCurrentUser>
+														)}
+													</WithProfiles>
 												)}
-											</WithProfiles>
+											</WithPosts>
 										)}
-									</WithPosts>
+									</WithNavigationParams>
 								)}
-							</WithNavigationParams>
+							</WithConfig>
 						)}
 					</WithOverlays>
 				)}

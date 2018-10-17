@@ -27,11 +27,11 @@ export const mapPostsForUI = (
 				(profile: any) => profile.pub === post.owner.pub,
 			);
 
-			// console.log(postOwnerProfile);
 			// const foundLike = post.likes.find(
 			// 	(like) => like.owner.alias === user!.userId,
 			// );
 
+			console.log(post);
 			return {
 				id: post.postId,
 				postText: post.postText,
@@ -46,7 +46,8 @@ export const mapPostsForUI = (
 				governanceVersion: false,
 				// TODO: add this later when data is available
 				numberOfSuperLikes: 0,
-				numberOfComments: post.comments.length,
+				// numberOfComments: post.comments.length,
+				numberOfComments: 0,
 				// TODO: add this later when data is available
 				numberOfWalletCoins: 0,
 				likedByMe: false,

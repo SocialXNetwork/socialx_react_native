@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 
 import {
 	IWithCreateWallPostEnhancedActions,
@@ -46,6 +46,7 @@ class Screen extends React.Component<
 		}
 
 		if (currentState.creatingPost && !nextProps.creatingPost) {
+			Keyboard.dismiss();
 			nextProps.navigation.goBack();
 			return {
 				creatingPost: false,

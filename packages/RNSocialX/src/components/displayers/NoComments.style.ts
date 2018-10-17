@@ -18,7 +18,7 @@ const style: any = {
 
 export default StyleSheet.create(style);
 
-export const customStyleProps = {
+export const defaultStyles = {
 	noCommentsIconSize: Sizes.smartHorizontalScale(120),
 	noCommentsIconColor: Colors.geyser,
 };

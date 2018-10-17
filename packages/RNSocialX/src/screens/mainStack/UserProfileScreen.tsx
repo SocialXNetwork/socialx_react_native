@@ -59,10 +59,9 @@ class Screen extends React.Component<
 
 	public render() {
 		const {
-			currentUser,
+			currentUserAvatarURL,
 			visitedUser,
 			refreshingProfile,
-			loadingProfile,
 			postComment,
 			blockUser,
 			reportProblem,
@@ -89,7 +88,6 @@ class Screen extends React.Component<
 
 		return (
 			<UserProfileScreenView
-				isLoading={loadingProfile}
 				refreshing={refreshingProfile}
 				onRefresh={this.onRefreshHandler}
 				numberOfPhotos={numberOfPhotos}
@@ -108,7 +106,7 @@ class Screen extends React.Component<
 				onViewProfilePhoto={this.onViewProfilePhotoHandler}
 				onViewMediaFullscreen={this.onViewMediaFullScreenHandler}
 				gridMediaProvider={gridMediaProvider}
-				currentUser={currentUser}
+				currentUserAvatarURL={currentUserAvatarURL}
 				onIconPress={this.onIconPressHandler}
 				listTranslate={listTranslate}
 				gridTranslate={gridTranslate}

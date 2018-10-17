@@ -12,7 +12,6 @@ import {
 import {
 	getTextSignature,
 	ICurrentUser,
-	ILike,
 	IWallPostCardActions,
 	IWallPostCardData,
 } from '../../../types';
@@ -21,16 +20,15 @@ import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends IWallPostCardActions {
 	avatarImage: string | undefined;
-	wallPosts: IWallPostCardData[];
+	posts: IWallPostCardData[];
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
 	currentUser: ICurrentUser;
-	noPosts: boolean;
 	shareSectionPlaceholder: string | null;
 	loadingMorePosts: boolean;
-	hasMorePosts: boolean;
+	canLoadMorePosts: boolean;
 	shareSectionOpacityInterpolation: number;
 	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
 	scrollY: AnimatedValue;
@@ -41,15 +39,14 @@ export class UserFeedScreenView extends React.Component<
 > {
 	public render() {
 		const {
+			posts,
 			avatarImage,
 			onLoadMorePosts,
-			wallPosts,
 			onRefresh,
 			refreshing,
-			hasMorePosts,
+			canLoadMorePosts,
 			onCreateWallPost,
 			shareSectionPlaceholder,
-			noPosts,
 			shareSectionOpacityInterpolation,
 			scrollRef,
 			scrollY,
@@ -58,10 +55,9 @@ export class UserFeedScreenView extends React.Component<
 
 		return (
 			<View style={styles.container}>
-				{noPosts ? (
+				{posts.length === 0 ? (
 					<FeedWithNoPosts
-						// onCreateWallPost={onCreateWallPost}
-						onCreateWallPost={onLoadMorePosts}
+						onCreateWallPost={onCreateWallPost}
 						getText={getText}
 					/>
 				) : (
@@ -80,13 +76,12 @@ export class UserFeedScreenView extends React.Component<
 						windowSize={10}
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						data={wallPosts}
+						data={posts}
 						keyExtractor={this.keyExtractor}
 						renderItem={(data) => this.renderWallPosts(data, getText)}
-						onEndReached={onLoadMorePosts}
-						onEndReachedThreshold={0.5}
+						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
 						keyboardShouldPersistTaps="handled"
-						ListFooterComponent={<LoadingFooter hasMore={hasMorePosts} />}
+						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
 						onScrollToIndexFailed={() => {
 							/**/
 						}}
@@ -107,18 +102,15 @@ export class UserFeedScreenView extends React.Component<
 		data: { item: IWallPostCardData; index: number },
 		getText: getTextSignature,
 	) => {
-		const postData = data.item;
-		const canDelete = this.props.currentUser.userId === postData.owner.userId;
-		const likedByMe = !!postData.likes.find(
-			(like: any) => like.userId === this.props.currentUser.userId,
-		);
+		const post = data.item;
+		const canDelete = this.props.currentUser.userId === post.owner.userId;
 
 		return (
 			<View style={styles.wallPostContainer}>
 				<WallPostCard
-					{...postData}
+					{...post}
 					canDelete={canDelete}
-					likedByMe={likedByMe}
+					likedByMe={post.likedByMe}
 					listLoading={this.props.loadingMorePosts}
 					currentUserAvatarURL={this.props.currentUser.avatarURL}
 					onCommentPress={this.props.onCommentPress}
@@ -135,9 +127,9 @@ export class UserFeedScreenView extends React.Component<
 					onBlockUser={this.props.onBlockUser}
 					onReportProblem={this.props.onReportProblem}
 				/>
-				{postData.suggested && (
+				{post.suggested && (
 					<SuggestionsCarousel
-						items={postData.suggested}
+						items={post.suggested}
 						getText={this.props.getText}
 					/>
 				)}
