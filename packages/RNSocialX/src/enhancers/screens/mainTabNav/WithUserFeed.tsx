@@ -30,7 +30,7 @@ const mock: IWithUserFeedEnhancedProps = {
 	data: {
 		currentUser,
 		posts,
-		hasMorePosts: false,
+		canLoadMorePosts: false,
 		refreshingFeed: false,
 		loadingMorePosts: false,
 	},
@@ -75,7 +75,7 @@ const mock: IWithUserFeedEnhancedProps = {
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
 	posts: IWallPostCardData[];
-	hasMorePosts: boolean;
+	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
 }
@@ -130,7 +130,7 @@ export class WithUserFeed extends React.Component<
 																		{(currentUserProps) => {
 																			const user = currentUserProps.currentUser!;
 
-																			let feedPosts: any = [];
+																			let feedPosts: IWallPostCardData[] = [];
 																			if (postsProps.posts.length > 0) {
 																				feedPosts = mapPostsForUI(
 																					postsProps.posts,
@@ -147,8 +147,8 @@ export class WithUserFeed extends React.Component<
 																				data: {
 																					...mock.data,
 																					currentUser: user,
-																					// posts: feedPosts,
-																					hasMorePosts:
+																					posts: feedPosts,
+																					canLoadMorePosts:
 																						globals.canLoadMorePosts,
 																					loadingMorePosts: getActivity(
 																						activities,
@@ -174,9 +174,13 @@ export class WithUserFeed extends React.Component<
 																					likePost: (postId) =>
 																						postsProps.likePost({ postId }),
 																					unlikePost: (postId) =>
-																						postsProps.unlikePost({ postId }),
+																						postsProps.unlikePost({
+																							postId,
+																						}),
 																					deletePost: (postId) =>
-																						postsProps.removePost({ postId }),
+																						postsProps.removePost({
+																							postId,
+																						}),
 																					postComment: (text, postId) =>
 																						postsProps.createComment({
 																							text,

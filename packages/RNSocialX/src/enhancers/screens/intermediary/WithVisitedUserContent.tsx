@@ -37,6 +37,7 @@ export class WithVisitedUserContent extends React.Component<
 											<WithActivities>
 												{({ activities }) => {
 													const user = visitedUser;
+
 													if (user) {
 														const userPosts = posts.filter(
 															(post) => post.owner.alias === user.userId,
@@ -51,6 +52,7 @@ export class WithVisitedUserContent extends React.Component<
 															ActionTypes.GET_POSTS_BY_USER,
 															appConfig,
 														);
+														console.log(recentPosts);
 
 														user.numberOfLikes = posts.reduce(
 															(acc, post) => acc + post.likes.length,
@@ -68,10 +70,12 @@ export class WithVisitedUserContent extends React.Component<
 															0,
 														);
 
-														user.mediaObjects = extractMediaFromPosts(
-															posts,
-															appConfig,
-														);
+														// user.mediaObjects = extractMediaFromPosts(
+														// 	posts,
+														// 	appConfig,
+														// );
+
+														user.mediaObjects = [];
 
 														user.recentPosts = recentPosts;
 													}

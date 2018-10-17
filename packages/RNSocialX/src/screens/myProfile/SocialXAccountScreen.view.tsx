@@ -41,8 +41,8 @@ export class SocialXAccountScreenView extends Component<
 		return (
 			<View style={styles.container}>
 				<Header
-					title={'socialx account'}
-					left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+					title={getText('socialx.account.screen.title')}
+					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 				/>
 				<ScrollView
 					contentContainerStyle={styles.contentContainer}

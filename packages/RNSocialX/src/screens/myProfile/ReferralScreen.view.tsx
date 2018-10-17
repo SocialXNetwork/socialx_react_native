@@ -7,13 +7,15 @@ import {
 	ReferralContainer,
 	ReferralRow,
 } from '../../components';
+import { ITranslatedProps } from '../../types';
+
 import styles, { shareIcon } from './ReferralScreen.style';
 
 const HEADING = 'Lorem ipsum dolor';
 const TEXT =
 	'Lorem ipsum dolor sit amet, consectetur adipi elit, sed do eiusmod tempor incididunt ut labore';
 
-interface IReferralScreenViewProps {
+interface IReferralScreenViewProps extends ITranslatedProps {
 	referrals: string;
 	socx: string;
 	code: string;
@@ -31,37 +33,43 @@ export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({
 	copyToClipboard,
 	onShare,
 	onGoBack,
+	getText,
 }) => (
 	<View style={styles.container}>
 		<Header
-			title={'referral system'}
-			left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+			title={getText('referral.screen.title')}
+			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<ReferralContainer heading={HEADING} text={TEXT} />
-		<ReferralRow title={'Total referrals'} value={referrals} />
 		<ReferralRow
-			title={'SOCX earned through referrals'}
+			title={getText('referral.screen.referrals')}
+			value={referrals}
+		/>
+		<ReferralRow
+			title={getText('referral.screen.socx')}
 			value={socx}
 			last={true}
 		/>
-		<ReferralContainer heading={'Share'} text={TEXT} />
+		<ReferralContainer heading={getText('referral.screen.share')} text={TEXT} />
 		<ReferralRow
-			title={'Invite URL'}
+			title={getText('referral.screen.url')}
 			value={url}
 			border={true}
 			onCopyText={() => copyToClipboard(url)}
 		/>
 		<ReferralRow
-			title={'Invite Code'}
+			title={getText('referral.screen.code')}
 			value={code}
 			border={true}
 			onCopyText={() => copyToClipboard(code)}
 			last={true}
 		/>
 		<View style={styles.footer}>
-			<Text style={styles.text}>INVITE FRIENDS VIA SOCIAL</Text>
+			<Text style={styles.text}>
+				{getText('referral.screen.code').toUpperCase()}
+			</Text>
 			<TouchableOpacity onPress={onShare} style={styles.iconContainer}>
-				<Image source={shareIcon} style={styles.icon} resizeMode={'contain'} />
+				<Image source={shareIcon} style={styles.icon} resizeMode="contain" />
 			</TouchableOpacity>
 		</View>
 	</View>

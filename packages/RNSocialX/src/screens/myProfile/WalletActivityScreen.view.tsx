@@ -22,7 +22,6 @@ export interface IWalletActivityScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-// Add 'Activity' and 'SOCIALX WALLET' to dictionary
 export const WalletActivityScreenView: React.SFC<
 	IWalletActivityScreenViewProps
 > = ({
@@ -40,8 +39,8 @@ export const WalletActivityScreenView: React.SFC<
 	return (
 		<View style={styles.container}>
 			<Header
-				title="SOCIALX WALLET"
-				left={<HeaderButton iconName={'ios-arrow-back'} onPress={onGoBack} />}
+				title={getText('wallet.activity.screen.title')}
+				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 			/>
 			<View style={styles.walletContainer}>
 				<MyWalletInfo
@@ -53,7 +52,9 @@ export const WalletActivityScreenView: React.SFC<
 				/>
 			</View>
 			<View style={styles.activity}>
-				<Text style={styles.heading}>Activity</Text>
+				<Text style={styles.heading}>
+					{getText('wallet.activity.screen.heading')}
+				</Text>
 				<FlatList
 					refreshing={refreshing}
 					onRefresh={onRefresh}

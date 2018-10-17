@@ -2,12 +2,11 @@ import * as React from 'react';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import style, { customStyleProps } from './CommentTextInput.style';
+import style, { defaultStyles } from './CommentTextInput.style';
 
 interface ICommentTextInputProps {
 	placeholder: string;
 	autoFocus: boolean;
-	showSendButton: boolean;
 	commentText: string;
 	onCommentSend: () => void;
 	onCommentTextChange: (value: string) => void;
@@ -23,7 +22,6 @@ export const CommentTextInput = React.forwardRef<
 			autoFocus = true,
 			commentText,
 			onCommentTextChange,
-			showSendButton,
 			onCommentSend,
 		},
 		ref,
@@ -37,18 +35,17 @@ export const CommentTextInput = React.forwardRef<
 				autoFocus={autoFocus}
 				multiline={true}
 				autoCorrect={false}
-				underlineColorAndroid={customStyleProps.underlineColorAndroid}
+				underlineColorAndroid={defaultStyles.underlineColorAndroid}
 				autoCapitalize="none"
 				value={commentText}
-				placeholderTextColor={customStyleProps.placeholderTextColor}
+				placeholderTextColor={defaultStyles.placeholderTextColor}
 			/>
-			{showSendButton && (
-				<View style={style.sendButtonContainer}>
-					<TouchableOpacity onPress={onCommentSend} style={style.sendButton}>
-						<Icon name="md-send" style={style.sendIcon} />
-					</TouchableOpacity>
-				</View>
-			)}
+
+			<View style={style.sendButtonContainer}>
+				<TouchableOpacity onPress={onCommentSend} style={style.sendButton}>
+					<Icon name="md-send" style={style.sendIcon} />
+				</TouchableOpacity>
+			</View>
 		</View>
 	),
 );

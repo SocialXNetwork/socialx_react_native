@@ -80,6 +80,19 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.SYNC_LOAD_MORE_POSTS: {
+			const updatedPosts = action.payload.reduce(
+				(updatedPostsAcc, newPost) => [
+					...updatedPostsAcc.filter(
+						(updatedPost) => updatedPost.postId !== newPost.postId,
+					),
+					newPost,
+				],
+				[...state.posts],
+			);
+			return { posts: updatedPosts };
+		}
+
 		case ActionTypes.REMOVE_POST: {
 			return state;
 		}

@@ -5,10 +5,9 @@ import { Colors, Sizes } from '../../environment/theme';
 const styles: any = {
 	container: {
 		flexDirection: 'row',
-		justifyContent: 'flex-end',
 		alignItems: 'center',
 		marginTop: Sizes.smartVerticalScale(10),
-		paddingTop: Sizes.smartVerticalScale(5),
+		paddingVertical: Sizes.smartVerticalScale(5),
 		marginHorizontal: Sizes.smartHorizontalScale(15),
 		borderTopWidth: 0.5,
 		borderColor: Colors.grayNurse,
@@ -16,6 +15,7 @@ const styles: any = {
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(24),
 		marginBottom: Sizes.smartVerticalScale(4),
+		marginLeft: Sizes.smartHorizontalScale(5),
 		color: Colors.black,
 	},
 };

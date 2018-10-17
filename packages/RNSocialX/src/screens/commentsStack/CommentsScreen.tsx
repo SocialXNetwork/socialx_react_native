@@ -25,38 +25,26 @@ import {
 	INavigationProps,
 	IWallPostComment,
 } from '../../types';
-import { customStyleProps } from './CommentsScreen.style';
+import { defaultStyles } from './CommentsScreen.style';
 import { CommentsScreenView } from './CommentsScreen.view';
 
 interface ICommentsScreenState {
 	sortOption: CommentsSortingOptions;
-	commentText: string;
-	showSendButton: boolean;
+	comment: string;
 	commentLikesPosition: object;
 }
-
-// interface INavigationScreenProps {
-// 	params: {
-// 		commentId?: string; // only available for replies
-// 		postId?: string; // only for main comments screen
-// 		startComment: boolean;
-// 	};
-// }
 
 type ICommentsScreenProps = INavigationProps &
 	IWithCommentsEnhancedData &
 	IWithCommentsEnhancedActions;
 
-// Go to the end of the file for the actual export, the Screen component is
-// for providing screen-level local state to the view. This is again for
-// explicit separation of levels of concerns
 class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	public state = {
 		sortOption: CommentsSortingOptions.Likes,
-		commentText: '',
+		comment: '',
 		showSendButton: false,
 		commentLikesPosition: {
-			bottom: customStyleProps.commentsLikeBottomStartPosition,
+			bottom: defaultStyles.commentsLikeBottomStartPosition,
 			right: 0,
 		},
 	};
@@ -68,7 +56,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		}
 	}
 
-	public componentWillUnmount(): void {
+	public componentWillUnmount() {
 		StatusBar.setBarStyle('light-content', true);
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustPan();
@@ -76,46 +64,33 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const {
-			getText,
-			postOwner,
-			currentUser,
-			postComments,
-			postData,
-			startComment,
-			commentId,
-		} = this.props;
+		const { getText, post, startComment } = this.props;
 
 		const optionsProps = {
 			sortOption: this.state.sortOption,
 			onSelectionChange: this.updateSortingHandler,
 		};
-		const { commentText, showSendButton } = this.state;
+		const { comment } = this.state;
 
 		return (
 			<CommentsScreenView
-				comments={postComments}
+				post={post}
+				startComment={startComment}
+				comment={comment}
+				optionsProps={optionsProps}
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentReply={this.onCommentReplyHandler}
 				onCommentSend={this.onCommentSendHandler}
-				startComment={startComment}
 				onViewUserProfile={this.navigateToUserProfile}
 				onCommentTextChange={this.onCommentTextChangeHandler}
-				commentText={commentText}
-				showSendButton={showSendButton}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
-				postData={postData}
-				postOwner={postOwner}
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
-				currentUser={currentUser}
 				onCommentContainerWidthChange={this.setCommentContainerWidthHandler}
 				commentLikesPosition={this.state.commentLikesPosition}
-				optionsProps={optionsProps}
 				getText={getText}
 				marginBottom={0}
-				isReplyScreen={!!commentId}
 			/>
 		);
 	}
@@ -148,12 +123,12 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentSendHandler = () => {
-		const { sendComment, postId, commentId } = this.props;
-		const escapedComment = this.state.commentText.replace(/\n/g, '\\n');
-		sendComment(escapedComment, postId, commentId);
+		const { sendComment, post } = this.props;
+		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
+		sendComment(escapedComment, post.id);
+
 		this.setState({
-			commentText: '',
-			showSendButton: false,
+			comment: '',
 		});
 	};
 
@@ -174,8 +149,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 
 	private onCommentTextChangeHandler = (value: string) => {
 		this.setState({
-			showSendButton: value !== '',
-			commentText: value,
+			comment: value,
 		});
 	};
 
@@ -226,11 +200,11 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private setCommentContainerWidthHandler = (width: number) => {
-		if (width < customStyleProps.commentWidthThreshold) {
+		if (width < defaultStyles.commentWidthThreshold) {
 			this.setState({
 				commentLikesPosition: {
-					bottom: customStyleProps.commentsLikeBottomAdaptivePosition,
-					right: customStyleProps.commentsLikeRightAdaptivePosition,
+					bottom: defaultStyles.commentsLikeBottomAdaptivePosition,
+					right: defaultStyles.commentsLikeRightAdaptivePosition,
 				},
 			});
 		}
