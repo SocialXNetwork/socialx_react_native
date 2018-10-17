@@ -8,16 +8,16 @@ export interface IAuthData {
 }
 
 export type IState = DeepReadonly<{
-	auth: IAuthData | null;
+	gun: IAuthData | null;
 }>;
 
 export const enum ActionTypes {
-	SET_AUTH = 'app/auth/SET_AUTH',
+	SET_GUN_AUTH = 'app/auth/SET_AUTH',
 	RESET_DATABASE_AND_STORE = 'app/auth/RESET_DATABASE_AND_STORE',
 }
 
 export interface ISetAuthAction extends Action {
-	type: ActionTypes.SET_AUTH;
+	type: ActionTypes.SET_GUN_AUTH;
 	payload: IAuthData | null;
 }
 

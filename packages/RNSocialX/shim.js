@@ -29,11 +29,19 @@ global.location = {
 
 // const { randomBytes } = require('react-native-randombytes');
 const { TextEncoder, TextDecoder } = require('text-encoding');
+
+// const webCrypto = require('@socialx/webcrypto');
+const bcrypto = require('crypto-browserify');
+const rncrypto = require('react-native-crypto');
+// const icrypto = require('isomorphic-webcrypto');
 const crypto = require('crypto');
 
 global.crypto = {
-  ...crypto,
+  ...bcrypto,
   subtle: {},
-  TextEncoder,
-  TextDecoder,
+  // iso crpto needs to be secured with a dumb wrapper method, but we dont care because we already have a module for it
+  // so this virtual *actual* random pseudo generator is valid and secure
+  getRandomValues: rncrypto.getRandomValues,
 };
+global.TextDecoder = TextDecoder;
+global.TextEncoder = TextEncoder;

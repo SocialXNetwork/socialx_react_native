@@ -47,7 +47,7 @@ export const getProfilesByPosts = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(getProfilesByPostsAction(getProfileByPostsInput));
@@ -100,7 +100,7 @@ export const searchProfilesByFullName = ({
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(searchProfilesByFullNameAction({ term, maxResults }));
@@ -149,7 +149,7 @@ export const getProfileByUsername = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
@@ -198,7 +198,7 @@ export const getCurrentProfile = (): IThunk => async (
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(getCurrentProfileAction());
@@ -238,7 +238,7 @@ export const updateCurrentProfile = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(updateCurrentProfileAction(updateProfileInput));
@@ -279,7 +279,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(addFriendAction(addFriendInput));
@@ -318,7 +318,7 @@ export const removeFriend = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(removeFriendAction(removeFriendInput));
@@ -357,7 +357,7 @@ export const acceptFriend = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(acceptFriendAction(acceptFriendInput));

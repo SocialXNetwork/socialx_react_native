@@ -1,7 +1,7 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	auth: null,
+	gun: null,
 };
 
 export default initialState;

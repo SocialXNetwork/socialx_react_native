@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
-import { IState as IAuth, reducer as auth } from './app/auth';
 import { IState as IConfig, reducer as config } from './app/config';
 import { IState as II18n, reducer as i18n } from './app/i18n';
 import {
 	IState as INavigationParams,
 	reducer as navigationParams,
 } from './app/navigationParams';
+import { IState as IAuth, reducer as database } from './auth/gun';
 
 import { IState as IAccounts, reducer as accounts } from './data/accounts';
 import {
@@ -23,6 +23,9 @@ import { IState as IGlobals, reducer as globals } from './ui/globals';
 import { IState as IOverlays, reducer as overlays } from './ui/overlays';
 
 export interface IApplicationState {
+	auth: {
+		database: IAuth;
+	};
 	data: {
 		accounts: IAccounts;
 		notifications: INotifications;
@@ -30,7 +33,6 @@ export interface IApplicationState {
 		profiles: IProfiles;
 	};
 	app: {
-		auth: IAuth;
 		config: IConfig;
 		i18n: II18n;
 		navigationParams: INavigationParams;
@@ -52,8 +54,10 @@ export default combineReducers<IApplicationState>({
 		posts,
 		profiles,
 	}),
+	auth: combineReducers({
+		database,
+	}),
 	app: combineReducers({
-		auth,
 		config,
 		i18n,
 		navigationParams,
