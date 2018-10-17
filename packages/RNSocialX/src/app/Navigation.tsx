@@ -23,6 +23,7 @@ import { IStackDefaultConfig } from '../types';
 import { tabStyles } from './Navigation.style';
 
 import {
+	AdsManagementConfigBudgetScreen,
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
@@ -215,8 +216,11 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
-		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
+		AdsManagementConfigBudgetScreen: {
+			screen: AdsManagementConfigBudgetScreen,
+		},
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
+		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
 		AdsManagementScreen: { screen: AdsManagementScreen },
 		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 	},
