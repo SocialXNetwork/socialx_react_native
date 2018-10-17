@@ -1,0 +1,43 @@
+{
+  "name": "@socialx/webcrypto",
+  "version": "0.0.1",
+  "private": true,
+  "description": "WebCrypto API for Node.js",
+  "main": "src/index.js",
+  "types": "index.d.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "nyc _mocha test",
+    "jsdoc": "jsdoc -c jsdoc.json -r",
+    "coverage": "nyc --reporter=lcov _mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/anvilresearch/webcrypto.git"
+  },
+  "keywords": [
+    "WebCrypto"
+  ],
+  "author": "Anvil Research, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anvilresearch/webcrypto/issues"
+  },
+  "homepage": "https://github.com/anvilresearch/webcrypto#README",
+  "dependencies": {
+    "@trust/keyto": "^0.3.4",
+    "base64url": "^3.0.0",
+    "elliptic": "^6.4.0",
+    "node-rsa": "^0.4.0",
+    "text-encoding": "^0.6.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "codecov": "^3.0.2",
+    "jsdoc": "^3.4.3",
+    "mocha": "^5.2.0",
+    "nyc": "^11.2.1"
+  }
+}

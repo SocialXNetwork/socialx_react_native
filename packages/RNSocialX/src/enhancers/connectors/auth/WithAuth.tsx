@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
-import { IAuthData } from '../../../store/app/auth';
+import { IAuthData } from '../../../store/auth/gun';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
@@ -24,8 +24,8 @@ class Enhancer extends React.Component<IProps & IChildren> {
 }
 
 const selectAuth = createSelector(
-	(state: IApplicationState) => state.app.auth.auth,
-	(auth) => auth,
+	(state: IApplicationState) => state.auth.database.gun,
+	(gun) => gun,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({

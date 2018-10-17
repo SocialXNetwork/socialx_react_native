@@ -1,5 +1,4 @@
 import {
-	ICommentsReturnData,
 	ICreatePostInput,
 	IPostArrayData,
 	IPostReturnData,
@@ -299,7 +298,7 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 	context,
 ) => {
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
 		try {
@@ -342,7 +341,7 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(likePostAction(likePostInput));
@@ -384,7 +383,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(removePostAction(removePostInput));
@@ -426,7 +425,7 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(unlikePostAction(unlikePostInput));
@@ -466,7 +465,7 @@ export const createComment = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(createCommentAction(createCommentInput));
@@ -512,7 +511,7 @@ export const likeComment = (
 				? true
 				: false,
 	);
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
 		try {
@@ -559,7 +558,7 @@ export const removeComment = (
 				? true
 				: false,
 	);
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
 		try {
@@ -606,7 +605,7 @@ export const unlikeComment = (
 				? true
 				: false,
 	);
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
 		try {

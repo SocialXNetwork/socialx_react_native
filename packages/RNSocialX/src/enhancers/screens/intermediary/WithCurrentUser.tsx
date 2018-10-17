@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { ICurrentUser } from '../../../types';
 
-import { WithAuth } from '../../connectors/app/WithAuth';
 import { WithConfig } from '../../connectors/app/WithConfig';
+import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 
