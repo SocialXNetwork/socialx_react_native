@@ -10,7 +10,7 @@ import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { getCurrentProfile } from '../profiles';
 
-import { clearAuth, setAuth } from '../../app/auth';
+import { clearGunAuth, setGunAtuh } from '../../auth/gun';
 import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
@@ -58,7 +58,7 @@ export const getCurrentAccount = (): IThunk => async (
 		const { dataApi } = context;
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
-		dispatch(setAuth({ alias: account.alias, pub: account.pub }));
+		dispatch(setGunAtuh({ alias: account.alias, pub: account.pub }));
 		dispatch(getCurrentProfile());
 	} catch (e) {
 		dispatch(
@@ -157,7 +157,7 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
-		dispatch(setAuth({ password: createAccountInput.password }));
+		dispatch(setGunAtuh({ password: createAccountInput.password }));
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
@@ -232,7 +232,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
-		dispatch(setAuth({ password: credentials.password }));
+		dispatch(setGunAtuh({ password: credentials.password }));
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
@@ -255,7 +255,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const actionType = ActionTypes.LOGOUT;
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(logoutAction());
@@ -268,7 +268,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 			const { dataApi } = context;
 			await dataApi.accounts.logout();
 
-			dispatch(clearAuth());
+			dispatch(clearGunAuth());
 		} catch (e) {
 			dispatch(
 				setError({
@@ -295,7 +295,7 @@ export const changePassword = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(changePasswordAction(changePasswordInput));

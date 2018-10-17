@@ -35,7 +35,8 @@ export const getContextMeta = (context: IContext) => ({
 });
 
 export const cleanGunMetaFromObject = (args: any = {}) => {
-	return args || {};
+	const { _, ...rest } = args;
+	return rest || {};
 };
 
 export const resolveCallback = (resolve: any, reject: any) => (

@@ -4,11 +4,11 @@ import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
-		case ActionTypes.SET_AUTH: {
-			const prevAuth: any = state.auth ? state.auth : {};
+		case ActionTypes.SET_GUN_AUTH: {
+			const prevAuth: any = state.gun ? state.gun : {};
 			return {
 				...state,
-				auth: {
+				gun: {
 					...prevAuth,
 					...action.payload,
 				},

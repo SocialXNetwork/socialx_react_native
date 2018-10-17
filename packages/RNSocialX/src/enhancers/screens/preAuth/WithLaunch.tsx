@@ -10,10 +10,10 @@ import { ICredentials } from '@socialx/api-data';
 import { currentUser } from '../../../mocks';
 import { ICurrentUser, IGlobal, ITranslatedProps } from '../../../types';
 
-import { IAuthData } from '../../../store/app/auth';
+import { IAuthData } from '../../../store/auth/gun';
 import { ActionTypes } from '../../../store/data/accounts/Types';
-import { WithAuth } from '../../connectors/app/WithAuth';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';

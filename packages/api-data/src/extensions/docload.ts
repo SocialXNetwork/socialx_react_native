@@ -6,81 +6,83 @@ Gun.chain.docLoad = function(
 	cb: (data: object | undefined, key: string) => IGunInstance,
 	old: boolean = false,
 ) {
-	if (!old) {
-		return this.docOpen((data: any, doc: any) => {
-			if (Object.keys(data).length === 0 && data.constructor === Object) {
-				return cb(undefined, doc.key);
-			}
-			return cb(data, doc.key);
-		}, { off: true });
-	}
-	const gun = this; // tslint:disable-line no-this-assignment
-	const root = gun.back(-1);
-	// return an instance of gun with once (used to be .val), best option here.
-	return this.once((obj: object = {}, key: string) => {
-		// if null or undefined (but shouldnt be able to be that, right ?).. skip it if opt allows
-		if (obj === null) {
-			return;
-		}
+	return this.docOpen(cb);
+	// if (!old) {
+	// 	return this.docOpen((data: any, doc: any) => {
+	// 		if (Object.keys(data).length === 0 && data.constructor === Object) {
+	// 			return cb(undefined, doc.key);
+	// 		}
+	// 		return cb(data, doc.key);
+	// 	}, { off: true });
+	// }
+	// return this.open(cb, {off: 1, wait: 500});
+	// const gun = this; // tslint:disable-line no-this-assignment
+	// const root = gun.back(-1);
+	// // return an instance of gun with once (used to be .val), best option here.
+	// return this.once((obj: object = {}, key: string) => {
+	// 	// if null or undefined (but shouldnt be able to be that, right ?).. skip it if opt allows
+	// 	if (obj === null) {
+	// 		return;
+	// 	}
 
-		const { _: obSoul, ...obRest } = Gun.obj.copy(obj);
-		obj = obRest;
+	// 	const { _: obSoul, ...obRest } = Gun.obj.copy(obj);
+	// 	obj = obRest;
 
-		// next objects to dig into
-		const queue: any = {};
-		// current doc (passed on the callback)
-		let doc: object;
-		// flag
-		let done: boolean;
+	// 	// next objects to dig into
+	// 	const queue: any = {};
+	// 	// current doc (passed on the callback)
+	// 	let doc: object;
+	// 	// flag
+	// 	let done: boolean;
 
-		// get deeper into the reference soul
-		const expand = (newObj: object | any = {}) => {
-			const { _: newObSoul, ...o } = newObj;
-			// console.log("que", queue);
-			// if doc is null assign the current object to the doc
-			if (!doc) {
-				doc = o;
-			}
+	// 	// get deeper into the reference soul
+	// 	const expand = (newObj: object | any = {}) => {
+	// 		const { _: newObSoul, ...o } = newObj;
+	// 		// console.log("que", queue);
+	// 		// if doc is null assign the current object to the doc
+	// 		if (!doc) {
+	// 			doc = o;
+	// 		}
 
-			// this is exactly foreach, what it does is iterate through all the levels inside a single object, if the object has levels/depth
-			// expand its soul and append the depth data on the parent object of the child (mutates the data)
-			// gun.js: line 125
-			// Type.obj.map = function(l, c, _)
-			// l -> current object to iterate
-			// c -> callback (if the current object has keys, call it with the callback otherwise just the values)
-			Object.entries(o).map(([k, v]) => {
-				const soul = Gun.val.rel.is(v);
-				if (soul) {
-					queue[soul] = true;
-					root.get(soul).once((loadedValue: object) => {
-						loadedValue = Gun.obj.copy(loadedValue);
-						o[k] = loadedValue;
-						queue[soul] = false;
-						expand(loadedValue);
-					});
-					return;
-				}
+	// 		// this is exactly foreach, what it does is iterate through all the levels inside a single object, if the object has levels/depth
+	// 		// expand its soul and append the depth data on the parent object of the child (mutates the data)
+	// 		// gun.js: line 125
+	// 		// Type.obj.map = function(l, c, _)
+	// 		// l -> current object to iterate
+	// 		// c -> callback (if the current object has keys, call it with the callback otherwise just the values)
+	// 		Object.entries(o).map(([k, v]) => {
+	// 			const soul = Gun.val.rel.is(v);
+	// 			if (soul) {
+	// 				queue[soul] = true;
+	// 				root.get(soul).once((loadedValue: object) => {
+	// 					loadedValue = Gun.obj.copy(loadedValue);
+	// 					o[k] = loadedValue;
+	// 					queue[soul] = false;
+	// 					expand(loadedValue);
+	// 				});
+	// 				return;
+	// 			}
 
-				// if it doesnt have a soul, just attach the value as is
-				o[k] = v;
-			});
+	// 			// if it doesnt have a soul, just attach the value as is
+	// 			o[k] = v;
+	// 		});
 
-			// if the object has souls inside in the queue, return true to continue expanding it without invoking the callback
-			const ty = Gun.obj.map(queue, (wait: boolean) => {
-				if (wait) {
-					return true;
-				}
-			})
-			if (done || ty) {
-				// dont send the document back yet / or again, we are either already done and have sent the doc, or are still waiting for it load completely
-				return;
-			}
-			done = true;
-			cb(doc, key);
-		};
+	// 		// if the object has souls inside in the queue, return true to continue expanding it without invoking the callback
+	// 		const ty = Gun.obj.map(queue, (wait: boolean) => {
+	// 			if (wait) {
+	// 				return true;
+	// 			}
+	// 		})
+	// 		if (done || ty) {
+	// 			// dont send the document back yet / or again, we are either already done and have sent the doc, or are still waiting for it load completely
+	// 			return;
+	// 		}
+	// 		done = true;
+	// 		cb(doc, key);
+	// 	};
 
-		expand(obj);
-	});
+	// 	expand(obj);
+	// });
 };
 
 Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
@@ -109,11 +111,9 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 				return;
 			}
 			opt.any.call(opt.at, opt.doc, opt.key, opt, opt.ev);
-			if (opt.off) {
-				opt.ev.off();
-				opt.any = null;
-			}
-		}, opt.wait || 100);
+			opt.ev.off();
+			opt.any = null;
+		}, 1000);
 		opt.at = opt.at || ctx;
 		opt.key = opt.key || key;
 		// @ts-ignore-file
@@ -142,5 +142,5 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 				.get(key)
 				.docOpen(opt.any, opt, (opt.ids[id] = (at || opt.doc)[key] = {}));
 		});
-	}, {wait: 50});
+	}, { wait: 500 });
 };

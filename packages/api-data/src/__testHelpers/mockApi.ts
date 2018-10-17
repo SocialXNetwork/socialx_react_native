@@ -123,5 +123,6 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		notifications,
 		posts,
 		profiles,
+		gun,
 	};
 };

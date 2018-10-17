@@ -27,7 +27,7 @@ export const createNotification = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(createNotificationAction(createNotificationInput));
@@ -60,7 +60,7 @@ export const removeNotification = (
 ): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(removeNotificationAction(removeNotificationInput));
@@ -101,7 +101,7 @@ export const getNotifications = (): IThunk => async (
 ) => {
 	const activityId = uuidv4();
 	const storeState = getState();
-	const auth = storeState.app.auth.auth;
+	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
 			dispatch(getNotificationsAction());

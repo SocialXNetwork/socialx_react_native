@@ -45,6 +45,11 @@ export const createAccount = (
 	callback: IGunCallback<null>,
 ) => {
 	const { account, encrypt, work } = context;
+	if (account.is) {
+		return callback(
+			new ApiError('cannot create account while a user is logged in.'),
+		);
+	}
 
 	const {
 		username,
@@ -141,6 +146,9 @@ export const login = (
 	callback: IGunCallback<null>,
 ) => {
 	const { account } = context;
+	if (account.is) {
+		return callback(null);
+	}
 	account.auth(username, password, (authCallback) => {
 		if (authCallback.err) {
 			return callback(
@@ -159,6 +167,9 @@ export const logout = async (
 	callback: IGunCallback<null>,
 ) => {
 	const { account } = context;
+	if (!account.is) {
+		return callback(null);
+	}
 	try {
 		await account.leave();
 		return callback(null);
