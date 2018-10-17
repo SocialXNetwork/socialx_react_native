@@ -28,10 +28,14 @@ interface IAdsManagementConfigBudgetScreenViewProps
 	perDayPressed: boolean;
 	lifetimePressed: boolean;
 	runAdContinuouslyPressed: boolean;
-	handleCheckboxChange: (text: string) => void;
+	handleCheckboxChange: (
+		text: 'perday' | 'lifetime' | 'runAdContinuously',
+	) => void;
 	isStartDatePickerVisible: boolean;
 	isStopDatePickerVisible: boolean;
-	handleDatePicker: (text: string) => void;
+	handleDatePicker: (
+		text: 'startDatePicker' | 'stopDatePicker' | 'hidePicker',
+	) => void;
 	currentDate: Date;
 	nextDayFromStartDate: Date;
 	handleStartDatePicked: (date: Date) => void;
@@ -77,7 +81,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 		<View style={styles.marginBetweenTitleAndCurrency} />
 		<ScrollView
 			alwaysBounceVertical={false}
-			keyboardShouldPersistTaps={'handled'}
+			keyboardShouldPersistTaps="handled"
 		>
 			<TouchableHighlight
 				underlayColor={customStyleProps.checkboxColor}
@@ -91,7 +95,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 						<Text style={styles.currencyText}>{selectedCurrencyValue}</Text>
 						<Icon
 							size={20}
-							name={'md-arrow-dropdown'}
+							name="md-arrow-dropdown"
 							style={styles.caretDownIcon}
 						/>
 					</View>
@@ -113,11 +117,11 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 							'ad.management.budget.budget.textinput.initialvalue',
 						)}
 						clearTextOnFocus={true}
-						keyboardType={'numeric'}
+						keyboardType="numeric"
 						onChangeText={submitBudget}
 						onSubmitEditing={Keyboard.dismiss}
 						blurOnSubmit={true}
-						underlineColorAndroid={'transparent'}
+						underlineColorAndroid="transparent"
 					/>
 				</View>
 				<View style={styles.separator} />
