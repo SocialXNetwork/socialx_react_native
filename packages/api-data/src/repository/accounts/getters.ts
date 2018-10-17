@@ -23,7 +23,7 @@ export const getCurrentAccount = (
 	}
 
 	account.docLoad((data: IAccountData) => {
-		if (!data) {
+		if (!Object.keys(data).length) {
 			return callback(
 				new ApiError('failed to get current account, user document not found'),
 			);
@@ -40,7 +40,7 @@ export const getAccountByPub = (
 	const { gun } = context;
 	const targetUser = gun.user(publicKey);
 	targetUser.docLoad((data: IAccountData) => {
-		if (!data) {
+		if (!Object.keys(data).length) {
 			return callback(
 				new ApiError(
 					'failed to get account, no object for provided public key',

@@ -133,7 +133,7 @@ export const likePost = (
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMeta: IPostMetasCallback) => {
-			if (!postMeta) {
+			if (!Object.keys(postMeta).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found with id`, {
 						initialRequestBody: { postId },
@@ -144,7 +144,7 @@ export const likePost = (
 			postHandles
 				.postLikesByCurrentUser(context, postMeta.postPath)
 				.docLoad((likePostCallback) => {
-					if (likePostCallback) {
+					if (Object.keys(likePostCallback).length) {
 						return callback(
 							new ApiError(`${errPrefix}, post already liked`, {
 								initialRequestBody: { postId },
@@ -172,7 +172,6 @@ export const likePost = (
 									),
 								);
 							}
-
 							return callback(null);
 						},
 					);
@@ -189,7 +188,7 @@ export const removePost = (
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMetaIdCallback: IPostMetasCallback) => {
-			if (!postMetaIdCallback) {
+			if (!Object.keys(postMetaIdCallback).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found by id`, {
 						initialRequestBody: { postId },
@@ -271,7 +270,7 @@ export const unlikePost = (
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMetaCallback: IPostMetasCallback) => {
-			if (!postMetaCallback) {
+			if (!Object.keys(postMetaCallback).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found by id`, {
 						initialRequestBody: { postId },
@@ -285,7 +284,7 @@ export const unlikePost = (
 			postHandles
 				.postLikesByCurrentUser(context, postPath)
 				.docLoad((likeData: ILikeData) => {
-					if (!likeData) {
+					if (!Object.keys(likeData).length) {
 						return callback(
 							new ApiError(`${errPrefix}, like was not removed`, {
 								initialRequestBody: { postId },

@@ -31,7 +31,7 @@ export const createComment = (
 	postHandles
 		.postMetaById(context, postId)
 		.docLoad((postMeta: IPostMetasCallback) => {
-			if (!postMeta) {
+			if (!Object.keys(postMeta).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found by this id`, {
 						initialRequestBody: createCommentInput,
@@ -105,7 +105,7 @@ export const removeComment = (
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentReturnCallback: ICommentMetasCallback) => {
-			if (!commentReturnCallback) {
+			if (!Object.keys(commentReturnCallback).length) {
 				return callback(
 					new ApiError(`${errPrefix}, failed to find comment`, {
 						initialRequestBody: { commentId },
@@ -183,7 +183,7 @@ export const likeComment = (
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentMeta: ICommentMetasCallback) => {
-			if (!commentMeta) {
+			if (!Object.keys(commentMeta).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no comment found by this id`, {
 						initialRequestBody: { commentId },
@@ -200,7 +200,7 @@ export const likeComment = (
 				.get(TABLE_ENUMS.LIKES)
 				.get(owner)
 				.docLoad((commentReturnCallback) => {
-					if (commentReturnCallback) {
+					if (Object.keys(commentReturnCallback).length) {
 						return callback(
 							new ApiError(`${errPrefix}, this comment is already liked`, {
 								initialRequestBody: { commentId },
@@ -251,7 +251,7 @@ export const unlikeComment = (
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentMetaCallback: ICommentMetasCallback) => {
-			if (!commentMetaCallback) {
+			if (!Object.keys(commentMetaCallback).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no comment by this id`, {
 						initialRequestBody: { commentId },
@@ -268,7 +268,7 @@ export const unlikeComment = (
 				.get(TABLE_ENUMS.LIKES)
 				.get(owner)
 				.docLoad((likeReturnCallback: ILikeData) => {
-					if (!likeReturnCallback) {
+					if (!Object.keys(likeReturnCallback).length) {
 						return callback(
 							new ApiError(`${errPrefix}, no like returned`, {
 								initialRequestBody: { commentId },

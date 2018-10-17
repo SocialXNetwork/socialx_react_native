@@ -50,7 +50,7 @@ export const getCurrentProfile = (
 	profileHandles
 		.currentUserProfile(context)
 		.docLoad((profile: IProfileCallbackData) => {
-			if (!profile) {
+			if (!Object.keys(profile).length) {
 				return callback(new ApiError('failed to find current profile'));
 			}
 			const { friends, username, ...profileRest } = profile;
@@ -73,7 +73,7 @@ export const getProfileByUsername = (
 	profileHandles
 		.profileByUsername(context, username)
 		.docLoad((profile: IProfileCallbackData) => {
-			if (!profile) {
+			if (!Object.keys(profile).length) {
 				return callback(
 					new ApiError('failed to find profile', {
 						initialRequestBody: { username },
@@ -101,7 +101,7 @@ export const getCurrentProfileFriends = (
 	profileHandles
 		.currentProfileFriends(context)
 		.docLoad((friends: IFriendsCallbackData) => {
-			if (!friends) {
+			if (!Object.keys(friends).length) {
 				return callback(new ApiError('failed to find friends of current user'));
 			}
 
