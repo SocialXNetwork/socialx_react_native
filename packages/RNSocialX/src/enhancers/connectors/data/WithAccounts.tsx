@@ -52,7 +52,7 @@ const selectAccount = createSelector(
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	account: selectAccount(state),
+	accounts: selectAccount(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({

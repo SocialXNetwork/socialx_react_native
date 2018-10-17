@@ -25,7 +25,7 @@ const mock: IWithNotificationsEnhancedProps = {
 	data: {
 		notifications: [
 			{
-				notificationId: '51asfa',
+				notificationId: '51asfa1',
 				userId: '123tqa5',
 				type: NOTIFICATION_TYPES.RECENT_COMMENT,
 				avatarURL:
@@ -35,7 +35,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				timestamp: new Date(2018, 2, 12, 5, 51, 23),
 			},
 			{
-				notificationId: '51asfa',
+				notificationId: '51asfa2',
 				userId: '981326537',
 				friendshipId: '2adsasdas',
 				type: NOTIFICATION_TYPES.FRIEND_REQUEST,
@@ -46,7 +46,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				timestamp: new Date(2018, 1, 24, 8, 23, 12),
 			},
 			{
-				notificationId: '51asfa',
+				notificationId: '51asfa3',
 				userId: '981326538',
 				type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
 				avatarURL:
@@ -56,7 +56,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				timestamp: new Date(2018, 2, 12, 5, 51, 23),
 			},
 			{
-				notificationId: '51asfa',
+				notificationId: '51asfa4',
 				userId: 'a24362',
 				type: NOTIFICATION_TYPES.SUPER_LIKED,
 				avatarURL:
@@ -66,7 +66,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				timestamp: new Date(2018, 1, 24, 8, 23, 12),
 			},
 			{
-				notificationId: '51asfa',
+				notificationId: '51asfa5',
 				userId: '990325',
 				type: NOTIFICATION_TYPES.GROUP_REQUEST,
 				avatarURL:
@@ -137,7 +137,7 @@ export class WithNotifications extends React.Component<
 									<WithProfiles>
 										{(profilesProps) => (
 											<WithNotificationsData>
-												{(notifcationsProps) => {
+												{(notificationsProps) => {
 													return this.props.children({
 														data: {
 															...mock.data,
@@ -145,7 +145,7 @@ export class WithNotifications extends React.Component<
 																activities,
 																ActionTypes.GET_CURRENT_NOTIFICATIONS,
 															),
-															// notifications: notifcationsProps.notifications.map(
+															// notifications: notificationsProps.notifications.map(
 															// 	(notification) => {
 															// 		const profile = profilesProps.profiles.find(
 															// 			(prof) =>
@@ -167,13 +167,13 @@ export class WithNotifications extends React.Component<
 														actions: {
 															...mock.actions,
 															loadNotifications:
-																notifcationsProps.getNotifications,
+																notificationsProps.getNotifications,
 															acceptFriendRequest: (input) =>
 																profilesProps.acceptFriend(input),
 															declineFriendRequest: (input) =>
 																profilesProps.removeFriend(input),
 															removeNotification: (notificationId) =>
-																notifcationsProps.removeNotification({
+																notificationsProps.removeNotification({
 																	notificationId,
 																}),
 															setNavigationParams,
