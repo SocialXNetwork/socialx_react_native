@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { boolean, button, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import Picker from 'react-native-picker';
@@ -15,16 +15,19 @@ storiesOf('Screens/adsManagementStack', module)
 	.addDecorator(withKnobs)
 	.add('AdsManagementConfigBudgetScreen', () => {
 		const selectedCurrencyValue = text('currencyButtonSelectedValue', 'SOCX');
+		const budgetValue = text('budgetValue', '458');
 		const knobsCurrencyButtonPressed = boolean('currencyButtonPress', false);
 		const perDayPressed = boolean('perDayPressed', true);
 		const lifetimePressed = boolean('lifetime', false);
 		const runAdContinuouslyPressed = boolean('runAdContinuouslyPressed', true);
 		const isStartDatePickerVisible = boolean('isStartDatePickerVisible', false);
 		const isStopDatePickerVisible = boolean('isStopDatePickerVisible', false);
-		const defaultDate = 'DD/MM/JJJJ';
+		const selectedStartDate = text('selectedStartDate', 'DD/MM/JJJJ');
+		const selectedStopDate = text('selectedStopDate', 'DD/MM/JJJJ');
+		const defaultDate = new Date();
 
-		const currencyButtonPressed = (hasBeenPressed: boolean) => {
-			if (hasBeenPressed) {
+		const currencyButtonPressed = () => {
+			if (knobsCurrencyButtonPressed) {
 				Picker.init({
 					pickerData,
 					pickerTitleColor: customStyleProps.pickerTitleColor,
@@ -58,23 +61,25 @@ storiesOf('Screens/adsManagementStack', module)
 
 		return (
 			<AdsManagementConfigBudgetScreenView
-				onGoBack={action('onGoBack')}
+				onGoBack={action('onGoBackHandler')}
 				getText={getTextMock}
-				currencyButtonPressed={() => {
-					currencyButtonPressed(knobsCurrencyButtonPressed);
-				}}
+				currencyButtonPressed={currencyButtonPressed}
 				selectedCurrencyValue={selectedCurrencyValue}
-				onChangeBudget={action('onChangeBudget')}
-				returnKeyAction={action('TRKeyboardKeys.done')}
+				budgetValue={budgetValue}
+				submitBudget={action('submitBudget')}
 				perDayPressed={perDayPressed}
 				lifetimePressed={lifetimePressed}
 				runAdContinuouslyPressed={runAdContinuouslyPressed}
+				selectedStartDate={selectedStartDate}
+				selectedStopDate={selectedStopDate}
+				handleCheckboxChange={action('handleCheckboxChange')}
 				isStartDatePickerVisible={isStartDatePickerVisible}
 				isStopDatePickerVisible={isStopDatePickerVisible}
-				showDatePicker={action('showDatePicker')}
-				confirmDatePicker={action('confirmDatePicker')}
-				cancelDatePicker={action('cancelDatePicker')}
-				defaultDate={defaultDate}
+				handleDatePicker={action('handleDatePicker')}
+				currentDate={defaultDate}
+				nextDayFromNow={defaultDate}
+				handleStartDatePicked={action('handleStartDatePicked')}
+				handleStopDatePicked={action('handleStopDatePicked')}
 				nextButtonPressed={action('nextButtonPressed')}
 			/>
 		);
