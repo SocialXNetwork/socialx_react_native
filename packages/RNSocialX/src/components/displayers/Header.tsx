@@ -27,7 +27,10 @@ export const Header: React.SFC<IHeaderProps> = ({
 	const displayNone = !center && title.length === 0 && !logo;
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView
+			style={styles.container}
+			forceInset={{ top: 'always', bottom: 'never' }}
+		>
 			{left ? (
 				<View style={styles.left}>{left}</View>
 			) : (

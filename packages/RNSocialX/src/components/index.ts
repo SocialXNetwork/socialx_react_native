@@ -114,7 +114,7 @@ export {
 
 export { ActivityIndicatorModal } from './modals/ActivityIndicatorModal';
 export { ConfirmationModal } from './modals/ConfirmationModal';
-export { DotsMenuModal, IDotsMenuItem } from './modals/DotsMenuModal';
+export { DotsMenuModal } from './modals/DotsMenuModal';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';
 export { MediaInfoModal } from './modals/MediaInfoModal';
 export { OfflineOverlayModal } from './modals/OfflineOverlayModal';

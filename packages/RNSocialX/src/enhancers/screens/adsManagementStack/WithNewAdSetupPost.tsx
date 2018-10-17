@@ -1,15 +1,14 @@
 import * as React from 'react';
 
-import { IDotsMenuItem } from '../../../components';
-import { ITranslatedProps } from '../../../types';
+import { IDotsMenuProps, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 
 const mock: IWithNewAdSetupPostEnhancedProps = {
 	data: {},
 	actions: {
-		getText: (value: string, ...args: any[]) => value,
-		showDotsMenuModal: (items: IDotsMenuItem[]) => {
+		getText: (value, ...args) => value,
+		showDotsMenuModal: (items) => {
 			/**/
 		},
 	},
@@ -17,9 +16,9 @@ const mock: IWithNewAdSetupPostEnhancedProps = {
 
 export interface IWithNewAdSetupPostEnhancedData {}
 
-export interface IWithNewAdSetupPostEnhancedActions extends ITranslatedProps {
-	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
-}
+export interface IWithNewAdSetupPostEnhancedActions
+	extends ITranslatedProps,
+		IDotsMenuProps {}
 
 interface IWithNewAdSetupPostEnhancedProps {
 	data: IWithNewAdSetupPostEnhancedData;
@@ -50,7 +49,7 @@ export class WithNewAdSetupPost extends React.Component<
 								actions: {
 									...mock.actions,
 									getText: i18nProps.getText,
-									showDotsMenuModal: (items: IDotsMenuItem[]) =>
+									showDotsMenuModal: (items) =>
 										overlayProps.showOptionsMenu({ items }),
 								},
 							})

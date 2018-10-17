@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
 import {
+	IDotsMenuProps,
 	ILike,
 	IMediaProps,
 	INavigationParamsActions,
@@ -19,6 +20,7 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
@@ -101,6 +103,9 @@ const mock: IWithCommentsEnhancedProps = {
 		setNavigationParams: () => {
 			/**/
 		},
+		showDotsMenuModal: (items) => {
+			/**/
+		},
 	},
 };
 
@@ -129,7 +134,8 @@ export interface IWithCommentsEnhancedData {
 
 export interface IWithCommentsEnhancedActions
 	extends ITranslatedProps,
-		INavigationParamsActions {
+		INavigationParamsActions,
+		IDotsMenuProps {
 	sendComment: (
 		text: string,
 		targetPostId: string,
@@ -164,104 +170,116 @@ export class WithComments extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithNavigationParams>
-						{({ setNavigationParams, navigationParams }) => (
-							<WithPosts>
-								{(postProps) => (
-									<WithProfiles>
-										{({ profiles }) => (
-											<WithCurrentUser>
-												{({ currentUser }) => {
-													const currentPost = postProps.posts.find(
-														(post) =>
-															post.postId ===
-															navigationParams[SCREENS.Comments].postId,
-													);
-													const ownerProfile = profiles.find(
-														(profile) => profile.pub === currentPost!.owner.pub,
-													);
+					<WithOverlays>
+						{(overlayProps) => (
+							<WithNavigationParams>
+								{({ setNavigationParams, navigationParams }) => (
+									<WithPosts>
+										{(postProps) => (
+											<WithProfiles>
+												{({ profiles }) => (
+													<WithCurrentUser>
+														{({ currentUser }) => {
+															const currentPost = postProps.posts.find(
+																(post) =>
+																	post.postId ===
+																	navigationParams[SCREENS.Comments].postId,
+															);
+															const ownerProfile = profiles.find(
+																(profile) =>
+																	profile.pub === currentPost!.owner.pub,
+															);
 
-													return this.props.children({
-														data: {
-															...mock.data,
-															currentUser: {
-																userId: currentUser!.userId,
-															},
-															startComment:
-																navigationParams[SCREENS.Comments].startComment,
-															commentId:
-																navigationParams[SCREENS.Comments].commentId,
-															postId: navigationParams[SCREENS.Comments].postId,
-															postOwner: {
-																userId: currentPost!.owner.alias,
-																fullName: ownerProfile!.fullName,
-																avatarURL: ownerProfile!.avatar,
-															},
-															postComments: currentPost!.comments.map(
-																(comment) => {
-																	const commentOwnerProfile = profiles.find(
-																		(profile) =>
-																			profile.pub === comment.owner.pub,
-																	);
+															return this.props.children({
+																data: {
+																	...mock.data,
+																	currentUser: {
+																		userId: currentUser!.userId,
+																	},
+																	startComment:
+																		navigationParams[SCREENS.Comments]
+																			.startComment,
+																	commentId:
+																		navigationParams[SCREENS.Comments]
+																			.commentId,
+																	postId:
+																		navigationParams[SCREENS.Comments].postId,
+																	postOwner: {
+																		userId: currentPost!.owner.alias,
+																		fullName: ownerProfile!.fullName,
+																		avatarURL: ownerProfile!.avatar,
+																	},
+																	postComments: currentPost!.comments.map(
+																		(comment) => {
+																			const commentOwnerProfile = profiles.find(
+																				(profile) =>
+																					profile.pub === comment.owner.pub,
+																			);
 
-																	return {
-																		id: comment.commentId,
-																		text: comment.text,
-																		user: {
-																			id: comment.owner.alias,
-																			fullName: commentOwnerProfile!.fullName,
-																			avatarURL: commentOwnerProfile!.avatar,
-																		},
-																		timestamp: new Date(comment.timestamp),
-																		numberOfLikes: comment.likes.length,
-																		likes: comment.likes.map((like) => {
 																			return {
-																				userId: like.owner.alias,
-																				userName: like.owner.alias,
+																				id: comment.commentId,
+																				text: comment.text,
+																				user: {
+																					id: comment.owner.alias,
+																					fullName: commentOwnerProfile!
+																						.fullName,
+																					avatarURL: commentOwnerProfile!
+																						.avatar,
+																				},
+																				timestamp: new Date(comment.timestamp),
+																				numberOfLikes: comment.likes.length,
+																				likes: comment.likes.map((like) => {
+																					return {
+																						userId: like.owner.alias,
+																						userName: like.owner.alias,
+																					};
+																				}),
+																				likedByMe: !!comment.likes.find(
+																					(like) =>
+																						like.owner.alias ===
+																						currentUser!.userId,
+																				),
 																			};
-																		}),
-																		likedByMe: !!comment.likes.find(
-																			(like) =>
-																				like.owner.alias ===
-																				currentUser!.userId,
-																		),
-																	};
+																		},
+																	),
 																},
-															),
-														},
-														actions: {
-															sendComment: (
-																text,
-																targetPostId,
-																targetCommentId,
-															) =>
-																postProps.createComment({
-																	text,
-																	postId: targetPostId,
-																}),
-															deleteComment: (commentId) =>
-																postProps.removeComment({ commentId }),
-															likeComment: (commentId) =>
-																postProps.likeComment({ commentId }),
-															unlikeComment: (commentId) =>
-																postProps.unlikeComment({ commentId }),
-															likePost: (postId) =>
-																postProps.likePost({ postId }),
-															unlikePost: (postId) =>
-																postProps.unlikePost({ postId }),
+																actions: {
+																	sendComment: (
+																		text,
+																		targetPostId,
+																		targetCommentId,
+																	) =>
+																		postProps.createComment({
+																			text,
+																			postId: targetPostId,
+																		}),
+																	deleteComment: (commentId) =>
+																		postProps.removeComment({ commentId }),
+																	likeComment: (commentId) =>
+																		postProps.likeComment({ commentId }),
+																	unlikeComment: (commentId) =>
+																		postProps.unlikeComment({ commentId }),
+																	likePost: (postId) =>
+																		postProps.likePost({ postId }),
+																	unlikePost: (postId) =>
+																		postProps.unlikePost({ postId }),
 
-															getText: i18nProps.getText,
-															setNavigationParams,
-														},
-													});
-												}}
-											</WithCurrentUser>
+																	getText: i18nProps.getText,
+																	showDotsMenuModal: (items) =>
+																		overlayProps.showOptionsMenu({ items }),
+																	setNavigationParams,
+																},
+															});
+														}}
+													</WithCurrentUser>
+												)}
+											</WithProfiles>
 										)}
-									</WithProfiles>
+									</WithPosts>
 								)}
-							</WithPosts>
+							</WithNavigationParams>
 						)}
-					</WithNavigationParams>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

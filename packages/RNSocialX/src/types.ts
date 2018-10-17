@@ -91,6 +91,12 @@ export interface INotificationData {
 	friendshipId?: string;
 }
 
+export interface IDotsMenuItem {
+	label: string;
+	icon: string;
+	actionHandler: () => void;
+}
+
 export interface IHeaderProps {
 	onGoBack: () => void;
 }
@@ -99,6 +105,10 @@ export interface INavigationParamsActions {
 	setNavigationParams: (
 		setNavigationParamsInput: ISetNavigationParamsInput,
 	) => void;
+}
+
+export interface IDotsMenuProps {
+	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
 }
 
 export interface IResizeProps {

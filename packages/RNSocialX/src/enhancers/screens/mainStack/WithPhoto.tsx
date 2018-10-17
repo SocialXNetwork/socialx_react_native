@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { KeyboardContext, SCREENS } from '../../../environment/consts';
 import {
+	IDotsMenuProps,
 	IFriendsSearchResult,
 	IResizeProps,
 	ITranslatedProps,
@@ -14,6 +15,7 @@ import {
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 interface IWallPostPhotoData {
@@ -31,6 +33,10 @@ const mock: IWithPhotoEnhancedProps = {
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
+		// This is now implemented with the WithOverlays connector enhancer
+		showDotsMenuModal: (items) => {
+			/**/
+		},
 		createPost: (wallPostData: IWallPostPhotoData) => {
 			/**/
 		},
@@ -42,7 +48,9 @@ export interface IWithPhotoEnhancedData extends IResizeProps {
 	mediaObjects: IWallPostPhotoOptimized[];
 }
 
-export interface IWithPhotoEnhancedActions extends ITranslatedProps {
+export interface IWithPhotoEnhancedActions
+	extends ITranslatedProps,
+		IDotsMenuProps {
 	createPost: (wallPostData: IWallPostPhotoData) => void;
 }
 
@@ -65,34 +73,42 @@ export class WithPhoto extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<KeyboardContext.Consumer>
-						{(keyboardProps) => (
-							<WithNavigationParams>
-								{(navigationParamsProps) => (
-									<WithCurrentUser>
-										{(currentUserProps) =>
-											this.props.children({
-												data: {
-													...mock.data,
-													currentUserAvatarURL: currentUserProps.currentUser!
-														.avatarURL,
-													mediaObjects:
-														navigationParamsProps.navigationParams[
-															SCREENS.Photo
-														].mediaObjects,
-													marginBottom: keyboardProps.marginBottom,
-												},
-												actions: {
-													...mock.actions,
-													getText: i18nProps.getText,
-												},
-											})
-										}
-									</WithCurrentUser>
+					<WithOverlays>
+						{(overlayProps) => (
+							<KeyboardContext.Consumer>
+								{(keyboardProps) => (
+									<WithNavigationParams>
+										{(navigationParamsProps) => (
+											<WithCurrentUser>
+												{(currentUserProps) =>
+													this.props.children({
+														data: {
+															...mock.data,
+															currentUserAvatarURL: currentUserProps.currentUser!
+																.avatarURL,
+															mediaObjects:
+																navigationParamsProps.navigationParams[
+																	SCREENS.Photo
+																].mediaObjects,
+															marginBottom: keyboardProps.marginBottom,
+														},
+														actions: {
+															...mock.actions,
+															getText: i18nProps.getText,
+															showDotsMenuModal: (items) =>
+																overlayProps.showOptionsMenu({
+																	items,
+																}),
+														},
+													})
+												}
+											</WithCurrentUser>
+										)}
+									</WithNavigationParams>
 								)}
-							</WithNavigationParams>
+							</KeyboardContext.Consumer>
 						)}
-					</KeyboardContext.Consumer>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

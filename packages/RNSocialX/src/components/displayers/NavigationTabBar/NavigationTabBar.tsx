@@ -1,15 +1,17 @@
-import { ActionSheet } from 'native-base';
 import * as React from 'react';
 import { View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { SCREENS } from '../../../environment/consts';
-import { INavigationParamsActions, ITranslatedProps } from '../../../types';
+import {
+	IDotsMenuProps,
+	INavigationParamsActions,
+	ITranslatedProps,
+} from '../../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
 	getOptimizedMediaObject,
-	IPickerImage,
 	IPickerImageMultiple,
 } from '../../../utilities';
 import { NavigationItems } from './';
@@ -23,7 +25,8 @@ interface ITabBarBottomState {
 
 interface ITabBarBottomProps
 	extends ITranslatedProps,
-		INavigationParamsActions {
+		INavigationParamsActions,
+		IDotsMenuProps {
 	navigation: NavigationScreenProp<any>;
 	notifications: number;
 }
@@ -74,38 +77,43 @@ export class NavigationTabBar extends React.Component<
 	};
 
 	private showPhotoOptionsMenu = () => {
-		const { getText, navigation, setNavigationParams } = this.props;
-		ActionSheet.show(
+		const { showDotsMenuModal, getText } = this.props;
+		const menuItems = [
 			{
-				options: [
-					getText('tab.bar.bottom.photo.picker.use.gallery'),
-					getText('tab.bar.bottom.photo.picker.take.use.camera'),
-					getText('button.cancel'),
-				],
-				cancelButtonIndex: 2,
-				title: getText('tab.bar.bottom.photo.picker.title'),
+				label: getText('tab.bar.bottom.photo.picker.use.gallery'),
+				icon: 'md-photos',
+				actionHandler: () => this.continueWithSelectedPhotoOption('gallery'),
 			},
-			async (buttonIndex: number) => {
-				let selectedMediaObjects: IPickerImageMultiple = [];
-				if (buttonIndex === 0) {
-					selectedMediaObjects = await getGalleryMediaObjectMultiple();
-				} else if (buttonIndex === 1) {
-					selectedMediaObjects = await getCameraMediaObjectMultiple();
-				}
+			{
+				label: getText('tab.bar.bottom.photo.picker.take.use.camera'),
+				icon: 'md-camera',
+				actionHandler: () => this.continueWithSelectedPhotoOption('photo'),
+			},
+		];
+		showDotsMenuModal(menuItems);
+	};
 
-				if (selectedMediaObjects.length > 0) {
-					const optimizedMediaObjects = await Promise.all(
-						selectedMediaObjects.map(async (mediaObject: IPickerImage) =>
-							getOptimizedMediaObject(mediaObject),
-						),
-					);
-					setNavigationParams({
-						screenName: SCREENS.Photo,
-						params: { mediaObjects: optimizedMediaObjects },
-					});
-					navigation.navigate(SCREENS.Photo);
-				}
-			},
-		);
+	private continueWithSelectedPhotoOption = async (
+		source: 'gallery' | 'photo',
+	) => {
+		const { navigation, setNavigationParams } = this.props;
+		let selectedMediaObjects: IPickerImageMultiple = [];
+		if (source === 'gallery') {
+			selectedMediaObjects = await getGalleryMediaObjectMultiple();
+		} else if (source === 'photo') {
+			selectedMediaObjects = await getCameraMediaObjectMultiple();
+		}
+		if (selectedMediaObjects.length > 0) {
+			const optimizedMediaObjects = await Promise.all(
+				selectedMediaObjects.map(async (mObject) =>
+					getOptimizedMediaObject(mObject),
+				),
+			);
+			setNavigationParams({
+				screenName: SCREENS.Photo,
+				params: { mediaObjects: optimizedMediaObjects },
+			});
+			navigation.navigate(SCREENS.Photo);
+		}
 	};
 }

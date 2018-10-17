@@ -4,7 +4,6 @@
  * 2. @Alex: check and implemented onAddComment, similar with what is on UserFeed?
  */
 
-import { ActionSheet } from 'native-base';
 import * as React from 'react';
 import { Alert, Animated, Dimensions } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
@@ -277,22 +276,15 @@ class Screen extends React.Component<
 	};
 
 	private onShowFriendshipOptionsHandler = () => {
-		const { getText } = this.props;
-		const menuOptions = [
-			getText('friendship.menu.option.remove'),
-			getText('button.cancel'),
-		];
-		ActionSheet.show(
+		const { showDotsMenuModal, getText } = this.props;
+		const menuItems = [
 			{
-				options: menuOptions,
-				cancelButtonIndex: menuOptions.length - 1,
+				label: getText('friendship.menu.option.remove'),
+				icon: 'md-remove-circle',
+				actionHandler: () => this.onRemoveFriendshipHandler,
 			},
-			(buttonIndex: number) => {
-				if (buttonIndex === 0) {
-					this.onRemoveFriendshipHandler();
-				}
-			},
-		);
+		];
+		showDotsMenuModal(menuItems);
 	};
 
 	private onRemoveFriendshipHandler = () => {
