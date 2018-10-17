@@ -90,21 +90,21 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 	};
 
 	public render() {
-		if (this.props.auth) {
-			return (
-				<View style={{ flex: 1, backgroundColor: '#fff' }}>
-					<Header />
-				</View>
-			);
-		} else {
-			return (
-				<LaunchScreenView
-					navigateToLoginScreen={this.navigateToLoginScreen}
-					navigateToRegisterScreen={this.navigateToRegisterScreen}
-					getText={this.props.getText}
-				/>
-			);
-		}
+		// if (this.props.auth) {
+		//     return (
+		//         <View style={{ flex: 1, backgroundColor: ‘#fff’ }}>
+		//             <Header />
+		//         </View>
+		//     );
+		// } else {
+		return (
+			<LaunchScreenView
+				navigateToLoginScreen={this.navigateToLoginScreen}
+				navigateToRegisterScreen={this.navigateToRegisterScreen}
+				getText={this.props.getText}
+			/>
+		);
+		// }
 	}
 
 	private navigateToLoginScreen = () => {

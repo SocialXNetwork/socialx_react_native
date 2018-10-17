@@ -40,8 +40,8 @@ export const mapPostsForUI = (
 				timestamp: new Date(post.timestamp),
 				owner: {
 					userId: post.owner.alias,
-					fullName: postOwnerProfile.fullName,
-					avatarURL: postOwnerProfile.avatar,
+					fullName: (postOwnerProfile || {}).fullName || '',
+					avatarURL: (postOwnerProfile || {}).avatar || '',
 				},
 				governanceVersion: false,
 				// TODO: add this later when data is available
