@@ -1,5 +1,7 @@
 declare module 'hex-rgb' {
-	export default function(color: string): {red: string; green: string; blue: string};
+	export default function(
+		color: string,
+	): { red: number; green: number; blue: number };
 }
 
 declare module 'react-native-swipeable';
@@ -33,70 +35,69 @@ declare module '*.json' {
 
 // background upload package
 declare module 'react-native-background-upload' {
-    export interface IUploadOpts {
-        url: string;
-        path: string;
-        method: string;
-        type: string;
-        headers?: {
-            [key: string]: string;
-        };
-        field?: string;
-        // Below are options only supported on Android
-        notification?: {
-            enabled: boolean
-        };
-    }
-    export interface IUploadResult {
-        responseCode: number;
-        responseBody: any;
-    }
-    export interface IGetFileInfo {
-        name: string;
-        exists: string;
-        size: number;
-        extension: string;
-        mimeType: string;
-    }
-    export interface IListenerBase {
-        id: string;
-    }
-    export interface IListenerProgess extends IListenerBase {
-        progress: number;
-    }
-    export interface IListenerError extends IListenerBase {
-        error: string;
-    }
-    export interface IListenerCompleted extends IListenerBase, IUploadResult {}
-    interface IUploader {
-        startUpload: (options: IUploadOpts) => Promise<string>;
-        getFileInfo: (path: string) => Promise<IGetFileInfo>;
-        cancelUpload: (uploadId: string) => Promise<boolean>;
-        addListener: (
-            eventType: string, 
-            uploadId: string, 
-            listener: (data: any) => void
-            ) => void;
-    }
-    const Upload: IUploader;
-    export default Upload;
+	export interface IUploadOpts {
+		url: string;
+		path: string;
+		method: string;
+		type: string;
+		headers?: {
+			[key: string]: string;
+		};
+		field?: string;
+		// Below are options only supported on Android
+		notification?: {
+			enabled: boolean;
+		};
+	}
+	export interface IUploadResult {
+		responseCode: number;
+		responseBody: any;
+	}
+	export interface IGetFileInfo {
+		name: string;
+		exists: string;
+		size: number;
+		extension: string;
+		mimeType: string;
+	}
+	export interface IListenerBase {
+		id: string;
+	}
+	export interface IListenerProgess extends IListenerBase {
+		progress: number;
+	}
+	export interface IListenerError extends IListenerBase {
+		error: string;
+	}
+	export interface IListenerCompleted extends IListenerBase, IUploadResult {}
+	interface IUploader {
+		startUpload: (options: IUploadOpts) => Promise<string>;
+		getFileInfo: (path: string) => Promise<IGetFileInfo>;
+		cancelUpload: (uploadId: string) => Promise<boolean>;
+		addListener: (
+			eventType: string,
+			uploadId: string,
+			listener: (data: any) => void,
+		) => void;
+	}
+	const Upload: IUploader;
+	export default Upload;
 }
 
 declare module 'react-native-webview' {
-    export const WebView: any;
+	export const WebView: any;
 }
 
 declare module 'react-native-webview-bridge' {
-    const WebViewBridge: any;
-    export default WebViewBridge;
+	const WebViewBridge: any;
+	export default WebViewBridge;
 }
 
-
 declare module 'webview-crypto' {
-    export const MainWorker: any;
-    export const webViewWorkerString: any;
+	export const MainWorker: any;
+	export const webViewWorkerString: any;
 }
 
 declare module 'react-native-randombytes' {
-    export const randomBytes: (size: number) => any;
+	export const randomBytes: (size: number) => any;
 }
