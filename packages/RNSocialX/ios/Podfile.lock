@@ -4,6 +4,10 @@ PODS:
     - React
   - BugsnagReactNative/Core (2.10.3):
     - React
+  - Picker (4.3.7):
+    - Picker/Core (= 4.3.7)
+  - Picker/Core (4.3.7):
+    - React
   - QBImagePickerController (3.4.0)
   - React (0.56.1):
     - React/Core (= 0.56.1)
@@ -48,6 +52,7 @@ PODS:
 
 DEPENDENCIES:
   - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
+  - Picker (from `../node_modules/react-native-picker`)
   - react-native-background-upload (from `../node_modules/react-native-background-upload`)
   - react-native-orientation (from `../node_modules/react-native-orientation`)
   - React/Core (from `../node_modules/react-native`)
@@ -72,6 +77,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   BugsnagReactNative:
     :path: "../node_modules/bugsnag-react-native"
+  Picker:
+    :path: "../node_modules/react-native-picker"
   React:
     :path: "../node_modules/react-native"
   react-native-background-upload:
@@ -85,6 +92,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BugsnagReactNative: 0b7626917d3612281d07aea84e5041f123290fee
+  Picker: 67a2566d9ff6b141d505d88b9177f905aaa5f1a6
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-background-upload: 8132a4011fc88c4039c84a2f9e6a21458288295b
@@ -93,6 +101,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: bd0bdf765b27c046c89728d65075b363a3b665c2
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 5a86f2986f43716043a144b124cd2da95da843f9
+PODFILE CHECKSUM: d2dcafd72c67ed08a1fe40375cfc3ffdea8fd0bf
 
 COCOAPODS: 1.5.3

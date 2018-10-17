@@ -1,4 +1,9 @@
 export {
+	IWithAdsManagementConfigBudgetEnhancedActions,
+	IWithAdsManagementConfigBudgetEnhancedData,
+	WithAdsManagementConfigBudget,
+} from './adsManagementStack/WithAdsManagementConfigBudget';
+export {
 	IWithAdsManagementEnhancedActions,
 	IWithAdsManagementEnhancedData,
 	WithAdsManagement,
