@@ -19,7 +19,7 @@ import {
 	OfflineOverlayModal,
 } from '../components';
 import { WithNavigation } from '../enhancers/navigation/WithNavigation';
-import { IStackDefaultConfig } from '../types';
+import { IDotsMenuItem, IStackDefaultConfig } from '../types';
 import { tabStyles } from './Navigation.style';
 
 import {
@@ -66,6 +66,7 @@ const defaultConfig: IStackDefaultConfig = {
 	},
 };
 
+// keep this as a reference for later use
 const slideFromLeftTransition = (): TransitionConfig => ({
 	transitionSpec: {
 		duration: 700,
@@ -184,6 +185,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 				navigation={props.navigation}
 				getText={props.screenProps.getText}
 				setNavigationParams={props.screenProps.setNavigationParams}
+				showDotsMenuModal={props.screenProps.showDotsMenuModal}
 			/>
 		),
 	},
@@ -197,7 +199,6 @@ const MainScreenWithModal = createStackNavigator(
 	{
 		mode: 'modal',
 		headerMode: 'none',
-		transitionConfig: slideFromLeftTransition,
 	},
 );
 
@@ -246,9 +247,19 @@ const Navigation = () => (
 			<Root>
 				<WithNavigationParams>
 					{({ setNavigationParams }) => (
-						<AppNavigation
-							screenProps={{ notifications, getText, setNavigationParams }}
-						/>
+						<WithOverlays>
+							{(overlayProps) => (
+								<AppNavigation
+									screenProps={{
+										notifications,
+										getText,
+										setNavigationParams,
+										showDotsMenuModal: (items: IDotsMenuItem[]) =>
+											overlayProps.showOptionsMenu({ items }),
+									}}
+								/>
+							)}
+						</WithOverlays>
 					)}
 				</WithNavigationParams>
 				<WithGlobals>

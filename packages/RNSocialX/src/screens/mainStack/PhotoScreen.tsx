@@ -6,7 +6,6 @@
  * 3. (Later) Consider using Formik to manage all user input data.
  */
 
-import { ActionSheet } from 'native-base';
 import * as React from 'react';
 
 import { WithModalForAddFriends } from '../../components';
@@ -115,39 +114,41 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	private onAddMediaHandler = () => {
-		const { getText } = this.props;
-		ActionSheet.show(
+		const { showDotsMenuModal, getText } = this.props;
+		const menuItems = [
 			{
-				options: [
-					getText('new.wall.post.screen.menu.pick.from.gallery'),
-					getText('new.wall.post.screen.menu.take.photo'),
-					getText('button.cancel'),
-				],
-				cancelButtonIndex: 2,
-				title: getText('new.wall.post.screen.menu.title'),
+				label: getText('new.wall.post.screen.menu.pick.from.gallery'),
+				icon: 'md-photos',
+				actionHandler: () => this.addToScrollerSelectedMediaObject('gallery'),
 			},
-			async (buttonIndex: number) => {
-				let selectedMediaObjects: IPickerImageMultiple = [];
-				if (buttonIndex === 0) {
-					selectedMediaObjects = await getGalleryMediaObjectMultiple();
-				} else if (buttonIndex === 1) {
-					selectedMediaObjects = await getCameraMediaObjectMultiple();
-				}
-				if (selectedMediaObjects.length > 0) {
-					const optimizedMediaObjects = await Promise.all(
-						selectedMediaObjects.map(async (mObject) =>
-							getOptimizedMediaObject(mObject),
-						),
-					);
-					this.setState({
-						mediaObjects: [
-							...this.state.mediaObjects,
-							...optimizedMediaObjects,
-						],
-					});
-				}
+			{
+				label: getText('new.wall.post.screen.menu.take.photo'),
+				icon: 'md-camera',
+				actionHandler: () => this.addToScrollerSelectedMediaObject('photo'),
 			},
-		);
+		];
+		showDotsMenuModal(menuItems);
+	};
+
+	private addToScrollerSelectedMediaObject = async (
+		source: 'gallery' | 'photo',
+	) => {
+		let selectedMediaObjects: IPickerImageMultiple = [];
+		if (source === 'gallery') {
+			selectedMediaObjects = await getGalleryMediaObjectMultiple();
+		} else if (source === 'photo') {
+			selectedMediaObjects = await getCameraMediaObjectMultiple();
+		}
+		if (selectedMediaObjects.length > 0) {
+			const optimizedMediaObjects = await Promise.all(
+				selectedMediaObjects.map(async (mObject) =>
+					getOptimizedMediaObject(mObject),
+				),
+			);
+			this.setState({
+				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
+			});
+		}
 	};
 
 	private sendPostHandler = () => {

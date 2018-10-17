@@ -31,6 +31,7 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 	updateUserProfile,
 	navigation,
 	getText,
+	showDotsMenuModal,
 }) => (
 	<SettingsScreenView
 		bio={currentUser.aboutMeText}
@@ -44,6 +45,7 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 		}
 		onGoBack={() => onGoBackHandler(navigation)}
 		getText={getText}
+		showDotsMenuModal={showDotsMenuModal}
 	/>
 );
 

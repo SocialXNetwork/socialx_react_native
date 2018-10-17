@@ -81,7 +81,7 @@ class Screen extends React.Component<
 	}
 
 	public render() {
-		const { getText, register } = this.props;
+		const { getText, register, showDotsMenuModal } = this.props;
 		return (
 			<RegisterScreenView
 				onStartRegister={(userData) => {
@@ -93,6 +93,7 @@ class Screen extends React.Component<
 				}
 				onGoBack={this.onGoBackHandler}
 				getText={getText}
+				showDotsMenuModal={showDotsMenuModal}
 			/>
 		);
 	}

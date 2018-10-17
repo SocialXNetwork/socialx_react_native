@@ -7,6 +7,7 @@ import * as React from 'react';
 import { currentUser, posts } from '../../../mocks';
 import {
 	ICurrentUser,
+	IDotsMenuProps,
 	INavigationParamsActions,
 	ITranslatedProps,
 	IVisitedUser,
@@ -21,9 +22,10 @@ import { WithNavigationParams } from '../../connectors/app/WithNavigationParams'
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
-const mock = {
+const mock: IUserProfileEnhancedProps = {
 	data: {
 		currentUser,
 		visitedUser: {
@@ -84,6 +86,9 @@ const mock = {
 		setNavigationParams: () => {
 			/**/
 		},
+		showDotsMenuModal: (items) => {
+			/**/
+		},
 	},
 };
 
@@ -96,7 +101,8 @@ export interface IWithUserProfileEnhancedData {
 
 export interface IWithUserProfileEnhancedActions
 	extends ITranslatedProps,
-		INavigationParamsActions {
+		INavigationParamsActions,
+		IDotsMenuProps {
 	addFriend: (userId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
@@ -126,60 +132,71 @@ export class WithUserProfile extends React.Component<
 		return (
 			<WithI18n>
 				{(i18nProps) => (
-					<WithNavigationParams>
-						{({ setNavigationParams }) => (
-							<WithProfiles>
-								{(profilesProps) => (
-									<WithPosts>
-										{(postsProps) => (
-											<WithActivities>
-												{({ activities }) => (
-													<WithCurrentUser>
-														{(currentUserProps) => (
-															<WithVisitedUserContent>
-																{({ visitedUser }) => {
-																	return this.props.children({
-																		data: {
-																			// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
-																			// @Ionut, check similar use cases if any changes are to be done here.
-																			currentUser: currentUserProps.currentUser!,
-																			visitedUser: visitedUser!,
-																			refreshingProfile: getActivity(
-																				activities,
-																				ActionTypes.SYNC_GET_CURRENT_PROFILE,
-																			),
-																			loadingProfile: true,
-																		},
-																		actions: {
-																			...mock.actions,
-																			addFriend: (username) =>
-																				profilesProps.addFriend({ username }),
-																			likePost: (postId) =>
-																				postsProps.likePost({ postId }),
-																			unlikePost: (postId) =>
-																				postsProps.unlikePost({ postId }),
-																			postComment: (text, postId) =>
-																				postsProps.createComment({
-																					text,
-																					postId,
-																				}),
-																			loadMorePosts: postsProps.loadMorePosts,
-																			setNavigationParams,
-																			getText: i18nProps.getText,
-																		},
-																	});
-																}}
-															</WithVisitedUserContent>
+					<WithOverlays>
+						{(overlayProps) => (
+							<WithNavigationParams>
+								{({ setNavigationParams }) => (
+									<WithProfiles>
+										{(profilesProps) => (
+											<WithPosts>
+												{(postsProps) => (
+													<WithActivities>
+														{({ activities }) => (
+															<WithCurrentUser>
+																{(currentUserProps) => (
+																	<WithVisitedUserContent>
+																		{({ visitedUser }) => {
+																			return this.props.children({
+																				data: {
+																					// TODO: @Serkan, is it safe here to assume currentUserProps.currentUser is always defined?
+																					// @Ionut, check similar use cases if any changes are to be done here.
+																					currentUser: currentUserProps.currentUser!,
+																					visitedUser: visitedUser!,
+																					refreshingProfile: getActivity(
+																						activities,
+																						ActionTypes.SYNC_GET_CURRENT_PROFILE,
+																					),
+																					loadingProfile: true,
+																				},
+																				actions: {
+																					...mock.actions,
+																					addFriend: (username) =>
+																						profilesProps.addFriend({
+																							username,
+																						}),
+																					likePost: (postId) =>
+																						postsProps.likePost({ postId }),
+																					unlikePost: (postId) =>
+																						postsProps.unlikePost({ postId }),
+																					postComment: (text, postId) =>
+																						postsProps.createComment({
+																							text,
+																							postId,
+																						}),
+																					loadMorePosts:
+																						postsProps.loadMorePosts,
+																					setNavigationParams,
+																					getText: i18nProps.getText,
+																					showDotsMenuModal: (items) =>
+																						overlayProps.showOptionsMenu({
+																							items,
+																						}),
+																				},
+																			});
+																		}}
+																	</WithVisitedUserContent>
+																)}
+															</WithCurrentUser>
 														)}
-													</WithCurrentUser>
+													</WithActivities>
 												)}
-											</WithActivities>
+											</WithPosts>
 										)}
-									</WithPosts>
+									</WithProfiles>
 								)}
-							</WithProfiles>
+							</WithNavigationParams>
 						)}
-					</WithNavigationParams>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

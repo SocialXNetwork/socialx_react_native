@@ -8,7 +8,6 @@
  * 5. Check navigation usage! Relevant use case.
  */
 
-import { ActionSheet } from 'native-base';
 import React, { Component } from 'react';
 import { Clipboard, Platform, StatusBar } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
@@ -181,26 +180,20 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onShowOptionsMenuHandler = (comment: IWallPostComment) => {
-		const { getText, deleteComment } = this.props;
-		const menuOptions = [
-			getText('comments.screen.advanced.menu.copy'),
-			getText('comments.screen.advanced.menu.delete'),
-			getText('button.cancel'),
-		];
-		ActionSheet.show(
+		const { showDotsMenuModal, getText, deleteComment } = this.props;
+		const menuItems = [
 			{
-				options: menuOptions,
-				destructiveButtonIndex: menuOptions.length - 2,
-				cancelButtonIndex: menuOptions.length - 1,
+				label: getText('comments.screen.advanced.menu.copy'),
+				icon: 'ios-copy',
+				actionHandler: () => Clipboard.setString(comment.text),
 			},
-			(buttonIndex: number) => {
-				if (buttonIndex === 0) {
-					Clipboard.setString(comment.text);
-				} else if (buttonIndex === 1) {
-					deleteComment(comment.id);
-				}
+			{
+				label: getText('comments.screen.advanced.menu.delete'),
+				icon: 'ios-trash',
+				actionHandler: () => deleteComment(comment.id),
 			},
-		);
+		];
+		showDotsMenuModal(menuItems);
 	};
 
 	private onCommentsBackPressHandler = () => {

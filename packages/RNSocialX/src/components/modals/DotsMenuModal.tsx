@@ -1,17 +1,14 @@
+// TODO: consider adding a title here for this menu.
+
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
+import { IDotsMenuItem } from '../../types';
 import { ModalManager, WithManagedTransitions } from '../managedTransitions';
 import styles from './DotsMenuModal.style';
-
-export interface IDotsMenuItem {
-	label: string;
-	icon: string;
-	actionHandler: () => void;
-}
 
 interface IDotsMenuModalProps {
 	visible: boolean;
