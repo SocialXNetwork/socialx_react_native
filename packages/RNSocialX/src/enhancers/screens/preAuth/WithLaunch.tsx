@@ -13,6 +13,7 @@ import { ICurrentUser, IGlobal, ITranslatedProps } from '../../../types';
 import { IAuthData } from '../../../store/auth/gun';
 import { ActionTypes as AccountActionTypes } from '../../../store/data/accounts/Types';
 import { ActionTypes as PostActionTypes } from '../../../store/data/posts/Types';
+import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -30,6 +31,7 @@ const mock: IWithLaunchEnhancedProps = {
 		auth: {},
 		loggingIn: false,
 		loadingPosts: false,
+		loadingProfiles: false,
 	},
 	actions: {
 		resetNavigationToRoute: (
@@ -46,6 +48,7 @@ const mock: IWithLaunchEnhancedProps = {
 		},
 		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
+		setGlobal: (global) => undefined,
 	},
 };
 
@@ -56,6 +59,7 @@ export interface IWithLaunchEnhancedData {
 	auth: IAuthData | null;
 	loggingIn: boolean;
 	loadingPosts: boolean;
+	loadingProfiles: boolean;
 }
 
 export interface IWithLaunchEnhancedActions extends ITranslatedProps {
@@ -65,6 +69,7 @@ export interface IWithLaunchEnhancedActions extends ITranslatedProps {
 	) => void;
 	loadPosts: () => void;
 	recall: (creds: ICredentials) => void;
+	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithLaunchEnhancedProps {
@@ -88,7 +93,7 @@ export class WithLaunch extends React.Component<
 			<WithI18n>
 				{(i18nProps) => (
 					<WithGlobals>
-						{({ globals }) => (
+						{({ globals, setGlobal }) => (
 							<WithAuth>
 								{({ auth }) => (
 									<WithAccounts>
@@ -112,6 +117,10 @@ export class WithLaunch extends React.Component<
 																				activities,
 																				PostActionTypes.LOAD_MORE_POSTS,
 																			),
+																			loadingProfiles: getActivity(
+																				activities,
+																				ProfileActionTypes.GET_PROFILES_BY_POSTS,
+																			),
 																			auth,
 																		},
 																		actions: {
@@ -123,6 +132,7 @@ export class WithLaunch extends React.Component<
 																				// has to be done, otherwise we will recall login when there is no gun instance
 																				setTimeout(() => login(creds), 1000);
 																			},
+																			setGlobal,
 																		},
 																	})
 																}
