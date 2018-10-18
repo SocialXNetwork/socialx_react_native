@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props actions: onCreateAdSetBudget
+ * 1. Props actions: onCreateAdSetBudget, showConfirmation
  */
 
 import * as React from 'react';
