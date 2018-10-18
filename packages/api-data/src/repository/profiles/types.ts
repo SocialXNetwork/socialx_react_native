@@ -25,6 +25,7 @@ export interface IProfileData {
 	miningEnabled: boolean;
 	aboutMeText: string;
 	friends: IFriendReturnData[];
+	alias: string;
 }
 
 export interface ISearchProfilesInput {

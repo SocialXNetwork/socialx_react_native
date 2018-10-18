@@ -28,51 +28,47 @@ export class WithVisitedUser extends React.Component<
 		return (
 			<WithNavigationParams>
 				{(navigationProps) => (
-					<WithAccounts>
-						{({ accounts }) => (
-							<WithProfiles>
-								{({ profiles }) => {
-									const { navigationParams } = navigationProps;
+					<WithProfiles>
+						{({ profiles }) => {
+							const { navigationParams } = navigationProps;
 
-									const { userId } = navigationParams[SCREENS.UserProfile];
+							const { userId } = navigationParams[SCREENS.UserProfile];
 
-									const foundAccount = accounts.find(
-										(account) => account.alias === userId,
-									);
+							const profileByAlias = profiles.find(
+								(profile) => profile.alias === userId,
+							);
 
-									const foundProfile = profiles.find(
-										(profile) => profile.pub === foundAccount!.pub,
-									);
+							const foundProfile = profiles.find(
+								(profile) => profile.pub === profileByAlias!.pub,
+							);
 
-									let visitedUser;
-									if (foundProfile) {
-										visitedUser = {
-											userId: foundAccount!.alias,
-											fullName: foundProfile.fullName,
-											userName: foundAccount!.alias,
-											avatarURL:
-												foundProfile.avatar.length > 0
-													? foundProfile.avatar
-													: USER_AVATAR_PLACEHOLDER,
-											aboutMeText: foundProfile.aboutMeText,
-											numberOfLikes: 0,
-											numberOfPhotos: 0,
-											numberOfFriends: foundProfile.friends.length,
-											numberOfComments: 0,
-											mediaObjects: [],
-											recentPosts: [],
-											relationship: SearchResultKind.NotFriend,
-										};
-									}
-									console.log(visitedUser);
+							let visitedUser;
+							if (foundProfile) {
+								visitedUser = {
+									userId: profileByAlias!.alias,
+									fullName: foundProfile.fullName,
+									userName: profileByAlias!.alias,
+									avatarURL:
+										foundProfile.avatar.length > 0
+											? foundProfile.avatar
+											: USER_AVATAR_PLACEHOLDER,
+									aboutMeText: foundProfile.aboutMeText,
+									numberOfLikes: 0,
+									numberOfPhotos: 0,
+									numberOfFriends: foundProfile.friends.length,
+									numberOfComments: 0,
+									mediaObjects: [],
+									recentPosts: [],
+									relationship: SearchResultKind.NotFriend,
+								};
+							}
+							console.log(visitedUser);
 
-									return this.props.children({
-										visitedUser,
-									});
-								}}
-							</WithProfiles>
-						)}
-					</WithAccounts>
+							return this.props.children({
+								visitedUser,
+							});
+						}}
+					</WithProfiles>
 				)}
 			</WithNavigationParams>
 		);
