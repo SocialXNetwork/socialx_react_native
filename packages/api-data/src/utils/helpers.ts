@@ -72,12 +72,14 @@ const getUsersThatLiked = (likes: any) =>
 	likes.length ? likes.map(getAliasFromLike) : [];
 const getUsersThatCommented = (comments: any) =>
 	comments.length ? comments.map(getAliasFromComment) : [];
+const getUserOwner = (owner: any) => owner.alias;
 
 const getRelatedUsernamesFromPost = (post: any) => {
 	return [
 		...getUsersThatLiked(post.likes || []),
 		...getUsersThatCommented(post.comments || []),
 		...getUsersFromCommentLikes(post.comments || []),
+		...getUserOwner(post.owner),
 	].filter((v) => v);
 };
 
