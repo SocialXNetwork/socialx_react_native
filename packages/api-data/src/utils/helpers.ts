@@ -79,7 +79,7 @@ const getRelatedUsernamesFromPost = (post: any) => {
 		...getUsersThatLiked(post.likes || []),
 		...getUsersThatCommented(post.comments || []),
 		...getUsersFromCommentLikes(post.comments || []),
-		...getUserOwner(post.owner),
+		getUserOwner(post.owner),
 	].filter((v) => v);
 };
 
