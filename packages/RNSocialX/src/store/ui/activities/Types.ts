@@ -3,10 +3,14 @@ import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export interface IActivity {
 	uuid: string;
-	type: string | null;
+	type: string;
+	done: boolean;
+	timestamp: number;
 }
 
-export interface IError extends IActivity {
+export interface IError {
+	type: string;
+	uuid: string;
 	error: {
 		message: string;
 		type: string;

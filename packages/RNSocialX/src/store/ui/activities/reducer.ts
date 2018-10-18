@@ -5,13 +5,17 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.ACTIVITY: {
+			const currentActivity = state.activities.find(
+				(activity) => activity.uuid === action.payload.uuid,
+			);
 			return {
 				...state,
-				activities: action.payload.type
-					? [...state.activities, action.payload]
-					: state.activities.filter(
-							(activity) => action.payload.uuid !== activity.uuid,
-					  ), // tslint:disable-line indent (tslint bug!!!)
+				activities: [
+					...state.activities.filter(
+						(activity) => activity.uuid !== action.payload.uuid,
+					),
+					action.payload,
+				],
 			};
 		}
 

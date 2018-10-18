@@ -71,7 +71,12 @@ export const getProfilesByPosts = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.GET_PROFILES_BY_POSTS,
+				}),
+			);
 		}
 	}
 };
@@ -125,7 +130,12 @@ export const searchProfilesByFullName = ({
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
+				}),
+			);
 		}
 	}
 };
@@ -173,7 +183,12 @@ export const getProfileByUsername = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+				}),
+			);
 		}
 	}
 };
@@ -221,7 +236,12 @@ export const getCurrentProfile = (): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.GET_CURRENT_PROFILE,
+				}),
+			);
 		}
 	}
 };
@@ -260,7 +280,9 @@ export const updateCurrentProfile = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({ uuid: activityId, type: ActionTypes.UPDATE_PROFILE }),
+			);
 		}
 	}
 };
@@ -301,7 +323,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(endActivity({ uuid: activityId, type: ActionTypes.ADD_FRIEND }));
 		}
 	}
 };
@@ -340,7 +362,9 @@ export const removeFriend = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({ uuid: activityId, type: ActionTypes.REMOVE_FRIEND }),
+			);
 		}
 	}
 };
@@ -379,7 +403,9 @@ export const acceptFriend = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({ uuid: activityId, type: ActionTypes.ACCEPT_FRIEND }),
+			);
 		}
 	}
 };
