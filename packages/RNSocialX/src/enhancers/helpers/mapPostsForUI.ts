@@ -31,7 +31,6 @@ export const mapPostsForUI = (
 			// 	(like) => like.owner.alias === user!.userId,
 			// );
 
-			console.log(post);
 			return {
 				id: post.postId,
 				postText: post.postText,
