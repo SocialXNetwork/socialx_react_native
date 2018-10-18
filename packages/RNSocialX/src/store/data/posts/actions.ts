@@ -239,7 +239,7 @@ export const loadMorePosts = (): IThunk => async (
 			timestamp: lastPostTimestamp,
 		});
 		dispatch(syncLoadMorePostsAction(posts));
-		dispatch(getProfilesByPosts(posts));
+		await dispatch(getProfilesByPosts(posts));
 		dispatch(
 			setGlobal({
 				canLoadMorePosts: !!posts.length,

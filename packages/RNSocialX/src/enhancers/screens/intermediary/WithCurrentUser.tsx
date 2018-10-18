@@ -25,12 +25,9 @@ export class WithCurrentUser extends React.Component<
 			<WithConfig>
 				{({ appConfig }) => (
 					<WithAuth>
-						{(authProps) => (
+						{({ auth }) => (
 							<WithProfiles>
-								{(profilesProps) => {
-									const { auth } = authProps;
-									const { profiles } = profilesProps;
-
+								{({ profiles }) => {
 									let currentUser;
 									if (auth && profiles.length > 0) {
 										const foundProfile = profiles.find(

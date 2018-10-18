@@ -25,14 +25,13 @@ storiesOf('Screens/mainTabNav', module)
 			<UserFeedScreenView
 				currentUser={currentUser}
 				avatarImage={avatar}
-				wallPosts={posts}
+				posts={posts}
 				refreshing={refreshing}
 				onRefresh={action('onRefresh')}
 				onLoadMorePosts={action('onLoadMorePosts')}
 				onCreateWallPost={action('onCreateWallPost')}
 				onImagePress={action('onImagePress')}
 				onCommentPress={action('onCommentPress')}
-				noPosts={noPosts}
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				onLikeButtonPress={(likedByMe: boolean) => !likedByMe}
 				onDeletePress={action('onDeletePress')}
