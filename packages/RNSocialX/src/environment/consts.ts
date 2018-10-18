@@ -36,6 +36,8 @@ export enum CoinFullName {
 	ETH = 'Ethereum',
 }
 
+export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
+
 export const LOCAL_VIDEO_STREAM = {
 	width: 1280,
 	height: 960,
@@ -54,6 +56,11 @@ export enum NOTIFICATION_TYPES {
 	GROUP_REQUEST = 'GROUP_REQUEST',
 	SUPER_LIKED = 'SUPER_LIKED',
 }
+
+export const dateFormatMomentJS = {
+	configBudgetScreen: 'DD/MM/YYYY',
+	statisticsScreen: 'MMM DD, YYYY',
+};
 
 export interface IKeyboardContextProps {
 	marginBottom: number;
