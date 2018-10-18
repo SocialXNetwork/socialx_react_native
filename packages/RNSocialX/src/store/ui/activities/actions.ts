@@ -44,8 +44,8 @@ export const setError = (error: IError): IThunk => async (
 ) => {
 	try {
 		dispatch(errorAction(error));
-		setTimeout(() => {
-			dispatch(clearError({ uuid: error.uuid }));
+		setTimeout(async () => {
+			await dispatch(clearError({ uuid: error.uuid }));
 		}, error.timeout || defaultClearErrorTimeout);
 	} catch (e) {
 		// Dispatching an error here would most probably

@@ -17,7 +17,7 @@ export const setGlobal = (global: IGlobal): IThunk => async (
 	try {
 		dispatch(setGlobalAction(global));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SET_GLOBAL,
 				error: e.message,

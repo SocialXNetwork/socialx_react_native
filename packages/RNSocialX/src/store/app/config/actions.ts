@@ -23,7 +23,7 @@ export const setAppConfig = (
 	try {
 		dispatch(setAppConfigAction(setAppConfigInput));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SET_APP_CONFIG,
 				error: e.message,
@@ -46,7 +46,7 @@ export const setCustomGunSuperPeers = (
 	try {
 		dispatch(setCustomGunSuperPeersAction(setCustomGunSuperPeersInput));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SET_CUSTOM_GUN_SUPER_PEERS,
 				error: e.message,
