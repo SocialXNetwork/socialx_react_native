@@ -31,16 +31,19 @@ export const getCurrentAccount = (
 				return callback(new ApiError('failed to get current account profile.'));
 			}
 			const { pub } = userProfileCallback;
-			gun.get(`~${pub}`).docLoad((userAccountCallback: IAccountData) => {
-				if (!Object.keys(userAccountCallback).length) {
-					return callback(
-						new ApiError(
-							'failed to get current account, user document not found',
-						),
-					);
-				}
-				return callback(null, userAccountCallback);
-			});
+			gun
+				.back(-1)
+				.get(`~${pub}`)
+				.docLoad((userAccountCallback: IAccountData) => {
+					if (!Object.keys(userAccountCallback).length) {
+						return callback(
+							new ApiError(
+								'failed to get current account, user document not found',
+							),
+						);
+					}
+					return callback(null, userAccountCallback);
+				});
 		});
 };
 
