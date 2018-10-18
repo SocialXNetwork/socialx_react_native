@@ -2,6 +2,7 @@ import moment from 'moment';
 import * as React from 'react';
 import Picker from 'react-native-picker';
 
+import { Currencies, dateFormatMomentJS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 
 import { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
@@ -30,19 +31,7 @@ interface IAdsManagementConfigBudgetScreenState {
 	nextDayFromStartDate: Date;
 }
 
-const pickerData = [
-	'ad.management.budget.currency.socx',
-	'ad.management.budget.currency.bitcoin',
-	'ad.management.budget.currency.usd',
-	'ad.management.budget.currency.euro',
-];
-
-const dateFormatMomentJS = 'DD/MM/YYYY';
-
-class Screen extends React.Component<
-	IAdsManagementConfigBudgetScreenProps,
-	IAdsManagementConfigBudgetScreenState
-> {
+class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
 	public state = {
 		budgetValue: this.props.getText(
 			'ad.management.budget.budget.textinput.initialvalue',
@@ -110,9 +99,7 @@ class Screen extends React.Component<
 	private currencyButtonPressed = () => {
 		const { getText } = this.props;
 		Picker.init({
-			pickerData: pickerData.map((value: string) =>
-				getText(value).toUpperCase(),
-			),
+			pickerData: Currencies.map((value: string) => value.toUpperCase()),
 			pickerTitleColor: defaultStyles.pickerTitleColor,
 			pickerConfirmBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
 			pickerCancelBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
@@ -192,14 +179,18 @@ class Screen extends React.Component<
 	};
 
 	private handleStartDatePicked = (date: Date) => {
-		const formattedStartDate = moment(date).format(dateFormatMomentJS);
+		const formattedStartDate = moment(date).format(
+			dateFormatMomentJS.configBudgetScreen,
+		);
 		this.setState({ selectedStartDate: formattedStartDate });
 		this.calculateStopDateFromStartDate(date);
 		this.handleDatePicker('hidePicker');
 	};
 
 	private handleStopDatePicked = (date: Date) => {
-		const formattedStopDate = moment(date).format(dateFormatMomentJS);
+		const formattedStopDate = moment(date).format(
+			dateFormatMomentJS.configBudgetScreen,
+		);
 		this.setState({ selectedStopDate: formattedStopDate });
 		this.handleDatePicker('hidePicker');
 	};
@@ -208,7 +199,9 @@ class Screen extends React.Component<
 		const newDate = new Date(selectedStartDate);
 		newDate.setDate(selectedStartDate.getDate() + 1);
 
-		const formattedNewDate = moment(newDate).format(dateFormatMomentJS);
+		const formattedNewDate = moment(newDate).format(
+			dateFormatMomentJS.configBudgetScreen,
+		);
 		this.setState({
 			selectedStopDate: formattedNewDate,
 			nextDayFromStartDate: newDate,
