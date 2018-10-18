@@ -111,10 +111,7 @@ export class WithLogin extends React.Component<
 																	username,
 																	password,
 																}),
-															getPosts: () =>
-																postProps.getPublicPostsByDate({
-																	date: new Date(Date.now()),
-																}),
+															getPosts: postProps.loadMorePosts,
 															setGlobal,
 															resetNavigationToRoute,
 															getText: i18nProps.getText,
