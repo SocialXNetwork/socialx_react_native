@@ -10,7 +10,7 @@ import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { getCurrentProfile } from '../profiles';
 
-import { clearGunAuth, setGunAtuh } from '../../auth/gun';
+import { clearGunAuth, setGunAuth } from '../../auth/gun';
 import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
@@ -58,7 +58,7 @@ export const getCurrentAccount = (): IThunk => async (
 		const { dataApi } = context;
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
-		dispatch(setGunAtuh({ alias: account.alias, pub: account.pub }));
+		dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
 		dispatch(getCurrentProfile());
 	} catch (e) {
 		dispatch(
@@ -157,7 +157,7 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
-		dispatch(setGunAtuh({ password: createAccountInput.password }));
+		dispatch(setGunAuth({ password: createAccountInput.password }));
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
@@ -232,7 +232,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
-		dispatch(setGunAtuh({ password: credentials.password }));
+		dispatch(setGunAuth({ password: credentials.password }));
 		dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(

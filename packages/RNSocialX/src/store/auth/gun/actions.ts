@@ -11,7 +11,7 @@ const setAuthAction: ActionCreator<ISetAuthAction> = (
 	payload: authData,
 });
 
-export const setGunAtuh = (authData: IAuthData): IThunk => async (
+export const setGunAuth = (authData: IAuthData): IThunk => async (
 	dispatch,
 	getState,
 	context,

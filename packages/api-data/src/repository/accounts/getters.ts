@@ -1,5 +1,7 @@
 import { IContext, IGunCallback } from '../../types';
 
+import * as profileHandles from '../profiles/handles';
+
 import { ApiError } from '../../utils/errors';
 import { IAccountData, IGetAccountByPubInput } from './types';
 
@@ -15,21 +17,31 @@ export const getCurrentAccount = (
 	context: IContext,
 	callback: IGunCallback<IAccountData>,
 ) => {
-	const { account } = context;
+	const { account, gun } = context;
 	if (!account.is) {
 		return callback(
 			new ApiError('failed to get current account, user not logged in'),
 		);
 	}
 
-	account.docLoad((data: IAccountData) => {
-		if (!Object.keys(data).length) {
-			return callback(
-				new ApiError('failed to get current account, user document not found'),
-			);
-		}
-		return callback(null, data);
-	});
+	profileHandles
+		.profileByUsername(context, account.is.alias)
+		.docLoad((userProfileCallback: any) => {
+			if (!Object.keys(userProfileCallback).length) {
+				return callback(new ApiError('failed to get current account profile.'));
+			}
+			const { pub } = userProfileCallback;
+			gun.get(`~${pub}`).docLoad((userAccountCallback: IAccountData) => {
+				if (!Object.keys(userAccountCallback).length) {
+					return callback(
+						new ApiError(
+							'failed to get current account, user document not found',
+						),
+					);
+				}
+				return callback(null, userAccountCallback);
+			});
+		});
 };
 
 export const getAccountByPub = (
