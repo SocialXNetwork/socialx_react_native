@@ -69,9 +69,7 @@ export const getCurrentAccount = (): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.GET_CURRENT_ACCOUNT }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -170,9 +168,7 @@ export const createAccount = (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.CREATE_ACCOUNT }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 		dispatch(removeUploadedFiles());
 	}
 };
@@ -209,9 +205,7 @@ export const recoverAccount = (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.RECOVER_ACCOUNT }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -249,7 +243,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId, type: ActionTypes.LOGIN }));
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -259,6 +253,7 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 
 export const logout = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
+	const actionType = ActionTypes.LOGOUT;
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -266,7 +261,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 			dispatch(logoutAction());
 			dispatch(
 				beginActivity({
-					type: ActionTypes.LOGOUT,
+					type: actionType,
 					uuid: activityId,
 				}),
 			);
@@ -277,13 +272,13 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 		} catch (e) {
 			dispatch(
 				setError({
-					type: ActionTypes.LOGOUT,
+					type: actionType,
 					error: e.message,
 					uuid: uuidv4(),
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId, type: ActionTypes.LOGOUT }));
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -321,9 +316,7 @@ export const changePassword = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.CHANGE_PASSWORD }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -365,8 +358,6 @@ export const getAccountByPub = (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.GET_ACCOUNT_BY_PUB }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
