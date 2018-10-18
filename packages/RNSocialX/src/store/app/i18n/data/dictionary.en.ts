@@ -293,5 +293,13 @@ export default {
 	'ad.management.budget.start.text': 'Start',
 	'ad.management.budget.start.datePicker': 'Pick a start date',
 	'ad.management.budget.stop.text': 'Stop',
-	'ad.management.budget.stop.datePicker': 'Pick a stop date'
+    'ad.management.budget.stop.datePicker': 'Pick a stop date',
+    'ad.statistics.title': 'Payment',
+    'ad.statistics.transactions.title': 'Transactions',
+    'ad.statistics.transactions.transaction': 'Transaction',
+    'ad.statistics.spent.title': 'Spent till now',
+    'ad.statistics.buttons.weekly': 'Weekly',
+    'ad.statistics.buttons.monthly': 'Monthly',
+    'ad.statistics.buttons.alltransactions': 'See all Transactions',
+    'ad.statistics.amount.text': 'Total amount of SOCX',
 };
