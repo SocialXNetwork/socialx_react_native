@@ -16,29 +16,20 @@ const activityAction: ActionCreator<IActivityAction> = (
 	payload: activity,
 });
 
-export const beginActivity = (activity: {
-	uuid: string;
-	type: string;
-}): IThunk => async (dispatch, getState, context) => {
-	dispatch(
-		activityAction({
-			...activity,
-			done: false,
-			timestamp: new Date(Date.now()).getTime(),
-		}),
-	);
+export const beginActivity = (activity: IActivity): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	dispatch(activityAction(activity));
 };
 
-export const endActivity = (activity: {
-	uuid: string;
-	type: string;
-}): IThunk => async (dispatch, getState, context) => {
-	dispatch(
-		activityAction({
-			...activity,
-			done: true,
-		}),
-	);
+export const endActivity = ({ uuid }: { uuid: string }): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	dispatch(activityAction({ uuid, type: null }));
 };
 
 const errorAction: ActionCreator<IErrorAction> = (error: IError) => ({

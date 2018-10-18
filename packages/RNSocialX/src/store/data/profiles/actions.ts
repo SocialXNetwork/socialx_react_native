@@ -71,12 +71,7 @@ export const getProfilesByPosts = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({
-					uuid: activityId,
-					type: ActionTypes.GET_PROFILES_BY_POSTS,
-				}),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -130,12 +125,7 @@ export const searchProfilesByFullName = ({
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({
-					uuid: activityId,
-					type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
-				}),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -183,12 +173,7 @@ export const getProfileByUsername = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({
-					uuid: activityId,
-					type: ActionTypes.GET_PROFILE_BY_USERNAME,
-				}),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -236,12 +221,7 @@ export const getCurrentProfile = (): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({
-					uuid: activityId,
-					type: ActionTypes.GET_CURRENT_PROFILE,
-				}),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -280,9 +260,7 @@ export const updateCurrentProfile = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.UPDATE_PROFILE }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -323,7 +301,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId, type: ActionTypes.ADD_FRIEND }));
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -362,9 +340,7 @@ export const removeFriend = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.REMOVE_FRIEND }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -403,9 +379,7 @@ export const acceptFriend = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.ACCEPT_FRIEND }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
