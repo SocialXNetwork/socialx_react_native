@@ -174,11 +174,11 @@ const recursiveSearchForPosts = (
 	{ startTimestamp, daysBack }: { startTimestamp: number; daysBack: number },
 	callback: IGunCallback<IPostArrayData>,
 ) => {
-	if (daysBack > 30) {
+	if (daysBack > 5) {
 		return callback(null, []);
 	}
 	const nextDate = moment(startTimestamp)
-		.subtract(daysBack, 'days')
+		.subtract(daysBack, 'd')
 		.toDate();
 
 	getPublicPostsByDate(context, { date: nextDate }, (err, posts) => {
@@ -203,7 +203,7 @@ export const getMostRecentPosts = (
 ) => {
 	return recursiveSearchForPosts(
 		context,
-		{ startTimestamp: timestamp, daysBack: 1 },
+		{ startTimestamp: timestamp, daysBack: 0 },
 		callback,
 	);
 };
