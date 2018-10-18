@@ -32,15 +32,12 @@ export class WithCurrentUser extends React.Component<
 									const { profiles } = profilesProps;
 
 									let currentUser;
-									if (auth) {
+									if (auth && profiles.length > 0) {
 										const foundProfile = profiles.find(
 											(profile) => profile.pub === auth.pub,
 										);
 
-										if (
-											Object.keys(foundProfile || {}).length &&
-											foundProfile
-										) {
+										if (foundProfile) {
 											currentUser = {
 												userId: auth.alias || '',
 												email: foundProfile.email,

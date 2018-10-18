@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
 
-import { Header } from '../../components';
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { LaunchScreenView } from './LaunchScreen.view';
@@ -19,6 +17,7 @@ type ILaunchScreenProps = INavigationProps &
 interface ILaunchScreenState {
 	loggingIn: boolean | null;
 	loadingPosts: boolean | null;
+	loadingProfiles: boolean | null;
 }
 
 class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
@@ -37,6 +36,10 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 			loadPosts,
 			loggingIn,
 		} = nextProps;
+
+		if (globals.register || globals.login) {
+			return null;
+		}
 
 		if (auth && currentState.loggingIn === null && !globals.logout) {
 			recall({ username: auth.alias || '', password: auth.password || '' });
@@ -64,7 +67,28 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 			};
 		}
 
-		if (!currentState.loggingIn && !currentState.loadingPosts && currentUser) {
+		if (
+			auth &&
+			currentState.loadingProfiles === null &&
+			nextProps.loadingProfiles
+		) {
+			return {
+				loadingProfiles: true,
+			};
+		}
+
+		if (auth && currentState.loadingProfiles && !nextProps.loadingProfiles) {
+			return {
+				loadingProfiles: false,
+			};
+		}
+
+		if (
+			!currentState.loggingIn &&
+			!currentState.loadingPosts &&
+			!currentState.loadingProfiles &&
+			currentUser
+		) {
 			if (__DEV__ && !globals.logout) {
 				resetNavigationToRoute(NAVIGATION.Main, navigation);
 				return null;
@@ -87,6 +111,7 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 	public state = {
 		loggingIn: null,
 		loadingPosts: null,
+		loadingProfiles: null,
 	};
 
 	public render() {
@@ -108,10 +133,12 @@ class Screen extends React.Component<ILaunchScreenProps, ILaunchScreenState> {
 	}
 
 	private navigateToLoginScreen = () => {
+		this.props.setGlobal({ login: true });
 		this.props.navigation.navigate(SCREENS.Login);
 	};
 
 	private navigateToRegisterScreen = () => {
+		this.props.setGlobal({ register: true });
 		this.props.navigation.navigate(SCREENS.Register);
 	};
 }
