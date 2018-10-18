@@ -23,64 +23,14 @@ type ILoginScreenProps = INavigationProps &
 	IWithLoginEnhancedActions;
 
 interface ILoginScreenState {
-	loadingAccount: boolean | null;
-	loadingProfile: boolean | null;
-	loadingPosts: boolean | null;
 	errors: IError[];
 }
 
 class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
-	public static getDerivedStateFromProps(
-		nextProps: ILoginScreenProps,
-		currentState: ILoginScreenState,
-	) {
+	public static getDerivedStateFromProps(nextProps: ILoginScreenProps) {
 		if (nextProps.errors.length > 0) {
 			return {
 				errors: nextProps.errors,
-			};
-		}
-
-		if (nextProps.loadingAccount) {
-			return {
-				loadingAccount: true,
-			};
-		}
-
-		if (nextProps.loadingProfile) {
-			return {
-				loadingProfile: true,
-			};
-		}
-
-		if (nextProps.loadingPosts) {
-			return {
-				loadingPosts: true,
-			};
-		}
-		// console.log('nextProps: ', nextProps.loadingPosts);
-		// console.log('state: ', currentState.loadingPosts);
-
-		if (
-			currentState.errors.length === 0 &&
-			!nextProps.loadingAccount &&
-			!nextProps.loadingProfile &&
-			currentState.loadingAccount &&
-			currentState.loadingProfile
-		) {
-			// nextProps.getPosts();
-			nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
-
-			// if (!nextProps.loadingPosts && currentState.loadingPosts) {
-			// 	nextProps.resetNavigationToRoute(NAVIGATION.Main, nextProps.navigation);
-
-			// 	return {
-			// 		loadingPosts: false,
-			// 	};
-			// }
-
-			return {
-				loadingAccount: false,
-				loadingProfile: false,
 			};
 		}
 
@@ -88,13 +38,10 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	}
 
 	public state = {
-		loadingAccount: null,
-		loadingProfile: null,
-		loadingPosts: null,
 		errors: [],
 	};
 
-	public componentDidMount() {
+	public async componentDidMount() {
 		const { setGlobal, getText } = this.props;
 
 		setGlobal({
@@ -105,13 +52,21 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	}
 
 	public render() {
-		const { getText, login } = this.props;
+		const {
+			getText,
+			login,
+			loadPosts,
+			resetNavigationToRoute,
+			navigation,
+		} = this.props;
 		return (
 			<LoginScreenView
 				errors={this.state.errors}
-				onStartLogin={(userName, password) => {
-					login(userName, password);
-					this.setState({ errors: [] });
+				onStartLogin={async (userName, password) => {
+					await login(userName, password);
+					await loadPosts();
+					await this.setState({ errors: [] });
+					resetNavigationToRoute(NAVIGATION.Main, navigation);
 				}}
 				onNavigateToPasswordForgot={() =>
 					this.safeNavigateToScreen(SCREENS.ForgotPassword)
