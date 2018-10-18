@@ -58,8 +58,8 @@ export const getCurrentAccount = (): IThunk => async (
 		const { dataApi } = context;
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
-		dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
-		dispatch(getCurrentProfile());
+		await dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
+		await dispatch(getCurrentProfile());
 	} catch (e) {
 		dispatch(
 			setError({
@@ -232,8 +232,8 @@ export const login = (credentials: ICredentials): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
-		dispatch(setGunAuth({ password: credentials.password }));
-		dispatch(getCurrentAccount());
+		await dispatch(setGunAuth({ password: credentials.password }));
+		await dispatch(getCurrentAccount());
 	} catch (e) {
 		dispatch(
 			setError({
