@@ -49,7 +49,7 @@ export const getCurrentAccount = (): IThunk => async (
 	const activityId = uuidv4();
 	try {
 		dispatch(getCurrentAccountAction());
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.GET_CURRENT_ACCOUNT,
 				uuid: activityId,
@@ -61,7 +61,7 @@ export const getCurrentAccount = (): IThunk => async (
 		await dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
 		await dispatch(getCurrentProfile());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.GET_CURRENT_ACCOUNT,
 				error: e.message,
@@ -69,7 +69,7 @@ export const getCurrentAccount = (): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -87,7 +87,7 @@ export const createAccount = (
 
 	try {
 		dispatch(createAccountAction(createAccountInput));
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.CREATE_ACCOUNT,
 				uuid: activityId,
@@ -110,11 +110,11 @@ export const createAccount = (
 				);
 			};
 
-			const updateStatus = ({
+			const updateStatus = async ({
 				uploadId: uploadIdUpdated,
 				progress,
 			}: IListenerProgess & { uploadId: string }) => {
-				dispatch(
+				await dispatch(
 					setUploadStatus({
 						uploadId: uploadIdUpdated,
 						progress,
@@ -133,7 +133,7 @@ export const createAccount = (
 			);
 			const { Hash: hash } = JSON.parse(responseBody);
 
-			dispatch(
+			await dispatch(
 				setUploadStatus({
 					uploadId,
 					progress: 100,
@@ -157,10 +157,10 @@ export const createAccount = (
 
 			await dataApi.accounts.createAccount(createAccountFinal);
 		}
-		dispatch(setGunAuth({ password: createAccountInput.password }));
-		dispatch(getCurrentAccount());
+		await dispatch(setGunAuth({ password: createAccountInput.password }));
+		await dispatch(getCurrentAccount());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.CREATE_ACCOUNT,
 				error: e.message,
@@ -168,8 +168,8 @@ export const createAccount = (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
-		dispatch(removeUploadedFiles());
+		await dispatch(endActivity({ uuid: activityId }));
+		await dispatch(removeUploadedFiles());
 	}
 };
 
@@ -186,7 +186,7 @@ export const recoverAccount = (
 	const activityId = uuidv4();
 	try {
 		dispatch(recoverAccountAction(recoverAccountInput));
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.RECOVER_ACCOUNT,
 				uuid: activityId,
@@ -197,7 +197,7 @@ export const recoverAccount = (
 			recoverAccountInput,
 		);
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.RECOVER_ACCOUNT,
 				error: e.message,
@@ -205,7 +205,7 @@ export const recoverAccount = (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -224,7 +224,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 	const activityId = uuidv4();
 	try {
 		dispatch(loginAction(credentials));
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.LOGIN,
 				uuid: activityId,
@@ -235,7 +235,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 		await dispatch(setGunAuth({ password: credentials.password }));
 		await dispatch(getCurrentAccount());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.LOGIN,
 				error: e.message,
@@ -243,7 +243,7 @@ export const login = (credentials: ICredentials): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -259,7 +259,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 	if (auth && auth.alias) {
 		try {
 			dispatch(logoutAction());
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: actionType,
 					uuid: activityId,
@@ -268,9 +268,9 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 			const { dataApi } = context;
 			await dataApi.accounts.logout();
 
-			dispatch(clearGunAuth());
+			await dispatch(clearGunAuth());
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: actionType,
 					error: e.message,
@@ -278,7 +278,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -299,7 +299,7 @@ export const changePassword = (
 	if (auth && auth.alias) {
 		try {
 			dispatch(changePasswordAction(changePasswordInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.CHANGE_PASSWORD,
 					uuid: activityId,
@@ -308,7 +308,7 @@ export const changePassword = (
 			const { dataApi } = context;
 			await dataApi.accounts.changePassword(changePasswordInput);
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.CHANGE_PASSWORD,
 					error: e.message,
@@ -316,7 +316,7 @@ export const changePassword = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -341,7 +341,7 @@ export const getAccountByPub = (
 	const activityId = uuidv4();
 	try {
 		dispatch(getAccountByPubAction(getAccountByPubInput));
-		dispatch(
+		await dispatch(
 			beginActivity({ type: ActionTypes.GET_ACCOUNT_BY_PUB, uuid: activityId }),
 		);
 		const { dataApi } = context;
@@ -350,7 +350,7 @@ export const getAccountByPub = (
 		);
 		dispatch(syncGetAccountByPubAction(account));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.GET_ACCOUNT_BY_PUB,
 				error: e.message,
@@ -358,6 +358,6 @@ export const getAccountByPub = (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };

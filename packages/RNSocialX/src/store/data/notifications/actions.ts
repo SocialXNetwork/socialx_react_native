@@ -31,7 +31,7 @@ export const createNotification = (
 	if (auth && auth.alias) {
 		try {
 			dispatch(createNotificationAction(createNotificationInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.CREATE_NOTIFICATION,
 					uuid: activityId,
@@ -39,11 +39,11 @@ export const createNotification = (
 			);
 			const { dataApi } = context;
 			await dataApi.notifications.createNotification(createNotificationInput);
-			dispatch(getNotifications());
+			await dispatch(getNotifications());
 		} catch (e) {
 			/**/
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -64,7 +64,7 @@ export const removeNotification = (
 	if (auth && auth.alias) {
 		try {
 			dispatch(removeNotificationAction(removeNotificationInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.REMOVE_NOTIFICATION,
 					uuid: activityId,
@@ -72,11 +72,11 @@ export const removeNotification = (
 			);
 			const { dataApi } = context;
 			await dataApi.notifications.removeNotification(removeNotificationInput);
-			dispatch(getNotifications());
+			await dispatch(getNotifications());
 		} catch (e) {
 			/**/
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -105,7 +105,7 @@ export const getNotifications = (): IThunk => async (
 	if (auth && auth.alias) {
 		try {
 			dispatch(getNotificationsAction());
-			dispatch(
+			await dispatch(
 				beginActivity({
 					uuid: activityId,
 					type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
@@ -117,7 +117,7 @@ export const getNotifications = (): IThunk => async (
 		} catch (e) {
 			/**/
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };

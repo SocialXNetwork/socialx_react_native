@@ -29,7 +29,7 @@ export const clearNavigationParams = ({
 	screenName: string;
 }): IThunk => async (dispatch, getState, context) => {
 	try {
-		dispatch(setNavigationParams({ screenName, params: {} }));
+		await dispatch(setNavigationParams({ screenName, params: {} }));
 	} catch (e) {
 		/**/
 	}

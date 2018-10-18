@@ -16,8 +16,6 @@ type IRegisterScreenProps = IWithRegisterEnhancedActions &
 	INavigationProps;
 
 interface IRegisterScreenState {
-	loadingAccount: boolean | null;
-	loadingProfile: boolean | null;
 	errors: IError[];
 }
 
@@ -25,39 +23,10 @@ class Screen extends React.Component<
 	IRegisterScreenProps,
 	IRegisterScreenState
 > {
-	public static getDerivedStateFromProps(
-		nextProps: IRegisterScreenProps,
-		currentState: IRegisterScreenState,
-	) {
+	public static getDerivedStateFromProps(nextProps: IRegisterScreenProps) {
 		if (nextProps.errors.length > 0) {
 			return {
 				errors: nextProps.errors,
-			};
-		}
-
-		if (nextProps.loadingAccount) {
-			return {
-				loadingAccount: true,
-			};
-		}
-
-		if (nextProps.loadingProfile) {
-			return {
-				loadingProfile: true,
-			};
-		}
-
-		if (
-			currentState.errors.length === 0 &&
-			!nextProps.loadingAccount &&
-			!nextProps.loadingProfile &&
-			currentState.loadingAccount &&
-			currentState.loadingProfile
-		) {
-			nextProps.resetNavigationToRoute(NAVIGATION.Intro, nextProps.navigation);
-			return {
-				loadingAccount: false,
-				loadingProfile: false,
 			};
 		}
 
@@ -65,8 +34,6 @@ class Screen extends React.Component<
 	}
 
 	public state = {
-		loadingAccount: null,
-		loadingProfile: null,
 		errors: [],
 	};
 
@@ -81,12 +48,22 @@ class Screen extends React.Component<
 	}
 
 	public render() {
-		const { getText, register, showDotsMenuModal } = this.props;
+		const {
+			getText,
+			register,
+			showDotsMenuModal,
+			loadPosts,
+			resetNavigationToRoute,
+			navigation,
+		} = this.props;
+
 		return (
 			<RegisterScreenView
-				onStartRegister={(userData) => {
-					register(userData);
-					this.setState({ errors: [] });
+				onStartRegister={async (userData) => {
+					await register(userData);
+					await loadPosts();
+					await this.setState({ errors: [] });
+					resetNavigationToRoute(NAVIGATION.Intro, navigation);
 				}}
 				onNavigateToTermsAndConditions={() =>
 					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
