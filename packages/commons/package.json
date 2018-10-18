@@ -4,15 +4,14 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "test": "jest --onlyChanged",
-    "test:all": "jest"
+		"test": "jest --onlyChanged",
+		"test:all": "jest"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "base-64": "^0.1.0",
-    "utility-types-fixme-todo": "latest",
-    "uuid": "^3.3.2"
+    "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
     "@types/base-64": "^0.1.2",

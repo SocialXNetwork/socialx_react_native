@@ -103,7 +103,6 @@ export const getPostsByUsername = (
 		dispatch(
 			endActivity({
 				uuid: activityId,
-				type: ActionTypes.GET_POSTS_BY_USER,
 			}),
 		);
 	}
@@ -147,9 +146,7 @@ export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.GET_POST_BY_ID }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -192,9 +189,7 @@ export const getPostByPath = (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.GET_POST_BY_PATH }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -251,9 +246,7 @@ export const loadMorePosts = (): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -296,12 +289,7 @@ export const getPublicPostsByDate = (
 			}),
 		);
 	} finally {
-		dispatch(
-			endActivity({
-				uuid: activityId,
-				type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-			}),
-		);
+		dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -342,9 +330,7 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.CREATE_POST }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -386,7 +372,7 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId, type: ActionTypes.LIKE_POST }));
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -428,9 +414,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.REMOVE_POST }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -471,9 +455,7 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.UNLIKE_POST }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -513,9 +495,7 @@ export const createComment = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.CREATE_COMMENT }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -562,9 +542,7 @@ export const likeComment = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.LIKE_COMMENT }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -611,9 +589,7 @@ export const removeComment = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.REMOVE_COMMENT }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -660,9 +636,7 @@ export const unlikeComment = (
 				}),
 			);
 		} finally {
-			dispatch(
-				endActivity({ uuid: activityId, type: ActionTypes.UNLIKE_COMMENT }),
-			);
+			dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };

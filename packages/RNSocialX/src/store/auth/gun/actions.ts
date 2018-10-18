@@ -50,7 +50,7 @@ export const clearGunAuth = (): IThunk => async (
 	} catch (e) {
 		dispatch(
 			setError({
-				type: ActionTypes.RESET_DATABASE_AND_STORE,
+				type: ActionTypes.SET_GUN_AUTH,
 				error: e.message,
 				uuid: uuidv4(),
 			}),
@@ -58,7 +58,6 @@ export const clearGunAuth = (): IThunk => async (
 	} finally {
 		dispatch(
 			endActivity({
-				type: ActionTypes.RESET_DATABASE_AND_STORE,
 				uuid: activityId,
 			}),
 		);
