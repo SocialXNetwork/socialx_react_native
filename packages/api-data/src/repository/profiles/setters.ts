@@ -22,7 +22,7 @@ export const createProfile = (
 	const { username, ...rest } = createProfileInput;
 	profileHandles
 		.profileByUsername(context, username)
-		.put({ ...rest }, (profileCallback) => {
+		.put({ ...rest, alias: username }, (profileCallback) => {
 			if (profileCallback.err) {
 				return callback(
 					new ApiError(`failed to create user profile ${profileCallback.err}`, {
