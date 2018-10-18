@@ -43,7 +43,12 @@ export const createNotification = (
 		} catch (e) {
 			/**/
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.CREATE_NOTIFICATION,
+				}),
+			);
 		}
 	}
 };
@@ -76,7 +81,12 @@ export const removeNotification = (
 		} catch (e) {
 			/**/
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.REMOVE_NOTIFICATION,
+				}),
+			);
 		}
 	}
 };
@@ -117,7 +127,12 @@ export const getNotifications = (): IThunk => async (
 		} catch (e) {
 			/**/
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			dispatch(
+				endActivity({
+					uuid: activityId,
+					type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
+				}),
+			);
 		}
 	}
 };
