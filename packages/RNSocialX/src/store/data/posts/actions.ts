@@ -220,9 +220,17 @@ export const loadMorePosts = (): IThunk => async (
 
 	const storeState = getState();
 	const storePosts = storeState.data.posts.posts;
+	const lastPostSaneDate = () => {
+		const time = moment(
+			[...storePosts].sort((x, t) => x.timestamp - t.timestamp)[0].timestamp,
+		).subtract(1, 'd');
+		return {
+			timestamp: time,
+		};
+	};
 	const latestPost =
 		storePosts.length !== 0
-			? [...storePosts].sort((x, t) => x.timestamp - t.timestamp)[0]
+			? lastPostSaneDate()
 			: { timestamp: new Date(Date.now()) };
 
 	const lastPostTimestamp = moment(latestPost.timestamp).valueOf();
