@@ -19,7 +19,7 @@ const styles: any = {
 		textAlign: 'left',
 		paddingLeft: Sizes.smartVerticalScale(24),
 		paddingVertical: Sizes.smartVerticalScale(20),
-		backgroundColor: 'white',
+		backgroundColor: Colors.white,
 	},
 	marginBetweenTitleAndCurrency: {
 		marginBottom: Sizes.smartVerticalScale(29),
@@ -27,7 +27,7 @@ const styles: any = {
 	currencyContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		backgroundColor: 'white',
+		backgroundColor: Colors.white,
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
 		paddingVertical: Sizes.smartVerticalScale(13),
 	},
@@ -48,7 +48,7 @@ const styles: any = {
 		paddingLeft: Sizes.smartHorizontalScale(5),
 	},
 	budgetContainer: {
-		backgroundColor: 'white',
+		backgroundColor: Colors.white,
 		marginTop: Sizes.smartVerticalScale(30),
 	},
 	inputBudget: {
@@ -57,7 +57,7 @@ const styles: any = {
 		textAlign: 'right',
 	},
 	scheduleContainer: {
-		backgroundColor: 'white',
+		backgroundColor: Colors.white,
 		marginTop: Sizes.smartVerticalScale(31),
 	},
 	optionContainer: {
