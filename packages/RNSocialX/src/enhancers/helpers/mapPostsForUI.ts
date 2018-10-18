@@ -27,9 +27,9 @@ export const mapPostsForUI = (
 				(profile: any) => profile.pub === post.owner.pub,
 			);
 
-			// const foundLike = post.likes.find(
-			// 	(like) => like.owner.alias === user!.userId,
-			// );
+			const foundLike = post.likes.find(
+				(like) => like.owner.alias === user!.userId,
+			);
 
 			return {
 				id: post.postId,
@@ -49,7 +49,7 @@ export const mapPostsForUI = (
 				numberOfComments: 0,
 				// TODO: add this later when data is available
 				numberOfWalletCoins: 0,
-				likedByMe: false,
+				likedByMe: foundLike,
 				canDelete: true,
 				// media: post.media!.map((media) => ({
 				// 	url: appConfig.ipfsConfig.ipfs_URL + media.hash,
