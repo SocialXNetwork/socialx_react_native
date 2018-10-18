@@ -31,7 +31,7 @@ export const showModal = (modal: IModal): IThunk => async (
 	try {
 		dispatch(showModalAction(modal));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SHOW_MODAL,
 				error: e.message,
@@ -49,7 +49,7 @@ export const hideModal = (): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(hideModalAction());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.HIDE_MODAL,
 				error: e.message,
@@ -74,7 +74,7 @@ export const showConfirmation = (confirmation: IConfirmation): IThunk => async (
 	try {
 		dispatch(showConfirmationAction(confirmation));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SHOW_CONFIRMATION,
 				error: e.message,
@@ -96,7 +96,7 @@ export const hideConfirmation = (): IThunk => async (
 	try {
 		dispatch(hideConfirmationAction());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.HIDE_CONFIRMATION,
 				error: e.message,
@@ -124,7 +124,7 @@ export const showMessage = (message: IMessage): IThunk => async (
 	try {
 		dispatch(showMessageAction(message));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SHOW_MESSAGE,
 				error: e.message,
@@ -146,7 +146,7 @@ export const hideMessage = (): IThunk => async (
 	try {
 		dispatch(hideMessageAction());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.HIDE_MESSAGE,
 				error: e.message,
@@ -171,7 +171,7 @@ export const showOptionsMenu = (optionsMenu: IOptionsMenu): IThunk => async (
 	try {
 		dispatch(showOptionsMenuAction(optionsMenu));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SHOW_OPTIONS_MENU,
 				error: e.message,
@@ -193,7 +193,7 @@ export const hideOptionsMenu = (): IThunk => async (
 	try {
 		dispatch(hideOptionsMenuAction());
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.HIDE_OPTIONS_MENU,
 				error: e.message,

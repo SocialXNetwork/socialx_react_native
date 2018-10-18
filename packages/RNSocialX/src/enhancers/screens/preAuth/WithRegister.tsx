@@ -18,44 +18,32 @@ import {
 	ITranslatedProps,
 } from '../../../types';
 
-import { ActionTypes as AcountActionTypes } from '../../../store/data/accounts/Types';
-import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
+import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { getActivity, resetNavigationToRoute } from '../../helpers/';
+import { resetNavigationToRoute } from '../../helpers/';
 
 const mock: IWithRegisterEnhancedProps = {
 	data: {
 		errors: [],
-		loadingAccount: false,
-		loadingProfile: false,
 	},
 	actions: {
-		register: (registerData: IRegisterData) => {
-			/**/
-		},
-		setGlobal: (global: IGlobal) => {
-			/**/
-		},
+		register: (registerData: IRegisterData) => undefined,
+		loadPosts: () => undefined,
+		setGlobal: (global: IGlobal) => undefined,
 		resetNavigationToRoute: (
 			screenName: string,
 			navigation: NavigationScreenProp<any>,
-		) => {
-			/**/
-		},
+		) => undefined,
 		getText: (value: string, ...args: any[]) => value,
-		showDotsMenuModal: (items) => {
-			/**/
-		},
+		showDotsMenuModal: (items) => undefined,
 	},
 };
 
 export interface IWithRegisterEnhancedData {
-	loadingAccount: boolean;
-	loadingProfile: boolean;
 	errors: IError[];
 }
 
@@ -63,6 +51,7 @@ export interface IWithRegisterEnhancedActions
 	extends ITranslatedProps,
 		IDotsMenuProps {
 	register: (registerData: IRegisterData) => void;
+	loadPosts: () => void;
 	setGlobal: (global: IGlobal) => void;
 	resetNavigationToRoute: (
 		screenName: string,
@@ -94,48 +83,45 @@ export class WithRegister extends React.Component<
 							<WithGlobals>
 								{({ setGlobal }) => (
 									<WithActivities>
-										{({ activities, errors }) => (
-											<WithAccounts>
-												{(accountsProps) =>
-													this.props.children({
-														data: {
-															...mock.data,
-															loadingAccount: getActivity(
-																activities,
-																AcountActionTypes.GET_CURRENT_ACCOUNT,
-															),
-															loadingProfile: getActivity(
-																activities,
-																ProfileActionTypes.GET_CURRENT_PROFILE,
-															),
-															errors,
-														},
-														actions: {
-															...mock.actions,
-															register: (registerData: IRegisterData) =>
-																accountsProps.createAccount({
-																	recover: {
-																		question1: 'question1',
-																		question2: 'questions2',
-																		reminder: 'password',
-																	},
-																	username: registerData.userName,
-																	password: registerData.password,
-																	email: registerData.email,
-																	avatar: registerData.avatar,
-																	fullName: registerData.name,
-																	miningEnabled: true,
-																	aboutMeText: 'about me text',
-																}),
-															setGlobal,
-															resetNavigationToRoute,
-															getText: i18nProps.getText,
-															showDotsMenuModal: (items) =>
-																overlayProps.showOptionsMenu({ items }),
-														},
-													})
-												}
-											</WithAccounts>
+										{({ errors }) => (
+											<WithPosts>
+												{({ loadMorePosts }) => (
+													<WithAccounts>
+														{(accountsProps) =>
+															this.props.children({
+																data: {
+																	...mock.data,
+																	errors,
+																},
+																actions: {
+																	...mock.actions,
+																	register: (registerData: IRegisterData) =>
+																		accountsProps.createAccount({
+																			recover: {
+																				question1: 'question1',
+																				question2: 'questions2',
+																				reminder: 'password',
+																			},
+																			username: registerData.userName,
+																			password: registerData.password,
+																			email: registerData.email,
+																			avatar: registerData.avatar,
+																			fullName: registerData.name,
+																			miningEnabled: true,
+																			aboutMeText: 'about me text',
+																		}),
+																	loadPosts: loadMorePosts,
+																	setGlobal,
+																	resetNavigationToRoute,
+																	getText: i18nProps.getText,
+																	showDotsMenuModal: (items) =>
+																		overlayProps.showOptionsMenu({ items }),
+																},
+															})
+														}
+													</WithAccounts>
+												)}
+											</WithPosts>
 										)}
 									</WithActivities>
 								)}

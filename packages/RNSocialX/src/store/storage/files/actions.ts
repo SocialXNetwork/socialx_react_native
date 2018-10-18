@@ -32,7 +32,7 @@ export const setUploadStatus = (
 	try {
 		dispatch(setUploadStatusAction(setUploadProgressInput));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SET_UPLOAD_STATUS,
 				error: e.message,
@@ -77,8 +77,8 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 	try {
 		dispatch(uploadFileAction(uploadFileInput));
 
-		const bootstrapStatus = (uploadIdStarted: string) => {
-			dispatch(
+		const bootstrapStatus = async (uploadIdStarted: string) => {
+			await dispatch(
 				setUploadStatus({
 					path,
 					uploadId: uploadIdStarted,
@@ -90,11 +90,11 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 			);
 		};
 
-		const updateStatus = ({
+		const updateStatus = async ({
 			uploadId: uploadIdUpdated,
 			progress,
 		}: IListenerProgess & { uploadId: string }) => {
-			dispatch(
+			await dispatch(
 				setUploadStatus({
 					uploadId: uploadIdUpdated,
 					progress,
@@ -113,7 +113,7 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 		);
 		const { Hash: hash } = JSON.parse(responseBody);
 
-		dispatch(
+		await dispatch(
 			setUploadStatus({
 				uploadId,
 				progress: 100,

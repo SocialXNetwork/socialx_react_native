@@ -19,7 +19,7 @@ export const setGunAuth = (authData: IAuthData): IThunk => async (
 	try {
 		dispatch(setAuthAction(authData));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SET_GUN_AUTH,
 				error: e.message,
@@ -38,7 +38,7 @@ export const clearGunAuth = (): IThunk => async (
 	try {
 		dispatch(setAuthAction(null));
 
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.RESET_DATABASE_AND_STORE,
 				uuid: activityId,
@@ -48,7 +48,7 @@ export const clearGunAuth = (): IThunk => async (
 		const { dataApi } = context;
 		await dataApi.resetDatabase();
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SET_GUN_AUTH,
 				error: e.message,
@@ -56,7 +56,7 @@ export const clearGunAuth = (): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(
+		await dispatch(
 			endActivity({
 				uuid: activityId,
 			}),

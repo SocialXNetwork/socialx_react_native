@@ -27,7 +27,7 @@ export const setLocale = (setLocaleInput: ISetLocaleInput): IThunk => async (
 		dispatch(setLocaleAction(setLocaleInput));
 	} catch (e) {
 		dispatch(
-			setError({
+			await setError({
 				type: ActionTypes.SET_LOCALE,
 				error: e.message,
 				uuid: uuidv4(),

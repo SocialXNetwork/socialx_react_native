@@ -54,7 +54,7 @@ export const resetPostsAndRefetch = (): IThunk => async (
 	context,
 ) => {
 	dispatch(resetPostsAction);
-	dispatch(
+	await dispatch(
 		getPublicPostsByDate({
 			date: new Date(Date.now()),
 		}),
@@ -81,7 +81,7 @@ export const getPostsByUsername = (
 	const activityId = uuidv4();
 	try {
 		dispatch(getPostsByUsernameAction(getPostsByUsernameInput));
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.GET_POSTS_BY_USER,
 				uuid: activityId,
@@ -90,9 +90,9 @@ export const getPostsByUsername = (
 		const { dataApi } = context;
 		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
 		dispatch(syncGetPostsByUsernameAction(posts));
-		dispatch(getProfilesByPosts(posts));
+		await dispatch(getProfilesByPosts(posts));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.GET_POSTS_BY_USER,
 				error: e.message,
@@ -100,7 +100,7 @@ export const getPostsByUsername = (
 			}),
 		);
 	} finally {
-		dispatch(
+		await dispatch(
 			endActivity({
 				uuid: activityId,
 			}),
@@ -130,15 +130,15 @@ export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
 	const activityId = uuidv4();
 	try {
 		dispatch(getPostByIdAction(getPostByIdInput));
-		dispatch(
+		await dispatch(
 			beginActivity({ type: ActionTypes.GET_POST_BY_ID, uuid: activityId }),
 		);
 		const { dataApi } = context;
 		const post = await dataApi.posts.getPostById(getPostByIdInput);
 		dispatch(syncGetPostByIdAction(post));
-		dispatch(getProfilesByPosts([post]));
+		await dispatch(getProfilesByPosts([post]));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.SYNC_GET_POST_BY_ID,
 				error: e.message,
@@ -146,7 +146,7 @@ export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -170,7 +170,7 @@ export const getPostByPath = (
 	const activityId = uuidv4();
 	try {
 		dispatch(getPostByPathAction(getPostPathInput));
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.GET_POST_BY_PATH,
 				uuid: activityId,
@@ -179,7 +179,7 @@ export const getPostByPath = (
 		const { dataApi } = context;
 		const post = await dataApi.posts.getPostByPath(getPostPathInput);
 		dispatch(syncGetPostByPathAction(post));
-		dispatch(getProfilesByPosts([post]));
+		await dispatch(getProfilesByPosts([post]));
 	} catch (e) {
 		dispatch(
 			setError({
@@ -189,7 +189,7 @@ export const getPostByPath = (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -212,7 +212,7 @@ export const loadMorePosts = (): IThunk => async (
 	const activityId = uuidv4();
 
 	dispatch(loadMorePostsAction());
-	dispatch(
+	await dispatch(
 		beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }),
 	);
 
@@ -240,13 +240,13 @@ export const loadMorePosts = (): IThunk => async (
 		});
 		dispatch(syncLoadMorePostsAction(posts));
 		await dispatch(getProfilesByPosts(posts));
-		dispatch(
+		await dispatch(
 			setGlobal({
 				canLoadMorePosts: !!posts.length,
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -270,7 +270,7 @@ export const getPublicPostsByDate = (
 	const activityId = uuidv4();
 	try {
 		dispatch(getPublicPostsByDateAction(getPostByDateInput));
-		dispatch(
+		await dispatch(
 			beginActivity({
 				type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
 				uuid: activityId,
@@ -279,9 +279,9 @@ export const getPublicPostsByDate = (
 		const { dataApi } = context;
 		const posts = await dataApi.posts.getPublicPostsByDate(getPostByDateInput);
 		dispatch(syncGetPublicPostsByDateAction(posts));
-		dispatch(getProfilesByPosts(posts));
+		await dispatch(getProfilesByPosts(posts));
 	} catch (e) {
-		dispatch(
+		await dispatch(
 			setError({
 				type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
 				error: e.message,
@@ -289,7 +289,7 @@ export const getPublicPostsByDate = (
 			}),
 		);
 	} finally {
-		dispatch(endActivity({ uuid: activityId }));
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -311,7 +311,7 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 		const activityId = uuidv4();
 		try {
 			dispatch(createPostAction(createPostInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.CREATE_POST,
 					uuid: activityId,
@@ -320,9 +320,9 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 			const { dataApi } = context;
 			await dataApi.posts.createPost(createPostInput);
 
-			dispatch(getPostsByUsername({ username: auth.alias }));
+			await dispatch(getPostsByUsername({ username: auth.alias }));
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.CREATE_POST,
 					error: e.message,
@@ -330,7 +330,7 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -353,7 +353,7 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 	if (auth && auth.alias) {
 		try {
 			dispatch(likePostAction(likePostInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.LIKE_POST,
 					uuid: activityId,
@@ -361,10 +361,10 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.posts.likePost(likePostInput);
-			dispatch(getPostById(likePostInput));
-			dispatch(getCurrentProfile());
+			await dispatch(getPostById(likePostInput));
+			await dispatch(getCurrentProfile());
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.LIKE_POST,
 					error: e.message,
@@ -372,7 +372,7 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -395,7 +395,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	if (auth && auth.alias) {
 		try {
 			dispatch(removePostAction(removePostInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.REMOVE_POST,
 					uuid: activityId,
@@ -404,9 +404,9 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 			const { dataApi } = context;
 			await dataApi.posts.removePost(removePostInput);
 
-			dispatch(getPostsByUsername({ username: auth.alias }));
+			await dispatch(getPostsByUsername({ username: auth.alias }));
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.REMOVE_POST,
 					error: e.message,
@@ -414,7 +414,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -437,7 +437,7 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 	if (auth && auth.alias) {
 		try {
 			dispatch(unlikePostAction(unlikePostInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.UNLIKE_POST,
 					uuid: activityId,
@@ -445,9 +445,9 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.posts.unlikePost(unlikePostInput);
-			dispatch(getPostById(unlikePostInput));
+			await dispatch(getPostById(unlikePostInput));
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.UNLIKE_POST,
 					error: e.message,
@@ -455,7 +455,7 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -477,7 +477,7 @@ export const createComment = (
 	if (auth && auth.alias) {
 		try {
 			dispatch(createCommentAction(createCommentInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.CREATE_COMMENT,
 					uuid: activityId,
@@ -485,9 +485,9 @@ export const createComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.createComment(createCommentInput);
-			dispatch(getPostById({ postId: createCommentInput.postId }));
+			await dispatch(getPostById({ postId: createCommentInput.postId }));
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.CREATE_COMMENT,
 					error: e.message,
@@ -495,7 +495,7 @@ export const createComment = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -524,7 +524,7 @@ export const likeComment = (
 		const activityId = uuidv4();
 		try {
 			dispatch(likeCommentAction(likeCommentInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.LIKE_COMMENT,
 					uuid: activityId,
@@ -532,9 +532,11 @@ export const likeComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.likeComment(likeCommentInput);
-			dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
+			await dispatch(
+				getPostById({ postId: parentPost ? parentPost.postId : '' }),
+			);
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.LIKE_COMMENT,
 					error: e.message,
@@ -542,7 +544,7 @@ export const likeComment = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -571,7 +573,7 @@ export const removeComment = (
 		const activityId = uuidv4();
 		try {
 			dispatch(removeCommentAction(removeCommentInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.REMOVE_COMMENT,
 					uuid: activityId,
@@ -579,9 +581,11 @@ export const removeComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.removeComment(removeCommentInput);
-			dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
+			await dispatch(
+				getPostById({ postId: parentPost ? parentPost.postId : '' }),
+			);
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.REMOVE_COMMENT,
 					error: e.message,
@@ -589,7 +593,7 @@ export const removeComment = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
@@ -618,7 +622,7 @@ export const unlikeComment = (
 		const activityId = uuidv4();
 		try {
 			dispatch(unlikeCommentAction(unlikeCommentInput));
-			dispatch(
+			await dispatch(
 				beginActivity({
 					type: ActionTypes.UNLIKE_COMMENT,
 					uuid: activityId,
@@ -626,9 +630,11 @@ export const unlikeComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.unlikeComment(unlikeCommentInput);
-			dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
+			await dispatch(
+				getPostById({ postId: parentPost ? parentPost.postId : '' }),
+			);
 		} catch (e) {
-			dispatch(
+			await dispatch(
 				setError({
 					type: ActionTypes.UNLIKE_COMMENT,
 					error: e.message,
@@ -636,7 +642,7 @@ export const unlikeComment = (
 				}),
 			);
 		} finally {
-			dispatch(endActivity({ uuid: activityId }));
+			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
 };
