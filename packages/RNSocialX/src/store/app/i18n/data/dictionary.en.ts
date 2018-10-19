@@ -214,7 +214,7 @@ export default {
 	'modal.sms.code.type.code.message': 'Please type the verification code sent to',
 	'modal.sms.code.resend.button': 'Resend Code',
 	'tab.bar.bottom.photo.picker.title': 'Share a photo',
-	'tab.bar.bottom.photo.picker.take.use.camera': 'Open camera',
+	'tab.bar.bottom.photo.picker.use.camera': 'Open camera',
 	'tab.bar.bottom.photo.picker.use.gallery': 'Pick from gallery',
 	'friendship.menu.option.remove': 'Unfriend',
 	'user.avatar.button.label.own.user': 'EDIT PROFILE',

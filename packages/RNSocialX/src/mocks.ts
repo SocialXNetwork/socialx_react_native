@@ -62,7 +62,7 @@ export const suggestedItems: ISearchResultData[] = [
 	{
 		userId: '101',
 		avatarURL:
-			'https://i.kinja-img.com/gawker-media/image/upload/s--_DBGLHVf--/c_scale,f_auto,fl_progressive,q_80,w_800/eibgv7kctah62iddzywm.jpg',
+			'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
 		location: 'New York',
@@ -103,7 +103,7 @@ export const suggestedItems: ISearchResultData[] = [
 
 export const posts: IWallPostCardData[] = [
 	{
-		id: '1',
+		postId: '1',
 		postText: 'Lorem ipsum dolor sit amet.',
 		location: 'Dolor',
 		taggedFriends: [{ fullName: 'Lorem' }, { fullName: 'Ipsum' }],
@@ -138,9 +138,10 @@ export const posts: IWallPostCardData[] = [
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 		contentOffensive: false,
+		errors: [],
 	},
 	{
-		id: '2',
+		postId: '2',
 		postText: 'Lorem ipsum dolor sit amet.',
 		location: 'Dolor',
 		taggedFriends: [{ fullName: 'Lorem' }, { fullName: 'Ipsum' }],
@@ -176,9 +177,10 @@ export const posts: IWallPostCardData[] = [
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 		contentOffensive: true,
+		errors: [],
 	},
 	{
-		id: '3',
+		postId: '3',
 		postText: 'Lorem ipsum dolor sit amet.',
 		location: 'Dolor',
 		taggedFriends: [{ fullName: 'Lorem' }, { fullName: 'Ipsum' }],
@@ -214,6 +216,7 @@ export const posts: IWallPostCardData[] = [
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 		contentOffensive: false,
+		errors: [],
 	},
 ];
 
