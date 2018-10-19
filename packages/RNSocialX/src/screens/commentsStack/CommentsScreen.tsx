@@ -17,6 +17,7 @@ import {
 	IWithCommentsEnhancedData,
 	WithComments,
 } from '../../enhancers/screens';
+import { ActionTypes } from '../../store/data/posts/Types';
 
 import { OS_TYPES, SCREENS } from '../../environment/consts';
 import {
@@ -25,6 +26,7 @@ import {
 	INavigationProps,
 	IWallPostComment,
 } from '../../types';
+
 import { defaultStyles } from './CommentsScreen.style';
 import { CommentsScreenView } from './CommentsScreen.view';
 
@@ -42,7 +44,6 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	public state = {
 		sortOption: CommentsSortingOptions.Likes,
 		comment: '',
-		showSendButton: false,
 		commentLikesPosition: {
 			bottom: defaultStyles.commentsLikeBottomStartPosition,
 			right: 0,
@@ -64,7 +65,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const { getText, post, startComment } = this.props;
+		const { getText, post, startComment, errors } = this.props;
 
 		const optionsProps = {
 			sortOption: this.state.sortOption,
@@ -72,14 +73,27 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		};
 		const { comment } = this.state;
 
+		const likePostError = !!errors.find(
+			(error) =>
+				error.type === ActionTypes.LIKE_POST ||
+				error.type === ActionTypes.UNLIKE_POST,
+		);
+
+		const likeCommentError = !!errors.find(
+			(error) =>
+				error.type === ActionTypes.LIKE_COMMENT ||
+				error.type === ActionTypes.UNLIKE_COMMENT,
+		);
+
 		return (
 			<CommentsScreenView
 				post={post}
 				startComment={startComment}
+				likePostError={likePostError}
+				likeCommentError={likeCommentError}
 				comment={comment}
 				optionsProps={optionsProps}
 				onCommentLike={this.onCommentLikeHandler}
-				onCommentReply={this.onCommentReplyHandler}
 				onCommentSend={this.onCommentSendHandler}
 				onViewUserProfile={this.navigateToUserProfile}
 				onCommentTextChange={this.onCommentTextChangeHandler}
@@ -95,37 +109,19 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		);
 	}
 
-	private onCommentReplyHandler = (
-		comment: IWallPostComment,
-		startComment: boolean,
-	) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: {
-				commentId: comment.id,
-				startComment,
-			},
-		});
-		navigation.navigate({
-			routeName: SCREENS.Comments,
-			key: comment.id,
-		});
-	};
-
 	private onCommentLikeHandler = (comment: IWallPostComment) => {
 		const { unlikeComment, likeComment } = this.props;
 		if (comment.likedByMe) {
-			unlikeComment(comment.id);
+			unlikeComment(comment.commentId);
 		} else {
-			likeComment(comment.id);
+			likeComment(comment.commentId);
 		}
 	};
 
 	private onCommentSendHandler = () => {
 		const { sendComment, post } = this.props;
 		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
-		sendComment(escapedComment, post.id);
+		sendComment(escapedComment, post.postId);
 
 		this.setState({
 			comment: '',
@@ -164,7 +160,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			{
 				label: getText('comments.screen.advanced.menu.delete'),
 				icon: 'ios-trash',
-				actionHandler: () => deleteComment(comment.id),
+				actionHandler: () => deleteComment(comment.commentId),
 			},
 		];
 		showDotsMenuModal(menuItems);

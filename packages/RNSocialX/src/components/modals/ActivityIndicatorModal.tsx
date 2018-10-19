@@ -2,23 +2,21 @@ import * as React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
+
 import style, { customStyleProps } from './ActivityIndicatorModal.style';
 
-interface IActivityIndicatorModalProps {
-	activityIndicatorTitle: string | null;
-	activityIndicatorMessage: string | null;
-	showActivityIndicator: boolean;
+interface IActivityIndicatorModalProps extends ITranslatedProps {
+	title: string;
+	message: string;
+	visible: boolean;
 }
 
 export const ActivityIndicatorModal: React.SFC<
 	IActivityIndicatorModalProps
-> = ({
-	activityIndicatorTitle = null,
-	activityIndicatorMessage = null,
-	showActivityIndicator,
-}) => (
-	<WithManagedTransitions modalVisible={showActivityIndicator}>
+> = ({ title = null, message = null, visible, getText }) => (
+	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
 				// @ts-ignore // lib. TS issue, onDismiss prop is inherited from Modal in 'react-native'
@@ -26,19 +24,15 @@ export const ActivityIndicatorModal: React.SFC<
 				// this does apply in all places where Modal from 'react-native-modal' is used.
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
-				isVisible={showActivityIndicator}
+				isVisible={visible}
 				backdropOpacity={0.5}
 				animationIn="slideInDown"
 				animationOut="slideOutUp"
 				style={style.container}
 			>
 				<View style={style.boxContainer}>
-					<Text style={style.title}>
-						{activityIndicatorTitle || 'Please wait'}
-					</Text>
-					{activityIndicatorMessage && (
-						<Text style={style.message}>{activityIndicatorMessage}</Text>
-					)}
+					<Text style={style.title}>{title || getText('please.wait')}</Text>
+					{message && <Text style={style.message}>{message}</Text>}
 					<ActivityIndicator
 						size="large"
 						color={customStyleProps.activityIndicatorColor}
