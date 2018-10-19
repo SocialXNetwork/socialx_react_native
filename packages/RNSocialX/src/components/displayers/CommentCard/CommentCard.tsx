@@ -9,57 +9,68 @@ import {
 } from 'react-native';
 
 import { AvatarImage } from '../../';
-import { AnimatedText } from '../../../environment/theme';
 import { ITranslatedProps, IWallPostComment } from '../../../types';
-import { CommentLikes, CommentReplies, ReplyButton } from './';
-import styles from './CommentCard.style';
+import { CommentLikes } from './';
 
-const PULSATE_PERIOD = 700;
+import styles from './CommentCard.style';
 
 interface ICommentCardProps extends ITranslatedProps {
 	comment: IWallPostComment;
 	onCommentLike: () => void;
-	onCommentReply: (startReply: boolean) => void;
-	isReply: boolean;
 	onViewUserProfile: (userId: string) => void;
 	onShowOptionsMenu: () => void;
 	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: StyleProp<ViewStyle>;
+	likeCommentError: boolean;
 }
 
-export class CommentCard extends React.Component<ICommentCardProps> {
-	public static defaultProps = {
-		isReply: false,
+interface ICommentCardState {
+	likes: number;
+	likedByMe: boolean;
+	error: boolean;
+	disabled: boolean;
+}
+
+export class CommentCard extends React.Component<
+	ICommentCardProps,
+	ICommentCardState
+> {
+	public static getDerivedStateFromProps(
+		nextProps: ICommentCardProps,
+		currentState: ICommentCardState,
+	) {
+		if (nextProps.likeCommentError !== currentState.error) {
+			return {
+				error: true,
+			};
+		}
+
+		return null;
+	}
+
+	public state = {
+		likes: this.props.comment.numberOfLikes,
+		likedByMe: this.props.comment.likedByMe,
+		error: false,
+		disabled: false,
 	};
 
 	public render() {
 		const {
 			comment,
-			isReply,
 			onViewUserProfile,
-			onCommentReply,
-			onCommentLike,
 			onShowOptionsMenu,
 			onCommentContainerWidthChange,
 			commentLikesPosition,
 			getText,
 		} = this.props;
 
-		const {
-			likedByMe,
-			numberOfLikes,
-			replies,
-			text,
-			user,
-			timestamp,
-		} = comment;
+		const { text, user, timestamp } = comment;
 		const commentTimestamp = moment(timestamp).fromNow();
-
-		const animatedText: React.RefObject<any> = React.createRef();
 
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={() => onViewUserProfile(user.id)}>
+				<TouchableOpacity onPress={() => onViewUserProfile(user.userId)}>
 					<AvatarImage image={user.avatarURL} style={styles.avatarImage} />
 				</TouchableOpacity>
 				<View style={styles.rightContainer}>
@@ -70,15 +81,15 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 						>
 							<Text
 								style={styles.userFullName}
-								onPress={() => onViewUserProfile(user.id)}
+								onPress={() => onViewUserProfile(user.userId)}
 							>
 								{user.fullName}
 							</Text>
 							<Text style={styles.commentText}>{text}</Text>
 						</TouchableOpacity>
-						{numberOfLikes > 0 && (
+						{this.state.likes > 0 && (
 							<CommentLikes
-								numberOfLikes={numberOfLikes}
+								numberOfLikes={this.state.likes}
 								commentLikesPosition={commentLikesPosition}
 							/>
 						)}
@@ -90,42 +101,41 @@ export class CommentCard extends React.Component<ICommentCardProps> {
 						}
 					>
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
-						<TouchableOpacity
-							onPress={() =>
-								this.onCommentLikeHandler(onCommentLike, animatedText)
-							}
-						>
-							<AnimatedText ref={animatedText} style={styles.actionButtonText}>
-								{likedByMe
+						<TouchableOpacity onPress={this.onCommentLikeHandler}>
+							<Text style={styles.actionButtonText}>
+								{this.state.likedByMe
 									? getText('comments.screen.actions.unlike')
 									: getText('comments.screen.actions.like')}
-							</AnimatedText>
+							</Text>
 						</TouchableOpacity>
-						{!isReply && (
-							<ReplyButton
-								onCommentReply={onCommentReply}
-								label={getText('comments.screen.actions.reply')}
-							/>
-						)}
 					</View>
-					{!isReply && (
-						<CommentReplies
-							replies={replies}
-							onViewUserProfile={onViewUserProfile}
-							onCommentReply={onCommentReply}
-							getText={getText}
-						/>
-					)}
 				</View>
 			</View>
 		);
 	}
 
-	private onCommentLikeHandler = (
-		onCommentLike: () => void,
-		animatedText: React.RefObject<any>,
-	) => {
-		onCommentLike();
-		animatedText.current.animate('pulse', PULSATE_PERIOD);
+	private onCommentLikeHandler = async () => {
+		this.setState((currentState) => {
+			return {
+				disabled: true,
+				likes: currentState.likedByMe
+					? currentState.likes - 1
+					: currentState.likes + 1,
+				likedByMe: !currentState.likedByMe,
+				error: false,
+			};
+		});
+
+		await this.props.onCommentLike();
+
+		if (this.state.error) {
+			this.setState({
+				disabled: false,
+				likes: this.props.comment.numberOfLikes,
+				likedByMe: this.props.comment.likedByMe,
+			});
+		} else {
+			this.setState({ disabled: false });
+		}
 	};
 }

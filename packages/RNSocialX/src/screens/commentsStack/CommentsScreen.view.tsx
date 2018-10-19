@@ -45,7 +45,6 @@ const onCommentSendHandler = (
 interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 	post: IPostForComment;
 	onCommentLike: (comment: IWallPostComment) => void;
-	onCommentReply: (comment: IWallPostComment, startReply: boolean) => void;
 	onCommentSend: () => void;
 	onCommentTextChange: (commentText: string) => void;
 	startComment: boolean;
@@ -58,12 +57,13 @@ interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 	onCommentContainerWidthChange: (value: number) => void;
 	commentLikesPosition: object;
 	optionsProps: object;
+	likePostError: boolean;
+	likeCommentError: boolean;
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	post,
 	onCommentLike,
-	onCommentReply,
 	onCommentSend,
 	startComment,
 	onViewUserProfile,
@@ -73,14 +73,16 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	onCommentsBackPress,
 	onImagePress,
 	onLikePress,
-	getText,
 	onCommentContainerWidthChange,
 	commentLikesPosition,
 	optionsProps,
+	likePostError,
+	likeCommentError,
 	marginBottom,
+	getText,
 }) => {
 	const {
-		id,
+		postId,
 		likes,
 		media,
 		postText,
@@ -123,31 +125,30 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					/>
 				)}
 				<CommentsPostLikes
-					getText={getText}
 					likes={likes}
 					showUserProfile={onViewUserProfile}
+					getText={getText}
 				/>
 				<CommentsPostActions
 					likedByMe={likedByMe}
-					onLikePress={() => onLikePress(likedByMe, id)}
-					getText={getText}
+					likePostError={likePostError}
+					onLikePress={() => onLikePress(likedByMe, postId)}
 					onStartComment={() => onStartCommentHandler(commentInputRef)}
+					getText={getText}
 				/>
 				{comments.length > 0 &&
 					comments.map((comm) => (
 						<CommentCard
-							key={comm.id}
+							key={comm.commentId}
 							comment={comm}
 							onCommentLike={() => onCommentLike(comm)}
-							onCommentReply={(startReply: boolean) =>
-								onCommentReply(comm, startReply)
-							}
 							onViewUserProfile={onViewUserProfile}
 							onShowOptionsMenu={() => onShowOptionsMenu(comm)}
 							onCommentContainerWidthChange={(width: number) =>
 								onCommentContainerWidthChange(width)
 							}
 							commentLikesPosition={commentLikesPosition}
+							likeCommentError={likeCommentError}
 							getText={getText}
 						/>
 					))}

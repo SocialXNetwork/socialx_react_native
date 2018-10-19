@@ -41,33 +41,11 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 		errors: [],
 	};
 
-	public async componentDidMount() {
-		const { setGlobal, getText } = this.props;
-
-		setGlobal({
-			activity: {
-				title: getText('login.progress.message'),
-			},
-		});
-	}
-
 	public render() {
-		const {
-			getText,
-			login,
-			loadPosts,
-			resetNavigationToRoute,
-			navigation,
-		} = this.props;
 		return (
 			<LoginScreenView
 				errors={this.state.errors}
-				onStartLogin={async (userName, password) => {
-					await login(userName, password);
-					await loadPosts();
-					await this.setState({ errors: [] });
-					resetNavigationToRoute(NAVIGATION.Main, navigation);
-				}}
+				onLogin={this.onLoginHandler}
 				onNavigateToPasswordForgot={() =>
 					this.safeNavigateToScreen(SCREENS.ForgotPassword)
 				}
@@ -76,10 +54,25 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 					this.safeNavigateToScreen('UploadKeyScreen')
 				}
 				onGoBack={this.onGoBackHandler}
-				getText={getText}
+				getText={this.props.getText}
 			/>
 		);
 	}
+
+	private onLoginHandler = async (userName: string, password: string) => {
+		const { login, loadPosts, resetNavigationToRoute, navigation } = this.props;
+
+		this.setState({ errors: [] });
+		this.switchActivityIndicator(true);
+		await login(userName, password);
+		if (this.state.errors.length > 0) {
+			this.switchActivityIndicator(false);
+		} else {
+			await loadPosts();
+			this.switchActivityIndicator(false);
+			resetNavigationToRoute(NAVIGATION.Main, navigation);
+		}
+	};
 
 	private safeNavigateToScreen = (screenName: string) => {
 		Keyboard.dismiss();
@@ -89,6 +82,15 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	private onGoBackHandler = () => {
 		Keyboard.dismiss();
 		this.props.navigation.goBack(null);
+	};
+
+	private switchActivityIndicator = (state: boolean) => {
+		this.props.setGlobal({
+			activity: {
+				visible: state,
+				title: this.props.getText('login.progress.message'),
+			},
+		});
 	};
 }
 

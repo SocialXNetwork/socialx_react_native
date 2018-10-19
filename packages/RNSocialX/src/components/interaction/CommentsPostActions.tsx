@@ -8,23 +8,27 @@ import { View } from 'react-native';
 
 import { IconButton, LikeAnimatingButton } from '../../components';
 import { ITranslatedProps } from '../../types';
+
 import styles from './CommentsPostActions.style';
 
 interface IPostActionsProps extends ITranslatedProps {
 	likedByMe: boolean;
+	likePostError: boolean;
 	onLikePress: () => void;
 	onStartComment: () => void;
 }
 
 export const CommentsPostActions: React.SFC<IPostActionsProps> = ({
 	likedByMe,
+	likePostError,
 	onLikePress,
 	onStartComment,
 	getText,
 }) => (
 	<View style={styles.container}>
 		<LikeAnimatingButton
-			onPress={onLikePress}
+			onLikePress={onLikePress}
+			likeError={likePostError}
 			likedByMe={likedByMe}
 			getText={getText}
 		/>

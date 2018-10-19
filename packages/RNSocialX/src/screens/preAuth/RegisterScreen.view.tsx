@@ -41,7 +41,7 @@ interface IRegisterFormData extends IRegisterData {
 }
 
 interface IRegisterScreenViewProps extends ITranslatedProps, IDotsMenuProps {
-	onStartRegister: (userData: IRegisterData) => void;
+	onRegister: (user: IRegisterData) => void;
 	onNavigateToTermsAndConditions: () => void;
 	onGoBack: () => void;
 }
@@ -67,7 +67,7 @@ const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({
 );
 
 export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
-	onStartRegister,
+	onRegister,
 	onNavigateToTermsAndConditions,
 	onGoBack,
 	getText,
@@ -150,7 +150,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							...registerData
 						}: IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
-								onStartRegister(registerData);
+								onRegister(registerData);
 							});
 							Keyboard.dismiss();
 						}}

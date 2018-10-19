@@ -404,24 +404,24 @@ export class WallPostCard extends React.Component<
 		let type = split[1];
 
 		switch (type) {
-			case 's': {
-				type = +value === 1 ? 'SECOND' : 'SECONDS';
+			case ' s': {
+				type = +value === 1 ? 'second' : 'seconds';
 				break;
 			}
-			case 'm': {
-				type = +value === 1 ? 'MINUTE' : 'MINUTES';
+			case ' m': {
+				type = +value === 1 ? 'minute' : 'minutes';
 				break;
 			}
-			case 'h': {
-				type = +value === 1 ? 'HOUR' : 'HOURS';
+			case ' h': {
+				type = +value === 1 ? 'hour' : 'hours';
 				break;
 			}
-			case 'd': {
-				type = +value === 1 ? 'DAY' : 'DAYS';
+			case ' d': {
+				type = +value === 1 ? 'day' : 'days';
 				break;
 			}
-			case 'month': {
-				type = +value === 1 ? 'MONTH' : 'MONTHS';
+			case ' month': {
+				type = +value === 1 ? 'month' : 'months';
 				break;
 			}
 			default:
@@ -430,7 +430,10 @@ export class WallPostCard extends React.Component<
 
 		split[0] = value;
 		split[1] = type;
-		return split.join(' ').toUpperCase();
+		return split
+			.join(' ')
+			.concat(' ago')
+			.toUpperCase();
 	};
 
 	private showOffensiveContent = () => {

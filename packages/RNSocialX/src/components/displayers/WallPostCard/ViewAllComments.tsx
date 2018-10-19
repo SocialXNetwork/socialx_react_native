@@ -14,7 +14,7 @@ export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({
 	onCommentPress,
 	getText,
 }) => {
-	if (numberOfComments > 0) {
+	if (numberOfComments > 2) {
 		return (
 			<TouchableOpacity
 				style={styles.numCommentsContainer}
