@@ -68,22 +68,17 @@ export const updateProfile = yup
 			.trim()
 			.min(10)
 			.max(200),
-		avatar: yup
-			.string()
-			.trim()
-			.required(),
+		avatar: yup.string().trim(),
 		email: yup
 			.string()
 			.trim()
 			.lowercase()
-			.email()
-			.required(),
+			.email(),
 		fullName: yup
 			.string()
 			.trim()
 			.min(4)
-			.max(128)
-			.required(),
+			.max(128),
 	})
 	.required();
 

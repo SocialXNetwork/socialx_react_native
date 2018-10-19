@@ -40,9 +40,10 @@ const Screen: React.SFC<ISettingsScreenProps> = ({
 		miningEnabled={currentUser.miningEnabled}
 		avatarURL={currentUser.avatarURL}
 		userName={currentUser.userName}
-		onSaveChanges={(saveData: ISettingsData) =>
-			saveChanges(saveData, { currentUser, updateUserProfile })
-		}
+		onSaveChanges={async (saveData: ISettingsData) => {
+			await saveChanges(saveData, { currentUser, updateUserProfile });
+			navigation.goBack();
+		}}
 		onGoBack={() => onGoBackHandler(navigation)}
 		getText={getText}
 		showDotsMenuModal={showDotsMenuModal}

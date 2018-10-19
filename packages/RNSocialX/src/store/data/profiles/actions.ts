@@ -8,6 +8,7 @@ import {
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
@@ -236,6 +237,8 @@ const updateCurrentProfileAction: ActionCreator<IUpdateProfileAction> = (
 export const updateCurrentProfile = (
 	updateProfileInput: IUpdateProfileInput,
 ): IThunk => async (dispatch, getState, context) => {
+	const { dataApi, storageApi } = context;
+
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -248,8 +251,67 @@ export const updateCurrentProfile = (
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			await dataApi.profiles.updateProfile(updateProfileInput);
+
+			const { avatar, ...profileRest } = updateProfileInput;
+
+			if (avatar!.length > 0 && avatar && avatar.indexOf('http') < 0) {
+				const bootstrapStatus = async (uploadIdStarted: string) => {
+					await dispatch(
+						setUploadStatus({
+							path: avatar,
+							uploadId: uploadIdStarted,
+							progress: 0,
+							aborting: false,
+							done: false,
+							hash: '',
+						}),
+					);
+				};
+
+				const updateStatus = async ({
+					uploadId: uploadIdUpdated,
+					progress,
+				}: any & { uploadId: string }) => {
+					await dispatch(
+						setUploadStatus({
+							uploadId: uploadIdUpdated,
+							progress,
+							path: avatar,
+							aborting: false,
+							done: false,
+							hash: '',
+						}),
+					);
+				};
+
+				const { uploadId, responseBody } = await storageApi.uploadFile(
+					avatar,
+					bootstrapStatus,
+					updateStatus,
+				);
+				const { Hash: hash } = JSON.parse(responseBody);
+
+				await dispatch(
+					setUploadStatus({
+						uploadId,
+						progress: 100,
+						path: avatar,
+						aborting: false,
+						done: true,
+						hash,
+					}),
+				);
+
+				const updateProfileFinal = {
+					...profileRest,
+					avatar: hash,
+				};
+
+				await dataApi.profiles.updateProfile(updateProfileFinal);
+			} else {
+				await dataApi.profiles.updateProfile(profileRest);
+			}
+
 			await dispatch(getCurrentProfile());
 		} catch (e) {
 			await dispatch(
