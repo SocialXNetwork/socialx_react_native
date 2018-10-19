@@ -4,9 +4,12 @@ import { IGunInstance } from '../types';
 
 Gun.chain.docLoad = function(
 	cb: (data: object | undefined, key: string) => IGunInstance,
-	old: boolean = false,
+	opts?: {
+		timeout: number,
+		wait: number;
+	},
 ) {
-	return this.docOpen(cb);
+	return this.docOpen(cb, opts);
 	// if (!old) {
 	// 	return this.docOpen((data: any, doc: any) => {
 	// 		if (Object.keys(data).length === 0 && data.constructor === Object) {
@@ -113,7 +116,7 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 			opt.any.call(opt.at, opt.doc, opt.key, opt, opt.ev);
 			opt.ev.off();
 			opt.any = null;
-		}, 600);
+		}, opt.timeout || 600);
 		opt.at = opt.at || ctx;
 		opt.key = opt.key || key;
 		// @ts-ignore-file
@@ -142,5 +145,5 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 				.get(key)
 				.docOpen(opt.any, opt, (opt.ids[id] = (at || opt.doc)[key] = {}));
 		});
-	}, { wait: 300 });
+	}, { wait: opt.wait || 300 });
 };

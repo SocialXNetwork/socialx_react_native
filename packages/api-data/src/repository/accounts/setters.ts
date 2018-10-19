@@ -162,16 +162,13 @@ export const login = (
 	});
 };
 
-export const logout = async (
-	context: IContext,
-	callback: IGunCallback<null>,
-) => {
+export const logout = (context: IContext, callback: IGunCallback<null>) => {
 	const { account } = context;
 	if (!account.is) {
 		return callback(null);
 	}
 	try {
-		await account.leave();
+		account.logout(context);
 		return callback(null);
 	} catch (e) {
 		return callback(e.message);
