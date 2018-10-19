@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { OS_TYPES } from '../environment/consts';
 import { Colors } from '../environment/theme';
 
-export const tabStyles: any = {
+const styles: any = {
 	activeTintColor: Colors.pink,
 	inactiveTintColor: Colors.background,
 	indicatorStyle: {
@@ -21,3 +21,6 @@ export const tabStyles: any = {
 		backgroundColor: Colors.white,
 	},
 };
+
+export const tabBarBackgroundColor = Colors.tabBarBottomBg;
+export default styles;

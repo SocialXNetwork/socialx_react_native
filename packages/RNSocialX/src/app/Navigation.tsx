@@ -15,12 +15,13 @@ import {
 	ConfirmationModal,
 	DotsMenuModal,
 	Header,
-	NavigationTabBar,
 	OfflineOverlayModal,
+	TabIcon,
 } from '../components';
 import { WithNavigation } from '../enhancers/navigation/WithNavigation';
 import { IDotsMenuItem, IStackDefaultConfig } from '../types';
-import { tabStyles } from './Navigation.style';
+
+import styles, { tabBarBackgroundColor } from './Navigation.style';
 
 import {
 	AdsManagementConfigBudgetScreen,
@@ -131,7 +132,7 @@ const TabbedFeedNavigator = createMaterialTopTabNavigator(
 	{
 		animationEnabled: true,
 		swipeEnabled: true,
-		tabBarOptions: tabStyles,
+		tabBarOptions: styles,
 	},
 );
 
@@ -173,22 +174,36 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 	{
 		UserFeedTab: UserFeedStackNavigator,
 		SearchTab: UserSearchStackNavigator,
+		PhotoTab: () => null,
 		NotificationsTab: NotificationsScreen,
 		MyProfileTab: MyProfileStackNavigator,
 	},
 	{
-		tabBarPosition: 'bottom',
-		animationEnabled: true,
-		swipeEnabled: false,
-		tabBarComponent: (props: any) => (
-			<NavigationTabBar
-				notifications={props.screenProps.notifications}
-				navigation={props.navigation}
-				getText={props.screenProps.getText}
-				setNavigationParams={props.screenProps.setNavigationParams}
-				showDotsMenuModal={props.screenProps.showDotsMenuModal}
-			/>
-		),
+		navigationOptions: (props) => ({
+			tabBarIcon: ({ focused }) => {
+				return (
+					<TabIcon
+						navigation={props.navigation}
+						focused={focused}
+						notifications={props.screenProps.notifications}
+						setNavigationParams={props.screenProps.setNavigationParams}
+						showDotsMenuModal={props.screenProps.showDotsMenuModal}
+						getText={props.screenProps.getText}
+					/>
+				);
+			},
+			tabBarOnPress: ({ navigation, defaultHandler }) => {
+				if (navigation.state.routeName !== 'PhotoTab') {
+					defaultHandler();
+				}
+			},
+			tabBarOptions: {
+				showLabel: false,
+				style: {
+					backgroundColor: tabBarBackgroundColor,
+				},
+			},
+		}),
 	},
 );
 
@@ -280,15 +295,9 @@ const Navigation = () => (
 														getText={i18nProps.getText}
 													/>
 													<ActivityIndicatorModal
-														showActivityIndicator={getActivitiesForIndicator(
-															activities,
-														)}
-														activityIndicatorTitle={
-															globals.activity ? globals.activity.title : ''
-														}
-														activityIndicatorMessage={
-															globals.activity ? globals.activity.message : ''
-														}
+														showActivityIndicator={globals.activity.visible}
+														activityIndicatorTitle={globals.activity.title}
+														activityIndicatorMessage={globals.activity.message}
 													/>
 													<ConfirmationModal
 														title={

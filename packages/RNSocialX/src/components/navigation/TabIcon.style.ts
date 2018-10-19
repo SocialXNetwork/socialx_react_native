@@ -1,31 +1,40 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const BADGE_HEIGHT = Sizes.smartHorizontalScale(18);
+const ICON_SIZE = Sizes.smartHorizontalScale(25);
 
 const styles: any = {
 	container: {
-		width: '100%',
+		width: '20%',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	button: {
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	icon: {
+		width: ICON_SIZE,
+		height: ICON_SIZE,
 	},
 	badge: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		lineHeight: BADGE_HEIGHT,
 		color: Colors.white,
 	},
 	background: {
 		position: 'absolute',
 		borderRadius: BADGE_HEIGHT / 2,
 		minWidth: BADGE_HEIGHT,
-		paddingHorizontal: 1,
-		paddingBottom: 1,
+		minHeight: BADGE_HEIGHT,
 		backgroundColor: Colors.red,
 		alignItems: 'center',
 		justifyContent: 'center',
-		left: '55%',
-		top: 2.5,
+		top: -5,
+		left: 7.5,
 	},
 };
 
