@@ -3,7 +3,7 @@ import { Keyboard } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { IError, INavigationProps } from '../../types';
-import { RegisterScreenView } from './RegisterScreen.view';
+import { IRegisterData, RegisterScreenView } from './RegisterScreen.view';
 
 import {
 	IWithRegisterEnhancedActions,
@@ -37,43 +37,40 @@ class Screen extends React.Component<
 		errors: [],
 	};
 
-	public componentDidMount() {
-		const { setGlobal, getText } = this.props;
-
-		setGlobal({
-			activity: {
-				title: getText('register.signingUp'),
-			},
-		});
+	public render() {
+		return (
+			<RegisterScreenView
+				onRegister={this.onRegisterHandler}
+				onNavigateToTermsAndConditions={() =>
+					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
+				}
+				onGoBack={this.onGoBackHandler}
+				showDotsMenuModal={this.props.showDotsMenuModal}
+				getText={this.props.getText}
+			/>
+		);
 	}
 
-	public render() {
+	private onRegisterHandler = async (user: IRegisterData) => {
 		const {
-			getText,
 			register,
-			showDotsMenuModal,
 			loadPosts,
 			resetNavigationToRoute,
 			navigation,
 		} = this.props;
 
-		return (
-			<RegisterScreenView
-				onStartRegister={async (userData) => {
-					await register(userData);
-					await loadPosts();
-					await this.setState({ errors: [] });
-					resetNavigationToRoute(NAVIGATION.Intro, navigation);
-				}}
-				onNavigateToTermsAndConditions={() =>
-					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
-				}
-				onGoBack={this.onGoBackHandler}
-				getText={getText}
-				showDotsMenuModal={showDotsMenuModal}
-			/>
-		);
-	}
+		this.setState({ errors: [] });
+		this.switchActivityIndicator(true);
+		await register(user);
+
+		if (this.state.errors.length > 0) {
+			this.switchActivityIndicator(false);
+		} else {
+			await loadPosts();
+			this.switchActivityIndicator(false);
+			resetNavigationToRoute(NAVIGATION.Main, navigation);
+		}
+	};
 
 	private safeNavigateToScreen = (screenName: string) => {
 		Keyboard.dismiss();
@@ -83,6 +80,15 @@ class Screen extends React.Component<
 	private onGoBackHandler = () => {
 		Keyboard.dismiss();
 		this.props.navigation.goBack(null);
+	};
+
+	private switchActivityIndicator = (state: boolean) => {
+		this.props.setGlobal({
+			activity: {
+				visible: state,
+				title: this.props.getText('register.progress.message'),
+			},
+		});
 	};
 }
 

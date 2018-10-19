@@ -288,16 +288,17 @@ const Navigation = () => (
 								<WithOverlays>
 									{(overlayProps) => (
 										<WithI18n>
-											{(i18nProps) => (
+											{(i18n) => (
 												<React.Fragment>
 													<OfflineOverlayModal
 														visible={!!globals.offline}
-														getText={i18nProps.getText}
+														getText={i18n.getText}
 													/>
 													<ActivityIndicatorModal
-														showActivityIndicator={globals.activity.visible}
-														activityIndicatorTitle={globals.activity.title}
-														activityIndicatorMessage={globals.activity.message}
+														visible={globals.activity.visible}
+														title={globals.activity.title}
+														message={globals.activity.message}
+														getText={i18n.getText}
 													/>
 													<ConfirmationModal
 														title={

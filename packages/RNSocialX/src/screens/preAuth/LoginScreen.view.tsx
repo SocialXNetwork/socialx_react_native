@@ -22,7 +22,7 @@ const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 interface ILoginFormProps extends ITranslatedProps {
 	authErrors: IError[];
-	onStartLogin: (userName: string, password: string) => void;
+	onLogin: (userName: string, password: string) => void;
 }
 
 interface ILoginScreenData {
@@ -32,7 +32,7 @@ interface ILoginScreenData {
 
 const LoginForm: React.SFC<ILoginFormProps> = ({
 	getText,
-	onStartLogin,
+	onLogin,
 	authErrors,
 }) => (
 	<KeyboardContext.Consumer>
@@ -54,7 +54,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 				}}
 				onSubmit={(values: ILoginScreenData) => {
 					safeRunAfterKeyboardHide(() =>
-						onStartLogin(values.userName, values.password),
+						onLogin(values.userName, values.password),
 					);
 					Keyboard.dismiss();
 				}}
@@ -138,7 +138,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 
 interface ILoginScreenViewProps extends ITranslatedProps {
 	errors: IError[];
-	onStartLogin: (userName: string, password: string) => void;
+	onLogin: (userName: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onNavigateToUploadKey: () => void;
@@ -147,7 +147,7 @@ interface ILoginScreenViewProps extends ITranslatedProps {
 
 export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 	errors,
-	onStartLogin,
+	onLogin,
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
 	onNavigateToUploadKey,
@@ -167,11 +167,7 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			keyboardShouldPersistTaps="handled"
 		>
 			<Text style={style.welcomeText}>{getText('login.welcome.message')}</Text>
-			<LoginForm
-				authErrors={errors}
-				getText={getText}
-				onStartLogin={onStartLogin}
-			/>
+			<LoginForm authErrors={errors} getText={getText} onLogin={onLogin} />
 			<TouchableOpacity
 				onPress={onNavigateToPasswordForgot}
 				style={style.forgotPassword}

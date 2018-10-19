@@ -26,7 +26,7 @@ interface ILikeAnimatingButtonProps extends ITranslatedProps {
 
 interface ILikeAnimatingButtonState {
 	disabled: boolean;
-	liked: boolean;
+	likedByMe: boolean;
 	error: boolean;
 }
 
@@ -53,7 +53,7 @@ export class LikeAnimatingButton extends React.Component<
 
 	public state = {
 		disabled: false,
-		liked: this.props.likedByMe,
+		likedByMe: this.props.likedByMe,
 		error: false,
 	};
 
@@ -61,11 +61,11 @@ export class LikeAnimatingButton extends React.Component<
 
 	public render() {
 		const { label, onLikePress } = this.props;
-		const { liked } = this.state;
+		const { likedByMe } = this.state;
 
 		const iconStyles = [
 			styles.icon,
-			{ color: liked ? Colors.pink : Colors.black },
+			{ color: likedByMe ? Colors.pink : Colors.black },
 		];
 
 		return (
@@ -76,7 +76,7 @@ export class LikeAnimatingButton extends React.Component<
 			>
 				<AnimatedFaIcon
 					ref={this.animatedIconRef}
-					name={liked ? 'heart' : 'heart-o'}
+					name={likedByMe ? 'heart' : 'heart-o'}
 					style={iconStyles}
 				/>
 				{label && <Text style={styles.label}>{label}</Text>}
@@ -88,7 +88,7 @@ export class LikeAnimatingButton extends React.Component<
 		this.setState((currentState) => {
 			return {
 				disabled: true,
-				liked: !currentState.liked,
+				likedByMe: !currentState.likedByMe,
 				error: false,
 			};
 		});
@@ -100,7 +100,7 @@ export class LikeAnimatingButton extends React.Component<
 		await this.props.onLikePress();
 
 		if (this.state.error) {
-			this.setState({ disabled: false, liked: this.props.likedByMe });
+			this.setState({ disabled: false, likedByMe: this.props.likedByMe });
 		} else {
 			this.setState({ disabled: false });
 		}

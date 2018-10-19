@@ -11,13 +11,12 @@ storiesOf('Components/displayers', module)
 	.addDecorator(withKnobs)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('CommentCard', () => {
-		const isReply = boolean('isReply', false);
 		const likedByMe = boolean('likedByMe', false);
+		const likeCommentError = boolean('likeCommentError', false);
 		const commentText = text(
 			'commentText',
 			'Sample comment text here.\nGoing on the second line',
 		);
-		const replyText = text('replyText', 'One line text reply.');
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
 		const userAvatarURL = text(
 			'user.avatarURL',
@@ -29,36 +28,19 @@ storiesOf('Components/displayers', module)
 		return (
 			<CommentCard
 				comment={{
-					id: 'comm_1',
+					commentId: 'comm_1',
 					text: commentText,
 					user: {
 						fullName: userFullName,
 						avatarURL: userAvatarURL,
-						id: 'user_11',
+						userId: 'user_11',
 					},
 					timestamp,
 					numberOfLikes,
 					likes: [], // not used by component
 					likedByMe,
-					replies: [
-						{
-							id: 'comm_2',
-							text: replyText,
-							user: {
-								fullName: userFullName,
-								avatarURL: userAvatarURL,
-								id: 'user_22',
-							},
-							timestamp: new Date('April 25, 2018 19:25:00'),
-							numberOfLikes: 2,
-							likes: [],
-							likedByMe: false,
-							replies: [],
-						},
-					],
 				}}
 				onCommentLike={action('onCommentLike')}
-				onCommentReply={action('onCommentReply')}
 				onViewUserProfile={action('onViewUserProfile')}
 				onShowOptionsMenu={action('onShowOptionsMenu')}
 				onCommentContainerWidthChange={action('onCommentContainerWidthChange')}
@@ -66,7 +48,7 @@ storiesOf('Components/displayers', module)
 					bottom: -15,
 					right: 0,
 				}}
-				isReply={isReply}
+				likeCommentError={likeCommentError}
 				getText={getTextMock}
 			/>
 		);

@@ -172,7 +172,7 @@ export interface IMediaProps {
 }
 
 export interface ISimpleComment {
-	id: string;
+	commentId: string;
 	text: string;
 	likes: ILike[];
 	owner: {
@@ -188,12 +188,12 @@ export interface IPostOwner {
 }
 
 export interface IWallPostComment {
-	id: string;
+	commentId: string;
 	text: string;
 	user: {
 		fullName: string;
 		avatarURL: string;
-		id: string;
+		userId: string;
 	};
 	timestamp: Date;
 	numberOfLikes: number;
@@ -202,7 +202,7 @@ export interface IWallPostComment {
 }
 
 export interface IPostForComment {
-	id: string;
+	postId: string;
 	postText: string;
 	owner: IPostOwner;
 	likedByMe: boolean;
