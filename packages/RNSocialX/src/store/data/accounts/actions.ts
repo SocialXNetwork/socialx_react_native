@@ -5,7 +5,6 @@ import {
 	IGetAccountByPubInput,
 	IRecoverAccountInput,
 } from '@socialx/api-data';
-import { IListenerProgess } from 'react-native-background-upload';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { getCurrentProfile } from '../profiles';
@@ -97,8 +96,8 @@ export const createAccount = (
 
 		const { avatar, ...createAccountRest } = createAccountInput;
 		if (avatar.uri.length > 0) {
-			const bootstrapStatus = (uploadIdStarted: string) => {
-				dispatch(
+			const bootstrapStatus = async (uploadIdStarted: string) => {
+				await dispatch(
 					setUploadStatus({
 						path: avatar.uri,
 						uploadId: uploadIdStarted,
@@ -113,7 +112,7 @@ export const createAccount = (
 			const updateStatus = async ({
 				uploadId: uploadIdUpdated,
 				progress,
-			}: IListenerProgess & { uploadId: string }) => {
+			}: any & { uploadId: string }) => {
 				await dispatch(
 					setUploadStatus({
 						uploadId: uploadIdUpdated,
