@@ -30,6 +30,10 @@ import {
 	IPostUserMetasCallback,
 } from './types';
 
+const noop = () => {
+	///
+};
+
 export const getPostPathsByUser = (
 	context: IContext,
 	{ username }: { username: string },
@@ -49,26 +53,41 @@ export const getPostPathsByUser = (
 };
 
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
-	convertGunSetToArrayWithKey(likes).map((like: any) => {
+	convertGunSetToArrayWithKey(likes).reduce((likesAgg: any[], like: any) => {
 		const { k, ...rest } = like;
-		return rest;
-	});
+		if (!like['#']) {
+			likesAgg = [...likesAgg, rest];
+		}
+		return likesAgg;
+	}, []);
 
 const convertMediaToArray = (media: any): IMedia[] =>
-	convertGunSetToArray(media).map((m: any) => m);
+	convertGunSetToArray(media).reduce((mediaAgg: any[], m: any) => {
+		if (!m['#']) {
+			mediaAgg = [...mediaAgg, m];
+		}
+		return mediaAgg;
+	}, []);
 
-const convertCommentsToArray = (comments: ICommentsPostData): ICommentData =>
-	convertGunSetToArrayWithKey(comments).map(
-		({ k, ...postComment }: ICommentCallbackData & { k: string }) => {
+const convertCommentsToArray = (comments: any): ICommentData[] =>
+	convertGunSetToArrayWithKey(comments).reduce(
+		(commentsAgg: any[], { k, ...postComment }: any & { k: string }) => {
 			// convert comment likes into an array with key
 			const commentLikes = convertLikesToArray(postComment.likes);
 			const { likes, ...postRest } = postComment;
-			return {
-				commentId: k,
-				likes: commentLikes,
-				...postRest,
-			} as any;
+			if (!postComment['#']) {
+				commentsAgg = [
+					...commentsAgg,
+					{
+						commentId: k,
+						likes: commentLikes,
+						...postRest,
+					},
+				];
+			}
+			return commentsAgg;
 		},
+		[],
 	);
 
 export const getPostByPath = (
@@ -134,9 +153,8 @@ export const getPublicPostsByDate = (
 ) => {
 	const datePath = datePathFromDate(date);
 
-	postHandles
-		.postsByDate(context, datePath)
-		.docLoad((postsData: IPostsDataCallback) => {
+	postHandles.postsByDate(context, datePath).docLoad(
+		(postsData: IPostsDataCallback) => {
 			if (!Object.keys(postsData).length) {
 				return callback(null, []);
 			}
@@ -152,7 +170,9 @@ export const getPublicPostsByDate = (
 				// convert likes into an array with keys
 				const postLikes = convertLikesToArray(post.likes);
 				// convert comments and their likes into an array with keys
-				const postComments = convertCommentsToArray(post.comments);
+				const postComments: ICommentData[] = convertCommentsToArray(
+					post.comments,
+				);
 				// convert media to an array
 				const mediaReturn = convertMediaToArray(post.media) || [];
 
@@ -166,7 +186,9 @@ export const getPublicPostsByDate = (
 			});
 
 			return callback(null, posts);
-		});
+		},
+		{ timeout: 700, wait: 300 },
+	);
 };
 
 const recursiveSearchForPosts = (

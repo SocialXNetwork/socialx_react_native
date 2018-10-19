@@ -73,9 +73,9 @@ export default (context: IContext) => ({
 		new Promise((resolve, reject) => {
 			setters.login(context, credentials, resolveCallback(resolve, reject));
 		}),
-	logout: (): Promise<null> =>
-		new Promise((resolve, reject) => {
-			setters.logout(context, resolveCallback(resolve, reject));
+	logout: () =>
+		setters.logout(context, () => {
+			return;
 		}),
 	recoverAccount: async (
 		recoverAccountInput: IRecoverAccountInput,
