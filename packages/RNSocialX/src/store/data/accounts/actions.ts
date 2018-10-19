@@ -221,6 +221,8 @@ export const login = (credentials: ICredentials): IThunk => async (
 	getState,
 	context,
 ) => {
+	const state = getState();
+	const auth = state.auth.database.gun;
 	const activityId = uuidv4();
 	try {
 		dispatch(loginAction(credentials));
@@ -235,13 +237,18 @@ export const login = (credentials: ICredentials): IThunk => async (
 		await dispatch(setGunAuth({ password: credentials.password }));
 		await dispatch(getCurrentAccount());
 	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.LOGIN,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
+		if (auth) {
+			await dispatch(login(credentials));
+			return;
+		} else {
+			await dispatch(
+				setError({
+					type: ActionTypes.LOGIN,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		}
 	} finally {
 		await dispatch(endActivity({ uuid: activityId }));
 	}
