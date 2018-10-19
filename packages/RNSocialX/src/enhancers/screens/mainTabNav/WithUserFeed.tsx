@@ -37,39 +37,16 @@ const mock: IWithUserFeedEnhancedProps = {
 		errors: [],
 	},
 	actions: {
-		loadPosts: (feed: FEED_TYPES) => {
-			/**/
-		},
-		loadMorePosts: () => {
-			/**/
-		},
-		refreshFeed: (feed: FEED_TYPES) => {
-			/**/
-		},
-		likePost: (postId: string) => {
-			/**/
-		},
-		unlikePost: (postId: string) => {
-			/**/
-		},
-		postComment: (escapedComment: string, postId: string) => {
-			/**/
-		},
-		blockUser: (userId: string) => {
-			/**/
-		},
-		reportProblem: (reason: string, description: string) => {
-			/**/
-		},
-		deletePost: (postId: string) => {
-			/**/
-		},
-		setGlobal: (global: IGlobal) => {
-			/**/
-		},
-		setNavigationParams: () => {
-			/**/
-		},
+		loadMorePosts: () => undefined,
+		refreshFeed: (feed: FEED_TYPES) => undefined,
+		likePost: (postId: string) => undefined,
+		unlikePost: (postId: string) => undefined,
+		postComment: (escapedComment: string, postId: string) => undefined,
+		blockUser: (userId: string) => undefined,
+		reportProblem: (reason: string, description: string) => undefined,
+		deletePost: (postId: string) => undefined,
+		setGlobal: (global: IGlobal) => undefined,
+		setNavigationParams: () => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -86,7 +63,6 @@ export interface IWithUserFeedEnhancedData {
 export interface IWithUserFeedEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions {
-	loadPosts: (feed: FEED_TYPES) => void;
 	loadMorePosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
 	likePost: (postId: string) => void;
@@ -165,14 +141,9 @@ export class WithUserFeed extends React.Component<
 																				},
 																				actions: {
 																					...mock.actions,
-																					// loadPosts: () =>
-																					// 	postsProps.getPublicPostsByDate({
-																					// 		date: new Date(Date.now()),
-																					// 	}),
 																					loadMorePosts:
 																						postsProps.loadMorePosts,
 																					refreshFeed: () => {
-																						// reset the store here, before refreshing
 																						postsProps.resetPostsAndRefetch();
 																					},
 																					likePost: (postId) =>

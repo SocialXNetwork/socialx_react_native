@@ -229,7 +229,6 @@ export interface ILike {
 }
 
 export interface IWallPostCardData extends IResizeProps {
-	errors: IError[];
 	postId: string;
 	postText: string | undefined;
 	location: string | undefined;
@@ -250,6 +249,7 @@ export interface IWallPostCardData extends IResizeProps {
 	suggested: undefined | ISearchResultData[];
 	noInput: boolean;
 	contentOffensive: boolean;
+	likeError: boolean;
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {

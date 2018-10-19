@@ -10,7 +10,7 @@ const styles: any = {
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(24),
-		marginLeft: Sizes.smartHorizontalScale(10),
+		marginLeft: Sizes.smartHorizontalScale(7.5),
 		transform: [{ translateY: -2 }],
 	},
 };

@@ -138,7 +138,7 @@ export const posts: IWallPostCardData[] = [
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 		contentOffensive: false,
-		errors: [],
+		likeError: false,
 	},
 	{
 		postId: '2',
@@ -177,7 +177,7 @@ export const posts: IWallPostCardData[] = [
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 		contentOffensive: true,
-		errors: [],
+		likeError: false,
 	},
 	{
 		postId: '3',
@@ -216,7 +216,7 @@ export const posts: IWallPostCardData[] = [
 		marginBottom: 0,
 		currentUserAvatarURL: avatar,
 		contentOffensive: false,
-		errors: [],
+		likeError: false,
 	},
 ];
 
