@@ -11,6 +11,7 @@ export interface IWallPostActions extends ITranslatedProps {
 	likedByMe: boolean;
 	numberOfSuperLikes: number;
 	numberOfWalletCoins: number;
+	likeError: boolean;
 	onLikePress: () => void;
 	onSuperLikePress: () => void;
 	onCommentPress: () => void;
@@ -19,9 +20,8 @@ export interface IWallPostActions extends ITranslatedProps {
 
 export const WallPostActions: React.SFC<IWallPostActions> = ({
 	likedByMe,
-	onLikePress = () => {
-		/**/
-	},
+	likeError,
+	onLikePress,
 	onCommentPress,
 	getText,
 }) => {
@@ -35,8 +35,9 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 				/> */}
 
 			<LikeAnimatingButton
-				onPress={onLikePress}
+				onLikePress={onLikePress}
 				likedByMe={likedByMe}
+				likeError={likeError}
 				getText={getText}
 			/>
 			{/* TODO: add when implemented: SuperLikes

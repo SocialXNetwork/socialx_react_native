@@ -2,19 +2,21 @@ import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
-import {
-	IWithUserFeedEnhancedActions,
-	IWithUserFeedEnhancedData,
-} from '../../../enhancers/screens';
-
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import {
 	IMediaProps,
 	INavigationProps,
 	IWallPostCardData,
 } from '../../../types';
+
 import { SHARE_SECTION_HEIGHT } from './UserFeedScreen.style';
 import { UserFeedScreenView } from './UserFeedScreen.view';
+
+import {
+	IWithUserFeedEnhancedActions,
+	IWithUserFeedEnhancedData,
+} from '../../../enhancers/screens';
+import { ActionTypes } from '../../../store/data/posts/Types';
 
 const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
@@ -61,11 +63,17 @@ export class Screen extends React.Component<
 			extrapolate: 'clamp',
 		});
 
+		const likeError = !!errors.find(
+			(error) =>
+				error.type === ActionTypes.LIKE_POST ||
+				error.type === ActionTypes.UNLIKE_POST,
+		);
+
 		return (
 			<UserFeedScreenView
 				avatarImage={currentUser ? currentUser.avatarURL : ''}
 				posts={posts}
-				errors={errors}
+				likeError={likeError}
 				currentUser={currentUser}
 				refreshing={refreshingFeed}
 				onRefresh={this.onRefreshHandler}

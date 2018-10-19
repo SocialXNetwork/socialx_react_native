@@ -21,7 +21,6 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { HeartAnimation, ReportProblemModal } from '../../';
 import { OS_TYPES } from '../../../environment/consts';
-import { ActionTypes } from '../../../store/data/posts/Types';
 import { IWallPostCardProps } from '../../../types';
 import {
 	BestComments,
@@ -51,7 +50,6 @@ export interface IWallPostCardState {
 	inputAvatarSize: Animated.Value;
 	inputAvatarRadius: Animated.Value;
 	viewOffensiveContent: boolean;
-	liked: boolean;
 }
 
 export class WallPostCard extends React.Component<
@@ -86,7 +84,6 @@ export class WallPostCard extends React.Component<
 		inputAvatarSize: new Animated.Value(25),
 		inputAvatarRadius: new Animated.Value(12.5),
 		viewOffensiveContent: false,
-		liked: this.props.likedByMe,
 	};
 
 	private readonly containerViewRef: React.RefObject<View> = React.createRef();
@@ -103,9 +100,9 @@ export class WallPostCard extends React.Component<
 	}
 
 	public shouldComponentUpdate(
-		nextProps: Readonly<IWallPostCardProps>,
-		nextState: Readonly<IWallPostCardState>,
-	): boolean {
+		nextProps: IWallPostCardProps,
+		nextState: IWallPostCardState,
+	) {
 		return (
 			this.props.postId !== nextProps.postId ||
 			this.props.numberOfComments !== nextProps.numberOfComments ||
@@ -119,7 +116,8 @@ export class WallPostCard extends React.Component<
 			this.state.inputAvatarSize !== nextState.inputAvatarSize ||
 			this.state.inputAvatarRadius !== nextState.inputAvatarRadius ||
 			this.props.listLoading !== nextProps.listLoading ||
-			this.state.viewOffensiveContent !== nextState.viewOffensiveContent
+			this.state.viewOffensiveContent !== nextState.viewOffensiveContent ||
+			this.props.likeError !== nextProps.likeError
 		);
 	}
 
@@ -145,6 +143,9 @@ export class WallPostCard extends React.Component<
 			numberOfWalletCoins,
 			postId,
 			onCommentPress,
+			onLikePress,
+			likedByMe,
+			likeError,
 			media,
 			onImagePress,
 			likes,
@@ -237,10 +238,11 @@ export class WallPostCard extends React.Component<
 				</View>
 				{!hidePostActionsAndComments && (
 					<WallPostActions
-						likedByMe={this.state.liked}
+						likedByMe={likedByMe}
+						likeError={likeError}
 						numberOfSuperLikes={numberOfSuperLikes}
 						numberOfWalletCoins={numberOfWalletCoins}
-						onLikePress={this.onLikePressHandler}
+						onLikePress={() => onLikePress(likedByMe, postId)}
 						onCommentPress={() => onCommentPress(postId, true)}
 						onSuperLikePress={this.superLikeButtonPressedHandler}
 						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
@@ -296,26 +298,6 @@ export class WallPostCard extends React.Component<
 				}),
 			]).start();
 			this.setState({ inputFocused: false });
-		}
-	};
-
-	private onLikePressHandler = async () => {
-		const { onLikePress, likedByMe, postId, errors } = this.props;
-
-		this.setState((prevState) => {
-			return {
-				liked: !prevState.liked,
-			};
-		});
-		await onLikePress(likedByMe, postId);
-		const error = errors.find(
-			(err) =>
-				err.type === ActionTypes.LIKE_POST ||
-				err.type === ActionTypes.UNLIKE_POST,
-		);
-
-		if (error) {
-			this.setState({ liked: likedByMe });
 		}
 	};
 
