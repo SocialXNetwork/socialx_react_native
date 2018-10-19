@@ -1,12 +1,3 @@
-export {
-	ActivityFriendRequestCard,
-} from './activityCards/ActivityFriendRequestCard';
-export {
-	ActivityRecentCommentCard,
-} from './activityCards/ActivityRecentCommentCard';
-export { ActivitySuperLikedCard } from './activityCards/ActivitySuperLikedCard';
-export { ActivityGenericCard } from './activityCards/ActivityGenericCard';
-
 export { AvatarImage } from './avatar/AvatarImage';
 export { AvatarName } from './avatar/AvatarName';
 export { AvatarPicker } from './avatar/AvatarPicker';
@@ -32,10 +23,6 @@ export { MediaObjectViewer } from './displayers/MediaObjectViewer';
 export { MyWalletInfo } from './displayers/MyWalletInfo';
 export { NoComments } from './displayers/NoComments';
 export { NoPhotos } from './displayers/NoPhotos';
-export {
-	NavigationTabBar,
-	NavigationItems,
-} from './displayers/NavigationTabBar';
 export { PeopleSearchResultEntry } from './displayers/PeopleSearchResultEntry';
 export { PhotoGrid } from './displayers/PhotoGrid';
 export { ProfilePhotoGrid } from './displayers/ProfilePhotoGrid';
@@ -124,6 +111,7 @@ export { WalletModal } from './modals/WalletModal';
 
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';
+export { TabIcon } from './navigation/TabIcon';
 
 export { Container as ReferralContainer } from './referral/Container';
 export { Row as ReferralRow } from './referral/Row';

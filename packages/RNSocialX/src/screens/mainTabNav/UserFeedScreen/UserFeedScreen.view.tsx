@@ -20,7 +20,7 @@ import {
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends IWallPostCardActions {
-	avatarImage: string | undefined;
+	avatarImage: string;
 	posts: IWallPostCardData[];
 	errors: IError[];
 	refreshing: boolean;

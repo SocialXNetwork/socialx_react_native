@@ -111,3 +111,15 @@ export enum NAVIGATION {
 	Main = 'Main',
 	Maintenance = 'Maintenance',
 }
+
+export enum TABS {
+	Feed = 'UserFeedTab',
+	Search = 'SearchTab',
+	Notifications = 'NotificationsTab',
+	Profile = 'MyProfileTab',
+}
+
+export enum IMAGE_PICKER_TYPES {
+	Camera = 'Camera',
+	Gallery = 'Gallery',
+}
