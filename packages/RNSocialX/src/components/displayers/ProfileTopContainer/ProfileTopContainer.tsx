@@ -76,7 +76,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 				onPress={onViewProfilePhoto}
 				style={styles.avatarContainer}
 			>
-				<AvatarImage image={{ uri: avatarURL }} style={styles.avatar} />
+				<AvatarImage image={avatarURL} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.statisticsContainer}>
 				<View style={styles.leftStatistics}>

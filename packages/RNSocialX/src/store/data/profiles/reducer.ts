@@ -12,7 +12,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const finalProfiles = action.payload.reduce(
 				(updatedProfiles, newProfile) => [
 					...updatedProfiles.filter(
-						(updatedProfile) => updatedProfile.pub !== newProfile.pub,
+						(updatedProfile) => updatedProfile.alias !== newProfile.alias,
 					),
 					newProfile,
 				],
@@ -31,7 +31,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				profiles: [
 					...state.profiles.filter(
-						(profile) => profile.pub !== action.payload.pub,
+						(profile) => profile.alias !== action.payload.alias,
 					),
 					action.payload,
 				],
@@ -46,7 +46,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const finalProfiles = action.payload.reduce(
 				(updatedProfiles, newProfile) => [
 					...updatedProfiles.filter(
-						(updatedProfile) => updatedProfile.pub !== newProfile.pub,
+						(updatedProfile) => updatedProfile.alias !== newProfile.alias,
 					),
 					newProfile,
 				],
@@ -65,7 +65,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				profiles: [
 					...state.profiles.filter(
-						(profile) => profile.pub !== action.payload.pub,
+						(profile) => profile.alias !== action.payload.alias,
 					),
 					action.payload,
 				],

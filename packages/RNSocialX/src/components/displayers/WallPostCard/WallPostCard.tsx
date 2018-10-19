@@ -21,6 +21,7 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { HeartAnimation, ReportProblemModal } from '../../';
 import { OS_TYPES } from '../../../environment/consts';
+import { ActionTypes } from '../../../store/data/posts/Types';
 import { IWallPostCardProps } from '../../../types';
 import {
 	BestComments,
@@ -33,6 +34,7 @@ import {
 	WallPostMedia,
 	WarnOffensiveContent,
 } from './';
+
 import styles from './WallPostCard.style';
 
 export interface IWallPostCardState {
@@ -49,6 +51,7 @@ export interface IWallPostCardState {
 	inputAvatarSize: Animated.Value;
 	inputAvatarRadius: Animated.Value;
 	viewOffensiveContent: boolean;
+	liked: boolean;
 }
 
 export class WallPostCard extends React.Component<
@@ -83,6 +86,7 @@ export class WallPostCard extends React.Component<
 		inputAvatarSize: new Animated.Value(25),
 		inputAvatarRadius: new Animated.Value(12.5),
 		viewOffensiveContent: false,
+		liked: this.props.likedByMe,
 	};
 
 	private readonly containerViewRef: React.RefObject<View> = React.createRef();
@@ -103,7 +107,7 @@ export class WallPostCard extends React.Component<
 		nextState: Readonly<IWallPostCardState>,
 	): boolean {
 		return (
-			this.props.id !== nextProps.id ||
+			this.props.postId !== nextProps.postId ||
 			this.props.numberOfComments !== nextProps.numberOfComments ||
 			this.state.reportProblemModalVisible !==
 				nextState.reportProblemModalVisible ||
@@ -136,12 +140,10 @@ export class WallPostCard extends React.Component<
 			location,
 			onUserPress,
 			postText,
-			likedByMe,
 			numberOfComments,
 			numberOfSuperLikes,
 			numberOfWalletCoins,
-			onLikeButtonPress,
-			id,
+			postId,
 			onCommentPress,
 			media,
 			onImagePress,
@@ -220,7 +222,7 @@ export class WallPostCard extends React.Component<
 							<WallPostMedia
 								mediaObjects={media}
 								onMediaObjectView={(index: number) =>
-									onImagePress(index, media, id)
+									onImagePress(index, media, postId)
 								}
 								onLikeButtonPressed={this.onDoubleTapLikeHandler}
 								noInteraction={disableMediaFullScreen}
@@ -235,11 +237,11 @@ export class WallPostCard extends React.Component<
 				</View>
 				{!hidePostActionsAndComments && (
 					<WallPostActions
-						likedByMe={likedByMe}
+						likedByMe={this.state.liked}
 						numberOfSuperLikes={numberOfSuperLikes}
 						numberOfWalletCoins={numberOfWalletCoins}
-						onLikePress={() => onLikeButtonPress(likedByMe, id)}
-						onCommentPress={() => onCommentPress(id, true)}
+						onLikePress={this.onLikePressHandler}
+						onCommentPress={() => onCommentPress(postId, true)}
 						onSuperLikePress={this.superLikeButtonPressedHandler}
 						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
 						getText={getText}
@@ -252,13 +254,13 @@ export class WallPostCard extends React.Component<
 				/>
 				<ViewAllComments
 					numberOfComments={numberOfComments}
-					onCommentPress={() => onCommentPress(id, false)}
+					onCommentPress={() => onCommentPress(postId, false)}
 					getText={getText}
 				/>
 				<BestComments
 					bestComments={bestComments}
 					onUserPress={onUserPress}
-					onCommentPress={() => onCommentPress(id, false)}
+					onCommentPress={() => onCommentPress(postId, false)}
 				/>
 				<CommentInput
 					noInput={noInput}
@@ -294,6 +296,26 @@ export class WallPostCard extends React.Component<
 				}),
 			]).start();
 			this.setState({ inputFocused: false });
+		}
+	};
+
+	private onLikePressHandler = async () => {
+		const { onLikePress, likedByMe, postId, errors } = this.props;
+
+		this.setState((prevState) => {
+			return {
+				liked: !prevState.liked,
+			};
+		});
+		await onLikePress(likedByMe, postId);
+		const error = errors.find(
+			(err) =>
+				err.type === ActionTypes.LIKE_POST ||
+				err.type === ActionTypes.UNLIKE_POST,
+		);
+
+		if (error) {
+			this.setState({ liked: likedByMe });
 		}
 	};
 
@@ -344,11 +366,13 @@ export class WallPostCard extends React.Component<
 	};
 
 	private onDoubleTapLikeHandler = async () => {
-		if (this.props.likedByMe) {
+		const { likedByMe, postId, onLikePress } = this.props;
+
+		if (likedByMe) {
 			this.setState({ heartAnimation: true });
 		} else {
 			this.setState({ heartAnimation: true });
-			this.props.onLikeButtonPress(this.props.likedByMe, this.props.id);
+			onLikePress(likedByMe, postId);
 		}
 	};
 
@@ -359,9 +383,9 @@ export class WallPostCard extends React.Component<
 	};
 
 	private onSubmitCommentHandler = () => {
-		const { id, onSubmitComment } = this.props;
+		const { postId, onSubmitComment } = this.props;
 		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
-		onSubmitComment(escapedComment, id);
+		onSubmitComment(escapedComment, postId);
 	};
 
 	private onCommentInputPress = () => {
@@ -454,7 +478,7 @@ export class WallPostCard extends React.Component<
 		const deleteItem = {
 			label: getText('wall.post.menu.delete.post'),
 			icon: 'ios-trash',
-			actionHandler: () => this.props.onDeletePress(this.props.id),
+			actionHandler: () => this.props.onDeletePress(this.props.postId),
 		};
 		return canDelete ? [...baseItems, deleteItem] : baseItems;
 	};

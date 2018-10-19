@@ -74,7 +74,7 @@ export const Notification: React.SFC<INotificationProps> = ({
 					style={styles.row}
 					onPress={() => onViewUserProfile(userId)}
 				>
-					<AvatarImage image={{ uri: avatarURL }} style={styles.avatarImage} />
+					<AvatarImage image={avatarURL} style={styles.avatarImage} />
 					<View style={{ flex: 1 }}>
 						<Text
 							style={[styles.fullName, { paddingBottom: groupName ? 5 : 0 }]}
