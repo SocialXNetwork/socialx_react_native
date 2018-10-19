@@ -16,5 +16,5 @@ Gun.chain.logout = function(context: IContext) {
         delete rootUser._.sea;
     };
     // @ts-ignore
-    account = new Gun({peers: context.config.peers}).user;
+    account = new Gun({peers: context.config.peers}).user();
 };

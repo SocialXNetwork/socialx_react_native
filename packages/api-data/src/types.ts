@@ -97,7 +97,7 @@ export interface IGunInstance {
 	path: (path: string) => IGunInstance;
 	docLoad: <T>(
 		callback: (data: T, key: string) => void,
-		old?: boolean,
+		opts?: { wait: number; timeout: number },
 	) => IGunInstance;
 	encrypt: (
 		data: IGunInstance | object,
@@ -155,7 +155,7 @@ export interface IGunAccountInstance extends IGunInstance {
 	 * @return a promise to be resolved into a IGunAccountInstance object
 	 */
 	leave: () => Promise<IGunAccountInstance | Error>;
-	logout: (account: IGunAccountInstance) => void;
+	logout: (context: IContext) => void;
 
 	/**
 	 * remove the actual user

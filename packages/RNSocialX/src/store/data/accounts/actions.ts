@@ -266,7 +266,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 				}),
 			);
 			const { dataApi } = context;
-			await dataApi.accounts.logout();
+			dataApi.accounts.logout();
 
 			await dispatch(clearGunAuth());
 		} catch (e) {
