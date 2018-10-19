@@ -22,7 +22,7 @@ export const SearchResultsItem: React.SFC<ISearchResultsItemProps> = ({
 		activeOpacity={1}
 		style={styles.card}
 	>
-		<AvatarImage image={{ uri: item.avatarURL }} style={styles.avatar} />
+		<AvatarImage image={item.avatarURL} style={styles.avatar} />
 		<View style={styles.textContainer}>
 			<Text style={styles.name}>{item.fullName}</Text>
 			<Text style={styles.text}>{item.location}</Text>
