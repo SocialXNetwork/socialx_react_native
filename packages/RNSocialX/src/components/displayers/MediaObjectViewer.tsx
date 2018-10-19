@@ -89,7 +89,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 								style={styles.photoStyle}
 								minimumZoomScale={1}
 								maximumZoomScale={3}
-								androidScaleType={'center'}
+								androidScaleType="center"
 								showsHorizontalScrollIndicator={false}
 								showsVerticalScrollIndicator={false}
 								androidZoomTransitionDuration={200}
@@ -100,7 +100,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 								source={{ uri }}
 								resizeMode={resizeMode}
 								style={styles.photoStyle}
-								resizeMethod={'resize'}
+								resizeMethod="resize"
 							/>
 						)}
 					</TouchableWithDoublePress>

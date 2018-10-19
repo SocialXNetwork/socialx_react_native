@@ -139,7 +139,8 @@ export class WithComments extends React.Component<
 
 																	const ownerProfile = profiles.find(
 																		(profile) =>
-																			profile.pub === currentPost!.owner.pub,
+																			profile.alias ===
+																			currentPost!.owner.alias,
 																	);
 
 																	return this.props.children({
@@ -175,8 +176,8 @@ export class WithComments extends React.Component<
 																					(comment) => {
 																						const commentOwner = profiles.find(
 																							(profile) =>
-																								profile.pub ===
-																								comment.owner.pub,
+																								profile.alias ===
+																								comment.owner.alias,
 																						);
 
 																						return {
@@ -186,7 +187,10 @@ export class WithComments extends React.Component<
 																								id: comment.owner.alias,
 																								fullName: commentOwner!
 																									.fullName,
-																								avatarURL: commentOwner!.avatar,
+																								avatarURL:
+																									appConfig.ipfsConfig
+																										.ipfs_URL +
+																									commentOwner!.avatar,
 																							},
 																							timestamp: new Date(
 																								comment.timestamp,

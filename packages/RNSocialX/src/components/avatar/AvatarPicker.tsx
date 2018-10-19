@@ -90,7 +90,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 		<TouchableOpacity
 			onPress={() => pickUserAvatar(afterImagePick, getText, showDotsMenuModal)}
 		>
-			<AvatarImage image={avatarImage} style={avatarSizeStyle} />
+			<AvatarImage image={avatarImage.uri} style={avatarSizeStyle} />
 			<View style={style.editIcon}>
 				<Icon name="camera" size={iconSize} color={Colors.postFullName} />
 			</View>

@@ -17,6 +17,7 @@ import {
 import { getActivity, mapPostsForUI } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
+import { IError } from '../../../store/ui/activities';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
@@ -33,6 +34,7 @@ const mock: IWithUserFeedEnhancedProps = {
 		canLoadMorePosts: false,
 		refreshingFeed: false,
 		loadingMorePosts: false,
+		errors: [],
 	},
 	actions: {
 		loadPosts: (feed: FEED_TYPES) => {
@@ -78,6 +80,7 @@ export interface IWithUserFeedEnhancedData {
 	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
+	errors: IError[];
 }
 
 export interface IWithUserFeedEnhancedActions
@@ -121,7 +124,7 @@ export class WithUserFeed extends React.Component<
 									<WithGlobals>
 										{({ setGlobal, globals }) => (
 											<WithActivities>
-												{({ activities }) => (
+												{({ activities, errors }) => (
 													<WithProfiles>
 														{({ profiles }) => (
 															<WithPosts>
@@ -158,6 +161,7 @@ export class WithUserFeed extends React.Component<
 																						activities,
 																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
 																					),
+																					errors,
 																				},
 																				actions: {
 																					...mock.actions,
