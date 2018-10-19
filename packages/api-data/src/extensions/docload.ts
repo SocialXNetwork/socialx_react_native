@@ -113,7 +113,7 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 			opt.any.call(opt.at, opt.doc, opt.key, opt, opt.ev);
 			opt.ev.off();
 			opt.any = null;
-		}, 500);
+		}, 600);
 		opt.at = opt.at || ctx;
 		opt.key = opt.key || key;
 		// @ts-ignore-file

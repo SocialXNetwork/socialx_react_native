@@ -59,6 +59,9 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		leave() {
 			return Promise.resolve(this);
 		},
+		logout() {
+			return null;
+		},
 		delete(username: string, password: string) {
 			return Promise.resolve(this);
 		},
@@ -95,6 +98,10 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		gun,
 		time,
 		work,
+		config: {
+			peers: [],
+			rootdb: '',
+		},
 	};
 
 	const accounts = accountsApi(context);
