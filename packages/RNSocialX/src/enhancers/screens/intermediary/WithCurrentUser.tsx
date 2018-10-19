@@ -31,7 +31,7 @@ export class WithCurrentUser extends React.Component<
 									let currentUser;
 									if (auth && profiles.length > 0) {
 										const foundProfile = profiles.find(
-											(profile) => profile.pub === auth.pub,
+											(profile) => profile.alias === auth.alias,
 										);
 
 										if (foundProfile) {

@@ -149,7 +149,7 @@ export class WithNotifications extends React.Component<
 															// 	(notification) => {
 															// 		const profile = profilesProps.profiles.find(
 															// 			(prof) =>
-															// 				prof.pub === notification.from.pub,
+															// 				prof.alias === notification.from.alias,
 															// 		);
 
 															// 		return {

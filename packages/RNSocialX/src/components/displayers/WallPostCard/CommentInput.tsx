@@ -10,7 +10,7 @@ import {
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
 import {
-	AnimatedImage,
+	AnimatedFastImage,
 	Colors,
 	Images,
 	Sizes,
@@ -54,7 +54,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 				activeOpacity={1}
 				style={styles.commentInputContainer}
 			>
-				<AnimatedImage
+				<AnimatedFastImage
 					source={
 						avatarURL.length > 0
 							? { uri: avatarURL }

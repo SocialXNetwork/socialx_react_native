@@ -48,6 +48,7 @@ export class Screen extends React.Component<
 			canLoadMorePosts,
 			refreshingFeed,
 			loadingMorePosts,
+			errors,
 			deletePost,
 			blockUser,
 			reportProblem,
@@ -64,6 +65,7 @@ export class Screen extends React.Component<
 			<UserFeedScreenView
 				avatarImage={currentUser ? currentUser.avatarURL : ''}
 				posts={posts}
+				errors={errors}
 				currentUser={currentUser}
 				refreshing={refreshingFeed}
 				onRefresh={this.onRefreshHandler}
@@ -74,7 +76,7 @@ export class Screen extends React.Component<
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				onImagePress={this.onMediaObjectPressHandler}
-				onLikeButtonPress={this.onLikePressHandler}
+				onLikePress={this.onLikePressHandler}
 				onUserPress={this.onUserPressHandler}
 				onSubmitComment={this.onSubmitCommentHandler}
 				onCommentPress={this.onCommentsButtonPressHandler}
@@ -93,7 +95,7 @@ export class Screen extends React.Component<
 		const { loadMorePosts } = this.props;
 
 		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
-			loadMorePosts();
+			await loadMorePosts();
 		}
 	};
 
@@ -114,29 +116,31 @@ export class Screen extends React.Component<
 		const { refreshFeed, feedType } = this.props;
 
 		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
-			refreshFeed(feedType);
+			await refreshFeed(feedType);
 		}
 	};
 
-	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
+	private onLikePressHandler = async (likedByMe: boolean, postId: string) => {
 		const { likePost, unlikePost } = this.props;
 
 		if (likedByMe) {
-			unlikePost(postId);
+			await unlikePost(postId);
 		} else {
-			likePost(postId);
+			await likePost(postId);
 		}
-
-		return !likedByMe;
 	};
 
 	private onUserPressHandler = (userId: string) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: { userId },
-		});
-		navigation.navigate(SCREENS.UserProfile);
+		const { navigation, setNavigationParams, currentUser } = this.props;
+		if (userId === currentUser.userId) {
+			navigation.navigate(SCREENS.MyProfile);
+		} else {
+			setNavigationParams({
+				screenName: SCREENS.UserProfile,
+				params: { userId },
+			});
+			navigation.navigate(SCREENS.UserProfile);
+		}
 	};
 
 	private onMediaObjectPressHandler = (

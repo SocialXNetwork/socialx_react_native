@@ -229,7 +229,8 @@ export interface ILike {
 }
 
 export interface IWallPostCardData extends IResizeProps {
-	id: string;
+	errors: IError[];
+	postId: string;
 	postText: string | undefined;
 	location: string | undefined;
 	taggedFriends: Array<{ fullName: string }> | undefined;
@@ -257,7 +258,7 @@ export interface IWallPostCardActions extends ITranslatedProps {
 		mediaObjects: IMediaProps[],
 		postId: string,
 	) => void;
-	onLikeButtonPress: (likedByMe: boolean, postId: string) => boolean;
+	onLikePress: (likedByMe: boolean, postId: string) => void;
 	onDeletePress: (postId: string) => void;
 	onUserPress: (userId: string) => void;
 	onCommentPress: (postId: string, startComment: boolean) => void; // this actually navigates to comments screen!

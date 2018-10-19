@@ -238,13 +238,13 @@ export const loadMorePosts = (): IThunk => async (
 		const posts = await dataApi.posts.loadMorePosts({
 			timestamp: lastPostTimestamp,
 		});
-		dispatch(syncLoadMorePostsAction(posts));
 		await dispatch(getProfilesByPosts(posts));
 		await dispatch(
 			setGlobal({
 				canLoadMorePosts: !!posts.length,
 			}),
 		);
+		dispatch(syncLoadMorePostsAction(posts));
 	} finally {
 		await dispatch(endActivity({ uuid: activityId }));
 	}
