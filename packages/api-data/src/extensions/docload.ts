@@ -113,7 +113,7 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 			opt.any.call(opt.at, opt.doc, opt.key, opt, opt.ev);
 			opt.ev.off();
 			opt.any = null;
-		}, 200);
+		}, 500);
 		opt.at = opt.at || ctx;
 		opt.key = opt.key || key;
 		// @ts-ignore-file
@@ -142,5 +142,5 @@ Gun.chain.docOpen = function(cb: any, opt: any, at: any) {
 				.get(key)
 				.docOpen(opt.any, opt, (opt.ids[id] = (at || opt.doc)[key] = {}));
 		});
-	}, { wait: 100 });
+	}, { wait: 300 });
 };
