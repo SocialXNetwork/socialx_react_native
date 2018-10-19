@@ -19,13 +19,15 @@ const PULSATE_PERIOD = 700;
 
 interface ILikeAnimatingButtonProps extends ITranslatedProps {
 	likedByMe: boolean;
+	likeError: boolean;
 	label: false | string;
-	onPress: () => void;
+	onLikePress: () => void;
 }
 
 interface ILikeAnimatingButtonState {
-	touchDisabled: boolean;
-	optimisticLikedByMe: boolean;
+	disabled: boolean;
+	liked: boolean;
+	error: boolean;
 }
 
 export class LikeAnimatingButton extends React.Component<
@@ -35,68 +37,73 @@ export class LikeAnimatingButton extends React.Component<
 	public static defaultProps = {
 		label: false,
 	};
+
 	public static getDerivedStateFromProps(
-		nextProps: Readonly<ILikeAnimatingButtonProps>,
-		prevState: Readonly<ILikeAnimatingButtonState>,
+		nextProps: ILikeAnimatingButtonProps,
+		currentState: ILikeAnimatingButtonState,
 	) {
-		if (nextProps.likedByMe !== prevState.optimisticLikedByMe) {
-			// TODO: investigate NativeBase as this crashes the app
-			// showToastMessage(nextProps.getText('toast.message.on.like.failed'));
+		if (nextProps.likeError !== currentState.error) {
 			return {
-				optimisticLikedByMe: nextProps.likedByMe,
+				error: true,
 			};
 		}
+
 		return null;
 	}
 
 	public state = {
-		touchDisabled: false,
-		optimisticLikedByMe: this.props.likedByMe,
+		disabled: false,
+		liked: this.props.likedByMe,
+		error: false,
 	};
 
 	private animatedIconRef: any = React.createRef();
 
 	public render() {
-		const { label, onPress } = this.props;
-		const { optimisticLikedByMe } = this.state;
-		const likeStyles = [
-			styles.likeButton,
-			{ color: optimisticLikedByMe ? Colors.pink : Colors.black },
+		const { label, onLikePress } = this.props;
+		const { liked } = this.state;
+
+		const iconStyles = [
+			styles.icon,
+			{ color: liked ? Colors.pink : Colors.black },
 		];
 
 		return (
 			<TouchableOpacity
 				style={styles.container}
-				disabled={!onPress || this.state.touchDisabled}
-				onPress={this.buttonPressedHandler}
+				disabled={!onLikePress || this.state.disabled}
+				onPress={this.onPressHandler}
 			>
 				<AnimatedFaIcon
 					ref={this.animatedIconRef}
-					name={optimisticLikedByMe ? 'heart' : 'heart-o'}
-					style={likeStyles}
+					name={liked ? 'heart' : 'heart-o'}
+					style={iconStyles}
 				/>
 				{label && <Text style={styles.label}>{label}</Text>}
 			</TouchableOpacity>
 		);
 	}
 
-	private buttonPressedHandler = async () => {
-		const { onPress } = this.props;
-
-		this.setState({
-			touchDisabled: true,
-			optimisticLikedByMe: !this.state.optimisticLikedByMe,
+	private onPressHandler = async () => {
+		this.setState((currentState) => {
+			return {
+				disabled: true,
+				liked: !currentState.liked,
+				error: false,
+			};
 		});
 
-		onPress();
 		await this.animatedIconRef.current.animate(
 			Animations.custom.pulsate,
 			PULSATE_PERIOD,
 		);
+		await this.props.onLikePress();
 
-		this.setState({
-			touchDisabled: false,
-		});
+		if (this.state.error) {
+			this.setState({ disabled: false, liked: this.props.likedByMe });
+		} else {
+			this.setState({ disabled: false });
+		}
 	};
 }
 
@@ -114,7 +121,7 @@ const styles: any = StyleSheet.create({
 		color: Colors.postButtonColor,
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
-	likeButton: {
+	icon: {
 		fontSize: Sizes.smartHorizontalScale(24),
 	},
 });

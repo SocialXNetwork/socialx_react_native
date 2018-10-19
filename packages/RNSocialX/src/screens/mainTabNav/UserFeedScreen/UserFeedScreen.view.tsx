@@ -12,7 +12,6 @@ import {
 import {
 	getTextSignature,
 	ICurrentUser,
-	IError,
 	IWallPostCardActions,
 	IWallPostCardData,
 } from '../../../types';
@@ -22,7 +21,6 @@ import styles from './UserFeedScreen.style';
 interface IUserFeedScreenViewProps extends IWallPostCardActions {
 	avatarImage: string;
 	posts: IWallPostCardData[];
-	errors: IError[];
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
@@ -34,6 +32,7 @@ interface IUserFeedScreenViewProps extends IWallPostCardActions {
 	shareSectionOpacityInterpolation: number;
 	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
 	scrollY: AnimatedValue;
+	likeError: boolean;
 }
 
 export class UserFeedScreenView extends React.Component<
@@ -111,7 +110,7 @@ export class UserFeedScreenView extends React.Component<
 			<View style={styles.wallPostContainer}>
 				<WallPostCard
 					{...post}
-					errors={this.props.errors}
+					likeError={this.props.likeError}
 					canDelete={canDelete}
 					likedByMe={post.likedByMe}
 					listLoading={this.props.loadingMorePosts}

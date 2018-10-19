@@ -8,6 +8,7 @@ import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithCurrentUser } from './WithCurrentUser';
 import { WithVisitedUser } from './WithVisitedUser';
 
 interface IWithVisitedUserContentProps {
@@ -32,61 +33,63 @@ export class WithVisitedUserContent extends React.Component<
 						{({ posts }) => (
 							<WithProfiles>
 								{({ profiles }) => (
-									<WithVisitedUser>
-										{({ visitedUser }) => (
-											<WithActivities>
-												{({ activities }) => {
-													const user = visitedUser;
+									<WithCurrentUser>
+										{({ currentUser }) => (
+											<WithVisitedUser>
+												{({ visitedUser }) => (
+													<WithActivities>
+														{({ activities }) => {
+															if (visitedUser) {
+																const userPosts = posts.filter(
+																	(post) =>
+																		post.owner.alias === visitedUser.userId,
+																);
 
-													if (user) {
-														const userPosts = posts.filter(
-															(post) => post.owner.alias === user.userId,
-														);
+																const recentPosts = mapPostsForUI(
+																	userPosts,
+																	5,
+																	currentUser,
+																	profiles,
+																	activities,
+																	ActionTypes.GET_POSTS_BY_USER,
+																	appConfig,
+																);
 
-														const recentPosts = mapPostsForUI(
-															userPosts,
-															5,
-															user,
-															profiles,
-															activities,
-															ActionTypes.GET_POSTS_BY_USER,
-															appConfig,
-														);
-														console.log(recentPosts);
+																visitedUser.numberOfLikes = posts.reduce(
+																	(acc, post) => acc + post.likes.length,
+																	0,
+																);
 
-														user.numberOfLikes = posts.reduce(
-															(acc, post) => acc + post.likes.length,
-															0,
-														);
+																visitedUser.numberOfPhotos = posts.reduce(
+																	(acc, post) =>
+																		post.media ? acc + post.media.length : 0,
+																	0,
+																);
 
-														user.numberOfPhotos = posts.reduce(
-															(acc, post) =>
-																post.media ? acc + post.media.length : 0,
-															0,
-														);
+																visitedUser.numberOfComments = posts.reduce(
+																	(acc, post) => acc + post.comments.length,
+																	0,
+																);
 
-														user.numberOfComments = posts.reduce(
-															(acc, post) => acc + post.comments.length,
-															0,
-														);
+																visitedUser.mediaObjects = extractMediaFromPosts(
+																	posts,
+																	appConfig,
+																);
 
-														// user.mediaObjects = extractMediaFromPosts(
-														// 	posts,
-														// 	appConfig,
-														// );
+																visitedUser.mediaObjects = [];
 
-														user.mediaObjects = [];
+																visitedUser.recentPosts = recentPosts;
+															}
 
-														user.recentPosts = recentPosts;
-													}
-
-													return this.props.children({
-														visitedUser: user,
-													});
-												}}
-											</WithActivities>
+															return this.props.children({
+																visitedUser,
+															});
+														}}
+													</WithActivities>
+												)}
+											</WithVisitedUser>
 										)}
-									</WithVisitedUser>
+									</WithCurrentUser>
 								)}
 							</WithProfiles>
 						)}

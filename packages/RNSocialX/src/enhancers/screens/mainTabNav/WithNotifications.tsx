@@ -29,7 +29,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				userId: '123tqa5',
 				type: NOTIFICATION_TYPES.RECENT_COMMENT,
 				avatarURL:
-					'https://i.kinja-img.com/gawker-media/image/upload/s--_DBGLHVf--/c_scale,f_auto,fl_progressive,q_80,w_800/eibgv7kctah62iddzywm.jpg',
+					'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 				fullName: 'Seth Saunders',
 				userName: 'sethsaunders',
 				timestamp: new Date(2018, 2, 12, 5, 51, 23),
