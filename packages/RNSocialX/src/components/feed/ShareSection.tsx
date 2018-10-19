@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Animated, TouchableWithoutFeedback, View } from 'react-native';
 
+import { AnimatedFastImage } from '../../environment/theme';
+
 import styles, { USER_AVATAR_PLACEHOLDER } from './ShareSection.style';
 
 interface IShareSectionProps {
 	sharePlaceholder: string;
-	avatarImage: string | number | undefined;
+	avatarImage: string;
 	onCreateWallPost: () => void;
 	opacity: number;
 }
@@ -17,8 +19,10 @@ export const ShareSection: React.SFC<IShareSectionProps> = ({
 	opacity,
 }) => (
 	<Animated.View style={[styles.container, { opacity }]}>
-		<Animated.Image
-			source={avatarImage ? { uri: avatarImage } : USER_AVATAR_PLACEHOLDER}
+		<AnimatedFastImage
+			source={
+				avatarImage.length > 0 ? { uri: avatarImage } : USER_AVATAR_PLACEHOLDER
+			}
 			resizeMode="cover"
 			style={[styles.avatar, { opacity }]}
 		/>
