@@ -146,15 +146,15 @@ export const getPostById = (
 		});
 };
 
-export const getPublicPostsByDate = (
+const getAllPostRelevantData = (
 	context: IContext,
-	{ date }: { date: Date },
+	datePath: string,
+	{ timeout, wait, tries }: { timeout: number; wait: number; tries: number },
 	callback: IGunCallback<IPostArrayData>,
-) => {
-	const datePath = datePathFromDate(date);
-
+) =>
 	postHandles.postsByDate(context, datePath).docLoad(
 		(postsData: IPostsDataCallback) => {
+			console.log('getAllPostRelevantData', { timeout, wait, tries });
 			if (!Object.keys(postsData).length) {
 				return callback(null, []);
 			}
@@ -166,6 +166,7 @@ export const getPublicPostsByDate = (
 				};
 			});
 
+			let shouldWaitAndTryAgain = false;
 			const posts = allPosts.map((post: IPostCallbackData & { k: string }) => {
 				// convert likes into an array with keys
 				const postLikes = convertLikesToArray(post.likes);
@@ -173,8 +174,27 @@ export const getPublicPostsByDate = (
 				const postComments: ICommentData[] = convertCommentsToArray(
 					post.comments,
 				);
-				// convert media to an array
+				// Convert media to an array
 				const mediaReturn = convertMediaToArray(post.media) || [];
+
+				// If we don't get data proper data i.e. a hashtag key is present,
+				// stop current operation, append 100 to both timeout and wait
+				// Try again the current operation
+				[post.likes, post.comments, post.media].forEach(
+					(propArray: any = []) => {
+						if (propArray && propArray.length) {
+							propArray.forEach((obj: any) => {
+								if (
+									obj &&
+									typeof obj === 'object' &&
+									Object.keys(obj).includes('#')
+								) {
+									shouldWaitAndTryAgain = true;
+								}
+							});
+						}
+					},
+				);
 
 				const { likes, comments, media, ...postRest } = post;
 				return {
@@ -185,9 +205,31 @@ export const getPublicPostsByDate = (
 				};
 			});
 
-			return callback(null, posts);
+			if (!shouldWaitAndTryAgain) {
+				return callback(null, posts);
+			}
+
+			getAllPostRelevantData(
+				context,
+				datePath,
+				{ timeout: timeout + 100, wait: wait + 100, tries: tries + 1 },
+				callback,
+			);
 		},
-		{ timeout: 700, wait: 300 },
+		{ timeout, wait },
+	);
+
+export const getPublicPostsByDate = (
+	context: IContext,
+	{ date }: { date: Date },
+	callback: IGunCallback<IPostArrayData>,
+) => {
+	const datePath = datePathFromDate(date);
+	getAllPostRelevantData(
+		context,
+		datePath,
+		{ timeout: 700, wait: 300, tries: 0 },
+		callback,
 	);
 };
 

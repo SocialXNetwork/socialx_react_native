@@ -8,6 +8,7 @@ import 'gun/sea';
 
 import './extensions/docload';
 import './extensions/find';
+import './extensions/logout';
 
 import './extensions/encrypt';
 
