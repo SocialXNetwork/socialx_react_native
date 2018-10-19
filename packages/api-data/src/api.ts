@@ -57,7 +57,7 @@ export const dataApiFactory = (config: IApiOptions) => {
 
 	const gun = rootGun.get(rootdb);
 
-	const account = rootGun.user();
+	let account = rootGun.user();
 
 	const { encrypt, decrypt, work } = Gun.SEA;
 
@@ -68,6 +68,7 @@ export const dataApiFactory = (config: IApiOptions) => {
 		gun,
 		time,
 		work,
+		config
 	};
 
 	const accounts = accountsApi(context);

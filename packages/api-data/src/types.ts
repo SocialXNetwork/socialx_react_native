@@ -60,6 +60,7 @@ export interface IContext {
 	encrypt: (target: string, salt: string) => Promise<string>;
 	work: (pairsalt1: string, pairsalt2: string) => Promise<string>;
 	decrypt: (target: string, salt: string) => Promise<string>;
+	config: { peers: string[]; rootdb: string };
 }
 
 export interface IGunSetterCallback {
@@ -154,6 +155,7 @@ export interface IGunAccountInstance extends IGunInstance {
 	 * @return a promise to be resolved into a IGunAccountInstance object
 	 */
 	leave: () => Promise<IGunAccountInstance | Error>;
+	logout: (account: IGunAccountInstance) => void;
 
 	/**
 	 * remove the actual user
