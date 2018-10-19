@@ -24,15 +24,15 @@ export const mapPostsForUI = (
 		.map((post) => {
 			// @Alex Fix typing later
 			const postOwnerProfile = profiles.find(
-				(profile: any) => profile.pub === post.owner.pub,
+				(profile: any) => profile.alias === post.owner.alias,
 			);
 
-			const foundLike = post.likes.find(
+			const foundLike = !!post.likes.find(
 				(like) => like.owner.alias === user!.userId,
 			);
 
 			return {
-				id: post.postId,
+				postId: post.postId,
 				postText: post.postText,
 				location: post.location,
 				taggedFriends: post.taggedFriends,
@@ -40,7 +40,7 @@ export const mapPostsForUI = (
 				owner: {
 					userId: post.owner.alias,
 					fullName: postOwnerProfile.fullName,
-					avatarURL: postOwnerProfile.avatar,
+					avatarURL: appConfig.ipfsConfig.ipfs_URL + postOwnerProfile.avatar,
 				},
 				governanceVersion: false,
 				// TODO: add this later when data is available
@@ -93,6 +93,7 @@ export const mapPostsForUI = (
 				contentOffensive: false,
 				marginBottom: 0,
 				currentUserAvatarURL: user.avatarURL,
+				errors: [],
 			};
 		});
 };

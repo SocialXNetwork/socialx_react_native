@@ -12,6 +12,7 @@ import {
 import {
 	getTextSignature,
 	ICurrentUser,
+	IError,
 	IWallPostCardActions,
 	IWallPostCardData,
 } from '../../../types';
@@ -21,6 +22,7 @@ import styles from './UserFeedScreen.style';
 interface IUserFeedScreenViewProps extends IWallPostCardActions {
 	avatarImage: string | undefined;
 	posts: IWallPostCardData[];
+	errors: IError[];
 	refreshing: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
@@ -96,7 +98,7 @@ export class UserFeedScreenView extends React.Component<
 		);
 	}
 
-	private keyExtractor = (item: IWallPostCardData) => item.id;
+	private keyExtractor = (item: IWallPostCardData) => item.postId;
 
 	private renderWallPosts = (
 		data: { item: IWallPostCardData; index: number },
@@ -109,6 +111,7 @@ export class UserFeedScreenView extends React.Component<
 			<View style={styles.wallPostContainer}>
 				<WallPostCard
 					{...post}
+					errors={this.props.errors}
 					canDelete={canDelete}
 					likedByMe={post.likedByMe}
 					listLoading={this.props.loadingMorePosts}
@@ -116,7 +119,7 @@ export class UserFeedScreenView extends React.Component<
 					onCommentPress={this.props.onCommentPress}
 					onImagePress={this.props.onImagePress}
 					onDeletePress={this.props.onDeletePress}
-					onLikeButtonPress={this.props.onLikeButtonPress}
+					onLikePress={this.props.onLikePress}
 					onUserPress={(userId: string) => this.props.onUserPress(userId)}
 					/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as data.index */
 					onAddComment={(dummyIndex: number, cardHeight: number) =>

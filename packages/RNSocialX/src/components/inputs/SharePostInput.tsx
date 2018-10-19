@@ -20,7 +20,7 @@ export const SharePostInput: React.SFC<ISharePostInputProps> = ({
 	onTextUpdate,
 }) => (
 	<View style={style.shareMessageContainer}>
-		<AvatarImage image={{ uri: avatarSource }} style={style.avatarImage} />
+		<AvatarImage image={avatarSource} style={style.avatarImage} />
 		<View style={style.captionContainer}>
 			<TextInput
 				style={style.textInput}
