@@ -4,7 +4,6 @@ import { INavigationProps } from '../../types';
 import { ISettingsData, SettingsScreenView } from './SettingsScreen.view';
 
 import {
-	ISaveChangesParams,
 	IWithSettingsEnhancedActions,
 	IWithSettingsEnhancedData,
 	WithSettings,
@@ -14,41 +13,45 @@ type ISettingsScreenProps = INavigationProps &
 	IWithSettingsEnhancedActions &
 	IWithSettingsEnhancedData;
 
-const saveChanges = (
-	saveData: ISettingsData,
-	{ currentUser, updateUserProfile }: ISaveChangesParams,
-) => {
-	const avatarHasChanged = currentUser.avatarURL !== saveData.avatarURL;
-	updateUserProfile(saveData, avatarHasChanged);
-};
+class Screen extends React.Component<ISettingsScreenProps> {
+	public render() {
+		const { currentUser, navigation, getText, showDotsMenuModal } = this.props;
 
-const onGoBackHandler = (navigation: any) => {
-	navigation.goBack(null);
-};
+		return (
+			<SettingsScreenView
+				bio={currentUser.aboutMeText}
+				fullName={currentUser.fullName}
+				email={currentUser.email}
+				miningEnabled={currentUser.miningEnabled}
+				avatarURL={currentUser.avatarURL}
+				userName={currentUser.userName}
+				onSaveChanges={this.onSaveChangesHandler}
+				onGoBack={() => this.onGoBackHandler(navigation)}
+				showDotsMenuModal={showDotsMenuModal}
+				getText={getText}
+			/>
+		);
+	}
 
-const Screen: React.SFC<ISettingsScreenProps> = ({
-	currentUser,
-	updateUserProfile,
-	navigation,
-	getText,
-	showDotsMenuModal,
-}) => (
-	<SettingsScreenView
-		bio={currentUser.aboutMeText}
-		fullName={currentUser.fullName}
-		email={currentUser.email}
-		miningEnabled={currentUser.miningEnabled}
-		avatarURL={currentUser.avatarURL}
-		userName={currentUser.userName}
-		onSaveChanges={async (saveData: ISettingsData) => {
-			await saveChanges(saveData, { currentUser, updateUserProfile });
-			navigation.goBack();
-		}}
-		onGoBack={() => onGoBackHandler(navigation)}
-		getText={getText}
-		showDotsMenuModal={showDotsMenuModal}
-	/>
-);
+	private onSaveChangesHandler = async (user: ISettingsData) => {
+		this.switchActivityIndicator(true);
+		await this.props.updateUserProfile(user);
+		this.switchActivityIndicator(false);
+	};
+
+	private onGoBackHandler = (navigation: any) => {
+		navigation.goBack(null);
+	};
+
+	private switchActivityIndicator = (state: boolean) => {
+		this.props.setGlobal({
+			activity: {
+				visible: state,
+				title: this.props.getText('settings.progress.message'),
+			},
+		});
+	};
+}
 
 export const SettingsScreen = ({
 	navigation,

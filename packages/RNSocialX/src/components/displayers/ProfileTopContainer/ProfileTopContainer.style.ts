@@ -83,13 +83,11 @@ const styles: any = {
 	},
 	button: {
 		height: Sizes.smartVerticalScale(30),
-		borderRadius: Sizes.smartHorizontalScale(4),
 		backgroundColor: Colors.pink,
 		marginHorizontal: Sizes.smartHorizontalScale(10),
 	},
 	ghostButton: {
 		height: Sizes.smartVerticalScale(30),
-		borderRadius: Sizes.smartHorizontalScale(4),
 		backgroundColor: Colors.white,
 		marginHorizontal: Sizes.smartHorizontalScale(10),
 	},
