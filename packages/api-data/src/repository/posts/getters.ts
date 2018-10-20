@@ -106,6 +106,9 @@ export const getPostByPath = (
 					}),
 				);
 			}
+			if (!postData.owner) {
+				return callback(null, { deleted: true } as any);
+			}
 			// const keys = Object.keys()
 			const { likes, comments, media, ...restPost } = postData;
 			// convert likes into an array with keys
@@ -198,12 +201,14 @@ const getAllPostRelevantData = (
 				);
 
 				const { likes, comments, media, ...postRest } = post;
-				return {
-					...postRest,
-					likes: postLikes,
-					comments: postComments,
-					media: mediaReturn,
-				};
+				if (postRest.owner) {
+					return {
+						...postRest,
+						likes: postLikes,
+						comments: postComments,
+						media: mediaReturn,
+					};
+				}
 			});
 
 			if (!shouldWaitAndTryAgain) {
