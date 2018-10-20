@@ -160,7 +160,7 @@ export const likePost = (
 			postHandles
 				.postLikesByCurrentUser(context, postMeta.postPath)
 				.docLoad((likePostCallback: any) => {
-					if (!likePostCallback) {
+					if (likePostCallback !== null) {
 						if (
 							Object.keys(likePostCallback).length &&
 							likePostCallback.owner
