@@ -13,10 +13,3 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
-
-export const defaultStyles = {
-	commentWidthThreshold: Sizes.smartHorizontalScale(150),
-	commentsLikeBottomStartPosition: Sizes.smartHorizontalScale(-18),
-	commentsLikeBottomAdaptivePosition: Sizes.smartHorizontalScale(10),
-	commentsLikeRightAdaptivePosition: Sizes.smartHorizontalScale(-30),
-};

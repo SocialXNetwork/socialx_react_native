@@ -27,13 +27,11 @@ import {
 	IWallPostComment,
 } from '../../types';
 
-import { defaultStyles } from './CommentsScreen.style';
 import { CommentsScreenView } from './CommentsScreen.view';
 
 interface ICommentsScreenState {
 	sortOption: CommentsSortingOptions;
 	comment: string;
-	commentLikesPosition: object;
 }
 
 type ICommentsScreenProps = INavigationProps &
@@ -44,10 +42,6 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	public state = {
 		sortOption: CommentsSortingOptions.Likes,
 		comment: '',
-		commentLikesPosition: {
-			bottom: defaultStyles.commentsLikeBottomStartPosition,
-			right: 0,
-		},
 	};
 
 	public componentDidMount() {
@@ -101,8 +95,6 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
-				onCommentContainerWidthChange={this.setCommentContainerWidthHandler}
-				commentLikesPosition={this.state.commentLikesPosition}
 				getText={getText}
 				marginBottom={0}
 			/>
@@ -194,20 +186,8 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 
 		return !likedByMe;
 	};
-
-	private setCommentContainerWidthHandler = (width: number) => {
-		if (width < defaultStyles.commentWidthThreshold) {
-			this.setState({
-				commentLikesPosition: {
-					bottom: defaultStyles.commentsLikeBottomAdaptivePosition,
-					right: defaultStyles.commentsLikeRightAdaptivePosition,
-				},
-			});
-		}
-	};
 }
 
-// We do it explicitly here instead of a generic wrapper for flexibility
 export const CommentsScreen = (navProps: INavigationProps) => (
 	<WithComments>
 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}

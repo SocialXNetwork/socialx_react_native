@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { View } from 'react-native';
 
-import { Header } from '../../components';
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { LaunchScreenView } from './LaunchScreen.view';
+import { LoadingScreen } from './LoadingScreen';
 
 import {
 	IWithLaunchEnhancedActions,
@@ -49,11 +48,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 
 	public render() {
 		if (this.props.auth) {
-			return (
-				<View style={{ flex: 1, backgroundColor: '#fff' }}>
-					<Header />
-				</View>
-			);
+			return <LoadingScreen />;
 		} else {
 			return (
 				<LaunchScreenView

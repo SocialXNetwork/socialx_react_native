@@ -26,7 +26,7 @@ export const Colors = {
 	iron2: '#D6D9DE',
 	rhino: '#273851',
 	mercury: '#E5E5E5',
-	tabBarBottomBg: 'rgba(255,255,255,0.8)',
+	alabaster: '#f7f7f7',
 	green: '#43a324',
 	geyser: '#D2DAE1',
 	cadetBlue: '#A1B5C2',
