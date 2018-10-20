@@ -1,4 +1,11 @@
-import { IContext, IGunCallback, ILikeData, TABLE_ENUMS } from '../../types';
+import {
+	IContext,
+	IGunCallback,
+	IGunInstance,
+	ILikeData,
+	TABLE_ENUMS,
+	TABLES,
+} from '../../types';
 import { ApiError } from '../../utils/errors';
 import { getContextMeta } from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
@@ -15,12 +22,18 @@ import {
 	IUnlikeCommentInput,
 } from './types';
 
+const loadAllMetas = (gun: IGunInstance, cb: any) => {
+	gun.get(TABLES.COMMENT_META_BY_ID).once(() => {
+		cb();
+	});
+};
+
 export const createComment = (
 	context: IContext,
 	createCommentInput: ICreateCommentInput,
 	callback: IGunCallback<null>,
 ) => {
-	const { account } = context;
+	const { account, gun } = context;
 	const errPrefix = 'failed to create comment';
 	if (!account.is) {
 		return callback(new ApiError(`${errPrefix}, user not logged in`));
@@ -28,71 +41,79 @@ export const createComment = (
 
 	const { postId, text } = createCommentInput;
 
-	postHandles
-		.postMetaById(context, postId)
-		.docLoad((postMeta: IPostMetasCallback) => {
-			if (!Object.keys(postMeta).length) {
-				return callback(
-					new ApiError(`${errPrefix}, no post found by this id`, {
-						initialRequestBody: createCommentInput,
-					}),
-				);
-			}
+	const mainRunner = () => {
+		postHandles
+			.postMetaById(context, postId)
+			.docLoad((postMeta: IPostMetasCallback) => {
+				if (!Object.keys(postMeta).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no post found by this id`, {
+							initialRequestBody: createCommentInput,
+						}),
+					);
+				}
 
-			const { postPath } = postMeta;
-			const { owner, ownerPub, timestamp } = getContextMeta(context);
+				const { postPath } = postMeta;
+				const { owner, ownerPub, timestamp } = getContextMeta(context);
 
-			const commentId = uuidv4();
-
-			commentHandles
-				.commentsByPostPath(context, postPath)
-				.get(commentId)
-				.put(
-					{
-						text,
-						timestamp,
-						owner: {
-							alias: owner,
-							pub: ownerPub,
-						},
+				const commentId = uuidv4();
+				const commentData = {
+					text,
+					timestamp,
+					owner: {
+						alias: owner,
+						pub: ownerPub,
 					},
-					(commentCallback) => {
-						if (commentCallback.err) {
-							return callback(
-								new ApiError(
-									`${errPrefix}, failed to put comment ${commentCallback.err}`,
-									{ initialRequestBody: createCommentInput },
-								),
-							);
-						}
-
-						commentHandles.commentMetaById(context, commentId).put(
-							{
-								owner: {
-									alias: owner,
-									pub: ownerPub,
-								},
-								postPath,
-								timestamp,
-								commentId,
-							},
-							(putCommentMetaCallback) => {
-								if (putCommentMetaCallback.err) {
-									return callback(
-										new ApiError(
-											`${errPrefix}, failed to put comment meta ${
-												putCommentMetaCallback.err
-											}`,
-											{ initialRequestBody: createCommentInput },
-										),
-									);
-								}
-								return callback(null);
-							},
-						);
-					},
-				);
-		});
+				};
+				loadAllMetas(gun, () => {
+					createCommentByPostPath(commentData, commentId, postPath);
+				});
+			});
+	};
+	const createCommentByPostPath = (
+		commentData: any,
+		commentId: string,
+		postPath: string,
+	) => {
+		commentHandles
+			.commentsByPostPath(context, postPath)
+			.get(commentId)
+			.put(commentData, (commentCallback) => {
+				if (commentCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, failed to put comment ${commentCallback.err}`,
+							{ initialRequestBody: createCommentInput },
+						),
+					);
+				}
+				const commentMetaIdData = {
+					owner: commentData.owner,
+					postPath,
+					timestamp: commentData.timestamp,
+					commentId,
+				};
+				createCommentMeta(commentMetaIdData, commentId);
+			});
+	};
+	const createCommentMeta = (commentMetaIdData: any, commentId: string) => {
+		commentHandles
+			.commentMetaById(context, commentId)
+			.put(commentMetaIdData, (putCommentMetaCallback) => {
+				if (putCommentMetaCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, failed to put comment meta ${
+								putCommentMetaCallback.err
+							}`,
+							{ initialRequestBody: createCommentInput },
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	mainRunner();
 };
 
 export const removeComment = (
