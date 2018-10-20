@@ -259,7 +259,7 @@ export interface IWallPostCardActions extends ITranslatedProps {
 		postId: string,
 	) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
-	onDeletePress: (postId: string) => void;
+	onDeletePostPress: (postId: string) => void;
 	onUserPress: (userId: string) => void;
 	onCommentPress: (postId: string, startComment: boolean) => void; // this actually navigates to comments screen!
 	onAddComment: (index: number, cardHeight: number) => void;

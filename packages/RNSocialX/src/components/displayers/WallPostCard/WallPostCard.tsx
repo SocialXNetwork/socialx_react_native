@@ -3,7 +3,7 @@
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
  * 2. Implement delete option, available for own posts only!
  * 3. Decide if we can make an enhancer to deal with actions for this component. (for the sake of DRY)
- * 4. Take care of activating <ReportProblemModal/> with proper menu items, see method showAdvancedMenu
+ * 4. Take care of activating <ReportProblemModal/> with proper menu items, see method onShowOptions
  */
 
 import moment from 'moment';
@@ -21,7 +21,7 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { HeartAnimation, ReportProblemModal } from '../../';
 import { OS_TYPES } from '../../../environment/consts';
-import { IWallPostCardProps } from '../../../types';
+import { IDotsMenuProps, IWallPostCardProps } from '../../../types';
 import {
 	BestComments,
 	CommentInput,
@@ -36,11 +36,13 @@ import {
 
 import styles from './WallPostCard.style';
 
+type IWallPostCardPropsType = IWallPostCardProps & IDotsMenuProps;
+
 export interface IWallPostCardState {
 	fullTextVisible: boolean;
 	reportProblemModalVisible: boolean;
-	hideAdvancedMenu: boolean;
-	hideGoToUserProfile: boolean;
+	hideOptions: boolean;
+	disableNavigation: boolean;
 	hidePostActionsAndComments: boolean;
 	disableMediaFullScreen: boolean;
 	heartAnimation: boolean;
@@ -53,7 +55,7 @@ export interface IWallPostCardState {
 }
 
 export class WallPostCard extends React.Component<
-	IWallPostCardProps,
+	IWallPostCardPropsType,
 	IWallPostCardState
 > {
 	public static defaultProps = {
@@ -73,8 +75,8 @@ export class WallPostCard extends React.Component<
 	public state = {
 		fullTextVisible: false,
 		reportProblemModalVisible: false,
-		hideAdvancedMenu: this.props.governanceVersion || false,
-		hideGoToUserProfile: this.props.governanceVersion || false,
+		hideOptions: this.props.governanceVersion || false,
+		disableNavigation: this.props.governanceVersion || false,
 		hidePostActionsAndComments: this.props.governanceVersion || false,
 		disableMediaFullScreen: this.props.governanceVersion || false,
 		heartAnimation: false,
@@ -161,9 +163,9 @@ export class WallPostCard extends React.Component<
 			inputAvatarRadius,
 			inputAvatarSize,
 			inputBorderWidth,
-			hideAdvancedMenu,
+			hideOptions,
 			reportProblemModalVisible,
-			hideGoToUserProfile,
+			disableNavigation,
 			fullTextVisible,
 			hidePostActionsAndComments,
 			heartAnimation,
@@ -182,7 +184,7 @@ export class WallPostCard extends React.Component<
 
 		return (
 			<View style={styles.container} ref={this.containerViewRef}>
-				{!hideAdvancedMenu && (
+				{!hideOptions && (
 					<ReportProblemModal
 						visible={reportProblemModalVisible}
 						confirmHandler={this.reportProblemHandler}
@@ -195,13 +197,13 @@ export class WallPostCard extends React.Component<
 					user={owner}
 					timeStampDate={timeStampDate}
 					timeStampHour={timeStampHour}
-					hideAdvancedMenu={hideAdvancedMenu}
-					hideGoToUserProfile={hideGoToUserProfile}
+					hideOptions={hideOptions}
+					disableNavigation={disableNavigation}
 					taggedFriends={taggedFriends}
 					location={location}
 					onUserPress={onUserPress}
 					getText={getText}
-					onShowAdvancedMenu={this.showAdvancedMenu}
+					onShowOptions={this.onShowOptions}
 				/>
 				<PostText
 					text={postText}
@@ -442,33 +444,35 @@ export class WallPostCard extends React.Component<
 		});
 	};
 
-	private getAdvancedMenuItems = () => {
-		const { getText, canDelete } = this.props;
+	private onShowOptions = () => {
+		const { getText, canDelete, showDotsMenuModal } = this.props;
+
 		const baseItems = [
 			{
 				label: getText('wall.post.menu.block.user'),
-				icon: 'ios-close-circle-outline',
-				actionHandler: () => this.props.onBlockUser(this.props.owner.userId),
+				icon: 'ios-close-circle',
+				// actionHandler: () => this.props.onBlockUser(this.props.owner.userId),
+				actionHandler: () => undefined,
 			},
 			{
 				label: getText('wall.post.menu.report.problem'),
 				icon: 'ios-warning',
-				actionHandler: () => {
-					this.setState({
-						reportProblemModalVisible: true,
-					});
-				},
+				// actionHandler: () => {
+				// 	this.setState({
+				// 		reportProblemModalVisible: true,
+				// 	});
+				// },
+				actionHandler: () => undefined,
 			},
 		];
 		const deleteItem = {
 			label: getText('wall.post.menu.delete.post'),
 			icon: 'ios-trash',
-			actionHandler: () => this.props.onDeletePress(this.props.postId),
+			// actionHandler: () => this.props.onDeletePostPress(this.props.postId),
+			actionHandler: () => undefined,
 		};
-		return canDelete ? [...baseItems, deleteItem] : baseItems;
-	};
 
-	private showAdvancedMenu = () => {
-		const menuItems = this.getAdvancedMenuItems();
+		const items = canDelete ? [...baseItems, deleteItem] : baseItems;
+		showDotsMenuModal(items);
 	};
 }

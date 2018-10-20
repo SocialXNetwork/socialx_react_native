@@ -62,7 +62,7 @@ export const mapPostsForUI = (
 				}),
 				bestComments: post.comments.slice(0, 2).map((comment) => {
 					return {
-						id: String(comment.timestamp),
+						commentId: String(comment.timestamp),
 						text: comment.text,
 						likes: comment.likes.map((like) => {
 							return {

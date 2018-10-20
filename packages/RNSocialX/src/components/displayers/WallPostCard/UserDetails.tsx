@@ -12,30 +12,30 @@ interface IUserDetailsProps extends ITranslatedProps {
 	user: IPostOwner;
 	timeStampDate: string;
 	timeStampHour: string;
-	hideAdvancedMenu: boolean;
-	hideGoToUserProfile: boolean;
+	hideOptions: boolean;
+	disableNavigation: boolean;
 	taggedFriends?: Array<{ fullName: string }>;
 	location?: string;
 	onUserPress: (userId: string) => void;
-	onShowAdvancedMenu: () => void;
+	onShowOptions: () => void;
 }
 
 export const UserDetails: React.SFC<IUserDetailsProps> = ({
 	user,
 	timeStampDate,
 	timeStampHour,
-	hideAdvancedMenu,
-	hideGoToUserProfile,
+	hideOptions,
+	disableNavigation,
 	taggedFriends,
 	location,
 	onUserPress,
-	onShowAdvancedMenu,
+	onShowOptions,
 	getText,
 }) => (
 	<TouchableOpacity
 		onPress={() => onUserPress(user.userId)}
 		style={styles.container}
-		disabled={hideGoToUserProfile}
+		disabled={disableNavigation}
 	>
 		<View style={{ flex: 1 }}>
 			<FastImage
@@ -58,10 +58,10 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 			>{`${timeStampDate} at ${timeStampHour}`}</Text>
 		</View>
 		<View style={styles.dotsContainer}>
-			{!hideAdvancedMenu && (
+			{!hideOptions && (
 				<DotsMenuButton
 					iconColor={defaultStyles.advancedMenuButtonColor}
-					onPress={onShowAdvancedMenu}
+					onPress={onShowOptions}
 				/>
 			)}
 		</View>

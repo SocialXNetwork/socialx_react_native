@@ -54,6 +54,7 @@ export class Screen extends React.Component<
 			deletePost,
 			blockUser,
 			reportProblem,
+			showDotsMenuModal,
 			getText,
 		} = this.props;
 
@@ -89,11 +90,12 @@ export class Screen extends React.Component<
 				onSubmitComment={this.onSubmitCommentHandler}
 				onCommentPress={this.onCommentsButtonPressHandler}
 				onAddComment={this.onAddCommentPressHandler}
-				onDeletePress={deletePost}
+				onDeletePostPress={deletePost}
 				onBlockUser={blockUser}
 				onReportProblem={reportProblem}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
+				showDotsMenuModal={showDotsMenuModal}
 				getText={getText}
 			/>
 		);
