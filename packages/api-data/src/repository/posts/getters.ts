@@ -209,6 +209,8 @@ const getAllPostRelevantData = (
 							comments: postComments,
 							media: mediaReturn,
 						};
+					} else {
+						return null;
 					}
 				})
 				.filter((post: any) => post !== null);
