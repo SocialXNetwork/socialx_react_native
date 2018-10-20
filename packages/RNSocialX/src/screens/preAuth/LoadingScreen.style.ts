@@ -50,7 +50,7 @@ const styles: any = {
 	},
 	post: {
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
-		paddingVertical: Sizes.smartVerticalScale(10),
+		paddingVertical: Sizes.smartVerticalScale(5),
 	},
 	row: {
 		flexDirection: 'row',
