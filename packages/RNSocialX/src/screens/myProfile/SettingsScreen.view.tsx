@@ -11,6 +11,7 @@ import {
 	Header,
 	HeaderButton,
 	InputSizes,
+	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
 	TRKeyboardKeys,
@@ -45,10 +46,10 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	avatarURL,
 	userName,
 	miningEnabled,
-	getText,
 	onSaveChanges,
 	onGoBack,
 	showDotsMenuModal,
+	getText,
 }) => (
 	<Formik
 		initialValues={{
@@ -99,12 +100,6 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<Header
 						title={getText('settings.screen.title')}
 						left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-						right={
-							<HeaderButton
-								iconName="md-checkmark"
-								onPress={isValid ? handleSubmit : () => undefined}
-							/>
-						}
 					/>
 				}
 				<KeyboardAwareScrollView
@@ -229,6 +224,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							}
 						/>
 					</View>
+					{isValid && (
+						<View style={styles.button}>
+							<PrimaryButton
+								label={getText('settings.screen.save.button')}
+								onPress={handleSubmit}
+							/>
+						</View>
+					)}
 				</KeyboardAwareScrollView>
 			</View>
 		)}

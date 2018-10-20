@@ -11,7 +11,7 @@ const style: any = {
 	},
 	containerNormal: {
 		height: Sizes.smartVerticalScale(50),
-		borderRadius: Sizes.smartVerticalScale(5),
+		borderRadius: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
 	},
 	containerSmall: {

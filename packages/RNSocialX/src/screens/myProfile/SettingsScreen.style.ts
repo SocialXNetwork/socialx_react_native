@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
 
-const style: any = {
+const styles: any = {
 	container: {
 		width: '100%',
 		alignItems: 'center',
@@ -47,9 +47,14 @@ const style: any = {
 		marginBottom: Sizes.smartVerticalScale(5),
 		color: Colors.monza,
 	},
+	button: {
+		marginTop: Sizes.smartVerticalScale(20),
+		height: Sizes.smartVerticalScale(35),
+		justifyContent: 'center',
+	},
 };
 
-export default StyleSheet.create(style);
+export default StyleSheet.create(styles);
 
 export const defaultStyles = {
 	avatarPickerSize: Sizes.smartHorizontalScale(100),
