@@ -24,7 +24,7 @@ export const postsRecordByPostPath = (context: IContext, postPath: string) => {
 	const { gun } = context;
 	const postPathDeconstructed = postPath.split('.');
 	const postsPath = postPathDeconstructed
-		.splice(postPathDeconstructed.length - 1, 1)
+		.slice(0, postPathDeconstructed.length - 1)
 		.join('.');
 	return gun.path(`${TABLES.POSTS}.${postsPath}`);
 };
