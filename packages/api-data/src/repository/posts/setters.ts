@@ -160,12 +160,17 @@ export const likePost = (
 			postHandles
 				.postLikesByCurrentUser(context, postMeta.postPath)
 				.docLoad((likePostCallback: any) => {
-					if (Object.keys(likePostCallback).length && likePostCallback.owner) {
-						return callback(
-							new ApiError(`${errPrefix}, post already liked`, {
-								initialRequestBody: { postId },
-							}),
-						);
+					if (!likePostCallback) {
+						if (
+							Object.keys(likePostCallback).length &&
+							likePostCallback.owner
+						) {
+							return callback(
+								new ApiError(`${errPrefix}, post already liked`, {
+									initialRequestBody: { postId },
+								}),
+							);
+						}
 					}
 					postHandles.postLikesByCurrentUser(context, postMeta.postPath).put(
 						{
