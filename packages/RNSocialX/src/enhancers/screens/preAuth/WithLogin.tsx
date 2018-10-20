@@ -84,11 +84,15 @@ export class WithLogin extends React.Component<
 																	errors,
 																},
 																actions: {
-																	login: (username: string, password: string) =>
-																		accountsProps.login({
+																	login: async (
+																		username: string,
+																		password: string,
+																	) => {
+																		await accountsProps.login({
 																			username,
 																			password,
-																		}),
+																		});
+																	},
 																	loadPosts: postProps.loadMorePosts,
 																	setGlobal,
 																	resetNavigationToRoute,

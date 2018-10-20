@@ -2,6 +2,7 @@ import uuidv4 from 'uuid/v4';
 import {
 	IContext,
 	IGunCallback,
+	IGunInstance,
 	IGunSetterCallback,
 	ILikeData,
 	TABLE_ENUMS,
@@ -17,6 +18,14 @@ import {
 	IRemovePostInput,
 	IUnlikePostInput,
 } from './types';
+
+const loadAllMetas = (gun: IGunInstance, cb: any) => {
+	gun.get(TABLES.POST_META_BY_ID).once(() => {
+		gun.get(TABLES.POST_METAS_BY_USER).once(() => {
+			cb();
+		});
+	});
+};
 
 export const createPost = (
 	context: IContext,
@@ -40,6 +49,7 @@ export const createPost = (
 	const postId = uuidv4();
 	const postPath = (privatePost ? privatePath : publicPath) + `.${postId}`;
 
+	const errPrefix = 'failed to create post';
 	const mediaSetData = media
 		? media.reduce((res, item, i) => {
 				res = {
@@ -51,75 +61,81 @@ export const createPost = (
 				// tslint:disable-next-line
 		    }, {})
 		: {};
-
-	const errPrefix = 'failed to create post';
-	postHandles.postByPath(context, postPath).put(
-		{
-			...createPostInput,
-			owner: {
-				alias: owner,
-				pub: ownerPub,
+	const mainRunner = () => {
+		postHandles.postByPath(context, postPath).put(
+			{
+				...createPostInput,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+				timestamp,
+				likes: {},
+				comments: {},
+				media: mediaSetData,
 			},
-			timestamp,
-			likes: {},
-			comments: {},
-			media: mediaSetData,
-		},
-		(setPostCallback: IGunSetterCallback) => {
-			if (setPostCallback.err) {
-				return callback(
-					new ApiError(
-						`${errPrefix}, error creating post ${setPostCallback.err}`,
-					),
-				);
-			}
-			postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
-				{
-					postPath,
-					privatePost,
-					timestamp,
-					owner: {
-						alias: owner,
-						pub: ownerPub,
-					},
-				},
-				(setPostMetaCallback) => {
-					if (setPostMetaCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, error creating post meta of current account ${
-									setPostMetaCallback.err
-								}`,
-							),
-						);
-					}
-
-					postHandles.postMetaById(context, postId).put(
-						{
-							postPath,
-							privatePost,
-							owner: {
-								alias: owner,
-								pub: ownerPub,
-							},
-						},
-						(putPostMetaCallback) => {
-							if (putPostMetaCallback.err) {
-								return callback(
-									new ApiError(
-										`${errPrefix}, error creating post meta ${
-											setPostMetaCallback.err
-										}`,
-									),
-								);
-							}
-							return callback(null);
-						},
+			(createPostCallback: IGunSetterCallback) => {
+				if (createPostCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error creating post ${createPostCallback.err}`,
+						),
 					);
+				}
+				loadAllMetas(gun, createPostMetaByUser);
+			},
+		);
+	};
+	const createPostMetaByUser = () => {
+		postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
+			{
+				postPath,
+				privatePost,
+				timestamp,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
 				},
-			);
-		},
-	);
+			},
+			(createPostMetaByUserCallback) => {
+				if (createPostMetaByUserCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error creating post meta of current account ${
+								createPostMetaByUserCallback.err
+							}`,
+						),
+					);
+				}
+				createPostMetaById();
+			},
+		);
+	};
+	const createPostMetaById = () => {
+		postHandles.postMetaById(context, postId).put(
+			{
+				postPath,
+				privatePost,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+			},
+			(createOistMetaByIdCallback) => {
+				if (createOistMetaByIdCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error creating post meta ${
+								createOistMetaByIdCallback.err
+							}`,
+						),
+					);
+				}
+				return callback(null);
+			},
+		);
+	};
+	mainRunner();
 };
 
 export const likePost = (
