@@ -17,7 +17,7 @@ const styles: any = {
 	descriptionText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingTop: Sizes.smartVerticalScale(60),
 		textAlign: 'center',
 		paddingBottom: Sizes.smartVerticalScale(20),

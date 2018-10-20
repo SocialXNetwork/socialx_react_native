@@ -20,7 +20,7 @@ const styles: any = {
 	numberOfLikes: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingLeft: Sizes.smartHorizontalScale(2),
 	},
 	iconContainer: {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { RichText } from '../..';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 import { ISimpleComment } from '../../../types';
 
@@ -17,17 +18,42 @@ export const BestComments: React.SFC<IBestCommentsProps> = ({
 }) => (
 	<React.Fragment>
 		{bestComments.length > 0 && (
-			<View style={styles.bestCommentsContainer}>
+			<View style={styles.container}>
 				{bestComments.map((comment: ISimpleComment, index: number) => (
 					<Text style={styles.commentContainer} numberOfLines={2} key={index}>
 						<Text
-							style={styles.commentUserName}
+							style={styles.user}
 							onPress={() => onUserPress(comment.owner.userId)}
 							suppressHighlighting={true}
 						>
-							{comment.owner.userName + '  '}
+							{comment.owner.userName}
 						</Text>
-						<Text onPress={onCommentPress}>{comment.text}</Text>
+						<RichText
+							style={styles.text}
+							childrenProps={{
+								onPress: onCommentPress,
+								suppressHighlighting: true,
+							}}
+							parse={[
+								{
+									type: 'hashtag',
+									style: styles.hashtag,
+									onPress: () => undefined,
+								},
+								{
+									type: 'tags',
+									style: styles.tag,
+									onPress: () => undefined,
+								},
+								{
+									type: 'url',
+									style: styles.url,
+									onPress: () => undefined,
+								},
+							]}
+						>
+							{'  ' + comment.text}
+						</RichText>
 					</Text>
 				))}
 			</View>
@@ -36,18 +62,30 @@ export const BestComments: React.SFC<IBestCommentsProps> = ({
 );
 
 const style: any = {
-	bestCommentsContainer: {
+	container: {
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	commentContainer: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postText,
+		color: Colors.cloudBurst,
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
-	commentUserName: {
+	user: {
 		...Fonts.centuryGothicBold,
-		marginRight: Sizes.smartHorizontalScale(10),
+		fontSize: Sizes.smartHorizontalScale(15),
+	},
+	text: {
+		fontSize: Sizes.smartHorizontalScale(15),
+	},
+	hashtag: {
+		color: Colors.pink,
+	},
+	tag: {
+		color: Colors.pink,
+	},
+	url: {
+		color: Colors.pink,
 	},
 };
 

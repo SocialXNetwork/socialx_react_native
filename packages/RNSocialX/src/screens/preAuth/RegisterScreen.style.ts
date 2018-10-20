@@ -20,7 +20,7 @@ const style: any = {
 	orText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	textInputContainer: {
 		width: '100%',
@@ -74,7 +74,7 @@ const style: any = {
 	acceptText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	acceptTextLink: {
 		...Fonts.centuryGothicBold,
@@ -112,7 +112,7 @@ export default StyleSheet.create(style);
 
 export const colors = {
 	iron: Colors.iron,
-	postText: Colors.postText,
+	paleSky: Colors.paleSky,
 	transparent: Colors.transparent,
 	pink: Colors.pink,
 };

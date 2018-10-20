@@ -32,7 +32,7 @@ const style: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(21),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
 		paddingVertical: Sizes.smartVerticalScale(37),
 		textAlign: 'center',
@@ -71,7 +71,7 @@ const style: any = {
 		color: Colors.postHour,
 	},
 	buttonTextCancel: {
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 };
 

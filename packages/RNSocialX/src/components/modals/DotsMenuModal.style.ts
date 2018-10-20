@@ -39,7 +39,7 @@ const styles: any = {
 		justifyContent: 'center',
 	},
 	icon: {
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(25),
 	},
 };

@@ -63,10 +63,7 @@ export class LikeAnimatingButton extends React.Component<
 		const { label, onLikePress } = this.props;
 		const { likedByMe } = this.state;
 
-		const iconStyles = [
-			styles.icon,
-			{ color: likedByMe ? Colors.pink : Colors.black },
-		];
+		const iconStyles = [styles.icon, { color: Colors.black }];
 
 		return (
 			<TouchableOpacity

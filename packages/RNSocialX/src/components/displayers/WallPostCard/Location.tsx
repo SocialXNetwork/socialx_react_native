@@ -17,7 +17,7 @@ export const Location: React.SFC<ILocationProps> = ({ location, getText }) => {
 				<Icon
 					name="md-pin"
 					size={Sizes.smartHorizontalScale(12)}
-					color={Colors.postText}
+					color={Colors.paleSky}
 				/>
 				<Text> {location}</Text>
 			</React.Fragment>
@@ -29,6 +29,6 @@ export const Location: React.SFC<ILocationProps> = ({ location, getText }) => {
 
 const styles: any = StyleSheet.create({
 	grayText: {
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 });

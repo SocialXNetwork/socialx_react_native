@@ -41,7 +41,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(24),
 		lineHeight: Sizes.smartHorizontalScale(29),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	coinDetails: {
 		...Fonts.centuryGothic,

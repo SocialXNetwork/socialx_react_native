@@ -30,7 +30,7 @@ const styles: any = {
 	coinFullName: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(18),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	usdValue: {
 		...Fonts.centuryGothic,

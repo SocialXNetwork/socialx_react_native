@@ -152,7 +152,9 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			{
 				label: getText('comments.screen.advanced.menu.delete'),
 				icon: 'ios-trash',
-				actionHandler: () => deleteComment(comment.commentId),
+				actionHandler: async () => {
+					await deleteComment(comment.commentId);
+				},
 			},
 		];
 		showDotsMenuModal(menuItems);

@@ -67,7 +67,7 @@ const style: any = {
 	},
 	dropdownTextStyle: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(18),
 		paddingRight: '10%',
@@ -116,7 +116,7 @@ const style: any = {
 		color: Colors.postHour,
 	},
 	buttonTextCancel: {
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 };
 

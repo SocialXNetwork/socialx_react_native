@@ -54,7 +54,6 @@ export class UserFeedScreenView extends React.Component<
 			shareSectionOpacityInterpolation,
 			scrollRef,
 			scrollY,
-			showDotsMenuModal,
 			getText,
 		} = this.props;
 

@@ -49,7 +49,6 @@ const styles: any = {
 	},
 	button: {
 		marginTop: Sizes.smartVerticalScale(20),
-		height: Sizes.smartVerticalScale(35),
 		justifyContent: 'center',
 	},
 };
@@ -58,10 +57,10 @@ export default StyleSheet.create(styles);
 
 export const defaultStyles = {
 	avatarPickerSize: Sizes.smartHorizontalScale(100),
-	avatarFullNameColor: Colors.postFullName,
+	avatarFullNameColor: Colors.cloudBurst,
 	avatarUserNameColor: Colors.pink,
 	aboutMeTextBorderColor: Colors.dustWhite,
-	userDataInputPlaceholderColor: Colors.postText,
+	userDataInputPlaceholderColor: Colors.paleSky,
 	userDataInputBorderColor: Colors.transparent,
 	avatarPlaceholderImg: Images.user_avatar_placeholder,
 };

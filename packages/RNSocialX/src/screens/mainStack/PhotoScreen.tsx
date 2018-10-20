@@ -1,11 +1,3 @@
-/**
- * old screen -> screens/PhotoScreen/index.tsx
- * TODO list:
- * 1. @Serkan: check pattern for this.addedFriends
- * 2. (Later) Get rid of navigation workaround for passing onSendPress
- * 3. (Later) Consider using Formik to manage all user input data.
- */
-
 import * as React from 'react';
 
 import { WithModalForAddFriends } from '../../components';
@@ -14,6 +6,7 @@ import {
 	IWithPhotoEnhancedData,
 	WithPhoto,
 } from '../../enhancers/screens';
+import { IMAGE_PICKER_TYPES } from '../../environment/consts';
 import {
 	IFriendsSearchResult,
 	INavigationProps,
@@ -117,26 +110,28 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 		const { showDotsMenuModal, getText } = this.props;
 		const menuItems = [
 			{
-				label: getText('new.wall.post.screen.menu.pick.from.gallery'),
+				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
-				actionHandler: () => this.addToScrollerSelectedMediaObject('gallery'),
+				actionHandler: () =>
+					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
-				label: getText('new.wall.post.screen.menu.take.photo'),
+				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
-				actionHandler: () => this.addToScrollerSelectedMediaObject('photo'),
+				actionHandler: () =>
+					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
 		showDotsMenuModal(menuItems);
 	};
 
 	private addToScrollerSelectedMediaObject = async (
-		source: 'gallery' | 'photo',
+		source: IMAGE_PICKER_TYPES,
 	) => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
-		if (source === 'gallery') {
+		if (source === IMAGE_PICKER_TYPES.Gallery) {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();
-		} else if (source === 'photo') {
+		} else if (source === IMAGE_PICKER_TYPES.Camera) {
 			selectedMediaObjects = await getCameraMediaObjectMultiple();
 		}
 		if (selectedMediaObjects.length > 0) {

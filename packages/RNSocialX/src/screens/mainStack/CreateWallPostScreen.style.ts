@@ -27,7 +27,7 @@ const style: any = {
 	addMediaText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	mediaContainer: {
 		marginTop: Sizes.smartVerticalScale(5),

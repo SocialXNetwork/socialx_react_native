@@ -11,7 +11,7 @@ const style: any = {
 	},
 	headerText: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(15),
 		paddingHorizontal: SCREEN_HORIZONTAL_PADDING,
 		paddingVertical: Sizes.smartVerticalScale(20),
@@ -46,13 +46,13 @@ const style: any = {
 	},
 	photoIcon: {
 		fontSize: Sizes.smartHorizontalScale(30),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	addMediaText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
 		marginLeft: Sizes.smartHorizontalScale(10),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	mediaContainer: {
 		marginTop: Sizes.smartVerticalScale(5),

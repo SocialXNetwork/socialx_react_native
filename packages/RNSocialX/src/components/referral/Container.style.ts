@@ -8,14 +8,14 @@ const styles: any = {
 	heading: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 };
 

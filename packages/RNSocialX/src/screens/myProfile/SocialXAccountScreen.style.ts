@@ -18,7 +18,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(60),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingTop: Sizes.smartVerticalScale(28),
 	},
 	bottomContainer: {

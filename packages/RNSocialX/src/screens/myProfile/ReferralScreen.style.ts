@@ -18,7 +18,7 @@ const styles: any = {
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		letterSpacing: Sizes.smartHorizontalScale(2),
 	},
 	icon: {

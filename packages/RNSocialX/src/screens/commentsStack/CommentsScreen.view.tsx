@@ -10,10 +10,10 @@ import {
 import {
 	CommentCard,
 	CommentsPostActions,
-	CommentsPostLikes,
 	CommentsPostOwner,
-	CommentsPostText,
 	CommentTextInput,
+	PostText,
+	RecentLikes,
 } from '../../components';
 import { WallPostMedia } from '../../components/displayers/WallPostCard';
 import {
@@ -106,10 +106,18 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					timestamp={timestamp}
 					onBackPress={onCommentsBackPress}
 					optionsProps={optionsProps}
-					getText={getText}
 					showUserProfile={onViewUserProfile}
+					getText={getText}
 				/>
-				<CommentsPostText text={postText} />
+				<PostText
+					text={postText}
+					fullTextVisible={true}
+					toggleShowFullText={() => undefined}
+					handleHashTag={() => undefined}
+					handleUserTag={() => undefined}
+					launchExternalUrl={() => undefined}
+					getText={getText}
+				/>
 				{media && (
 					<WallPostMedia
 						mediaObjects={media}
@@ -120,9 +128,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 						getText={getText}
 					/>
 				)}
-				<CommentsPostLikes
+				<RecentLikes
 					likes={likes}
-					showUserProfile={onViewUserProfile}
+					onUserPress={onViewUserProfile}
 					getText={getText}
 				/>
 				<CommentsPostActions

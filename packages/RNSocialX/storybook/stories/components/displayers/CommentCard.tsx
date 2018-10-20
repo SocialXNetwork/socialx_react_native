@@ -48,11 +48,6 @@ storiesOf('Components/displayers', module)
 				onCommentLike={action('onCommentLike')}
 				onViewUserProfile={action('onViewUserProfile')}
 				onShowOptionsMenu={action('onShowOptionsMenu')}
-				onCommentContainerWidthChange={action('onCommentContainerWidthChange')}
-				commentLikesPosition={{
-					bottom: -15,
-					right: 0,
-				}}
 				likeCommentError={likeCommentError}
 				getText={getTextMock}
 			/>

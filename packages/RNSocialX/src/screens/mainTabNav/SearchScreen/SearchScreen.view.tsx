@@ -26,10 +26,10 @@ interface ISearchScreenViewProps
 		INavigationParamsActions {
 	loadedTabs: number[];
 	searchTermValue: string;
-	topSearchResults: ISearchResultData[];
-	topSuggestions: ISearchResultData[];
-	topSearching: boolean;
-	topHasMoreResults: boolean;
+	results: ISearchResultData[];
+	suggestions: ISearchResultData[];
+	searching: boolean;
+	hasMoreResults: boolean;
 	onTabIndexChanged: (value: { i: number }) => void;
 	onSearchTermChange: (value: string) => void;
 	searchForMoreResults: () => void;
@@ -41,10 +41,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 	searchTermValue,
 	onTabIndexChanged,
 	onSearchTermChange,
-	topSearchResults,
-	topSuggestions,
-	topHasMoreResults,
-	topSearching,
+	results,
+	suggestions,
+	hasMoreResults,
+	searching,
 	searchForMoreResults,
 	setNavigationParams,
 	getText,
@@ -58,7 +58,7 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 			autoFocus={true}
 		/>
 		<Tabs
-			locked={false} // allow swipe to change tabs
+			locked={false}
 			tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
 			onChangeTab={onTabIndexChanged}
 		>
@@ -73,10 +73,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 					<SearchTabResults
 						searchTermValue={searchTermValue}
 						navigation={navigation}
-						searchResults={topSearchResults}
-						suggestions={topSuggestions}
-						searching={topSearching}
-						hasMoreResults={topHasMoreResults}
+						searchResults={results}
+						suggestions={suggestions}
+						searching={searching}
+						hasMoreResults={hasMoreResults}
 						searchForMoreResults={searchForMoreResults}
 						setNavigationParams={setNavigationParams}
 						getText={getText}

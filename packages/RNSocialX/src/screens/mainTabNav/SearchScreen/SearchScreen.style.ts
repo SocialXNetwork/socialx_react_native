@@ -36,7 +36,7 @@ const styles: any = {
 	},
 	comingSoonIcon: {
 		fontSize: Sizes.smartVerticalScale(72),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 };
 

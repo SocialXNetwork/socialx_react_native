@@ -77,7 +77,6 @@ export class SearchHeader extends Component<
 							borderColor={colors.border}
 							iconColor={colors.icon}
 							returnKeyType={TRKeyboardKeys.done}
-							autoCorrect={true}
 							canCancel={true}
 							persistCancel={this.props.cancel}
 							onPressCancel={this.onBackHandler}

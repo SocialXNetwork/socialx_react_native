@@ -23,19 +23,19 @@ const styles: any = {
 	aboutMeTitle: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingBottom: Sizes.smartVerticalScale(23),
 	},
 	aboutMeText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(23),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	recentPostsTitle: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingTop: Sizes.smartVerticalScale(23),
 		paddingBottom: Sizes.smartVerticalScale(27),
 		paddingLeft: Sizes.smartHorizontalScale(17),
