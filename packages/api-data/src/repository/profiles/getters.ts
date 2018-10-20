@@ -22,7 +22,7 @@ export const getPublicKeyByUsername = (
 	callback: IGunCallback<string>,
 ) => {
 	profileHandles
-		.profileByUsername(context, username)
+		.publicProfileByUsername(context, username)
 		.docLoad(({ pub }: IProfileCallbackData) => {
 			return callback(null, pub);
 		});
@@ -46,23 +46,29 @@ export const getCurrentProfile = (
 			new ApiError('failed to get current profile, user not logged in'),
 		);
 	}
+	/**
+	 * get the current profile from the private scope
+	 */
+	const mainRunner = () => {
+		profileHandles
+			.currentUserProfileData(context)
+			.docLoad((currentProfileCallback: IProfileCallbackData) => {
+				if (!Object.keys(currentProfileCallback).length) {
+					return callback(new ApiError('failed to find current profile'));
+				}
 
-	profileHandles
-		.currentUserProfile(context)
-		.docLoad((profile: IProfileCallbackData) => {
-			if (!Object.keys(profile).length) {
-				return callback(new ApiError('failed to find current profile'));
-			}
-			const { friends, username, ...profileRest } = profile;
+				const { friends, username, ...profileRest } = currentProfileCallback;
 
-			const cleanedProfile = cleanGunMetaFromObject(profileRest);
-			const friendsData = friendsToArray(friends) || [];
-			const profileReturnData = {
-				friends: friendsData,
-				...cleanedProfile,
-			};
-			return callback(null, profileReturnData);
-		});
+				const cleanedProfile = cleanGunMetaFromObject(profileRest);
+				const friendsData = friendsToArray(friends) || [];
+				const profileReturnData = {
+					friends: friendsData,
+					...cleanedProfile,
+				};
+				return callback(null, profileReturnData);
+			});
+	};
+	mainRunner();
 };
 
 export const getProfileByUsername = (
@@ -70,27 +76,30 @@ export const getProfileByUsername = (
 	{ username }: { username: string },
 	callback: IGunCallback<IProfileCallbackData>,
 ) => {
-	profileHandles
-		.profileByUsername(context, username)
-		.docLoad((profile: IProfileCallbackData) => {
-			if (!Object.keys(profile).length) {
-				return callback(
-					new ApiError('failed to find profile', {
-						initialRequestBody: { username },
-					}),
-				);
-			}
-			const { friends, ...profileRest } = profile;
+	const mainRunner = () => {
+		profileHandles
+			.publicProfileByUsername(context, username)
+			.docLoad((profile: IProfileCallbackData) => {
+				if (!Object.keys(profile).length) {
+					return callback(
+						new ApiError('failed to find profile', {
+							initialRequestBody: { username },
+						}),
+					);
+				}
+				const { friends, ...profileRest } = profile;
 
-			const cleanedProfile = cleanGunMetaFromObject(profileRest);
+				const cleanedProfile = cleanGunMetaFromObject(profileRest);
 
-			const friendsData = friendsToArray(friends);
-			const profileReturnData = {
-				friends: friendsData,
-				...cleanedProfile,
-			};
-			return callback(null, profileReturnData);
-		});
+				const friendsData = friendsToArray(friends);
+				const profileReturnData = {
+					friends: friendsData,
+					...cleanedProfile,
+				};
+				return callback(null, profileReturnData);
+			});
+	};
+	mainRunner();
 };
 
 // ? this is not needed anymore, should exist?
@@ -98,17 +107,7 @@ export const getCurrentProfileFriends = (
 	context: IContext,
 	callback: IGunCallback<IFriendReturnData[]>,
 ) => {
-	profileHandles
-		.currentProfileFriends(context)
-		.docLoad((friends: IFriendsCallbackData) => {
-			if (!Object.keys(friends).length) {
-				return callback(new ApiError('failed to find friends of current user'));
-			}
-
-			const friendsData = friendsToArray(friends);
-
-			return callback(null, friendsData);
-		});
+	//
 };
 
 export const findProfilesByFullName = (
@@ -117,7 +116,7 @@ export const findProfilesByFullName = (
 	callback: IGunCallback<any[]>,
 ) => {
 	profileHandles
-		.allProfiles(context)
+		.publicProfilesRecord(context)
 		.find({ fullName: new RegExp(textSearch, 'i') }, (data: any) => {
 			return callback(null, data);
 		});

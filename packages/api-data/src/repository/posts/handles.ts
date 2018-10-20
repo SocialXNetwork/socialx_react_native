@@ -2,17 +2,17 @@ import { IContext, TABLE_ENUMS, TABLES } from '../../types';
 
 export const postMetaById = (context: IContext, postId: string) => {
 	const { gun } = context;
-	return gun.get(TABLES.POST_META_BY_ID).get(postId);
+	return gun.path(`${TABLES.POST_META_BY_ID}.${postId}`);
 };
 
 export const postMetasByUsername = (context: IContext, username: string) => {
 	const { gun } = context;
-	return gun.get(TABLES.POST_METAS_BY_USER).get(username);
+	return gun.path(`${TABLES.POST_METAS_BY_USER}.${username}`);
 };
 
 export const postMetasByCurrentUser = (context: IContext) => {
 	const { gun, account } = context;
-	return gun.get(TABLES.POST_METAS_BY_USER).get(account.is.alias);
+	return gun.path(`${TABLES.POST_METAS_BY_USER}.${account.is.alias}`);
 };
 
 export const postMetasByPostIdOfCurrentAccount = (
@@ -20,15 +20,12 @@ export const postMetasByPostIdOfCurrentAccount = (
 	postId: string,
 ) => {
 	const { gun, account } = context;
-	return gun
-		.get(TABLES.POST_METAS_BY_USER)
-		.get(account.is.alias)
-		.get(postId);
+	return gun.path(`${TABLES.POST_METAS_BY_USER}.${account.is.alias}.${postId}`);
 };
 
 export const postByPath = (context: IContext, postPath: string) => {
 	const { gun } = context;
-	return gun.get(TABLES.POSTS).path(postPath);
+	return gun.path(`${TABLES.POSTS}.${postPath}`);
 };
 
 export const postsByDate = (context: IContext, datePath: string) => {
@@ -38,7 +35,7 @@ export const postsByDate = (context: IContext, datePath: string) => {
 
 export const likesByPostPath = (context: IContext, postPath: string) => {
 	const { gun } = context;
-	return gun.get(TABLES.POSTS).path(`${postPath}.${TABLE_ENUMS.LIKES}`);
+	return gun.path(`${TABLES.POSTS}.${postPath}.${TABLE_ENUMS.LIKES}`);
 };
 
 export const postLikesByCurrentUser = (context: IContext, postPath: string) => {
