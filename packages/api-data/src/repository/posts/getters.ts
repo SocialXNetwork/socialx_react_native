@@ -55,7 +55,7 @@ export const getPostPathsByUser = (
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
 	convertGunSetToArrayWithKey(likes).reduce((likesAgg: any[], like: any) => {
 		const { k, ...rest } = like;
-		if (!like['#'] && Object.keys(rest).length > 0) {
+		if (!like['#'] && rest.owner) {
 			likesAgg = [...likesAgg, rest];
 		}
 		return likesAgg;
@@ -76,7 +76,7 @@ const convertCommentsToArray = (comments: any): ICommentData[] =>
 			// convert comment likes into an array with key
 			const commentLikes = convertLikesToArray(postComment.likes);
 			const { likes, ...postRest } = postComment;
-			if (!postComment['#'] && Object.keys(postRest).length > 0) {
+			if (!postComment['#'] && postComment.owner) {
 				commentsAgg = [
 					...commentsAgg,
 					{
