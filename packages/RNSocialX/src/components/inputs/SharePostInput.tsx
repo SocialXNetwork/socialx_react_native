@@ -25,7 +25,6 @@ export const SharePostInput: React.SFC<ISharePostInputProps> = ({
 			<TextInput
 				style={style.textInput}
 				autoFocus={true}
-				autoCorrect={true}
 				autoCapitalize="sentences"
 				underlineColorAndroid={customStyleProps.underlineColorAndroid}
 				numberOfLines={1}

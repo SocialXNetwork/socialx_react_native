@@ -19,7 +19,7 @@ const styles: any = {
 		flex: 8,
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		backgroundColor: Colors.dustWhite,
 		borderRadius: Sizes.smartHorizontalScale(25),
 		borderColor: Colors.silverSand,
@@ -51,6 +51,6 @@ const styles: any = {
 export default StyleSheet.create(styles);
 
 export const defaultStyles = {
-	placeholderTextColor: Colors.postFullName,
+	placeholderTextColor: Colors.cloudBurst,
 	underlineColorAndroid: Colors.transparent,
 };

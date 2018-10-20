@@ -32,21 +32,13 @@ const mock: IWithCreateWallPostEnhancedProps = {
 		currentUserAvatarURL: 'https://placeimg.com/200/200/people',
 	},
 	actions: {
-		createPost: (wallPostData: IWallPostData) => {
-			/**/
-		},
-		uploadFile: (input: IUploadFileInput) => {
-			/**/
-		},
-		setGlobal: (global: IGlobal) => {
-			/**/
-		},
+		createPost: (post: IWallPostData) => undefined,
+		uploadFile: (input: IUploadFileInput) => undefined,
+		setGlobal: (global: IGlobal) => undefined,
 		// This is now implemented with the WithI18n connector enhancer
 		getText: (value: string, ...args: any[]) => value,
 		// This is now implemented with the WithOverlays connector enhancer
-		showDotsMenuModal: (items) => {
-			/**/
-		},
+		showDotsMenuModal: (items) => undefined,
 	},
 };
 
@@ -91,13 +83,13 @@ export class WithCreateWallPost extends React.Component<
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithOverlays>
-						{(overlayProps) => (
+						{({ showOptionsMenu }) => (
 							<WithGlobals>
 								{({ setGlobal }) => (
 									<WithFiles>
-										{({ uploadFile, uploads }) => (
+										{({ uploadFile }) => (
 											<KeyboardContext.Consumer>
 												{({ marginBottom }) => (
 													<WithActivities>
@@ -105,7 +97,7 @@ export class WithCreateWallPost extends React.Component<
 															<WithCurrentUser>
 																{({ currentUser }) => (
 																	<WithPosts>
-																		{(postsProps) =>
+																		{({ createPost }) =>
 																			children({
 																				data: {
 																					...mock.data,
@@ -120,15 +112,11 @@ export class WithCreateWallPost extends React.Component<
 																				actions: {
 																					...mock.actions,
 																					uploadFile,
-																					createPost: (
-																						wallPostData: IWallPostData,
-																					) =>
-																						postsProps.createPost({
-																							postText: wallPostData.text,
-																							// location: wallPostData.location,
-																							location: 'Timisoara',
-																							taggedFriends:
-																								wallPostData.taggedFriends,
+																					createPost: (post: IWallPostData) =>
+																						createPost({
+																							postText: post.text,
+																							location: post.location,
+																							taggedFriends: post.taggedFriends,
 																							// media: uploads.map((upload) => ({
 																							// 	hash: upload.hash,
 																							// 	type: {
@@ -142,9 +130,9 @@ export class WithCreateWallPost extends React.Component<
 																							privatePost: false,
 																						}),
 																					setGlobal,
-																					getText: i18nProps.getText,
+																					getText,
 																					showDotsMenuModal: (items) =>
-																						overlayProps.showOptionsMenu({
+																						showOptionsMenu({
 																							items,
 																						}),
 																				},

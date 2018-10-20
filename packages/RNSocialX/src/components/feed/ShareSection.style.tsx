@@ -25,7 +25,7 @@ const styles: any = {
 	placeholder: {
 		...Fonts.centuryGothic,
 		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.cadetBlue,
+		color: Colors.paleSky,
 		paddingHorizontal: Sizes.smartHorizontalScale(13),
 	},
 };

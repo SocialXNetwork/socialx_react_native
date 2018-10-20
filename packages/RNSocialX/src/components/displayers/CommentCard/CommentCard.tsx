@@ -8,7 +8,7 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { AvatarImage } from '../../';
+import { AvatarImage, RichText } from '../../';
 import { ITranslatedProps, IWallPostComment } from '../../../types';
 import { CommentLikes } from './';
 
@@ -96,10 +96,36 @@ export class CommentCard extends React.Component<
 							<Text
 								style={styles.userFullName}
 								onPress={() => onViewUserProfile(user.userId)}
+								suppressHighlighting={true}
 							>
 								{user.fullName}
 							</Text>
-							<Text style={styles.commentText}>{text}</Text>
+							<RichText
+								style={styles.commentText}
+								childrenProps={{
+									onPress: () => onViewUserProfile(user.userId),
+									suppressHighlighting: true,
+								}}
+								parse={[
+									{
+										type: 'hashtag',
+										style: styles.hashtag,
+										onPress: () => undefined,
+									},
+									{
+										type: 'tags',
+										style: styles.tag,
+										onPress: () => undefined,
+									},
+									{
+										type: 'url',
+										style: styles.url,
+										onPress: () => undefined,
+									},
+								]}
+							>
+								{text}
+							</RichText>
 						</TouchableOpacity>
 						{this.state.likes > 0 && (
 							<CommentLikes

@@ -30,16 +30,15 @@ const styles: any = {
 	},
 	userFullName: {
 		...Fonts.centuryGothicBold,
-		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postFullName,
+		fontSize: Sizes.smartHorizontalScale(15),
+		color: Colors.cloudBurst,
 		lineHeight: Sizes.smartHorizontalScale(20),
-		alignSelf: 'flex-start',
 		marginBottom: Sizes.smartVerticalScale(2),
 	},
 	commentText: {
 		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postFullName,
+		fontSize: Sizes.smartHorizontalScale(15),
+		color: Colors.cloudBurst,
 		lineHeight: Sizes.smartHorizontalScale(20),
 		paddingBottom: Sizes.smartHorizontalScale(8),
 	},
@@ -50,14 +49,14 @@ const styles: any = {
 	timestamp: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		lineHeight: Sizes.smartHorizontalScale(24),
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	actionButtonText: {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		lineHeight: Sizes.smartHorizontalScale(24),
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
@@ -69,9 +68,18 @@ const styles: any = {
 	commentOption: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		lineHeight: DROPDOWN_ITEM_HEIGHT,
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
+	},
+	hashtag: {
+		color: Colors.pink,
+	},
+	tag: {
+		color: Colors.pink,
+	},
+	url: {
+		color: Colors.pink,
 	},
 };
 

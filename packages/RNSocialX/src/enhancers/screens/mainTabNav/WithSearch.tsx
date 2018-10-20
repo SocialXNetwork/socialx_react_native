@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: topSearchResults, topSuggestions, topHasMoreResults
+ * 1. Props data: results, topSuggestions, hasMoreResults
  * 2. Props actions: searchForMoreResults
  * 3. LATER - add more enhancers to support other tabs: People, Tags, Places
  * 4. Talk with Jake to simplify this
@@ -17,6 +17,7 @@ import {
 } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/profiles/Types';
+import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
@@ -25,10 +26,10 @@ import { getActivity } from '../../helpers';
 
 const mock: IWithSearchEnhancedProps = {
 	data: {
-		topSearchResults: suggestedItems,
-		topSuggestions: suggestedItems,
-		topSearching: false,
-		topHasMoreResults: true,
+		results: suggestedItems,
+		suggestions: suggestedItems,
+		searching: false,
+		hasMoreResults: true,
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
@@ -45,10 +46,10 @@ const mock: IWithSearchEnhancedProps = {
 };
 
 export interface IWithSearchEnhancedData {
-	topSearchResults: ISearchResultData[];
-	topSuggestions: ISearchResultData[];
-	topSearching: boolean;
-	topHasMoreResults: boolean;
+	results: ISearchResultData[];
+	suggestions: ISearchResultData[];
+	searching: boolean;
+	hasMoreResults: boolean;
 }
 
 export interface IWithSearchEnhancedActions
@@ -76,48 +77,51 @@ export class WithSearch extends React.Component<
 	render() {
 		return (
 			<WithNavigationParams>
-				{(navigationParamsProps) => (
-					<WithI18n>
-						{(i18nProps) => (
-							<WithActivities>
-								{({ activities }) => (
-									<WithProfiles>
-										{(profilesProps) => {
-											return this.props.children({
-												data: {
-													...mock.data,
-													topSearching: getActivity(
-														activities,
-														ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
-													),
-													topSearchResults: profilesProps.profiles.map(
-														(profileData) => ({
-															userId: profileData.pub,
-															fullName: profileData.fullName,
-															userName: '',
-															location: '',
-															avatarURL: profileData.avatar,
-														}),
-													),
-												},
-												actions: {
-													...mock.actions,
-													search: (term: string, tab: SearchTabs) =>
-														profilesProps.searchProfilesByFullName({
-															term,
-															maxResults: 10,
-														}),
-													getText: i18nProps.getText,
-													setNavigationParams:
-														navigationParamsProps.setNavigationParams,
-												},
-											});
-										}}
-									</WithProfiles>
+				{({ setNavigationParams }) => (
+					<WithConfig>
+						{({ appConfig }) => (
+							<WithI18n>
+								{({ getText }) => (
+									<WithActivities>
+										{({ activities }) => (
+											<WithProfiles>
+												{({ profiles, searchProfilesByFullName }) => {
+													return this.props.children({
+														data: {
+															...mock.data,
+															searching: getActivity(
+																activities,
+																ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
+															),
+															results: profiles.map((profile) => ({
+																userId: profile.alias,
+																fullName: profile.fullName,
+																userName: profile.alias,
+																location: '',
+																avatarURL:
+																	appConfig.ipfsConfig.ipfs_URL +
+																	profile.avatar,
+															})),
+														},
+														actions: {
+															...mock.actions,
+															search: (term: string, tab: SearchTabs) =>
+																searchProfilesByFullName({
+																	term,
+																	maxResults: 10,
+																}),
+															getText,
+															setNavigationParams,
+														},
+													});
+												}}
+											</WithProfiles>
+										)}
+									</WithActivities>
 								)}
-							</WithActivities>
+							</WithI18n>
 						)}
-					</WithI18n>
+					</WithConfig>
 				)}
 			</WithNavigationParams>
 		);

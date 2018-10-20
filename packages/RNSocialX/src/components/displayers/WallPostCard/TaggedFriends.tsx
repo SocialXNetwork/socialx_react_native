@@ -35,6 +35,6 @@ export const TaggedFriends: React.SFC<ITaggedFriendsProps> = ({
 
 const styles: any = StyleSheet.create({
 	grayText: {
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 });

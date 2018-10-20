@@ -30,7 +30,7 @@ const style: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(21),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
 		paddingVertical: Sizes.smartVerticalScale(15),
 		textAlign: 'center',
@@ -70,7 +70,7 @@ const style: any = {
 		color: Colors.postHour,
 	},
 	buttonTextCancel: {
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	inputCellsContainer: {
 		flexDirection: 'row',
@@ -89,7 +89,7 @@ const style: any = {
 	inputText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(28),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		letterSpacing: 10,
 	},
 	buttonDisabled: {

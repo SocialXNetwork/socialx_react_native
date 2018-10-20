@@ -35,13 +35,13 @@ const styles: any = {
 	fieldTitle: {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		lineHeight: ROW_LINE_HEIGHT,
 	},
 	fieldValue: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		lineHeight: ROW_LINE_HEIGHT,
 	},
 	filedValueLink: {

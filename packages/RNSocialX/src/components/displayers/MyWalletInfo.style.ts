@@ -27,7 +27,7 @@ const styles: any = {
 	},
 	myCoinsValue: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(30),
 		lineHeight: Sizes.smartHorizontalScale(37),
 	},

@@ -16,7 +16,7 @@ const style: any = {
 	},
 	weekText: {
 		...Fonts.centuryGothic,
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(12),
 		marginBottom: Sizes.smartVerticalScale(30),
 	},
@@ -40,10 +40,10 @@ export const customStyleProps = {
 	chartXAxisContentInset: HORIZONTAL_PADDING,
 	chartXAxisSvgStyle: {
 		fontSize: Sizes.smartHorizontalScale(12),
-		fill: Colors.postText,
+		fill: Colors.paleSky,
 	},
 	chartYAxisSvgStyle: {
 		fontSize: Sizes.smartHorizontalScale(16),
-		fill: Colors.postText,
+		fill: Colors.paleSky,
 	},
 };

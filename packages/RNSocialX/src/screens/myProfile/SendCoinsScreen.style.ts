@@ -32,7 +32,7 @@ const styles: any = {
 		height: Sizes.smartVerticalScale(62),
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(22),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		flex: 1,
 	},
 	secondInputContainer: {
@@ -44,7 +44,7 @@ const styles: any = {
 		height: Sizes.smartVerticalScale(62),
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(22),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		flex: 1,
 	},
 	inputLabel: {

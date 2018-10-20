@@ -41,7 +41,7 @@ type IWallPostCardPropsType = IWallPostCardProps & IDotsMenuProps;
 export interface IWallPostCardState {
 	fullTextVisible: boolean;
 	reportProblemModalVisible: boolean;
-	hideOptions: boolean;
+	displayOptions: boolean;
 	disableNavigation: boolean;
 	hidePostActionsAndComments: boolean;
 	disableMediaFullScreen: boolean;
@@ -63,19 +63,12 @@ export class WallPostCard extends React.Component<
 		numberOfSuperLikes: 0,
 		numberOfComments: 0,
 		numberOfWalletCoins: 0,
-		canDelete: false,
-		likedByMe: false,
-		media: false,
-		taggedFriends: [],
-		location: false,
-		postText: false,
-		likes: [],
 	};
 
 	public state = {
 		fullTextVisible: false,
 		reportProblemModalVisible: false,
-		hideOptions: this.props.governanceVersion || false,
+		displayOptions: this.props.governanceVersion || true,
 		disableNavigation: this.props.governanceVersion || false,
 		hidePostActionsAndComments: this.props.governanceVersion || false,
 		disableMediaFullScreen: this.props.governanceVersion || false,
@@ -101,27 +94,28 @@ export class WallPostCard extends React.Component<
 		);
 	}
 
-	public shouldComponentUpdate(
-		nextProps: IWallPostCardProps,
-		nextState: IWallPostCardState,
-	) {
-		return (
-			this.props.postId !== nextProps.postId ||
-			this.props.numberOfComments !== nextProps.numberOfComments ||
-			this.state.reportProblemModalVisible !==
-				nextState.reportProblemModalVisible ||
-			this.state.fullTextVisible !== nextState.fullTextVisible ||
-			this.state.heartAnimation !== nextState.heartAnimation ||
-			this.state.comment !== nextState.comment ||
-			this.state.inputFocused !== nextState.inputFocused ||
-			this.state.inputBorderWidth !== nextState.inputBorderWidth ||
-			this.state.inputAvatarSize !== nextState.inputAvatarSize ||
-			this.state.inputAvatarRadius !== nextState.inputAvatarRadius ||
-			this.props.listLoading !== nextProps.listLoading ||
-			this.state.viewOffensiveContent !== nextState.viewOffensiveContent ||
-			this.props.likeError !== nextProps.likeError
-		);
-	}
+	// TODO @Alex likedByMe
+	// public shouldComponentUpdate(
+	// 	nextProps: IWallPostCardProps,
+	// 	nextState: IWallPostCardState,
+	// ) {
+	// 	return (
+	// 		this.props.postId !== nextProps.postId ||
+	// 		this.props.numberOfComments !== nextProps.numberOfComments ||
+	// 		this.state.reportProblemModalVisible !==
+	// 			nextState.reportProblemModalVisible ||
+	// 		this.state.fullTextVisible !== nextState.fullTextVisible ||
+	// 		this.state.heartAnimation !== nextState.heartAnimation ||
+	// 		this.state.comment !== nextState.comment ||
+	// 		this.state.inputFocused !== nextState.inputFocused ||
+	// 		this.state.inputBorderWidth !== nextState.inputBorderWidth ||
+	// 		this.state.inputAvatarSize !== nextState.inputAvatarSize ||
+	// 		this.state.inputAvatarRadius !== nextState.inputAvatarRadius ||
+	// 		this.props.listLoading !== nextProps.listLoading ||
+	// 		this.state.viewOffensiveContent !== nextState.viewOffensiveContent ||
+	// 		this.props.likeError !== nextProps.likeError
+	// 	);
+	// }
 
 	public componentWillUnmount() {
 		if (Platform.OS === OS_TYPES.Android) {
@@ -163,7 +157,7 @@ export class WallPostCard extends React.Component<
 			inputAvatarRadius,
 			inputAvatarSize,
 			inputBorderWidth,
-			hideOptions,
+			displayOptions,
 			reportProblemModalVisible,
 			disableNavigation,
 			fullTextVisible,
@@ -173,8 +167,6 @@ export class WallPostCard extends React.Component<
 			comment,
 		} = this.state;
 
-		const timeStampDate = moment(timestamp).format('MMM DD');
-		const timeStampHour = moment(timestamp).format('hh:mma');
 		const formatedTimestamp = this.getFormattedPostTime(timestamp);
 		const animationValues = {
 			border: inputBorderWidth,
@@ -184,7 +176,7 @@ export class WallPostCard extends React.Component<
 
 		return (
 			<View style={styles.container} ref={this.containerViewRef}>
-				{!hideOptions && (
+				{!displayOptions && (
 					<ReportProblemModal
 						visible={reportProblemModalVisible}
 						confirmHandler={this.reportProblemHandler}
@@ -195,15 +187,14 @@ export class WallPostCard extends React.Component<
 				)}
 				<UserDetails
 					user={owner}
-					timeStampDate={timeStampDate}
-					timeStampHour={timeStampHour}
-					hideOptions={hideOptions}
+					timestamp={timestamp}
+					displayOptions={displayOptions}
 					disableNavigation={disableNavigation}
 					taggedFriends={taggedFriends}
 					location={location}
 					onUserPress={onUserPress}
-					getText={getText}
 					onShowOptions={this.onShowOptions}
+					getText={getText}
 				/>
 				<PostText
 					text={postText}
@@ -468,8 +459,9 @@ export class WallPostCard extends React.Component<
 		const deleteItem = {
 			label: getText('wall.post.menu.delete.post'),
 			icon: 'ios-trash',
-			// actionHandler: () => this.props.onDeletePostPress(this.props.postId),
-			actionHandler: () => undefined,
+			actionHandler: async () => {
+				await this.props.onDeletePostPress(this.props.postId);
+			},
 		};
 
 		const items = canDelete ? [...baseItems, deleteItem] : baseItems;

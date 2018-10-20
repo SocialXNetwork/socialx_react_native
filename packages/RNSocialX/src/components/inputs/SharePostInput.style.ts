@@ -27,7 +27,7 @@ const style: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	avatarImage: {
 		width: USER_AVATAR_SIZE,

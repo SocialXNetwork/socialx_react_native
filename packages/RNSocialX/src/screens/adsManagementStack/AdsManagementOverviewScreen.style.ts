@@ -21,7 +21,7 @@ const style: any = {
 	currentDate: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		width: '100%',
 		textAlign: 'center',
 		paddingVertical: Sizes.smartVerticalScale(10),
@@ -35,7 +35,7 @@ const style: any = {
 	heading: {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		backgroundColor: Colors.white,
 		paddingHorizontal: HORIZONTAL_PADDING,
 		paddingVertical: Sizes.smartVerticalScale(10),
@@ -57,17 +57,17 @@ const style: any = {
 	title: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		flex: 1,
 	},
 	description: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	editIcon: {
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(20),
 	},
 	image: {

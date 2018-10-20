@@ -149,24 +149,33 @@ export class WithUserFeed extends React.Component<
 																							...mock.actions,
 																							loadMorePosts:
 																								postsProps.loadMorePosts,
-																							refreshFeed: () => {
-																								postsProps.resetPostsAndRefetch();
+																							refreshFeed: async () => {
+																								await postsProps.resetPostsAndRefetch();
 																							},
-																							likePost: (postId) =>
-																								postsProps.likePost({ postId }),
-																							unlikePost: (postId) =>
-																								postsProps.unlikePost({
+																							likePost: async (postId) => {
+																								await postsProps.likePost({
 																									postId,
-																								}),
-																							deletePost: (postId) =>
-																								postsProps.removePost({
+																								});
+																							},
+																							unlikePost: async (postId) => {
+																								await postsProps.unlikePost({
 																									postId,
-																								}),
-																							postComment: (text, postId) =>
-																								postsProps.createComment({
+																								});
+																							},
+																							deletePost: async (postId) => {
+																								await postsProps.removePost({
+																									postId,
+																								});
+																							},
+																							postComment: async (
+																								text,
+																								postId,
+																							) => {
+																								await postsProps.createComment({
 																									text,
 																									postId,
-																								}),
+																								});
+																							},
 																							showDotsMenuModal: (items) =>
 																								showOptionsMenu({ items }),
 																							setNavigationParams,

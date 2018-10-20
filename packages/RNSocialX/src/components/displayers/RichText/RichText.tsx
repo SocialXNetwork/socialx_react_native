@@ -48,6 +48,7 @@ export class RichText extends React.Component<ITextParserProps> {
 		const textExtraction = canParse
 			? new TextParser(children as string, getParsePatterns(parse))
 			: null;
+
 		return (
 			<Text {...this.props} ref={this.root}>
 				{!canParse && children}
@@ -71,12 +72,6 @@ export class RichText extends React.Component<ITextParserProps> {
 			</Text>
 		);
 	}
-
-	// private setNativeProps = (nativeProps: any) => {
-	// 	if (this.root.current) {
-	// 		this.root.current.setNativeProps(nativeProps);
-	// 	}
-	// };
 }
 
 /**

@@ -97,7 +97,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 		>
 			<AvatarImage image={avatarImage.uri} style={avatarSizeStyle} />
 			<View style={style.editIcon}>
-				<Icon name="camera" size={iconSize} color={Colors.postFullName} />
+				<Icon name="camera" size={iconSize} color={Colors.cloudBurst} />
 			</View>
 		</TouchableOpacity>
 	);

@@ -230,7 +230,7 @@ export interface ILike {
 
 export interface IWallPostCardData extends IResizeProps {
 	postId: string;
-	postText: string | undefined;
+	postText: string;
 	location: string | undefined;
 	taggedFriends: Array<{ fullName: string }> | undefined;
 	timestamp: Date;
