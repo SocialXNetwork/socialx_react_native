@@ -171,45 +171,47 @@ const getAllPostRelevantData = (
 			});
 
 			let shouldWaitAndTryAgain = false;
-			const posts = allPosts.map((post: IPostCallbackData & { k: string }) => {
-				// convert likes into an array with keys
-				const postLikes = convertLikesToArray(post.likes);
-				// convert comments and their likes into an array with keys
-				const postComments: ICommentData[] = convertCommentsToArray(
-					post.comments,
-				);
-				// Convert media to an array
-				const mediaReturn = convertMediaToArray(post.media) || [];
+			const posts = allPosts
+				.map((post: IPostCallbackData & { k: string }) => {
+					// convert likes into an array with keys
+					const postLikes = convertLikesToArray(post.likes);
+					// convert comments and their likes into an array with keys
+					const postComments: ICommentData[] = convertCommentsToArray(
+						post.comments,
+					);
+					// Convert media to an array
+					const mediaReturn = convertMediaToArray(post.media) || [];
 
-				// If we don't get data proper data i.e. a hashtag key is present,
-				// stop current operation, append 100 to both timeout and wait
-				// Try again the current operation
-				[post.likes, post.comments, post.media].forEach(
-					(propArray: any = []) => {
-						if (propArray && propArray.length) {
-							propArray.forEach((obj: any) => {
-								if (
-									obj &&
-									typeof obj === 'object' &&
-									Object.keys(obj).includes('#')
-								) {
-									shouldWaitAndTryAgain = true;
-								}
-							});
-						}
-					},
-				);
+					// If we don't get data proper data i.e. a hashtag key is present,
+					// stop current operation, append 100 to both timeout and wait
+					// Try again the current operation
+					[post.likes, post.comments, post.media].forEach(
+						(propArray: any = []) => {
+							if (propArray && propArray.length) {
+								propArray.forEach((obj: any) => {
+									if (
+										obj &&
+										typeof obj === 'object' &&
+										Object.keys(obj).includes('#')
+									) {
+										shouldWaitAndTryAgain = true;
+									}
+								});
+							}
+						},
+					);
 
-				const { likes, comments, media, ...postRest } = post;
-				if (postRest.owner) {
-					return {
-						...postRest,
-						likes: postLikes,
-						comments: postComments,
-						media: mediaReturn,
-					};
-				}
-			});
+					const { likes, comments, media, ...postRest } = post;
+					if (postRest.owner) {
+						return {
+							...postRest,
+							likes: postLikes,
+							comments: postComments,
+							media: mediaReturn,
+						};
+					}
+				})
+				.filter((post: any) => post !== null);
 
 			if (!shouldWaitAndTryAgain) {
 				return callback(null, posts);
