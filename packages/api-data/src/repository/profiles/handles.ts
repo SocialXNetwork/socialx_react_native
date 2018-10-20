@@ -1,24 +1,43 @@
 import { IContext, TABLE_ENUMS, TABLES } from '../../types';
 
-export const allProfiles = (context: IContext) =>
-	context.gun.get(TABLES.PROFILES);
+export const currentUserProfileData = (context: IContext) => {
+	const { account } = context;
+	return account.path(`${TABLES.PROFILE}.${account.is.alias}`);
+};
 
 export const currentUserProfile = (context: IContext) => {
-	const { account, gun } = context;
-	return gun.get(TABLES.PROFILES).get(account.is.alias);
+	const { account } = context;
+	return account.path(`${TABLES.PROFILE}`);
 };
 
-export const profileByUsername = (context: IContext, username: string) => {
+export const publicProfilesRecord = (context: IContext) => {
 	const { gun } = context;
-	return gun.get(TABLES.PROFILES).get(username);
+	return gun.path(`${TABLES.PROFILES}`);
 };
 
-export const currentProfileFriends = (context: IContext) => {
-	const { account, gun } = context;
-	return gun
-		.get(TABLES.PROFILES)
-		.get(account.is.alias)
-		.get(TABLE_ENUMS.FRIENDS);
+export const publicProfileByUsername = (
+	context: IContext,
+	username: string,
+) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.PROFILES}.${username}`);
+};
+
+export const currentProfileFriendsRecord = (context: IContext) => {
+	const { account } = context;
+	return account.path(
+		`${TABLES.PROFILE}.${account.is.alias}.${TABLE_ENUMS.FRIENDS}`,
+	);
+};
+
+export const currentProfileFriendByUsername = (
+	context: IContext,
+	username: string,
+) => {
+	const { account } = context;
+	return account.path(
+		`${TABLES.PROFILE}.${account.is.alias}.${TABLE_ENUMS.FRIENDS}.${username}`,
+	);
 };
 
 export const profileFriendsByUsername = (
@@ -26,22 +45,17 @@ export const profileFriendsByUsername = (
 	username: string,
 ) => {
 	const { gun } = context;
-	return gun
-		.get(TABLES.PROFILES)
-		.get(username)
-		.get(TABLE_ENUMS.FRIENDS);
+	return gun.path(`${TABLES.PROFILES}.${username}.${TABLE_ENUMS.FRIENDS}`);
 };
 
 export const currentProfileFriendship = (
 	context: IContext,
 	friendshipId: string,
 ) => {
-	const { gun, account } = context;
-	return gun
-		.get(TABLES.PROFILES)
-		.get(account.is.alias)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(friendshipId);
+	const { account } = context;
+	return account.path(
+		`${TABLES.PROFILE}.${TABLE_ENUMS.FRIENDS}.${friendshipId}`,
+	);
 };
 
 export const userProfileFriendship = (
@@ -50,9 +64,36 @@ export const userProfileFriendship = (
 	friendshipId: string,
 ) => {
 	const { gun } = context;
-	return gun
-		.get(TABLES.PROFILES)
-		.get(username)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(friendshipId);
+	return gun.path(
+		`${TABLES.PROFILES}.${username}.${TABLE_ENUMS.FRIENDS}.${friendshipId}`,
+	);
+};
+
+export const publicFriendRequestsByUsers = (
+	context: IContext,
+	from: string,
+	to: string,
+) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.FRIEND_REQUESTS}.${to}.${from}`);
+};
+
+export const publicCurrentFriendRequestToUsername = (
+	context: IContext,
+	to: string,
+) => {
+	const { gun, account } = context;
+	return gun.path(`${TABLES.FRIEND_REQUESTS}.${to}.${account.is.alias}`);
+};
+export const publicCurrentFriendRequestFromUsername = (
+	context: IContext,
+	username: string,
+) => {
+	const { gun, account } = context;
+	return gun.path(`${TABLES.FRIEND_REQUESTS}.${account.is.alias}.${username}`);
+};
+
+export const publicCurrentFriendRequests = (context: IContext) => {
+	const { gun, account } = context;
+	return gun.path(`${TABLES.FRIEND_REQUESTS}.${account.is.alias}`);
 };

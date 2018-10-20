@@ -96,7 +96,6 @@ export const addFriend = yup
 export const removeFriend = yup
 	.object()
 	.shape({
-		friendshipId: longTextType.required(),
 		username: usernameOrPasswordType,
 	})
 	.required();
@@ -104,7 +103,6 @@ export const removeFriend = yup
 export const acceptFriend = yup
 	.object()
 	.shape({
-		friendshipId: longTextType.required(),
 		username: usernameOrPasswordType,
 	})
 	.required();

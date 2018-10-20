@@ -1,4 +1,4 @@
-import { IContext, IGunCallback, TABLES } from '../../types';
+import { IContext, IGunCallback, IGunInstance, TABLES } from '../../types';
 import { ApiError } from '../../utils/errors';
 import * as profileHandles from './handles';
 
@@ -19,10 +19,39 @@ export const createProfile = (
 	createProfileInput: ICreateProfileInput,
 	callback: IGunCallback<null>,
 ) => {
-	const { username, ...rest } = createProfileInput;
-	profileHandles
-		.profileByUsername(context, username)
-		.put({ ...rest, alias: username }, (profileCallback) => {
+	const { username: alias, ...rest } = createProfileInput;
+	/**
+	 * add the profile data to the current user's private scope profile record
+	 */
+	const mainRunner = () => {
+		profileHandles.currentUserProfileData(context).put(
+			{
+				...rest,
+				alias,
+			},
+			(createProfileOnAccCallback) => {
+				if (createProfileOnAccCallback.err) {
+					return callback(
+						new ApiError(
+							`failed to create user profile on current account ${
+								createProfileOnAccCallback.err
+							}`,
+							{
+								initialRequestBody: createProfileInput,
+							},
+						),
+					);
+				}
+				createUserProfRaw(profileHandles.currentUserProfile(context));
+			},
+		);
+	};
+	/**
+	 * reference the private user's profile to the public profiles record
+	 * @param ref IGunInstance reference to the private scope user profile
+	 */
+	const createUserProfRaw = (ref: IGunInstance) => {
+		profileHandles.publicProfilesRecord(context).put(ref, (profileCallback) => {
 			if (profileCallback.err) {
 				return callback(
 					new ApiError(`failed to create user profile ${profileCallback.err}`, {
@@ -33,6 +62,9 @@ export const createProfile = (
 
 			return callback(null);
 		});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export const updateProfile = (
@@ -40,18 +72,29 @@ export const updateProfile = (
 	updateProfileInput: IUpdateProfileInput,
 	callback: IGunCallback<null>,
 ) => {
-	profileHandles
-		.currentUserProfile(context)
-		.put(updateProfileInput, (updateCallback) => {
-			if (updateCallback.err) {
-				return callback(
-					new ApiError(`failed to update user profile ${updateCallback.err}`, {
-						initialRequestBody: updateProfileInput,
-					}),
-				);
-			}
-			return callback(null);
-		});
+	/**
+	 * update the current user's private scope profile, this will reflect changes on the public scope
+	 * aswell because the public scope has a reference to the private scope record
+	 */
+	const mainRunner = () => {
+		profileHandles
+			.currentUserProfileData(context)
+			.put(updateProfileInput, (updateCallback) => {
+				if (updateCallback.err) {
+					return callback(
+						new ApiError(
+							`failed to update user profile ${updateCallback.err}`,
+							{
+								initialRequestBody: updateProfileInput,
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export const addFriend = (
@@ -59,7 +102,15 @@ export const addFriend = (
 	{ username }: IAddFriendInput,
 	callback: IGunCallback<null>,
 ) => {
-	const { owner, timestamp } = getContextMeta(context);
+	const { account } = context;
+	if (!account.is) {
+		return callback(
+			new ApiError(`no user logged in`, {
+				initialRequestBody: { username },
+			}),
+		);
+	}
+	const { owner, ownerPub, timestamp } = getContextMeta(context);
 	const errPrefix = 'failed to add friend';
 	if (owner === username) {
 		return callback(
@@ -68,136 +119,255 @@ export const addFriend = (
 			}),
 		);
 	}
-
-	// dynamic username data builder
-	const setFriendData = (setUsername: string) => ({
-		username: setUsername,
-		timestamp,
-		relation: FRIEND_TYPES.PENDING,
-	});
-
-	const relationshipId = uuidv4();
-
-	profileHandles
-		.currentProfileFriendship(context, relationshipId)
-		.put(setFriendData(username), (addFriendCallback) => {
-			if (addFriendCallback.err) {
-				return callback(
-					new ApiError(
-						`${errPrefix}, current user friendship not updated ${
-							addFriendCallback.err
-						}`,
-						{
+	/**
+	 * check if the current user is already friends with the targeted user
+	 */
+	const mainRunner = () => {
+		profileHandles
+			.currentProfileFriendByUsername(context, username)
+			.once((currentFriendCallback: any) => {
+				if (currentFriendCallback) {
+					return callback(
+						new ApiError(`${errPrefix}, can not add already existing friend`, {
 							initialRequestBody: { username },
-						},
-					),
-				);
-			}
-
-			// emulate a .set to achive mutual id, this will make accepting
-			// the friendship 2 operations less
-			profileHandles
-				.userProfileFriendship(context, username, relationshipId)
-				.put(setFriendData(owner), (targetAddFriendCallback) => {
-					if (targetAddFriendCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, target user friendship not updated ${
-									targetAddFriendCallback.err
-								}`,
-								{
-									initialRequestBody: { username },
-								},
-							),
-						);
-					}
-					return callback(null);
-				});
-		});
+						}),
+					);
+				}
+				checkPending();
+			});
+	};
+	/**
+	 * check if the current user already send a friend request to the targeted user
+	 */
+	const checkPending = () => {
+		profileHandles
+			.publicCurrentFriendRequestToUsername(context, username)
+			.once((currentRequestCallback: any) => {
+				if (currentRequestCallback) {
+					return callback(
+						new ApiError(`${errPrefix}, friend request already sent`, {
+							initialRequestBody: { username },
+						}),
+					);
+				}
+				getTargetedUserAndCreateRequest();
+			});
+	};
+	/**
+	 * check if the targeted user exists and get his profile reference then pass it to create profile
+	 */
+	const getTargetedUserAndCreateRequest = () => {
+		profileHandles
+			.publicProfileByUsername(context, username)
+			.once((userProfileCallback: any) => {
+				if (!userProfileCallback) {
+					return callback(
+						new ApiError(`${errPrefix}, user does not exist!`, {
+							initialRequestBody: { username },
+						}),
+					);
+				}
+				createFriend(profileHandles.publicProfileByUsername(context, username));
+			});
+	};
+	/**
+	 * create a friend record on the current user's private scope and put the friend's entire profile reference
+	 * @param requestedUserRef object
+	 */
+	const createFriend = (requestedUserRef: any) => {
+		profileHandles
+			.currentProfileFriendByUsername(context, username)
+			.put(requestedUserRef, (friendCreationCallback) => {
+				if (friendCreationCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, something went wrong on creating the friend!`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				createFriendRequest();
+			});
+	};
+	/**
+	 * get the public record of friend requests to the user from the current user and put the friend request data
+	 */
+	const createFriendRequest = () => {
+		profileHandles.publicCurrentFriendRequestToUsername(context, username).put(
+			{
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+				timestamp,
+			},
+			(friendRequestCreationCallback) => {
+				if (friendRequestCreationCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, something went wrong on creating the friend request to the user!`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				return callback(null);
+			},
+		);
+	};
+	// run the sequence
+	mainRunner();
 };
 export const removeFriend = (
 	context: IContext,
-	{ friendshipId, username }: IRemoveFriendInput,
+	{ username }: IRemoveFriendInput,
 	callback: IGunCallback<null>,
 ) => {
+	const { account } = context;
+	if (!account.is) {
+		return callback(
+			new ApiError(`no user logged in`, {
+				initialRequestBody: { username },
+			}),
+		);
+	}
 	const errPrefix = 'failed to remove friend';
-	profileHandles
-		.currentProfileFriends(context)
-		.get(friendshipId)
-		.put(null, (removeFriendCallback) => {
-			if (removeFriendCallback.err) {
-				return callback(
-					new ApiError(
-						`${errPrefix}, failed to remove current user friendship ${
-							removeFriendCallback.err
-						}`,
-						{
-							initialRequestBody: { username, friendshipId },
-						},
-					),
-				);
-			}
-			profileHandles
-				.profileFriendsByUsername(context, username)
-				.get(friendshipId)
-				.put(null, (targetRemoveFriendCallback) => {
-					if (targetRemoveFriendCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, failed to remove target relationship ${
-									targetRemoveFriendCallback.err
-								}`,
-								{
-									initialRequestBody: { username, friendshipId },
-								},
-							),
-						);
-					}
-					return callback(null);
-				});
-		});
+	/**
+	 * check if the current user is not a friend with the targeted user
+	 */
+	const mainRunner = () => {
+		profileHandles
+			.currentProfileFriendByUsername(context, username)
+			.once((currentFriendCallback: any) => {
+				if (!currentFriendCallback) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, can not delete a friend that does not exist (sadface)`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				removeFriendFromPrivateRecord();
+			});
+	};
+	/**
+	 * remove friend from the current user's private friends record
+	 */
+	const removeFriendFromPrivateRecord = () => {
+		profileHandles
+			.currentProfileFriendsRecord(context)
+			.erase(username, (removeFriendCallback) => {
+				if (removeFriendCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, something went wrong on deleting the friend`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export const acceptFriend = (
 	context: IContext,
-	{ friendshipId, username }: IAcceptFriendInput,
+	{ username }: IAcceptFriendInput,
 	callback: IGunCallback<null>,
 ) => {
 	const errPrefix = 'failed to accept friend';
-	profileHandles
-		.currentProfileFriendship(context, friendshipId)
-		.put({ relation: FRIEND_TYPES.MUTUAL }, (targetAcceptCallback) => {
-			if (targetAcceptCallback.err) {
+	/**
+	 * check if the current user indeed has a friendrequest from the targeted user
+	 */
+	const mainRunner = () => {
+		profileHandles
+			.publicCurrentFriendRequestFromUsername(context, username)
+			.once((currentRequestCallback: any) => {
+				if (currentRequestCallback) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, no friend request found from this user`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				userExistsCheck();
+			});
+	};
+	/**
+	 * check if the user profile exists within the current database segment
+	 */
+	const userExistsCheck = () => {
+		profileHandles
+			.publicProfileByUsername(context, username)
+			.once((targetUserProfileCallback: any) => {
+				if (!targetUserProfileCallback) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, user doesnt exist on the current public scope`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				removePendingAndProceed(
+					profileHandles.publicCurrentFriendRequests(context),
+				);
+			});
+	};
+	/**
+	 * remove the pending friend request from the public record of friend requests
+	 * @param requests IGunInstance the current user public record of friend requests
+	 */
+	const removePendingAndProceed = (requests: IGunInstance) => {
+		requests.erase(username, (removePendingCallback) => {
+			if (removePendingCallback.err) {
 				return callback(
-					new ApiError(
-						`${errPrefix}, failed to update current user friendship ${
-							targetAcceptCallback.err
-						}`,
-						{
-							initialRequestBody: { username, friendshipId },
-						},
-					),
+					new ApiError(`${errPrefix}, cannot remove pending friend request`, {
+						initialRequestBody: { username },
+					}),
 				);
 			}
-			// ! this is not working? its like the target is an empty object
-			profileHandles
-				.userProfileFriendship(context, username, friendshipId)
-				.put({ relation: FRIEND_TYPES.MUTUAL }, (acceptFriendCallback) => {
-					if (acceptFriendCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, failed to update target user friendship ${
-									acceptFriendCallback.err
-								}`,
-								{
-									initialRequestBody: { username, friendshipId },
-								},
-							),
-						);
-					}
-					return callback(null);
-				});
+			addRequestedUserAsFriend(
+				profileHandles.publicProfileByUsername(context, username),
+			);
 		});
+	};
+	/**
+	 * adds the targeted user to the current user private scope friends record
+	 * @param friendProfileReference IGunInstance the reference to the public profile record of the targeted user
+	 */
+	const addRequestedUserAsFriend = (friendProfileReference: IGunInstance) => {
+		profileHandles
+			.currentProfileFriendByUsername(context, username)
+			.put(friendProfileReference, (addFriendCallback) => {
+				if (addFriendCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, something went wrong, could not add the user as a friend`,
+							{
+								initialRequestBody: { username },
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export default {
