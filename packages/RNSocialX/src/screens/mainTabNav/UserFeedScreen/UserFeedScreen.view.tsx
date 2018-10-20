@@ -12,13 +12,16 @@ import {
 import {
 	getTextSignature,
 	ICurrentUser,
+	IDotsMenuProps,
 	IWallPostCardActions,
 	IWallPostCardData,
 } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps extends IWallPostCardActions {
+interface IUserFeedScreenViewProps
+	extends IWallPostCardActions,
+		IDotsMenuProps {
 	avatarImage: string;
 	posts: IWallPostCardData[];
 	refreshing: boolean;
@@ -51,6 +54,7 @@ export class UserFeedScreenView extends React.Component<
 			shareSectionOpacityInterpolation,
 			scrollRef,
 			scrollY,
+			showDotsMenuModal,
 			getText,
 		} = this.props;
 
@@ -117,7 +121,7 @@ export class UserFeedScreenView extends React.Component<
 					currentUserAvatarURL={this.props.currentUser.avatarURL}
 					onCommentPress={this.props.onCommentPress}
 					onImagePress={this.props.onImagePress}
-					onDeletePress={this.props.onDeletePress}
+					onDeletePostPress={this.props.onDeletePostPress}
 					onLikePress={this.props.onLikePress}
 					onUserPress={(userId: string) => this.props.onUserPress(userId)}
 					/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as data.index */
@@ -128,6 +132,7 @@ export class UserFeedScreenView extends React.Component<
 					getText={getText}
 					onBlockUser={this.props.onBlockUser}
 					onReportProblem={this.props.onReportProblem}
+					showDotsMenuModal={this.props.showDotsMenuModal}
 				/>
 				{post.suggested && (
 					<SuggestionsCarousel

@@ -9,6 +9,7 @@ import { FEED_TYPES } from '../../../environment/consts';
 import { currentUser, posts } from '../../../mocks';
 import {
 	ICurrentUser,
+	IDotsMenuProps,
 	IGlobal,
 	INavigationParamsActions,
 	ITranslatedProps,
@@ -25,6 +26,7 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithUserFeedEnhancedProps = {
@@ -47,6 +49,7 @@ const mock: IWithUserFeedEnhancedProps = {
 		deletePost: (postId: string) => undefined,
 		setGlobal: (global: IGlobal) => undefined,
 		setNavigationParams: () => undefined,
+		showDotsMenuModal: (items) => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -62,6 +65,7 @@ export interface IWithUserFeedEnhancedData {
 
 export interface IWithUserFeedEnhancedActions
 	extends ITranslatedProps,
+		IDotsMenuProps,
 		INavigationParamsActions {
 	loadMorePosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
@@ -97,85 +101,91 @@ export class WithUserFeed extends React.Component<
 						{({ appConfig }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
-									<WithGlobals>
-										{({ setGlobal, globals }) => (
-											<WithActivities>
-												{({ activities, errors }) => (
-													<WithProfiles>
-														{({ profiles }) => (
-															<WithPosts>
-																{(postsProps) => (
-																	<WithCurrentUser>
-																		{(currentUserProps) => {
-																			const user = currentUserProps.currentUser!;
+									<WithOverlays>
+										{({ showOptionsMenu }) => (
+											<WithGlobals>
+												{({ setGlobal, globals }) => (
+													<WithActivities>
+														{({ activities, errors }) => (
+															<WithProfiles>
+																{({ profiles }) => (
+																	<WithPosts>
+																		{(postsProps) => (
+																			<WithCurrentUser>
+																				{(currentUserProps) => {
+																					const user = currentUserProps.currentUser!;
 
-																			let feedPosts: IWallPostCardData[] = [];
-																			if (postsProps.posts.length > 0) {
-																				feedPosts = mapPostsForUI(
-																					postsProps.posts,
-																					10,
-																					user,
-																					profiles,
-																					activities,
-																					ActionTypes.GET_POSTS_BY_USER,
-																					appConfig,
-																				);
-																			}
+																					let feedPosts: IWallPostCardData[] = [];
+																					if (postsProps.posts.length > 0) {
+																						feedPosts = mapPostsForUI(
+																							postsProps.posts,
+																							10,
+																							user,
+																							profiles,
+																							activities,
+																							ActionTypes.GET_POSTS_BY_USER,
+																							appConfig,
+																						);
+																					}
 
-																			return this.props.children({
-																				data: {
-																					...mock.data,
-																					currentUser: user,
-																					posts: feedPosts,
-																					canLoadMorePosts:
-																						globals.canLoadMorePosts,
-																					loadingMorePosts: getActivity(
-																						activities,
-																						ActionTypes.LOAD_MORE_POSTS,
-																					),
-																					refreshingFeed: getActivity(
-																						activities,
-																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																					),
-																					errors,
-																				},
-																				actions: {
-																					...mock.actions,
-																					loadMorePosts:
-																						postsProps.loadMorePosts,
-																					refreshFeed: () => {
-																						postsProps.resetPostsAndRefetch();
-																					},
-																					likePost: (postId) =>
-																						postsProps.likePost({ postId }),
-																					unlikePost: (postId) =>
-																						postsProps.unlikePost({
-																							postId,
-																						}),
-																					deletePost: (postId) =>
-																						postsProps.removePost({
-																							postId,
-																						}),
-																					postComment: (text, postId) =>
-																						postsProps.createComment({
-																							text,
-																							postId,
-																						}),
-																					setNavigationParams,
-																					setGlobal,
-																					getText,
-																				},
-																			});
-																		}}
-																	</WithCurrentUser>
+																					return this.props.children({
+																						data: {
+																							...mock.data,
+																							currentUser: user,
+																							posts: feedPosts,
+																							canLoadMorePosts:
+																								globals.canLoadMorePosts,
+																							loadingMorePosts: getActivity(
+																								activities,
+																								ActionTypes.LOAD_MORE_POSTS,
+																							),
+																							refreshingFeed: getActivity(
+																								activities,
+																								ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																							),
+																							errors,
+																						},
+																						actions: {
+																							...mock.actions,
+																							loadMorePosts:
+																								postsProps.loadMorePosts,
+																							refreshFeed: () => {
+																								postsProps.resetPostsAndRefetch();
+																							},
+																							likePost: (postId) =>
+																								postsProps.likePost({ postId }),
+																							unlikePost: (postId) =>
+																								postsProps.unlikePost({
+																									postId,
+																								}),
+																							deletePost: (postId) =>
+																								postsProps.removePost({
+																									postId,
+																								}),
+																							postComment: (text, postId) =>
+																								postsProps.createComment({
+																									text,
+																									postId,
+																								}),
+																							showDotsMenuModal: (items) =>
+																								showOptionsMenu({ items }),
+																							setNavigationParams,
+																							setGlobal,
+																							getText,
+																						},
+																					});
+																				}}
+																			</WithCurrentUser>
+																		)}
+																	</WithPosts>
 																)}
-															</WithPosts>
+															</WithProfiles>
 														)}
-													</WithProfiles>
+													</WithActivities>
 												)}
-											</WithActivities>
+											</WithGlobals>
 										)}
-									</WithGlobals>
+									</WithOverlays>
 								)}
 							</WithNavigationParams>
 						)}

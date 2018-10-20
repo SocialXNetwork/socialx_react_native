@@ -45,7 +45,6 @@ export const Colors = {
 	chatTextInputBorder: 'rgba(151,151,151,0.5)',
 	dustGray: '#979797',
 	gallery: '#efefef',
-	alabaster: '#F9F9F9',
 	monza: '#D0021B',
 	blueMarguerite: '#6162C7',
 	amethyst: '#9863D3',
