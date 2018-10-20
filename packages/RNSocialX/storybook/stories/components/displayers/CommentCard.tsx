@@ -37,7 +37,12 @@ storiesOf('Components/displayers', module)
 					},
 					timestamp,
 					numberOfLikes,
-					likes: [], // not used by component
+					likes: [
+						{
+							userId: 'randomUserId',
+							userName: 'randomUserName',
+						},
+					],
 					likedByMe,
 				}}
 				onCommentLike={action('onCommentLike')}

@@ -2,11 +2,17 @@ import * as React from 'react';
 
 import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
-import { ICurrentUser, IDotsMenuProps, ITranslatedProps } from '../../../types';
+import {
+	ICurrentUser,
+	IDotsMenuProps,
+	IGlobal,
+	ITranslatedProps,
+} from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
@@ -15,26 +21,13 @@ const mock: IWithSettingsEnhancedProps = {
 		currentUser,
 	},
 	actions: {
-		updateUserProfile: (saveData: ISettingsData, avatarHasChanged: boolean) => {
-			/**/
-		},
-		logout: () => {
-			/**/
-		},
+		updateUserProfile: (user: ISettingsData) => undefined,
+		logout: () => undefined,
+		setGlobal: (global: IGlobal) => undefined,
+		showDotsMenuModal: (items) => undefined,
 		getText: (value: string, ...args: any[]) => value,
-		showDotsMenuModal: (items) => {
-			/**/
-		},
 	},
 };
-
-export interface ISaveChangesParams {
-	currentUser: ICurrentUser;
-	updateUserProfile: (
-		saveData: ISettingsData,
-		avatarHasChanged: boolean,
-	) => void;
-}
 
 export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;
@@ -43,10 +36,8 @@ export interface IWithSettingsEnhancedData {
 export interface IWithSettingsEnhancedActions
 	extends ITranslatedProps,
 		IDotsMenuProps {
-	updateUserProfile: (
-		saveData: ISettingsData,
-		avatarHasChanged: boolean,
-	) => void;
+	setGlobal: (global: IGlobal) => void;
+	updateUserProfile: (user: ISettingsData) => void;
 	logout: () => void;
 }
 
@@ -68,39 +59,44 @@ export class WithSettings extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithOverlays>
-						{(overlayProps) => (
-							<WithAccounts>
-								{(accountsProps) => (
-									<WithProfiles>
-										{(profilesProps) => (
-											<WithCurrentUser>
-												{(currentUserProps) =>
-													this.props.children({
-														data: {
-															currentUser: currentUserProps.currentUser!,
-														},
-														actions: {
-															updateUserProfile: (saveData) =>
-																profilesProps.updateCurrentProfile({
-																	aboutMeText: saveData.bio,
-																	avatar: saveData.avatarURL,
-																	email: saveData.email,
-																	fullName: saveData.fullName,
-																}),
-															logout: accountsProps.logout,
-															getText: i18nProps.getText,
-															showDotsMenuModal: (items) =>
-																overlayProps.showOptionsMenu({ items }),
-														},
-													})
-												}
-											</WithCurrentUser>
+						{({ showOptionsMenu }) => (
+							<WithGlobals>
+								{({ setGlobal }) => (
+									<WithAccounts>
+										{({ logout }) => (
+											<WithProfiles>
+												{({ updateCurrentProfile }) => (
+													<WithCurrentUser>
+														{(currUser) =>
+															this.props.children({
+																data: {
+																	currentUser: currUser.currentUser!,
+																},
+																actions: {
+																	updateUserProfile: (user) =>
+																		updateCurrentProfile({
+																			aboutMeText: user.bio,
+																			avatar: user.avatarURL,
+																			email: user.email,
+																			fullName: user.fullName,
+																		}),
+																	logout,
+																	showDotsMenuModal: (items) =>
+																		showOptionsMenu({ items }),
+																	setGlobal,
+																	getText,
+																},
+															})
+														}
+													</WithCurrentUser>
+												)}
+											</WithProfiles>
 										)}
-									</WithProfiles>
+									</WithAccounts>
 								)}
-							</WithAccounts>
+							</WithGlobals>
 						)}
 					</WithOverlays>
 				)}

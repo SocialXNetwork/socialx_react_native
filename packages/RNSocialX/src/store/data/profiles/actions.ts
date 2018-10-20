@@ -309,7 +309,11 @@ export const updateCurrentProfile = (
 
 				await dataApi.profiles.updateProfile(updateProfileFinal);
 			} else {
-				await dataApi.profiles.updateProfile(profileRest);
+				if (avatar && avatar.indexOf('http') >= 0) {
+					await dataApi.profiles.updateProfile(profileRest);
+				} else {
+					await dataApi.profiles.updateProfile(updateProfileInput);
+				}
 			}
 
 			await dispatch(getCurrentProfile());
