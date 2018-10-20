@@ -26,6 +26,7 @@ class Screen extends Component<IReferralScreenProps> {
 				copyToClipboard={this.copyToClipboardHandler}
 				onShare={this.onShareHandler}
 				onGoBack={this.onGoBackHandler}
+				getText={this.props.getText}
 			/>
 		);
 	}

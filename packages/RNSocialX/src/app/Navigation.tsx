@@ -59,7 +59,6 @@ import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigation
 import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
-import { getActivitiesForIndicator } from '../enhancers/helpers';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',

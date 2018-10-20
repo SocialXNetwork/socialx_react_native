@@ -72,10 +72,10 @@ export class WithReferral extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) =>
+				{({ getText }) =>
 					this.props.children({
 						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+						actions: { ...mock.actions, getText },
 					})
 				}
 			</WithI18n>

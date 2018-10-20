@@ -14,13 +14,13 @@ import { CommentLikes } from './';
 
 import styles from './CommentCard.style';
 
+const TEXT_LENGTH_TRESHOLD = 15;
+
 interface ICommentCardProps extends ITranslatedProps {
 	comment: IWallPostComment;
 	onCommentLike: () => void;
 	onViewUserProfile: (userId: string) => void;
 	onShowOptionsMenu: () => void;
-	onCommentContainerWidthChange: (value: number) => void;
-	commentLikesPosition: StyleProp<ViewStyle>;
 	likeCommentError: boolean;
 }
 
@@ -29,6 +29,7 @@ interface ICommentCardState {
 	likedByMe: boolean;
 	error: boolean;
 	disabled: boolean;
+	commentLikesPosition: StyleProp<ViewStyle>;
 }
 
 export class CommentCard extends React.Component<
@@ -53,15 +54,28 @@ export class CommentCard extends React.Component<
 		likedByMe: this.props.comment.likedByMe,
 		error: false,
 		disabled: false,
+		commentLikesPosition: {
+			bottom: -18,
+			right: 0,
+		},
 	};
+
+	public componentDidMount() {
+		if (this.props.comment.text.length < TEXT_LENGTH_TRESHOLD) {
+			this.setState({
+				commentLikesPosition: {
+					bottom: 10,
+					right: -30,
+				},
+			});
+		}
+	}
 
 	public render() {
 		const {
 			comment,
 			onViewUserProfile,
 			onShowOptionsMenu,
-			onCommentContainerWidthChange,
-			commentLikesPosition,
 			getText,
 		} = this.props;
 
@@ -90,18 +104,16 @@ export class CommentCard extends React.Component<
 						{this.state.likes > 0 && (
 							<CommentLikes
 								numberOfLikes={this.state.likes}
-								commentLikesPosition={commentLikesPosition}
+								commentLikesPosition={this.state.commentLikesPosition}
 							/>
 						)}
 					</View>
-					<View
-						style={styles.actionsContainer}
-						onLayout={(event) =>
-							onCommentContainerWidthChange(event.nativeEvent.layout.width)
-						}
-					>
+					<View style={styles.actionsContainer}>
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
-						<TouchableOpacity onPress={this.onCommentLikeHandler}>
+						<TouchableOpacity
+							onPress={this.onCommentLikeHandler}
+							disabled={this.state.disabled}
+						>
 							<Text style={styles.actionButtonText}>
 								{this.state.likedByMe
 									? getText('comments.screen.actions.unlike')

@@ -5,7 +5,6 @@ const styles: any = {
 	likesContainer: {
 		position: 'absolute',
 		zIndex: 1,
-		elevation: 3,
 	},
 	likesBorder: {
 		flexDirection: 'row',
@@ -22,7 +21,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
 		color: Colors.postFullName,
-		paddingLeft: Sizes.smartHorizontalScale(1),
+		paddingLeft: Sizes.smartHorizontalScale(2),
 	},
 	iconContainer: {
 		backgroundColor: Colors.pink,
