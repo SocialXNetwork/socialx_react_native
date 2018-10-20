@@ -97,6 +97,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.SYNC_REMOVE_POST: {
+			return {
+				posts: [
+					...state.posts.filter((post) => post.postId !== action.payload),
+				],
+			};
+		}
+
 		case ActionTypes.UNLIKE_POST: {
 			return state;
 		}

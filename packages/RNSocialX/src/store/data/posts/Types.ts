@@ -51,6 +51,7 @@ export const enum ActionTypes {
 	CREATE_POST = 'data/posts/CREATE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
+	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
 	RESET_POSTS = 'data/posts/RESET_POSTS',
 	// <================= comments =================>
@@ -128,6 +129,11 @@ export interface IRemovePostAction extends Action {
 	payload: IRemovePostInput;
 }
 
+export interface ISyncRemovePostAction extends Action {
+	type: ActionTypes.SYNC_REMOVE_POST;
+	payload: string;
+}
+
 export interface IUnlikePostAction extends Action {
 	type: ActionTypes.UNLIKE_POST;
 	payload: IUnlikePostInput;
@@ -192,4 +198,5 @@ export type IAction =
 	| ICreateCommentAction
 	| ILikeCommentAction
 	| IRemoveCommentAction
+	| ISyncRemovePostAction
 	| IUnlikeCommentAction;
