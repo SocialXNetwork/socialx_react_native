@@ -54,8 +54,6 @@ interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 	onCommentsBackPress: () => void;
 	onImagePress: (index: number, medias: IMediaProps[]) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
-	onCommentContainerWidthChange: (value: number) => void;
-	commentLikesPosition: object;
 	optionsProps: object;
 	likePostError: boolean;
 	likeCommentError: boolean;
@@ -73,8 +71,6 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	onCommentsBackPress,
 	onImagePress,
 	onLikePress,
-	onCommentContainerWidthChange,
-	commentLikesPosition,
 	optionsProps,
 	likePostError,
 	likeCommentError,
@@ -144,10 +140,6 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 							onCommentLike={() => onCommentLike(comm)}
 							onViewUserProfile={onViewUserProfile}
 							onShowOptionsMenu={() => onShowOptionsMenu(comm)}
-							onCommentContainerWidthChange={(width: number) =>
-								onCommentContainerWidthChange(width)
-							}
-							commentLikesPosition={commentLikesPosition}
 							likeCommentError={likeCommentError}
 							getText={getText}
 						/>

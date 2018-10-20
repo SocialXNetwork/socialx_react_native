@@ -66,7 +66,7 @@ export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({
 		/>
 		<View style={styles.footer}>
 			<Text style={styles.text}>
-				{getText('referral.screen.code').toUpperCase()}
+				{getText('referral.screen.invite').toUpperCase()}
 			</Text>
 			<TouchableOpacity onPress={onShare} style={styles.iconContainer}>
 				<Image source={shareIcon} style={styles.icon} resizeMode="contain" />
