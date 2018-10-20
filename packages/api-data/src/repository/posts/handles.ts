@@ -5,9 +5,28 @@ export const postMetaById = (context: IContext, postId: string) => {
 	return gun.path(`${TABLES.POST_META_BY_ID}.${postId}`);
 };
 
+export const postMetaIdsRecord = (context: IContext) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.POST_META_BY_ID}`);
+};
+
 export const postMetasByUsername = (context: IContext, username: string) => {
 	const { gun } = context;
 	return gun.path(`${TABLES.POST_METAS_BY_USER}.${username}`);
+};
+
+export const postMetasByUsernamesRecord = (context: IContext) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.POST_METAS_BY_USER}`);
+};
+
+export const postsRecordByPostPath = (context: IContext, postPath: string) => {
+	const { gun } = context;
+	const postPathDeconstructed = postPath.split('.');
+	const postsPath = postPathDeconstructed
+		.splice(postPathDeconstructed.length - 1, 1)
+		.join('.');
+	return gun.path(`${TABLES.POSTS}.${postsPath}`);
 };
 
 export const postMetasByCurrentUser = (context: IContext) => {

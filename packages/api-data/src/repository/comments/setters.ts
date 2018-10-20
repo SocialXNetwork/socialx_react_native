@@ -123,66 +123,84 @@ export const removeComment = (
 ) => {
 	const errPrefix = 'failed to remove comment';
 
-	commentHandles
-		.commentMetaById(context, commentId)
-		.docLoad((commentReturnCallback: ICommentMetasCallback) => {
-			if (!Object.keys(commentReturnCallback).length) {
-				return callback(
-					new ApiError(`${errPrefix}, failed to find comment`, {
-						initialRequestBody: { commentId },
-					}),
-				);
-			}
+	/**
+	 * fetch the comment meta and check if the current user owns the comment
+	 */
+	const mainRunner = () => {
+		commentHandles
+			.commentMetaById(context, commentId)
+			.docLoad((commentReturnCallback: ICommentMetasCallback) => {
+				if (!Object.keys(commentReturnCallback).length) {
+					return callback(
+						new ApiError(`${errPrefix}, failed to find comment`, {
+							initialRequestBody: { commentId },
+						}),
+					);
+				}
 
-			const {
-				postPath,
-				owner: { alias },
-			} = commentReturnCallback;
-			const { owner } = getContextMeta(context);
+				const {
+					postPath,
+					owner: { alias },
+				} = commentReturnCallback;
+				const { owner } = getContextMeta(context);
 
-			if (owner !== alias) {
-				return callback(
-					new ApiError(`${errPrefix}, user does not own comment`, {
-						initialRequestBody: { commentId },
-					}),
-				);
-			}
-
-			commentHandles
-				.commentsByPostPath(context, postPath)
-				.get(commentId)
-				.put(null, (removeCommentCallback) => {
-					if (removeCommentCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, failed to put null comment record ${
-									removeCommentCallback.err
-								}`,
-								{
-									initialRequestBody: { commentId },
-								},
-							),
-						);
-					}
-					commentHandles
-						.commentMetaById(context, commentId)
-						.put(null, (removeCommentMetaCallback) => {
-							if (removeCommentMetaCallback.err) {
-								return callback(
-									new ApiError(
-										`${errPrefix}, failed to put null comment meta record ${
-											removeCommentMetaCallback.err
-										}`,
-										{
-											initialRequestBody: { commentId },
-										},
-									),
-								);
-							}
-							return callback(null);
-						});
-				});
-		});
+				if (owner !== alias) {
+					return callback(
+						new ApiError(`${errPrefix}, user does not own comment`, {
+							initialRequestBody: { commentId },
+						}),
+					);
+				}
+				eraseCommentNode(postPath);
+			});
+	};
+	/**
+	 * erase the comment on the post
+	 * @param postPath string absolute path to the post
+	 */
+	const eraseCommentNode = (postPath: string) => {
+		commentHandles
+			.commentsByPostPath(context, postPath)
+			.erase(commentId, (removeCommentCallback) => {
+				if (removeCommentCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, failed to put null comment record ${
+								removeCommentCallback.err
+							}`,
+							{
+								initialRequestBody: { commentId },
+							},
+						),
+					);
+				}
+				eraseCommentMetaNode();
+			});
+	};
+	/**
+	 * erase the comment meta data from the public record
+	 */
+	const eraseCommentMetaNode = () => {
+		commentHandles
+			.commentMetaById(context, commentId)
+			.put(null, (removeCommentMetaCallback) => {
+				if (removeCommentMetaCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, failed to put null comment meta record ${
+								removeCommentMetaCallback.err
+							}`,
+							{
+								initialRequestBody: { commentId },
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export const likeComment = (
@@ -269,64 +287,83 @@ export const unlikeComment = (
 	callback: IGunCallback<null>,
 ) => {
 	const errPrefix = 'failed to unlike comment';
-	commentHandles
-		.commentMetaById(context, commentId)
-		.docLoad((commentMetaCallback: ICommentMetasCallback) => {
-			if (!Object.keys(commentMetaCallback).length) {
-				return callback(
-					new ApiError(`${errPrefix}, no comment by this id`, {
-						initialRequestBody: { commentId },
-					}),
-				);
-			}
+	/**
+	 * fetch comment meta and get the related post path
+	 */
+	const mainRunner = () => {
+		commentHandles
+			.commentMetaById(context, commentId)
+			.docLoad((commentMetaCallback: ICommentMetasCallback) => {
+				if (!Object.keys(commentMetaCallback).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no comment by this id`, {
+							initialRequestBody: { commentId },
+						}),
+					);
+				}
 
-			const { postPath } = commentMetaCallback;
-			const { owner } = getContextMeta(context);
+				const { postPath } = commentMetaCallback;
+				const { owner } = getContextMeta(context);
+				checkCommentLike(postPath, owner);
+			});
+	};
+	/**
+	 * check if the like exists on the comment and the current user owns it
+	 * @param postPath string absolute post path
+	 * @param owner string current user alias/username
+	 */
+	const checkCommentLike = (postPath: string, owner: string) => {
+		commentHandles
+			.commentsByPostPath(context, postPath)
+			.path(`${commentId}.${TABLE_ENUMS.LIKES}.${owner}`)
+			.docLoad((likeReturnCallback: ILikeData) => {
+				if (!Object.keys(likeReturnCallback).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no like found to be erased`, {
+							initialRequestBody: { commentId },
+						}),
+					);
+				}
 
-			commentHandles
-				.commentsByPostPath(context, postPath)
-				.get(commentId)
-				.get(TABLE_ENUMS.LIKES)
-				.get(owner)
-				.docLoad((likeReturnCallback: ILikeData) => {
-					if (!Object.keys(likeReturnCallback).length) {
-						return callback(
-							new ApiError(`${errPrefix}, no like returned`, {
+				if (likeReturnCallback.owner.alias !== owner) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, user does not own this like? something is wrong here`,
+							{
 								initialRequestBody: { commentId },
-							}),
-						);
-					}
+							},
+						),
+					);
+				}
 
-					if (likeReturnCallback.owner.alias !== owner) {
-						return callback(
-							new ApiError(`${errPrefix}, user does not own this like`, {
+				eraseCommentLike(postPath, owner);
+			});
+	};
+	/**
+	 * erase the like from the comment
+	 * @param postPath string absolute post path
+	 * @param owner string current user alias/username
+	 */
+	const eraseCommentLike = (postPath: string, owner: string) => {
+		commentHandles
+			.commentsByPostPath(context, postPath)
+			.path(`${commentId}.${TABLE_ENUMS.LIKES}`)
+			.erase(owner, (unlikeCommentCallback) => {
+				if (unlikeCommentCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, like was not removed ${unlikeCommentCallback.err}`,
+							{
 								initialRequestBody: { commentId },
-							}),
-						);
-					}
-
-					commentHandles
-						.commentsByPostPath(context, postPath)
-						.get(commentId)
-						.get(TABLE_ENUMS.LIKES)
-						.get(owner)
-						.put(null, (unlikeCommentCallback) => {
-							if (unlikeCommentCallback.err) {
-								return callback(
-									new ApiError(
-										`${errPrefix}, like was not removed ${
-											unlikeCommentCallback.err
-										}`,
-										{
-											initialRequestBody: { commentId },
-										},
-									),
-								);
-							}
-							return callback(null);
-						});
-				});
-		});
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export default {

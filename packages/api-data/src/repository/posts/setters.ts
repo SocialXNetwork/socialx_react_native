@@ -201,80 +201,98 @@ export const removePost = (
 	callback: IGunCallback<null>,
 ) => {
 	const errPrefix = 'failed to remove post';
-	postHandles
-		.postMetaById(context, postId)
-		.docLoad((postMetaIdCallback: IPostMetasCallback) => {
-			if (!Object.keys(postMetaIdCallback).length) {
-				return callback(
-					new ApiError(`${errPrefix}, no post found by id`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
+	/**
+	 * get absolute postPath from postId and check if the post exist and the current user owns it
+	 */
+	const mainRunner = () => {
+		postHandles
+			.postMetaById(context, postId)
+			.docLoad((postMetaIdCallback: IPostMetasCallback) => {
+				if (!Object.keys(postMetaIdCallback).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no post found by id`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
 
-			const { owner } = getContextMeta(context);
+				const { owner } = getContextMeta(context);
 
-			const {
-				postPath,
-				owner: { alias },
-			} = postMetaIdCallback;
+				const {
+					postPath,
+					owner: { alias },
+				} = postMetaIdCallback;
 
-			if (owner !== alias) {
-				return callback(
-					new ApiError(`${errPrefix}, user does not own this post`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
-
-			postHandles
-				.postByPath(context, postPath)
-				.put(null, (postRemoveCallback) => {
-					if (postRemoveCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, error removing post ${postRemoveCallback.err}`,
-								{
-									initialRequestBody: { postId },
-								},
-							),
-						);
-					}
-					postHandles
-						.postMetaById(context, postId)
-						.put(null, (metaRemoveCallback) => {
-							if (metaRemoveCallback.err) {
-								return callback(
-									new ApiError(
-										`${errPrefix}, error removing post ${
-											metaRemoveCallback.err
-										}`,
-										{
-											initialRequestBody: { postId },
-										},
-									),
-								);
-							}
-							postHandles
-								.postMetasByPostIdOfCurrentAccount(context, postId)
-								.put(null, (postMetasRemoveCallback) => {
-									if (postMetasRemoveCallback.err) {
-										return callback(
-											new ApiError(
-												`${errPrefix}, error removing post meta ${
-													postMetasRemoveCallback.err
-												}`,
-												{
-													initialRequestBody: { postId },
-												},
-											),
-										);
-									}
-									return callback(null);
-								});
-						});
-				});
-		});
+				if (owner !== alias) {
+					return callback(
+						new ApiError(`${errPrefix}, user does not own this post`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
+				erasePostNode(postPath);
+			});
+	};
+	/**
+	 * erase post from the posts public record
+	 * @param postPath string absolute post path
+	 */
+	const erasePostNode = (postPath: string) => {
+		postHandles
+			.postsRecordByPostPath(context, postPath)
+			.erase(postId, (postRemoveCallback) => {
+				if (postRemoveCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error removing post ${postRemoveCallback.err}`,
+							{
+								initialRequestBody: { postId },
+							},
+						),
+					);
+				}
+				erasePostMetaNodeById();
+			});
+	};
+	const erasePostMetaNodeById = () => {
+		postHandles
+			.postMetaIdsRecord(context)
+			.erase(postId, (metaRemoveCallback) => {
+				if (metaRemoveCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error removing post meta ${
+								metaRemoveCallback.err
+							}`,
+							{
+								initialRequestBody: { postId },
+							},
+						),
+					);
+				}
+				erasePostMetaNodeByUser();
+			});
+	};
+	const erasePostMetaNodeByUser = () => {
+		postHandles
+			.postMetasByUsernamesRecord(context)
+			.erase(postId, (postMetasRemoveCallback) => {
+				if (postMetasRemoveCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error removing post meta ${
+								postMetasRemoveCallback.err
+							}`,
+							{
+								initialRequestBody: { postId },
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	mainRunner();
 };
 
 export const unlikePost = (
@@ -283,56 +301,84 @@ export const unlikePost = (
 	callback: IGunCallback<null>,
 ) => {
 	const errPrefix = 'failed to unlike post';
-	postHandles
-		.postMetaById(context, postId)
-		.docLoad((postMetaCallback: IPostMetasCallback) => {
-			if (!Object.keys(postMetaCallback).length) {
-				return callback(
-					new ApiError(`${errPrefix}, no post found by id`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
-
-			const { postPath } = postMetaCallback;
-			const { owner } = getContextMeta(context);
-
-			postHandles
-				.postLikesByCurrentUser(context, postPath)
-				.docLoad((likeData: ILikeData) => {
-					if (!Object.keys(likeData).length) {
-						return callback(
-							new ApiError(`${errPrefix}, like was not removed`, {
+	/**
+	 * get the post meta by its id
+	 */
+	const mainRunner = () => {
+		postHandles
+			.postMetaById(context, postId)
+			.docLoad((postMetaCallback: IPostMetasCallback) => {
+				if (!Object.keys(postMetaCallback).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no post found by id`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
+				const { postPath } = postMetaCallback;
+				const { owner } = getContextMeta(context);
+				checkIfLikedAndOwned(postPath, owner);
+			});
+	};
+	/**
+	 * check if the like exists and the current user owns it too
+	 * @param postPath string absoulte path to the post
+	 * @param owner string owner alias/username
+	 */
+	const checkIfLikedAndOwned = (postPath: string, owner: string) => {
+		postHandles
+			.postLikesByCurrentUser(context, postPath)
+			.docLoad((likeData: ILikeData) => {
+				if (!Object.keys(likeData).length) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, can not remove a like that doesnt exist`,
+							{
 								initialRequestBody: { postId },
-							}),
-						);
-					}
+							},
+						),
+					);
+				}
 
-					if (likeData.owner.alias !== owner) {
-						return callback(
-							new ApiError(`${errPrefix}, user does not own post`, {
+				if (likeData.owner.alias !== owner) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, user does not own the like? something is wrong here..`,
+							{
 								initialRequestBody: { postId },
-							}),
-						);
-					}
-
-					postHandles
-						.postLikesByCurrentUser(context, postPath)
-						.put(null, (unlikePostCallback) => {
-							if (unlikePostCallback.err) {
-								return callback(
-									new ApiError(
-										`${errPrefix}, failed to put ${unlikePostCallback.err}`,
-										{
-											initialRequestBody: { postId },
-										},
-									),
-								);
-							}
-							return callback(null);
-						});
-				});
-		});
+							},
+						),
+					);
+				}
+				removeLike(postPath, owner);
+			});
+	};
+	/**
+	 * removes the like by the current user on a post
+	 * @param postPath string absolute path to the post
+	 * @param owner string owner alias/username
+	 */
+	const removeLike = (postPath: string, owner: string) => {
+		postHandles
+			.likesByPostPath(context, postPath)
+			.erase(owner, (unlikePostCallback) => {
+				if (unlikePostCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, failed to remove like on post ${
+								unlikePostCallback.err
+							}`,
+							{
+								initialRequestBody: { postId },
+							},
+						),
+					);
+				}
+				return callback(null);
+			});
+	};
+	// run sequence
+	mainRunner();
 };
 
 export default { createPost, likePost, removePost, unlikePost };
