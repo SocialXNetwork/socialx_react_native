@@ -159,8 +159,8 @@ export const likePost = (
 
 			postHandles
 				.postLikesByCurrentUser(context, postMeta.postPath)
-				.docLoad((likePostCallback) => {
-					if (Object.keys(likePostCallback).length) {
+				.docLoad((likePostCallback: any) => {
+					if (Object.keys(likePostCallback).length && likePostCallback.owner) {
 						return callback(
 							new ApiError(`${errPrefix}, post already liked`, {
 								initialRequestBody: { postId },
@@ -329,7 +329,7 @@ export const unlikePost = (
 		postHandles
 			.postLikesByCurrentUser(context, postPath)
 			.docLoad((likeData: ILikeData) => {
-				if (!Object.keys(likeData).length) {
+				if (!Object.keys(likeData).length && !likeData.owner) {
 					return callback(
 						new ApiError(
 							`${errPrefix}, can not remove a like that doesnt exist`,
