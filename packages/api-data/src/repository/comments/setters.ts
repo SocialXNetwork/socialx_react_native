@@ -238,8 +238,11 @@ export const likeComment = (
 				.get(commentId)
 				.get(TABLE_ENUMS.LIKES)
 				.get(owner)
-				.docLoad((commentReturnCallback) => {
-					if (Object.keys(commentReturnCallback).length) {
+				.docLoad((commentReturnCallback: any) => {
+					if (
+						Object.keys(commentReturnCallback).length &&
+						commentReturnCallback.owner
+					) {
 						return callback(
 							new ApiError(`${errPrefix}, this comment is already liked`, {
 								initialRequestBody: { commentId },
@@ -317,7 +320,10 @@ export const unlikeComment = (
 			.commentsByPostPath(context, postPath)
 			.path(`${commentId}.${TABLE_ENUMS.LIKES}.${owner}`)
 			.docLoad((likeReturnCallback: ILikeData) => {
-				if (!Object.keys(likeReturnCallback).length) {
+				if (
+					!Object.keys(likeReturnCallback).length &&
+					!likeReturnCallback.owner
+				) {
 					return callback(
 						new ApiError(`${errPrefix}, no like found to be erased`, {
 							initialRequestBody: { commentId },
