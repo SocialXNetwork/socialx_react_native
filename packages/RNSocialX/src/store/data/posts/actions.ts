@@ -36,6 +36,7 @@ import {
 	ISyncGetPostsByUserAction,
 	ISyncGetPublicPostsByDateAction,
 	ISyncLoadMorePostsAction,
+	ISyncRemovePostAction,
 	IUnlikeCommentAction,
 	IUnlikePostAction,
 	IUsernameInput,
@@ -384,6 +385,13 @@ const removePostAction: ActionCreator<IRemovePostAction> = (
 	payload: removePostInput,
 });
 
+const syncRemovePostAction: ActionCreator<ISyncRemovePostAction> = (
+	postId: string,
+) => ({
+	type: ActionTypes.SYNC_REMOVE_POST,
+	payload: postId,
+});
+
 export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	dispatch,
 	getState,
@@ -403,8 +411,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.posts.removePost(removePostInput);
-
-			await dispatch(getPostsByUsername({ username: auth.alias }));
+			dispatch(syncRemovePostAction(removePostInput.postId));
 		} catch (e) {
 			await dispatch(
 				setError({

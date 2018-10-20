@@ -239,15 +239,17 @@ export const likeComment = (
 				.get(TABLE_ENUMS.LIKES)
 				.get(owner)
 				.docLoad((commentReturnCallback: any) => {
-					if (
-						Object.keys(commentReturnCallback).length &&
-						commentReturnCallback.owner
-					) {
-						return callback(
-							new ApiError(`${errPrefix}, this comment is already liked`, {
-								initialRequestBody: { commentId },
-							}),
-						);
+					if (!commentReturnCallback) {
+						if (
+							Object.keys(commentReturnCallback).length &&
+							commentReturnCallback.owner
+						) {
+							return callback(
+								new ApiError(`${errPrefix}, this comment is already liked`, {
+									initialRequestBody: { commentId },
+								}),
+							);
+						}
 					}
 
 					commentHandles
