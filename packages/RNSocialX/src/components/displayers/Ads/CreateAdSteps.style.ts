@@ -16,7 +16,7 @@ const styles: any = {
 		justifyContent: 'center',
 	},
 	stepIcon: {
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: ICON_SIZE,
 	},
 	stepIconSelected: {

@@ -54,7 +54,7 @@ const styles: any = {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(20),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		textAlign: 'center',
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
@@ -70,7 +70,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(20),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		textAlign: 'center',
 	},
 	buttonsContainer: {

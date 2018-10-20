@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		paddingTop: Sizes.smartVerticalScale(20),
 		textAlign: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(20),

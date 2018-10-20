@@ -216,28 +216,37 @@ export class WithComments extends React.Component<
 																					},
 																				},
 																				actions: {
-																					sendComment: (text, postId) =>
-																						postProps.createComment({
+																					sendComment: async (text, postId) => {
+																						await postProps.createComment({
 																							text,
 																							postId,
-																						}),
-																					deleteComment: (commentId) =>
-																						postProps.removeComment({
+																						});
+																					},
+																					deleteComment: async (commentId) => {
+																						await postProps.removeComment({
 																							commentId,
-																						}),
-																					likeComment: (commentId) =>
-																						postProps.likeComment({
+																						});
+																					},
+																					likeComment: async (commentId) => {
+																						await postProps.likeComment({
 																							commentId,
-																						}),
-																					unlikeComment: (commentId) =>
-																						postProps.unlikeComment({
+																						});
+																					},
+																					unlikeComment: async (commentId) => {
+																						await postProps.unlikeComment({
 																							commentId,
-																						}),
-																					likePost: (postId) =>
-																						postProps.likePost({ postId }),
-																					unlikePost: (postId) =>
-																						postProps.unlikePost({ postId }),
-
+																						});
+																					},
+																					likePost: async (postId) => {
+																						await postProps.likePost({
+																							postId,
+																						});
+																					},
+																					unlikePost: async (postId) => {
+																						await postProps.unlikePost({
+																							postId,
+																						});
+																					},
 																					getText: i18nProps.getText,
 																					showDotsMenuModal: (items) =>
 																						overlayProps.showOptionsMenu({

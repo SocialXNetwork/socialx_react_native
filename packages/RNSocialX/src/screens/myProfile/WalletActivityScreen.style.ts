@@ -20,7 +20,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(0),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 };

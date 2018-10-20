@@ -9,7 +9,7 @@ const styles: any = {
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	showMoreText: {
 		...Fonts.centuryGothic,
@@ -18,16 +18,13 @@ const styles: any = {
 		paddingLeft: Sizes.smartHorizontalScale(5),
 	},
 	hashtag: {
-		color: 'rgba(98, 162, 225, 0.8)',
-		textDecorationLine: 'underline',
+		color: Colors.pink,
 	},
 	tag: {
-		color: 'black',
-		fontWeight: 'bold',
+		color: Colors.pink,
 	},
 	url: {
-		color: Colors.postHour,
-		textDecorationLine: 'underline',
+		color: Colors.pink,
 	},
 };
 

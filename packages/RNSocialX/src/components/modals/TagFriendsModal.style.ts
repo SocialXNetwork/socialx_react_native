@@ -78,7 +78,7 @@ const style: any = {
 	},
 	buttonTextCancel: {
 		opacity: 0.5,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	resultsContainer: {
 		minHeight: 100,

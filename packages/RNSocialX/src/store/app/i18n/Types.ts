@@ -1,6 +1,5 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
-import { ISetAuthAction } from '../auth/Types';
 
 export const enum AvailableLocales {
 	EN = 'en',

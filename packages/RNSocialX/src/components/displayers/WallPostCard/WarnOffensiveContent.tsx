@@ -48,13 +48,13 @@ const style: any = {
 	offensiveWarningText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		flex: 1,
 	},
 	viewOffensiveText: {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 };
 

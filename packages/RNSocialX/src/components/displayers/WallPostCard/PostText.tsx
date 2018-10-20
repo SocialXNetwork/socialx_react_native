@@ -3,13 +3,14 @@ import { Text, View } from 'react-native';
 
 import { RichText } from '../..';
 import { ITranslatedProps } from '../../../types';
+
 import styles from './PostText.style';
 
 const POST_SHORT_LENGTH = 100;
 const POST_SHORT_MAX_LINES = 3;
 
 interface IPostTextProps extends ITranslatedProps {
-	text?: string;
+	text: string;
 	fullTextVisible: boolean;
 	toggleShowFullText: () => void;
 	handleHashTag: (hashTag: string) => void;

@@ -16,7 +16,7 @@ const styles: any = {
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	border: {
 		color: Colors.grayText,

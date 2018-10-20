@@ -30,7 +30,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(35),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	grayText: {
 		color: Colors.shuttleGray,

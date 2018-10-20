@@ -25,5 +25,5 @@ const style: any = {
 };
 
 export const fullNameDefaultColor = Colors.userAvatarFullName;
-export const userNameDefaultColor = Colors.postText;
+export const userNameDefaultColor = Colors.paleSky;
 export const styles = StyleSheet.create(style);

@@ -31,5 +31,5 @@ export default StyleSheet.create(styles);
 export const colors = {
 	icon: Colors.cadetBlue,
 	border: Colors.transparent,
-	iosInputCancel: Colors.postText,
+	iosInputCancel: Colors.paleSky,
 };

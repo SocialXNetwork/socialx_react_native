@@ -61,11 +61,11 @@ export const CommentsHeaderMenuButton: React.SFC<
 	const menuItems = getSortingItems(sortOption, onValueChange);
 	return (
 		<View style={style.rightHeader}>
-			{/*<DotsMenuButton*/}
-			{/*getItems={() => headerItem.concat(menuItems)}*/}
-			{/*iconName={'ios-more'}*/}
-			{/*iconColor={customStyleProps.dotsColor}*/}
-			{/*/>*/}
+			{/* <DotsMenuButton
+			getItems={() => headerItem.concat(menuItems)}
+			iconName='ios-more'
+			iconColor={customStyleProps.dotsColor}
+			> */}
 		</View>
 	);
 };

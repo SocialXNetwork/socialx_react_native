@@ -30,7 +30,7 @@ const styles: any = {
 	},
 	fullName: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
 	},
 	userName: {
@@ -41,7 +41,7 @@ const styles: any = {
 	},
 	text: {
 		...Fonts.centuryGothic,
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(23),
 	},

@@ -157,7 +157,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 					</Text>
 				</TouchableOpacity>
 			</View>
-			<View style={style.paddingContainer}>
+			{/* <View style={style.paddingContainer}>
 				<LocationSection
 					locationEnabled={locationEnabled}
 					onLocationToggle={onLocationToggle}
@@ -172,7 +172,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 					showTagFriendsModal={showTagFriendsModal}
 					checkboxLabel={getText('photo.screen.tag.friends.checkbox')}
 				/>
-			</View>
+			</View> */}
 		</KeyboardAwareScrollView>
 	</React.Fragment>
 );

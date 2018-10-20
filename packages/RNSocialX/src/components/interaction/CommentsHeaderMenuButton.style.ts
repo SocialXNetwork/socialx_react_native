@@ -16,7 +16,7 @@ const style: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(22),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		textAlign: 'left',
 	},
 	iconView: {
@@ -31,7 +31,7 @@ const style: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(22),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		textAlign: 'center',
 		backgroundColor: Colors.dustWhite,
 		width: '100%',

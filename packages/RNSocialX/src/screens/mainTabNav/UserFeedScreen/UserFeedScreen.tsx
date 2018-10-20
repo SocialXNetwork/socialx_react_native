@@ -197,8 +197,13 @@ export class Screen extends React.Component<
 		}
 	};
 
-	private onSubmitCommentHandler = (escapedComment: string, postId: string) => {
-		this.props.postComment(escapedComment, postId);
+	private onSubmitCommentHandler = async (
+		escapedComment: string,
+		postId: string,
+	) => {
+		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
+			await this.props.postComment(escapedComment, postId);
+		}
 	};
 
 	private calculateScrollOffset = (cardHeight: number, index: number) => {

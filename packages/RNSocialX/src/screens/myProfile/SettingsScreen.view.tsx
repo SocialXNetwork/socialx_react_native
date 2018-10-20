@@ -7,6 +7,7 @@ import { string } from 'yup';
 import {
 	AvatarName,
 	AvatarPicker,
+	ButtonSizes,
 	Checkbox,
 	Header,
 	HeaderButton,
@@ -228,6 +229,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						<View style={styles.button}>
 							<PrimaryButton
 								label={getText('settings.screen.save.button')}
+								size={ButtonSizes.Small}
 								onPress={handleSubmit}
 							/>
 						</View>

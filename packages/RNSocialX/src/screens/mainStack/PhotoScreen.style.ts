@@ -22,14 +22,14 @@ const style: any = {
 	smallText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
 	multilineTextInput: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(13),
 		lineHeight: Sizes.smartHorizontalScale(22),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	withMaxHeight: {
 		maxHeight: Sizes.smartVerticalScale(80),
@@ -55,7 +55,7 @@ const style: any = {
 	addMediaText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 };
 

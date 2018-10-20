@@ -41,6 +41,7 @@ export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 				>{`${timeStampDate} at ${timeStampHour}`}</Text>
 			</View>
 			<View style={styles.dotsContainer}>
+				{/* TODO @Alex replace this with DotsMenuModal */}
 				<CommentsHeaderMenuButton
 					sortOption={optionsProps.sortOption}
 					onValueChange={optionsProps.onSelectionChange}

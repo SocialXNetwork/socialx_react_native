@@ -19,14 +19,14 @@ const style: any = {
 	},
 	title: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(21),
 		marginRight: Sizes.smartHorizontalScale(10),
 	},
 	description: {
 		...Fonts.centuryGothic,
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(23),
 		marginRight: Sizes.smartHorizontalScale(10),

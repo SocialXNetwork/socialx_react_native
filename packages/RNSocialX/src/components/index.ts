@@ -9,9 +9,7 @@ export { CreateAdSteps } from './displayers/Ads/CreateAdSteps';
 export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
-export { CommentsPostLikes } from './displayers/CommentsPostLikes';
 export { CommentsPostOwner } from './displayers/CommentsPostOwner';
-export { CommentsPostText } from './displayers/CommentsPostText';
 export { CommentCard } from './displayers/CommentCard';
 export { DotsMenuButton } from './displayers/DotsMenuButton';
 export { Header } from './displayers/Header';
@@ -43,7 +41,12 @@ export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
 export { TransactionItem } from './displayers/TransactionItem';
-export { WallPostCard } from './displayers/WallPostCard';
+export {
+	WallPostCard,
+	PostText,
+	RecentLikes,
+	UserDetails,
+} from './displayers/WallPostCard';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';

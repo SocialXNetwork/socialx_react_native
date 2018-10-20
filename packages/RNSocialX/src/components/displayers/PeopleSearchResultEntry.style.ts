@@ -32,12 +32,12 @@ const style: any = {
 	},
 	fullName: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
 	},
 	location: {
 		...Fonts.centuryGothic,
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(10),
 	},
 	isFiendIcon: {

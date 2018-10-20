@@ -128,6 +128,7 @@ const CancelButton: React.SFC<{
 			</TouchableOpacity>
 		);
 	}
+
 	return null;
 };
 
@@ -136,12 +137,17 @@ const PostButton: React.SFC<{
 	hasFocus: boolean;
 	onPressPost: () => void;
 	postButtonTextColor: string;
-}> = ({ canPost, hasFocus, onPressPost, postButtonTextColor }) => {
+	inputRef: React.RefObject<TextInput>;
+}> = ({ canPost, hasFocus, onPressPost, postButtonTextColor, inputRef }) => {
 	if (hasFocus && canPost) {
 		return (
 			<TouchableOpacity
 				style={style.cancelButton}
-				onPress={() => Keyboard.dismiss()}
+				onPress={() => {
+					Keyboard.dismiss();
+					onPressPost();
+					inputRef.current!.clear();
+				}}
 			>
 				<Text style={[style.cancelButtonText, { color: postButtonTextColor }]}>
 					Post
@@ -309,6 +315,7 @@ export class PrimaryTextInput extends React.Component<
 					hasFocus={hasFocus}
 					postButtonTextColor={postButtonTextColor}
 					onPressPost={onPressPost}
+					inputRef={this.inputRef}
 				/>
 			</View>
 		);

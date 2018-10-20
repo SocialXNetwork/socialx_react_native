@@ -10,11 +10,12 @@ const styles: any = {
 	},
 	likedText: {
 		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.postText,
+		fontSize: Sizes.smartHorizontalScale(15),
+		color: Colors.cloudBurst,
 	},
 	likeTextBold: {
 		...Fonts.centuryGothicBold,
+		color: Colors.cloudBurst,
 	},
 };
 

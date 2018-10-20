@@ -15,7 +15,7 @@ const style: any = {
 	},
 	welcomeText: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(24),
 		paddingTop: Sizes.smartVerticalScale(59),
@@ -44,7 +44,7 @@ const style: any = {
 	},
 	noAccountQuestion: {
 		...Fonts.centuryGothic,
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(17),
 	},
@@ -87,6 +87,6 @@ const style: any = {
 export default StyleSheet.create(style);
 
 export const customStyleProps = {
-	inputPlaceholderColor: Colors.postText,
+	inputPlaceholderColor: Colors.paleSky,
 	borderTransparent: Colors.transparent,
 };

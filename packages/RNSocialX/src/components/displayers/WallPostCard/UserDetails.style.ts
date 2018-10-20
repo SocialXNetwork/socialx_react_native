@@ -24,13 +24,13 @@ const styles: any = {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 	},
 	timestamp: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
 		lineHeight: Sizes.smartHorizontalScale(14),
-		color: Colors.postText,
+		color: Colors.paleSky,
 		paddingTop: Sizes.smartVerticalScale(3),
 	},
 	dotsContainer: {
@@ -42,5 +42,5 @@ const styles: any = {
 export default StyleSheet.create(styles);
 export const images = Images;
 export const defaultStyles = {
-	advancedMenuButtonColor: Colors.postFullName,
+	advancedMenuButtonColor: Colors.cloudBurst,
 };
