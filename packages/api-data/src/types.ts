@@ -7,7 +7,10 @@ export enum TABLES {
 	POST_METAS_BY_USER = 'postMetasByUser',
 	COMMENT_META_BY_ID = 'commentMetaById',
 	PROFILES = 'profiles',
+	PROFILE = 'profile',
 	NOTIFICATIONS = 'notifications',
+	FRIEND_REQUESTS = 'friend_requests',
+	FRIENDS = 'friends',
 }
 
 export enum TABLE_ENUMS {

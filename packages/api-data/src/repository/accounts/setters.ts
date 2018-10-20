@@ -62,82 +62,103 @@ export const createAccount = (
 		recover: { reminder, question1, question2 },
 	} = createAccountInput;
 	const errPrefix = 'failed to create a new account';
-	// start the creation process here
-	account.create(username, password, (createAccountCallback) => {
-		if (createAccountCallback.wait) {
-			// we wait? what do we do here
-		} else if (createAccountCallback.err) {
-			return callback(
-				new ApiError(`${errPrefix} ${createAccountCallback.err}`, {
-					initialRequestBody: createAccountInput,
-				}),
+
+	/**
+	 * create the user account
+	 */
+	const mainRunner = () => {
+		account.create(username, password, (createAccountCallback) => {
+			if (createAccountCallback.wait) {
+				// we wait? what do we do here
+			} else if (createAccountCallback.err) {
+				return callback(
+					new ApiError(`${errPrefix} ${createAccountCallback.err}`, {
+						initialRequestBody: createAccountInput,
+					}),
+				);
+			} else {
+				authenticateWithUser();
+			}
+		});
+	};
+	/**
+	 * authenticate with the newly created account to have access to the private scope
+	 */
+	const authenticateWithUser = () => {
+		account.auth(username, password, async (authAck) => {
+			if (authAck.err) {
+				return callback(
+					new ApiError(`${errPrefix}, failed authentication ${authAck.err}`, {
+						initialRequestBody: createAccountInput,
+					}),
+				);
+			}
+
+			const encryptedReminder = await encrypt(
+				reminder,
+				await work(question1, question2),
 			);
-		} else {
-			// we authenticate the user
-			account.auth(username, password, async (authAck) => {
-				if (authAck.err) {
+			const recoveryData = {
+				encryptedReminder,
+				question1: question1.length,
+				question2: question2.length,
+			};
+			createRecoveryOnAccount(recoveryData);
+		});
+	};
+	/**
+	 * create the recovery object on the current user's private scope
+	 * @param recoveryData object the user's recovery information
+	 */
+	const createRecoveryOnAccount = (recoveryData: object) => {
+		accountHandles
+			.currentAccountRecover(context)
+			.put(recoveryData, (recoverCallback) => {
+				if (recoverCallback.err) {
 					return callback(
-						new ApiError(`${errPrefix}, failed authentication ${authAck.err}`, {
+						new ApiError(
+							`${errPrefix}, failed to create account recovery settings ${
+								recoverCallback.err
+							}`,
+							{
+								initialRequestBody: createAccountInput,
+							},
+						),
+					);
+				}
+				createAccountProfile();
+			});
+	};
+	/**
+	 * create the user's profile
+	 */
+	const createAccountProfile = () => {
+		createProfile(
+			context,
+			{
+				username,
+				aboutMeText,
+				miningEnabled,
+				fullName,
+				email,
+				avatar,
+				pub: account.is.pub,
+			},
+			(err) => {
+				if (err) {
+					return callback(
+						new ApiError(`${errPrefix}, failed to set created account ${err}`, {
 							initialRequestBody: createAccountInput,
 						}),
 					);
 				}
-				// after the user is authenticate we create their recovery setting
-				const encryptedReminder = await encrypt(
-					reminder,
-					await work(question1, question2),
-				);
 
-				accountHandles.currentAccountRecover(context).put(
-					{
-						// recovery stuff here
-						encryptedReminder,
-						question1: question1.length,
-						question2: question2.length,
-					},
-					(recoverCallback) => {
-						if (recoverCallback.err) {
-							return callback(
-								new ApiError(
-									`${errPrefix}, failed to create account recovery settings ${
-										recoverCallback.err
-									}`,
-									{
-										initialRequestBody: createAccountInput,
-									},
-								),
-							);
-						}
-
-						createProfile(
-							context,
-							{
-								username,
-								aboutMeText,
-								miningEnabled,
-								fullName,
-								email,
-								avatar,
-								pub: account.is.pub,
-							},
-							(err) => {
-								if (err) {
-									return callback(
-										new ApiError(
-											`${errPrefix}, failed to set created account ${err}`,
-											{ initialRequestBody: createAccountInput },
-										),
-									);
-								}
-
-								return callback(null);
-							},
-						);
-					},
-				);
-			});
-		}
-	});
+				return callback(null);
+			},
+		);
+	};
+	// run sequence
+	mainRunner();
 };
 
 export const login = (
@@ -198,6 +219,7 @@ export const changePassword = (
 	);
 };
 
+// TODO: change into functional pattern, put to use?
 export const recoverAccount = (
 	context: IContext,
 	{ username, question1, question2 }: IRecoverAccountInput,
