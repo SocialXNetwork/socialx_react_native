@@ -233,12 +233,20 @@ export const login = (credentials: ICredentials): IThunk => async (
 		);
 		const { dataApi } = context;
 		await dataApi.accounts.login(credentials);
-		await dispatch(setGunAuth({ password: credentials.password }));
-		await dispatch(getCurrentAccount());
 	} catch (e) {
-		if (auth) {
-			await dispatch(login(credentials));
-			return;
+		if (auth && auth.alias && auth.password) {
+			if (auth.alias.length > 0 && auth.password.length > 0) {
+				await dispatch(login(credentials));
+				return;
+			} else {
+				await dispatch(
+					setError({
+						type: ActionTypes.LOGIN,
+						error: e.message,
+						uuid: uuidv4(),
+					}),
+				);
+			}
 		} else {
 			await dispatch(
 				setError({
@@ -249,6 +257,13 @@ export const login = (credentials: ICredentials): IThunk => async (
 			);
 		}
 	} finally {
+		await dispatch(
+			setGunAuth({
+				password: credentials.password,
+				alias: credentials.username,
+			}),
+		);
+		await dispatch(getCurrentAccount());
 		await dispatch(endActivity({ uuid: activityId }));
 	}
 };

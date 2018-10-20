@@ -26,8 +26,8 @@ export const getCurrentAccount = (
 
 	profileHandles
 		.currentUserProfileData(context)
-		.docLoad((userProfileCallback: any) => {
-			if (!Object.keys(userProfileCallback).length) {
+		.once((userProfileCallback: any) => {
+			if (!userProfileCallback) {
 				return callback(new ApiError('failed to get current account profile.'));
 			}
 			const { pub } = userProfileCallback;
