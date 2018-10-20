@@ -239,7 +239,7 @@ export const likeComment = (
 				.get(TABLE_ENUMS.LIKES)
 				.get(owner)
 				.docLoad((commentReturnCallback: any) => {
-					if (!commentReturnCallback) {
+					if (commentReturnCallback !== null) {
 						if (
 							Object.keys(commentReturnCallback).length &&
 							commentReturnCallback.owner
