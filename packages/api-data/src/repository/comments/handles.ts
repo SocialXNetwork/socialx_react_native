@@ -9,6 +9,11 @@ export const commentMetaById = (context: IContext, commentId: string) => {
 	return gun.path(`${TABLES.COMMENT_META_BY_ID}.${commentId}`);
 };
 
+export const commentMetas = (context: IContext) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.COMMENT_META_BY_ID}`);
+};
+
 export const likesByCommentPath = (context: IContext, commentPath: string) => {
 	const { gun } = context;
 	return gun.path(`${commentPath}.${TABLE_ENUMS.LIKES}`);
