@@ -8,7 +8,7 @@ import {
 	ViewStyle,
 } from 'react-native';
 
-import { defaultColor, styles } from './PrimaryButton.style';
+import styles, { defaultColor } from './PrimaryButton.style';
 
 export enum ButtonSizes {
 	Small = 'Small',

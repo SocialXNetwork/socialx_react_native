@@ -66,10 +66,10 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 		/**/
 	},
 }) => {
-	const ImageComponent =
-		Platform.OS === OS_TYPES.Android && uri.startsWith('https://')
-			? FastImage
-			: Image;
+	// const ImageComponent =
+	// 	Platform.OS === OS_TYPES.Android && uri.startsWith('https://')
+	// 		? FastImage
+	// 		: Image;
 	const mediaMimeType = getMimeType(uri, type, extension);
 
 	return (
@@ -96,11 +96,15 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 							/>
 						)}
 						{!canZoom && (
-							<ImageComponent
+							<FastImage
 								source={{ uri }}
-								resizeMode={resizeMode}
+								resizeMode={
+									resizeMode === 'contain'
+										? FastImage.resizeMode.contain
+										: FastImage.resizeMode.cover
+								}
 								style={styles.photoStyle}
-								resizeMethod="resize"
+								// resizeMethod="resize"
 							/>
 						)}
 					</TouchableWithDoublePress>

@@ -13,6 +13,8 @@ const DEFAULT_PICKER_OPTIONS: Partial<Options> = {
 	cropping: false,
 	mediaType: 'any',
 	compressImageQuality: 0.8,
+	compressImageMaxWidth: 1024,
+	compressImageMaxHeight: 768,
 };
 
 export type IPickerImage = Image;

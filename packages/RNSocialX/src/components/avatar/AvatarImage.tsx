@@ -1,12 +1,3 @@
-/**
- * TODO list:
- * 1. @Ionut: refactor all usages to send image of correct updated type
- * 2. @Serkan: is this the correct place to decide about using placeholder for an image
- * or should we do this at the top most level in components and screens!
- * with DRY principle in mind it should go here IMO.
- * 3. @Serkan: discuss nullable types in general!
- */
-
 import * as React from 'react';
 import { ImageStyle, StyleProp, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
