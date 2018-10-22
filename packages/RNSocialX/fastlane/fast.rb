@@ -114,12 +114,12 @@ platform :ios do
 
   desc 'iOS build and upload flow'
   lane :release do |options|
-    install_dev
+    # install_dev
     check_build_params options
     version_ios options
     ios_build
-    send_testflight
-    ios_bugsnag options
+    # send_testflight
+    # ios_bugsnag options
   end
 
 end
@@ -128,11 +128,11 @@ platform :android do
 
   desc 'Android build and upload flow'
   lane :release do |options|
-    install_dev
+    # install_dev
     check_build_params options
     android_build options
-    send_play_store
-    android_bugsnag options
+    # send_play_store
+    # android_bugsnag options
   end
 
 end
