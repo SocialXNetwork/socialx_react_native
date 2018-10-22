@@ -62,9 +62,6 @@ interface IPrimaryTextInputProps {
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
 	onPressCancel: () => void;
-	canPost: boolean;
-	onPressPost: () => void;
-	postButtonTextColor: string;
 	getRef: (ref: React.RefObject<TextInput>) => void;
 }
 
@@ -132,32 +129,6 @@ const CancelButton: React.SFC<{
 	return null;
 };
 
-const PostButton: React.SFC<{
-	canPost: boolean;
-	hasFocus: boolean;
-	onPressPost: () => void;
-	postButtonTextColor: string;
-	inputRef: React.RefObject<TextInput>;
-}> = ({ canPost, hasFocus, onPressPost, postButtonTextColor, inputRef }) => {
-	if (hasFocus && canPost) {
-		return (
-			<TouchableOpacity
-				style={style.cancelButton}
-				onPress={() => {
-					Keyboard.dismiss();
-					onPressPost();
-					inputRef.current!.clear();
-				}}
-			>
-				<Text style={[style.cancelButtonText, { color: postButtonTextColor }]}>
-					Post
-				</Text>
-			</TouchableOpacity>
-		);
-	}
-	return null;
-};
-
 export class PrimaryTextInput extends React.Component<
 	IPrimaryTextInputProps,
 	IPrimaryTextInputState
@@ -196,11 +167,6 @@ export class PrimaryTextInput extends React.Component<
 			/**/
 		},
 		onSubmitPressed: (event: any) => {
-			/**/
-		},
-		canPost: false,
-		postButtonTextColor: defaultStyles.defaultPostTextColor,
-		onPressPost: () => {
 			/**/
 		},
 		getRef: () => {
@@ -245,9 +211,6 @@ export class PrimaryTextInput extends React.Component<
 			value,
 			borderColor,
 			borderWidth,
-			canPost,
-			postButtonTextColor,
-			onPressPost,
 		} = this.props;
 		const { hasFocus } = this.state;
 
@@ -283,7 +246,11 @@ export class PrimaryTextInput extends React.Component<
 						autoFocus={autoFocus}
 						value={value || ''}
 						onChangeText={onChangeText}
-						onSubmitEditing={onSubmitPressed}
+						onSubmitEditing={(event) => {
+							onSubmitPressed(event);
+							this.inputRef.current!.clear();
+							Keyboard.dismiss();
+						}}
 						ref={this.inputRef}
 						onFocus={() => this.updateFocusHandler(true)}
 						onBlur={() => this.updateFocusHandler(false)}
@@ -309,13 +276,6 @@ export class PrimaryTextInput extends React.Component<
 					cancelButtonTextColor={cancelButtonTextColor}
 					onPressCancel={onPressCancel}
 					persistCancel={persistCancel}
-				/>
-				<PostButton
-					canPost={canPost}
-					hasFocus={hasFocus}
-					postButtonTextColor={postButtonTextColor}
-					onPressPost={onPressPost}
-					inputRef={this.inputRef}
 				/>
 			</View>
 		);

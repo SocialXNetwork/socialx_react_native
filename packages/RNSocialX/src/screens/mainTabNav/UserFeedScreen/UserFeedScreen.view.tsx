@@ -132,6 +132,7 @@ export class UserFeedScreenView extends React.Component<
 					onBlockUser={this.props.onBlockUser}
 					onReportProblem={this.props.onReportProblem}
 					showDotsMenuModal={this.props.showDotsMenuModal}
+					displayDots={true}
 				/>
 				{post.suggested && (
 					<SuggestionsCarousel

@@ -116,16 +116,14 @@ class Screen extends React.Component<
 				onClose={this.onCloseHandler}
 				getText={this.props.getText}
 				onImagePress={this.onMediaObjectPressHandler}
-				onLikeButtonPress={this.onLikePressHandler}
+				onLikePress={this.onLikePressHandler}
 				onUserPress={this.onViewUserProfile}
 				onSubmitComment={postComment}
 				onCommentPress={this.onViewCommentsForPost}
 				onAddComment={(height: number) => {
 					/**/
 				}}
-				onDeletePress={() => {
-					/* When viewing a user profile page there is no option to delete a post. This should remain empty. */
-				}}
+				onDeletePostPress={() => undefined}
 				onBlockUser={blockUser}
 				onReportProblem={reportProblem}
 			/>

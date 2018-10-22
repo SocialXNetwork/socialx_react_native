@@ -8,9 +8,8 @@ const styles: any = {
 	container: {
 		width: '100%',
 		flexDirection: 'row',
-		paddingVertical: Sizes.smartVerticalScale(5),
+		paddingVertical: Sizes.smartVerticalScale(7.5),
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		justifyContent: 'flex-start',
 	},
 	avatarImage: {
 		width: AVATAR_SIZE,
@@ -23,24 +22,21 @@ const styles: any = {
 		paddingLeft: Sizes.smartHorizontalScale(10),
 	},
 	commentBackground: {
-		borderRadius: Sizes.smartHorizontalScale(20),
+		borderRadius: Sizes.smartHorizontalScale(15),
 		backgroundColor: Colors.gallery,
 		paddingHorizontal: Sizes.smartHorizontalScale(12),
-		paddingTop: Sizes.smartHorizontalScale(8),
+		paddingVertical: Sizes.smartVerticalScale(7),
 	},
 	userFullName: {
 		...Fonts.centuryGothicBold,
-		fontSize: Sizes.smartHorizontalScale(15),
+		fontSize: Sizes.smartHorizontalScale(14),
 		color: Colors.cloudBurst,
-		lineHeight: Sizes.smartHorizontalScale(20),
-		marginBottom: Sizes.smartVerticalScale(2),
+		marginBottom: Sizes.smartVerticalScale(1),
 	},
 	commentText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 		color: Colors.cloudBurst,
-		lineHeight: Sizes.smartHorizontalScale(20),
-		paddingBottom: Sizes.smartHorizontalScale(8),
 	},
 	actionsContainer: {
 		flex: 1,

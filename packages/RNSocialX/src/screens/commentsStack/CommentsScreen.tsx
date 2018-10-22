@@ -11,6 +11,7 @@
 import React, { Component } from 'react';
 import { Clipboard, Platform, StatusBar } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+import uuid from 'uuid/v4';
 
 import {
 	IWithCommentsEnhancedActions,
@@ -32,6 +33,9 @@ import { CommentsScreenView } from './CommentsScreen.view';
 interface ICommentsScreenState {
 	sortOption: CommentsSortingOptions;
 	comment: string;
+	comments: IWallPostComment[];
+	disabledInput: boolean;
+	error: boolean;
 }
 
 type ICommentsScreenProps = INavigationProps &
@@ -39,9 +43,31 @@ type ICommentsScreenProps = INavigationProps &
 	IWithCommentsEnhancedActions;
 
 class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
+	public static getDerivedStateFromProps(
+		nextProps: ICommentsScreenProps,
+		currentState: ICommentsScreenState,
+	) {
+		const incomingError = !!nextProps.errors.find(
+			(error) =>
+				error.type === ActionTypes.CREATE_COMMENT ||
+				error.type === ActionTypes.REMOVE_COMMENT,
+		);
+
+		if (incomingError !== currentState.error) {
+			return {
+				error: true,
+			};
+		}
+
+		return null;
+	}
+
 	public state = {
 		sortOption: CommentsSortingOptions.Likes,
 		comment: '',
+		comments: this.props.post.comments,
+		disabledInput: false,
+		error: false,
 	};
 
 	public componentDidMount() {
@@ -49,6 +75,18 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustResize();
 		}
+	}
+
+	public shouldComponentUpdate(
+		nextProps: ICommentsScreenProps,
+		nextState: ICommentsScreenState,
+	) {
+		return (
+			this.state !== nextState ||
+			this.props.currentUser !== nextProps.currentUser ||
+			this.props.errors !== nextProps.errors ||
+			this.props.post !== nextProps.post
+		);
 	}
 
 	public componentWillUnmount() {
@@ -82,6 +120,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		return (
 			<CommentsScreenView
 				post={post}
+				comments={this.state.comments}
 				startComment={startComment}
 				likePostError={likePostError}
 				likeCommentError={likeCommentError}
@@ -90,7 +129,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentSend={this.onCommentSendHandler}
 				onViewUserProfile={this.navigateToUserProfile}
-				onCommentTextChange={this.onCommentTextChangeHandler}
+				onCommentInputChange={this.onCommentInputChangeHandler}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
@@ -110,14 +149,59 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		}
 	};
 
-	private onCommentSendHandler = () => {
-		const { sendComment, post } = this.props;
-		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
-		sendComment(escapedComment, post.postId);
+	private onCommentSendHandler = async () => {
+		const { sendComment, post, currentUser } = this.props;
+
+		const escapedCommentText = this.state.comment.replace(/\n/g, '\\n');
+		const newComment = {
+			commentId: uuid(),
+			text: escapedCommentText,
+			user: {
+				userId: currentUser.userId,
+				fullName: currentUser.fullName,
+				avatarURL: currentUser.avatarURL,
+			},
+			timestamp: new Date(Date.now()),
+			numberOfLikes: 0,
+			likes: [],
+			likedByMe: false,
+		};
+
+		this.setState((currentState) => {
+			return {
+				disabledInput: true,
+				comments: [...currentState.comments, newComment],
+				error: false,
+				comment: '',
+			};
+		});
+
+		await sendComment(escapedCommentText, post.postId);
+
+		if (this.state.error) {
+			this.setState({
+				comments: this.props.post.comments,
+			});
+		}
+	};
+
+	private onDeleteCommentHandler = async (commId: string) => {
+		const updatedComments = this.state.comments.filter(
+			(comm) => comm.commentId !== commId,
+		);
 
 		this.setState({
-			comment: '',
+			comments: updatedComments,
+			error: false,
 		});
+
+		await this.props.deleteComment(commId);
+
+		if (this.state.error) {
+			this.setState({
+				comments: this.props.post.comments,
+			});
+		}
 	};
 
 	private navigateToUserProfile = (userId: string) => {
@@ -135,14 +219,14 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		});
 	};
 
-	private onCommentTextChangeHandler = (value: string) => {
+	private onCommentInputChangeHandler = (value: string) => {
 		this.setState({
 			comment: value,
 		});
 	};
 
 	private onShowOptionsMenuHandler = (comment: IWallPostComment) => {
-		const { showDotsMenuModal, getText, deleteComment } = this.props;
+		const { showDotsMenuModal, getText } = this.props;
 		const menuItems = [
 			{
 				label: getText('comments.screen.advanced.menu.copy'),
@@ -153,7 +237,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				label: getText('comments.screen.advanced.menu.delete'),
 				icon: 'ios-trash',
 				actionHandler: async () => {
-					await deleteComment(comment.commentId);
+					await this.onDeleteCommentHandler(comment.commentId);
 				},
 			},
 		];
@@ -161,7 +245,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onCommentsBackPressHandler = () => {
-		this.props.navigation.navigate(SCREENS.UserFeed);
+		this.props.navigation.goBack(null);
 	};
 
 	private onImagePressHandler = (index: number, medias: IMediaProps[]) => {
@@ -177,16 +261,14 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		navigation.navigate(SCREENS.MediaViewer);
 	};
 
-	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
+	private onLikePressHandler = async (likedByMe: boolean, postId: string) => {
 		const { likePost, unlikePost } = this.props;
 
 		if (likedByMe) {
-			unlikePost(postId);
+			await unlikePost(postId);
 		} else {
-			likePost(postId);
+			await likePost(postId);
 		}
-
-		return !likedByMe;
 	};
 }
 

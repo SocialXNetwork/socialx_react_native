@@ -44,9 +44,10 @@ const onCommentSendHandler = (
 
 interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 	post: IPostForComment;
+	comments: IWallPostComment[];
 	onCommentLike: (comment: IWallPostComment) => void;
 	onCommentSend: () => void;
-	onCommentTextChange: (commentText: string) => void;
+	onCommentInputChange: (commentText: string) => void;
 	startComment: boolean;
 	onViewUserProfile: (userId: string) => void;
 	comment: string;
@@ -61,12 +62,13 @@ interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	post,
+	comments,
 	onCommentLike,
 	onCommentSend,
 	startComment,
 	onViewUserProfile,
 	comment,
-	onCommentTextChange,
+	onCommentInputChange,
 	onShowOptionsMenu,
 	onCommentsBackPress,
 	onImagePress,
@@ -77,16 +79,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	marginBottom,
 	getText,
 }) => {
-	const {
-		postId,
-		likes,
-		media,
-		postText,
-		timestamp,
-		owner,
-		comments,
-		likedByMe,
-	} = post;
+	const { postId, likes, media, postText, timestamp, owner, likedByMe } = post;
 
 	const scrollRef: React.RefObject<ScrollView> = React.createRef();
 	const commentInputRef: React.RefObject<TextInput> = React.createRef();
@@ -95,20 +88,20 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 		<SafeAreaView
 			style={[styles.container, Platform.select({ ios: { marginBottom } })]}
 		>
+			<CommentsPostOwner
+				owner={owner}
+				timestamp={timestamp}
+				onBackPress={onCommentsBackPress}
+				optionsProps={optionsProps}
+				showUserProfile={onViewUserProfile}
+				getText={getText}
+			/>
 			<ScrollView
 				style={styles.commentsList}
 				keyboardShouldPersistTaps="handled"
 				ref={scrollRef}
 				onLayout={() => scrollRef.current && scrollRef.current.scrollToEnd()}
 			>
-				<CommentsPostOwner
-					owner={owner}
-					timestamp={timestamp}
-					onBackPress={onCommentsBackPress}
-					optionsProps={optionsProps}
-					showUserProfile={onViewUserProfile}
-					getText={getText}
-				/>
 				<PostText
 					text={postText}
 					fullTextVisible={true}
@@ -140,6 +133,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					onStartComment={() => onStartCommentHandler(commentInputRef)}
 					getText={getText}
 				/>
+
 				{comments.length > 0 &&
 					comments.map((comm) => (
 						<CommentCard
@@ -160,9 +154,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					onCommentSend={() =>
 						onCommentSendHandler(commentInputRef, onCommentSend)
 					}
-					placeholder={getText('comments.screen.comment.input.placeholder')}
-					commentText={comment}
-					onCommentTextChange={onCommentTextChange}
+					comment={comment}
+					onCommentInputChange={onCommentInputChange}
+					getText={getText}
 				/>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
