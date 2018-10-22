@@ -119,7 +119,11 @@ export const findProfilesByFullName = (
 	profileHandles
 		.publicProfilesRecord(context)
 		.find({ fullName: new RegExp(textSearch, 'i') }, (data: any) => {
-			return callback(null, data);
+			const profilesReturned = data.map((profile: any) => ({
+				...profile,
+				friends: friendsToArray(profile.friends) || [],
+			}));
+			return callback(null, profilesReturned);
 		});
 };
 
