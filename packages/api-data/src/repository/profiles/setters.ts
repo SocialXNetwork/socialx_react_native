@@ -33,6 +33,7 @@ export const createProfile = (
 			{
 				...rest,
 				alias,
+				friends: [],
 			},
 			(createProfileOnAccCallback) => {
 				if (createProfileOnAccCallback.err) {
