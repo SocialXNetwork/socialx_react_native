@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+const styles: any = {
 	container: {
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -16,7 +16,7 @@ const style: any = {
 	},
 	containerSmall: {
 		height: Sizes.smartVerticalScale(36),
-		borderRadius: Sizes.smartVerticalScale(5),
+		borderRadius: Sizes.smartVerticalScale(4),
 		paddingHorizontal: Sizes.smartHorizontalScale(13),
 	},
 	containerLarge: {
@@ -48,5 +48,5 @@ const style: any = {
 	},
 };
 
-export const styles = StyleSheet.create(style);
+export default StyleSheet.create(styles);
 export const defaultColor = Colors.white;

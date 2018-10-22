@@ -361,7 +361,11 @@ export const createPost = (
 				// TODO @Jake fix obj type
 				const uploadedFiles: IUploadResponse[] = await Promise.all(
 					media.map((obj: any) =>
-						storageApi.uploadFile(obj.pathx, bootstrapStatus, updateStatus),
+						storageApi.uploadFile(
+							obj.contentOptimizedPath,
+							bootstrapStatus,
+							updateStatus,
+						),
 					),
 				);
 

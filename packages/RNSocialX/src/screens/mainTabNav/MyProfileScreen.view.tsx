@@ -24,7 +24,7 @@ interface IMyProfileScreenViewProps extends ITranslatedProps {
 	numberOfComments: number;
 	onViewProfilePhoto: () => void;
 	aboutMeText: false | string;
-	gridMediaProvider: DataProvider;
+	dataProvider: DataProvider;
 	loadMorePhotosHandler: () => void;
 	onViewMediaFullScreen: (index: number) => void;
 	onEditProfile: () => void;
@@ -43,7 +43,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	numberOfComments,
 	aboutMeText,
 	loadMorePhotosHandler,
-	gridMediaProvider,
+	dataProvider,
 	onViewMediaFullScreen,
 	onViewProfilePhoto,
 	hasPhotos,
@@ -97,7 +97,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					<View style={styles.gridContainer}>
 						<ProfilePhotoGrid
 							loadMorePhotosHandler={loadMorePhotosHandler}
-							gridMediaProvider={gridMediaProvider}
+							dataProvider={dataProvider}
 							onViewMediaFullScreen={onViewMediaFullScreen}
 							header={{
 								element: <View style={{ width: 1, height: 1 }} />,

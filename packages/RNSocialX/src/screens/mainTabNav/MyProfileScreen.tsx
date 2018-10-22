@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { DataProvider } from 'recyclerlistview';
-import uuidv4 from 'uuid/v4';
+import uuid from 'uuid/v4';
 
 import { resetNavigationToRoute } from '../../enhancers/helpers';
 import {
@@ -25,7 +25,7 @@ type IMyProfileScreenProps = INavigationProps &
 	IWithMyProfileEnhancedActions;
 
 interface IMyProfileScreenState {
-	gridMediaProvider: DataProvider;
+	dataProvider: DataProvider;
 }
 
 class Screen extends React.Component<
@@ -35,22 +35,22 @@ class Screen extends React.Component<
 	// todo @serkan @jake why?
 	private lastLoadedPhotoIndex = 0;
 
-	private readonly gridPhotosProvider: DataProvider;
+	private readonly dataProvider: DataProvider;
 
 	constructor(props: IMyProfileScreenProps) {
 		super(props);
-		this.gridPhotosProvider = new DataProvider((row1: any, row2: any) => {
+		this.dataProvider = new DataProvider((row1: any, row2: any) => {
 			return row1.index !== row2.index;
 		});
 
 		this.state = {
-			gridMediaProvider: this.gridPhotosProvider,
+			dataProvider: this.dataProvider,
 		};
 	}
 
 	public render() {
 		const { currentUser, getText } = this.props;
-		const { gridMediaProvider } = this.state;
+		const { dataProvider } = this.state;
 		const {
 			numberOfLikes,
 			numberOfPhotos,
@@ -74,7 +74,7 @@ class Screen extends React.Component<
 				userName={userName}
 				aboutMeText={aboutMeText}
 				loadMorePhotosHandler={this.loadMorePhotosHandler}
-				gridMediaProvider={gridMediaProvider}
+				dataProvider={dataProvider}
 				hasPhotos={mediaObjects.length > 0}
 				onViewMediaFullScreen={this.onPhotoPressHandler}
 				onEditProfile={this.onEditProfilePressHandler}
@@ -126,19 +126,19 @@ class Screen extends React.Component<
 	};
 
 	private loadMorePhotosHandler = () => {
-		const { gridMediaProvider } = this.state;
+		const { dataProvider } = this.state;
 		const { mediaObjects } = this.props.currentUser;
-		const headerElement = [{ index: uuidv4() }];
+		const headerElement = [{ index: uuid() }];
 
 		if (mediaObjects.length === 0) {
 			this.setState({
-				gridMediaProvider: gridMediaProvider.cloneWithRows(headerElement),
+				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
 		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
-			const loadedSize = gridMediaProvider.getSize();
+			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia =
-				loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+				loadedSize === 0 ? headerElement : dataProvider.getAllData();
 			const newMedia = mediaObjects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject, index: number) => ({
@@ -150,7 +150,7 @@ class Screen extends React.Component<
 			const allMedia = [...loadedMedia, ...newMedia];
 
 			this.setState({
-				gridMediaProvider: gridMediaProvider.cloneWithRows(allMedia),
+				dataProvider: dataProvider.cloneWithRows(allMedia),
 			});
 			this.lastLoadedPhotoIndex = allMedia.length - 1;
 		}
