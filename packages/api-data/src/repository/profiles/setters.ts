@@ -14,11 +14,16 @@ import {
 	IUpdateProfileInput,
 } from './types';
 
+const pollyLoadAccounts = (gun: IGunInstance, cb: any) => {
+	gun.path(TABLES.PROFILES).once(cb);
+};
+
 export const createProfile = (
 	context: IContext,
 	createProfileInput: ICreateProfileInput,
 	callback: IGunCallback<null>,
 ) => {
+	const { gun } = context;
 	const { username: alias, ...rest } = createProfileInput;
 	/**
 	 * add the profile data to the current user's private scope profile record
@@ -42,7 +47,9 @@ export const createProfile = (
 						),
 					);
 				}
-				createUserProfRaw(profileHandles.currentUserProfile(context));
+				pollyLoadAccounts(gun, () =>
+					createUserProfRaw(profileHandles.currentUserProfile(context)),
+				);
 			},
 		);
 	};
