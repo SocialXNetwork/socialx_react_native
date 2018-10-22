@@ -24,9 +24,8 @@ export const getCurrentAccount = (
 		);
 	}
 
-	profileHandles
-		.currentUserProfileData(context)
-		.once((userProfileCallback: any) => {
+	profileHandles.currentUserProfileData(context).once(
+		(userProfileCallback: any) => {
 			if (!userProfileCallback) {
 				return callback(new ApiError('failed to get current account profile.'));
 			}
@@ -34,17 +33,22 @@ export const getCurrentAccount = (
 			gun
 				.back(-1)
 				.get(`~${pub}`)
-				.docLoad((userAccountCallback: IAccountData) => {
-					if (!Object.keys(userAccountCallback).length) {
-						return callback(
-							new ApiError(
-								'failed to get current account, user document not found',
-							),
-						);
-					}
-					return callback(null, userAccountCallback);
-				});
-		});
+				.docLoad(
+					(userAccountCallback: IAccountData) => {
+						if (!Object.keys(userAccountCallback).length) {
+							return callback(
+								new ApiError(
+									'failed to get current account, user document not found',
+								),
+							);
+						}
+						return callback(null, userAccountCallback);
+					},
+					{ wait: 500, timeout: 1000 },
+				);
+		},
+		{ wait: 500 },
+	);
 };
 
 export const getAccountByPub = (

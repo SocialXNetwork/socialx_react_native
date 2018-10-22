@@ -36,25 +36,24 @@ export default class PolyfillCrypto extends React.Component<
 					ref={(c: any) => {
 						if (c && !worker) {
 							worker = new MainWorker(c.sendToBridge, this.props.debug);
-							console.log('*** poly', webcrp);
 							// @ts-ignore
-							// if (window.crypto) {
-							// 	// we are in chrome debugger
-							// 	// this means overridng the crypto object itself won't
-							// 	// work, so we have to override all of it's methods
-							// 	// @ts-ignore
-							// 	window.crypto.getRandomValues = randomBytes;
-							// 	// tslint:disable-next-line
-							// 	for (const name in worker.crypto.subtle) {
-							// 		// @ts-ignore
-							// 		window.crypto.subtle[name] = worker.crypto.subtle[name];
-							// 	}
-							// 	// @ts-ignore
-							// 	(window.crypto as any).fake = true;
-							// } else {
-							// 	// @ts-ignore
-							// 	(window as any).crypto = worker.crypto;
-							// }
+							if (window.crypto) {
+								// we are in chrome debugger
+								// this means overridng the crypto object itself won't
+								// work, so we have to override all of it's methods
+								// @ts-ignore
+								window.crypto.getRandomValues = randomBytes;
+								// tslint:disable-next-line
+								for (const name in worker.crypto.subtle) {
+									// @ts-ignore
+									window.crypto.subtle[name] = worker.crypto.subtle[name];
+								}
+								// @ts-ignore
+								(window.crypto as any).fake = true;
+							} else {
+								// @ts-ignore
+								(window as any).crypto = worker.crypto;
+							}
 						}
 					}}
 					onBridgeMessage={
