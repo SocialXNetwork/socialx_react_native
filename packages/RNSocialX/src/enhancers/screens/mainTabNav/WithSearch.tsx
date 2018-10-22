@@ -105,11 +105,12 @@ export class WithSearch extends React.Component<
 														},
 														actions: {
 															...mock.actions,
-															search: (term: string, tab: SearchTabs) =>
-																searchProfilesByFullName({
+															search: async (term: string, tab: SearchTabs) => {
+																await searchProfilesByFullName({
 																	term,
 																	maxResults: 10,
-																}),
+																});
+															},
 															getText,
 															setNavigationParams,
 														},

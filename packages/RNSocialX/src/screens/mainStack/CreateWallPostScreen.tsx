@@ -1,9 +1,3 @@
-/**
- * old screen -> screens/NewWallPostScreen/index.tsx
- * TODO list:
- * 1. (Later) Consider using Formik and get rid of state in here
- */
-
 import * as React from 'react';
 import { Alert, Keyboard } from 'react-native';
 
@@ -128,8 +122,8 @@ class Screen extends React.Component<
 		} else {
 			Keyboard.dismiss();
 			await createPost({
-				mediaObjects,
 				text: shareText,
+				media: mediaObjects,
 			});
 			this.onCloseHandler();
 		}

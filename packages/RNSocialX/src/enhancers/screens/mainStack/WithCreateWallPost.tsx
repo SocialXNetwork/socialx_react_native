@@ -43,12 +43,12 @@ const mock: IWithCreateWallPostEnhancedProps = {
 };
 
 interface IWallPostData {
-	mediaObjects: IWallPostPhotoOptimized[];
+	text: string;
+	media: IWallPostPhotoOptimized[];
 	taggedFriends?: Array<{
 		fullName: string;
 	}>;
 	location?: string;
-	text: string;
 }
 
 export interface IWithCreateWallPostEnhancedData extends IResizeProps {
@@ -59,7 +59,7 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 export interface IWithCreateWallPostEnhancedActions
 	extends ITranslatedProps,
 		IDotsMenuProps {
-	createPost: (wallPostData: IWallPostData) => void;
+	createPost: (post: IWallPostData) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
 }
@@ -89,7 +89,7 @@ export class WithCreateWallPost extends React.Component<
 							<WithGlobals>
 								{({ setGlobal }) => (
 									<WithFiles>
-										{({ uploadFile }) => (
+										{({ uploadFile, uploads }) => (
 											<KeyboardContext.Consumer>
 												{({ marginBottom }) => (
 													<WithActivities>
@@ -112,23 +112,17 @@ export class WithCreateWallPost extends React.Component<
 																				actions: {
 																					...mock.actions,
 																					uploadFile,
-																					createPost: (post: IWallPostData) =>
-																						createPost({
+																					createPost: async (
+																						post: IWallPostData,
+																					) => {
+																						await createPost({
 																							postText: post.text,
 																							location: post.location,
 																							taggedFriends: post.taggedFriends,
-																							// media: uploads.map((upload) => ({
-																							// 	hash: upload.hash,
-																							// 	type: {
-																							// 		key: 'TBD',
-																							// 		name: 'Photo',
-																							// 		category: 'TBD',
-																							// 	},
-																							// 	extension: 'TBD',
-																							// 	size: 1234,
-																							// })),
+																							media: post.media,
 																							privatePost: false,
-																						}),
+																						} as any);
+																					},
 																					setGlobal,
 																					getText,
 																					showDotsMenuModal: (items) =>
