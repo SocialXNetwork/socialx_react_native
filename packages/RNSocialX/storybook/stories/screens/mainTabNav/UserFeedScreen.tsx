@@ -13,7 +13,6 @@ storiesOf('Screens/mainTabNav', module)
 		const avatar = 'https://www.w3schools.com/w3css/img_lights.jpg';
 
 		const refreshing = boolean('refreshing', false);
-		const noPosts = boolean('noPosts', false);
 		const loadingMorePosts = boolean('loadingMorePosts', false);
 		const canLoadMorePosts = boolean('canLoadMorePosts', false);
 		const shareSectionPlaceholder = text(
@@ -33,8 +32,8 @@ storiesOf('Screens/mainTabNav', module)
 				onImagePress={action('onImagePress')}
 				onCommentPress={action('onCommentPress')}
 				shareSectionPlaceholder={shareSectionPlaceholder}
-				onLikeButtonPress={(likedByMe: boolean) => !likedByMe}
-				onDeletePress={action('onDeletePress')}
+				onLikePress={(likedByMe: boolean) => !likedByMe}
+				onDeletePostPress={action('onDeletePress')}
 				onUserPress={action('onUserPress')}
 				loadingMorePosts={loadingMorePosts}
 				canLoadMorePosts={canLoadMorePosts}
@@ -46,6 +45,8 @@ storiesOf('Screens/mainTabNav', module)
 				getText={getTextMock}
 				onBlockUser={action('onBlockUser')}
 				onReportProblem={action('onReportProblem')}
+				showDotsMenuModal={action('showDotsMenuModal')}
+				likeError={false}
 			/>
 		);
 	});

@@ -47,6 +47,7 @@ class Screen extends React.Component<
 	public render() {
 		const { getText, marginBottom, currentUserAvatarURL } = this.props;
 		const { shareText, mediaObjects } = this.state;
+
 		return (
 			<CreateWallPostScreenView
 				avatarImage={currentUserAvatarURL}
@@ -98,14 +99,14 @@ class Screen extends React.Component<
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
 			selectedMediaObjects = await getCameraMediaObjectMultiple();
 		}
+
 		if (selectedMediaObjects.length > 0) {
 			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (mObject) =>
-					getOptimizedMediaObject(mObject),
-				),
+				selectedMediaObjects.map(async (obj) => getOptimizedMediaObject(obj)),
 			);
+
 			this.setState({
-				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
+				mediaObjects: optimizedMediaObjects,
 			});
 		}
 	};

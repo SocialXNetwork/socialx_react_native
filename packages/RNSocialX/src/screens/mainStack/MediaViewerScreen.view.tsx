@@ -127,7 +127,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 								paused={index !== activeSlide}
 								uri={item.url}
 								style={[styles.carouselMediaObject, { width: viewport.width }]}
-								resizeMode={'contain'}
+								resizeMode="contain"
 								resizeToChangeAspectRatio={true}
 								canZoom={false}
 								getText={getText}

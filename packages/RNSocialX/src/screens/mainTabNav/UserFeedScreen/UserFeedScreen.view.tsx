@@ -84,6 +84,7 @@ export class UserFeedScreenView extends React.Component<
 						keyExtractor={this.keyExtractor}
 						renderItem={(data) => this.renderWallPosts(data, getText)}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
+						onEndReachedThreshold={0.5}
 						keyboardShouldPersistTaps="handled"
 						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
 						onScrollToIndexFailed={() => {
