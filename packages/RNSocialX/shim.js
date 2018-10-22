@@ -38,7 +38,9 @@ const crypto = require('crypto');
 
 global.crypto = {
   ...bcrypto,
-  subtle: {},
+  subtle: {
+    key: 'ECDAS'
+  },
   // iso crpto needs to be secured with a dumb wrapper method, but we dont care because we already have a module for it
   // so this virtual *actual* random pseudo generator is valid and secure
   getRandomValues: rncrypto.getRandomValues,

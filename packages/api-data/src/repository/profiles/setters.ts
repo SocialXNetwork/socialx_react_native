@@ -58,17 +58,25 @@ export const createProfile = (
 	 * @param ref IGunInstance reference to the private scope user profile
 	 */
 	const createUserProfRaw = (ref: IGunInstance) => {
-		profileHandles.publicProfilesRecord(context).put(ref, (profileCallback) => {
-			if (profileCallback.err) {
-				return callback(
-					new ApiError(`failed to create user profile ${profileCallback.err}`, {
-						initialRequestBody: createProfileInput,
-					}),
-				);
-			}
+		profileHandles.publicProfilesRecord(context).put(
+			{
+				[alias]: ref,
+			},
+			(profileCallback) => {
+				if (profileCallback.err) {
+					return callback(
+						new ApiError(
+							`failed to create user profile ${profileCallback.err}`,
+							{
+								initialRequestBody: createProfileInput,
+							},
+						),
+					);
+				}
 
-			return callback(null);
-		});
+				return callback(null);
+			},
+		);
 	};
 	// run sequence
 	mainRunner();

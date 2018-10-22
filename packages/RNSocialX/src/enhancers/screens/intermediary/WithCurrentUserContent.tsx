@@ -52,30 +52,32 @@ export class WithCurrentUserContent extends React.Component<
 															appConfig,
 														);
 
-														currentUser.numberOfLikes = posts.reduce(
+														currentUser.numberOfLikes = userPosts.reduce(
 															(acc, post) => acc + post.likes.length,
 															0,
 														);
 
-														currentUser.numberOfPhotos = posts.reduce(
+														currentUser.numberOfPhotos = userPosts.reduce(
 															(acc, post) =>
 																post.media ? acc + post.media.length : 0,
 															0,
 														);
 
-														currentUser.numberOfComments = posts.reduce(
+														currentUser.numberOfComments = userPosts.reduce(
 															(acc, post) => acc + post.comments.length,
 															0,
 														);
 
 														currentUser.mediaObjects = extractMediaFromPosts(
-															posts,
+															userPosts,
 															appConfig,
 														);
 
 														currentUser.mediaObjects = [];
 
 														currentUser.recentPosts = recentPosts;
+
+														console.log('*** currentUser', currentUser);
 													}
 
 													return this.props.children({
