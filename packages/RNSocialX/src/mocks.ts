@@ -39,7 +39,7 @@ const likes: ILike[] = [
 
 const bestComments: ISimpleComment[] = [
 	{
-		id: '1',
+		commentId: '1',
 		text: 'Lorem ipsum dolor sit amet',
 		likes,
 		owner: {
@@ -48,7 +48,7 @@ const bestComments: ISimpleComment[] = [
 		},
 	},
 	{
-		id: '2',
+		commentId: '2',
 		text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
 		likes,
 		owner: {

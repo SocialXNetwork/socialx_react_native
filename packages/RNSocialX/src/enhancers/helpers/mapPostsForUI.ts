@@ -3,7 +3,7 @@ import { IPostArrayData } from '../../store/data/posts';
 import { IProfileData } from '../../store/data/profiles';
 import { IActivity } from '../../store/ui/activities';
 import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
-import { getActivity } from './getActivity';
+import { getActivity, getBestComments } from './';
 
 export const mapPostsForUI = (
 	posts: IPostArrayData,
@@ -60,26 +60,9 @@ export const mapPostsForUI = (
 						userName: like.owner.alias,
 					};
 				}),
-				bestComments: post.comments.slice(0, 2).map((comment) => {
-					return {
-						commentId: String(comment.timestamp),
-						text: comment.text,
-						likes: comment.likes.map((like) => {
-							return {
-								userId: like.owner.alias,
-								userName: like.owner.alias,
-							};
-						}),
-						owner: {
-							userId: comment.owner.alias,
-							userName: comment.owner.alias,
-						},
-					};
-				}),
+				bestComments: getBestComments(post.comments),
 				listLoading: getActivity(activities, activityType),
 				suggested: undefined,
-				// @Alex find a good way of passing noInput
-				noInput: false,
 				contentOffensive: false,
 				marginBottom: 0,
 				currentUserAvatarURL: currentUser!.avatarURL,

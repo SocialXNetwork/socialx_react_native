@@ -2,11 +2,11 @@ import * as React from 'react';
 import {
 	Animated,
 	Dimensions,
-	ImageRequireSource,
 	Keyboard,
 	StyleSheet,
 	TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
 import {
@@ -15,6 +15,7 @@ import {
 	Images,
 	Sizes,
 } from '../../../environment/theme';
+import { ITranslatedProps } from '../../../types';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -22,10 +23,11 @@ interface IAnimationValues {
 	size: Animated.Value;
 	radius: Animated.Value;
 	border: Animated.Value;
+	send: Animated.Value;
 }
 
-interface ICommentInputProps {
-	noInput: boolean;
+interface ICommentInputProps extends ITranslatedProps {
+	noInput: boolean | undefined;
 	comment: string;
 	disabled: boolean;
 	avatarURL: string;
@@ -44,6 +46,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	onCommentInputChange,
 	onCommentInputPress,
 	onSubmitComment,
+	getText,
 }) => {
 	if (noInput) {
 		return null;
@@ -52,7 +55,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 			<TouchableOpacity
 				onPress={onCommentInputPress}
 				activeOpacity={1}
-				style={styles.commentInputContainer}
+				style={styles.container}
 			>
 				<AnimatedFastImage
 					source={
@@ -61,7 +64,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 							: Images.user_avatar_placeholder
 					}
 					style={[
-						styles.commentInputAvatar,
+						styles.avatar,
 						{
 							width: animationValues.size,
 							height: animationValues.size,
@@ -71,28 +74,47 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 				/>
 				<Animated.View
 					style={[
-						styles.commentInputView,
+						styles.inputContainer,
 						{
 							borderWidth: animationValues.border,
 						},
 					]}
 				>
 					<PrimaryTextInput
-						width={SCREEN_WIDTH - 90}
+						width={SCREEN_WIDTH - 115}
 						borderWidth={0}
 						size={InputSizes.Small}
-						placeholder="Add a comment..."
+						placeholder={getText('comments.screen.comment.input.placeholder')}
 						value={comment}
 						onChangeText={onCommentInputChange}
 						focusUpdateHandler={onCommentInputPress}
 						returnKeyType={TRKeyboardKeys.send}
-						onSubmitPressed={Keyboard.dismiss}
+						onSubmitPressed={
+							comment.length > 0 ? onSubmitComment : Keyboard.dismiss
+						}
 						blurOnSubmit={true}
 						disabled={disabled}
-						canPost={true}
-						postButtonTextColor={Colors.pink}
-						onPressPost={onSubmitComment}
 					/>
+				</Animated.View>
+				<Animated.View
+					style={[
+						styles.send,
+						{ transform: [{ translateX: animationValues.send }] },
+					]}
+				>
+					<TouchableOpacity
+						onPress={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						activeOpacity={1}
+						disabled={comment.length === 0}
+					>
+						<Icon
+							name="comment-arrow-right"
+							style={[
+								styles.icon,
+								{ color: comment.length === 0 ? Colors.grayText : Colors.pink },
+							]}
+						/>
+					</TouchableOpacity>
 				</Animated.View>
 			</TouchableOpacity>
 		);
@@ -100,20 +122,30 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 };
 
 const styles: any = StyleSheet.create({
-	commentInputContainer: {
+	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		marginTop: Sizes.smartVerticalScale(5),
 	},
-	commentInputView: {
+	inputContainer: {
 		borderRadius: Sizes.smartHorizontalScale(6),
 		borderColor: Colors.grayText,
 	},
-	commentInputAvatar: {
+	avatar: {
 		width: Sizes.smartHorizontalScale(25),
 		height: Sizes.smartHorizontalScale(25),
 		borderRadius: Sizes.smartHorizontalScale(25) / 2,
 		marginRight: Sizes.smartHorizontalScale(8),
+	},
+	send: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		marginLeft: Sizes.smartHorizontalScale(5),
+	},
+	icon: {
+		fontSize: Sizes.smartHorizontalScale(30),
+		transform: [{ translateY: 2 }],
 	},
 });

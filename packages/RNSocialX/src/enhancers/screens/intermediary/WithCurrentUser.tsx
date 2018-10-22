@@ -7,11 +7,7 @@ import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 
 interface IWithCurrentUserProps {
-	children({
-		currentUser,
-	}: {
-		currentUser: ICurrentUser | undefined;
-	}): JSX.Element;
+	children({ currentUser }: { currentUser: ICurrentUser | any }): JSX.Element;
 }
 
 interface IWithCurrentUserState {}
@@ -48,8 +44,7 @@ export class WithCurrentUser extends React.Component<
 												aboutMeText: foundProfile.aboutMeText,
 												numberOfLikes: 0,
 												numberOfPhotos: 0,
-												// numberOfFriends: foundProfile.friends.length,
-												numberOfFriends: 0,
+												numberOfFriends: foundProfile.friends.length,
 												numberOfComments: 0,
 												mediaObjects: [],
 												recentPosts: [],

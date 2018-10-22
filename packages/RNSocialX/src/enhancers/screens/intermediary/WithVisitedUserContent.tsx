@@ -55,18 +55,18 @@ export class WithVisitedUserContent extends React.Component<
 																	appConfig,
 																);
 
-																visitedUser.numberOfLikes = posts.reduce(
+																visitedUser.numberOfLikes = userPosts.reduce(
 																	(acc, post) => acc + post.likes.length,
 																	0,
 																);
 
-																visitedUser.numberOfPhotos = posts.reduce(
+																visitedUser.numberOfPhotos = userPosts.reduce(
 																	(acc, post) =>
 																		post.media ? acc + post.media.length : 0,
 																	0,
 																);
 
-																visitedUser.numberOfComments = posts.reduce(
+																visitedUser.numberOfComments = userPosts.reduce(
 																	(acc, post) => acc + post.comments.length,
 																	0,
 																);
@@ -75,8 +75,6 @@ export class WithVisitedUserContent extends React.Component<
 																	posts,
 																	appConfig,
 																);
-
-																visitedUser.mediaObjects = [];
 
 																visitedUser.recentPosts = recentPosts;
 															}

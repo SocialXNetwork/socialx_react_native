@@ -73,11 +73,7 @@ export class WithCurrentUserContent extends React.Component<
 															appConfig,
 														);
 
-														currentUser.mediaObjects = [];
-
 														currentUser.recentPosts = recentPosts;
-
-														console.log('*** currentUser', currentUser);
 													}
 
 													return this.props.children({

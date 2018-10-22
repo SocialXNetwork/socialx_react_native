@@ -62,20 +62,19 @@ storiesOf('Screens/commentsStack', module)
 			<CommentsScreenView
 				post={post}
 				comment={comment}
+				comments={[]}
 				likePostError={likePostError}
 				likeCommentError={likeCommentError}
 				onCommentLike={action('onCommentLike')}
 				onCommentSend={action('onCommentSend')}
-				onCommentTextChange={action('onCommentTextChange')}
+				onCommentInputChange={action('onCommentInputChange')}
 				startComment={startComment}
 				onViewUserProfile={action('onViewUserProfile')}
 				onShowOptionsMenu={action('onShowOptionsMenu')}
 				onCommentsBackPress={action('onCommentsBackPress')}
 				onImagePress={action('onImagePress')}
 				onLikePress={action('onLikePress')}
-				onCommentContainerWidthChange={action('onCommentContainerWidthChange')}
 				optionsProps={optionsProps}
-				commentLikesPosition={commentLikesPosition}
 				marginBottom={marginBottom}
 				getText={getTextMock}
 			/>

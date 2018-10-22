@@ -91,19 +91,14 @@ export class CommentCard extends React.Component<
 					<View>
 						<TouchableOpacity
 							style={styles.commentBackground}
-							onLongPress={onShowOptionsMenu}
+							onPress={onShowOptionsMenu}
 						>
-							<Text
-								style={styles.userFullName}
-								onPress={() => onViewUserProfile(user.userId)}
-								suppressHighlighting={true}
-							>
+							<Text style={styles.userFullName} suppressHighlighting={true}>
 								{user.fullName}
 							</Text>
 							<RichText
 								style={styles.commentText}
 								childrenProps={{
-									onPress: () => onViewUserProfile(user.userId),
 									suppressHighlighting: true,
 								}}
 								parse={[
