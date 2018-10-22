@@ -258,7 +258,7 @@ export default (context: IContext) => ({
 	}: ISearchProfilesInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) => {
 			!textSearch || !textSearch.length || typeof textSearch !== 'string'
-				? resolve()
+				? resolve([])
 				: getters.findProfilesByFullName(
 						context,
 						{ textSearch, maxResults },
