@@ -1,8 +1,3 @@
-/**
- * TODO list:
- * 1. Check timings here. What will happen if tapping multiple times in row the button, and async calls take longer?
- */
-
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 

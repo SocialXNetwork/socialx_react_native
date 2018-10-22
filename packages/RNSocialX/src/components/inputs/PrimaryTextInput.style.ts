@@ -80,7 +80,6 @@ export const defaultStyles = {
 	defaultIconColor: Colors.iron,
 	defaultIconActiveColor: Colors.pink,
 	defaultPlaceholderColor: Colors.grayText,
-	defaultPostTextColor: Colors.white,
 	defaultCancelTextColor: Colors.pink,
 	defaultBorderColor: Colors.pink,
 	defaultBorderWidth: Sizes.smartHorizontalScale(2),

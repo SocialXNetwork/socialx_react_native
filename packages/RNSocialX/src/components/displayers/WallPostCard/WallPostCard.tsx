@@ -68,7 +68,9 @@ export class WallPostCard extends React.Component<
 	public state = {
 		fullTextVisible: false,
 		reportProblemModalVisible: false,
-		displayOptions: this.props.governanceVersion || true,
+		displayOptions: this.props.displayDots
+			? this.props.governanceVersion || true
+			: false,
 		disableNavigation: this.props.governanceVersion || false,
 		hidePostActionsAndComments: this.props.governanceVersion || false,
 		disableMediaFullScreen: this.props.governanceVersion || false,
@@ -78,6 +80,7 @@ export class WallPostCard extends React.Component<
 		inputBorderWidth: new Animated.Value(0),
 		inputAvatarSize: new Animated.Value(25),
 		inputAvatarRadius: new Animated.Value(12.5),
+		inputIconPosition: new Animated.Value(100),
 		viewOffensiveContent: false,
 	};
 
@@ -94,28 +97,22 @@ export class WallPostCard extends React.Component<
 		);
 	}
 
-	// TODO @Alex likedByMe
-	// public shouldComponentUpdate(
-	// 	nextProps: IWallPostCardProps,
-	// 	nextState: IWallPostCardState,
-	// ) {
-	// 	return (
-	// 		this.props.postId !== nextProps.postId ||
-	// 		this.props.numberOfComments !== nextProps.numberOfComments ||
-	// 		this.state.reportProblemModalVisible !==
-	// 			nextState.reportProblemModalVisible ||
-	// 		this.state.fullTextVisible !== nextState.fullTextVisible ||
-	// 		this.state.heartAnimation !== nextState.heartAnimation ||
-	// 		this.state.comment !== nextState.comment ||
-	// 		this.state.inputFocused !== nextState.inputFocused ||
-	// 		this.state.inputBorderWidth !== nextState.inputBorderWidth ||
-	// 		this.state.inputAvatarSize !== nextState.inputAvatarSize ||
-	// 		this.state.inputAvatarRadius !== nextState.inputAvatarRadius ||
-	// 		this.props.listLoading !== nextProps.listLoading ||
-	// 		this.state.viewOffensiveContent !== nextState.viewOffensiveContent ||
-	// 		this.props.likeError !== nextProps.likeError
-	// 	);
-	// }
+	public shouldComponentUpdate(
+		nextProps: IWallPostCardProps,
+		nextState: IWallPostCardState,
+	) {
+		return (
+			this.state !== nextState ||
+			this.props.postId !== nextProps.postId ||
+			this.props.numberOfComments !== nextProps.numberOfComments ||
+			this.props.bestComments !== nextProps.bestComments ||
+			this.props.likes !== nextProps.likes ||
+			this.props.likedByMe !== nextProps.likedByMe ||
+			this.props.listLoading !== nextProps.listLoading ||
+			this.props.likeError !== nextProps.likeError ||
+			this.props.owner !== nextProps.owner
+		);
+	}
 
 	public componentWillUnmount() {
 		if (Platform.OS === OS_TYPES.Android) {
@@ -157,6 +154,7 @@ export class WallPostCard extends React.Component<
 			inputAvatarRadius,
 			inputAvatarSize,
 			inputBorderWidth,
+			inputIconPosition,
 			displayOptions,
 			reportProblemModalVisible,
 			disableNavigation,
@@ -172,6 +170,7 @@ export class WallPostCard extends React.Component<
 			border: inputBorderWidth,
 			size: inputAvatarSize,
 			radius: inputAvatarRadius,
+			send: inputIconPosition,
 		};
 
 		return (
@@ -266,6 +265,7 @@ export class WallPostCard extends React.Component<
 					onCommentInputChange={this.onCommentInputChange}
 					onCommentInputPress={this.onCommentInputPress}
 					onSubmitComment={this.onSubmitCommentHandler}
+					getText={getText}
 				/>
 				<View style={styles.postedTimeContainer}>
 					<Text style={styles.postedTime}>{formatedTimestamp}</Text>
@@ -288,6 +288,9 @@ export class WallPostCard extends React.Component<
 				Animated.timing(this.state.inputAvatarRadius, {
 					toValue: 12.5,
 					duration: 250,
+				}),
+				Animated.spring(this.state.inputIconPosition, {
+					toValue: 100,
 				}),
 			]).start();
 			this.setState({ inputFocused: false });
@@ -357,10 +360,12 @@ export class WallPostCard extends React.Component<
 		}
 	};
 
-	private onSubmitCommentHandler = () => {
+	private onSubmitCommentHandler = async () => {
 		const { postId, onSubmitComment } = this.props;
 		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
-		onSubmitComment(escapedComment, postId);
+		this.setState({ comment: '' });
+		Keyboard.dismiss();
+		await onSubmitComment(escapedComment, postId);
 	};
 
 	private onCommentInputPress = () => {
@@ -373,7 +378,7 @@ export class WallPostCard extends React.Component<
 			if (!this.state.inputFocused) {
 				Animated.parallel([
 					Animated.timing(this.state.inputBorderWidth, {
-						toValue: 2,
+						toValue: 1,
 						duration: 250,
 					}),
 					Animated.timing(this.state.inputAvatarSize, {
@@ -383,6 +388,9 @@ export class WallPostCard extends React.Component<
 					Animated.timing(this.state.inputAvatarRadius, {
 						toValue: 17.5,
 						duration: 250,
+					}),
+					Animated.spring(this.state.inputIconPosition, {
+						toValue: 0,
 					}),
 				]).start();
 				this.setState({ inputFocused: true });

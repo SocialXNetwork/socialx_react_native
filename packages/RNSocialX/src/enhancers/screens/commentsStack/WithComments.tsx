@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
 import {
+	ICurrentUser,
 	IDotsMenuProps,
 	IError,
 	INavigationParamsActions,
@@ -15,6 +16,8 @@ import {
 	MediaTypeImage,
 } from '../../../types';
 
+import { currentUser as currentUserMock } from '../../../mocks';
+
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
@@ -22,11 +25,12 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { extractMediaFromPosts } from '../../helpers';
+import { extractMediaFromPosts, getComments } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
 const mock: IWithCommentsEnhancedProps = {
 	data: {
+		currentUser: currentUserMock,
 		startComment: false,
 		errors: [],
 		post: {
@@ -71,6 +75,7 @@ const mock: IWithCommentsEnhancedProps = {
 
 export interface IWithCommentsEnhancedData {
 	post: IPostForComment;
+	currentUser: ICurrentUser;
 	startComment: boolean;
 	errors: IError[];
 }
@@ -136,6 +141,7 @@ export class WithComments extends React.Component<
 																			return this.props.children({
 																				data: {
 																					...mock.data,
+																					currentUser,
 																					startComment:
 																						navigationParams[SCREENS.Comments]
 																							.startComment,
@@ -161,50 +167,13 @@ export class WithComments extends React.Component<
 																						likedByMe: !!currentPost!.likes.find(
 																							(like) =>
 																								like.owner.alias ===
-																								currentUser!.userId,
+																								currentUser.userId,
 																						),
-																						comments: currentPost!.comments.map(
-																							(comment) => {
-																								const commentOwner = profiles.find(
-																									(profile) =>
-																										profile.alias ===
-																										comment.owner.alias,
-																								);
-
-																								return {
-																									commentId: comment.commentId,
-																									text: comment.text,
-																									user: {
-																										userId: comment.owner.alias,
-																										fullName: commentOwner!
-																											.fullName,
-																										avatarURL:
-																											appConfig.ipfsConfig
-																												.ipfs_URL +
-																											commentOwner!.avatar,
-																									},
-																									timestamp: new Date(
-																										comment.timestamp,
-																									),
-																									numberOfLikes:
-																										comment.likes.length,
-																									likes: comment.likes.map(
-																										(like) => {
-																											return {
-																												userId:
-																													like.owner.alias,
-																												userName:
-																													like.owner.alias,
-																											};
-																										},
-																									),
-																									likedByMe: !!comment.likes.find(
-																										(like) =>
-																											like.owner.alias ===
-																											currentUser!.userId,
-																									),
-																								};
-																							},
+																						comments: getComments(
+																							currentPost!.comments,
+																							profiles,
+																							currentUser.userId,
+																							appConfig,
 																						),
 																						owner: {
 																							userId: currentPost!.owner.alias,

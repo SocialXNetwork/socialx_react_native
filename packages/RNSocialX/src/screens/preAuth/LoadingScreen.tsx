@@ -72,12 +72,12 @@ export const LoadingScreen = () => (
 			<View style={styles.shortDate} />
 		</View>
 		<View style={styles.separator} />
-		<View style={styles.bottomTabs}>
+		<SafeAreaView style={styles.bottomTabs}>
 			<View style={styles.bottomTab} />
 			<View style={styles.bottomTab} />
 			<View style={styles.bottomTab} />
 			<View style={styles.bottomTab} />
 			<View style={styles.bottomTab} />
-		</View>
+		</SafeAreaView>
 	</SafeAreaView>
 );

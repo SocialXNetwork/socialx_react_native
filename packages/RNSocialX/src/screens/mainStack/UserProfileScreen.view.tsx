@@ -76,7 +76,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	recentPosts,
 	onCommentPress,
 	onImagePress,
-	onLikeButtonPress,
+	onLikePress,
 	aboutMeText,
 	numberOfComments,
 	currentUserAvatarURL,
@@ -91,11 +91,12 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onUserPress,
 	onAddComment,
 	onSubmitComment,
-	onDeletePress,
+	onDeletePostPress,
 	onBlockUser,
 	onReportProblem,
 }) => {
-	const hasPhotos = numberOfPhotos !== 0;
+	const hasPhotos = numberOfPhotos > 0;
+	const hasPosts = recentPosts.length > 0;
 
 	let contentContainerStyle;
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
@@ -107,9 +108,10 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 		contentContainerStyle = styles.contentContainer;
 	}
 
-	const scrollContainerStyles = hasPhotos
-		? styles.scrollContainer
-		: [styles.scrollContainer, { flex: 1 }];
+	const scrollContainerStyles =
+		hasPhotos || hasPosts
+			? styles.scrollContainer
+			: [styles.scrollContainer, { flex: 1 }];
 
 	return (
 		<View style={styles.container}>
@@ -128,7 +130,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 						tintColor={colors.white}
 					/>
 				}
-				scrollEnabled={hasPhotos}
+				scrollEnabled={hasPhotos || hasPosts}
 			>
 				<ProfileTopContainer
 					avatarURL={avatarURL}
@@ -149,7 +151,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					activeTab={activeTab}
 					getText={getText}
 				/>
-				{hasPhotos && (
+				{hasPosts && (
 					<View style={contentContainerStyle}>
 						<Animated.View
 							style={[
@@ -158,7 +160,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							]}
 						>
 							{recentPosts.map((post: IWallPostCardData, index: number) => (
-								<View style={styles.wallPostContainer} key={post.id}>
+								<View style={styles.wallPostContainer} key={post.postId}>
 									<WallPostCard
 										{...post}
 										likedByMe={post.likedByMe}
@@ -172,12 +174,14 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 											onAddComment(index, cardHeight)
 										}
 										onSubmitComment={onSubmitComment}
-										onLikeButtonPress={onLikeButtonPress}
-										noInput={true}
+										onLikePress={onLikePress}
 										currentUserAvatarURL={currentUserAvatarURL}
-										onDeletePress={onDeletePress}
+										onDeletePostPress={onDeletePostPress}
 										onBlockUser={onBlockUser}
 										onReportProblem={onReportProblem}
+										showDotsMenuModal={() => undefined}
+										displayDots={false}
+										noInput={true}
 									/>
 								</View>
 							))}

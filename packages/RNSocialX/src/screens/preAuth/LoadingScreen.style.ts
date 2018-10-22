@@ -110,8 +110,7 @@ const styles: any = {
 		width: '25%',
 	},
 	bottomTabs: {
-		height: Sizes.smartVerticalScale(80),
-		paddingTop: Sizes.smartVerticalScale(15),
+		paddingVertical: Sizes.smartVerticalScale(12),
 		width: '100%',
 		backgroundColor: Colors.alabaster,
 		position: 'absolute',

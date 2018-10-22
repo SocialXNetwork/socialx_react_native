@@ -247,9 +247,10 @@ export interface IWallPostCardData extends IResizeProps {
 	bestComments: ISimpleComment[];
 	listLoading: boolean;
 	suggested: undefined | ISearchResultData[];
-	noInput: boolean;
+	noInput?: boolean;
 	contentOffensive: boolean;
 	likeError: boolean;
+	displayDots?: boolean;
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {

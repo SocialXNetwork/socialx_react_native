@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Keyboard, TextInput, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import style, { defaultStyles } from './CommentTextInput.style';
+import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
+import { ITranslatedProps } from '../../types';
 
-interface ICommentTextInputProps {
-	placeholder: string;
+import { Colors } from '../../environment/theme';
+import styles from './CommentTextInput.style';
+
+interface ICommentTextInputProps extends ITranslatedProps {
 	autoFocus: boolean;
-	commentText: string;
+	comment: string;
 	onCommentSend: () => void;
-	onCommentTextChange: (value: string) => void;
+	onCommentInputChange: (value: string) => void;
 }
 
 export const CommentTextInput = React.forwardRef<
@@ -17,33 +20,39 @@ export const CommentTextInput = React.forwardRef<
 	ICommentTextInputProps
 >(
 	(
-		{
-			placeholder,
-			autoFocus = true,
-			commentText,
-			onCommentTextChange,
-			onCommentSend,
-		},
+		{ autoFocus = true, comment, onCommentInputChange, onCommentSend, getText },
 		ref,
 	) => (
-		<View style={style.inputContainer}>
-			<TextInput
-				ref={ref}
-				onChangeText={onCommentTextChange}
-				style={style.textInput}
-				placeholder={placeholder}
-				autoFocus={autoFocus}
-				multiline={true}
-				autoCorrect={false}
-				underlineColorAndroid={defaultStyles.underlineColorAndroid}
-				autoCapitalize="none"
-				value={commentText}
-				placeholderTextColor={defaultStyles.placeholderTextColor}
-			/>
+		<View style={styles.container}>
+			<View style={styles.inputContainer}>
+				<PrimaryTextInput
+					borderWidth={0}
+					size={InputSizes.Small}
+					placeholder={getText('comments.screen.comment.input.placeholder')}
+					value={comment}
+					autoFocus={autoFocus}
+					onChangeText={onCommentInputChange}
+					returnKeyType={TRKeyboardKeys.send}
+					onSubmitPressed={
+						comment.length > 0 ? onCommentSend : Keyboard.dismiss
+					}
+					blurOnSubmit={true}
+				/>
+			</View>
 
-			<View style={style.sendButtonContainer}>
-				<TouchableOpacity onPress={onCommentSend} style={style.sendButton}>
-					<Icon name="md-send" style={style.sendIcon} />
+			<View style={styles.send}>
+				<TouchableOpacity
+					onPress={onCommentSend}
+					activeOpacity={1}
+					disabled={comment.length === 0}
+				>
+					<Icon
+						name="comment-arrow-right"
+						style={[
+							styles.icon,
+							{ color: comment.length === 0 ? Colors.grayText : Colors.pink },
+						]}
+					/>
 				</TouchableOpacity>
 			</View>
 		</View>
