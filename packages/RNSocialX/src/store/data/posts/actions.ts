@@ -7,10 +7,15 @@ import {
 	IUnlikeCommentInput,
 	IUnlikePostInput,
 } from '@socialx/api-data';
+import moment from 'moment';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+
+import { IWallPostPhotoOptimized } from '../../../types';
+import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { setGlobal } from '../../ui/globals';
 import { getCurrentProfile, getProfilesByPosts } from '../profiles';
 import {
 	ActionTypes,
@@ -41,9 +46,6 @@ import {
 	IUnlikePostAction,
 	IUsernameInput,
 } from './Types';
-
-import moment from 'moment';
-import { setGlobal } from '../../ui/globals';
 
 const resetPostsAction: ActionCreator<IResetPostsAction> = () => ({
 	type: ActionTypes.RESET_POSTS,
@@ -301,11 +303,15 @@ const createPostAction: ActionCreator<ICreatePostAction> = (
 	payload: createPostInput,
 });
 
-export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+// TODO @Jake move this
+interface IUploadResponse {
+	uploadId: string;
+	responseBody: string;
+}
+
+export const createPost = (
+	createPostInput: ICreatePostInput & { media: IWallPostPhotoOptimized[] },
+): IThunk => async (dispatch, getState, context) => {
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -318,8 +324,81 @@ export const createPost = (createPostInput: ICreatePostInput): IThunk => async (
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			await dataApi.posts.createPost(createPostInput);
+			const { dataApi, storageApi } = context;
+
+			if (createPostInput.media && createPostInput.media.length > 0) {
+				const { media, ...postRest } = createPostInput;
+
+				const bootstrapStatus = async (uploadIdStarted: string) => {
+					await dispatch(
+						setUploadStatus({
+							path: '',
+							uploadId: uploadIdStarted,
+							progress: 0,
+							aborting: false,
+							done: false,
+							hash: '',
+						}),
+					);
+				};
+
+				const updateStatus = async ({
+					uploadId: uploadIdUpdated,
+					progress,
+				}: any & { uploadId: string }) => {
+					await dispatch(
+						setUploadStatus({
+							uploadId: uploadIdUpdated,
+							progress,
+							path: '',
+							aborting: false,
+							done: false,
+							hash: '',
+						}),
+					);
+				};
+
+				// TODO @Jake fix obj type
+				const uploadedFiles: IUploadResponse[] = await Promise.all(
+					media.map((obj: any) =>
+						storageApi.uploadFile(obj.pathx, bootstrapStatus, updateStatus),
+					),
+				);
+
+				const responses = uploadedFiles.map((file) => ({
+					uploadId: file.uploadId,
+					body: JSON.parse(file.responseBody),
+				}));
+
+				responses.forEach(async (resp) => {
+					await dispatch(
+						setUploadStatus({
+							uploadId: resp.uploadId,
+							progress: 100,
+							path: '',
+							aborting: false,
+							done: true,
+							hash: resp.body.Hash,
+						}),
+					);
+				});
+
+				const finalMedia = responses.map((resp, index) => ({
+					hash: resp.body.Hash,
+					extension: media[index].type,
+					size: media[index].size,
+					type: {
+						key: media[index].type,
+						name: media[index].type.indexOf('image') < 0 ? 'Video' : 'Photo',
+						category: 'Photography',
+					},
+				}));
+
+				const finalInput = { ...postRest, media: finalMedia };
+				await dataApi.posts.createPost(finalInput as any);
+			} else {
+				await dataApi.posts.createPost(createPostInput);
+			}
 
 			await dispatch(getPostsByUsername({ username: auth.alias }));
 		} catch (e) {

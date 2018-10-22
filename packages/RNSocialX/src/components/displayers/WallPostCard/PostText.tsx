@@ -53,7 +53,7 @@ export const PostText: React.SFC<IPostTextProps> = ({
 		}
 
 		return (
-			<View style={styles.textPadding}>
+			<View style={styles.container}>
 				<Text style={styles.text}>
 					<RichText
 						style={styles.text}

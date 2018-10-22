@@ -45,7 +45,7 @@ export const mapPostsForUI = (
 				numberOfWalletCoins: 0,
 				likedByMe: foundLike,
 				canDelete: post.owner.alias === currentUser!.userId,
-				media: post.media!.map((media) => ({
+				media: post.media.map((media) => ({
 					url: appConfig.ipfsConfig.ipfs_URL + media.hash,
 					hash: media.hash,
 					type: media.type.name === 'Photo' ? MediaTypeImage : MediaTypeVideo,

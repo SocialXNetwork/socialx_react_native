@@ -242,7 +242,7 @@ export interface IWallPostCardData extends IResizeProps {
 	numberOfWalletCoins: number;
 	likedByMe: boolean;
 	canDelete: boolean;
-	media: IMediaProps[] | undefined;
+	media: IMediaProps[];
 	likes: ILike[];
 	bestComments: ISimpleComment[];
 	listLoading: boolean;

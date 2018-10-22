@@ -6,6 +6,9 @@ const styles: any = {
 		width: '100%',
 		backgroundColor: Colors.white,
 	},
+	mediaContainer: {
+		marginTop: Sizes.smartVerticalScale(10),
+	},
 	postedTimeContainer: {
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		marginVertical: Sizes.smartVerticalScale(10),
