@@ -79,7 +79,7 @@ const styles: any = {
 		alignItems: 'center',
 		width: '100%',
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		marginBottom: Sizes.smartVerticalScale(15),
+		marginBottom: Sizes.smartVerticalScale(20),
 	},
 	button: {
 		height: Sizes.smartVerticalScale(30),

@@ -204,14 +204,14 @@ export class WallPostCard extends React.Component<
 					launchExternalUrl={this.launchExternalURL}
 					getText={getText}
 				/>
-				<View>
-					{heartAnimation && (
-						<HeartAnimation
-							ended={(status) => this.setState({ heartAnimation: !status })}
-						/>
-					)}
-					{media &&
-						(!contentOffensive || viewOffensiveContent) && (
+				{media!.length > 0 && (
+					<View style={styles.mediaContainer}>
+						{heartAnimation && (
+							<HeartAnimation
+								ended={(status) => this.setState({ heartAnimation: !status })}
+							/>
+						)}
+						{(!contentOffensive || viewOffensiveContent) && (
 							<WallPostMedia
 								mediaObjects={media}
 								onMediaObjectView={(index: number) =>
@@ -222,12 +222,13 @@ export class WallPostCard extends React.Component<
 								getText={getText}
 							/>
 						)}
-					<WarnOffensiveContent
-						getText={getText}
-						onShowOffensiveContent={this.showOffensiveContent}
-						visible={contentOffensive && !viewOffensiveContent}
-					/>
-				</View>
+						<WarnOffensiveContent
+							getText={getText}
+							onShowOffensiveContent={this.showOffensiveContent}
+							visible={contentOffensive && !viewOffensiveContent}
+						/>
+					</View>
+				)}
 				{!hidePostActionsAndComments && (
 					<WallPostActions
 						likedByMe={likedByMe}
