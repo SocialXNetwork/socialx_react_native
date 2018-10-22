@@ -55,7 +55,7 @@ export const resolveCallback = (resolve: any, reject: any) => (
 	resolve(typeof r !== 'undefined' ? JSON.parse(JSON.stringify(r)) : undefined);
 };
 
-const flatten: any = (arr: any[]) =>
+const flatten: any = (arr: any[] = []) =>
 	arr.reduce(
 		(flatted: any[], toFlat: any[] | string) =>
 			flatted.concat(Array.isArray(toFlat) ? flatten(toFlat) : toFlat),
@@ -83,6 +83,6 @@ const getRelatedUsernamesFromPost = (post: any) => {
 	].filter((v) => v);
 };
 
-export const getRelatedUsernamesFromPosts = (posts: object[]) => {
+export const getRelatedUsernamesFromPosts = (posts: object[] = []) => {
 	return flatten(posts.map(getRelatedUsernamesFromPost));
 };
