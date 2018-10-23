@@ -11,8 +11,8 @@ export {
 	ICreateProfileInput,
 	IProfileData,
 	IRemoveFriendInput,
+	IFindFriendsSuggestionsInput,
 	IUpdateProfileInput,
-	ISearchProfilesInput,
 	IPostArrayData,
 } from '@socialx/api-data';
 export {
@@ -20,6 +20,7 @@ export {
 	getProfileByUsername,
 	acceptFriend,
 	searchProfilesByFullName,
+	findFriendsSuggestions,
 	addFriend,
 	updateCurrentProfile,
 	getProfilesByPosts,

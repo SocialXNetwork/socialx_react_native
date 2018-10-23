@@ -5,14 +5,19 @@ import {
 	IPostArrayData,
 	IProfileData,
 	IRemoveFriendInput,
-	ISearchProfilesInput,
+	ISearchProfilesByFullNameInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
+interface IFriendSuggestionData extends IProfileData {
+	commonFriends?: number;
+}
+
 export type IState = DeepReadonly<{
 	profiles: IProfileData[];
+	friendsSuggestions?: IFriendSuggestionData[];
 }>;
 
 export interface IUsernameInput {
@@ -58,7 +63,7 @@ export interface IGetProfileByUsernameAction extends Action {
 
 export interface ISearchProfilesByFullNameAction extends Action {
 	type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME;
-	payload: ISearchProfilesInput;
+	payload: ISearchProfilesByFullNameInput;
 }
 
 export interface ISyncSearchProfilesByFullNameAction extends Action {
