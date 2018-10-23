@@ -1167,6 +1167,10 @@
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.1.3.tgz#b700d97385fa91affed60c71dfd51c67e9dad762"
 
+"@ptomasroos/react-native-multi-slider@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-1.0.0.tgz#a4ea27b1320b93a1db9f696c24789695df6c9f30"
+
 "@sinonjs/commons@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.0.2.tgz#3e0ac737781627b8844257fadc3d803997d0526e"
@@ -8867,14 +8871,7 @@ react-native-modal-dropdown@^0.6.2:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-modal@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
-  dependencies:
-    prop-types "^15.6.1"
-    react-native-animatable "^1.2.4"
-
-"react-native-modal@https://github.com/react-native-community/react-native-modal":
+react-native-modal@^6.5.0, "react-native-modal@https://github.com/react-native-community/react-native-modal":
   version "6.5.0"
   resolved "https://github.com/react-native-community/react-native-modal#e7ebb5e42812b3be87f45167dd09a40d9fec44c0"
   dependencies:

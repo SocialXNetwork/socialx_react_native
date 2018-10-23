@@ -19,6 +19,11 @@ export {
 	WithAdsStatistics,
 } from './adsManagementStack/WithAdsStatistics';
 export {
+	IWithNewAdSetupAudienceEnhancedActions,
+	IWithNewAdSetupAudienceEnhancedData,
+	WithNewAdSetupAudience,
+} from './adsManagementStack/WithNewAdSetupAudience';
+export {
 	IWithNewAdSetupPostEnhancedActions,
 	IWithNewAdSetupPostEnhancedData,
 	WithNewAdSetupPost,
@@ -97,7 +102,6 @@ export {
 	WithSettings,
 	IWithSettingsEnhancedActions,
 	IWithSettingsEnhancedData,
-	ISaveChangesParams,
 } from './myProfile/WithSettings';
 export {
 	WithSocialXAccount,

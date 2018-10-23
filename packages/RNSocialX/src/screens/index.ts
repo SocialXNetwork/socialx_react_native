@@ -9,6 +9,7 @@ export { AdsStatisticsScreen } from './adsManagementStack/AdsStatisticsScreen';
 export {
 	NewAdSetupPostScreen,
 } from './adsManagementStack/NewAdSetupPostScreen';
+export { NewAdSetupAudience } from './adsManagementStack/NewAdSetupAudience';
 
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 
