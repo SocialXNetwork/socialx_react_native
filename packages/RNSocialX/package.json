@@ -18,7 +18,8 @@
     "start:storybook": "storybook start -p 7007 --metro-config $PWD/rn-cli.config.js",
     "start:js": "react-native start",
     "run:ios": "react-native run-ios",
-    "run:android": "react-native run-android"
+    "run:android": "react-native run-android",
+    "reload:android": "$ANDROID_HOME/platform-tools/adb shell input text 'RR'"
   },
   "dependencies": {
     "@socialx/api-blockchain": "^0.0.1",
