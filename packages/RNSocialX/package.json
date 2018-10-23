@@ -22,6 +22,7 @@
     "reload:android": "$ANDROID_HOME/platform-tools/adb shell input text 'RR'"
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@socialx/api-blockchain": "^0.0.1",
     "@socialx/api-data": "^0.0.1",
     "@socialx/api-storage": "^0.0.1",
