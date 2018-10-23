@@ -2,7 +2,6 @@ import moment from 'moment';
 import * as React from 'react';
 import Picker from 'react-native-picker';
 
-import { IConfirmation } from '../../store/ui/overlays';
 import { INavigationProps } from '../../types';
 
 import { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
@@ -37,14 +36,6 @@ const pickerData = [
 	'ad.management.budget.currency.usd',
 	'ad.management.budget.currency.euro',
 ];
-
-const confirmation: IConfirmation = {
-	title: 'Save Ad',
-	message:
-		'When you save an ad, it will be placed on the Ad Management Home screen so that you can edit it.\n\nDo you want to save your ad?',
-	confirmButtonLabel: 'Save',
-	cancelButtonLabel: 'Discard',
-};
 
 const dateFormatMomentJS = 'DD/MM/YYYY';
 
@@ -225,6 +216,22 @@ class Screen extends React.Component<
 	};
 
 	private nextButtonPressed = () => {
+		const { getText } = this.props;
+
+		this.props.showConfirmation({
+			title: getText('ad.management.budget.modal.confirm.title'),
+			message: getText('ad.management.budget.modal.confirm.message'),
+			confirmButtonLabel: getText(
+				'ad.management.budget.modal.confirm.confirm.label',
+			),
+			cancelButtonLabel: getText(
+				'ad.management.budget.modal.confirm.cancel.label',
+			),
+			confirmHandler: this.saveAdConfirmedHandler,
+		});
+	};
+
+	private saveAdConfirmedHandler = () => {
 		const {
 			selectedCurrencyValue,
 			budgetValue,
@@ -245,8 +252,7 @@ class Screen extends React.Component<
 			stop: selectedStopDate,
 		};
 
-		// this.props.onCreateAdSetBudget(budgetObject);
-		this.props.showConfirmation(confirmation);
+		this.props.onCreateAdSetBudget(budgetObject);
 	};
 }
 

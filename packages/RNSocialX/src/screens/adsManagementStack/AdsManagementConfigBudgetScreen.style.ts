@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../environment/theme';
-import { colorWithAlphaArray } from './../../environment/theme/Colors';
+import {
+	Colors,
+	colorWithAlphaArray,
+	Fonts,
+	Sizes,
+} from '../../environment/theme';
 
 const styles: any = {
 	container: {
@@ -108,9 +112,6 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(14),
 		color: Colors.dustGray,
 	},
-	datePickerConfirmAndCancelBtnColor: {
-		color: Colors.pink,
-	},
 	buttonContainer: {
 		marginTop: Sizes.smartVerticalScale(20),
 		paddingHorizontal: Sizes.smartHorizontalScale(28),
@@ -123,6 +124,9 @@ const styles: any = {
 export default StyleSheet.create(styles);
 
 export const defaultStyles: any = {
+	datePickerConfirmAndCancelBtnColor: {
+		color: Colors.pink,
+	},
 	highlightButton: Colors.pinkLace,
 	checkboxColor: Colors.pink,
 	pickerTitleColor: colorWithAlphaArray(Colors.alabaster, 1),
