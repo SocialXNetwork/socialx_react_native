@@ -4,10 +4,51 @@
  * 2. Props actions: onShowAllTransactions: should redirect to a screen with all transactions.
  */
 
+import moment from 'moment';
 import * as React from 'react';
 
+import {
+	IMonthlyBarChartData,
+	IWeeklyBarChartData,
+} from '../../../environment/consts';
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+
+const getRandomWeeklyValuesForCurrentYear = () => {
+	const ret: IWeeklyBarChartData[] = [];
+	const indexDate = moment().startOf('year');
+	const today = moment();
+	while (indexDate < today) {
+		const randomValue = Math.round(Math.random() * 100);
+		ret.push({
+			value: randomValue,
+			date: indexDate.toDate(),
+		});
+		indexDate.add(1, 'weeks');
+	}
+	ret.sort((left, right) => moment.utc(left.date).diff(moment.utc(right.date)));
+	return ret;
+};
+
+const getRandomMonthlyValuesForLastTwelveMonths = () => {
+	const ret: IMonthlyBarChartData[] = [];
+	const indexDate = moment().add(-11, 'months');
+	const today = moment();
+	while (indexDate < today) {
+		const randomValue = Math.round(Math.random() * 100);
+		ret.push({
+			value: randomValue,
+			monthShort: indexDate.format('MMM'),
+		});
+		indexDate.add(1, 'month');
+	}
+	ret.sort((left, right) =>
+		moment
+			.utc(left.monthShort, 'MMM')
+			.diff(moment.utc(right.monthShort, 'MMM')),
+	);
+	return ret;
+};
 
 const mock: IWithAdsStatisticsEnhancedProps = {
 	data: {
@@ -26,6 +67,8 @@ const mock: IWithAdsStatisticsEnhancedProps = {
 			},
 		],
 		totalAmountSOCX: 2568,
+		weeklySeries: getRandomWeeklyValuesForCurrentYear(),
+		monthlySeries: getRandomMonthlyValuesForLastTwelveMonths(),
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
@@ -41,6 +84,8 @@ export interface IWithAdsStatisticsEnhancedData {
 		date: Date | string;
 	}>;
 	totalAmountSOCX: number;
+	weeklySeries: any[];
+	monthlySeries: any[];
 }
 
 export interface IWithAdsStatisticsEnhancedActions extends ITranslatedProps {

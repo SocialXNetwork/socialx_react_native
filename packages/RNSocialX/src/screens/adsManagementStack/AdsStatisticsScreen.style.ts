@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
+import { colorWithAlpha } from './../../environment/theme/Colors';
+
+export const DAY_CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(30));
 
 const styles: any = {
 	container: {
@@ -130,11 +133,65 @@ const styles: any = {
 		paddingBottom: Sizes.smartVerticalScale(15),
 		paddingHorizontal: Sizes.smartHorizontalScale(18),
 	},
-	graphContainer: {},
+	graphContainer: {
+		flex: 1,
+		minHeight: '100%',
+		backgroundColor: Colors.white,
+		paddingHorizontal: Sizes.smartHorizontalScale(18),
+	},
+	animatedViewport: {
+		flex: 1,
+		overflow: 'hidden',
+		zIndex: 1,
+	},
+	animatedView: {
+		flex: 1,
+		width: '200%',
+		flexDirection: 'row',
+	},
+	fullWidth: {
+		flex: 1,
+		width: '50%',
+		minHeight: Sizes.smartVerticalScale(75),
+		maxHeight: Sizes.smartHorizontalScale(150),
+	},
+	barChartColumn: {
+		width: Sizes.smartHorizontalScale(8),
+	},
+	dayChartItem: {
+		width: DAY_CHART_ITEM_WIDTH,
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+	},
+	barChartColumnContainer: {
+		flex: 1,
+		justifyContent: 'flex-end',
+	},
+	barChartLabelContainer: {
+		marginTop: Sizes.smartHorizontalScale(9),
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+	},
+	barCharItemLabel: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(12),
+		color: Colors.postText,
+	},
+	barCharItemLabelUpperScript: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(8),
+		color: Colors.postText,
+	},
+	monthChartItem: {
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+	},
 };
 
 export default StyleSheet.create(styles) as any;
 
 export const customStyleProps = {
 	highlightButton: Colors.pinkLace,
+	barChartColumnColor: Colors.pink,
+	barChartColumnLightColor: colorWithAlpha(Colors.pink, 0.5),
 };
