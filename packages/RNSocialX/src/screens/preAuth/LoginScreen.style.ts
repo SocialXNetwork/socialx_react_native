@@ -5,10 +5,11 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 const style: any = {
 	container: {
 		width: '100%',
-		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
-		backgroundColor: Colors.white,
+	},
+	containerIOS: {
+		flex: 1,
 	},
 	keyboardView: {
 		backgroundColor: Colors.white,
@@ -37,10 +38,15 @@ const style: any = {
 		color: Colors.black,
 	},
 	noAccountContainer: {
-		position: 'absolute',
-		bottom: 10,
+		paddingBottom: Sizes.smartVerticalScale(10),
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'flex-end',
+	},
+	noAccountContainerAndroid: {
+		paddingTop: Sizes.smartVerticalScale(50),
+	},
+	noAccountContainerIOS: {
+		flex: 1,
 	},
 	noAccountQuestion: {
 		...Fonts.centuryGothic,
@@ -53,7 +59,7 @@ const style: any = {
 		color: Colors.black,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(17),
-		padding: Sizes.smartHorizontalScale(4),
+		paddingHorizontal: Sizes.smartHorizontalScale(4),
 	},
 	fullWidth: {
 		width: '100%',

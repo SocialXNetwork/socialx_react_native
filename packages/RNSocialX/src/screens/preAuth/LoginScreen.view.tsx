@@ -1,6 +1,6 @@
 import { Formik, FormikErrors, FormikProps } from 'formik';
 import * as React from 'react';
-import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
+import { Keyboard, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-navigation';
 
@@ -164,7 +164,10 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 		/>
 		<KeyboardAwareScrollView
 			style={style.keyboardView}
-			contentContainerStyle={style.container}
+			contentContainerStyle={Platform.select({
+				ios: [style.container, style.containerIOS],
+				android: [style.container],
+			})}
 			alwaysBounceVertical={false}
 			keyboardDismissMode="interactive"
 			keyboardShouldPersistTaps="handled"
@@ -185,7 +188,12 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 				borderColor={customStyleProps.borderTransparent}
 				disabled={false}
 			/>
-			<View style={style.noAccountContainer}>
+			<View
+				style={Platform.select({
+					ios: [style.noAccountContainer, style.noAccountContainerIOS],
+					android: [style.noAccountContainer, style.noAccountContainerAndroid],
+				})}
+			>
 				<Text style={style.noAccountQuestion}>
 					{getText('login.no.account.text')}
 				</Text>
