@@ -7,7 +7,7 @@ const styles: any = {
 	container: {
 		flexDirection: 'row',
 		paddingHorizontal: Sizes.smartHorizontalScale(SIDE_PADDING),
-		paddingBottom: Sizes.smartHorizontalScale(14),
+		paddingVertical: Sizes.smartHorizontalScale(16),
 		justifyContent: 'space-between',
 	},
 	smallAvatarImage: {
