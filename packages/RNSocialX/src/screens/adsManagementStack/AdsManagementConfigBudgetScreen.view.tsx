@@ -14,9 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Header, HeaderButton, PrimaryButton } from '../../components';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
-import styles, {
-	customStyleProps,
-} from './AdsManagementConfigBudgetScreen.style';
+import styles, { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
 
 interface IAdsManagementConfigBudgetScreenViewProps
 	extends ITranslatedProps,
@@ -84,7 +82,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 			keyboardShouldPersistTaps="handled"
 		>
 			<TouchableHighlight
-				underlayColor={customStyleProps.checkboxColor}
+				underlayColor={defaultStyles.checkboxColor}
 				onPress={currencyButtonPressed}
 			>
 				<View style={styles.currencyContainer}>
@@ -126,7 +124,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 				</View>
 				<View style={styles.separator} />
 				<TouchableHighlight
-					underlayColor={customStyleProps.highlightButton}
+					underlayColor={defaultStyles.highlightButton}
 					onPress={() => handleCheckboxChange('perday')}
 				>
 					<View style={styles.optionContainer}>
@@ -135,7 +133,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 						</Text>
 						<CheckBox
 							checked={perDayPressed}
-							color={customStyleProps.checkboxColor}
+							color={defaultStyles.checkboxColor}
 							style={styles.checkbox}
 							onPress={() => handleCheckboxChange('perday')}
 						/>
@@ -143,7 +141,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 				</TouchableHighlight>
 				<View style={styles.separator} />
 				<TouchableHighlight
-					underlayColor={customStyleProps.highlightButton}
+					underlayColor={defaultStyles.highlightButton}
 					onPress={() => handleCheckboxChange('lifetime')}
 				>
 					<View style={styles.optionContainer}>
@@ -152,7 +150,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 						</Text>
 						<CheckBox
 							checked={lifetimePressed}
-							color={customStyleProps.checkboxColor}
+							color={defaultStyles.checkboxColor}
 							style={styles.checkbox}
 							onPress={() => handleCheckboxChange('lifetime')}
 						/>
@@ -168,7 +166,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 				</View>
 				<View style={styles.separator} />
 				<TouchableHighlight
-					underlayColor={customStyleProps.highlightButton}
+					underlayColor={defaultStyles.highlightButton}
 					onPress={() => handleCheckboxChange('runAdContinuously')}
 				>
 					<View style={styles.optionContainer}>
@@ -177,7 +175,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 						</Text>
 						<CheckBox
 							checked={runAdContinuouslyPressed}
-							color={customStyleProps.checkboxColor}
+							color={defaultStyles.checkboxColor}
 							style={styles.checkbox}
 							onPress={() => handleCheckboxChange('runAdContinuously')}
 						/>
@@ -185,7 +183,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 				</TouchableHighlight>
 				<View style={styles.separator} />
 				<TouchableHighlight
-					underlayColor={customStyleProps.highlightButton}
+					underlayColor={defaultStyles.highlightButton}
 					onPress={() => handleDatePicker('startDatePicker')}
 					disabled={runAdContinuouslyPressed}
 				>
@@ -201,8 +199,12 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 								isVisible={isStartDatePickerVisible}
 								minimumDate={currentDate}
 								titleIOS={getText('ad.management.budget.start.datePicker')}
-								confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
-								cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
+								confirmTextStyle={
+									defaultStyles.datePickerConfirmAndCancelBtnColor
+								}
+								cancelTextStyle={
+									defaultStyles.datePickerConfirmAndCancelBtnColor
+								}
 								onConfirm={handleStartDatePicked}
 								onCancel={() => handleDatePicker('hidePicker')}
 							/>
@@ -211,7 +213,7 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 				</TouchableHighlight>
 				<View style={styles.separator} />
 				<TouchableHighlight
-					underlayColor={customStyleProps.highlightButton}
+					underlayColor={defaultStyles.highlightButton}
 					onPress={() => handleDatePicker('stopDatePicker')}
 					disabled={runAdContinuouslyPressed}
 				>
@@ -227,8 +229,12 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 								isVisible={isStopDatePickerVisible}
 								minimumDate={nextDayFromStartDate}
 								titleIOS={getText('ad.management.budget.stop.datePicker')}
-								confirmTextStyle={styles.datePickerConfirmAndCancelBtnColor}
-								cancelTextStyle={styles.datePickerConfirmAndCancelBtnColor}
+								confirmTextStyle={
+									defaultStyles.datePickerConfirmAndCancelBtnColor
+								}
+								cancelTextStyle={
+									defaultStyles.datePickerConfirmAndCancelBtnColor
+								}
 								onConfirm={handleStopDatePicked}
 								onCancel={() => handleDatePicker('hidePicker')}
 							/>
