@@ -101,3 +101,5 @@ declare module 'webview-crypto' {
 declare module 'react-native-randombytes' {
 	export const randomBytes: (size: number) => any;
 }
+
+declare module '@ptomasroos/react-native-multi-slider';

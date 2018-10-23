@@ -304,4 +304,11 @@ export default {
 	'ad.management.budget.modal.confirm.message': 'When you save an ad, it will be placed on the Ad Management Home screen so that you can edit it.\n\nDo you want to save your ad?',
 	'ad.management.budget.modal.confirm.confirm.label': 'Save',
 	'ad.management.budget.modal.confirm.cancel.label': 'Discard',
+  'new.ad.setup.audience.screen.title': 'Create Ad',
+  'new.ad.setup.audience.header.title': 'Audience',
+  'new.ad.setup.audience.gender.select': 'Select Gender',
+  'new.ad.setup.audience.gender.male': 'Men',
+  'new.ad.setup.audience.gender.female': 'Women',
+  'new.ad.setup.audience.gender.all': 'All',
+  'new.ad.setup.audience.age.range.select': 'Select Age Range',
 };
