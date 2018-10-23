@@ -71,15 +71,15 @@ Gun.chain.findFriendsSuggestions = function(
   if (!friendsArray || !friendsArray.length) {
     return cb([]);
   }
-  const currentFriendsAliases = friendsArray.map(f => f.alias).filter(a => a !== username);
-
+  const currentFriendsAliases = friendsArray.map(f => f.alias);
   this.docLoad((data: any[]) => {
     // for each profile, go throw each and count number of shared friends
     const profilesSortedByCommonFriends = Object.entries(data)
       .map(countCommonFriends(currentFriendsAliases))
-      .filter(v => v && v.alias)
+      .filter(f => f && f.alias && f.alias !== username)
       .sort(byCommonFriends)
       .reverse();
+    console.log('*** profilesSortedByCommonFriends', profilesSortedByCommonFriends);
     return cb(profilesSortedByCommonFriends);
   });
 };
