@@ -127,10 +127,32 @@ export const findProfilesByFullName = (
 		});
 };
 
+export const findFriendsSuggestions = (
+	context: IContext,
+	{ maxResults }: { maxResults?: number },
+	callback: IGunCallback<any[]>,
+) => {
+	profileHandles
+		.currentUserProfileData(context)
+		.docLoad((currentProfileCallback: IProfileCallbackData) => {
+			const friendsData = friendsToArray(currentProfileCallback.friends) || [];
+			profileHandles
+				.publicProfilesRecord(context)
+				.findFriendsSuggestions(friendsData, (data: any) => {
+					const profilesReturned = data.map((profile: any) => ({
+						...profile,
+						friends: friendsToArray(profile.friends) || [],
+					}));
+					return callback(null, profilesReturned);
+				});
+		});
+};
+
 export default {
 	getCurrentProfile,
 	getProfileByUsername,
 	getPublicKeyByUsername,
 	getCurrentProfileFriends,
 	findProfilesByFullName,
+	findFriendsSuggestions,
 };

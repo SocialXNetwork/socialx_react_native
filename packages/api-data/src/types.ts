@@ -115,6 +115,10 @@ export interface IGunInstance {
 		query: object,
 		callback: (data: T, key: string) => void,
 	) => IGunInstance;
+	findFriendsSuggestions: <T>(
+		friendsArray: object,
+		callback: (data: T, key: string) => void,
+	) => IGunInstance;
 	// subInstance api
 	user: (pub?: string) => IGunAccountInstance;
 }
