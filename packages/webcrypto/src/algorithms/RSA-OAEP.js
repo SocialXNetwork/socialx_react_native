@@ -4,7 +4,7 @@
 const crypto = require('crypto')
 const base64url = require('base64url') 
 const keyto = require('@trust/keyto')
-const {spawnSync} = require('child_process')
+// const {spawnSync} = require('child_process')
 const {TextEncoder, TextDecoder} = require('text-encoding')
 
 /**
@@ -19,6 +19,11 @@ const JsonWebKey = require('../keys/JsonWebKey')
 const RsaKeyAlgorithm = require('../dictionaries/RsaKeyAlgorithm')
 const RsaHashedKeyAlgorithm = require('../dictionaries/RsaHashedKeyAlgorithm')
 const supportedAlgorithms = require('../algorithms')
+
+/**
+ * placeholder for spawn
+ */
+const spawnSync = (args) => (100101101).toString();
 
 /**
  * Errors

@@ -3,7 +3,7 @@
  */
 const RSA = require('node-rsa')
 const crypto = require('crypto')
-const {spawnSync} = require('child_process')
+// const {spawnSync} = require('child_process')
 const {TextEncoder, TextDecoder} = require('text-encoding')
 
 /**
@@ -15,6 +15,11 @@ const JsonWebKey = require('../keys/JsonWebKey')
 const KeyAlgorithm = require('./KeyAlgorithm')
 const RsaKeyAlgorithm = require('./RsaKeyAlgorithm')
 const supportedAlgorithms = require('../algorithms')
+
+/**
+ * placeholder for spawn
+ */
+const spawnSync = (args) => (100101101).toString();
 
 /**
  * Errors
