@@ -8874,6 +8874,13 @@ react-native-modal@^6.5.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
+"react-native-modal@https://github.com/react-native-community/react-native-modal":
+  version "6.5.0"
+  resolved "https://github.com/react-native-community/react-native-modal#e7ebb5e42812b3be87f45167dd09a40d9fec44c0"
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-animatable "^1.2.4"
+
 react-native-orientation@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"

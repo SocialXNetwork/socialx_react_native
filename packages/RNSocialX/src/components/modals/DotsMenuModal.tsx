@@ -24,7 +24,6 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
-				// @ts-ignore
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={visible}

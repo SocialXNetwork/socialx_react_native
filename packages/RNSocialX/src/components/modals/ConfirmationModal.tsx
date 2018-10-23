@@ -37,7 +37,6 @@ export const ConfirmationModal: React.SFC<IConfirmationModalProps> = ({
 				animationOut="zoomOut"
 				onBackdropPress={declineHandler}
 				style={style.container}
-				// @ts-ignore
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 			>

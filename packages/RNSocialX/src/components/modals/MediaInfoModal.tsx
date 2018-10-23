@@ -43,7 +43,6 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onModalHide, onDismiss }) => (
 			<Modal
-				// @ts-ignore
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={visible}

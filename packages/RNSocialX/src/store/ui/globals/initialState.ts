@@ -8,6 +8,10 @@ const initialState: IState = {
 		title: '',
 		message: '',
 	},
+	transparentOverlay: {
+		visible: false,
+		alpha: 0,
+	},
 };
 
 export default initialState;
