@@ -12,6 +12,7 @@ const config = {
       path.resolve(__dirname, "../api-storage"),
       path.resolve(__dirname, "../api-blockchain"),
       path.resolve(__dirname, "../api-data"),
+      path.resolve(__dirname, "../api-crypto"),
       // path.resolve(__dirname, "../webcrypto")
     ];
   },

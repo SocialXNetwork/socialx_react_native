@@ -13,6 +13,7 @@
       "packages/api-storage",
       "packages/api-blockchain",
       "packages/api-data",
+      "packages/api-crypto",
       "packages/RNSocialX"
     ],
     "nohoist": [
@@ -26,6 +27,8 @@
       "**/api-blockchain/**",
       "**/api-data",
       "**/api-data/**",
+      "**/api-crypto",
+      "**/api-crypto/**",
       "**/RNSocialX",
       "**/RNSocialX/**"
     ]
