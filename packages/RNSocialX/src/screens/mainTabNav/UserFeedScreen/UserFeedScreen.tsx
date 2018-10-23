@@ -9,7 +9,6 @@ import {
 	IWallPostCardData,
 } from '../../../types';
 
-import { SHARE_SECTION_HEIGHT } from './UserFeedScreen.style';
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
 import {
@@ -26,7 +25,9 @@ export interface IFeedProps {
 	feedType: FEED_TYPES;
 }
 
-interface IUserFeedScreenState {}
+interface IUserFeedScreenState {
+	deletingPost: boolean;
+}
 
 type IUserFeedScreenProps = INavigationProps &
 	IFeedProps &
@@ -37,6 +38,10 @@ export class Screen extends React.Component<
 	IUserFeedScreenProps,
 	IUserFeedScreenState
 > {
+	public state = {
+		deletingPost: false,
+	};
+
 	private readonly scrollRef: React.RefObject<
 		FlatList<IWallPostCardData>
 	> = React.createRef();
@@ -51,18 +56,11 @@ export class Screen extends React.Component<
 			refreshingFeed,
 			loadingMorePosts,
 			errors,
-			deletePost,
 			blockUser,
 			reportProblem,
 			showDotsMenuModal,
 			getText,
 		} = this.props;
-
-		const shareSectionOpacityInterpolation = this.scrollY.interpolate({
-			inputRange: [0, SHARE_SECTION_HEIGHT / 2, SHARE_SECTION_HEIGHT],
-			outputRange: [1, 0.3, 0],
-			extrapolate: 'clamp',
-		});
 
 		const likeError = !!errors.find(
 			(error) =>
@@ -83,14 +81,13 @@ export class Screen extends React.Component<
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
 				shareSectionPlaceholder={shareSectionPlaceholder}
-				shareSectionOpacityInterpolation={shareSectionOpacityInterpolation}
 				onImagePress={this.onMediaObjectPressHandler}
 				onLikePress={this.onLikePressHandler}
 				onUserPress={this.onUserPressHandler}
 				onSubmitComment={this.onSubmitCommentHandler}
 				onCommentPress={this.onCommentsButtonPressHandler}
 				onAddComment={this.onAddCommentPressHandler}
-				onDeletePostPress={deletePost}
+				onDeletePostPress={this.onDeletePostPressHandler}
 				onBlockUser={blockUser}
 				onReportProblem={reportProblem}
 				scrollRef={this.scrollRef}
@@ -233,5 +230,11 @@ export class Screen extends React.Component<
 		}
 
 		return -(offset - diff);
+	};
+
+	private onDeletePostPressHandler = async (postId: string) => {
+		this.setState({ deletingPost: true });
+		await this.props.deletePost(postId);
+		this.setState({ deletingPost: true });
 	};
 }

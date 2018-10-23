@@ -5,6 +5,7 @@ import {
 	SafeAreaView,
 	ScrollView,
 	TextInput,
+	View,
 } from 'react-native';
 
 import {
@@ -97,7 +98,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 				getText={getText}
 			/>
 			<ScrollView
-				style={styles.commentsList}
+				style={{ flex: 1 }}
 				keyboardShouldPersistTaps="handled"
 				ref={scrollRef}
 				onLayout={() => scrollRef.current && scrollRef.current.scrollToEnd()}
@@ -112,14 +113,16 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					getText={getText}
 				/>
 				{media && (
-					<WallPostMedia
-						mediaObjects={media}
-						onMediaObjectView={(index: number) => onImagePress(index, media)}
-						onLikeButtonPressed={() => undefined}
-						// onLikeButtonPressed={this.onDoubleTapLikeHandler}
-						noInteraction={false}
-						getText={getText}
-					/>
+					<View style={styles.media}>
+						<WallPostMedia
+							mediaObjects={media}
+							onMediaObjectView={(index: number) => onImagePress(index, media)}
+							onLikeButtonPressed={() => undefined}
+							// onLikeButtonPressed={this.onDoubleTapLikeHandler}
+							noInteraction={false}
+							getText={getText}
+						/>
+					</View>
 				)}
 				<RecentLikes
 					likes={likes}

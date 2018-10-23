@@ -8,16 +8,16 @@ interface IDotsMenuButtonProps {
 	iconColor?: string;
 	iconName?: string;
 	onPress: () => void;
+	disabled?: boolean;
 }
 
 export const DotsMenuButton: React.SFC<IDotsMenuButtonProps> = ({
 	iconColor = Colors.white,
 	iconName = 'ios-more',
-	onPress = () => {
-		/**/
-	},
+	onPress = () => undefined,
+	disabled,
 }) => (
-	<TouchableOpacity onPress={onPress}>
+	<TouchableOpacity onPress={onPress} disabled={disabled}>
 		<Icon name={iconName} color={iconColor} style={styles.icon} />
 	</TouchableOpacity>
 );

@@ -7,8 +7,8 @@ const styles: any = {
 		width: '100%',
 		backgroundColor: Colors.white,
 	},
-	commentsList: {
-		flex: 1,
+	media: {
+		marginTop: Sizes.smartVerticalScale(10),
 	},
 };
 
