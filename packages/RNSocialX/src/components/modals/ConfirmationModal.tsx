@@ -43,12 +43,12 @@ export const ConfirmationModal: React.SFC<IConfirmationModalProps> = ({
 			>
 				<View style={style.boxContainer}>
 					{title && (
-						<View style={style.titleBorder}>
+						<View style={style.titleContainer}>
 							<Text style={style.title}>{title}</Text>
 						</View>
 					)}
 					{message && (
-						<View style={style.messageBorder}>
+						<View style={style.messageContainer}>
 							<Text style={style.message}>{message}</Text>
 						</View>
 					)}

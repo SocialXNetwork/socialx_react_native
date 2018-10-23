@@ -16,6 +16,8 @@ export interface IConfirmation {
 	message: string;
 	confirmButtonLabel: string;
 	cancelButtonLabel: string;
+	confirmHandler: () => void;
+	cancelHandler?: () => void;
 }
 
 export interface IOptionsMenu {
