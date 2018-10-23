@@ -7,7 +7,7 @@ export {
 	AnimatedText,
 } from './Animations';
 export { ApplicationStyles } from './ApplicationStyles';
-export { Colors, colorWithAlpha } from './Colors';
+export { Colors, colorWithAlpha, colorWithAlphaArray } from './Colors';
 export { Fonts } from './Fonts';
 export { Icons } from './Icons';
 export { Images } from './Images';

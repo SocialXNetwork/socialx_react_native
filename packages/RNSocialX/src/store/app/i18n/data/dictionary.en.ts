@@ -299,5 +299,9 @@ export default {
 	'ad.management.budget.start.text': 'Start',
 	'ad.management.budget.start.datePicker': 'Pick a start date',
 	'ad.management.budget.stop.text': 'Stop',
-	'ad.management.budget.stop.datePicker': 'Pick a stop date'
+	'ad.management.budget.stop.datePicker': 'Pick a stop date',
+	'ad.management.budget.modal.confirm.title': 'Save Ad',
+	'ad.management.budget.modal.confirm.message': 'When you save an ad, it will be placed on the Ad Management Home screen so that you can edit it.\n\nDo you want to save your ad?',
+	'ad.management.budget.modal.confirm.confirm.label': 'Save',
+	'ad.management.budget.modal.confirm.cancel.label': 'Discard',
 };

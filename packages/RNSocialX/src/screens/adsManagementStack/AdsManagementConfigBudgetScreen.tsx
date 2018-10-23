@@ -216,6 +216,22 @@ class Screen extends React.Component<
 	};
 
 	private nextButtonPressed = () => {
+		const { getText } = this.props;
+
+		this.props.showConfirmation({
+			title: getText('ad.management.budget.modal.confirm.title'),
+			message: getText('ad.management.budget.modal.confirm.message'),
+			confirmButtonLabel: getText(
+				'ad.management.budget.modal.confirm.confirm.label',
+			),
+			cancelButtonLabel: getText(
+				'ad.management.budget.modal.confirm.cancel.label',
+			),
+			confirmHandler: this.saveAdConfirmedHandler,
+		});
+	};
+
+	private saveAdConfirmedHandler = () => {
 		const {
 			selectedCurrencyValue,
 			budgetValue,
