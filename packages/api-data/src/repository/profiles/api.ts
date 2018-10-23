@@ -21,6 +21,7 @@ import { ValidationError } from '../../utils/errors';
 import {
 	getRelatedUsernamesFromPosts,
 	resolveCallback,
+	unique,
 } from '../../utils/helpers';
 import { IPostArrayData } from '../posts/types';
 
@@ -98,7 +99,8 @@ export default (context: IContext) => ({
 		// 		{ validationInput: createProfileInput },
 		// 	);
 		// }
-		const usernames = getRelatedUsernamesFromPosts(posts);
+		const usernames = unique(getRelatedUsernamesFromPosts(posts) || []);
+		console.log('*** usernames', usernames);
 		return this.getProfilesByUsernames({ usernames });
 	},
 	async getProfileByUsername(getProfileByUsernameInput: {

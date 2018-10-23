@@ -6,6 +6,12 @@ import {
 	IMetasTypeCallback,
 } from '../types';
 
+const onlyUnique = (value: any, index: any, self: any) => {
+	return self.indexOf(value) === index;
+};
+
+export const unique = (arr: any[]) => arr.filter(onlyUnique);
+
 export const datePathFromDate = (date: Date) =>
 	`${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
 
