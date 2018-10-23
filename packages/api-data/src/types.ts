@@ -116,6 +116,7 @@ export interface IGunInstance {
 		callback: (data: T, key: string) => void,
 	) => IGunInstance;
 	findFriendsSuggestions: <T>(
+		username: string,
 		friendsArray: object,
 		callback: (data: T, key: string) => void,
 	) => IGunInstance;

@@ -1,6 +1,7 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IFindFriendsSuggestionsInput,
 	IPostArrayData,
 	IProfileData,
 	IRemoveFriendInput,
@@ -28,6 +29,8 @@ export const enum ActionTypes {
 	SYNC_GET_PROFILE_BY_USERNAME = 'app/data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
 	SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/SEARCH_PROFILES_BY_FULLNAME',
 	SYNC_SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/SYNC_SEARCH_PROFILES_BY_FULLNAME',
+	FIND_FRIENDS_SUGGESTIONS = 'app/data/profiles/FIND_FRIENDS_SUGGESTIONS',
+	SYNC_FIND_FRIENDS_SUGGESTIONS = 'app/data/profiles/SYNC_FIND_FRIENDS_SUGGESTIONS',
 	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
 	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
 	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
@@ -60,6 +63,16 @@ export interface ISearchProfilesByFullNameAction extends Action {
 
 export interface ISyncSearchProfilesByFullNameAction extends Action {
 	type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME;
+	payload: IProfileData[];
+}
+
+export interface IFindFriendsSuggestionsAction extends Action {
+	type: ActionTypes.FIND_FRIENDS_SUGGESTIONS;
+	payload: IFindFriendsSuggestionsInput;
+}
+
+export interface ISyncFindFriendsSuggestionsAction extends Action {
+	type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS;
 	payload: IProfileData[];
 }
 
@@ -106,6 +119,8 @@ export type IAction =
 	| ISyncGetProfileByUsernameAction
 	| IGetCurrentProfileAction
 	| ISyncGetCurrentProfileAction
+	| IFindFriendsSuggestionsAction
+	| ISyncFindFriendsSuggestionsAction
 	| IUpdateProfileAction
 	| IAddFriendAction
 	| IRemoveFriendAction

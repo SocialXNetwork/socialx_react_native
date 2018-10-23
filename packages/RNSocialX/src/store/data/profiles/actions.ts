@@ -1,9 +1,11 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IFindFriendsSuggestionsInput,
 	IPostArrayData,
 	IProfileData,
 	IRemoveFriendInput,
+	ISearchProfilesByFullNameInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
@@ -15,12 +17,13 @@ import {
 	ActionTypes,
 	IAcceptFriendAction,
 	IAddFriendAction,
+	IFindFriendsSuggestionsAction,
 	IGetCurrentProfileAction,
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
 	IRemoveFriendAction,
 	ISearchProfilesByFullNameAction,
-	ISearchProfilesByFullNameInput,
+	ISyncFindFriendsSuggestionsAction,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByUsernameAction,
 	ISyncGetProfilesByPostsAction,
@@ -94,11 +97,10 @@ export const syncSearchProfilesByFullNameAction: ActionCreator<
 export const searchProfilesByFullName = ({
 	term,
 	maxResults,
-}: ISearchProfilesByFullNameInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+}: {
+	term: string;
+	maxResults?: number;
+}): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -121,6 +123,58 @@ export const searchProfilesByFullName = ({
 			await dispatch(
 				setError({
 					type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			await dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
+
+export const findFriendsSuggestionsAction: ActionCreator<
+	IFindFriendsSuggestionsAction
+> = (findFriendsSuggestionsInput: any) => ({
+	type: ActionTypes.FIND_FRIENDS_SUGGESTIONS,
+	payload: findFriendsSuggestionsInput,
+});
+
+export const syncFindFriendsSuggestionsAction: ActionCreator<
+	ISyncFindFriendsSuggestionsAction
+> = (profiles: IProfileData[]) => ({
+	type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS,
+	payload: profiles,
+});
+
+export const findFriendsSuggestions = ({
+	maxResults,
+}: IFindFriendsSuggestionsInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.auth.database.gun;
+	if (auth && auth.alias) {
+		try {
+			dispatch(findFriendsSuggestionsAction({ maxResults }));
+			await dispatch(
+				beginActivity({
+					type: ActionTypes.FIND_FRIENDS_SUGGESTIONS,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			const profiles = await dataApi.profiles.findFriendsSuggestions({
+				maxResults: 10,
+			});
+			await dispatch(syncFindFriendsSuggestionsAction(profiles));
+		} catch (e) {
+			await dispatch(
+				setError({
+					type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS,
 					error: e.message,
 					uuid: uuidv4(),
 				}),

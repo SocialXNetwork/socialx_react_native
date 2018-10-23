@@ -10,6 +10,7 @@ export interface IProfileCallbackData {
 	miningEnabled: boolean;
 	aboutMeText: string;
 	username: string;
+	alias: string;
 	friends: IFriendsCallbackData;
 }
 
@@ -28,8 +29,12 @@ export interface IProfileData {
 	alias: string;
 }
 
-export interface ISearchProfilesInput {
+export interface ISearchProfilesByFullNameInput {
 	textSearch: string;
+	maxResults?: number;
+}
+
+export interface IFindFriendsSuggestionsInput {
 	maxResults?: number;
 }
 

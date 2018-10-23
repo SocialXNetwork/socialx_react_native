@@ -123,6 +123,9 @@ export const findProfilesByFullName = (
 				...profile,
 				friends: friendsToArray(profile.friends) || [],
 			}));
+			if (maxResults) {
+				return callback(null, profilesReturned.slice(0, maxResults));
+			}
 			return callback(null, profilesReturned);
 		});
 };
@@ -135,16 +138,29 @@ export const findFriendsSuggestions = (
 	profileHandles
 		.currentUserProfileData(context)
 		.docLoad((currentProfileCallback: IProfileCallbackData) => {
+			if (
+				!currentProfileCallback ||
+				!Object.keys(currentProfileCallback).length
+			) {
+				return callback(new ApiError('failed to find current profile'));
+			}
 			const friendsData = friendsToArray(currentProfileCallback.friends) || [];
 			profileHandles
 				.publicProfilesRecord(context)
-				.findFriendsSuggestions(friendsData, (data: any) => {
-					const profilesReturned = data.map((profile: any) => ({
-						...profile,
-						friends: friendsToArray(profile.friends) || [],
-					}));
-					return callback(null, profilesReturned);
-				});
+				.findFriendsSuggestions(
+					currentProfileCallback.alias,
+					friendsData,
+					(data: any) => {
+						const profilesReturned = data.map((profile: any) => ({
+							...profile,
+							friends: friendsToArray(profile.friends) || [],
+						}));
+						if (maxResults) {
+							return callback(null, profilesReturned.slice(0, maxResults));
+						}
+						return callback(null, profilesReturned);
+					},
+				);
 		});
 };
 
