@@ -38,6 +38,16 @@ export enum CoinFullName {
 
 export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
 
+export interface IWeeklyBarChartData {
+	value: number;
+	date: Date;
+}
+
+export interface IMonthlyBarChartData {
+	value: number;
+	monthShort: string;
+}
+
 export const LOCAL_VIDEO_STREAM = {
 	width: 1280,
 	height: 960,
