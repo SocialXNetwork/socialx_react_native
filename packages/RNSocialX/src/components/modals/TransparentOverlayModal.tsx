@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import Modal from 'react-native-modal';
 
-import { Colors } from '../../environment/theme';
-import { WithManagedTransitions } from '../managedTransitions';
+import { Colors, colorWithAlpha } from '../../environment/theme';
 
 interface IActivityIndicatorModalProps {
 	visible: boolean;
@@ -13,25 +11,19 @@ interface IActivityIndicatorModalProps {
 export const TransparentOverlayModal: React.SFC<
 	IActivityIndicatorModalProps
 > = ({ visible, alpha }) => (
-	<WithManagedTransitions modalVisible={visible}>
-		{({ onDismiss, onModalHide }) => (
-			<Modal
-				// avoidKeyboard={true} // would expect that this way this can show and keyboard remain open, but NOT!
-				onDismiss={onDismiss}
-				onModalHide={onModalHide}
-				isVisible={visible}
-				backdropOpacity={alpha}
-				backdropTransitionInTiming={50}
-				backdropTransitionOutTiming={50}
-				backdropColor={Colors.black}
-				animationIn="fadeIn"
-				animationOut="fadeOut"
-				hideModalContentWhileAnimating={true}
-			>
-				<View />
-			</Modal>
-		)}
-	</WithManagedTransitions>
+	<View
+		pointerEvents={visible ? 'auto' : 'none'}
+		style={{
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			bottom: 0,
+			right: 0,
+			backgroundColor: visible
+				? colorWithAlpha(Colors.black, alpha)
+				: Colors.transparent,
+		}}
+	/>
 );
 
 /**
