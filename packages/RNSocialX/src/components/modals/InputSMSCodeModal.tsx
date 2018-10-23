@@ -57,7 +57,6 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 		{({ onDismiss, onModalHide }) => (
 			<Modal
 				onModalHide={onModalHide}
-				// @ts-ignore
 				onDismiss={onDismiss}
 				isVisible={visible}
 				backdropOpacity={0.5}

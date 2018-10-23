@@ -38,6 +38,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 	<KeyboardContext.Consumer>
 		{({ safeRunAfterKeyboardHide }) => (
 			<Formik
+				// TODO: later remove isInitialValid + set initialValues to ''
+				isInitialValid={true}
 				initialValues={{
 					userName: 'jaakee',
 					password: 'password',
@@ -63,6 +65,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 					errors,
 					handleSubmit,
 					touched,
+					isValid,
 					setFieldValue,
 					setFieldTouched,
 				}: FormikProps<ILoginScreenData>) => (
@@ -125,7 +128,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({
 							<PrimaryButton
 								label={getText('login.login.button')}
 								onPress={handleSubmit}
-								// disabled={!isValid}
+								disabled={!isValid}
 								borderColor={customStyleProps.borderTransparent}
 							/>
 						</View>

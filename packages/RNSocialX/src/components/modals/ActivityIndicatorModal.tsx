@@ -19,9 +19,6 @@ export const ActivityIndicatorModal: React.SFC<
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
-				// @ts-ignore // lib. TS issue, onDismiss prop is inherited from Modal in 'react-native'
-				// created issue with the lib. https://github.com/react-native-community/react-native-modal/issues/212
-				// this does apply in all places where Modal from 'react-native-modal' is used.
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={visible}

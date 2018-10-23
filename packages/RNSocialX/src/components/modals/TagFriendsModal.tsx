@@ -54,7 +54,6 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 }) => {
 	return (
 		<Modal
-			// @ts-ignore
 			onDismiss={onDismiss}
 			onModalHide={onModalHide}
 			isVisible={visible}

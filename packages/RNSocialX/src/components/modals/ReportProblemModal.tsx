@@ -51,7 +51,6 @@ const ReportProblemModalComponent: React.SFC<
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
-				// @ts-ignore
 				onDismiss={onDismiss}
 				onModalHide={onModalHide}
 				isVisible={visible}

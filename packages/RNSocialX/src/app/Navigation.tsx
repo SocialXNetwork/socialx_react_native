@@ -17,6 +17,7 @@ import {
 	Header,
 	OfflineOverlayModal,
 	TabIcon,
+	TransparentOverlayModal,
 } from '../components';
 import { WithNavigation } from '../enhancers/navigation/WithNavigation';
 import { IDotsMenuItem, IStackDefaultConfig } from '../types';
@@ -289,6 +290,10 @@ const Navigation = () => (
 										<WithI18n>
 											{(i18n) => (
 												<React.Fragment>
+													<TransparentOverlayModal
+														visible={globals.transparentOverlay.visible}
+														alpha={globals.transparentOverlay.alpha}
+													/>
 													<OfflineOverlayModal
 														visible={!!globals.offline}
 														getText={i18n.getText}
