@@ -3,6 +3,9 @@ import * as Gun from 'gun/gun';
 import { IGunInstance } from '../types';
 
 const docMatchesQuery = (query: object) => ([key, doc]: [string, any]) => {
+  if (!doc) {
+    return undefined;
+  }
   // If empty query, it matches all docs
   if (!Object.keys(query).length) {
     return doc;
@@ -18,7 +21,7 @@ const docMatchesQuery = (query: object) => ([key, doc]: [string, any]) => {
     }
     return doc[docKey] === wantedValue;
   });
-  // Chcek that all query parameters check out for the doc
+  // Check that all query parameters check out for the doc
   if (checks.every(v => !!v === true)) {
     return doc;
   };
@@ -35,5 +38,48 @@ Gun.chain.find = function(
       .filter((v) => v);
 
     return cb(filteredData);
+  });
+};
+
+const byCommonFriends = function(a: any, b: any) {
+  return a.commonFriends - b.commonFriends;
+}
+
+const countCommonFriends = (friendsArray: any[]) => ([key, doc]: [string, any]) => {
+  if (!doc) {
+    return undefined;
+  }
+  if (!doc.friends || !Object.keys(doc.friends)) {
+    return {
+      ...doc,
+      commonFriends: 0,
+    }
+  }
+  const commonFriends = Object.keys(doc.friends).reduce((acc, alias) => acc + Number(friendsArray.includes(alias) ? 1 : 0), 0);
+
+  return {
+    ...doc,
+    commonFriends
+  };
+}
+
+Gun.chain.findFriendsSuggestions = function(
+  username: string,
+  friendsArray: any[],
+	cb: (data: object | undefined) => IGunInstance,
+) {
+  if (!friendsArray || !friendsArray.length) {
+    return cb([]);
+  }
+  const currentFriendsAliases = friendsArray.map(f => f.alias).filter(a => a !== username);
+
+  this.docLoad((data: any[]) => {
+    // for each profile, go throw each and count number of shared friends
+    const profilesSortedByCommonFriends = Object.entries(data)
+      .map(countCommonFriends(currentFriendsAliases))
+      .filter(v => v && v.alias)
+      .sort(byCommonFriends)
+      .reverse();
+    return cb(profilesSortedByCommonFriends);
   });
 };
