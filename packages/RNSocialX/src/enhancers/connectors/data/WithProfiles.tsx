@@ -5,14 +5,15 @@ import { IApplicationState } from '../../../store';
 import {
 	acceptFriend,
 	addFriend,
+	findFriendsSuggestions,
 	getCurrentProfile,
 	getProfileByUsername,
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IFindFriendsSuggestionsInput,
 	IProfileData,
 	IRemoveFriendInput,
 	ISearchProfilesByFullNameInput,
-	ISearchProfilesInput,
 	IUpdateProfileInput,
 	IUsernameInput,
 	removeFriend,
@@ -33,6 +34,9 @@ interface IActionProps {
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
 	searchProfilesByFullName: (
 		searchProfilesByFullNameInput: ISearchProfilesByFullNameInput,
+	) => void;
+	findFriendsSuggestions: (
+		findFriendsSuggestionsInput: IFindFriendsSuggestionsInput,
 	) => void;
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 }
@@ -70,6 +74,9 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	searchProfilesByFullName: (
 		searchProfilesByFullNameInput: ISearchProfilesByFullNameInput,
 	) => dispatch(searchProfilesByFullName(searchProfilesByFullNameInput)),
+	findFriendsSuggestions: (
+		findFriendsSuggestionsInput: IFindFriendsSuggestionsInput,
+	) => dispatch(findFriendsSuggestions(findFriendsSuggestionsInput)),
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
 		dispatch(acceptFriend(acceptFriendInput)),
 	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) =>

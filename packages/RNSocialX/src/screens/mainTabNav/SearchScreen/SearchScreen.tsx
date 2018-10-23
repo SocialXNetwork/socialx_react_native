@@ -39,6 +39,10 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		this.props.search(term, TabsByIndex[this.state.selectedTab]);
 	});
 
+	public componentDidMount() {
+		this.props.findFriendsSuggestions();
+	}
+
 	public render() {
 		const {
 			navigation,

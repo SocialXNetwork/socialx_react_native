@@ -57,6 +57,7 @@ export interface IWithSearchEnhancedActions
 		INavigationParamsActions {
 	searchForMoreResults: () => void;
 	search: (term: string, tab: SearchTabs) => void;
+	findFriendsSuggestions: () => void;
 }
 
 interface IWithSearchEnhancedProps {
@@ -85,7 +86,11 @@ export class WithSearch extends React.Component<
 									<WithActivities>
 										{({ activities }) => (
 											<WithProfiles>
-												{({ profiles, searchProfilesByFullName }) => {
+												{({
+													profiles,
+													searchProfilesByFullName,
+													findFriendsSuggestions,
+												}) => {
 													return this.props.children({
 														data: {
 															...mock.data,
@@ -108,6 +113,11 @@ export class WithSearch extends React.Component<
 															search: async (term: string, tab: SearchTabs) => {
 																await searchProfilesByFullName({
 																	term,
+																	maxResults: 10,
+																});
+															},
+															findFriendsSuggestions: async () => {
+																await findFriendsSuggestions({
 																	maxResults: 10,
 																});
 															},
