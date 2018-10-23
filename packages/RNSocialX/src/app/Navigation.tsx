@@ -310,11 +310,18 @@ const Navigation = () => (
 														}
 														confirmActive={!!overlayProps.confirmation}
 														confirmHandler={() => {
-															console.log('confirmed');
+															if (overlayProps.confirmation) {
+																overlayProps.confirmation.confirmHandler();
+															}
 															overlayProps.hideConfirmation();
 														}}
 														declineHandler={() => {
-															console.log('declined');
+															if (
+																overlayProps.confirmation &&
+																overlayProps.confirmation.cancelHandler
+															) {
+																overlayProps.confirmation.cancelHandler();
+															}
 															overlayProps.hideConfirmation();
 														}}
 													/>
