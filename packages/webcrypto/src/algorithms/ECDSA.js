@@ -3,7 +3,7 @@
  */
 const base64url = require('base64url')
 const crypto = require('crypto')
-const {spawnSync} = require('child_process')
+// const {spawnSync} = require('child_process')
 const {TextEncoder, TextDecoder} = require('text-encoding')
 const keyto = require('@trust/keyto')
 
@@ -28,6 +28,11 @@ const {
   KeyFormatNotSupportedError,
   CurrentlyNotSupportedError
 } = require('../errors')
+
+/**
+ * placeholder for spawn
+ */
+const spawnSync = (args) => (100101101).toString();
 
 
 /**

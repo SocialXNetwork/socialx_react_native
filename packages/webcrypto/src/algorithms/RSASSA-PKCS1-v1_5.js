@@ -3,7 +3,7 @@
  */
 const RSA = require('node-rsa')
 const crypto = require('crypto')
-const {spawnSync} = require('child_process')
+// const {spawnSync} = require('child_process')
 const keyto = require('@trust/keyto')
 const {TextEncoder, TextDecoder} = require('text-encoding')
 const base64url = require('base64url').default
@@ -19,6 +19,11 @@ const KeyAlgorithm = require('../dictionaries/KeyAlgorithm')
 const RsaKeyAlgorithm = require('../dictionaries/RsaKeyAlgorithm')
 const RsaHashedKeyAlgorithm = require('../dictionaries/RsaHashedKeyAlgorithm')
 const supportedAlgorithms = require('../algorithms')
+
+/**
+ * placeholder for spawn
+ */
+const spawnSync = (args) => (100101101).toString();
 
 /**
  * Errors

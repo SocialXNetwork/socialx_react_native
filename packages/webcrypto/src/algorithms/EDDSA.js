@@ -3,7 +3,7 @@
  */
 const base64url = require('base64url')
 const crypto = require('crypto')
-const {spawnSync} = require('child_process')
+// const {spawnSync} = require('child_process')
 const {TextEncoder, TextDecoder} = require('text-encoding')
 const keyto = require('@trust/keyto')
 const elEdDSA = require('elliptic').eddsa;
@@ -18,6 +18,11 @@ const CryptoKeyPair = require('../keys/CryptoKeyPair')
 const JsonWebKey = require('../keys/JsonWebKey')
 const KeyAlgorithm = require('../dictionaries/KeyAlgorithm')
 const EcKeyAlgorithm = require('../dictionaries/EcKeyAlgorithm')
+
+/**
+ * placeholder for spawn
+ */
+const spawnSync = (args) => (100101101).toString();
 
 
 /**
