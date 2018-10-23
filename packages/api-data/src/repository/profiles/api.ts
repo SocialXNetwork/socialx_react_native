@@ -265,4 +265,12 @@ export default (context: IContext) => ({
 						resolveCallback(resolve, reject),
 				  ); // tslint:disable-line
 		}),
+	findFriendsSuggestions: (): Promise<IProfileData[]> =>
+		new Promise((resolve, reject) =>
+			getters.findFriendsSuggestions(
+				context,
+				{},
+				resolveCallback(resolve, reject),
+			),
+		),
 });
