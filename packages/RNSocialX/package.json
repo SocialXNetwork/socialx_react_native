@@ -63,7 +63,7 @@
     "react-native-level-fs": "^3.0.0",
     "react-native-linear-gradient": "2.4.0",
     "react-native-mime-types": "^2.2.1",
-    "react-native-modal": "^6.5.0",
+    "react-native-modal": "https://github.com/react-native-community/react-native-modal",
     "react-native-modal-datetime-picker": "https://github.com/mmazzarolo/react-native-modal-datetime-picker",
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-orientation": "^3.1.3",
