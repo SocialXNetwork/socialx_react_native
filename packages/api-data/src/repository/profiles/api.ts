@@ -7,12 +7,13 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	ICreateProfileInput,
+	IFindFriendsSuggestionsInput,
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
 	IProfileCallbackData,
 	IProfileData,
 	IRemoveFriendInput,
-	ISearchProfilesInput,
+	ISearchProfilesByFullNameInput,
 	IUpdateProfileInput,
 } from './types';
 
@@ -254,8 +255,8 @@ export default (context: IContext) => ({
 		}),
 	searchByFullName: ({
 		textSearch,
-		maxResults,
-	}: ISearchProfilesInput): Promise<IProfileData[]> =>
+		maxResults = 10,
+	}: ISearchProfilesByFullNameInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) => {
 			!textSearch || !textSearch.length || typeof textSearch !== 'string'
 				? resolve([])
@@ -265,11 +266,13 @@ export default (context: IContext) => ({
 						resolveCallback(resolve, reject),
 				  ); // tslint:disable-line
 		}),
-	findFriendsSuggestions: (): Promise<IProfileData[]> =>
+	findFriendsSuggestions: ({
+		maxResults = 10,
+	}: IFindFriendsSuggestionsInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) =>
 			getters.findFriendsSuggestions(
 				context,
-				{},
+				{ maxResults },
 				resolveCallback(resolve, reject),
 			),
 		),

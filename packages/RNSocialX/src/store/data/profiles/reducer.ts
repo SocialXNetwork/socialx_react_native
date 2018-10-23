@@ -57,6 +57,18 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.FIND_FRIENDS_SUGGESTIONS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS: {
+			return {
+				...state,
+				// TODO:
+				// friendsSuggestions: action.payload,
+			};
+		}
+
 		case ActionTypes.GET_PROFILE_BY_USERNAME: {
 			return state;
 		}
