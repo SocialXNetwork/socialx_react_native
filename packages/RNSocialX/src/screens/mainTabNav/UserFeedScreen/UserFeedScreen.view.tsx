@@ -32,7 +32,6 @@ interface IUserFeedScreenViewProps
 	shareSectionPlaceholder: string | null;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
-	shareSectionOpacityInterpolation: number;
 	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
 	scrollY: AnimatedValue;
 	likeError: boolean;
@@ -51,7 +50,6 @@ export class UserFeedScreenView extends React.Component<
 			canLoadMorePosts,
 			onCreateWallPost,
 			shareSectionPlaceholder,
-			shareSectionOpacityInterpolation,
 			scrollRef,
 			scrollY,
 			getText,
@@ -72,7 +70,6 @@ export class UserFeedScreenView extends React.Component<
 									avatarImage={avatarImage}
 									onCreateWallPost={onCreateWallPost}
 									sharePlaceholder={shareSectionPlaceholder}
-									opacity={shareSectionOpacityInterpolation}
 								/>
 							) : null
 						}
@@ -107,33 +104,48 @@ export class UserFeedScreenView extends React.Component<
 		data: { item: IWallPostCardData; index: number },
 		getText: getTextSignature,
 	) => {
+		const {
+			currentUser,
+			likeError,
+			loadingMorePosts,
+			onCommentPress,
+			onImagePress,
+			onDeletePostPress,
+			onLikePress,
+			onUserPress,
+			onSubmitComment,
+			onBlockUser,
+			onReportProblem,
+			showDotsMenuModal,
+		} = this.props;
+
 		const post = data.item;
-		const canDelete = this.props.currentUser.userId === post.owner.userId;
+		const canDelete = currentUser.userId === post.owner.userId;
 
 		return (
-			<View style={styles.wallPostContainer}>
+			<View style={styles.post}>
 				<WallPostCard
 					{...post}
-					likeError={this.props.likeError}
+					likeError={likeError}
 					canDelete={canDelete}
 					likedByMe={post.likedByMe}
-					listLoading={this.props.loadingMorePosts}
-					currentUserAvatarURL={this.props.currentUser.avatarURL}
-					onCommentPress={this.props.onCommentPress}
-					onImagePress={this.props.onImagePress}
-					onDeletePostPress={this.props.onDeletePostPress}
-					onLikePress={this.props.onLikePress}
-					onUserPress={(userId: string) => this.props.onUserPress(userId)}
+					listLoading={loadingMorePosts}
+					currentUserAvatarURL={currentUser.avatarURL}
+					onCommentPress={onCommentPress}
+					onImagePress={onImagePress}
+					onDeletePostPress={onDeletePostPress}
+					onLikePress={onLikePress}
+					onUserPress={(userId: string) => onUserPress(userId)}
 					/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as data.index */
 					onAddComment={(dummyIndex: number, cardHeight: number) =>
 						this.props.onAddComment(data.index, cardHeight)
 					}
-					onSubmitComment={this.props.onSubmitComment}
-					getText={getText}
-					onBlockUser={this.props.onBlockUser}
-					onReportProblem={this.props.onReportProblem}
-					showDotsMenuModal={this.props.showDotsMenuModal}
+					onSubmitComment={onSubmitComment}
+					onBlockUser={onBlockUser}
+					onReportProblem={onReportProblem}
+					showDotsMenuModal={showDotsMenuModal}
 					displayDots={true}
+					getText={getText}
 				/>
 				{post.suggested && (
 					<SuggestionsCarousel

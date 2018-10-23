@@ -12,7 +12,7 @@ const styles: any = {
 		backgroundColor: Colors.pink,
 		width: '100%',
 		height: Sizes.smartVerticalScale(75),
-		marginBottom: Sizes.smartVerticalScale(30),
+		marginBottom: Sizes.smartVerticalScale(60),
 	},
 	avatar: {
 		width: AVATAR_SIZE,
@@ -24,7 +24,7 @@ const styles: any = {
 		height: AVATAR_CONTAINER_SIZE,
 		position: 'absolute',
 		alignSelf: 'center',
-		top: Sizes.smartVerticalScale(25),
+		top: Sizes.smartVerticalScale(20),
 		borderRadius: AVATAR_CONTAINER_SIZE / 2,
 		padding: 10,
 		backgroundColor: Colors.white,
@@ -33,11 +33,12 @@ const styles: any = {
 		alignItems: 'center',
 	},
 	statisticsContainer: {
+		position: 'absolute',
+		top: Sizes.smartVerticalScale(48),
 		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		transform: [{ translateY: -Sizes.smartHorizontalScale(60) }],
 	},
 	leftStatistics: {
 		flexDirection: 'row',
@@ -46,7 +47,6 @@ const styles: any = {
 		flexDirection: 'row',
 	},
 	textContainer: {
-		transform: [{ translateY: -Sizes.smartVerticalScale(10) }],
 		marginBottom: Sizes.smartVerticalScale(5),
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
