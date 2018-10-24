@@ -53,11 +53,12 @@ const takeCameraPhoto = async (afterImagePick: (image: string) => void) => {
 };
 
 const editAvatar = (
+	uri: string,
 	afterImagePick: (image: string) => void,
-	getText: getTextSignature,
 	showDotsMenuModal: (items: IDotsMenuItem[]) => void,
+	getText: getTextSignature,
 ) => {
-	const menuItems = [
+	const defaultOptions = [
 		{
 			label: getText('avatar.picker.gallery'),
 			icon: 'md-photos',
@@ -68,13 +69,18 @@ const editAvatar = (
 			icon: 'md-camera',
 			actionHandler: () => takeCameraPhoto(afterImagePick),
 		},
-		{
-			label: getText('avatar.picker.remove'),
-			icon: 'md-remove-circle',
-			actionHandler: () => afterImagePick(''),
-		},
 	];
-	showDotsMenuModal(menuItems);
+
+	const removeOption = {
+		label: getText('avatar.picker.remove'),
+		icon: 'md-remove-circle',
+		actionHandler: () => afterImagePick(''),
+	};
+
+	const items =
+		uri.length > 0 ? [...defaultOptions, removeOption] : defaultOptions;
+
+	showDotsMenuModal(items);
 };
 
 export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
@@ -89,15 +95,16 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 		height: avatarSize,
 		borderRadius: avatarSize / 2,
 	};
-	const iconSize = Math.min(30, Math.round(avatarSize / 6));
 
 	return (
 		<TouchableOpacity
-			onPress={() => editAvatar(afterImagePick, getText, showDotsMenuModal)}
+			onPress={() =>
+				editAvatar(avatarImage.uri, afterImagePick, showDotsMenuModal, getText)
+			}
 		>
 			<AvatarImage image={avatarImage.uri} style={avatarSizeStyle} />
 			<View style={style.editIcon}>
-				<Icon name="camera" size={iconSize} color={Colors.cloudBurst} />
+				<Icon name="camera" size={17.5} color={Colors.cloudBurst} />
 			</View>
 		</TouchableOpacity>
 	);
