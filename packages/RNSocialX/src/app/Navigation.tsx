@@ -42,6 +42,7 @@ import {
 	MyProfileScreen,
 	NewAdSetupAudience,
 	NewAdSetupPostScreen,
+	NewAdSliderScreen,
 	NotificationsScreen,
 	PhotoScreen,
 	ReferralScreen,
@@ -233,6 +234,7 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
+		NewAdSliderScreen: { screen: NewAdSliderScreen },
 		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
 		NewAdSetupAudience: { screen: NewAdSetupAudience },
 		AdsManagementConfigBudgetScreen: {

@@ -3,16 +3,17 @@ import { TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SafeAreaView } from 'react-navigation';
+import { ICreateAdSteps } from '../../../types';
 import styles from './CreateAdSteps.style';
 
 const STEPS_CONFIG = [
-	{ icon: 'ios-create', name: 'post' },
-	{ icon: 'md-people', name: 'audience' },
-	{ icon: 'ios-card', name: 'budget' },
+	{ icon: 'ios-create', name: ICreateAdSteps.SetupPost },
+	{ icon: 'md-people', name: ICreateAdSteps.SetupAudience },
+	{ icon: 'ios-card', name: ICreateAdSteps.SetupBudget },
 ];
 
 interface ICreateAdStepsProps {
-	currentStep: 'post' | 'audience' | 'budget';
+	currentStep: ICreateAdSteps;
 	onGoToNextStep: () => void;
 }
 

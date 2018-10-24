@@ -10,6 +10,7 @@ export {
 	NewAdSetupPostScreen,
 } from './adsManagementStack/NewAdSetupPostScreen';
 export { NewAdSetupAudience } from './adsManagementStack/NewAdSetupAudience';
+export { NewAdSliderScreen } from './adsManagementStack/NewAdSliderScreen';
 
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 
