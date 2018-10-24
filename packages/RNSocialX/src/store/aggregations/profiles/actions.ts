@@ -51,8 +51,7 @@ export const searchProfilesByFullName = ({
 				maxResults,
 			});
 			dispatch(syncSearchProfilesByFullNameAction(profiles));
-			const usernames = profiles.map((profile) => profile.alias);
-			await dispatch(getProfilesByUsernames({ usernames }));
+			// TODO: @Alexandre, fetch the users posts here and put them in the posts container on this redux store
 		} catch (e) {
 			await dispatch(
 				setError({
