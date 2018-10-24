@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. Props data: latest 3 transactions, total amount of SOCX that user has
+ * 1. Props data: latest 3 transactions, total amount of SOCX that user has, weeklyData and monthlyData regarding Spent till now section
  * 2. Props actions: onShowAllTransactions: should redirect to a screen with all transactions.
  */
 
@@ -84,8 +84,8 @@ export interface IWithAdsStatisticsEnhancedData {
 		date: Date | string;
 	}>;
 	totalAmountSOCX: number;
-	weeklySeries: any[];
-	monthlySeries: any[];
+	weeklySeries: IWeeklyBarChartData[];
+	monthlySeries: IMonthlyBarChartData[];
 }
 
 export interface IWithAdsStatisticsEnhancedActions extends ITranslatedProps {
