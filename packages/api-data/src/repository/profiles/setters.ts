@@ -15,7 +15,9 @@ import {
 } from './types';
 
 const pollyLoadAccounts = (gun: IGunInstance, cb: any) => {
-	gun.path(TABLES.PROFILES).once(cb);
+	gun.path(TABLES.PROFILES).docLoad(() => {
+		cb();
+	});
 };
 
 export const createProfile = (
