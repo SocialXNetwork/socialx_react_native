@@ -31,14 +31,8 @@ const renderItem = (
 	item: ISearchResultData,
 	onResultPress: (result: ISearchResultData) => void,
 ) => (
-	<SearchResultsItem
-		key={item.userId}
-		item={item}
-		onResultPress={() => onResultPress(item)}
-	/>
+	<SearchResultsItem item={item} onResultPress={() => onResultPress(item)} />
 );
-
-const keyExtractor = (item: ISearchResultData) => item.userId; // TODO: enable later!
 
 export const SearchResultsList: React.SFC<ISearchResultsListProps> = ({
 	searchResults,
@@ -51,10 +45,10 @@ export const SearchResultsList: React.SFC<ISearchResultsListProps> = ({
 		renderItem={({ item }) => renderItem(item, onResultPress)}
 		style={styles.resultsContainer}
 		keyboardShouldPersistTaps="handled"
-		keyExtractor={keyExtractor}
-		onEndReachedThreshold={0.5}
+		keyExtractor={(item: ISearchResultData) => item.userId}
 		alwaysBounceVertical={false}
-		onEndReached={onLoadMore}
+		// onEndReached={onLoadMore}
+		// onEndReachedThreshold={0.5}
 		ListFooterComponent={<LoadingFooter hasMore={hasMore} />}
 	/>
 );

@@ -78,7 +78,7 @@ export class UserFeedScreenView extends React.Component<
 						refreshing={refreshing}
 						onRefresh={onRefresh}
 						data={posts}
-						keyExtractor={this.keyExtractor}
+						keyExtractor={(item: IWallPostCardData) => item.postId}
 						renderItem={(data) => this.renderWallPosts(data, getText)}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
 						onEndReachedThreshold={0.5}
@@ -97,8 +97,6 @@ export class UserFeedScreenView extends React.Component<
 			</View>
 		);
 	}
-
-	private keyExtractor = (item: IWallPostCardData) => item.postId;
 
 	private renderWallPosts = (
 		data: { item: IWallPostCardData; index: number },
