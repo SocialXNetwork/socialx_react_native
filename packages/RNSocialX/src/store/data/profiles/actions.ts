@@ -18,12 +18,15 @@ import {
 	IGetCurrentProfileAction,
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
+	IGetProfilesByUsernamesAction,
 	IRemoveFriendAction,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByUsernameAction,
 	ISyncGetProfilesByPostsAction,
+	ISyncGetProfilesByUsernamesAction,
 	IUpdateProfileAction,
 	IUsernameInput,
+	IUsernamesInput,
 } from './Types';
 
 const getProfilesByPostsAction: ActionCreator<IGetProfilesByPostsAction> = (
@@ -108,6 +111,53 @@ export const getProfileByUsername = (
 				getProfileByUsernameInput,
 			);
 			await dispatch(syncGetProfileByUsernameAction(profile));
+		} catch (e) {
+			await dispatch(
+				setError({
+					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			await dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
+const getProfilesByUsernamesAction: ActionCreator<
+	IGetProfilesByUsernamesAction
+> = (getProfilesByUsernamesInput: IUsernamesInput) => ({
+	type: ActionTypes.GET_PROFILES_BY_USERNAMES,
+	payload: getProfilesByUsernamesInput,
+});
+
+const syncGetProfilesByUsernamesAction: ActionCreator<
+	ISyncGetProfilesByUsernamesAction
+> = (profiles: IProfileData[]) => ({
+	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES,
+	payload: profiles,
+});
+
+export const getProfilesByUsernames = (
+	getProfileByUsernameInput: IUsernamesInput,
+): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.auth.database.gun;
+	if (auth && auth.alias) {
+		try {
+			dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
+			await dispatch(
+				beginActivity({
+					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			const profiles = await dataApi.profiles.getProfilesByUsernames(
+				getProfileByUsernameInput,
+			);
+			dispatch(syncGetProfilesByUsernamesAction(profiles));
 		} catch (e) {
 			await dispatch(
 				setError({

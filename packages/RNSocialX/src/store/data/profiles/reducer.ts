@@ -53,6 +53,25 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.GET_PROFILES_BY_USERNAMES: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES: {
+			const finalProfiles = action.payload.reduce(
+				(updatedProfiles, newProfile) => [
+					...updatedProfiles.filter(
+						(updatedProfile) => updatedProfile.alias !== newProfile.alias,
+					),
+					newProfile,
+				],
+				[...state.profiles],
+			);
+			return {
+				profiles: finalProfiles,
+			};
+		}
+
 		case ActionTypes.UPDATE_PROFILE: {
 			return state;
 		}

@@ -18,4 +18,5 @@ export {
 	updateCurrentProfile,
 	getProfilesByPosts,
 	removeFriend,
+	getProfilesByUsernames,
 } from './actions';
