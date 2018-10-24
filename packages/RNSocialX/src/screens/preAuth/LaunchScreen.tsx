@@ -28,21 +28,23 @@ class Screen extends React.Component<ILaunchScreenProps> {
 		} = this.props;
 
 		if (auth && !globals.logout) {
-			await recall({
-				username: auth.alias || '',
-				password: auth.password || '',
-			});
-			await loadPosts();
+			setTimeout(async () => {
+				await recall({
+					username: auth.alias || '',
+					password: auth.password || '',
+				});
+				await loadPosts();
 
-			if (__DEV__) {
-				resetNavigationToRoute(NAVIGATION.Main, navigation);
-			} else {
-				if (applicationInMaintenanceMode) {
-					resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
-				} else {
+				if (__DEV__) {
 					resetNavigationToRoute(NAVIGATION.Main, navigation);
+				} else {
+					if (applicationInMaintenanceMode) {
+						resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
+					} else {
+						resetNavigationToRoute(NAVIGATION.Main, navigation);
+					}
 				}
-			}
+			}, 2000);
 		}
 	}
 

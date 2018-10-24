@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import WebViewBridge from 'react-native-webview-bridge';
 
+import { randomBytes } from 'react-native-randombytes';
 import { MainWorker, webViewWorkerString } from 'webview-crypto';
 
-import { OS_TYPES } from '../environment/consts';
+import webcrp from '@trust/webcrypto';
 
 const injectString =
 	webViewWorkerString +
@@ -29,20 +30,41 @@ export default class PolyfillCrypto extends React.Component<
 
 	render() {
 		let worker: typeof MainWorker;
-		const uri = 'file:///android_asset/html/pollyfillCrypto.html';
 		return (
 			<View style={styles.hidden}>
 				<WebViewBridge
 					ref={(c: any) => {
 						if (c && !worker) {
-                            // tslint:disable
 							worker = new MainWorker(c.sendToBridge, this.props.debug);
 							// @ts-ignore
-							(window as any).crypto = worker.crypto;
-
-							for (const name in worker.crypto.subtle) {
+							if (window.crypto) {
+								// we are in chrome debugger
+								// this means overridng the crypto object itself won't
+								// work, so we have to override all of it's methods
 								// @ts-ignore
-								window.mkcrypto.subtle[name] = worker.crypto.subtle[name];
+								window.crypto.getRandomValues = (arg: Uint8Array) => {
+									const original = arg;
+									if (arg.byteLength !== arg.length) {
+										arg = new Uint8Array(arg.buffer);
+									}
+									const bytes = randomBytes(arg.length);
+									for (let i = 0; i < bytes.length; i++) {
+										arg[i] = bytes[i];
+									}
+									return original;
+								};
+								// tslint:disable-next-line
+								for (const name in worker.crypto.subtle) {
+									// @ts-ignore
+									window.crypto.subtle[name] = worker.crypto.subtle[name];
+								}
+								// @ts-ignore
+								(window.crypto as any).fake = true;
+								// @ts-ignore
+								console.log('*** poly', window.crypto);
+							} else {
+								// @ts-ignore
+								(window as any).crypto = worker.crypto;
 							}
 						}
 					}}
@@ -59,7 +81,7 @@ export default class PolyfillCrypto extends React.Component<
 						console.warn('Error creating webview: ', error);
 					}}
 					javaScriptEnabled={true}
-					source={{ uri: Platform.OS === OS_TYPES.Android ? uri : 'about:blank' }}
+					source={{ uri: 'about:blank' }}
 				/>
 			</View>
 		);

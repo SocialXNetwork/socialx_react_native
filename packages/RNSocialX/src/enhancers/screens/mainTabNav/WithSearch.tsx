@@ -17,7 +17,7 @@ import {
 } from '../../../types';
 
 import { ActionTypes } from '../../../store/aggregations/profiles/Types';
-import { WithAggregations } from '../../connectors/aggregate/WithAggregations';
+import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';

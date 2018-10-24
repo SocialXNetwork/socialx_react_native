@@ -37,7 +37,7 @@ const rncrypto = require('react-native-crypto');
 const crypto = require('crypto');
 
 global.crypto = {
-  //subtle: scrypto._subtle,
+  subtle: {},
 };
 
 
