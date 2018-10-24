@@ -1,7 +1,6 @@
 /**
  * TODO list:
  * 1. Props data: latest 3 transactions, total amount of SOCX that user has, weeklyData and monthlyData regarding Spent till now section
- * 2. Props actions: onShowAllTransactions: should redirect to a screen with all transactions.
  */
 
 import moment from 'moment';
@@ -72,9 +71,6 @@ const mock: IWithAdsStatisticsEnhancedProps = {
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
-		onShowAllTransactions: () => {
-			/* */
-		},
 	},
 };
 
@@ -88,9 +84,7 @@ export interface IWithAdsStatisticsEnhancedData {
 	monthlySeries: IMonthlyBarChartData[];
 }
 
-export interface IWithAdsStatisticsEnhancedActions extends ITranslatedProps {
-	onShowAllTransactions: () => void;
-}
+export interface IWithAdsStatisticsEnhancedActions extends ITranslatedProps {}
 
 interface IWithAdsStatisticsEnhancedProps {
 	data: IWithAdsStatisticsEnhancedData;

@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../environment/theme';
-import { colorWithAlpha } from './../../environment/theme/Colors';
+import { Colors, colorWithAlpha, Fonts, Sizes } from '../../environment/theme';
 
 export const WEEK_CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(35));
 
@@ -14,7 +13,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 		lineHeight: Sizes.smartHorizontalScale(18),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		textAlign: 'left',
 		paddingLeft: Sizes.smartVerticalScale(24),
 		paddingVertical: Sizes.smartVerticalScale(20),
@@ -57,17 +56,17 @@ const styles: any = {
 	},
 	text: {
 		...Fonts.centuryGothic,
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(15),
 	},
 	textAmount: {
 		fontSize: Sizes.smartHorizontalScale(27),
-		color: Colors.postFullName,
+		color: Colors.cloudBurst,
 		paddingRight: Sizes.smartVerticalScale(8),
 	},
 	textDate: {
 		...Fonts.centuryGothic,
-		color: Colors.postText,
+		color: Colors.paleSky,
 		fontSize: Sizes.smartHorizontalScale(12),
 	},
 	spentContainer: {
@@ -100,22 +99,12 @@ const styles: any = {
 	segment: {
 		backgroundColor: Colors.white,
 	},
-	segmentButtonWeeklyActive: {
+	segmentButtonSpentTillNowActive: {
 		backgroundColor: Colors.pink,
 		borderColor: Colors.pink,
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
-	segmentButtonWeeklyInactive: {
-		backgroundColor: 'transparent',
-		borderColor: Colors.pink,
-		paddingVertical: Sizes.smartVerticalScale(10),
-	},
-	segmentButtonMonthlyActive: {
-		backgroundColor: Colors.pink,
-		borderColor: Colors.pink,
-		paddingVertical: Sizes.smartVerticalScale(10),
-	},
-	segmentButtonMonthlyInactive: {
+	segmentButtonSpentTillNowInactive: {
 		backgroundColor: 'transparent',
 		borderColor: Colors.pink,
 		paddingVertical: Sizes.smartVerticalScale(10),
@@ -175,12 +164,12 @@ const styles: any = {
 	barCharItemLabel: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	barCharItemLabelLowerScript: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(8),
-		color: Colors.postText,
+		color: Colors.paleSky,
 	},
 	monthChartItem: {
 		alignItems: 'center',
@@ -190,7 +179,7 @@ const styles: any = {
 
 export default StyleSheet.create(styles) as any;
 
-export const customStyleProps = {
+export const defaultStyles = {
 	highlightButton: Colors.pinkLace,
 	barChartColumnColor: Colors.pink,
 	barChartColumnLightColor: colorWithAlpha(Colors.pink, 0.5),
