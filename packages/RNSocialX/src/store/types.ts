@@ -9,10 +9,13 @@ import { IAction as INotificationsActions } from './data/notifications/Types';
 import { IAction as IPostsActions } from './data/posts/Types';
 import { IAction as IProfilesActions } from './data/profiles/Types';
 
-import { IAction as IAuthActions } from './app/auth/Types';
+import { IAction as IProfilesAggregationActions } from './aggregations/profiles/Types';
+
 import { IAction as IConfigActions } from './app/config/Types';
 import { IAction as II18nActions } from './app/i18n/Types';
 import { IAction as INavigationParamsActions } from './app/navigationParams/Types';
+
+import { IAction as IAuthActions } from './auth/gun/Types';
 
 import { IAction as IFilesActions } from './storage/files/Types';
 
@@ -29,6 +32,7 @@ type IApplicationAction =
 	| IProfilesActions
 	| IPostsActions
 	| INotificationsActions
+	| IProfilesAggregationActions
 	| IAuthActions
 	| IConfigActions
 	| II18nActions
