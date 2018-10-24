@@ -48,7 +48,7 @@ export const createProfile = (
 					);
 				}
 				pollyLoadAccounts(gun, () =>
-					createUserProfRaw(profileHandles.currentUserProfile(context)),
+					createUserProfRaw(profileHandles.currentUserProfileData(context)),
 				);
 			},
 		);
@@ -58,11 +58,9 @@ export const createProfile = (
 	 * @param ref IGunInstance reference to the private scope user profile
 	 */
 	const createUserProfRaw = (ref: IGunInstance) => {
-		profileHandles.publicProfilesRecord(context).put(
-			{
-				[alias]: ref,
-			},
-			(profileCallback) => {
+		profileHandles
+			.publicProfileByUsername(context, alias)
+			.put(ref, (profileCallback) => {
 				if (profileCallback.err) {
 					return callback(
 						new ApiError(
@@ -75,8 +73,7 @@ export const createProfile = (
 				}
 
 				return callback(null);
-			},
-		);
+			});
 	};
 	// run sequence
 	mainRunner();

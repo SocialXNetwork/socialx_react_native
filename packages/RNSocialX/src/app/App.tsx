@@ -11,7 +11,7 @@ import Splash from './Splash';
 import StatusBar from './StatusBar';
 import Store from './Store';
 
-import PolyfillCrypto from './PolyfillCrypto';
+import PolyfillCrypto from './pollyfillCryptoOld';
 
 export default class App extends React.Component<{}> {
 	public render() {
@@ -21,7 +21,7 @@ export default class App extends React.Component<{}> {
 					<Init>
 						<Splash>
 							<Keyboard>
-								{/* <PolyfillCrypto /> */}
+								<PolyfillCrypto />
 								<Store>
 									<React.Fragment>
 										<StatusBar />
