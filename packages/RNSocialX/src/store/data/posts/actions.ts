@@ -405,6 +405,7 @@ export const createPost = (
 			}
 
 			await dispatch(getPostsByUsername({ username: auth.alias }));
+			// await dispatch()
 		} catch (e) {
 			await dispatch(
 				setError({

@@ -57,5 +57,8 @@ export const configureStore = (
 
 	store.dispatch(setAppConfig({ appConfig }));
 
+	// subscribe to all events on gun
+	// setTimeout(() => { dispatch(subscribeToAll) }, 2500);
+
 	return store;
 };

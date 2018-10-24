@@ -31,8 +31,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS: {
 			return {
 				...state,
-				// @Alexandre action.payload should be an empty array if there is no friend suggestions, redux shouldnt decide that
-				friendsSuggestions: action.payload || [],
+				friendsSuggestions: action.payload,
 			};
 		}
 

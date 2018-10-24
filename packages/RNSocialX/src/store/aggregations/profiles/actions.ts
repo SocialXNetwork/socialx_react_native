@@ -6,6 +6,7 @@ import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	IFindFriendsSuggestionsAction,
+	IFriendSuggestionData,
 	ISearchProfilesByFullNameAction,
 	ISyncFindFriendsSuggestionsAction,
 	ISyncSearchProfilesByFullNameAction,
@@ -49,7 +50,6 @@ export const searchProfilesByFullName = ({
 				maxResults,
 			});
 			dispatch(syncSearchProfilesByFullNameAction(profiles));
-			// TODO: @Alexandre, fetch the users posts here and put them in the posts container on this redux store
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -73,7 +73,7 @@ export const findFriendsSuggestionsAction: ActionCreator<
 
 export const syncFindFriendsSuggestionsAction: ActionCreator<
 	ISyncFindFriendsSuggestionsAction
-> = (profiles: IProfileData[]) => ({
+> = (profiles: IFriendSuggestionData[]) => ({
 	type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS,
 	payload: profiles,
 });
