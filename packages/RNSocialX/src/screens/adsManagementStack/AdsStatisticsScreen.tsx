@@ -18,7 +18,7 @@ import {
 import { INavigationProps } from '../../types';
 import styles, {
 	customStyleProps,
-	DAY_CHART_ITEM_WIDTH,
+	WEEK_CHART_ITEM_WIDTH,
 } from './AdsStatisticsScreen.style';
 import { AdsStatisticsScreenView } from './AdsStatisticsScreen.view';
 
@@ -51,7 +51,6 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 			weeklySeries,
 			monthlySeries,
 		} = this.props;
-		console.log(weeklySeries);
 		const { weeklySelected, monthlySelected, translateX } = this.state;
 		const totalAmountSOCXFormatted = numeral(totalAmountSOCX).format('0.000a');
 		transactions.map((transaction) => {
@@ -124,8 +123,8 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 
 	private getWeeklyChartItemLayout = (data: any, index: number) => {
 		return {
-			length: DAY_CHART_ITEM_WIDTH,
-			offset: DAY_CHART_ITEM_WIDTH * index,
+			length: WEEK_CHART_ITEM_WIDTH,
+			offset: WEEK_CHART_ITEM_WIDTH * index,
 			index,
 		};
 	};
@@ -150,9 +149,10 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 		item: IWeeklyBarChartData;
 		index: number;
 	}) => {
-		const monthDate = moment(data.item.date).format('Do');
-		const monthDateNumber = parseInt(monthDate, 10);
-		const monthDateSuffix = monthDate.substr(monthDateNumber.toString().length);
+		const weekDate = moment(data.item.date).week();
+		const weekDateSuffix = this.props.getText(
+			'ad.statistics.chart.currentweek.text',
+		);
 		const barChartColumnStyles = [
 			styles.barChartColumn,
 			{
@@ -164,14 +164,14 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 			},
 		];
 		return (
-			<View style={styles.dayChartItem}>
+			<View style={styles.weekChartItem}>
 				<View style={styles.barChartColumnContainer}>
 					<View style={barChartColumnStyles} />
 				</View>
 				<View style={styles.barChartLabelContainer}>
-					<Text style={styles.barCharItemLabel}>{monthDateNumber}</Text>
-					<Text style={styles.barCharItemLabelUpperScript}>
-						{monthDateSuffix}
+					<Text style={styles.barCharItemLabel}>{weekDate}</Text>
+					<Text style={styles.barCharItemLabelLowerScript}>
+						{weekDateSuffix}
 					</Text>
 				</View>
 			</View>

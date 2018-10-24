@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 import { colorWithAlpha } from './../../environment/theme/Colors';
 
-export const DAY_CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(30));
+export const WEEK_CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(35));
 
 const styles: any = {
 	container: {
@@ -158,8 +158,8 @@ const styles: any = {
 	barChartColumn: {
 		width: Sizes.smartHorizontalScale(8),
 	},
-	dayChartItem: {
-		width: DAY_CHART_ITEM_WIDTH,
+	weekChartItem: {
+		width: WEEK_CHART_ITEM_WIDTH,
 		alignItems: 'center',
 		justifyContent: 'flex-end',
 	},
@@ -170,14 +170,14 @@ const styles: any = {
 	barChartLabelContainer: {
 		marginTop: Sizes.smartHorizontalScale(9),
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
+		alignItems: 'flex-end',
 	},
 	barCharItemLabel: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
 		color: Colors.postText,
 	},
-	barCharItemLabelUpperScript: {
+	barCharItemLabelLowerScript: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(8),
 		color: Colors.postText,
