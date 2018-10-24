@@ -1,6 +1,7 @@
 import { IFindFriendsSuggestionsInput, IProfileData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+import { getProfilesByUsernames } from '../../data/profiles';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
@@ -35,7 +36,7 @@ export const searchProfilesByFullName = ({
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
+	if (auth && auth.alias && term.length > 0) {
 		try {
 			dispatch(searchProfilesByFullNameAction({ term, maxResults }));
 			await dispatch(
@@ -49,7 +50,9 @@ export const searchProfilesByFullName = ({
 				textSearch: term,
 				maxResults,
 			});
-			await dispatch(syncSearchProfilesByFullNameAction(profiles));
+			dispatch(syncSearchProfilesByFullNameAction(profiles));
+			const usernames = profiles.map((profile) => profile.alias);
+			await dispatch(getProfilesByUsernames({ usernames }));
 		} catch (e) {
 			await dispatch(
 				setError({

@@ -17,9 +17,15 @@ export interface IUsernameInput {
 	username: string;
 }
 
+export interface IUsernamesInput {
+	usernames: string[];
+}
+
 export const enum ActionTypes {
 	GET_PROFILE_BY_USERNAME = 'app/data/profiles/GET_PROFILE_BY_USERNAME',
 	SYNC_GET_PROFILE_BY_USERNAME = 'app/data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
+	GET_PROFILES_BY_USERNAMES = 'app/data/profiles/GET_PROFILES_BY_USERNAMES',
+	SYNC_GET_PROFILES_BY_USERNAMES = 'app/data/profiles/SYNC_GET_PROFILES_BY_USERNAMES',
 	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
 	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
 	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
@@ -48,6 +54,16 @@ export interface IGetProfileByUsernameAction extends Action {
 export interface ISyncGetProfileByUsernameAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME;
 	payload: IProfileData;
+}
+
+export interface IGetProfilesByUsernamesAction extends Action {
+	type: ActionTypes.GET_PROFILES_BY_USERNAMES;
+	payload: IUsernamesInput;
+}
+
+export interface ISyncGetProfilesByUsernamesAction extends Action {
+	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES;
+	payload: IProfileData[];
 }
 
 export interface IGetCurrentProfileAction extends Action {
@@ -86,6 +102,8 @@ export type IAction =
 	| IResetStoreAction
 	| IGetProfileByUsernameAction
 	| ISyncGetProfileByUsernameAction
+	| IGetProfilesByUsernamesAction
+	| ISyncGetProfilesByUsernamesAction
 	| IGetCurrentProfileAction
 	| ISyncGetCurrentProfileAction
 	| IUpdateProfileAction
