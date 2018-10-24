@@ -13,9 +13,7 @@ interface ISearchResultsItemProps {
 
 export const SearchResultsItem: React.SFC<ISearchResultsItemProps> = ({
 	item,
-	onResultPress = () => {
-		/**/
-	},
+	onResultPress,
 }) => (
 	<TouchableOpacity
 		onPress={() => onResultPress(item)}
@@ -25,7 +23,12 @@ export const SearchResultsItem: React.SFC<ISearchResultsItemProps> = ({
 		<AvatarImage image={item.avatarURL} style={styles.avatar} />
 		<View style={styles.textContainer}>
 			<Text style={styles.name}>{item.fullName}</Text>
-			<Text style={styles.text}>{item.location}</Text>
+			{item.location.length > 0 && (
+				<Text style={styles.text}>{item.location}</Text>
+			)}
+			{item.location.length === 0 && (
+				<Text style={styles.userName}>@{item.userName}</Text>
+			)}
 		</View>
 	</TouchableOpacity>
 );

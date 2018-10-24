@@ -14,12 +14,12 @@ const styles: any = {
 	spinner: {
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
-	shortMessage: {
+	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		color: Colors.silverSand,
 	},
-	messageContainer: {
+	textContainer: {
 		paddingVertical: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
 	},

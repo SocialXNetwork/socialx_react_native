@@ -269,14 +269,14 @@ const Navigation = () => (
 				<WithNavigationParams>
 					{({ setNavigationParams }) => (
 						<WithOverlays>
-							{(overlayProps) => (
+							{({ showOptionsMenu }) => (
 								<AppNavigation
 									screenProps={{
 										notifications,
 										getText,
 										setNavigationParams,
 										showDotsMenuModal: (items: IDotsMenuItem[]) =>
-											overlayProps.showOptionsMenu({ items }),
+											showOptionsMenu({ items }),
 									}}
 								/>
 							)}
@@ -288,13 +288,19 @@ const Navigation = () => (
 						<WithActivities>
 							{({ activities }) => (
 								<WithOverlays>
-									{(overlayProps) => (
+									{({
+										confirmation,
+										hideConfirmation,
+										optionsMenu,
+										hideOptionsMenu,
+									}) => (
 										<WithI18n>
 											{(i18n) => (
 												<React.Fragment>
 													<TransparentOverlayModal
 														visible={globals.transparentOverlay.visible}
 														alpha={globals.transparentOverlay.alpha}
+														loader={globals.transparentOverlay.loader}
 													/>
 													<OfflineOverlayModal
 														visible={!!globals.offline}
@@ -307,39 +313,26 @@ const Navigation = () => (
 														getText={i18n.getText}
 													/>
 													<ConfirmationModal
-														title={
-															overlayProps.confirmation &&
-															overlayProps.confirmation.title
-														}
-														message={
-															overlayProps.confirmation &&
-															overlayProps.confirmation.message
-														}
-														confirmActive={!!overlayProps.confirmation}
+														title={confirmation && confirmation.title}
+														message={confirmation && confirmation.message}
+														confirmActive={!!confirmation}
 														confirmHandler={() => {
-															if (overlayProps.confirmation) {
-																overlayProps.confirmation.confirmHandler();
+															if (confirmation) {
+																confirmation.confirmHandler();
 															}
-															overlayProps.hideConfirmation();
+															hideConfirmation();
 														}}
 														declineHandler={() => {
-															if (
-																overlayProps.confirmation &&
-																overlayProps.confirmation.cancelHandler
-															) {
-																overlayProps.confirmation.cancelHandler();
+															if (confirmation && confirmation.cancelHandler) {
+																confirmation.cancelHandler();
 															}
-															overlayProps.hideConfirmation();
+															hideConfirmation();
 														}}
 													/>
 													<DotsMenuModal
-														visible={!!overlayProps.optionsMenu}
-														items={
-															(overlayProps.optionsMenu &&
-																overlayProps.optionsMenu.items) ||
-															[]
-														}
-														onBackdropPress={overlayProps.hideOptionsMenu}
+														visible={!!optionsMenu}
+														items={(optionsMenu && optionsMenu.items) || []}
+														onBackdropPress={hideOptionsMenu}
 													/>
 												</React.Fragment>
 											)}

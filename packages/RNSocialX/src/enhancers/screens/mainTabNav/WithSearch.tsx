@@ -110,8 +110,10 @@ export class WithSearch extends React.Component<
 																userName: profile.alias,
 																location: '',
 																avatarURL:
-																	appConfig.ipfsConfig.ipfs_URL +
-																	profile.avatar,
+																	profile.avatar.length > 0
+																		? appConfig.ipfsConfig.ipfs_URL +
+																		  profile.avatar  // tslint:disable-line
+																		: '',
 															})),
 															suggestions: friendsSuggestions.map(
 																(profile) => ({
@@ -120,8 +122,10 @@ export class WithSearch extends React.Component<
 																	userName: profile.alias,
 																	location: '',
 																	avatarURL:
-																		appConfig.ipfsConfig.ipfs_URL +
-																		profile.avatar,
+																		profile.avatar.length > 0
+																			? appConfig.ipfsConfig.ipfs_URL +
+																			  profile.avatar // tslint:disable-line
+																			: '',
 																}),
 															),
 														},

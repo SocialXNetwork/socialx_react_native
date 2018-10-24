@@ -72,31 +72,28 @@ export class WithPhoto extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithOverlays>
-						{(overlayProps) => (
+						{({ showOptionsMenu }) => (
 							<KeyboardContext.Consumer>
-								{(keyboardProps) => (
+								{({ marginBottom }) => (
 									<WithNavigationParams>
-										{(navigationParamsProps) => (
+										{({ navigationParams }) => (
 											<WithCurrentUser>
-												{(currentUserProps) =>
+												{({ currentUser }) =>
 													this.props.children({
 														data: {
 															...mock.data,
-															currentUserAvatarURL: currentUserProps.currentUser!
-																.avatarURL,
+															currentUserAvatarURL: currentUser!.avatarURL,
 															mediaObjects:
-																navigationParamsProps.navigationParams[
-																	SCREENS.Photo
-																].mediaObjects,
-															marginBottom: keyboardProps.marginBottom,
+																navigationParams[SCREENS.Photo].mediaObjects,
+															marginBottom,
 														},
 														actions: {
 															...mock.actions,
-															getText: i18nProps.getText,
+															getText,
 															showDotsMenuModal: (items) =>
-																overlayProps.showOptionsMenu({
+																showOptionsMenu({
 																	items,
 																}),
 														},

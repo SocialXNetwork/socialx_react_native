@@ -35,7 +35,10 @@ export const mapPostsForUI = (
 				owner: {
 					userId: post.owner.alias,
 					fullName: ownerProfile!.fullName,
-					avatarURL: appConfig.ipfsConfig.ipfs_URL + ownerProfile!.avatar,
+					avatarURL:
+						ownerProfile!.avatar.length > 0
+							? appConfig.ipfsConfig.ipfs_URL + ownerProfile!.avatar
+							: '',
 				},
 				governanceVersion: false,
 				// TODO: add this later when data is available
