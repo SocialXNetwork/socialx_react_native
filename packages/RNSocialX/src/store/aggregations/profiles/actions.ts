@@ -1,7 +1,6 @@
 import { IFindFriendsSuggestionsInput, IProfileData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
-import { getProfilesByUsernames } from '../../data/profiles';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
@@ -34,9 +33,8 @@ export const searchProfilesByFullName = ({
 	maxResults?: number;
 }): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias && term.length > 0) {
+
+	if (term.length > 0) {
 		try {
 			dispatch(searchProfilesByFullNameAction({ term, maxResults }));
 			await dispatch(
@@ -88,32 +86,29 @@ export const findFriendsSuggestions = ({
 	context,
 ) => {
 	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(findFriendsSuggestionsAction({ maxResults }));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.FIND_FRIENDS_SUGGESTIONS,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			const profiles = await dataApi.profiles.findFriendsSuggestions({
-				maxResults: 10,
-			});
-			await dispatch(syncFindFriendsSuggestionsAction(profiles));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+
+	try {
+		dispatch(findFriendsSuggestionsAction({ maxResults }));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.FIND_FRIENDS_SUGGESTIONS,
+				uuid: activityId,
+			}),
+		);
+		const { dataApi } = context;
+		const profiles = await dataApi.profiles.findFriendsSuggestions({
+			maxResults: 10,
+		});
+		await dispatch(syncFindFriendsSuggestionsAction(profiles));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };

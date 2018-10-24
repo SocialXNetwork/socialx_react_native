@@ -8,6 +8,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { IError, IGlobal, ITranslatedProps } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
+import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
