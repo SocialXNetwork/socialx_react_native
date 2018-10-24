@@ -12,11 +12,12 @@ import { SafeAreaView } from 'react-navigation';
 import { Header, HeaderButton } from '../../components';
 import {
 	IMonthlyBarChartData,
+	ISpentTillNow,
 	IWeeklyBarChartData,
 } from '../../environment/consts';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
-import styles, { customStyleProps } from './AdsStatisticsScreen.style';
+import styles, { defaultStyles } from './AdsStatisticsScreen.style';
 
 interface IAdsStatisticsScreenViewProps extends ITranslatedProps, IHeaderProps {
 	transactions: Array<{
@@ -24,9 +25,8 @@ interface IAdsStatisticsScreenViewProps extends ITranslatedProps, IHeaderProps {
 		date: Date | string;
 	}>;
 	onShowAllTransactions: () => void;
-	handleStatistics: (text: 'weekly' | 'monthly') => void;
-	weeklySelected: boolean;
-	monthlySelected: boolean;
+	handleStatistics: (text: ISpentTillNow) => void;
+	selectedSpentButton: ISpentTillNow;
 	totalAmountSOCX: string;
 	translateXValue: Animated.Value;
 	weeklyChartContainerOnLayout: (event: LayoutChangeEvent) => void;
@@ -45,6 +45,17 @@ interface IAdsStatisticsScreenViewProps extends ITranslatedProps, IHeaderProps {
 	) => JSX.Element;
 }
 
+const SPENT_TILL_NOW_BUTTONS = [
+	{
+		label: 'ad.statistics.buttons.weekly',
+		value: ISpentTillNow.weekly,
+	},
+	{
+		label: 'ad.statistics.buttons.monthly',
+		value: ISpentTillNow.monthly,
+	},
+];
+
 export const AdsStatisticsScreenView: React.SFC<
 	IAdsStatisticsScreenViewProps
 > = ({
@@ -53,8 +64,7 @@ export const AdsStatisticsScreenView: React.SFC<
 	onGoBack,
 	handleStatistics,
 	getText,
-	weeklySelected,
-	monthlySelected,
+	selectedSpentButton,
 	totalAmountSOCX,
 	translateXValue,
 	weeklyChartContainerOnLayout,
@@ -94,7 +104,7 @@ export const AdsStatisticsScreenView: React.SFC<
 			))}
 			<TouchableHighlight
 				style={styles.moreTransactionsContainer}
-				underlayColor={customStyleProps.highlightButton}
+				underlayColor={defaultStyles.highlightButton}
 				onPress={() => {
 					onShowAllTransactions();
 				}}
@@ -114,50 +124,31 @@ export const AdsStatisticsScreenView: React.SFC<
 			<View style={styles.separator} />
 			<View style={styles.buttonsContainer}>
 				<Segment style={styles.segment}>
-					<Button
-						style={
-							weeklySelected
-								? styles.segmentButtonWeeklyActive
-								: styles.segmentButtonWeeklyInactive
-						}
-						first={true}
-						active={weeklySelected}
-						onPress={() => {
-							handleStatistics('weekly');
-						}}
-					>
-						<Text
+					{SPENT_TILL_NOW_BUTTONS.map((spentTillNowButton, index) => (
+						<Button
 							style={
-								weeklySelected
-									? styles.segmentTitleActive
-									: styles.segmentTitleInactive
+								selectedSpentButton === spentTillNowButton.value
+									? styles.segmentButtonSpentTillNowActive
+									: styles.segmentButtonSpentTillNowInactive
 							}
+							first={index === 0}
+							last={index === SPENT_TILL_NOW_BUTTONS.length - 1}
+							active={selectedSpentButton === spentTillNowButton.value}
+							onPress={() => {
+								handleStatistics(spentTillNowButton.value);
+							}}
 						>
-							{getText('ad.statistics.buttons.weekly').toLowerCase()}
-						</Text>
-					</Button>
-					<Button
-						style={
-							monthlySelected
-								? styles.segmentButtonMonthlyActive
-								: styles.segmentButtonMonthlyInactive
-						}
-						last={true}
-						active={monthlySelected}
-						onPress={() => {
-							handleStatistics('monthly');
-						}}
-					>
-						<Text
-							style={
-								monthlySelected
-									? styles.segmentTitleActive
-									: styles.segmentTitleInactive
-							}
-						>
-							{getText('ad.statistics.buttons.monthly').toLowerCase()}
-						</Text>
-					</Button>
+							<Text
+								style={
+									selectedSpentButton === spentTillNowButton.value
+										? styles.segmentTitleActive
+										: styles.segmentTitleInactive
+								}
+							>
+								{getText(spentTillNowButton.label).toLowerCase()}
+							</Text>
+						</Button>
+					))}
 				</Segment>
 			</View>
 			<View style={styles.amountContainer}>

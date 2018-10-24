@@ -48,6 +48,11 @@ export interface IMonthlyBarChartData {
 	monthShort: string;
 }
 
+export enum ISpentTillNow {
+	weekly = 'weekly',
+	monthly = 'monthly',
+}
+
 export const LOCAL_VIDEO_STREAM = {
 	width: 1280,
 	height: 960,

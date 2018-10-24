@@ -31,7 +31,10 @@ interface IAdsManagementConfigBudgetScreenState {
 	nextDayFromStartDate: Date;
 }
 
-class Screen extends React.Component<IAdsManagementConfigBudgetScreenProps> {
+class Screen extends React.Component<
+	IAdsManagementConfigBudgetScreenProps,
+	IAdsManagementConfigBudgetScreenState
+> {
 	public state = {
 		budgetValue: this.props.getText(
 			'ad.management.budget.budget.textinput.initialvalue',
