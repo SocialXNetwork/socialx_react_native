@@ -111,10 +111,6 @@ export interface INavigationParamsActions {
 	) => void;
 }
 
-export interface IDotsMenuProps {
-	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
-}
-
 export interface IResizeProps {
 	marginBottom: number;
 }
@@ -393,6 +389,12 @@ export interface IAd {
 	title: string;
 	description: string;
 	id: string;
+}
+
+export enum ICreateAdSteps {
+	SetupPost = 'SetupPost',
+	SetupAudience = 'SetupAudience',
+	SetupBudget = 'SetupBudget',
 }
 /**
  * TODO list:
