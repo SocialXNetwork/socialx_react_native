@@ -13,11 +13,12 @@ import {
 import {
 	dateFormatMomentJS,
 	IMonthlyBarChartData,
+	ISpentTillNow,
 	IWeeklyBarChartData,
 } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import styles, {
-	customStyleProps,
+	defaultStyles,
 	WEEK_CHART_ITEM_WIDTH,
 } from './AdsStatisticsScreen.style';
 import { AdsStatisticsScreenView } from './AdsStatisticsScreen.view';
@@ -32,10 +33,17 @@ type IAdsStatisticsScreenProps = INavigationProps &
 	IWithAdsStatisticsEnhancedActions &
 	IWithAdsStatisticsEnhancedData;
 
-class Screen extends React.Component<IAdsStatisticsScreenProps> {
+interface IAdsStatisticsScreenState {
+	selectedSpentButton: ISpentTillNow;
+	translateX: Animated.Value;
+}
+
+class Screen extends React.Component<
+	IAdsStatisticsScreenProps,
+	IAdsStatisticsScreenState
+> {
 	public state = {
-		weeklySelected: true,
-		monthlySelected: false,
+		selectedSpentButton: ISpentTillNow.weekly,
 		translateX: new Animated.Value(0),
 	};
 
@@ -51,7 +59,7 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 			weeklySeries,
 			monthlySeries,
 		} = this.props;
-		const { weeklySelected, monthlySelected, translateX } = this.state;
+		const { selectedSpentButton, translateX } = this.state;
 		const totalAmountSOCXFormatted = numeral(totalAmountSOCX).format('0.000a');
 		transactions.map((transaction) => {
 			transaction.date = moment(
@@ -70,8 +78,7 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 				transactions={transactions}
 				onShowAllTransactions={this.onShowAllTransactions}
 				handleStatistics={this.handleStatistics}
-				weeklySelected={weeklySelected}
-				monthlySelected={monthlySelected}
+				selectedSpentButton={selectedSpentButton}
 				totalAmountSOCX={totalAmountSOCXFormatted}
 				translateXValue={translateX}
 				weeklyChartContainerOnLayout={this.weeklyChartContainerOnLayout}
@@ -90,28 +97,26 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 	};
 
 	private onShowAllTransactions = () => {
-		/* */
+		console.log('TO DO: navigate to all transactions');
 	};
 
-	private handleStatistics = (buttonSelected: 'weekly' | 'monthly') => {
-		if (buttonSelected === 'weekly') {
+	private handleStatistics = (buttonSelected: ISpentTillNow) => {
+		if (buttonSelected === ISpentTillNow.weekly) {
 			this.setState({
-				monthlySelected: false,
-				weeklySelected: true,
+				selectedSpentButton: ISpentTillNow.weekly,
 			});
-			this.runSlideTransition(buttonSelected);
+			this.runSlideTransition(ISpentTillNow.weekly);
 		}
-		if (buttonSelected === 'monthly') {
+		if (buttonSelected === ISpentTillNow.monthly) {
 			this.setState({
-				monthlySelected: true,
-				weeklySelected: false,
+				selectedSpentButton: ISpentTillNow.monthly,
 			});
-			this.runSlideTransition(buttonSelected);
+			this.runSlideTransition(ISpentTillNow.monthly);
 		}
 	};
 
-	private runSlideTransition = (tab: 'weekly' | 'monthly') => {
-		const slideValue = tab === 'monthly' ? -this.slideWidth : 0;
+	private runSlideTransition = (tab: ISpentTillNow) => {
+		const slideValue = tab === ISpentTillNow.monthly ? -this.slideWidth : 0;
 		Animated.timing(this.state.translateX, {
 			toValue: slideValue,
 			easing: Easing.linear,
@@ -158,8 +163,8 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 			{
 				backgroundColor:
 					data.index % 2 === 0
-						? customStyleProps.barChartColumnColor
-						: customStyleProps.barChartColumnLightColor,
+						? defaultStyles.barChartColumnColor
+						: defaultStyles.barChartColumnLightColor,
 				height: Math.round((data.item.value * 100) / this.maxWeeklyValue) + '%',
 			},
 		];
@@ -187,8 +192,8 @@ class Screen extends React.Component<IAdsStatisticsScreenProps> {
 			{
 				backgroundColor:
 					data.index % 2 === 0
-						? customStyleProps.barChartColumnColor
-						: customStyleProps.barChartColumnLightColor,
+						? defaultStyles.barChartColumnColor
+						: defaultStyles.barChartColumnLightColor,
 				height: Math.round((data.item.value * 100) / this.maxMonthValue) + '%',
 			},
 		];
