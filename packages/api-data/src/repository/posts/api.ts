@@ -113,7 +113,10 @@ export default function(context: IContext) {
 					validatedInput as { username: string },
 					async (err, paths) => {
 						if (err) {
-							reject(err);
+							resolve([]);
+						}
+						if (!paths) {
+							resolve([]);
 						}
 						const posts = await Promise.all(
 							(paths || [])
