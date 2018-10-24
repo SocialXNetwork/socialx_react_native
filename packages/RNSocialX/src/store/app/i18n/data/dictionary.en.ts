@@ -320,4 +320,5 @@ export default {
     'ad.statistics.buttons.monthly': 'Monthly',
     'ad.statistics.buttons.alltransactions': 'See all Transactions',
     'ad.statistics.amount.text': 'Total amount of SOCX',
+    'ad.statistics.chart.currentweek.text': 'CW',
 };
