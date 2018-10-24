@@ -24,12 +24,17 @@ class Screen extends React.Component<
 			<NewAdSetupAudienceView
 				getText={getText}
 				onGoBack={this.onGoBackHandler}
+				onNavigateToBudgetSection={this.onNavigateToBudgetSectionHandler}
 			/>
 		);
 	}
 
 	private onGoBackHandler = () => {
 		this.props.navigation.goBack(null);
+	};
+
+	private onNavigateToBudgetSectionHandler = () => {
+		this.props.navigation.navigate('AdsManagementConfigBudgetScreen');
 	};
 }
 

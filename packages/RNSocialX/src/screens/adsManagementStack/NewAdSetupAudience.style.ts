@@ -46,6 +46,12 @@ const style: any = {
 		borderWidth: Sizes.smartHorizontalScale(2),
 		padding: Sizes.smartHorizontalScale(3),
 	},
+	sectionLabel: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.cloudBurst,
+		marginVertical: Sizes.smartVerticalScale(10),
+	},
 };
 
 export default StyleSheet.create(style);
