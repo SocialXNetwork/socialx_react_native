@@ -16,9 +16,8 @@ import { IContextConfig } from './types';
 const persistConfig = {
 	key: 'root',
 	storage,
-	// NOTE: takes an array of strings
-	blacklist: ['ui', 'data', 'app'],
-	// whitelist: [],
+	// TODO: persist the language setting
+	whitelist: ['auth'],
 };
 
 export const configureStore = (
