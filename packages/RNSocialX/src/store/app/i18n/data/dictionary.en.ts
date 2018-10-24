@@ -311,4 +311,5 @@ export default {
   'new.ad.setup.audience.gender.female': 'Women',
   'new.ad.setup.audience.gender.all': 'All',
   'new.ad.setup.audience.age.range.select': 'Select Age Range',
+  'new.ad.setup.audience.countries.select': 'Select Countries',
 };
