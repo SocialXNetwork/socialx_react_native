@@ -85,7 +85,6 @@ class Screen extends React.Component<
 			aboutMeText,
 			relationship,
 		} = visitedUser;
-
 		return (
 			<UserProfileScreenView
 				refreshing={refreshingProfile}
