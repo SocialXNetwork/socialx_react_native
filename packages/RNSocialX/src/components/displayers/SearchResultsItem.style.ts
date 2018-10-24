@@ -27,6 +27,11 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(14),
 		color: Colors.grayText,
 	},
+	userName: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(14),
+		color: Colors.pink,
+	},
 };
 
 export default StyleSheet.create(styles);

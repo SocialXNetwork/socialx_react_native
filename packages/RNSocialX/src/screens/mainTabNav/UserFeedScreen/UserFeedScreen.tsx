@@ -25,9 +25,7 @@ export interface IFeedProps {
 	feedType: FEED_TYPES;
 }
 
-interface IUserFeedScreenState {
-	deletingPost: boolean;
-}
+interface IUserFeedScreenState {}
 
 type IUserFeedScreenProps = INavigationProps &
 	IFeedProps &
@@ -38,10 +36,6 @@ export class Screen extends React.Component<
 	IUserFeedScreenProps,
 	IUserFeedScreenState
 > {
-	public state = {
-		deletingPost: false,
-	};
-
 	private readonly scrollRef: React.RefObject<
 		FlatList<IWallPostCardData>
 	> = React.createRef();
@@ -233,8 +227,19 @@ export class Screen extends React.Component<
 	};
 
 	private onDeletePostPressHandler = async (postId: string) => {
-		this.setState({ deletingPost: true });
-		await this.props.deletePost(postId);
-		this.setState({ deletingPost: true });
+		const { setGlobal, deletePost } = this.props;
+		setGlobal({
+			transparentOverlay: {
+				visible: true,
+				alpha: 0.5,
+				loader: true,
+			},
+		});
+		await deletePost(postId);
+		setGlobal({
+			transparentOverlay: {
+				visible: false,
+			},
+		});
 	};
 }

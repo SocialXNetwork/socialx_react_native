@@ -274,7 +274,7 @@ export default {
 	'search.screen.results.tab.tags.title': 'Tags',
 	'search.screen.results.tab.places.title': 'Places',
 	'search.screen.results.coming.soon': 'Stay close, this feature is coming soon!',
-	'searching.loader.text': 'Searching',
+	'search.loader.text': 'Searching',
 	'search.suggested': 'Suggested',
 	'search.no.results.text': 'No results found',
 	'new.ad.setup.post.screen.title': 'Create Ad',

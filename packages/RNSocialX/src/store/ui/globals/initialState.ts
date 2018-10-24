@@ -11,6 +11,7 @@ const initialState: IState = {
 	transparentOverlay: {
 		visible: false,
 		alpha: 0,
+		loader: false,
 	},
 };
 

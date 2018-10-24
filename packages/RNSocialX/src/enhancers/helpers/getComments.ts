@@ -18,7 +18,11 @@ export const getComments = (
 			user: {
 				userId: comment.owner.alias,
 				fullName: commentOwner!.fullName,
-				avatarURL: appConfig.ipfsConfig.ipfs_URL + commentOwner!.avatar,
+				avatarURL:
+					commentOwner!.avatar.length > 0
+				? appConfig.ipfsConfig.ipfs_URL +
+				  commentOwner!.avatar  // tslint:disable-line
+						: '',
 			},
 			timestamp: new Date(comment.timestamp),
 			numberOfLikes: comment.likes.length,

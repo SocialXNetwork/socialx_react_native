@@ -131,13 +131,18 @@ export class WithUserProfile extends React.Component<
 			<WithI18n>
 				{(i18nProps) => (
 					<WithOverlays>
-						{(overlayProps) => (
+						{({ showOptionsMenu }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
 									<WithProfiles>
-										{(profilesProps) => (
+										{({ addFriend }) => (
 											<WithPosts>
-												{(postsProps) => (
+												{({
+													likePost,
+													unlikePost,
+													createComment,
+													loadMorePosts,
+												}) => (
 													<WithActivities>
 														{({ activities }) => (
 															<WithCurrentUser>
@@ -157,24 +162,23 @@ export class WithUserProfile extends React.Component<
 																				actions: {
 																					...mock.actions,
 																					addFriend: (username) =>
-																						profilesProps.addFriend({
+																						addFriend({
 																							username,
 																						}),
 																					likePost: (postId) =>
-																						postsProps.likePost({ postId }),
+																						likePost({ postId }),
 																					unlikePost: (postId) =>
-																						postsProps.unlikePost({ postId }),
+																						unlikePost({ postId }),
 																					postComment: (text, postId) =>
-																						postsProps.createComment({
+																						createComment({
 																							text,
 																							postId,
 																						}),
-																					loadMorePosts:
-																						postsProps.loadMorePosts,
+																					loadMorePosts,
 																					setNavigationParams,
 																					getText: i18nProps.getText,
 																					showDotsMenuModal: (items) =>
-																						overlayProps.showOptionsMenu({
+																						showOptionsMenu({
 																							items,
 																						}),
 																				},
