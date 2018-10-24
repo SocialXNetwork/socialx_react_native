@@ -3,6 +3,11 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
+	getUserPosts,
+	IGetUserPostsInput,
+	IPostReturnData,
+} from '../../../store/aggregations/posts';
+import {
 	findFriendsSuggestions,
 	IFindFriendsSuggestionsInput,
 	IFriendSuggestionData,
@@ -15,6 +20,9 @@ import { IThunkDispatch } from '../../../store/types';
 interface IDataProps {
 	friendsSuggestions: IFriendSuggestionData[];
 	searchResults: IProfileData[];
+	userPosts: {
+		[owner: string]: IPostReturnData[];
+	};
 }
 
 interface IActionProps {
@@ -24,6 +32,7 @@ interface IActionProps {
 	findFriendsSuggestions: (
 		findFriendsSuggestionsInput: IFindFriendsSuggestionsInput,
 	) => void;
+	getUserPosts: (getUserPostsInput: IGetUserPostsInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -51,9 +60,15 @@ const selectFriendSuggestions = createSelector(
 	(friendsSuggestions) => friendsSuggestions,
 );
 
+const selectUserPosts = createSelector(
+	(state: IApplicationState) => state.aggregate.postsAggregation.userPosts,
+	(userPosts) => userPosts,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	searchResults: selectSearchResults(state),
 	friendsSuggestions: selectFriendSuggestions(state),
+	userPosts: selectUserPosts(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -63,6 +78,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	findFriendsSuggestions: (
 		findFriendsSuggestionsInput: IFindFriendsSuggestionsInput,
 	) => dispatch(findFriendsSuggestions(findFriendsSuggestionsInput)),
+	getUserPosts: (getUserPostsInput: IGetUserPostsInput) =>
+		dispatch(getUserPosts(getUserPostsInput)),
 });
 
 export const WithAggregations: ConnectedComponentClass<

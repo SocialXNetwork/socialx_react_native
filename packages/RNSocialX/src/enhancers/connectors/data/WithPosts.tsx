@@ -76,8 +76,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
+	// @Jake fix typing of IMedia
 	createPost: (createPostInput: ICreatePostInput) =>
-		dispatch(createPost(createPostInput)),
+		dispatch(createPost(createPostInput as any)),
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
 	getPostByPath: (getPostPathInput: IPostPathInput) =>
 		dispatch(getPostByPath(getPostPathInput)),

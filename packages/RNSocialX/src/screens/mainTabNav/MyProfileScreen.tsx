@@ -1,9 +1,3 @@
-/**
- * TODO list:
- * 1. Refactor the commented part into the header component - Done
- * 2. Implement onViewProfilePhoto (check IPFS)
- */
-
 import * as React from 'react';
 import { DataProvider } from 'recyclerlistview';
 import uuid from 'uuid/v4';

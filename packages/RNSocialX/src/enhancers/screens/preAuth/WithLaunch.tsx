@@ -10,30 +10,13 @@ import { ICredentials } from '@socialx/api-data';
 import { IGlobal, ITranslatedProps } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
+import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { resetNavigationToRoute } from '../../helpers';
-
-const mock: IWithLaunchEnhancedProps = {
-	data: {
-		globals: {},
-		applicationInMaintenanceMode: false,
-		auth: {},
-	},
-	actions: {
-		resetNavigationToRoute: (
-			screenName: string,
-			navigation: NavigationScreenProp<any>,
-		) => undefined,
-		loadPosts: () => undefined,
-		recall: (creds: ICredentials) => undefined,
-		getText: (value: string, ...args: any[]) => value,
-		setGlobal: (global) => undefined,
-	},
-};
 
 export interface IWithLaunchEnhancedData {
 	globals: IGlobal;
@@ -46,7 +29,7 @@ export interface IWithLaunchEnhancedActions extends ITranslatedProps {
 		screenName: string,
 		navigation: NavigationScreenProp<any>,
 	) => void;
-	loadPosts: () => void;
+	loadFeed: () => void;
 	recall: (creds: ICredentials) => void;
 	setGlobal: (global: IGlobal) => void;
 }
@@ -69,32 +52,35 @@ export class WithLaunch extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithGlobals>
 						{({ globals, setGlobal }) => (
 							<WithAuth>
 								{({ auth }) => (
 									<WithAccounts>
 										{({ login }) => (
-											<WithPosts>
-												{(postsProps) =>
-													this.props.children({
-														data: {
-															...mock.data,
-															globals,
-															auth,
-														},
-														actions: {
-															...mock.actions,
-															getText: i18nProps.getText,
-															resetNavigationToRoute,
-															loadPosts: postsProps.loadMorePosts,
-															recall: login,
-															setGlobal,
-														},
-													})
-												}
-											</WithPosts>
+											<WithAggregations>
+												{({ getUserPosts }) => (
+													<WithPosts>
+														{({ loadMorePosts }) =>
+															this.props.children({
+																data: {
+																	applicationInMaintenanceMode: false,
+																	globals,
+																	auth,
+																},
+																actions: {
+																	resetNavigationToRoute,
+																	loadFeed: loadMorePosts,
+																	recall: login,
+																	setGlobal,
+																	getText,
+																},
+															})
+														}
+													</WithPosts>
+												)}
+											</WithAggregations>
 										)}
 									</WithAccounts>
 								)}
