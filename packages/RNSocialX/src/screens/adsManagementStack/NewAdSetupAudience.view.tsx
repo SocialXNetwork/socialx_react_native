@@ -1,15 +1,16 @@
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import { Formik, FormikErrors, FormikProps } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { Button, Segment } from 'native-base';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import { Header, HeaderButton } from '../../components';
+import { CreateAdSteps, Header, HeaderButton } from '../../components';
 import { ITranslatedProps } from '../../types';
 import styles, { nativeBaseStyles } from './NewAdSetupAudience.style';
 
 interface INewAdSetupAudienceViewProps extends ITranslatedProps {
 	onGoBack: () => void;
+	onNavigateToBudgetSection: (values: INewAdSetupAudienceData) => void;
 }
 
 enum IGenderSelect {
@@ -48,23 +49,14 @@ const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({
 
 export const NewAdSetupAudienceView: React.SFC<
 	INewAdSetupAudienceViewProps
-> = ({ getText, onGoBack }) => (
+> = ({ getText, onGoBack, onNavigateToBudgetSection }) => (
 	<View style={styles.rootView}>
 		<Formik
 			initialValues={{
 				selectedGender: IGenderSelect.all,
 				ageRange: [20, 80],
 			}}
-			validate={({ selectedGender }: INewAdSetupAudienceData) => {
-				const errors: FormikErrors<INewAdSetupAudienceData> = {};
-				// if (!headline) {
-				// 	errors.headline = getText('new.ad.setup.post.headline.required');
-				// }
-				return errors;
-			}}
-			onSubmit={(values: INewAdSetupAudienceData) => {
-				console.log('onSubmit', values);
-			}}
+			onSubmit={onNavigateToBudgetSection}
 			render={({
 				values: { selectedGender, ageRange },
 				errors,
@@ -87,10 +79,13 @@ export const NewAdSetupAudienceView: React.SFC<
 							{getText('new.ad.setup.audience.header.title').toUpperCase()}
 						</Text>
 						<View style={styles.screenContent}>
-							<Text>{getText('new.ad.setup.audience.gender.select')}</Text>
+							<Text style={styles.sectionLabel}>
+								{getText('new.ad.setup.audience.gender.select')}
+							</Text>
 							<Segment style={nativeBaseStyles.segment}>
 								{GENDER_SELECTION_BUTTONS.map((genderButton, index) => (
 									<Button
+										key={genderButton.value}
 										style={[
 											selectedGender === genderButton.value
 												? nativeBaseStyles.segmentButtonActive
@@ -115,7 +110,9 @@ export const NewAdSetupAudienceView: React.SFC<
 									</Button>
 								))}
 							</Segment>
-							<Text>{getText('new.ad.setup.audience.age.range.select')}</Text>
+							<Text style={styles.sectionLabel}>
+								{getText('new.ad.setup.audience.age.range.select')}
+							</Text>
 							<MultiSlider
 								values={ageRange}
 								min={10}
@@ -128,8 +125,16 @@ export const NewAdSetupAudienceView: React.SFC<
 								containerStyle={styles.ageSelectorContainer}
 								customMarker={SliderMarkerWithValue}
 							/>
+							<Text style={styles.sectionLabel}>
+								{getText('new.ad.setup.audience.countries.select')}
+							</Text>
+							<Text>{'TBD: figure out best selector here'}</Text>
 						</View>
 					</ScrollView>
+					<CreateAdSteps
+						currentStep={'audience'}
+						onGoToNextStep={handleSubmit}
+					/>
 				</React.Fragment>
 			)}
 		/>
