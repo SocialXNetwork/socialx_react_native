@@ -39,7 +39,6 @@ export const getUserPosts = (
 		);
 		const { dataApi } = context;
 		const userPosts = await dataApi.posts.getPostsByUser(getUserPostsInput);
-		console.log('userPosts', userPosts);
 		dispatch(
 			syncGetUserPostsAction({
 				posts: userPosts,

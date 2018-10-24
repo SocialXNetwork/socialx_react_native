@@ -68,7 +68,7 @@ class Screen extends React.Component<
 		} else {
 			await loadPosts();
 			this.switchActivityIndicator(false);
-			resetNavigationToRoute(NAVIGATION.Main, navigation);
+			resetNavigationToRoute(NAVIGATION.Intro, navigation);
 		}
 	};
 

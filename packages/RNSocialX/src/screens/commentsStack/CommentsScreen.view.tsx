@@ -39,6 +39,7 @@ const onCommentSendHandler = (
 ) => {
 	if (commentInputRef.current) {
 		commentInputRef.current.blur();
+		commentInputRef.current.clear();
 	}
 	onCommentSend();
 };
