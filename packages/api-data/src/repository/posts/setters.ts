@@ -19,11 +19,15 @@ import {
 	IUnlikePostInput,
 } from './types';
 
-const loadAllMetas = (gun: IGunInstance, cb: any) => {
+const loadMetaIdAndPass = (gun: IGunInstance, cb: any) => {
 	gun.get(TABLES.POST_META_BY_ID).once(() => {
-		gun.get(TABLES.POST_METAS_BY_USER).once(() => {
-			cb();
-		});
+		cb();
+	});
+};
+
+const loadMetaUserAndPass = (gun: IGunInstance, cb: any) => {
+	gun.get(TABLES.POST_METAS_BY_USER).once(() => {
+		cb();
 	});
 };
 
@@ -82,7 +86,7 @@ export const createPost = (
 						),
 					);
 				}
-				loadAllMetas(gun, createPostMetaByUser);
+				loadMetaUserAndPass(gun, createPostMetaByUser);
 			},
 		);
 	};
@@ -107,7 +111,7 @@ export const createPost = (
 						),
 					);
 				}
-				createPostMetaById();
+				loadMetaIdAndPass(gun, createPostMetaById);
 			},
 		);
 	};
@@ -205,6 +209,7 @@ export const removePost = (
 	{ postId }: IRemovePostInput,
 	callback: IGunCallback<null>,
 ) => {
+	const { gun } = context;
 	const errPrefix = 'failed to remove post';
 	/**
 	 * get absolute postPath from postId and check if the post exist and the current user owns it
@@ -256,7 +261,7 @@ export const removePost = (
 						),
 					);
 				}
-				erasePostMetaNodeById();
+				loadMetaIdAndPass(gun, erasePostMetaNodeById);
 			});
 	};
 	const erasePostMetaNodeById = () => {
@@ -275,27 +280,35 @@ export const removePost = (
 						),
 					);
 				}
-				erasePostMetaNodeByUser();
+				loadMetaUserAndPass(gun, erasePostMetaNodeByUser);
 			});
 	};
 	const erasePostMetaNodeByUser = () => {
 		postHandles
-			.postMetasByUsernamesRecord(context)
-			.erase(postId, (postMetasRemoveCallback) => {
-				if (postMetasRemoveCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, error removing post meta ${
-								postMetasRemoveCallback.err
-							}`,
-							{
-								initialRequestBody: { postId },
-							},
-						),
-					);
-				}
-				return callback(null);
-			});
+			.postMetasByCurrentUser(context)
+			.put({
+				[postId]: null,
+			})
+			.put(
+				{
+					[postId]: {},
+				},
+				(postMetasRemoveCallback) => {
+					if (postMetasRemoveCallback.err) {
+						return callback(
+							new ApiError(
+								`${errPrefix}, error removing post meta ${
+									postMetasRemoveCallback.err
+								}`,
+								{
+									initialRequestBody: { postId },
+								},
+							),
+						);
+					}
+					return callback(null);
+				},
+			);
 	};
 	mainRunner();
 };

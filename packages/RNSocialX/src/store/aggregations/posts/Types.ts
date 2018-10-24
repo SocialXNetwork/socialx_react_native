@@ -12,9 +12,16 @@ export interface IGetUserPostsInput {
 	username: string;
 }
 
+export interface IUpdateUserPosts {
+	username: string;
+	postId: string;
+	post?: IPostReturnData;
+}
+
 export const enum ActionTypes {
 	GET_USER_POSTS = 'app/data/profiles/GET_USER_POSTS',
 	SYNC_GET_USER_POSTS = 'app/data/profiles/SYNC_GET_USER_POSTS',
+	UPDATE_USER_POSTS = 'app/data/profiles/UPDATE_USER_POSTS',
 }
 
 export interface IGetUserPostsAction extends Action {
@@ -28,6 +35,11 @@ export interface ISyncGetUserPostsAction extends Action {
 		posts: IPostReturnData[];
 		owner: string;
 	};
+}
+
+export interface IGetUserPostsAction extends Action {
+	type: ActionTypes.GET_USER_POSTS;
+	payload: IGetUserPostsInput;
 }
 
 interface IResetStoreAction {
