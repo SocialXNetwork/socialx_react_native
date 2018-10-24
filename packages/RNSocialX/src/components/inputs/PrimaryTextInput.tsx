@@ -248,7 +248,6 @@ export class PrimaryTextInput extends React.Component<
 						onChangeText={onChangeText}
 						onSubmitEditing={(event) => {
 							onSubmitPressed(event);
-							this.inputRef.current!.clear();
 							Keyboard.dismiss();
 						}}
 						ref={this.inputRef}

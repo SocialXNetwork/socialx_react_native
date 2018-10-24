@@ -100,7 +100,6 @@ export default (context: IContext) => ({
 		// 	);
 		// }
 		const usernames = unique(getRelatedUsernamesFromPosts(posts) || []);
-		console.log('*** usernames', usernames);
 		return this.getProfilesByUsernames({ usernames });
 	},
 	async getProfileByUsername(getProfileByUsernameInput: {
