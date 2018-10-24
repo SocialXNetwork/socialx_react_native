@@ -16,6 +16,11 @@ import {
 import { IState as IPosts, reducer as posts } from './data/posts';
 import { IState as IProfiles, reducer as profiles } from './data/profiles';
 
+import {
+	IState as IProfilesAggregation,
+	reducer as profilesAggregation,
+} from './aggregations/profiles';
+
 import { IState as IFiles, reducer as files } from './storage/files';
 
 import { IState as IActivities, reducer as activities } from './ui/activities';
@@ -31,6 +36,9 @@ export interface IApplicationState {
 		notifications: INotifications;
 		posts: IPosts;
 		profiles: IProfiles;
+	};
+	aggregate: {
+		profilesAggregation: IProfilesAggregation;
 	};
 	app: {
 		config: IConfig;
@@ -61,6 +69,9 @@ export default combineReducers<IApplicationState>({
 		config,
 		i18n,
 		navigationParams,
+	}),
+	aggregate: combineReducers({
+		profilesAggregation,
 	}),
 	ui: combineReducers({
 		activities,

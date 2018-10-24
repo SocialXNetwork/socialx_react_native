@@ -16,11 +16,11 @@ import {
 	SearchTabs,
 } from '../../../types';
 
-import { ActionTypes } from '../../../store/data/profiles/Types';
+import { ActionTypes } from '../../../store/aggregations/profiles/Types';
+import { WithAggregations } from '../../connectors/aggregate/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { getActivity } from '../../helpers';
 
@@ -33,6 +33,9 @@ const mock: IWithSearchEnhancedProps = {
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
+		findFriendsSuggestions: () => {
+			/**/
+		},
 		search: (term: string, tab: SearchTabs) => {
 			/**/
 		},
@@ -85,20 +88,23 @@ export class WithSearch extends React.Component<
 								{({ getText }) => (
 									<WithActivities>
 										{({ activities }) => (
-											<WithProfiles>
+											<WithAggregations>
 												{({
-													profiles,
+													searchResults,
+													friendsSuggestions,
 													searchProfilesByFullName,
 													findFriendsSuggestions,
 												}) => {
 													return this.props.children({
 														data: {
 															...mock.data,
+															// @Alexandre @Alex, this should be determined by the offset/length ratio
+															hasMoreResults: false,
 															searching: getActivity(
 																activities,
 																ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
 															),
-															results: profiles.map((profile) => ({
+															results: searchResults.map((profile) => ({
 																userId: profile.alias,
 																fullName: profile.fullName,
 																userName: profile.alias,
@@ -107,6 +113,17 @@ export class WithSearch extends React.Component<
 																	appConfig.ipfsConfig.ipfs_URL +
 																	profile.avatar,
 															})),
+															suggestions: friendsSuggestions.map(
+																(profile) => ({
+																	userId: profile.alias,
+																	fullName: profile.fullName,
+																	userName: profile.alias,
+																	location: '',
+																	avatarURL:
+																		appConfig.ipfsConfig.ipfs_URL +
+																		profile.avatar,
+																}),
+															),
 														},
 														actions: {
 															...mock.actions,
@@ -126,7 +143,7 @@ export class WithSearch extends React.Component<
 														},
 													});
 												}}
-											</WithProfiles>
+											</WithAggregations>
 										)}
 									</WithActivities>
 								)}
