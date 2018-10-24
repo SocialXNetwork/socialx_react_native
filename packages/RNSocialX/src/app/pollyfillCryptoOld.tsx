@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import WebViewBridge from 'react-native-webview-bridge';
 
 import { randomBytes } from 'react-native-randombytes';
 import { MainWorker, webViewWorkerString } from 'webview-crypto';
 
 import webcrp from '@trust/webcrypto';
+import { OS_TYPES } from '../environment/consts';
 
 const injectString =
 	webViewWorkerString +
@@ -30,6 +31,7 @@ export default class PolyfillCrypto extends React.Component<
 
 	render() {
 		let worker: typeof MainWorker;
+		const uri = 'file:///android_asset/html/pollyfillCrypto.html';
 		return (
 			<View style={styles.hidden}>
 				<WebViewBridge
@@ -81,7 +83,9 @@ export default class PolyfillCrypto extends React.Component<
 						console.warn('Error creating webview: ', error);
 					}}
 					javaScriptEnabled={true}
-					source={{ uri: 'about:blank' }}
+					source={{
+						uri: Platform.OS === OS_TYPES.Android ? uri : 'about:blank',
+					}}
 				/>
 			</View>
 		);
