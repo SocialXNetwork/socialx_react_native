@@ -138,6 +138,7 @@ const syncGetProfilesByUsernamesAction: ActionCreator<
 	payload: profiles,
 });
 
+// relevant for fetching the users that liked/commented on stuff etc..
 export const getProfilesByUsernames = (
 	getProfileByUsernameInput: IUsernamesInput,
 ): IThunk => async (dispatch, getState, context) => {
