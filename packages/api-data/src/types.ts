@@ -9,7 +9,6 @@ export enum TABLES {
 	PROFILES = 'profiles',
 	PROFILE = 'profile',
 	NOTIFICATIONS = 'notifications',
-	FRIEND_REQUESTS = 'friend_requests',
 	FRIENDS = 'friends',
 }
 
@@ -20,6 +19,8 @@ export enum TABLE_ENUMS {
 	FRIENDS = 'friends',
 	COMMENTS = 'comments',
 	LIKES = 'likes',
+	FRIEND_REQUESTS = 'friend_requests',
+	FRIEND_REQUESTS_RESPONSE = 'friend_requests_response',
 }
 
 export interface ILikeData {
@@ -99,6 +100,10 @@ export interface IGunInstance {
 	unset: (node: IGunInstance) => IGunInstance;
 	path: (path: string) => IGunInstance;
 	docLoad: <T>(
+		callback: (data: T, key: string) => void,
+		opts?: { wait: number; timeout: number },
+	) => IGunInstance;
+	docSubscribe: <T>(
 		callback: (data: T, key: string) => void,
 		opts?: { wait: number; timeout: number },
 	) => IGunInstance;

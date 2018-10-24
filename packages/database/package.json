@@ -11,13 +11,18 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"dependencies": {
+		"@trust/webcrypto": "^0.9.2",
 		"express": "^4.16.3",
 		"gun": "latest",
-		"utility-types-fixme-todo": "latest"
+		"node-webcrypto-ossl": "^1.0.38",
+		"text-encoding": "^0.7.0",
+		"utility-types-fixme-todo": "latest",
+		"ws": "^6.1.0"
 	},
 	"devDependencies": {
-		"@types/jest": "^23.3.1",
 		"@types/express": "^4.16.0",
+		"@types/jest": "^23.3.1",
+		"@types/ws": "^6.0.1",
 		"jest": "^23.5.0",
 		"ts-jest": "^23.1.4",
 		"typescript": "^3.0.1"

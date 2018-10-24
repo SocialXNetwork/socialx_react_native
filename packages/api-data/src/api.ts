@@ -7,6 +7,7 @@ import 'gun/nts';
 import 'gun/sea';
 
 import './extensions/docload';
+import './extensions/docsubscribe';
 import './extensions/find';
 import './extensions/logout';
 

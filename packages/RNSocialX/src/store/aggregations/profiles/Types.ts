@@ -7,9 +7,8 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
-// @Alexandre why is this returning an undefined/null? it should always be a number
 export interface IFriendSuggestionData extends IProfileData {
-	commonFriends?: number;
+	commonFriends: number;
 }
 
 export type IState = DeepReadonly<{
@@ -47,7 +46,7 @@ export interface IFindFriendsSuggestionsAction extends Action {
 
 export interface ISyncFindFriendsSuggestionsAction extends Action {
 	type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS;
-	payload: IProfileData[];
+	payload: IFriendSuggestionData[];
 }
 
 interface IResetStoreAction {

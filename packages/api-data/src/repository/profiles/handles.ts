@@ -75,7 +75,9 @@ export const publicFriendRequestsByUsers = (
 	to: string,
 ) => {
 	const { gun } = context;
-	return gun.path(`${TABLES.FRIEND_REQUESTS}.${to}.${from}`);
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`,
+	);
 };
 
 export const publicCurrentFriendRequestToUsername = (
@@ -83,17 +85,29 @@ export const publicCurrentFriendRequestToUsername = (
 	to: string,
 ) => {
 	const { gun, account } = context;
-	return gun.path(`${TABLES.FRIEND_REQUESTS}.${to}.${account.is.alias}`);
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${
+			account.is.alias
+		}`,
+	);
 };
 export const publicCurrentFriendRequestFromUsername = (
 	context: IContext,
 	username: string,
 ) => {
 	const { gun, account } = context;
-	return gun.path(`${TABLES.FRIEND_REQUESTS}.${account.is.alias}.${username}`);
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${
+			account.is.alias
+		}.${username}`,
+	);
 };
 
 export const publicCurrentFriendRequests = (context: IContext) => {
 	const { gun, account } = context;
-	return gun.path(`${TABLES.FRIEND_REQUESTS}.${account.is.alias}`);
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${
+			account.is.alias
+		}`,
+	);
 };

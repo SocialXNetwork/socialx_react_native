@@ -58,3 +58,10 @@ export const getUserPosts = (
 		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
+
+export const updateUserPostsAction: ActionCreator<IGetUserPostsAction> = (
+	getUserPostsInput: IGetUserPostsInput,
+) => ({
+	type: ActionTypes.GET_USER_POSTS,
+	payload: getUserPostsInput,
+});
