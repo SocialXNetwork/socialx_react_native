@@ -30,6 +30,12 @@ export {
 } from './adsManagementStack/WithNewAdSetupPost';
 
 export {
+	WithNewAdSlider,
+	IWithNewAdSliderEnhancedActions,
+	IWithNewAdSliderEnhancedData,
+} from './adsManagementStack/WithNewAdSlider';
+
+export {
 	WithComments,
 	IWithCommentsEnhancedData,
 	IWithCommentsEnhancedActions,
