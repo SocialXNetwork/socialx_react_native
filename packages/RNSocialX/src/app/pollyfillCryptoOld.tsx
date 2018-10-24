@@ -39,35 +39,35 @@ export default class PolyfillCrypto extends React.Component<
 						if (c && !worker) {
 							worker = new MainWorker(c.sendToBridge, this.props.debug);
 							// @ts-ignore
-							// if (window.crypto) {
-							// 	// we are in chrome debugger
-							// 	// this means overridng the crypto object itself won't
-							// 	// work, so we have to override all of it's methods
-							// 	// @ts-ignore
-							// 	// window.crypto.getRandomValues = (arg: Uint8Array) => {
-							// 	// 	const original = arg;
-							// 	// 	if (arg.byteLength !== arg.length) {
-							// 	// 		arg = new Uint8Array(arg.buffer);
-							// 	// 	}
-							// 	// 	const bytes = randomBytes(arg.length);
-							// 	// 	for (let i = 0; i < bytes.length; i++) {
-							// 	// 		arg[i] = bytes[i];
-							// 	// 	}
-							// 	// 	return original;
-							// 	// };
-							// 	// tslint:disable-next-line
-							// 	for (const name in worker.crypto.subtle) {
-							// 		// @ts-ignore
-							// 		window.crypto.subtle[name] = worker.crypto.subtle[name];
-							// 	}
-							// 	// @ts-ignore
-							// 	(window.crypto as any).fake = true;
-							// 	// @ts-ignore
-							// 	console.log('*** poly', window.crypto);
-							// } else {
-							// 	// @ts-ignore
-							// 	(window as any).crypto = worker.crypto;
-							// }
+							if (window.crypto) {
+								// we are in chrome debugger
+								// this means overridng the crypto object itself won't
+								// work, so we have to override all of it's methods
+								// @ts-ignore
+								window.crypto.getRandomValues = (arg: Uint8Array) => {
+									const original = arg;
+									if (arg.byteLength !== arg.length) {
+										arg = new Uint8Array(arg.buffer);
+									}
+									const bytes = randomBytes(arg.length);
+									for (let i = 0; i < bytes.length; i++) {
+										arg[i] = bytes[i];
+									}
+									return original;
+								};
+								// tslint:disable-next-line
+								for (const name in worker.crypto.subtle) {
+									// @ts-ignore
+									window.crypto.subtle[name] = worker.crypto.subtle[name];
+								}
+								// @ts-ignore
+								(window.crypto as any).fake = true;
+								// @ts-ignore
+								console.log('*** poly', window.crypto);
+							} else {
+								// @ts-ignore
+								(window as any).crypto = worker.crypto;
+							}
 						}
 					}}
 					onBridgeMessage={
