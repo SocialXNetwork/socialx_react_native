@@ -8,6 +8,7 @@ import {
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
@@ -205,7 +206,8 @@ export const getCurrentProfile = (): IThunk => async (
 			);
 			const { dataApi } = context;
 			const profile = await dataApi.profiles.getCurrentProfile();
-			await dispatch(syncGetCurrentProfileAction(profile));
+			dispatch(syncGetCurrentProfileAction(profile));
+			await dispatch(getUserPosts({ username: profile.alias }));
 		} catch (e) {
 			console.log(e);
 			await dispatch(

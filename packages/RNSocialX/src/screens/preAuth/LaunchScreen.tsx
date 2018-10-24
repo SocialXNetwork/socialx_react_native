@@ -19,7 +19,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 	public async componentDidMount() {
 		const {
 			recall,
-			loadPosts,
+			loadFeed,
 			globals,
 			auth,
 			navigation,
@@ -33,7 +33,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 					username: auth.alias || '',
 					password: auth.password || '',
 				});
-				await loadPosts();
+				await loadFeed();
 
 				if (__DEV__) {
 					resetNavigationToRoute(NAVIGATION.Main, navigation);
