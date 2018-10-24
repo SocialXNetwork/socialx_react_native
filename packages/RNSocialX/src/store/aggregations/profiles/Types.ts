@@ -1,5 +1,6 @@
 import {
 	IFindFriendsSuggestionsInput,
+	IPostArrayData,
 	IProfileData,
 	ISearchProfilesByFullNameInput,
 } from '@socialx/api-data';
