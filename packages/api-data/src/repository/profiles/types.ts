@@ -32,6 +32,7 @@ export interface IProfileData {
 export interface ISearchProfilesByFullNameInput {
 	textSearch: string;
 	maxResults?: number;
+	alias: string;
 }
 
 export interface IFindFriendsSuggestionsInput {
