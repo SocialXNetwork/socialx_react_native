@@ -69,7 +69,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 			: onAddFriend;
 
 	return (
-		<View style={styles.topContainer}>
+		<View style={styles.container}>
 			<View style={styles.background} />
 			<TouchableOpacity
 				activeOpacity={1}

@@ -6,6 +6,7 @@ import {
 	IWithSearchEnhancedData,
 	WithSearch,
 } from '../../../enhancers/screens';
+import { SCREENS, TABS } from '../../../environment/consts';
 import { INavigationProps, SearchTabs } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
@@ -46,7 +47,6 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	public render() {
 		const {
 			navigation,
-			setNavigationParams,
 			results,
 			suggestions,
 			searching,
@@ -59,7 +59,6 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		return (
 			<SearchScreenView
 				navigation={navigation}
-				setNavigationParams={setNavigationParams}
 				loadedTabs={loadedTabs}
 				results={results}
 				suggestions={suggestions}
@@ -68,6 +67,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 				searchForMoreResults={searchForMoreResults}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
+				onResultPress={this.onResultPressHandler}
 				searchTermValue={term}
 				getText={getText}
 			/>
@@ -86,6 +86,25 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	private onSearchTermChangeHandler = (term: string) => {
 		this.debounceSearch(term);
 		this.setState({ term });
+	};
+
+	private onResultPressHandler = (userId: string) => {
+		const {
+			getPostsForUser,
+			userPosts,
+			setNavigationParams,
+			navigation,
+		} = this.props;
+
+		if (!userPosts[userId]) {
+			getPostsForUser(userId);
+		}
+
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
+			params: { userId, origin: TABS.Search },
+		});
+		navigation.navigate(SCREENS.UserProfile);
 	};
 }
 

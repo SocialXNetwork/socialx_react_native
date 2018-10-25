@@ -6,7 +6,7 @@ import {
 	DotsMenuButton,
 	Header,
 	IconButton,
-	NoPhotos,
+	NoContent,
 	ProfilePhotoGrid,
 	ProfileTopContainer,
 } from '../../components';
@@ -93,7 +93,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						/**/
 					}}
 				/>
-				{hasPhotos && (
+				{hasPhotos ? (
 					<View style={styles.gridContainer}>
 						<ProfilePhotoGrid
 							loadMorePhotosHandler={loadMorePhotosHandler}
@@ -107,8 +107,9 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							getText={getText}
 						/>
 					</View>
+				) : (
+					<NoContent gallery={true} owner={true} getText={getText} />
 				)}
-				{!hasPhotos && <NoPhotos owner={true} getText={getText} />}
 			</ScrollView>
 		</View>
 	);

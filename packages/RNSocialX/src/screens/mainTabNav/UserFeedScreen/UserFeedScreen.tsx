@@ -2,7 +2,12 @@ import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
-import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
+import {
+	FEED_TYPES,
+	OS_TYPES,
+	SCREENS,
+	TABS,
+} from '../../../environment/consts';
 import {
 	IMediaProps,
 	INavigationProps,
@@ -132,13 +137,24 @@ export class Screen extends React.Component<
 	};
 
 	private onUserPressHandler = (userId: string) => {
-		const { navigation, setNavigationParams, currentUser } = this.props;
+		const {
+			navigation,
+			setNavigationParams,
+			currentUser,
+			userPosts,
+			getPostsForUser,
+		} = this.props;
+
 		if (userId === currentUser.userId) {
 			navigation.navigate(SCREENS.MyProfile);
 		} else {
+			if (!userPosts[userId]) {
+				getPostsForUser(userId);
+			}
+
 			setNavigationParams({
 				screenName: SCREENS.UserProfile,
-				params: { userId },
+				params: { userId, origin: TABS.Feed },
 			});
 			navigation.navigate(SCREENS.UserProfile);
 		}

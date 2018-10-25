@@ -1,12 +1,12 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
-import { IPostArrayData } from '../../store/data/posts';
+import { IPostReturnData } from '../../store/data/posts';
 import { IProfileData } from '../../store/data/profiles';
 import { IActivity } from '../../store/ui/activities';
 import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
 import { getActivity, getBestComments } from './';
 
 export const mapPostsForUI = (
-	posts: IPostArrayData,
+	posts: IPostReturnData[],
 	returnLength: number,
 	currentUser: ICurrentUser | undefined,
 	profiles: IProfileData[],
