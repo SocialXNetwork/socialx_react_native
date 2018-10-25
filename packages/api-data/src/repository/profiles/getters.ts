@@ -116,13 +116,16 @@ export const findProfilesByFullName = (
 	{ textSearch, maxResults }: { textSearch: string; maxResults?: number },
 	callback: IGunCallback<any[]>,
 ) => {
+	const currentAlias = context.account.is.alias;
 	profileHandles
 		.publicProfilesRecord(context)
 		.find({ fullName: new RegExp(textSearch, 'i') }, (data: any) => {
-			const profilesReturned = data.map((profile: any) => ({
-				...profile,
-				friends: friendsToArray(profile.friends) || [],
-			}));
+			const profilesReturned = data
+				.map((profile: any) => ({
+					...profile,
+					friends: friendsToArray(profile.friends) || [],
+				}))
+				.filter((profile: any) => profile.alias !== currentAlias);
 			if (maxResults) {
 				return callback(null, profilesReturned.slice(0, maxResults));
 			}
