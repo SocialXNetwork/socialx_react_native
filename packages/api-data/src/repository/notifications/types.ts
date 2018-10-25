@@ -6,6 +6,14 @@ export enum NOTIFICATION_TYPES {
 	SUPER_LIKED = 'SUPER_LIKED',
 }
 
+export enum NOTIFICATION_TABLE_NAMES {
+	RECENT_COMMENT = 'recent_comments',
+	FRIEND_REQUEST = 'friend_requests',
+	FRIEND_REQUEST_RESPONSE = 'friend_request_responses',
+	GROUP_REQUEST = 'group_requests',
+	SUPER_LIKED = 'super_likes',
+}
+
 export interface INotificationData {
 	type: NOTIFICATION_TYPES;
 	from: {
