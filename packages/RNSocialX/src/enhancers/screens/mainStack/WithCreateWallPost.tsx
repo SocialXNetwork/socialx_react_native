@@ -15,32 +15,12 @@ import {
 	IWallPostPhotoOptimized,
 } from '../../../types';
 
-import { ActionTypes } from '../../../store/data/posts/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
-import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { getActivity } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
-
-const mock: IWithCreateWallPostEnhancedProps = {
-	data: {
-		creatingPost: false,
-		marginBottom: 0,
-		currentUserAvatarURL: 'https://placeimg.com/200/200/people',
-	},
-	actions: {
-		createPost: (post: IWallPostData) => undefined,
-		uploadFile: (input: IUploadFileInput) => undefined,
-		setGlobal: (global: IGlobal) => undefined,
-		// This is now implemented with the WithI18n connector enhancer
-		getText: (value: string, ...args: any[]) => value,
-		// This is now implemented with the WithOverlays connector enhancer
-		showDotsMenuModal: (items) => undefined,
-	},
-};
 
 interface IWallPostData {
 	text: string;
@@ -52,8 +32,9 @@ interface IWallPostData {
 }
 
 export interface IWithCreateWallPostEnhancedData extends IResizeProps {
-	currentUserAvatarURL?: string;
-	creatingPost: boolean;
+	currentUserAvatarURL: string;
+	currentUserId: string;
+	currentUserFullName: string;
 }
 
 export interface IWithCreateWallPostEnhancedActions
@@ -89,54 +70,47 @@ export class WithCreateWallPost extends React.Component<
 							<WithGlobals>
 								{({ setGlobal }) => (
 									<WithFiles>
-										{({ uploadFile, uploads }) => (
+										{({ uploadFile }) => (
 											<KeyboardContext.Consumer>
 												{({ marginBottom }) => (
-													<WithActivities>
-														{({ activities }) => (
-															<WithCurrentUser>
-																{({ currentUser }) => (
-																	<WithPosts>
-																		{({ createPost }) =>
-																			children({
-																				data: {
-																					...mock.data,
-																					creatingPost: getActivity(
-																						activities,
-																						ActionTypes.CREATE_POST,
-																					),
-																					marginBottom,
-																					currentUserAvatarURL: currentUser!
-																						.avatarURL,
-																				},
-																				actions: {
-																					...mock.actions,
-																					uploadFile,
-																					createPost: async (
-																						post: IWallPostData,
-																					) => {
-																						await createPost({
-																							postText: post.text,
-																							location: post.location,
-																							taggedFriends: post.taggedFriends,
-																							media: post.media,
-																							privatePost: false,
-																						} as any);
-																					},
-																					setGlobal,
-																					getText,
-																					showDotsMenuModal: (items) =>
-																						showOptionsMenu({
-																							items,
-																						}),
-																				},
-																			})
-																		}
-																	</WithPosts>
-																)}
-															</WithCurrentUser>
+													<WithCurrentUser>
+														{({ currentUser }) => (
+															<WithPosts>
+																{({ createPost }) =>
+																	children({
+																		data: {
+																			currentUserAvatarURL: currentUser!
+																				.avatarURL,
+																			currentUserId: currentUser!.userId,
+																			currentUserFullName: currentUser!
+																				.fullName,
+																			marginBottom,
+																		},
+																		actions: {
+																			uploadFile,
+																			createPost: async (
+																				post: IWallPostData,
+																			) => {
+																				await createPost({
+																					postText: post.text,
+																					location: post.location,
+																					taggedFriends: post.taggedFriends,
+																					media: post.media,
+																					privatePost: false,
+																				} as any);
+																			},
+																			setGlobal,
+																			getText,
+																			showDotsMenuModal: (items) =>
+																				showOptionsMenu({
+																					items,
+																				}),
+																		},
+																	})
+																}
+															</WithPosts>
 														)}
-													</WithActivities>
+													</WithCurrentUser>
 												)}
 											</KeyboardContext.Consumer>
 										)}

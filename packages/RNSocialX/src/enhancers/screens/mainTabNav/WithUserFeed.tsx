@@ -33,6 +33,8 @@ import { WithCurrentUser } from '../intermediary';
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
 	posts: IWallPostCardData[];
+	skeletonPost: IWallPostCardData;
+	creatingPost: boolean;
 	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
@@ -112,6 +114,8 @@ export class WithUserFeed extends React.Component<
 																								data: {
 																									currentUser: user,
 																									posts: feedPosts,
+																									skeletonPost:
+																										globals.skeletonPost,
 																									canLoadMorePosts:
 																										globals.canLoadMorePosts,
 																									loadingMorePosts: getActivity(
@@ -121,6 +125,10 @@ export class WithUserFeed extends React.Component<
 																									refreshingFeed: getActivity(
 																										activities,
 																										ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																									),
+																									creatingPost: getActivity(
+																										activities,
+																										ActionTypes.CREATE_POST,
 																									),
 																									userPosts:
 																										aggregations.userPosts,

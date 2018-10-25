@@ -43,9 +43,9 @@ export const CreateWallPostScreenView: React.SFC<
 	onAddMedia,
 	onCreatePost,
 	mediaObjects,
-	getText,
 	marginBottom,
 	onClose,
+	getText,
 }) => (
 	<View
 		style={[
@@ -89,6 +89,7 @@ export const CreateWallPostScreenView: React.SFC<
 					width={buttonWidth}
 					onPress={onCreatePost}
 					borderColor={Colors.transparent}
+					disabled={shareText.length === 0}
 				/>
 			</View>
 		</ScrollView>
