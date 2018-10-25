@@ -85,6 +85,7 @@ class Screen extends React.Component<
 			aboutMeText,
 			relationship,
 		} = visitedUser;
+
 		return (
 			<UserProfileScreenView
 				refreshing={refreshingProfile}
@@ -119,9 +120,7 @@ class Screen extends React.Component<
 				onUserPress={this.onViewUserProfile}
 				onSubmitComment={postComment}
 				onCommentPress={this.onViewCommentsForPost}
-				onAddComment={(height: number) => {
-					/**/
-				}}
+				onAddComment={(height: number) => undefined}
 				onDeletePostPress={() => undefined}
 				onBlockUser={blockUser}
 				onReportProblem={reportProblem}
@@ -201,12 +200,10 @@ class Screen extends React.Component<
 	};
 
 	private onRefreshHandler = () => {
-		const { loadMorePosts, loadMorePhotos, visitedUser } = this.props;
+		const { visitedUser, refreshProfile, refreshingProfile } = this.props;
 
-		if (this.state.activeTab === PROFILE_TAB_ICON_TYPES.LIST) {
-			loadMorePosts(visitedUser.userId);
-		} else {
-			loadMorePhotos(visitedUser.userId);
+		if (!refreshingProfile) {
+			refreshProfile(visitedUser.userId);
 		}
 	};
 
@@ -291,6 +288,7 @@ class Screen extends React.Component<
 		this.props.navigation.goBack(null);
 	};
 
+	// @Alex Add getPostsForUser here
 	private onViewUserProfile = (userId: string) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({

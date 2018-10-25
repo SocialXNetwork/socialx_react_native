@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 
-import { suggestedItems } from '../../../mocks';
 import {
 	INavigationParamsActions,
 	ISearchResultData,
@@ -16,6 +15,7 @@ import {
 	SearchTabs,
 } from '../../../types';
 
+import { IPostReturnData } from '../../../store/aggregations/posts';
 import { ActionTypes } from '../../../store/aggregations/profiles/Types';
 import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
@@ -24,43 +24,21 @@ import { WithNavigationParams } from '../../connectors/app/WithNavigationParams'
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { getActivity } from '../../helpers';
 
-const mock: IWithSearchEnhancedProps = {
-	data: {
-		results: suggestedItems,
-		suggestions: suggestedItems,
-		searching: false,
-		hasMoreResults: true,
-	},
-	actions: {
-		getText: (value: string, ...args: any[]) => value,
-		findFriendsSuggestions: () => {
-			/**/
-		},
-		search: (term: string, tab: SearchTabs) => {
-			/**/
-		},
-		searchForMoreResults: () => {
-			/**/
-		},
-		setNavigationParams: () => {
-			/**/
-		},
-	},
-};
-
 export interface IWithSearchEnhancedData {
 	results: ISearchResultData[];
 	suggestions: ISearchResultData[];
 	searching: boolean;
 	hasMoreResults: boolean;
+	userPosts: { [owner: string]: IPostReturnData[] };
 }
 
 export interface IWithSearchEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions {
-	searchForMoreResults: () => void;
 	search: (term: string, tab: SearchTabs) => void;
+	searchForMoreResults: () => void;
 	findFriendsSuggestions: () => void;
+	getPostsForUser: (userName: string) => void;
 }
 
 interface IWithSearchEnhancedProps {
@@ -89,33 +67,29 @@ export class WithSearch extends React.Component<
 									<WithActivities>
 										{({ activities }) => (
 											<WithAggregations>
-												{({
-													searchResults,
-													friendsSuggestions,
-													searchProfilesByFullName,
-													findFriendsSuggestions,
-												}) => {
+												{(aggregations) => {
 													return this.props.children({
 														data: {
-															...mock.data,
 															// @Alexandre @Alex, this should be determined by the offset/length ratio
 															hasMoreResults: false,
 															searching: getActivity(
 																activities,
 																ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
 															),
-															results: searchResults.map((profile) => ({
-																userId: profile.alias,
-																fullName: profile.fullName,
-																userName: profile.alias,
-																location: '',
-																avatarURL:
-																	profile.avatar.length > 0
-																		? appConfig.ipfsConfig.ipfs_URL +
+															results: aggregations.searchResults.map(
+																(profile) => ({
+																	userId: profile.alias,
+																	fullName: profile.fullName,
+																	userName: profile.alias,
+																	location: '',
+																	avatarURL:
+																		profile.avatar.length > 0
+																			? appConfig.ipfsConfig.ipfs_URL +
 																		  profile.avatar  // tslint:disable-line
-																		: '',
-															})),
-															suggestions: friendsSuggestions.map(
+																			: '',
+																}),
+															),
+															suggestions: aggregations.friendsSuggestions.map(
 																(profile) => ({
 																	userId: profile.alias,
 																	fullName: profile.fullName,
@@ -128,22 +102,26 @@ export class WithSearch extends React.Component<
 																			: '',
 																}),
 															),
+															userPosts: aggregations.userPosts,
 														},
 														actions: {
-															...mock.actions,
 															search: async (term: string, tab: SearchTabs) => {
-																await searchProfilesByFullName({
+																await aggregations.searchProfilesByFullName({
 																	term,
 																	maxResults: 10,
 																});
 															},
 															findFriendsSuggestions: async () => {
-																await findFriendsSuggestions({
+																await aggregations.findFriendsSuggestions({
 																	maxResults: 10,
 																});
 															},
-															getText,
+															getPostsForUser: async (username: string) => {
+																await aggregations.getUserPosts({ username });
+															},
+															searchForMoreResults: () => undefined,
 															setNavigationParams,
+															getText,
 														},
 													});
 												}}

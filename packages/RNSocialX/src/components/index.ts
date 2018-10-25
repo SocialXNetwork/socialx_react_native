@@ -20,7 +20,7 @@ export { MediaHorizontalScroller } from './displayers/MediaHorizontalScroller';
 export { MediaObjectViewer } from './displayers/MediaObjectViewer';
 export { MyWalletInfo } from './displayers/MyWalletInfo';
 export { NoComments } from './displayers/NoComments';
-export { NoPhotos } from './displayers/NoPhotos';
+export { NoContent } from './displayers/NoContent';
 export { PeopleSearchResultEntry } from './displayers/PeopleSearchResultEntry';
 export { PhotoGrid } from './displayers/PhotoGrid';
 export { ProfilePhotoGrid } from './displayers/ProfilePhotoGrid';

@@ -5,7 +5,7 @@ const AVATAR_SIZE = Sizes.smartHorizontalScale(100);
 const AVATAR_CONTAINER_SIZE = Sizes.smartHorizontalScale(106);
 
 const styles: any = {
-	topContainer: {
+	container: {
 		backgroundColor: Colors.white,
 	},
 	background: {
@@ -47,7 +47,7 @@ const styles: any = {
 		flexDirection: 'row',
 	},
 	textContainer: {
-		marginBottom: Sizes.smartVerticalScale(5),
+		marginBottom: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	name: {

@@ -12,7 +12,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const { owner, posts } = action.payload;
 			return {
 				...state,
-				userPosts: { [owner]: posts },
+				userPosts: {
+					...state.userPosts,
+					[owner]: posts,
+				},
 			};
 		}
 

@@ -1,41 +1,21 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { SCREENS } from '../../environment/consts';
-import {
-	INavigationParamsActions,
-	INavigationProps,
-	ISearchResultData,
-	ITranslatedProps,
-} from '../../types';
+import { ISearchResultData, ITranslatedProps } from '../../types';
 import { SearchResults } from './SearchResults';
 import { SuggestedSearches } from './SuggestedSearches';
 
 import styles from './SearchTabResults.style';
 
-interface ISearchTabResultsProps
-	extends INavigationProps,
-		ITranslatedProps,
-		INavigationParamsActions {
+interface ISearchTabResultsProps extends ITranslatedProps {
 	searchTermValue: string;
 	searchResults: ISearchResultData[];
 	suggestions: ISearchResultData[];
 	searching: boolean;
 	hasMoreResults: boolean;
 	searchForMoreResults: () => void;
+	onResultPress: (userId: string) => void;
 }
-
-const onResultPressHandler = (
-	result: ISearchResultData,
-	navigation: any,
-	setNavigationParams: any,
-) => {
-	setNavigationParams({
-		screenName: SCREENS.UserProfile,
-		params: { userId: result.userId },
-	});
-	navigation.navigate(SCREENS.UserProfile);
-};
 
 const onLoadMoreResultsHandler = (
 	searching: boolean,
@@ -54,17 +34,14 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 	searching,
 	hasMoreResults,
 	searchForMoreResults,
+	onResultPress,
 	getText,
-	navigation,
-	setNavigationParams,
 }) => (
 	<View style={styles.container}>
 		{searchTermValue.length === 0 && (
 			<SuggestedSearches
 				items={suggestions}
-				onResultPress={(result) =>
-					onResultPressHandler(result, navigation, setNavigationParams)
-				}
+				onResultPress={(result) => onResultPress(result.userId)}
 				getText={getText}
 			/>
 		)}
@@ -72,9 +49,7 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 			<SearchResults
 				searchResults={searchResults}
 				searching={searching}
-				onResultPress={(result) =>
-					onResultPressHandler(result, navigation, setNavigationParams)
-				}
+				onResultPress={(result) => onResultPress(result.userId)}
 				hasMore={hasMoreResults}
 				onLoadMore={() =>
 					onLoadMoreResultsHandler(

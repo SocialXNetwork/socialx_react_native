@@ -12,7 +12,7 @@ import { DataProvider } from 'recyclerlistview';
 import {
 	CloseButton,
 	Header,
-	NoPhotos,
+	NoContent,
 	ProfilePhotoGrid,
 	ProfileTopContainer,
 	WallPostCard,
@@ -29,7 +29,7 @@ import styles, { colors } from './UserProfileScreen.style';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 interface IUserProfileScreenViewProps extends IWallPostCardActions {
-	avatarURL: any;
+	avatarURL: string;
 	fullName: string;
 	userName: false | string;
 	numberOfPhotos: number;
@@ -151,15 +151,16 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					activeTab={activeTab}
 					getText={getText}
 				/>
-				{hasPosts && (
-					<View style={contentContainerStyle}>
-						<Animated.View
-							style={[
-								styles.postsContainer,
-								{ transform: [{ translateX: listTranslate }] },
-							]}
-						>
-							{recentPosts.map((post: IWallPostCardData, index: number) => (
+
+				<View style={contentContainerStyle}>
+					<Animated.View
+						style={[
+							styles.postsContainer,
+							{ transform: [{ translateX: listTranslate }] },
+						]}
+					>
+						{hasPosts ? (
+							recentPosts.map((post: IWallPostCardData, index: number) => (
 								<View style={styles.wallPostContainer} key={post.postId}>
 									<WallPostCard
 										{...post}
@@ -184,37 +185,39 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 										noInput={true}
 									/>
 								</View>
-							))}
-						</Animated.View>
-						<Animated.View
-							onLayout={(event: any) => {
-								if (containerHeight !== event.nativeEvent.layout.height) {
-									onLayoutChange(event.nativeEvent.layout.height);
-								}
-							}}
-							style={[
-								styles.gridContainer,
-								{ transform: [{ translateX: gridTranslate }] },
-							]}
-						>
-							{hasPhotos ? (
-								<ProfilePhotoGrid
-									loadMorePhotosHandler={loadMorePhotosHandler}
-									gridMediaProvider={gridMediaProvider}
-									onViewMediaFullScreen={onViewMediaFullscreen}
-									header={{
-										element: <View style={{ width: 1, height: 1 }} />,
-										height: hasPhotos ? 1 : SCREEN_HEIGHT,
-									}}
-									disabled={hasPhotos}
-									getText={getText}
-								/>
-							) : (
-								<NoPhotos getText={getText} />
-							)}
-						</Animated.View>
-					</View>
-				)}
+							))
+						) : (
+							<NoContent posts={true} getText={getText} />
+						)}
+					</Animated.View>
+					<Animated.View
+						onLayout={(event: any) => {
+							if (containerHeight !== event.nativeEvent.layout.height) {
+								onLayoutChange(event.nativeEvent.layout.height);
+							}
+						}}
+						style={[
+							styles.gridContainer,
+							{ transform: [{ translateX: gridTranslate }] },
+						]}
+					>
+						{hasPhotos ? (
+							<ProfilePhotoGrid
+								loadMorePhotosHandler={loadMorePhotosHandler}
+								dataProvider={gridMediaProvider}
+								onViewMediaFullScreen={onViewMediaFullscreen}
+								header={{
+									element: <View style={{ width: 1, height: 1 }} />,
+									height: hasPhotos ? 1 : SCREEN_HEIGHT,
+								}}
+								disabled={hasPhotos}
+								getText={getText}
+							/>
+						) : (
+							<NoContent gallery={true} getText={getText} />
+						)}
+					</Animated.View>
+				</View>
 			</ScrollView>
 		</View>
 	);
