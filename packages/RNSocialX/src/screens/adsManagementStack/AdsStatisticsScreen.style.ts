@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 export const CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(35));

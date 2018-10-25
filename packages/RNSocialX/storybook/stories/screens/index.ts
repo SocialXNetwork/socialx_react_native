@@ -1,6 +1,6 @@
-import './adsManagementStack/AdsManagementConfigBudgetScreen';
 import './adsManagementStack/AdsManagementOverview';
 import './adsManagementStack/AdsManagementScreen';
+import './adsManagementStack/NewAdConfigBudgetScreen';
 
 import './commentsStack/CommentsScreen';
 
