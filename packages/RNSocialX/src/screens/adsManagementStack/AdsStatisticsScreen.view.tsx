@@ -2,7 +2,6 @@ import { Button, Segment, Text } from 'native-base';
 import * as React from 'react';
 import {
 	Animated,
-	FlatList,
 	LayoutChangeEvent,
 	TouchableHighlight,
 	View,
@@ -10,6 +9,7 @@ import {
 import { SafeAreaView } from 'react-navigation';
 
 import { Header, HeaderButton } from '../../components';
+import { BarChart } from '../../components/displayers/BarChart';
 import {
 	IMonthlyBarChartData,
 	ISpentTillNow,
@@ -17,7 +17,10 @@ import {
 } from '../../environment/consts';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
-import styles, { defaultStyles } from './AdsStatisticsScreen.style';
+import styles, {
+	CHART_ITEM_WIDTH,
+	defaultStyles,
+} from './AdsStatisticsScreen.style';
 
 interface IAdsStatisticsScreenViewProps extends ITranslatedProps, IHeaderProps {
 	transactions: Array<{
@@ -30,19 +33,10 @@ interface IAdsStatisticsScreenViewProps extends ITranslatedProps, IHeaderProps {
 	totalAmountSOCX: string;
 	translateXValue: Animated.Value;
 	weeklyChartContainerOnLayout: (event: LayoutChangeEvent) => void;
-	scrollRef: FlatList<IWeeklyBarChartData> | undefined;
 	weeklySeries: IWeeklyBarChartData[];
-	renderBarChartWeeklyItem: (
-		data: { item: IWeeklyBarChartData; index: number },
-	) => JSX.Element;
-	getWeeklyChartItemLayout: (
-		data: any,
-		index: number,
-	) => { length: number; offset: number; index: number };
 	monthlySeries: IMonthlyBarChartData[];
-	renderBarChartMonthlyItem: (
-		data: { item: IMonthlyBarChartData; index: number },
-	) => JSX.Element;
+	maxWeeklyValue: number;
+	maxMonthlyValue: number;
 }
 
 const SPENT_TILL_NOW_BUTTONS = [
@@ -68,12 +62,10 @@ export const AdsStatisticsScreenView: React.SFC<
 	totalAmountSOCX,
 	translateXValue,
 	weeklyChartContainerOnLayout,
-	scrollRef,
 	weeklySeries,
-	renderBarChartWeeklyItem,
-	getWeeklyChartItemLayout,
 	monthlySeries,
-	renderBarChartMonthlyItem,
+	maxMonthlyValue,
+	maxWeeklyValue,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
@@ -169,33 +161,17 @@ export const AdsStatisticsScreenView: React.SFC<
 							style={styles.fullWidth}
 							onLayout={weeklyChartContainerOnLayout}
 						>
-							<FlatList
-								showsHorizontalScrollIndicator={false}
-								ref={(ref: FlatList<IWeeklyBarChartData>) => (scrollRef = ref)}
-								horizontal={true}
-								data={weeklySeries}
-								renderItem={renderBarChartWeeklyItem}
-								getItemLayout={getWeeklyChartItemLayout}
-								initialNumToRender={10}
-								windowSize={30}
-								keyExtractor={(item: IWeeklyBarChartData, index: number) =>
-									index.toString()
-								}
+							<BarChart
+								dataSeries={weeklySeries}
+								maxDate={maxWeeklyValue}
+								CHART_ITEM_WIDTH={CHART_ITEM_WIDTH}
 							/>
 						</View>
 						<View style={styles.fullWidth}>
-							<FlatList
-								alwaysBounceHorizontal={false}
-								contentContainerStyle={{
-									flex: 1,
-									justifyContent: 'space-between',
-								}}
-								horizontal={true}
-								data={monthlySeries}
-								renderItem={renderBarChartMonthlyItem}
-								keyExtractor={(item: IMonthlyBarChartData, index: number) =>
-									index.toString()
-								}
+							<BarChart
+								contentStyle={styles.monthlyBarChartStyles}
+								dataSeries={monthlySeries}
+								maxDate={maxMonthlyValue}
 							/>
 						</View>
 					</Animated.View>
