@@ -498,6 +498,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 			const { dataApi } = context;
 			await dataApi.posts.removePost(removePostInput);
 			dispatch(syncRemovePostAction(removePostInput.postId));
+			await dispatch(getUserPosts({ username: auth.alias }));
 		} catch (e) {
 			await dispatch(
 				setError({
