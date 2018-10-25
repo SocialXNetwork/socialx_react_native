@@ -12,8 +12,7 @@ const style: any = {
 		height: 0,
 	},
 	scrollContent: {
-		// width: '300%',
-		width: '100%',
+		width: '300%',
 	},
 };
 

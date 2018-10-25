@@ -2,20 +2,25 @@ import moment from 'moment';
 import * as React from 'react';
 import Picker from 'react-native-picker';
 
-import { INavigationProps } from '../../types';
-
 import { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
 import { AdsManagementConfigBudgetScreenView } from './AdsManagementConfigBudgetScreen.view';
 
-import {
-	IWithAdsManagementConfigBudgetEnhancedActions,
-	IWithAdsManagementConfigBudgetEnhancedData,
-	WithAdsManagementConfigBudget,
-} from '../../enhancers/screens';
+import { IConfirmation } from '../../store/ui/overlays';
+import { ITranslatedProps } from '../../types';
 
-type IAdsManagementConfigBudgetScreenProps = INavigationProps &
-	IWithAdsManagementConfigBudgetEnhancedActions &
-	IWithAdsManagementConfigBudgetEnhancedData;
+export interface IBudgetConfigData {
+	currency: string;
+	budget: number;
+	perDay: boolean;
+	lifetime: boolean;
+	runAdContinuously: boolean;
+	start: string;
+	stop: string;
+}
+
+interface IAdsManagementConfigBudgetScreenProps extends ITranslatedProps {
+	showConfirmation: (confirmation: IConfirmation) => void;
+}
 
 interface IAdsManagementConfigBudgetScreenState {
 	budgetValue: string;
@@ -39,7 +44,7 @@ const pickerData = [
 
 const dateFormatMomentJS = 'DD/MM/YYYY';
 
-class Screen extends React.Component<
+export class AdsManagementConfigBudgetScreen extends React.Component<
 	IAdsManagementConfigBudgetScreenProps,
 	IAdsManagementConfigBudgetScreenState
 > {
@@ -79,7 +84,6 @@ class Screen extends React.Component<
 
 		return (
 			<AdsManagementConfigBudgetScreenView
-				onGoBack={this.onGoBackHandler}
 				getText={getText}
 				currencyButtonPressed={this.currencyButtonPressed}
 				selectedCurrencyValue={selectedCurrencyValue}
@@ -98,13 +102,30 @@ class Screen extends React.Component<
 				nextDayFromStartDate={nextDayFromStartDate}
 				handleStartDatePicked={this.handleStartDatePicked}
 				handleStopDatePicked={this.handleStopDatePicked}
-				nextButtonPressed={this.nextButtonPressed}
 			/>
 		);
 	}
 
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
+	public getAdBudgetData = (): IBudgetConfigData => {
+		const {
+			selectedCurrencyValue,
+			budgetValue,
+			perDayPressed,
+			lifetimePressed,
+			runAdContinuouslyPressed,
+			selectedStartDate,
+			selectedStopDate,
+		} = this.state;
+
+		return {
+			currency: selectedCurrencyValue,
+			budget: parseInt(budgetValue, 10),
+			perDay: perDayPressed,
+			lifetime: lifetimePressed,
+			runAdContinuously: runAdContinuouslyPressed,
+			start: selectedStartDate,
+			stop: selectedStopDate,
+		};
 	};
 
 	private currencyButtonPressed = () => {
@@ -214,50 +235,4 @@ class Screen extends React.Component<
 			nextDayFromStartDate: newDate,
 		});
 	};
-
-	private nextButtonPressed = () => {
-		const { getText } = this.props;
-
-		this.props.showConfirmation({
-			title: getText('ad.management.budget.modal.confirm.title'),
-			message: getText('ad.management.budget.modal.confirm.message'),
-			confirmButtonLabel: getText(
-				'ad.management.budget.modal.confirm.confirm.label',
-			),
-			cancelButtonLabel: getText(
-				'ad.management.budget.modal.confirm.cancel.label',
-			),
-			confirmHandler: this.saveAdConfirmedHandler,
-		});
-	};
-
-	private saveAdConfirmedHandler = () => {
-		const {
-			selectedCurrencyValue,
-			budgetValue,
-			perDayPressed,
-			lifetimePressed,
-			runAdContinuouslyPressed,
-			selectedStartDate,
-			selectedStopDate,
-		} = this.state;
-
-		const budgetObject = {
-			currency: selectedCurrencyValue,
-			budget: parseInt(budgetValue, 10),
-			perDay: perDayPressed,
-			lifetime: lifetimePressed,
-			runAdContinuously: runAdContinuouslyPressed,
-			start: selectedStartDate,
-			stop: selectedStopDate,
-		};
-
-		this.props.onCreateAdSetBudget(budgetObject);
-	};
 }
-
-export const AdsManagementConfigBudgetScreen = (navProps: INavigationProps) => (
-	<WithAdsManagementConfigBudget>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithAdsManagementConfigBudget>
-);

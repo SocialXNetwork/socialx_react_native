@@ -119,7 +119,6 @@ export const NewAdSetupPostScreenView: React.SFC<
 							)}
 						</View>
 					</ScrollView>
-					<CreateAdSteps currentStep={'post'} onGoToNextStep={handleSubmit} />
 				</React.Fragment>
 			)}
 		/>

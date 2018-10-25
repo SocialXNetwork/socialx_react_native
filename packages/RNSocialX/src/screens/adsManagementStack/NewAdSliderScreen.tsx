@@ -1,19 +1,32 @@
 import * as React from 'react';
 
+import { Dimensions, ScrollView } from 'react-native';
 import {
 	IWithNewAdSliderEnhancedActions,
 	IWithNewAdSliderEnhancedData,
 	WithNewAdSlider,
 } from '../../enhancers/screens';
 import { ICreateAdSteps, INavigationProps } from '../../types';
-import { NewAdSetupPostScreen } from './NewAdSetupPostScreen';
+import { AdsManagementConfigBudgetScreen } from './AdsManagementConfigBudgetScreen';
+import { NewAdSetupAudience } from './NewAdSetupAudience';
+import { INewAdSetupAudienceData } from './NewAdSetupAudience.view';
+import { IAdSetupPostData, NewAdSetupPostScreen } from './NewAdSetupPostScreen';
 import { NewAdSliderScreenView } from './NewAdSliderScreen.view';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const SLIDER_STEPS = [
 	ICreateAdSteps.SetupPost,
 	ICreateAdSteps.SetupAudience,
 	ICreateAdSteps.SetupBudget,
 ];
+
+interface IFormikProps {
+	getFormikComputedProps: () => {
+		isValid: boolean;
+	};
+	submitForm: () => void;
+}
 
 type INewAdSliderScreenProps = INavigationProps &
 	IWithNewAdSliderEnhancedData &
@@ -31,11 +44,17 @@ class Screen extends React.Component<
 		stepIndex: 0,
 	};
 
-	private adSetupPostFormik = React.createRef();
-	private adSetupAudienceFormik = React.createRef();
+	private postData: IAdSetupPostData | null = null;
+	private audienceData: INewAdSetupAudienceData | null = null;
+
+	private adSetupPostFormik: React.RefObject<IFormikProps> = React.createRef();
+	private adSetupAudienceFormik: React.RefObject<
+		IFormikProps
+	> = React.createRef();
+	private scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
 	public render() {
-		const { getText, showDotsMenuModal } = this.props;
+		const { getText, showDotsMenuModal, showConfirmation } = this.props;
 		const { stepIndex } = this.state;
 		return (
 			<NewAdSliderScreenView
@@ -43,12 +62,23 @@ class Screen extends React.Component<
 				onGoBack={this.onGoBackHandler}
 				onGoToNextStep={this.onGoToNextStepHandler}
 				sliderStep={SLIDER_STEPS[stepIndex]}
+				ref={this.scrollViewRef}
 			>
 				<NewAdSetupPostScreen
 					showDotsMenuModal={showDotsMenuModal}
 					getText={getText}
 					updateAdSetPost={this.updateAdSetPostHandler}
 					adSetupPostFormik={this.adSetupPostFormik}
+				/>
+				<NewAdSetupAudience
+					getText={getText}
+					adSetupAudienceFormik={this.adSetupAudienceFormik}
+					updateAdSetAudience={this.updateAdSetAudienceHandler}
+				/>
+				<AdsManagementConfigBudgetScreen
+					getText={getText}
+					showConfirmation={showConfirmation}
+					/* TODO: create ref here to read the data! */
 				/>
 			</NewAdSliderScreenView>
 		);
@@ -58,8 +88,36 @@ class Screen extends React.Component<
 		this.props.navigation.goBack(null);
 	};
 
-	private updateAdSetPostHandler = (...args: any) => {
-		console.log('TODO: updateAdSetPost', args);
+	private updateAdSetPostHandler = (postData: IAdSetupPostData) => {
+		console.log('updateAdSetPostHandler', postData);
+		this.postData = postData;
+	};
+
+	private updateAdSetAudienceHandler = (
+		audienceData: INewAdSetupAudienceData,
+	) => {
+		console.log('updateAdSetAudienceHandler', audienceData);
+		this.audienceData = audienceData;
+	};
+
+	private confirmAdCreationHandler = () => {
+		const { getText } = this.props;
+
+		this.props.showConfirmation({
+			title: getText('ad.management.budget.modal.confirm.title'),
+			message: getText('ad.management.budget.modal.confirm.message'),
+			confirmButtonLabel: getText(
+				'ad.management.budget.modal.confirm.confirm.label',
+			),
+			cancelButtonLabel: getText(
+				'ad.management.budget.modal.confirm.cancel.label',
+			),
+			confirmHandler: this.adCreationConfirmedHandler,
+		});
+	};
+
+	private adCreationConfirmedHandler = () => {
+		console.log('adCreationConfirmedHandler');
 	};
 
 	private onGoToNextStepHandler = () => {
@@ -67,24 +125,32 @@ class Screen extends React.Component<
 		if (stepIndex < SLIDER_STEPS.length - 1) {
 			let validationPassed = true;
 			const adSetupPostFormik = this.adSetupPostFormik.current;
+			const adSetupAudienceFormik = this.adSetupAudienceFormik.current;
 			if (
 				SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupPost &&
 				adSetupPostFormik
 			) {
-				// @ts-ignore
 				validationPassed = adSetupPostFormik.getFormikComputedProps().isValid;
-				// @ts-ignore
 				adSetupPostFormik.submitForm();
-			} else if (SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupPost) {
-				// TODO
-			} else if (SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupBudget) {
-				// TODO
+			} else if (
+				SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupAudience &&
+				adSetupAudienceFormik
+			) {
+				validationPassed = adSetupAudienceFormik.getFormikComputedProps()
+					.isValid;
+				adSetupAudienceFormik.submitForm();
 			}
-			if (validationPassed) {
+			if (validationPassed && this.scrollViewRef.current) {
 				this.setState({ stepIndex: stepIndex + 1 });
+				this.scrollViewRef.current.scrollTo({
+					x: SCREEN_WIDTH * (stepIndex + 1),
+					y: 0,
+					animated: true,
+				});
 			}
 		} else {
 			console.log('Handle finish action');
+			this.confirmAdCreationHandler();
 		}
 	};
 }

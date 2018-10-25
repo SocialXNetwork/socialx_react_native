@@ -11,19 +11,17 @@ interface INewAdSliderScreenViewProps extends ITranslatedProps {
 	onGoToNextStep: () => void;
 }
 
-export const NewAdSliderScreenView: React.SFC<INewAdSliderScreenViewProps> = ({
-	getText,
-	onGoBack,
-	sliderStep,
-	onGoToNextStep,
-	children,
-}) => (
+export const NewAdSliderScreenView = React.forwardRef<
+	ScrollView,
+	INewAdSliderScreenViewProps
+>(({ getText, onGoBack, sliderStep, onGoToNextStep, children }, ref) => (
 	<View style={styles.rootView}>
 		<Header
 			title={getText('new.ad.setup.post.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<ScrollView
+			ref={ref}
 			horizontal={true}
 			pagingEnabled={true}
 			contentContainerStyle={styles.scrollContent}
@@ -34,4 +32,4 @@ export const NewAdSliderScreenView: React.SFC<INewAdSliderScreenViewProps> = ({
 		</ScrollView>
 		<CreateAdSteps currentStep={sliderStep} onGoToNextStep={onGoToNextStep} />
 	</View>
-);
+));
