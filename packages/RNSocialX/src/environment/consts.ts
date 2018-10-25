@@ -40,12 +40,12 @@ export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
 
 export interface IWeeklyBarChartData {
 	value: number;
-	date: Date;
+	label: string;
 }
 
 export interface IMonthlyBarChartData {
 	value: number;
-	monthShort: string;
+	label: string;
 }
 
 export enum ISpentTillNow {

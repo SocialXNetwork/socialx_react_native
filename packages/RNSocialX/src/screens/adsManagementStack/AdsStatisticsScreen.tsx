@@ -1,14 +1,7 @@
 import moment from 'moment';
 import numeral from 'numeral';
 import * as React from 'react';
-import {
-	Animated,
-	Easing,
-	FlatList,
-	LayoutChangeEvent,
-	Text,
-	View,
-} from 'react-native';
+import { Animated, Easing, LayoutChangeEvent } from 'react-native';
 
 import {
 	dateFormatMomentJS,
@@ -17,10 +10,6 @@ import {
 	IWeeklyBarChartData,
 } from '../../environment/consts';
 import { INavigationProps } from '../../types';
-import styles, {
-	defaultStyles,
-	WEEK_CHART_ITEM_WIDTH,
-} from './AdsStatisticsScreen.style';
 import { AdsStatisticsScreenView } from './AdsStatisticsScreen.view';
 
 import {
@@ -49,8 +38,7 @@ class Screen extends React.Component<
 
 	private slideWidth = 0;
 	private maxWeeklyValue = 0;
-	private maxMonthValue = 0;
-	private scrollRef: FlatList<IWeeklyBarChartData> | undefined;
+	private maxMonthlyValue = 0;
 
 	public render() {
 		const {
@@ -69,7 +57,7 @@ class Screen extends React.Component<
 		});
 
 		this.maxWeeklyValue = this.getMaxSeriesValue(weeklySeries);
-		this.maxMonthValue = this.getMaxSeriesValue(monthlySeries);
+		this.maxMonthlyValue = this.getMaxSeriesValue(monthlySeries);
 
 		return (
 			<AdsStatisticsScreenView
@@ -82,12 +70,10 @@ class Screen extends React.Component<
 				totalAmountSOCX={totalAmountSOCXFormatted}
 				translateXValue={translateX}
 				weeklyChartContainerOnLayout={this.weeklyChartContainerOnLayout}
-				scrollRef={this.scrollRef}
 				weeklySeries={weeklySeries}
-				renderBarChartWeeklyItem={this.renderBarChartWeeklyItem}
-				getWeeklyChartItemLayout={this.getWeeklyChartItemLayout}
 				monthlySeries={monthlySeries}
-				renderBarChartMonthlyItem={this.renderBarChartMonthlyItem}
+				maxWeeklyValue={this.maxWeeklyValue}
+				maxMonthlyValue={this.maxMonthlyValue}
 			/>
 		);
 	}
@@ -126,14 +112,6 @@ class Screen extends React.Component<
 		}).start();
 	};
 
-	private getWeeklyChartItemLayout = (data: any, index: number) => {
-		return {
-			length: WEEK_CHART_ITEM_WIDTH,
-			offset: WEEK_CHART_ITEM_WIDTH * index,
-			index,
-		};
-	};
-
 	private weeklyChartContainerOnLayout = (event: LayoutChangeEvent) => {
 		this.slideWidth = event.nativeEvent.layout.width;
 	};
@@ -148,63 +126,6 @@ class Screen extends React.Component<
 			}
 		}
 		return ret;
-	};
-
-	private renderBarChartWeeklyItem = (data: {
-		item: IWeeklyBarChartData;
-		index: number;
-	}) => {
-		const weekDate = moment(data.item.date).week();
-		const weekDateSuffix = this.props.getText(
-			'ad.statistics.chart.currentweek.text',
-		);
-		const barChartColumnStyles = [
-			styles.barChartColumn,
-			{
-				backgroundColor:
-					data.index % 2 === 0
-						? defaultStyles.barChartColumnColor
-						: defaultStyles.barChartColumnLightColor,
-				height: Math.round((data.item.value * 100) / this.maxWeeklyValue) + '%',
-			},
-		];
-		return (
-			<View style={styles.weekChartItem}>
-				<View style={styles.barChartColumnContainer}>
-					<View style={barChartColumnStyles} />
-				</View>
-				<View style={styles.barChartLabelContainer}>
-					<Text style={styles.barCharItemLabel}>{weekDate}</Text>
-					<Text style={styles.barCharItemLabelLowerScript}>
-						{weekDateSuffix}
-					</Text>
-				</View>
-			</View>
-		);
-	};
-
-	private renderBarChartMonthlyItem = (data: {
-		item: IMonthlyBarChartData;
-		index: number;
-	}) => {
-		const barChartColumnStyles = [
-			styles.barChartColumn,
-			{
-				backgroundColor:
-					data.index % 2 === 0
-						? defaultStyles.barChartColumnColor
-						: defaultStyles.barChartColumnLightColor,
-				height: Math.round((data.item.value * 100) / this.maxMonthValue) + '%',
-			},
-		];
-		return (
-			<View style={styles.monthChartItem}>
-				<View style={styles.barChartColumnContainer}>
-					<View style={barChartColumnStyles} />
-				</View>
-				<Text style={styles.barCharItemLabel}>{data.item.monthShort}</Text>
-			</View>
-		);
 	};
 }
 

@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { Colors, colorWithAlpha, Fonts, Sizes } from '../../environment/theme';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-export const WEEK_CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(35));
+export const CHART_ITEM_WIDTH = Math.round(Sizes.smartHorizontalScale(35));
 
 const styles: any = {
 	container: {
@@ -75,36 +75,26 @@ const styles: any = {
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
+		justifyContent: 'center',
+		alignItems: 'center',
 		paddingVertical: Sizes.smartVerticalScale(19),
 		paddingHorizontal: Sizes.smartHorizontalScale(18),
 	},
-	button: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		height: Sizes.smartHorizontalScale(35),
-		width: Sizes.smartVerticalScale(100),
-		borderWidth: 1,
-		borderColor: Colors.pink,
-		backgroundColor: Colors.pink,
-		borderRadius: 32,
-		fontSize: Sizes.smartHorizontalScale(14),
-		marginRight: Sizes.smartVerticalScale(18),
-	},
-	buttonText: {
-		color: Colors.white,
-	},
 	segment: {
+		width: '100%',
+		height: '100%',
 		backgroundColor: Colors.white,
 	},
 	segmentButtonSpentTillNowActive: {
+		width: '50%',
+		justifyContent: 'center',
 		backgroundColor: Colors.pink,
 		borderColor: Colors.pink,
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 	segmentButtonSpentTillNowInactive: {
+		width: '50%',
+		justifyContent: 'center',
 		backgroundColor: 'transparent',
 		borderColor: Colors.pink,
 		paddingVertical: Sizes.smartVerticalScale(10),
@@ -144,36 +134,9 @@ const styles: any = {
 		minHeight: Sizes.smartVerticalScale(75),
 		maxHeight: Sizes.smartHorizontalScale(150),
 	},
-	barChartColumn: {
-		width: Sizes.smartHorizontalScale(8),
-	},
-	weekChartItem: {
-		width: WEEK_CHART_ITEM_WIDTH,
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-	},
-	barChartColumnContainer: {
+	monthlyBarChartStyles: {
 		flex: 1,
-		justifyContent: 'flex-end',
-	},
-	barChartLabelContainer: {
-		marginTop: Sizes.smartHorizontalScale(9),
-		flexDirection: 'row',
-		alignItems: 'flex-end',
-	},
-	barCharItemLabel: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.paleSky,
-	},
-	barCharItemLabelLowerScript: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(8),
-		color: Colors.paleSky,
-	},
-	monthChartItem: {
-		alignItems: 'center',
-		justifyContent: 'flex-end',
+		justifyContent: 'space-between',
 	},
 };
 
@@ -181,6 +144,4 @@ export default StyleSheet.create(styles) as any;
 
 export const defaultStyles = {
 	highlightButton: Colors.pinkLace,
-	barChartColumnColor: Colors.pink,
-	barChartColumnLightColor: colorWithAlpha(Colors.pink, 0.5),
 };

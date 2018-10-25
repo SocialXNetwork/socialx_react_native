@@ -21,11 +21,11 @@ const getRandomWeeklyValuesForCurrentYear = () => {
 		const randomValue = Math.round(Math.random() * 100);
 		ret.push({
 			value: randomValue,
-			date: indexDate.toDate(),
+			label: `${indexDate.week()}`,
 		});
 		indexDate.add(1, 'weeks');
 	}
-	ret.sort((left, right) => moment.utc(left.date).diff(moment.utc(right.date)));
+	ret.sort();
 	return ret;
 };
 
@@ -37,14 +37,12 @@ const getRandomMonthlyValuesForLastTwelveMonths = () => {
 		const randomValue = Math.round(Math.random() * 100);
 		ret.push({
 			value: randomValue,
-			monthShort: indexDate.format('MMM'),
+			label: indexDate.format('MMM'),
 		});
 		indexDate.add(1, 'month');
 	}
 	ret.sort((left, right) =>
-		moment
-			.utc(left.monthShort, 'MMM')
-			.diff(moment.utc(right.monthShort, 'MMM')),
+		moment.utc(left.label, 'MMM').diff(moment.utc(right.label, 'MMM')),
 	);
 	return ret;
 };
