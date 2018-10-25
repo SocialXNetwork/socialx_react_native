@@ -39,9 +39,8 @@ export const getPostPathsByUser = (
 	{ username }: { username: string },
 	callback: IGunCallback<string[]>,
 ) => {
-	postHandles
-		.postMetasByUsername(context, username)
-		.docLoad((postsMeta: IPostUserMetasCallback) => {
+	postHandles.postMetasByUsername(context, username).docLoad(
+		(postsMeta: IPostUserMetasCallback) => {
 			if (!Object.keys(postsMeta).length) {
 				return callback([]);
 			}
@@ -49,7 +48,9 @@ export const getPostPathsByUser = (
 				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
 			);
 			return callback(null, paths);
-		});
+		},
+		{ wait: 800, timeout: 1000 },
+	);
 };
 
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
