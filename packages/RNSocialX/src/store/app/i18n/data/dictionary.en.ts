@@ -11,7 +11,9 @@ export default {
 	'button.add.friend': 'Add friend',
 	'button.add': 'Add',
 	'button.yes': 'Yes!',
-	'button.no': 'No',
+    'button.no': 'No',
+    'button.edit': 'Edit',
+    'button.duplicate': 'Duplicate',
 	'button.SEND': 'SEND',
 	'button.RECEIVE': 'RECEIVE',
 	'button.CONTINUE': 'CONTINUE',
@@ -322,4 +324,5 @@ export default {
     'ad.statistics.amount.text': 'Total amount of SOCX',
     'ad.statistics.chart.currentweek.text': 'CW',
     'ad.management.editad.title': 'Ad Edit',
+    'ad.management.editad.adpreview': 'Ad Preview',
 };
