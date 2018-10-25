@@ -13,12 +13,14 @@ import {
 	IPickerImageMultiple,
 } from '../../utilities';
 
+export interface IAdSetupPostData {
+	headline: string;
+	description: string;
+	mediaObjects: IWallPostPhotoOptimized[];
+}
+
 interface INewAdSetupPostScreenProps extends ITranslatedProps, IDotsMenuProps {
-	updateAdSetPost: (
-		headline: string,
-		description: string,
-		mediaObjects: IWallPostPhotoOptimized[],
-	) => void;
+	updateAdSetPost: (data: IAdSetupPostData) => void;
 	adSetupPostFormik: React.RefObject<any>;
 }
 
@@ -53,19 +55,19 @@ export class NewAdSetupPostScreen extends React.Component<
 	private updateAdSetPostHandler = (headline: string, description: string) => {
 		const { updateAdSetPost } = this.props;
 		const { mediaObjects } = this.state;
-		updateAdSetPost(headline, description, mediaObjects);
+		updateAdSetPost({ headline, description, mediaObjects });
 	};
 
 	private onAddMediaHandler = () => {
 		const { showDotsMenuModal, getText } = this.props;
 		const menuItems = [
 			{
-				label: getText('new.wall.post.screen.menu.pick.from.gallery'),
+				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
 				actionHandler: () => this.addToScrollerSelectedMediaObject('gallery'),
 			},
 			{
-				label: getText('new.wall.post.screen.menu.take.photo'),
+				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
 				actionHandler: () => this.addToScrollerSelectedMediaObject('photo'),
 			},

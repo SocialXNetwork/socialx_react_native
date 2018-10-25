@@ -11,14 +11,11 @@ import {
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { Header, HeaderButton, PrimaryButton } from '../../components';
-import { IHeaderProps, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
 
-interface IAdsManagementConfigBudgetScreenViewProps
-	extends ITranslatedProps,
-		IHeaderProps {
+interface IAdsManagementConfigBudgetScreenViewProps extends ITranslatedProps {
 	currencyButtonPressed: () => void;
 	selectedCurrencyValue: string;
 	budgetValue: string;
@@ -40,13 +37,11 @@ interface IAdsManagementConfigBudgetScreenViewProps
 	handleStopDatePicked: (date: Date) => void;
 	selectedStartDate: string;
 	selectedStopDate: string;
-	nextButtonPressed: () => void;
 }
 
 export const AdsManagementConfigBudgetScreenView: React.SFC<
 	IAdsManagementConfigBudgetScreenViewProps
 > = ({
-	onGoBack,
 	getText,
 	currencyButtonPressed,
 	selectedCurrencyValue,
@@ -65,22 +60,17 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 	handleStopDatePicked,
 	selectedStartDate,
 	selectedStopDate,
-	nextButtonPressed,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={getText('ad.management.create')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
-		<Text style={styles.title}>
-			{getText('ad.management.budget.title').toUpperCase()}
-		</Text>
-		<View style={styles.separator} />
-		<View style={styles.marginBetweenTitleAndCurrency} />
 		<ScrollView
 			alwaysBounceVertical={false}
 			keyboardShouldPersistTaps="handled"
 		>
+			<Text style={styles.title}>
+				{getText('ad.management.budget.title').toUpperCase()}
+			</Text>
+			<View style={styles.separator} />
+			<View style={styles.marginBetweenTitleAndCurrency} />
 			<TouchableHighlight
 				underlayColor={defaultStyles.checkboxColor}
 				onPress={currencyButtonPressed}
@@ -241,13 +231,6 @@ export const AdsManagementConfigBudgetScreenView: React.SFC<
 						</View>
 					</View>
 				</TouchableHighlight>
-			</View>
-			<View style={styles.buttonContainer}>
-				<PrimaryButton
-					label={getText('button.next')}
-					onPress={nextButtonPressed}
-					containerStyle={styles.button}
-				/>
 			</View>
 		</ScrollView>
 	</View>
