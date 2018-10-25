@@ -38,8 +38,120 @@ import {
 	IRecoverData,
 } from './types';
 
-// TODO: rollback
-export const createAccount = (
+/**
+ * create the user's profile
+ */
+const createAccountProfile = (
+	context: IContext,
+	createAccountInput: ICreateAccountInput,
+) => {
+	const {
+		username,
+		aboutMeText,
+		miningEnabled,
+		fullName,
+		email,
+		avatar,
+	} = createAccountInput;
+	const pub = context.account.is.pub;
+	return new Promise((res, rej) =>
+		createProfile(
+			context,
+			{
+				username,
+				aboutMeText,
+				miningEnabled,
+				fullName,
+				email,
+				avatar,
+				pub,
+			},
+			(err) => {
+				if (err) {
+					rej(new ApiError(`failed to set created account ${err}`));
+				}
+				res();
+			},
+		),
+	);
+};
+
+/**
+ * create the recovery object on the current user's private scope
+ * @param recoveryData object the user's recovery information
+ */
+const createRecoveryOnAccount = (context: IContext, recoveryData: object) => {
+	return new Promise((res, rej) =>
+		accountHandles
+			.currentAccountRecover(context)
+			.put(recoveryData, (recoverCallback) => {
+				if (recoverCallback.err) {
+					rej(
+						new ApiError(
+							`failed to create account recovery settings ${
+								recoverCallback.err
+							}`,
+						),
+					);
+				}
+				res();
+			}),
+	);
+};
+
+/**
+ * authenticate with the newly created account to have access to the private scope
+ */
+const authenticateWithUser = (
+	context: IContext,
+	createAccountInput: ICreateAccountInput,
+) => {
+	const { account, encrypt, work } = context;
+	const {
+		username,
+		password,
+		recover: { reminder, question1, question2 },
+	} = createAccountInput;
+	return new Promise((res, rej) =>
+		account.auth(username, password, async (authAck: any) => {
+			if (authAck.err) {
+				rej(new ApiError(`failed authentication ${authAck.err}`));
+			}
+
+			const encryptedReminder = await encrypt(
+				reminder,
+				await work(question1, question2),
+			);
+			res({
+				encryptedReminder,
+				question1: question1.length,
+				question2: question2.length,
+			});
+		}),
+	);
+};
+
+/**
+ * create the user account
+ */
+const createAccountRecord = (
+	context: IContext,
+	createAccountInput: ICreateAccountInput,
+) => {
+	const { username, password } = createAccountInput;
+	return new Promise((res, rej) =>
+		context.account.create(username, password, (createAccountCallback) => {
+			if (createAccountCallback.wait) {
+				// we wait? what do we do here
+			} else if (createAccountCallback.err) {
+				rej(new ApiError(`${createAccountCallback.err}`));
+			}
+			res();
+		}),
+	);
+};
+
+export const createAccount = async (
 	context: IContext,
 	createAccountInput: ICreateAccountInput,
 	callback: IGunCallback<null>,
@@ -51,114 +163,11 @@ export const createAccount = (
 		);
 	}
 
-	const {
-		username,
-		password,
-		fullName,
-		email,
-		avatar,
-		aboutMeText,
-		miningEnabled,
-		recover: { reminder, question1, question2 },
-	} = createAccountInput;
-	const errPrefix = 'failed to create a new account';
-
-	/**
-	 * create the user account
-	 */
-	const mainRunner = () => {
-		account.create(username, password, (createAccountCallback) => {
-			if (createAccountCallback.wait) {
-				// we wait? what do we do here
-			} else if (createAccountCallback.err) {
-				return callback(
-					new ApiError(`${errPrefix} ${createAccountCallback.err}`, {
-						initialRequestBody: createAccountInput,
-					}),
-				);
-			} else {
-				authenticateWithUser();
-			}
-		});
-	};
-	/**
-	 * authenticate with the newly created account to have access to the private scope
-	 */
-	const authenticateWithUser = () => {
-		account.auth(username, password, async (authAck) => {
-			if (authAck.err) {
-				return callback(
-					new ApiError(`${errPrefix}, failed authentication ${authAck.err}`, {
-						initialRequestBody: createAccountInput,
-					}),
-				);
-			}
-
-			const encryptedReminder = await encrypt(
-				reminder,
-				await work(question1, question2),
-			);
-			const recoveryData = {
-				encryptedReminder,
-				question1: question1.length,
-				question2: question2.length,
-			};
-			createRecoveryOnAccount(recoveryData);
-		});
-	};
-	/**
-	 * create the recovery object on the current user's private scope
-	 * @param recoveryData object the user's recovery information
-	 */
-	const createRecoveryOnAccount = (recoveryData: object) => {
-		accountHandles
-			.currentAccountRecover(context)
-			.put(recoveryData, (recoverCallback) => {
-				if (recoverCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, failed to create account recovery settings ${
-								recoverCallback.err
-							}`,
-							{
-								initialRequestBody: createAccountInput,
-							},
-						),
-					);
-				}
-				createAccountProfile();
-			});
-	};
-	/**
-	 * create the user's profile
-	 */
-	const createAccountProfile = () => {
-		createProfile(
-			context,
-			{
-				username,
-				aboutMeText,
-				miningEnabled,
-				fullName,
-				email,
-				avatar,
-				pub: account.is.pub,
-			},
-			(err) => {
-				if (err) {
-					return callback(
-						new ApiError(`${errPrefix}, failed to set created account ${err}`, {
-							initialRequestBody: createAccountInput,
-						}),
-					);
-				}
-
-				return callback(null);
-			},
-		);
-	};
-	// run sequence
-	mainRunner();
+	await createAccountRecord(context, createAccountInput);
+	const recoveryData = await authenticateWithUser(context, createAccountInput);
+	await createRecoveryOnAccount(context, recoveryData);
+	await createAccountProfile(context, createAccountInput);
+	return callback(null);
 };
 
 export const login = (
