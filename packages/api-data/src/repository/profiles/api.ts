@@ -257,14 +257,13 @@ export default (context: IContext) => ({
 	searchByFullName: ({
 		textSearch,
 		maxResults = 10,
-		alias,
 	}: ISearchProfilesByFullNameInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) => {
 			!textSearch || !textSearch.length || typeof textSearch !== 'string'
 				? resolve([])
 				: getters.findProfilesByFullName(
 						context,
-						{ textSearch, maxResults, alias },
+						{ textSearch, maxResults },
 						resolveCallback(resolve, reject),
 				  ); // tslint:disable-line
 		}),

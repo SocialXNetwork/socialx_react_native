@@ -113,22 +113,16 @@ export const getCurrentProfileFriends = (
 
 export const findProfilesByFullName = (
 	context: IContext,
-	{
-		textSearch,
-		maxResults,
-		alias,
-	}: { textSearch: string; maxResults?: number; alias: string },
+	{ textSearch, maxResults }: { textSearch: string; maxResults?: number },
 	callback: IGunCallback<any[]>,
 ) => {
 	profileHandles
 		.publicProfilesRecord(context)
 		.find({ fullName: new RegExp(textSearch, 'i') }, (data: any) => {
-			const profilesReturned = data
-				.map((profile: any) => ({
-					...profile,
-					friends: friendsToArray(profile.friends) || [],
-				}))
-				.filter((profile: any = {}) => profile.alias !== alias);
+			const profilesReturned = data.map((profile: any) => ({
+				...profile,
+				friends: friendsToArray(profile.friends) || [],
+			}));
 			if (maxResults) {
 				return callback(null, profilesReturned.slice(0, maxResults));
 			}

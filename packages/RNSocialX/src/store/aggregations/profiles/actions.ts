@@ -34,8 +34,8 @@ export const searchProfilesByFullName = ({
 	maxResults?: number;
 }): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	const auth = getState().auth.database.gun;
-	if (auth && auth.alias && term.length > 0) {
+
+	if (term.length > 0) {
 		try {
 			dispatch(searchProfilesByFullNameAction({ term, maxResults }));
 			await dispatch(
@@ -48,7 +48,6 @@ export const searchProfilesByFullName = ({
 			const profiles = await dataApi.profiles.searchByFullName({
 				textSearch: term,
 				maxResults,
-				alias: auth.alias,
 			});
 			dispatch(syncSearchProfilesByFullNameAction(profiles));
 		} catch (e) {
