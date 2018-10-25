@@ -1,8 +1,13 @@
 export {
-	IWithAdsManagementConfigBudgetEnhancedActions,
-	IWithAdsManagementConfigBudgetEnhancedData,
-	WithAdsManagementConfigBudget,
-} from './adsManagementStack/WithAdsManagementConfigBudget';
+	IWithAdsManagementEditAdEnhancedActions,
+	IWithAdsManagementEditAdEnhancedData,
+	WithAdsManagementEditAd,
+} from './adsManagementStack/WithAdsManagementEditAd';
+export {
+	IWithNewAdConfigBudgetEnhancedActions,
+	IWithNewAdConfigBudgetEnhancedData,
+	WithNewAdConfigBudget,
+} from './adsManagementStack/WithNewAdConfigBudget';
 export {
 	IWithAdsManagementEnhancedActions,
 	IWithAdsManagementEnhancedData,
