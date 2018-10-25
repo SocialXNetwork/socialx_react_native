@@ -42,6 +42,14 @@ class Screen extends React.Component<
 		};
 	}
 
+	public componentDidUpdate(prevProps: IMyProfileScreenProps) {
+		if (
+			prevProps.currentUser.mediaObjects !== this.props.currentUser.mediaObjects
+		) {
+			this.loadMorePhotosHandler();
+		}
+	}
+
 	public render() {
 		const { currentUser, getText } = this.props;
 		const { dataProvider } = this.state;
@@ -73,9 +81,7 @@ class Screen extends React.Component<
 				onViewMediaFullScreen={this.onPhotoPressHandler}
 				onEditProfile={this.onEditProfilePressHandler}
 				onSharePress={this.onSharePressHandler}
-				onViewProfilePhoto={() => {
-					/**/
-				}}
+				onViewProfilePhoto={() => undefined}
 				onShowDotsModal={this.onShowDotsModalHandler}
 				getText={getText}
 			/>
@@ -119,6 +125,7 @@ class Screen extends React.Component<
 		showDotsMenuModal(menuItems);
 	};
 
+	// Improve this when we have lazy loading
 	private loadMorePhotosHandler = () => {
 		const { dataProvider } = this.state;
 		const { mediaObjects } = this.props.currentUser;

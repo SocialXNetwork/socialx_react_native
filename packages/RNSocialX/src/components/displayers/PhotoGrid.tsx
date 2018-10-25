@@ -87,9 +87,7 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 	dataProvider,
 	renderGridItem,
 	onLoadMore,
-	onScroll = () => {
-		/**/
-	},
+	onScroll = () => undefined,
 	extendedState = {},
 	scrollViewProps = {},
 	thumbHeight = Sizes.getThumbSize(),

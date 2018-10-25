@@ -12,6 +12,7 @@ import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 
 import { IWallPostPhotoOptimized } from '../../../types';
+import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
@@ -94,6 +95,7 @@ export const getPostsByUsername = (
 		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
 		dispatch(syncGetPostsByUsernameAction(posts));
 		await dispatch(getProfilesByPosts(posts));
+		await dispatch(getUserPosts(getPostsByUsernameInput));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -405,7 +407,6 @@ export const createPost = (
 			}
 
 			await dispatch(getPostsByUsername({ username: auth.alias }));
-			// await dispatch()
 		} catch (e) {
 			await dispatch(
 				setError({
