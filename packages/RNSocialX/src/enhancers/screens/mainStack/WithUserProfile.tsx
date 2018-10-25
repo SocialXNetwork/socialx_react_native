@@ -1,17 +1,14 @@
 /**
  * TODO list:
- * 1. Props actions: loadMorePhotos, blockUser, reportProblem
+ * 1. Props actions: blockUser, reportProblem
  */
 
 import * as React from 'react';
-import { posts } from '../../../mocks';
 import {
 	IDotsMenuProps,
 	INavigationParamsActions,
 	ITranslatedProps,
 	IVisitedUser,
-	MediaTypeImage,
-	SearchResultKind,
 } from '../../../types';
 import { getActivity } from '../../helpers';
 
@@ -24,73 +21,6 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
-const mock: IUserProfileEnhancedProps = {
-	data: {
-		currentUserAvatarURL:
-			'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
-		visitedUser: {
-			userId: '999',
-			avatarURL:
-				'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
-			fullName: 'Alex Sirbu',
-			userName: 'alexsirbu',
-			aboutMeText: 'Lorem ipsum dolor sit amet',
-			numberOfLikes: 25,
-			numberOfPhotos: 1,
-			numberOfFriends: 2,
-			numberOfComments: 87,
-			mediaObjects: [
-				{
-					url:
-						'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-					hash: '131289fsdf03yr9hehdiwb32',
-					type: MediaTypeImage,
-					extension: 'jpg',
-					size: 512,
-					numberOfLikes: 0,
-					numberOfComments: 0,
-				},
-			],
-			recentPosts: posts,
-			relationship: SearchResultKind.NotFriend,
-		},
-		refreshingProfile: false,
-	},
-	actions: {
-		addFriend: (userId: string) => {
-			/**/
-		},
-		loadMorePosts: (userId: string) => {
-			/**/
-		},
-		loadMorePhotos: (userId: string) => {
-			/**/
-		},
-		likePost: (postId: string) => {
-			/**/
-		},
-		unlikePost: (postId: string) => {
-			/**/
-		},
-		postComment: (commentText: string, postId: string) => {
-			/**/
-		},
-		blockUser: (userId: string) => {
-			/**/
-		},
-		reportProblem: (reason: string, description: string) => {
-			/**/
-		},
-		getText: (value: string, ...args: any[]) => value,
-		setNavigationParams: () => {
-			/**/
-		},
-		showDotsMenuModal: (items) => {
-			/**/
-		},
-	},
-};
-
 export interface IWithUserProfileEnhancedData {
 	currentUserAvatarURL: string;
 	visitedUser: IVisitedUser;
@@ -101,11 +31,10 @@ export interface IWithUserProfileEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions,
 		IDotsMenuProps {
+	refreshProfile: (userName: string) => void;
 	addFriend: (userId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
-	loadMorePosts: (userId: string) => void;
-	loadMorePhotos: (userId: string) => void;
 	postComment: (postId: string, commentText: string) => void;
 	blockUser: (userId: string) => void;
 	reportProblem: (reason: string, description: string) => void;
@@ -129,61 +58,70 @@ export class WithUserProfile extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
 									<WithProfiles>
-										{({ addFriend }) => (
+										{({ addFriend, getProfileByUsername }) => (
 											<WithPosts>
-												{({
-													likePost,
-													unlikePost,
-													createComment,
-													loadMorePosts,
-												}) => (
+												{({ likePost, unlikePost, createComment }) => (
 													<WithActivities>
 														{({ activities }) => (
 															<WithCurrentUser>
 																{({ currentUser }) => (
 																	<WithVisitedUserContent>
-																		{({ visitedUser }) => {
-																			return this.props.children({
+																		{({ visitedUser }) =>
+																			this.props.children({
 																				data: {
 																					currentUserAvatarURL: currentUser!
 																						.avatarURL,
 																					visitedUser: visitedUser!,
 																					refreshingProfile: getActivity(
 																						activities,
-																						ActionTypes.SYNC_GET_CURRENT_PROFILE,
+																						ActionTypes.GET_PROFILE_BY_USERNAME,
 																					),
 																				},
 																				actions: {
-																					...mock.actions,
+																					refreshProfile: async (
+																						username: string,
+																					) => {
+																						await getProfileByUsername({
+																							username,
+																						});
+																					},
 																					addFriend: (username) =>
 																						addFriend({
 																							username,
 																						}),
-																					likePost: (postId) =>
-																						likePost({ postId }),
-																					unlikePost: (postId) =>
-																						unlikePost({ postId }),
-																					postComment: (text, postId) =>
-																						createComment({
+																					likePost: async (postId) => {
+																						await likePost({
+																							postId,
+																						});
+																					},
+																					unlikePost: async (postId) => {
+																						await unlikePost({
+																							postId,
+																						});
+																					},
+																					postComment: async (text, postId) => {
+																						await createComment({
 																							text,
 																							postId,
-																						}),
-																					loadMorePosts,
-																					setNavigationParams,
-																					getText: i18nProps.getText,
+																						});
+																					},
+																					blockUser: () => undefined,
+																					reportProblem: () => undefined,
 																					showDotsMenuModal: (items) =>
 																						showOptionsMenu({
 																							items,
 																						}),
+																					setNavigationParams,
+																					getText,
 																				},
-																			});
-																		}}
+																			})
+																		}
 																	</WithVisitedUserContent>
 																)}
 															</WithCurrentUser>
