@@ -120,54 +120,46 @@ class Screen extends React.Component<
 			currentUserFullName,
 			createPost,
 			setGlobal,
-			getText,
 		} = this.props;
 
-		if (mediaObjects.length < 1 || !shareText) {
-			Alert.alert(
-				getText('new.wall.post.screen.post.not.allowed.title'),
-				getText('new.wall.post.screen.post.not.allowed.message'),
-			);
-		} else {
-			await setGlobal({
-				skeletonPost: {
-					postId: uuid(),
-					postText: shareText,
-					location: '',
-					taggedFriends: undefined,
-					timestamp: new Date(Date.now()),
-					owner: {
-						userId: currentUserId,
-						fullName: currentUserFullName,
-						avatarURL: currentUserAvatarURL,
-					},
-					currentUserAvatarURL,
-					governanceVersion: false,
-					numberOfSuperLikes: 0,
-					numberOfComments: 0,
-					numberOfWalletCoins: 0,
-					likedByMe: false,
-					canDelete: false,
-					media: mediaObjects,
-					likes: [],
-					bestComments: [],
-					listLoading: false,
-					suggested: undefined,
-					noInput: false,
-					contentOffensive: false,
-					likeError: false,
-					displayDots: true,
-					skeleton: true,
+		await setGlobal({
+			skeletonPost: {
+				postId: uuid(),
+				postText: shareText,
+				location: '',
+				taggedFriends: undefined,
+				timestamp: new Date(Date.now()),
+				owner: {
+					userId: currentUserId,
+					fullName: currentUserFullName,
+					avatarURL: currentUserAvatarURL,
 				},
-			});
-
-			Keyboard.dismiss();
-			createPost({
-				text: shareText,
+				currentUserAvatarURL,
+				governanceVersion: false,
+				numberOfSuperLikes: 0,
+				numberOfComments: 0,
+				numberOfWalletCoins: 0,
+				likedByMe: false,
+				canDelete: false,
 				media: mediaObjects,
-			});
-			this.onCloseHandler();
-		}
+				likes: [],
+				bestComments: [],
+				listLoading: false,
+				suggested: undefined,
+				noInput: false,
+				contentOffensive: false,
+				likeError: false,
+				displayDots: true,
+				skeleton: true,
+			},
+		});
+
+		Keyboard.dismiss();
+		createPost({
+			text: shareText,
+			media: mediaObjects,
+		});
+		this.onCloseHandler();
 	};
 
 	private onCloseHandler = () => {
