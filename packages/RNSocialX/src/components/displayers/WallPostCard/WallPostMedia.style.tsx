@@ -37,6 +37,13 @@ const style: any = {
 		fontSize: Sizes.smartHorizontalScale(20),
 		color: Colors.white,
 	},
+	placeholder: {
+		backgroundColor: Colors.cloudBurst,
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 };
 
 export default StyleSheet.create(style);

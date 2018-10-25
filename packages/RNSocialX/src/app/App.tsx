@@ -21,7 +21,7 @@ export default class App extends React.Component<{}> {
 					<Init>
 						<Splash>
 							<Keyboard>
-								<PolyfillCrypto />
+								{/* <PolyfillCrypto /> */}
 								<Store>
 									<React.Fragment>
 										<StatusBar />

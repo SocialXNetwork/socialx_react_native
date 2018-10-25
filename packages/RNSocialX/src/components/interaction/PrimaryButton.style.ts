@@ -41,7 +41,7 @@ const styles: any = {
 		letterSpacing: Sizes.smartHorizontalScale(2.5),
 	},
 	disabledButton: {
-		opacity: 0.5,
+		backgroundColor: Colors.gray,
 	},
 	loadingIndicator: {
 		paddingLeft: Sizes.smartHorizontalScale(10),

@@ -93,6 +93,7 @@ export const getPostsByUsername = (
 		);
 		const { dataApi } = context;
 		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
+		await dispatch(setGlobal({ skeletonPost: null }));
 		dispatch(syncGetPostsByUsernameAction(posts));
 		await dispatch(getProfilesByPosts(posts));
 		await dispatch(getUserPosts(getPostsByUsernameInput));

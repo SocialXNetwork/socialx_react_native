@@ -26,7 +26,7 @@ const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 export interface IFeedProps {
-	shareSectionPlaceholder: string | null;
+	shareSectionPlaceholder: string;
 	feedType: FEED_TYPES;
 }
 
@@ -50,10 +50,12 @@ export class Screen extends React.Component<
 		const {
 			currentUser,
 			posts,
+			skeletonPost,
 			shareSectionPlaceholder,
 			canLoadMorePosts,
 			refreshingFeed,
 			loadingMorePosts,
+			creatingPost,
 			errors,
 			blockUser,
 			reportProblem,
@@ -71,9 +73,11 @@ export class Screen extends React.Component<
 			<UserFeedScreenView
 				avatarImage={currentUser ? currentUser.avatarURL : ''}
 				posts={posts}
+				skeletonPost={skeletonPost}
 				likeError={likeError}
 				currentUser={currentUser}
 				refreshing={refreshingFeed}
+				creatingPost={creatingPost}
 				onRefresh={this.onRefreshHandler}
 				canLoadMorePosts={canLoadMorePosts}
 				loadingMorePosts={loadingMorePosts}

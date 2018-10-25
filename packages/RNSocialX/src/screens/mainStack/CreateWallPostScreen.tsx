@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Alert, Keyboard } from 'react-native';
+import uuid from 'uuid/v4';
 
 import {
 	IWithCreateWallPostEnhancedActions,
@@ -113,16 +114,55 @@ class Screen extends React.Component<
 
 	private onCreatePostHandler = async () => {
 		const { mediaObjects, shareText } = this.state;
-		const { createPost, getText } = this.props;
+		const {
+			currentUserAvatarURL,
+			currentUserId,
+			currentUserFullName,
+			createPost,
+			setGlobal,
+			getText,
+		} = this.props;
 
-		if (mediaObjects.length < 1 && !shareText) {
+		if (mediaObjects.length < 1 || !shareText) {
 			Alert.alert(
 				getText('new.wall.post.screen.post.not.allowed.title'),
 				getText('new.wall.post.screen.post.not.allowed.message'),
 			);
 		} else {
+			await setGlobal({
+				skeletonPost: {
+					postId: uuid(),
+					postText: shareText,
+					location: '',
+					taggedFriends: undefined,
+					timestamp: new Date(Date.now()),
+					owner: {
+						userId: currentUserId,
+						fullName: currentUserFullName,
+						avatarURL: currentUserAvatarURL,
+					},
+					currentUserAvatarURL,
+					governanceVersion: false,
+					numberOfSuperLikes: 0,
+					numberOfComments: 0,
+					numberOfWalletCoins: 0,
+					likedByMe: false,
+					canDelete: false,
+					media: mediaObjects,
+					likes: [],
+					bestComments: [],
+					listLoading: false,
+					suggested: undefined,
+					noInput: false,
+					contentOffensive: false,
+					likeError: false,
+					displayDots: true,
+					skeleton: true,
+				},
+			});
+
 			Keyboard.dismiss();
-			await createPost({
+			createPost({
 				text: shareText,
 				media: mediaObjects,
 			});

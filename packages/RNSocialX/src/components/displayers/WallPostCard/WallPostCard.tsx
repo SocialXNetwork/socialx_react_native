@@ -147,6 +147,7 @@ export class WallPostCard extends React.Component<
 			contentOffensive,
 			listLoading,
 			currentUserAvatarURL,
+			skeleton,
 		} = this.props;
 
 		const {
@@ -204,7 +205,7 @@ export class WallPostCard extends React.Component<
 					launchExternalUrl={this.launchExternalURL}
 					getText={getText}
 				/>
-				{media!.length > 0 && (
+				{media.length > 0 && (
 					<View style={styles.mediaContainer}>
 						{heartAnimation && (
 							<HeartAnimation
@@ -219,6 +220,7 @@ export class WallPostCard extends React.Component<
 								}
 								onLikeButtonPressed={this.onDoubleTapLikeHandler}
 								noInteraction={disableMediaFullScreen}
+								placeholder={skeleton}
 								getText={getText}
 							/>
 						)}

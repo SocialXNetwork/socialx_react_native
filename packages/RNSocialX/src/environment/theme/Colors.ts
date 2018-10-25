@@ -50,6 +50,7 @@ export const Colors = {
 	amethyst: '#9863D3',
 	blueGem: '#4813A0',
 	wildSand: '#F6F6F6',
+	gray: '#808080',
 };
 
 export const colorWithAlpha = (color: string, alpha: number) => {
