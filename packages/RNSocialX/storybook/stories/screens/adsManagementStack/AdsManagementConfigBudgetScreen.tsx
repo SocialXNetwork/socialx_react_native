@@ -7,7 +7,7 @@ import Picker from 'react-native-picker';
 import { getTextMock } from '../../../../src/mocks';
 import { AdsManagementConfigBudgetScreenView } from '../../../../src/screens/adsManagementStack/AdsManagementConfigBudgetScreen.view';
 
-import { customStyleProps } from '../../../../src/screens/adsManagementStack/AdsManagementConfigBudgetScreen.style';
+import { defaultStyles } from '../../../../src/screens/adsManagementStack/AdsManagementConfigBudgetScreen.style';
 
 const pickerData = ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'];
 
@@ -30,12 +30,11 @@ storiesOf('Screens/adsManagementStack', module)
 			if (knobsCurrencyButtonPressed) {
 				Picker.init({
 					pickerData,
-					pickerTitleColor: customStyleProps.pickerTitleColor,
-					pickerConfirmBtnColor:
-						customStyleProps.pickerConfirmAndCancelBtnColor,
-					pickerCancelBtnColor: customStyleProps.pickerConfirmAndCancelBtnColor,
-					pickerBg: customStyleProps.pickerToolbarAndBgColor,
-					pickerToolBarBg: customStyleProps.pickerToolbarAndBgColor,
+					pickerTitleColor: defaultStyles.pickerTitleColor,
+					pickerConfirmBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
+					pickerCancelBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
+					pickerBg: defaultStyles.pickerToolbarAndBgColor,
+					pickerToolBarBg: defaultStyles.pickerToolbarAndBgColor,
 					selectedValue: [1],
 					pickerTitleText: getTextMock(
 						'ad.management.budget.currency.picker.select',
@@ -61,7 +60,6 @@ storiesOf('Screens/adsManagementStack', module)
 
 		return (
 			<AdsManagementConfigBudgetScreenView
-				onGoBack={action('onGoBackHandler')}
 				getText={getTextMock}
 				currencyButtonPressed={currencyButtonPressed}
 				selectedCurrencyValue={selectedCurrencyValue}
@@ -77,10 +75,9 @@ storiesOf('Screens/adsManagementStack', module)
 				isStopDatePickerVisible={isStopDatePickerVisible}
 				handleDatePicker={action('handleDatePicker')}
 				currentDate={defaultDate}
-				nextDayFromNow={defaultDate}
+				nextDayFromStartDate={defaultDate}
 				handleStartDatePicked={action('handleStartDatePicked')}
 				handleStopDatePicked={action('handleStopDatePicked')}
-				nextButtonPressed={action('nextButtonPressed')}
 			/>
 		);
 	});
