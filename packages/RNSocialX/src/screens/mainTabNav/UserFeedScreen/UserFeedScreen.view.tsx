@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, FlatList, View } from 'react-native';
+import { Animated, FlatList, ScrollView, View } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
 import {
@@ -24,12 +24,14 @@ interface IUserFeedScreenViewProps
 		IDotsMenuProps {
 	avatarImage: string;
 	posts: IWallPostCardData[];
+	skeletonPost: IWallPostCardData;
 	refreshing: boolean;
+	creatingPost: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
 	currentUser: ICurrentUser;
-	shareSectionPlaceholder: string | null;
+	shareSectionPlaceholder: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
 	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
@@ -52,48 +54,65 @@ export class UserFeedScreenView extends React.Component<
 			shareSectionPlaceholder,
 			scrollRef,
 			scrollY,
+			skeletonPost,
 			getText,
 		} = this.props;
 
 		return (
 			<View style={styles.container}>
-				{posts.length === 0 ? (
-					<FeedWithNoPosts
+				<ScrollView showsVerticalScrollIndicator={false}>
+					<ShareSection
+						avatarImage={avatarImage}
 						onCreateWallPost={onCreateWallPost}
-						getText={getText}
+						sharePlaceholder={shareSectionPlaceholder}
 					/>
-				) : (
-					<FlatList
-						ListHeaderComponent={
-							shareSectionPlaceholder ? (
-								<ShareSection
-									avatarImage={avatarImage}
-									onCreateWallPost={onCreateWallPost}
-									sharePlaceholder={shareSectionPlaceholder}
-								/>
-							) : null
-						}
-						ref={scrollRef}
-						windowSize={10}
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						data={posts}
-						keyExtractor={(item: IWallPostCardData) => item.postId}
-						renderItem={(data) => this.renderWallPosts(data, getText)}
-						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
-						onEndReachedThreshold={0.5}
-						keyboardShouldPersistTaps="handled"
-						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-						onScrollToIndexFailed={() => {
-							/**/
-						}}
-						onScroll={Animated.event([
-							{ nativeEvent: { contentOffset: { y: scrollY } } },
-						])}
-						scrollEventThrottle={16}
-						showsVerticalScrollIndicator={false}
-					/>
-				)}
+					{skeletonPost && (
+						<View style={styles.post}>
+							<WallPostCard
+								{...skeletonPost}
+								onCommentPress={() => undefined}
+								onImagePress={() => undefined}
+								onDeletePostPress={() => undefined}
+								onLikePress={() => undefined}
+								onUserPress={() => undefined}
+								onAddComment={() => undefined}
+								onSubmitComment={() => undefined}
+								onBlockUser={() => undefined}
+								onReportProblem={() => undefined}
+								showDotsMenuModal={() => undefined}
+								displayDots={true}
+								getText={getText}
+							/>
+							<View style={styles.overlay} />
+						</View>
+					)}
+					{posts.length === 0 ? (
+						<FeedWithNoPosts
+							onCreateWallPost={onCreateWallPost}
+							getText={getText}
+						/>
+					) : (
+						<FlatList
+							ref={scrollRef}
+							windowSize={10}
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							data={posts}
+							keyExtractor={(item: IWallPostCardData) => item.postId}
+							renderItem={(data) => this.renderWallPosts(data, getText)}
+							onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
+							onEndReachedThreshold={0.5}
+							keyboardShouldPersistTaps="handled"
+							ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
+							onScrollToIndexFailed={() => undefined}
+							onScroll={Animated.event([
+								{ nativeEvent: { contentOffset: { y: scrollY } } },
+							])}
+							scrollEventThrottle={16}
+							showsVerticalScrollIndicator={false}
+						/>
+					)}
+				</ScrollView>
 			</View>
 		);
 	}

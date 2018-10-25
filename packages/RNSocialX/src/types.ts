@@ -251,6 +251,7 @@ export interface IWallPostCardData extends IResizeProps {
 	contentOffensive: boolean;
 	likeError: boolean;
 	displayDots?: boolean;
+	skeleton?: boolean;
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {
