@@ -1,10 +1,10 @@
 {
-  "name": "socialx_distributed",
+  "name": "socialx_react_native",
   "version": "0.0.1",
   "description": "Monorepo for the SocialX distributed mobile app and its library ecosystem",
-  "repository": "git@bitbucket.org:nolimitdigital/socialx_distributed.git",
-  "homepage": "https://socialx.network",
-  "license": "UNLICENSED",
+  "repository": "git@github.com:SocialXNetwork/socialx_react_native.git",
+  "homepage": "https://socialx.network/",
+  "license": "MIT",
   "private": true,
   "workspaces": {
     "packages": [
