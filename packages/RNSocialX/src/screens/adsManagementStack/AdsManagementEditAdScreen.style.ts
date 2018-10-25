@@ -30,9 +30,19 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 	},
-	transactionsContainer: {
+	managementContainer: {
+		marginTop: Sizes.smartHorizontalScale(29),
 		backgroundColor: Colors.white,
-		marginTop: Sizes.smartVerticalScale(27),
+		width: Sizes.smartVerticalScale(375),
+		height: Sizes.smartHorizontalScale(172),
+	},
+	buttonsContainer: {
+		marginTop: Sizes.smartHorizontalScale(29),
+		backgroundColor: Colors.white,
+	},
+	previewContainer: {
+		backgroundColor: Colors.white,
+		marginTop: Sizes.smartVerticalScale(29),
 	},
 };
 

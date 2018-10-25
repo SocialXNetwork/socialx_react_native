@@ -25,7 +25,7 @@ import { IDotsMenuItem, IStackDefaultConfig } from '../types';
 import styles, { tabBarBackgroundColor } from './Navigation.style';
 
 import {
-	AdsManagementConfigBudgetScreen,
+	AdsManagementEditAdScreen,
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
@@ -40,6 +40,7 @@ import {
 	MaintenanceScreen,
 	MediaViewerScreen,
 	MyProfileScreen,
+	NewAdConfigBudgetScreen,
 	NewAdSetupAudience,
 	NewAdSetupPostScreen,
 	NotificationsScreen,
@@ -233,14 +234,15 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
+		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
+		NewAdConfigBudgetScreen: {
+			screen: NewAdConfigBudgetScreen,
+		},
 		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
 		NewAdSetupAudience: { screen: NewAdSetupAudience },
-		AdsManagementConfigBudgetScreen: {
-			screen: AdsManagementConfigBudgetScreen,
-		},
-		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
 		AdsManagementScreen: { screen: AdsManagementScreen },
 		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
+		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
 	},
 	{
 		headerMode: 'none',

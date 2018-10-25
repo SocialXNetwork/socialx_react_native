@@ -390,6 +390,7 @@ export interface IAdsAccountPerformanceValues {
 
 export interface IAd {
 	url: string;
+	editable?: boolean;
 	title: string;
 	description: string;
 	id: string;
