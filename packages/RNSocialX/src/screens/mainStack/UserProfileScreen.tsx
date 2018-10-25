@@ -1,9 +1,3 @@
-/**
- * TODO list:
- * 1. @Serkan: Take a look over onViewProfilePhotoHandler function, it uses ipfs
- * 2. @Alex: check and implemented onAddComment, similar with what is on UserFeed?
- */
-
 import * as React from 'react';
 import { Alert, Animated, Dimensions } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
@@ -128,6 +122,7 @@ class Screen extends React.Component<
 		);
 	}
 
+	// Improve this when we have lazy loading
 	private loadMorePhotosHandler = () => {
 		const { gridMediaProvider } = this.state;
 		const { visitedUser } = this.props;
