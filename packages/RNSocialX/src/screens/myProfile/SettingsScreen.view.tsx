@@ -28,6 +28,7 @@ export interface ISettingsData {
 	fullName: string;
 	email: string;
 	miningEnabled: boolean;
+	shareDataEnabled: boolean;
 	avatarURL: string;
 	userName: string;
 }
@@ -47,6 +48,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	avatarURL,
 	userName,
 	miningEnabled,
+	shareDataEnabled,
 	onSaveChanges,
 	onGoBack,
 	showDotsMenuModal,
@@ -60,6 +62,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 			avatarURL,
 			userName,
 			miningEnabled,
+			shareDataEnabled,
 		}}
 		validate={({
 			fullName: nameValue,
@@ -89,6 +92,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				avatarURL: avatarURLValue,
 				userName: userNameValue,
 				miningEnabled: miningEnabledValue,
+				shareDataEnabled: shareDataEnabledValue,
 			},
 			errors,
 			handleBlur,
@@ -222,6 +226,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							value={miningEnabledValue}
 							onValueUpdated={() =>
 								setFieldValue('miningEnabled', !miningEnabledValue, false)
+							}
+						/>
+						<Checkbox
+							title={getText('settings.screen.sharedata.title')}
+							description={getText('settings.screen.sharedata.description')}
+							value={shareDataEnabledValue}
+							onValueUpdated={() =>
+								setFieldValue('shareDataEnabled', !shareDataEnabledValue, false)
 							}
 						/>
 					</View>

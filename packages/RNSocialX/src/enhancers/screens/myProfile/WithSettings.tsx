@@ -72,7 +72,11 @@ export class WithSettings extends React.Component<
 														{(currUser) =>
 															this.props.children({
 																data: {
-																	currentUser: currUser.currentUser!,
+																	currentUser: {
+																		shareDataEnabled:
+																			mock.data.currentUser.shareDataEnabled,
+																		...currUser.currentUser!,
+																	},
 																},
 																actions: {
 																	updateUserProfile: (user) =>
