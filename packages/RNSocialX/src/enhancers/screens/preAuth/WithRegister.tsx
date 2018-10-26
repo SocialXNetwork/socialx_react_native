@@ -108,6 +108,7 @@ export class WithRegister extends React.Component<
 																			avatar: registerData.avatar,
 																			fullName: registerData.name,
 																			miningEnabled: true,
+																			shareDataEnabled: true,
 																			aboutMeText: 'about me text',
 																		}),
 																	loadPosts: loadMorePosts,
