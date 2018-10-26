@@ -1,25 +1,30 @@
 /**
  * TODO list:
- * 1. Props data: Selected Ad Data Object
+ * 1. Props data: Ad Data Object
  */
 
-import moment from 'moment';
 import * as React from 'react';
 
 import { IAd, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
-const adData = {
-	url: 'https://placeimg.com/300/300/any',
-	title: 'Lorem ipsum dolor 1',
-	description:
-		'Lorem ipsum dolor sit amet, consectetur adipi. And some more text on first paragraph\n' +
-		'Elit, sed do eiusmod tempor incididunt ut labore',
-	id: '1',
-};
-
 const mock: IWithAdsManagementEditAdEnhancedProps = {
-	data: { adData },
+	data: {
+		adData: {
+			name: 'Any',
+			url: 'https://placeimg.com/300/300/any',
+			title: 'Lorem ipsum dolor 1',
+			description:
+				'Lorem ipsum dolor sit amet, consectetur adipi. And some more text on first paragraph\n' +
+				'Elit, sed do eiusmod tempor incididunt ut labore',
+			id: '1',
+			startDate: 'Mar 10, 2018',
+			endDate: 'Apr 16, 2018',
+			amount: '100',
+			currency: 'SOCX',
+			numberOfAds: '1',
+		},
+	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
 	},
