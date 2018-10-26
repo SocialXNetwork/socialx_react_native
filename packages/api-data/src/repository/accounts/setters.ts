@@ -80,7 +80,7 @@ const createAccountProfile = (
  * create the recovery object on the current user's private scope
  * @param recoveryData object the user's recovery information
  */
-const createRecoveryOnAccount = (context: IContext, recoveryData: object) => {
+const createRecoveryOnAccount = (context: IContext, recoveryData: any) => {
 	return new Promise((res, rej) =>
 		accountHandles
 			.currentAccountRecover(context)
@@ -97,6 +97,36 @@ const createRecoveryOnAccount = (context: IContext, recoveryData: object) => {
 				res();
 			}),
 	);
+};
+
+/**
+ * decrypt hint from recovery data
+ * @param recoveryData object the user's recovery information
+ */
+const decryptRecovery = async (
+	context: IContext,
+	recoverData: IRecoverData<string>,
+	{ question1, question2 }: { question1: string; question2: string },
+) => {
+	if (!Object.keys(recoverData).length) {
+		throw new ApiError(`account not found`);
+	}
+	const { decrypt, work } = context;
+	try {
+		const {
+			recover: { encryptedReminder },
+		} = recoverData;
+		if (!encryptedReminder) {
+			throw new ApiError('no encrypted reminder');
+		}
+		const hint = await decrypt(
+			encryptedReminder,
+			await work(question1, question2),
+		);
+		return { hint };
+	} catch (e) {
+		throw new ApiError(`recovery key not captured ${e.message}`);
+	}
 };
 
 /**
@@ -228,13 +258,11 @@ export const changePassword = (
 	);
 };
 
-// TODO: change into functional pattern, put to use?
 export const recoverAccount = (
 	context: IContext,
 	{ username, question1, question2 }: IRecoverAccountInput,
 	callback: IGunCallback<{ hint: string }>,
 ) => {
-	const { decrypt, work } = context;
 	const errPrefix = 'failed to recover account';
 	getPublicKeyByUsername(context, { username }, (err, pub) => {
 		if (!pub) {
@@ -244,43 +272,19 @@ export const recoverAccount = (
 				}),
 			);
 		}
-		accountHandles
-			.accountByPub(context, pub)
-			.docLoad(async (recoverData: IRecoverData<string>) => {
-				if (!Object.keys(recoverData).length) {
-					return callback(
-						new ApiError(`${errPrefix}, account not found`, {
-							initialRequestBody: { username },
-						}),
-					);
-				}
-				try {
-					const {
-						recover: { encryptedReminder },
-					} = recoverData;
-					if (!encryptedReminder) {
-						return callback(
-							new ApiError(`${errPrefix}, no encrypted reminder`, {
-								initialRequestBody: { username },
-							}),
-						);
-					}
-					const hint = await decrypt(
-						encryptedReminder,
-						await work(question1, question2),
-					);
-					return callback(null, { hint });
-				} catch (e) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, recovery key not captured ${e.message}`,
-							{
-								initialRequestBody: { username },
-							},
-						),
-					);
-				}
-			});
+		try {
+			accountHandles
+				.accountByPub(context, pub)
+				.docLoad(async (recoverData: IRecoverData<string>) => {
+					const hint = await decryptRecovery(context, recoverData, {
+						question1,
+						question2,
+					});
+					callback(null, hint);
+				});
+		} catch (e) {
+			callback(e);
+		}
 	});
 };
 
