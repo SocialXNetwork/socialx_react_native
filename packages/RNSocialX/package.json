@@ -25,6 +25,7 @@
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@socialx/api-blockchain": "^0.0.1",
     "@socialx/api-data": "^0.0.1",
+    "@socialx/webview-crypto": "^0.0.1",
     "@socialx/api-storage": "^0.0.1",
     "@socialx/commons": "^0.0.1",
     "@tradle/react-native-http": "^2.0.0",

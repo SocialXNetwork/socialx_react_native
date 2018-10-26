@@ -9,15 +9,9 @@ const base64EncodeString = (input: string) => {
 };
 
 const styles = StyleSheet.create({
-	hide: {
-		display: 'none',
-		position: 'absolute',
-
-		width: 0,
+	hidden: {
 		height: 0,
-
-		flexGrow: 0,
-		flexShrink: 1,
+		opacity: 0,
 	},
 });
 
@@ -138,6 +132,7 @@ export default class PolyfillCrypto extends React.Component<{}> {
 
 		return (
 			<WebView
+				style={styles.hidden}
 				injectedJavaScript={injectString}
 				javaScriptEnabled={true}
 				onError={(a) => console.error(a)}
@@ -149,12 +144,4 @@ export default class PolyfillCrypto extends React.Component<{}> {
 	}
 }
 // @ts-ignore
-// window.crypto = {
-// 	subtle: null,
-// };
-// // @ts-ignore
-// window.crypto.subtle = subtle;
-// // @ts-ignore
-// global.crypto = {
-// 	subtle: null,
-// };
+window.polynewcrypto = { subtle };
