@@ -14,9 +14,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Header, HeaderButton, PrimaryButton } from '../../components';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
-import styles, { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
+import styles, { defaultStyles } from './NewAdConfigBudgetScreen.style';
 
-interface IAdsManagementConfigBudgetScreenViewProps
+interface INewAdConfigBudgetScreenViewProps
 	extends ITranslatedProps,
 		IHeaderProps {
 	currencyButtonPressed: () => void;
@@ -43,8 +43,8 @@ interface IAdsManagementConfigBudgetScreenViewProps
 	nextButtonPressed: () => void;
 }
 
-export const AdsManagementConfigBudgetScreenView: React.SFC<
-	IAdsManagementConfigBudgetScreenViewProps
+export const NewAdConfigBudgetScreenView: React.SFC<
+	INewAdConfigBudgetScreenViewProps
 > = ({
 	onGoBack,
 	getText,
