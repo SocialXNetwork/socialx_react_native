@@ -169,8 +169,8 @@
             api.TextEncoder = window.TextEncoder;
             api.TextDecoder = window.TextDecoder;
             api.random = (len) => Buffer.from(api.crypto.getRandomValues(new Uint8Array(Buffer.alloc(len))))
-            console.log('*** sea api', api);
-        }, 2000);
+            console.log('*** sea api assigned', api);
+        }, 3000);
       }
       module.exports = api
     })(USE, './shim');

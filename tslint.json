@@ -49,6 +49,11 @@
     "member-access": false,
     "no-console": false
   },
+  "linterOptions": {
+    "exclude": [
+      "./packages/**/node_modules/**"
+    ]
+  },
   "include": [
     "./packages/**/*.ts",
     "./packages/**/*.tsx"
