@@ -230,6 +230,7 @@ export const currentUser: ICurrentUser = {
 	pub:
 		'rPZqFYcR01E81UiAtzkY0tV2LmxnNHtQG-UwqfvxLyQ.4Xc5xwCqzFaEOJpu7ftadiXXQLE7sbm7ETs23lzC96E',
 	miningEnabled: false,
+	shareDataEnabled: true,
 	numberOfLikes: 25,
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
