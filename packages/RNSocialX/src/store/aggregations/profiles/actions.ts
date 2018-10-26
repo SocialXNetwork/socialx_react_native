@@ -7,6 +7,10 @@ import {
 	ActionTypes,
 	IFindFriendsSuggestionsAction,
 	IFriendSuggestionData,
+	IResetSearchProfilesByFullNameAction,
+	IResetSearchProfilesByFullNameAction,
+	IResetSyncSearchProfilesByFullNameAction,
+	IResetSyncSearchProfilesByFullNameAction,
 	ISearchProfilesByFullNameAction,
 	ISyncFindFriendsSuggestionsAction,
 	ISyncSearchProfilesByFullNameAction,
@@ -64,6 +68,39 @@ export const searchProfilesByFullName = ({
 	}
 };
 
+export const resetSearchProfilesByFullNameAction: ActionCreator<
+	IResetSearchProfilesByFullNameAction
+> = () => ({
+	type: ActionTypes.RESET_SEARCH_PROFILES_BY_FULLNAME,
+});
+
+export const syncResetSearchProfilesByFullNameAction: ActionCreator<
+	IResetSyncSearchProfilesByFullNameAction
+> = () => ({
+	type: ActionTypes.SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME,
+});
+
+export const resetSearchProfilesByFullName = async () => {
+	try {
+		dispatch(resetSearchProfilesByFullNameAction());
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.RESET_SEARCH_PROFILES_BY_FULLNAME,
+				uuid: activityId,
+			}),
+		);
+		dispatch(syncResetSearchProfilesByFullNameAction());
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	}
+};
+
 export const findFriendsSuggestionsAction: ActionCreator<
 	IFindFriendsSuggestionsAction
 > = (findFriendsSuggestionsInput: any) => ({
@@ -110,5 +147,38 @@ export const findFriendsSuggestions = ({
 		);
 	} finally {
 		await dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
+export const resetFindFriendsSuggestionsAction: ActionCreator<
+	IResetFriendsSuggestionsAction
+> = () => ({
+	type: ActionTypes.RESET_FIND_FRIENDS_SUGGESTIONS,
+});
+
+export const syncResetFindFriendsSuggestionsAction: ActionCreator<
+	ISyncResetFindFriendsSuggestionsAction
+> = () => ({
+	type: ActionTypes.SYNC_RESET_FIND_FRIENDS_SUGGESTIONS,
+});
+
+export const resetFindFriendsSuggestions = async () => {
+	try {
+		dispatch(resetFindFriendsSuggestionsAction());
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.RESET_FIND_FRIENDS_SUGGESTIONS,
+				uuid: activityId,
+			}),
+		);
+		dispatch(syncResetFindFriendsSuggestionsAction());
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.SYNC_RESET_FIND_FRIENDS_SUGGESTIONS,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };
