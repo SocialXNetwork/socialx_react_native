@@ -26,9 +26,28 @@ export const enum ActionTypes {
 	SYNC_SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/SYNC_SEARCH_PROFILES_BY_FULLNAME',
 	FIND_FRIENDS_SUGGESTIONS = 'app/data/profiles/FIND_FRIENDS_SUGGESTIONS',
 	SYNC_FIND_FRIENDS_SUGGESTIONS = 'app/data/profiles/SYNC_FIND_FRIENDS_SUGGESTIONS',
+	RESET_SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/RESET_SEARCH_PROFILES_BY_FULLNAME',
+	SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME = 'app/data/profiles/SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME',
+	RESET_FIND_FRIENDS_SUGGESTIONS = 'app/data/profiles/RESET_FIND_FRIENDS_SUGGESTIONS',
+	SYNC_RESET_FIND_FRIENDS_SUGGESTIONS = 'app/data/profiles/SYNC_RESET_FIND_FRIENDS_SUGGESTIONS',
 }
 
-// @Alexandre, create an action to reset the searchResults
+export interface IResetSearchProfilesByFullNameAction extends Action {
+	type: ActionTypes.RESET_SEARCH_PROFILES_BY_FULLNAME;
+}
+
+export interface ISyncResetSearchProfilesByFullNameAction extends Action {
+	type: ActionTypes.SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME;
+}
+
+export interface IResetFriendsSuggestionsAction extends Action {
+	type: ActionTypes.RESET_FIND_FRIENDS_SUGGESTIONS;
+}
+
+export interface ISyncResetFindFriendsSuggestionsAction extends Action {
+	type: ActionTypes.SYNC_RESET_FIND_FRIENDS_SUGGESTIONS;
+}
+
 export interface ISearchProfilesByFullNameAction extends Action {
 	type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME;
 	payload: ISearchProfilesByFullNameInput;
@@ -53,6 +72,10 @@ interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
 export type IAction =
+	| IResetSearchProfilesByFullNameAction
+	| ISyncSearchProfilesByFullNameAction
+	| IResetFindFriendsSuggestionsAction
+	| ISyncResetFindFriendsSuggestionsAction
 	| IResetStoreAction
 	| IFindFriendsSuggestionsAction
 	| ISyncFindFriendsSuggestionsAction
