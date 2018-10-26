@@ -2,23 +2,27 @@ import moment from 'moment';
 import * as React from 'react';
 import Picker from 'react-native-picker';
 
-import { Currencies, dateFormatMomentJS } from '../../environment/consts';
+import {
+	AdsInitialBudgetValue,
+	Currencies,
+	dateFormatMomentJS,
+} from '../../environment/consts';
 import { INavigationProps } from '../../types';
 
-import { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
-import { AdsManagementConfigBudgetScreenView } from './AdsManagementConfigBudgetScreen.view';
+import { defaultStyles } from './NewAdConfigBudgetScreen.style';
+import { NewAdConfigBudgetScreenView } from './NewAdConfigBudgetScreen.view';
 
 import {
-	IWithAdsManagementConfigBudgetEnhancedActions,
-	IWithAdsManagementConfigBudgetEnhancedData,
-	WithAdsManagementConfigBudget,
+	IWithNewAdConfigBudgetEnhancedActions,
+	IWithNewAdConfigBudgetEnhancedData,
+	WithNewAdConfigBudget,
 } from '../../enhancers/screens';
 
-type IAdsManagementConfigBudgetScreenProps = INavigationProps &
-	IWithAdsManagementConfigBudgetEnhancedActions &
-	IWithAdsManagementConfigBudgetEnhancedData;
+type INewAdConfigBudgetScreenProps = INavigationProps &
+	IWithNewAdConfigBudgetEnhancedActions &
+	IWithNewAdConfigBudgetEnhancedData;
 
-interface IAdsManagementConfigBudgetScreenState {
+interface INewAdConfigBudgetScreenState {
 	budgetValue: string;
 	selectedCurrencyValue: string;
 	perDayPressed: boolean;
@@ -32,16 +36,12 @@ interface IAdsManagementConfigBudgetScreenState {
 }
 
 class Screen extends React.Component<
-	IAdsManagementConfigBudgetScreenProps,
-	IAdsManagementConfigBudgetScreenState
+	INewAdConfigBudgetScreenProps,
+	INewAdConfigBudgetScreenState
 > {
 	public state = {
-		budgetValue: this.props.getText(
-			'ad.management.budget.budget.textinput.initialvalue',
-		),
-		selectedCurrencyValue: this.props
-			.getText('ad.management.budget.currency.socx')
-			.toUpperCase(),
+		budgetValue: AdsInitialBudgetValue,
+		selectedCurrencyValue: Currencies[0].toUpperCase(),
 		perDayPressed: true,
 		lifetimePressed: false,
 		runAdContinuouslyPressed: true,
@@ -70,7 +70,7 @@ class Screen extends React.Component<
 		} = this.state;
 
 		return (
-			<AdsManagementConfigBudgetScreenView
+			<NewAdConfigBudgetScreenView
 				onGoBack={this.onGoBackHandler}
 				getText={getText}
 				currencyButtonPressed={this.currencyButtonPressed}
@@ -252,8 +252,8 @@ class Screen extends React.Component<
 	};
 }
 
-export const AdsManagementConfigBudgetScreen = (navProps: INavigationProps) => (
-	<WithAdsManagementConfigBudget>
+export const NewAdConfigBudgetScreen = (navProps: INavigationProps) => (
+	<WithNewAdConfigBudget>
 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithAdsManagementConfigBudget>
+	</WithNewAdConfigBudget>
 );

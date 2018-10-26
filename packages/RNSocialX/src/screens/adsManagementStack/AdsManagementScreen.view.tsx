@@ -34,6 +34,7 @@ export const AdsManagementScreenView: React.SFC<
 		{userName && <Text style={styles.userName}>@{userName}</Text>}
 		<View style={styles.separator} />
 		<Option
+			type="image"
 			icon={Icons.shareIconGradient}
 			text={getText('ad.management.option.post')}
 			onPress={() => {
@@ -42,6 +43,7 @@ export const AdsManagementScreenView: React.SFC<
 		/>
 		<View style={styles.separator} />
 		<Option
+			type="image"
 			icon={Icons.shareIconGradient}
 			text={getText('ad.management.option.video')}
 			onPress={() => {
@@ -50,6 +52,7 @@ export const AdsManagementScreenView: React.SFC<
 		/>
 		<View style={styles.separator} />
 		<Option
+			type="image"
 			icon={Icons.shareIconGradient}
 			text={getText('ad.management.option.traffic')}
 			onPress={() => {

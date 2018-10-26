@@ -390,10 +390,17 @@ export interface IAdsAccountPerformanceValues {
 }
 
 export interface IAd {
+	name?: string;
 	url: string;
+	editable?: boolean;
 	title: string;
 	description: string;
 	id: string;
+	startDate?: string;
+	endDate?: string;
+	amount?: string;
+	currency?: string;
+	numberOfAds?: string;
 }
 /**
  * TODO list:

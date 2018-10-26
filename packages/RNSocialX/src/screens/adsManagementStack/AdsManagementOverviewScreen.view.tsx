@@ -4,6 +4,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
+	AdPreview,
 	ChartAccountPerformance,
 	CloseButton as CloseModal,
 	Header,
@@ -17,31 +18,7 @@ import {
 
 import styles, { BUTTON_WIDTH } from './AdsManagementOverviewScreen.style';
 
-interface IAdActions {
-	onEditAd: () => void;
-}
-
-interface IAdProps extends IAd, IAdActions {}
-
-const AdCard: React.SFC<IAdProps> = ({ url, title, description, onEditAd }) => (
-	<View style={styles.card}>
-		<Image source={{ uri: url }} style={styles.image} resizeMode="cover" />
-		<View style={styles.cardHeader}>
-			<Text style={styles.title}>{title}</Text>
-			<TouchableOpacity
-				onPress={onEditAd}
-				hitSlop={{ top: 10, bottom: 10, left: 15, right: 10 }}
-			>
-				<Icon name="md-create" style={styles.editIcon} />
-			</TouchableOpacity>
-		</View>
-		<Text style={styles.description}>{description}</Text>
-	</View>
-);
-
-interface IAdsManagementOverviewScreenViewProps
-	extends IAdActions,
-		ITranslatedProps {
+interface IAdsManagementOverviewScreenViewProps extends ITranslatedProps {
 	currentDate: string;
 	currentWeek: string;
 	lastSevenDays: string;
@@ -51,6 +28,7 @@ interface IAdsManagementOverviewScreenViewProps
 	impressionsValues: IAdsAccountPerformanceValues[];
 	onClose: () => void;
 	onCreateAd: () => void;
+	onEditAd: () => void;
 	onSeePastPerformance: () => void;
 }
 
@@ -83,7 +61,12 @@ export const AdsManagementOverviewScreenView: React.SFC<
 						{getText('ad.management.overview.screen.ads.list.title')}
 					</Text>
 					{ads.map((ad) => (
-						<AdCard {...ad} onEditAd={onEditAd} key={ad.id} />
+						<AdPreview
+							{...ad}
+							onEditAd={onEditAd}
+							key={ad.id}
+							editable={true}
+						/>
 					))}
 				</View>
 				<View style={styles.section}>
