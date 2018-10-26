@@ -7,7 +7,7 @@ declare const WebViewBridge: any;
 
 export async function parse(text: string): Promise<any> {
 	// need decodeURIComponent so binary strings are transfered properly
-	const deocodedText = unescape(text);
+	const deocodedText = decodeURIComponent(text);
 	const objects = JSON.parse(deocodedText);
 	return fromObjects(serializers(true), objects);
 }
@@ -21,7 +21,7 @@ export async function stringify(
 	);
 	// need encodeURIComponent so binary strings are transfered properly
 	const message = JSON.stringify(serialized);
-	return escape(message);
+	return encodeURIComponent(message);
 }
 
 function serializers(waitForArrayBufferView: boolean) {
