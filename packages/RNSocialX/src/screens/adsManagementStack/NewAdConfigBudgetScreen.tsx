@@ -2,7 +2,11 @@ import moment from 'moment';
 import * as React from 'react';
 import Picker from 'react-native-picker';
 
-import { Currencies, dateFormatMomentJS } from '../../environment/consts';
+import {
+	AdsInitialBudgetValue,
+	Currencies,
+	dateFormatMomentJS,
+} from '../../environment/consts';
 import { INavigationProps } from '../../types';
 
 import { defaultStyles } from './NewAdConfigBudgetScreen.style';
@@ -36,12 +40,8 @@ class Screen extends React.Component<
 	INewAdConfigBudgetScreenState
 > {
 	public state = {
-		budgetValue: this.props.getText(
-			'ad.management.budget.budget.textinput.initialvalue',
-		),
-		selectedCurrencyValue: this.props
-			.getText('ad.management.budget.currency.socx')
-			.toUpperCase(),
+		budgetValue: AdsInitialBudgetValue,
+		selectedCurrencyValue: Currencies[0].toUpperCase(),
 		perDayPressed: true,
 		lifetimePressed: false,
 		runAdContinuouslyPressed: true,

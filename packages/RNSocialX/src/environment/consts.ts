@@ -38,6 +38,8 @@ export enum CoinFullName {
 
 export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
 
+export const AdsInitialBudgetValue = '458';
+
 export interface IWeeklyBarChartData {
 	value: number;
 	label: string;
