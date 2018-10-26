@@ -27,23 +27,12 @@ global.location = {
   host: '',
 };
 
-// const { randomBytes } = require('react-native-randombytes');
+// const rande = require('react-native-randombytes');
 const { TextEncoder, TextDecoder } = require('text-encoding');
-
-const scrypto = require('@socialx/api-crypto');
-const bcrypto = require('crypto-browserify');
-const rncrypto = require('react-native-crypto');
-// const icrypto = require('isomorphic-webcrypto');
-const crypto = require('crypto');
 
 global.crypto = {
   subtle: {},
 };
-
-
-global.scrypto = scrypto;
-global.bcrypto = bcrypto;
-global.rncrypto = rncrypto;
 
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;

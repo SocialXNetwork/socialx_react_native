@@ -2,20 +2,42 @@ import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import WebViewBridge from 'react-native-webview-bridge';
 
-import { randomBytes } from 'react-native-randombytes';
-import { MainWorker, webViewWorkerString } from 'webview-crypto';
+import {
+	MainWorker,
+	webViewWorkerString as webViewWorkerStringAndroid,
+} from '@socialx/webview-crypto';
+import { webViewWorkerString as webViewWorkerStringIOS } from 'webview-crypto';
 
-import webcrp from '@trust/webcrypto';
+// import { randomBytes } from 'react-native-randombytes';
+
 import { OS_TYPES } from '../environment/consts';
 
-const injectString =
-	webViewWorkerString +
-	`
+import encodeUtf8 from 'encode-utf8';
+import encodeBase64 from 'fast-base64-encode';
+
+const base64EncodeString = (input: string) => {
+	return encodeBase64(new Uint8Array(encodeUtf8(input)));
+};
+
+const internalLibIOS = `
+${webViewWorkerStringIOS}
 (function () {
   var wvw = new WebViewWorker(WebViewBridge.send.bind(WebViewBridge));
   WebViewBridge.onMessage = wvw.onMainMessage.bind(wvw);
 }());
 `;
+
+const intermediateLib = `
+${webViewWorkerStringAndroid}
+(function () {
+  var wvw = new WebViewWorker(WebViewBridge.send.bind(WebViewBridge));
+  WebViewBridge.onMessage = wvw.onMainMessage.bind(wvw);
+}());
+`;
+
+const internalLibAndroid = `eval(window.atob('${base64EncodeString(
+	intermediateLib,
+)}'))`;
 
 // TODO: replace this with a better polly or even better, find a better solution
 export default class PolyfillCrypto extends React.Component<
@@ -30,8 +52,8 @@ export default class PolyfillCrypto extends React.Component<
 	}
 
 	render() {
-		let worker: typeof MainWorker;
-		const uri = 'file:///android_asset/html/pollyfillCrypto.html';
+		let worker: any;
+		const uri = 'file:///android_asset/html/blank.html';
 		return (
 			<View style={styles.hidden}>
 				<WebViewBridge
@@ -44,17 +66,7 @@ export default class PolyfillCrypto extends React.Component<
 								// this means overridng the crypto object itself won't
 								// work, so we have to override all of it's methods
 								// @ts-ignore
-								window.crypto.getRandomValues = (arg: Uint8Array) => {
-									const original = arg;
-									if (arg.byteLength !== arg.length) {
-										arg = new Uint8Array(arg.buffer);
-									}
-									const bytes = randomBytes(arg.length);
-									for (let i = 0; i < bytes.length; i++) {
-										arg[i] = bytes[i];
-									}
-									return original;
-								};
+								window.crypto.getRandomValues = worker.crypto.getRandomValues;
 								// tslint:disable-next-line
 								for (const name in worker.crypto.subtle) {
 									// @ts-ignore
@@ -68,6 +80,7 @@ export default class PolyfillCrypto extends React.Component<
 								// @ts-ignore
 								(window as any).crypto = worker.crypto;
 							}
+							console.log('*** poly injected');
 						}
 					}}
 					onBridgeMessage={
@@ -78,7 +91,11 @@ export default class PolyfillCrypto extends React.Component<
 							worker.onWebViewMessage(message);
 						}
 					}
-					injectedJavaScript={injectString}
+					injectedJavaScript={
+						Platform.OS === OS_TYPES.Android
+							? internalLibAndroid
+							: internalLibIOS
+					}
 					onError={(error: string) => {
 						console.warn('Error creating webview: ', error);
 					}}
