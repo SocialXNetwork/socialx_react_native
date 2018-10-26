@@ -10,7 +10,7 @@ import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 
-const mock: IWithAdsManagementConfigBudgetEnhancedProps = {
+const mock: IWithNewAdConfigBudgetEnhancedProps = {
 	data: {},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
@@ -35,28 +35,28 @@ interface IBudgetConfigData {
 	stop: string;
 }
 
-export interface IWithAdsManagementConfigBudgetEnhancedData {}
+export interface IWithNewAdConfigBudgetEnhancedData {}
 
-export interface IWithAdsManagementConfigBudgetEnhancedActions
+export interface IWithNewAdConfigBudgetEnhancedActions
 	extends ITranslatedProps {
 	onCreateAdSetBudget: (budgetConfig: IBudgetConfigData) => void;
 	showConfirmation: (confirmation: IConfirmation) => void;
 }
 
-interface IWithAdsManagementConfigBudgetEnhancedProps {
-	data: IWithAdsManagementConfigBudgetEnhancedData;
-	actions: IWithAdsManagementConfigBudgetEnhancedActions;
+interface IWithNewAdConfigBudgetEnhancedProps {
+	data: IWithNewAdConfigBudgetEnhancedData;
+	actions: IWithNewAdConfigBudgetEnhancedActions;
 }
 
-interface IWithAdsManagementConfigBudgetProps {
-	children(props: IWithAdsManagementConfigBudgetEnhancedProps): JSX.Element;
+interface IWithNewAdConfigBudgetProps {
+	children(props: IWithNewAdConfigBudgetEnhancedProps): JSX.Element;
 }
 
-interface IWithAdsManagementConfigBudgetState {}
+interface IWithNewAdConfigBudgetState {}
 
-export class WithAdsManagementConfigBudget extends React.Component<
-	IWithAdsManagementConfigBudgetProps,
-	IWithAdsManagementConfigBudgetState
+export class WithNewAdConfigBudget extends React.Component<
+	IWithNewAdConfigBudgetProps,
+	IWithNewAdConfigBudgetState
 > {
 	render() {
 		return (

@@ -1,6 +1,9 @@
 export {
-	AdsManagementConfigBudgetScreen,
-} from './adsManagementStack/AdsManagementConfigBudgetScreen';
+	AdsManagementEditAdScreen,
+} from './adsManagementStack/AdsManagementEditAdScreen';
+export {
+	NewAdConfigBudgetScreen,
+} from './adsManagementStack/NewAdConfigBudgetScreen';
 export {
 	AdsManagementOverviewScreen,
 } from './adsManagementStack/AdsManagementOverviewScreen';
