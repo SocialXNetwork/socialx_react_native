@@ -234,14 +234,14 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
+		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
+		AdsManagementScreen: { screen: AdsManagementScreen },
 		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
+		NewAdSetupAudience: { screen: NewAdSetupAudience },
+		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
 		NewAdConfigBudgetScreen: {
 			screen: NewAdConfigBudgetScreen,
 		},
-		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
-		NewAdSetupAudience: { screen: NewAdSetupAudience },
-		AdsManagementScreen: { screen: AdsManagementScreen },
-		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
 	},
 	{
