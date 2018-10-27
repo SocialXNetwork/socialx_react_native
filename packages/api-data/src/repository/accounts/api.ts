@@ -13,22 +13,16 @@ import {
 } from './types';
 
 export default (context: IContext) => ({
-	changePassword: async (
-		changePasswordInput: IChangePasswordInput,
-	): Promise<null> => {
+	changePassword: async (changePasswordInput: IChangePasswordInput): Promise<null> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.changePassword.validate(
-				changePasswordInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.changePassword.validate(changePasswordInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: changePasswordInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: changePasswordInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -39,22 +33,16 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	createAccount: async (
-		createAccountInput: ICreateAccountInput,
-	): Promise<null> => {
+	createAccount: async (createAccountInput: ICreateAccountInput): Promise<null> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.createAccountInput.validate(
-				createAccountInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.createAccountInput.validate(createAccountInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: createAccountInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: createAccountInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -77,22 +65,16 @@ export default (context: IContext) => ({
 		setters.logout(context, () => {
 			return;
 		}),
-	recoverAccount: async (
-		recoverAccountInput: IRecoverAccountInput,
-	): Promise<{ hint: string }> => {
+	recoverAccount: async (recoverAccountInput: IRecoverAccountInput): Promise<{ hint: string }> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.recoverAccountInput.validate(
-				recoverAccountInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.recoverAccountInput.validate(recoverAccountInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: recoverAccountInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: recoverAccountInput,
+			});
 		}
 
 		return new Promise<{ hint: string }>((resolve, reject) => {
@@ -111,16 +93,8 @@ export default (context: IContext) => ({
 		new Promise((resolve, reject) => {
 			getters.getCurrentAccount(context, resolveCallback(resolve, reject));
 		}),
-	getAccountByPub: ({
-		publicKey,
-	}: {
-		publicKey: string;
-	}): Promise<IAccountData> =>
+	getAccountByPub: ({ publicKey }: { publicKey: string }): Promise<IAccountData> =>
 		new Promise((resolve, reject) => {
-			getters.getAccountByPub(
-				context,
-				{ publicKey },
-				resolveCallback(resolve, reject),
-			);
+			getters.getAccountByPub(context, { publicKey }, resolveCallback(resolve, reject));
 		}),
 });

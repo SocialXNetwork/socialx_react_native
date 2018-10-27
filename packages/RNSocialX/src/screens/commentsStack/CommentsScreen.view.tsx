@@ -87,9 +87,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	const commentInputRef: React.RefObject<TextInput> = React.createRef();
 
 	return (
-		<SafeAreaView
-			style={[styles.container, Platform.select({ ios: { marginBottom } })]}
-		>
+		<SafeAreaView style={[styles.container, Platform.select({ ios: { marginBottom } })]}>
 			<CommentsPostOwner
 				owner={owner}
 				timestamp={timestamp}
@@ -125,11 +123,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 						/>
 					</View>
 				)}
-				<RecentLikes
-					likes={likes}
-					onUserPress={onViewUserProfile}
-					getText={getText}
-				/>
+				<RecentLikes likes={likes} onUserPress={onViewUserProfile} getText={getText} />
 				<CommentsPostActions
 					likedByMe={likedByMe}
 					likePostError={likePostError}
@@ -155,9 +149,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 				<CommentTextInput
 					ref={commentInputRef}
 					autoFocus={startComment}
-					onCommentSend={() =>
-						onCommentSendHandler(commentInputRef, onCommentSend)
-					}
+					onCommentSend={() => onCommentSendHandler(commentInputRef, onCommentSend)}
 					comment={comment}
 					onCommentInputChange={onCommentInputChange}
 					getText={getText}

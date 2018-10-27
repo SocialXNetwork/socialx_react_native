@@ -11,9 +11,9 @@ import { MediaTypeImage } from '../../../../src/types';
 
 const generateMediaObjects = (limit: number) =>
 	new Array(limit).fill(0).map(() => ({
-		url: `https://placeimg.com/${Math.round(
-			Math.random() * 200 + 200,
-		)}/${Math.round(Math.random() * 150 + 200)}/any`,
+		url: `https://placeimg.com/${Math.round(Math.random() * 200 + 200)}/${Math.round(
+			Math.random() * 150 + 200,
+		)}/any`,
 		hash: 'q89235y7jfa' + Math.random(),
 		type: MediaTypeImage,
 		extension: 'jpg',

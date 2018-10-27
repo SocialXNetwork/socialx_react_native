@@ -3,9 +3,7 @@ export { AvatarName } from './avatar/AvatarName';
 export { AvatarPicker } from './avatar/AvatarPicker';
 
 export { AdPreview } from './displayers/Ads/AdPreview';
-export {
-	ChartAccountPerformance,
-} from './displayers/Ads/ChartAccountPerformance';
+export { ChartAccountPerformance } from './displayers/Ads/ChartAccountPerformance';
 export { CreateAdSteps } from './displayers/Ads/CreateAdSteps';
 export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
@@ -42,22 +40,13 @@ export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
 export { TransactionItem } from './displayers/TransactionItem';
-export {
-	WallPostCard,
-	PostText,
-	RecentLikes,
-	UserDetails,
-} from './displayers/WallPostCard';
+export { WallPostCard, PostText, RecentLikes, UserDetails } from './displayers/WallPostCard';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';
 export { ShareSection } from './feed/ShareSection';
 
-export {
-	WithInlineLoader,
-	IWithLoaderProps,
-	SpinnerTypes,
-} from './inlineLoader';
+export { WithInlineLoader, IWithLoaderProps, SpinnerTypes } from './inlineLoader';
 
 export { CommentTextInput } from './inputs/CommentTextInput';
 export { Checkbox } from './inputs/Checkbox';
@@ -70,30 +59,18 @@ export {
 } from './inputs/PrimaryTextInput';
 
 export { CloseButton } from './interaction/CloseButton';
-export {
-	CommentsHeaderMenuButton,
-} from './interaction/CommentsHeaderMenuButton';
+export { CommentsHeaderMenuButton } from './interaction/CommentsHeaderMenuButton';
 export { CommentsPostActions } from './interaction/CommentsPostActions';
 export { GradientButton } from './interaction/GradientButton';
 export { IconButton } from './interaction/IconButton';
 export { LikeAnimatingButton } from './interaction/LikeAnimatingButton';
 export { MediaInteractionButtons } from './interaction/MediaInteractionButtons';
-export {
-	PrimaryButton,
-	IPrimaryButtonProps,
-	ButtonSizes,
-} from './interaction/PrimaryButton';
+export { PrimaryButton, IPrimaryButtonProps, ButtonSizes } from './interaction/PrimaryButton';
 export { SuggestionCard, SuggestionsCarousel } from './interaction/suggestions';
 export { ToggleIconButton } from './interaction/ToggleIconButton';
-export {
-	TouchableWithDoublePress,
-} from './interaction/TouchableWithDoublePress';
-export {
-	TrendingCategoriesCarousel,
-} from './interaction/trending/TrendingCategoriesCarousel';
-export {
-	TrendingContentCarousel,
-} from './interaction/trending/TrendingContentCarousel';
+export { TouchableWithDoublePress } from './interaction/TouchableWithDoublePress';
+export { TrendingCategoriesCarousel } from './interaction/trending/TrendingCategoriesCarousel';
+export { TrendingContentCarousel } from './interaction/trending/TrendingContentCarousel';
 export { IVideoOptions, VideoPlayer } from './interaction/video';
 
 export {

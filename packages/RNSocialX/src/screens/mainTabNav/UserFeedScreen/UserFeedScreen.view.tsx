@@ -19,9 +19,7 @@ import {
 
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps
-	extends IWallPostCardActions,
-		IDotsMenuProps {
+interface IUserFeedScreenViewProps extends IWallPostCardActions, IDotsMenuProps {
 	avatarImage: string;
 	posts: IWallPostCardData[];
 	skeletonPost: IWallPostCardData;
@@ -39,9 +37,7 @@ interface IUserFeedScreenViewProps
 	likeError: boolean;
 }
 
-export class UserFeedScreenView extends React.Component<
-	IUserFeedScreenViewProps
-> {
+export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
 	public render() {
 		const {
 			posts,
@@ -63,10 +59,7 @@ export class UserFeedScreenView extends React.Component<
 		return (
 			<View style={styles.container}>
 				{posts.length === 0 ? (
-					<FeedWithNoPosts
-						onCreateWallPost={onCreateWallPost}
-						getText={getText}
-					/>
+					<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
 				) : (
 					<FlatList
 						ref={scrollRef}
@@ -88,9 +81,7 @@ export class UserFeedScreenView extends React.Component<
 						}
 						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
 						onScrollToIndexFailed={() => undefined}
-						onScroll={Animated.event([
-							{ nativeEvent: { contentOffset: { y: scrollY } } },
-						])}
+						onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
 						scrollEventThrottle={16}
 						showsVerticalScrollIndicator={false}
 					/>
@@ -149,10 +140,7 @@ export class UserFeedScreenView extends React.Component<
 				/>
 				{skeletonPost && <View style={styles.overlay} />}
 				{post.suggested && (
-					<SuggestionsCarousel
-						items={post.suggested}
-						getText={this.props.getText}
-					/>
+					<SuggestionsCarousel items={post.suggested} getText={this.props.getText} />
 				)}
 			</View>
 		);

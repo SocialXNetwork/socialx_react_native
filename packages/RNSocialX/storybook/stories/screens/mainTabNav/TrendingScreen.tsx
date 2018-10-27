@@ -1,10 +1,7 @@
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import {
-	trendingCategoriesItems,
-	trendingContentItems,
-} from '../../../../src/mocks';
+import { trendingCategoriesItems, trendingContentItems } from '../../../../src/mocks';
 import { TrendingScreenView } from '../../../../src/screens/mainTabNav/SearchScreen/TrendingScreen.view';
 
 class TrendingScreenStory extends React.Component {
@@ -30,6 +27,4 @@ class TrendingScreenStory extends React.Component {
 	};
 }
 
-storiesOf('Screens/mainTabNav', module).add('TrendingScreen', () => (
-	<TrendingScreenStory />
-));
+storiesOf('Screens/mainTabNav', module).add('TrendingScreen', () => <TrendingScreenStory />);

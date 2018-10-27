@@ -7,14 +7,9 @@ import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	.add('TaggedFriends no friends', () => (
-		<TaggedFriends friends={[]} getText={getTextMock} />
-	))
+	.add('TaggedFriends no friends', () => <TaggedFriends friends={[]} getText={getTextMock} />)
 	.add('TaggedFriends, 1 friend', () => (
-		<TaggedFriends
-			friends={[{ fullName: 'Stanley Sater' }]}
-			getText={getTextMock}
-		/>
+		<TaggedFriends friends={[{ fullName: 'Stanley Sater' }]} getText={getTextMock} />
 	))
 	.add('TaggedFriends, 2+ friends', () => (
 		<TaggedFriends

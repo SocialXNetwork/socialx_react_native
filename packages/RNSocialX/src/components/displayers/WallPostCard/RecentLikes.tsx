@@ -9,11 +9,7 @@ interface IRecentLikesProps extends ITranslatedProps {
 	onUserPress: (userId: string) => void;
 }
 
-export const RecentLikes: React.SFC<IRecentLikesProps> = ({
-	likes,
-	onUserPress,
-	getText,
-}) => {
+export const RecentLikes: React.SFC<IRecentLikesProps> = ({ likes, onUserPress, getText }) => {
 	if (likes.length > 0) {
 		const lastLikeUser = likes[likes.length - 1];
 		const numberOfOtherLikes = likes.length - 1;
@@ -23,10 +19,7 @@ export const RecentLikes: React.SFC<IRecentLikesProps> = ({
 			<View style={styles.recentLikesContainer}>
 				<Text style={styles.likedText}>
 					{getText('post.card.liked.by') + ' '}
-					<Text
-						style={styles.likeTextBold}
-						onPress={() => onUserPress(lastLikeUser.userId)}
-					>
+					<Text style={styles.likeTextBold} onPress={() => onUserPress(lastLikeUser.userId)}>
 						{lastLikeUser.userName}
 					</Text>
 				</Text>
@@ -34,10 +27,7 @@ export const RecentLikes: React.SFC<IRecentLikesProps> = ({
 					<Text style={styles.likedText}>
 						{` ${getText('text.and')} `}
 						{secondLastLike && (
-							<Text
-								style={styles.likeTextBold}
-								onPress={() => onUserPress(secondLastLike.userId)}
-							>
+							<Text style={styles.likeTextBold} onPress={() => onUserPress(secondLastLike.userId)}>
 								{secondLastLike.userName}
 							</Text>
 						)}
@@ -46,9 +36,7 @@ export const RecentLikes: React.SFC<IRecentLikesProps> = ({
 				{numberOfOtherLikes > 1 && (
 					<Text style={styles.likedText}>
 						{` ${getText('text.and')} `}
-						<Text style={styles.likeTextBold}>
-							{numberOfOtherLikes + ' others'}
-						</Text>
+						<Text style={styles.likeTextBold}>{numberOfOtherLikes + ' others'}</Text>
 					</Text>
 				)}
 			</View>

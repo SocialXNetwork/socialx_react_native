@@ -27,10 +27,7 @@ interface IAdsStatisticsScreenState {
 	translateX: Animated.Value;
 }
 
-class Screen extends React.Component<
-	IAdsStatisticsScreenProps,
-	IAdsStatisticsScreenState
-> {
+class Screen extends React.Component<IAdsStatisticsScreenProps, IAdsStatisticsScreenState> {
 	public state = {
 		selectedSpentButton: ISpentTillNow.weekly,
 		translateX: new Animated.Value(0),
@@ -41,19 +38,13 @@ class Screen extends React.Component<
 	private maxMonthlyValue = 0;
 
 	public render() {
-		const {
-			transactions,
-			totalAmountSOCX,
-			weeklySeries,
-			monthlySeries,
-		} = this.props;
+		const { transactions, totalAmountSOCX, weeklySeries, monthlySeries } = this.props;
 		const { selectedSpentButton, translateX } = this.state;
 		const totalAmountSOCXFormatted = numeral(totalAmountSOCX).format('0.000a');
 		transactions.map((transaction) => {
-			transaction.date = moment(
-				transaction.date,
-				'MMMM DD, YYYY h:mm:ss',
-			).format(dateFormatMomentJS.statisticsScreen);
+			transaction.date = moment(transaction.date, 'MMMM DD, YYYY h:mm:ss').format(
+				dateFormatMomentJS.statisticsScreen,
+			);
 		});
 
 		this.maxWeeklyValue = this.getMaxSeriesValue(weeklySeries);
@@ -116,9 +107,7 @@ class Screen extends React.Component<
 		this.slideWidth = event.nativeEvent.layout.width;
 	};
 
-	private getMaxSeriesValue = (
-		series: IWeeklyBarChartData[] | IMonthlyBarChartData[],
-	) => {
+	private getMaxSeriesValue = (series: IWeeklyBarChartData[] | IMonthlyBarChartData[]) => {
 		let ret = 0;
 		for (const weeklyData of series) {
 			if (weeklyData.value > ret) {

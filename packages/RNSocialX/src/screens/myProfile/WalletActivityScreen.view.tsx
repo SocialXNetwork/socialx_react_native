@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import {
-	Header,
-	HeaderButton,
-	MyWalletInfo,
-	TransactionItem,
-} from '../../components';
+import { Header, HeaderButton, MyWalletInfo, TransactionItem } from '../../components';
 import { ITransactionData, ITranslatedProps, TrendOptions } from '../../types';
 import styles from './WalletActivityScreen.style';
 
@@ -22,9 +17,7 @@ export interface IWalletActivityScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-export const WalletActivityScreenView: React.SFC<
-	IWalletActivityScreenViewProps
-> = ({
+export const WalletActivityScreenView: React.SFC<IWalletActivityScreenViewProps> = ({
 	coins,
 	trendPercentage,
 	trendArrow,
@@ -52,9 +45,7 @@ export const WalletActivityScreenView: React.SFC<
 				/>
 			</View>
 			<View style={styles.activity}>
-				<Text style={styles.heading}>
-					{getText('wallet.activity.screen.heading')}
-				</Text>
+				<Text style={styles.heading}>{getText('wallet.activity.screen.heading')}</Text>
 				<FlatList
 					refreshing={refreshing}
 					onRefresh={onRefresh}

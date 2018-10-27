@@ -8,10 +8,7 @@ interface ITaggedFriendsProps extends ITranslatedProps {
 	friends: Array<{ fullName: string }>;
 }
 
-export const TaggedFriends: React.SFC<ITaggedFriendsProps> = ({
-	friends,
-	getText,
-}) => {
+export const TaggedFriends: React.SFC<ITaggedFriendsProps> = ({ friends, getText }) => {
 	const hasFriends = friends.length > 0;
 	const hasMoreThanOneFriend = friends.length > 1;
 

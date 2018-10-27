@@ -26,12 +26,8 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	searchProfilesByFullName: (
-		searchProfilesByFullNameInput: ISearchProfilesByFullNameInput,
-	) => void;
-	findFriendsSuggestions: (
-		findFriendsSuggestionsInput: IFindFriendsSuggestionsInput,
-	) => void;
+	searchProfilesByFullName: (searchProfilesByFullNameInput: ISearchProfilesByFullNameInput) => void;
+	findFriendsSuggestions: (findFriendsSuggestionsInput: IFindFriendsSuggestionsInput) => void;
 	getUserPosts: (getUserPostsInput: IGetUserPostsInput) => void;
 }
 
@@ -49,14 +45,12 @@ class Enhancer extends React.Component<IProps & IChildren> {
 }
 
 const selectSearchResults = createSelector(
-	(state: IApplicationState) =>
-		state.aggregate.profilesAggregation.searchResults,
+	(state: IApplicationState) => state.aggregate.profilesAggregation.searchResults,
 	(searchResults) => searchResults,
 );
 
 const selectFriendSuggestions = createSelector(
-	(state: IApplicationState) =>
-		state.aggregate.profilesAggregation.friendsSuggestions,
+	(state: IApplicationState) => state.aggregate.profilesAggregation.friendsSuggestions,
 	(friendsSuggestions) => friendsSuggestions,
 );
 
@@ -72,20 +66,15 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	searchProfilesByFullName: (
-		searchProfilesByFullNameInput: ISearchProfilesByFullNameInput,
-	) => dispatch(searchProfilesByFullName(searchProfilesByFullNameInput)),
-	findFriendsSuggestions: (
-		findFriendsSuggestionsInput: IFindFriendsSuggestionsInput,
-	) => dispatch(findFriendsSuggestions(findFriendsSuggestionsInput)),
+	searchProfilesByFullName: (searchProfilesByFullNameInput: ISearchProfilesByFullNameInput) =>
+		dispatch(searchProfilesByFullName(searchProfilesByFullNameInput)),
+	findFriendsSuggestions: (findFriendsSuggestionsInput: IFindFriendsSuggestionsInput) =>
+		dispatch(findFriendsSuggestions(findFriendsSuggestionsInput)),
 	getUserPosts: (getUserPostsInput: IGetUserPostsInput) =>
 		dispatch(getUserPosts(getUserPostsInput)),
 });
 
-export const WithAggregations: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithAggregations: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

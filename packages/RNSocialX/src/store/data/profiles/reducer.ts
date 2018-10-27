@@ -11,9 +11,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
 			return {
 				profiles: [
-					...state.profiles.filter(
-						(profile) => profile.alias !== action.payload.alias,
-					),
+					...state.profiles.filter((profile) => profile.alias !== action.payload.alias),
 					action.payload,
 				],
 			};
@@ -26,9 +24,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_PROFILES_BY_POSTS: {
 			const finalProfiles = action.payload.reduce(
 				(updatedProfiles, newProfile) => [
-					...updatedProfiles.filter(
-						(updatedProfile) => updatedProfile.alias !== newProfile.alias,
-					),
+					...updatedProfiles.filter((updatedProfile) => updatedProfile.alias !== newProfile.alias),
 					newProfile,
 				],
 				[...state.profiles],
@@ -45,9 +41,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_PROFILE_BY_USERNAME: {
 			return {
 				profiles: [
-					...state.profiles.filter(
-						(profile) => profile.alias !== action.payload.alias,
-					),
+					...state.profiles.filter((profile) => profile.alias !== action.payload.alias),
 					action.payload,
 				],
 			};
@@ -60,9 +54,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES: {
 			const finalProfiles = action.payload.reduce(
 				(updatedProfiles, newProfile) => [
-					...updatedProfiles.filter(
-						(updatedProfile) => updatedProfile.alias !== newProfile.alias,
-					),
+					...updatedProfiles.filter((updatedProfile) => updatedProfile.alias !== newProfile.alias),
 					newProfile,
 				],
 				[...state.profiles],

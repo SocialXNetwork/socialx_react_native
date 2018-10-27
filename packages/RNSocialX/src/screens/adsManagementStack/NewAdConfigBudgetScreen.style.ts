@@ -1,10 +1,5 @@
 import { StyleSheet } from 'react-native';
-import {
-	Colors,
-	colorWithAlphaArray,
-	Fonts,
-	Sizes,
-} from '../../environment/theme';
+import { Colors, colorWithAlphaArray, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
 	container: {

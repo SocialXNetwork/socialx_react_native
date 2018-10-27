@@ -49,8 +49,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	) {
 		const incomingError = !!nextProps.errors.find(
 			(error) =>
-				error.type === ActionTypes.CREATE_COMMENT ||
-				error.type === ActionTypes.REMOVE_COMMENT,
+				error.type === ActionTypes.CREATE_COMMENT || error.type === ActionTypes.REMOVE_COMMENT,
 		);
 
 		if (incomingError !== currentState.error) {
@@ -77,10 +76,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		}
 	}
 
-	public shouldComponentUpdate(
-		nextProps: ICommentsScreenProps,
-		nextState: ICommentsScreenState,
-	) {
+	public shouldComponentUpdate(nextProps: ICommentsScreenProps, nextState: ICommentsScreenState) {
 		return (
 			this.state !== nextState ||
 			this.props.currentUser !== nextProps.currentUser ||
@@ -106,15 +102,12 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		const { comment } = this.state;
 
 		const likePostError = !!errors.find(
-			(error) =>
-				error.type === ActionTypes.LIKE_POST ||
-				error.type === ActionTypes.UNLIKE_POST,
+			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
 		);
 
 		const likeCommentError = !!errors.find(
 			(error) =>
-				error.type === ActionTypes.LIKE_COMMENT ||
-				error.type === ActionTypes.UNLIKE_COMMENT,
+				error.type === ActionTypes.LIKE_COMMENT || error.type === ActionTypes.UNLIKE_COMMENT,
 		);
 
 		return (
@@ -186,9 +179,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onDeleteCommentHandler = async (commId: string) => {
-		const updatedComments = this.state.comments.filter(
-			(comm) => comm.commentId !== commId,
-		);
+		const updatedComments = this.state.comments.filter((comm) => comm.commentId !== commId);
 
 		this.setState({
 			comments: updatedComments,

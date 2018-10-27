@@ -20,10 +20,7 @@ const onGoBackHandler = (navigation: any) => {
 	navigation.goBack(null);
 };
 
-const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({
-	navigation,
-	getText,
-}) => {
+const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({ navigation, getText }) => {
 	const webViewLocalSource =
 		Platform.OS === OS_TYPES.IOS
 			? TermsAndConditionsHTML
@@ -38,10 +35,7 @@ const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({
 	);
 };
 
-export const TermsAndConditionsScreen = ({
-	navigation,
-	navigationOptions,
-}: INavigationProps) => (
+export const TermsAndConditionsScreen = ({ navigation, navigationOptions }: INavigationProps) => (
 	<WithTermsAndConditions>
 		{({ data, actions }) => (
 			<Screen

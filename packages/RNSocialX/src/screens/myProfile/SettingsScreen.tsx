@@ -53,10 +53,7 @@ class Screen extends React.Component<ISettingsScreenProps> {
 	};
 }
 
-export const SettingsScreen = ({
-	navigation,
-	navigationOptions,
-}: INavigationProps) => (
+export const SettingsScreen = ({ navigation, navigationOptions }: INavigationProps) => (
 	<WithSettings>
 		{({ data, actions }) => (
 			<Screen

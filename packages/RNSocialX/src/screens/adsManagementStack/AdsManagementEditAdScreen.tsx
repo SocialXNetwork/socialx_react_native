@@ -48,14 +48,7 @@ class Screen extends React.Component<IAdsManagementEditAdScreenProps> {
 
 	private getModifiedAdData = () => {
 		const { getText } = this.props;
-		const {
-			name,
-			numberOfAds,
-			startDate,
-			endDate,
-			amount,
-			currency,
-		} = this.props.adData;
+		const { name, numberOfAds, startDate, endDate, amount, currency } = this.props.adData;
 
 		const numberAds =
 			numberOfAds === '1'
@@ -83,9 +76,7 @@ class Screen extends React.Component<IAdsManagementEditAdScreenProps> {
 	};
 
 	private duplicateAd = () => {
-		console.log(
-			'TO DO: duplicate Ad and navigate to AdsManagementOverviewScreen',
-		);
+		console.log('TO DO: duplicate Ad and navigate to AdsManagementOverviewScreen');
 	};
 }
 

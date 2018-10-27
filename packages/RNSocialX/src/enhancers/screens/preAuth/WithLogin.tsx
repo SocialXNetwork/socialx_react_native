@@ -26,10 +26,8 @@ const mock: IWithLoginEnhancedProps = {
 		login: (userName: string, password: string) => undefined,
 		loadPosts: () => undefined,
 		setGlobal: (global: IGlobal) => undefined,
-		resetNavigationToRoute: (
-			screenName: string,
-			navigation: NavigationScreenProp<any>,
-		) => undefined,
+		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) =>
+			undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -43,10 +41,7 @@ export interface IWithLoginEnhancedActions extends ITranslatedProps {
 	login: (userName: string, password: string) => void;
 	loadPosts: () => void;
 	setGlobal: (global: IGlobal) => void;
-	resetNavigationToRoute: (
-		screenName: string,
-		navigation: NavigationScreenProp<any>,
-	) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 }
 
 interface IWithLoginEnhancedProps {
@@ -60,10 +55,7 @@ interface IWithLoginProps {
 
 interface IWithLoginState {}
 
-export class WithLogin extends React.Component<
-	IWithLoginProps,
-	IWithLoginState
-> {
+export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState> {
 	render() {
 		return (
 			<WithI18n>
@@ -85,10 +77,7 @@ export class WithLogin extends React.Component<
 																	errors,
 																},
 																actions: {
-																	login: async (
-																		username: string,
-																		password: string,
-																	) => {
+																	login: async (username: string, password: string) => {
 																		await accountsProps.login({
 																			username,
 																			password,

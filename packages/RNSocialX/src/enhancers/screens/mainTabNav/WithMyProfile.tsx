@@ -24,10 +24,7 @@ export interface IWithMyProfileEnhancedActions
 	extends ITranslatedProps,
 		IDotsMenuProps,
 		INavigationParamsActions {
-	resetNavigationToRoute: (
-		screenName: string,
-		navigation: NavigationScreenProp<any>,
-	) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	logout: () => void;
 	setGlobal: (input: IGlobal) => void;
 }
@@ -43,10 +40,7 @@ interface IWithMyProfileProps {
 
 interface IWithMyProfileState {}
 
-export class WithMyProfile extends React.Component<
-	IWithMyProfileProps,
-	IWithMyProfileState
-> {
+export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyProfileState> {
 	render() {
 		return (
 			<WithI18n>
@@ -66,8 +60,7 @@ export class WithMyProfile extends React.Component<
 																	currentUser: currentUser!,
 																},
 																actions: {
-																	showDotsMenuModal: (items) =>
-																		showOptionsMenu({ items }),
+																	showDotsMenuModal: (items) => showOptionsMenu({ items }),
 																	logout,
 																	resetNavigationToRoute,
 																	setNavigationParams,

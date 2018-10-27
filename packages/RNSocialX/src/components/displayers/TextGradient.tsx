@@ -7,11 +7,7 @@ interface ITextGradientProps {
 	colors: string[];
 }
 
-export const TextGradient: React.SFC<ITextGradientProps> = ({
-	text,
-	style,
-	colors,
-}) => (
+export const TextGradient: React.SFC<ITextGradientProps> = ({ text, style, colors }) => (
 	<LinearTextGradient
 		style={style}
 		locations={[0, 1]}

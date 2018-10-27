@@ -7,11 +7,7 @@
 import * as React from 'react';
 
 import { trendingCategoriesItems, trendingContentItems } from '../../../mocks';
-import {
-	ITranslatedProps,
-	ITrendingCategoriesItem,
-	ITrendingContentItem,
-} from '../../../types';
+import { ITranslatedProps, ITrendingCategoriesItem, ITrendingContentItem } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 
@@ -43,10 +39,7 @@ interface IWithTrendingProps {
 
 interface IWithTrendingState {}
 
-export class WithTrending extends React.Component<
-	IWithTrendingProps,
-	IWithTrendingState
-> {
+export class WithTrending extends React.Component<IWithTrendingProps, IWithTrendingState> {
 	render() {
 		return (
 			<WithI18n>

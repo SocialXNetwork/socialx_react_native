@@ -1,9 +1,5 @@
 import { IContext } from '../../types';
-import {
-	ICreateNotification,
-	INotificationsReturnData,
-	IRemoveNotificationInput,
-} from './types';
+import { ICreateNotification, INotificationsReturnData, IRemoveNotificationInput } from './types';
 
 import getters from './getters';
 import schemas from './schemas';
@@ -15,22 +11,16 @@ import { resolveCallback } from '../../utils/helpers';
 export default (context: IContext) => ({
 	// todo @jake I think we should separate the input type from the data type
 	// because the data can always contain auto generated things that don't exist on the input itself
-	createNotification: async (
-		createNotificationInput: ICreateNotification,
-	): Promise<null> => {
+	createNotification: async (createNotificationInput: ICreateNotification): Promise<null> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.createNotification.validate(
-				createNotificationInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.createNotification.validate(createNotificationInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: createNotificationInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: createNotificationInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -41,22 +31,16 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	removeNotification: async (
-		removeNotifcationInput: IRemoveNotificationInput,
-	): Promise<null> => {
+	removeNotification: async (removeNotifcationInput: IRemoveNotificationInput): Promise<null> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.removeNotification.validate(
-				removeNotifcationInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.removeNotification.validate(removeNotifcationInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: removeNotifcationInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: removeNotifcationInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {

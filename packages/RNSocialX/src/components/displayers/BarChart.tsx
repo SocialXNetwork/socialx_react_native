@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { FlatList, StyleProp, Text, View, ViewStyle } from 'react-native';
 
-import {
-	IMonthlyBarChartData,
-	IWeeklyBarChartData,
-} from '../../environment/consts';
+import { IMonthlyBarChartData, IWeeklyBarChartData } from '../../environment/consts';
 import styles, { barChartStyles } from './BarChart.style';
 
 interface IBarChartProps {
@@ -33,15 +30,8 @@ export const BarChart: React.SFC<IBarChartProps> = ({
 			contentContainerStyle={contentStyle}
 			horizontal={true}
 			data={dataSeries}
-			renderItem={(data: {
-				item: IWeeklyBarChartData | IMonthlyBarChartData;
-				index: number;
-			}) => (
-				<BarChartItem
-					data={data}
-					maxDate={maxDate}
-					CHART_ITEM_WIDTH={CHART_ITEM_WIDTH}
-				/>
+			renderItem={(data: { item: IWeeklyBarChartData | IMonthlyBarChartData; index: number }) => (
+				<BarChartItem data={data} maxDate={maxDate} CHART_ITEM_WIDTH={CHART_ITEM_WIDTH} />
 			)}
 			getItemLayout={(data, index) => ({
 				length: CHART_ITEM_WIDTH!,
@@ -55,11 +45,7 @@ export const BarChart: React.SFC<IBarChartProps> = ({
 	);
 };
 
-const BarChartItem: React.SFC<IBarChartItemProps> = ({
-	data,
-	maxDate,
-	CHART_ITEM_WIDTH,
-}) => {
+const BarChartItem: React.SFC<IBarChartItemProps> = ({ data, maxDate, CHART_ITEM_WIDTH }) => {
 	const barChartColumnStyles = [
 		barChartStyles.barChartColumn,
 		{

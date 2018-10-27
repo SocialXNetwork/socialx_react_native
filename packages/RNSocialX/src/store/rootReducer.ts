@@ -2,24 +2,15 @@ import { combineReducers } from 'redux';
 
 import { IState as IConfig, reducer as config } from './app/config';
 import { IState as II18n, reducer as i18n } from './app/i18n';
-import {
-	IState as INavigationParams,
-	reducer as navigationParams,
-} from './app/navigationParams';
+import { IState as INavigationParams, reducer as navigationParams } from './app/navigationParams';
 import { IState as IAuth, reducer as database } from './auth/gun';
 
 import { IState as IAccounts, reducer as accounts } from './data/accounts';
-import {
-	IState as INotifications,
-	reducer as notifications,
-} from './data/notifications';
+import { IState as INotifications, reducer as notifications } from './data/notifications';
 import { IState as IPosts, reducer as posts } from './data/posts';
 import { IState as IProfiles, reducer as profiles } from './data/profiles';
 
-import {
-	IState as IPostsAggregation,
-	reducer as postsAggregation,
-} from './aggregations/posts';
+import { IState as IPostsAggregation, reducer as postsAggregation } from './aggregations/posts';
 import {
 	IState as IProfilesAggregation,
 	reducer as profilesAggregation,

@@ -65,19 +65,11 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 	];
 
 	return (
-		<TouchableOpacity
-			disabled={disabledButton}
-			onPress={onPress}
-			style={containerWidth}
-		>
+		<TouchableOpacity disabled={disabledButton} onPress={onPress} style={containerWidth}>
 			<View style={containerStyles}>
 				<Text style={textStyles}>{label.toUpperCase()}</Text>
 				{loading && (
-					<ActivityIndicator
-						size="small"
-						color={defaultColor}
-						style={styles.loadingIndicator}
-					/>
+					<ActivityIndicator size="small" color={defaultColor} style={styles.loadingIndicator} />
 				)}
 			</View>
 		</TouchableOpacity>

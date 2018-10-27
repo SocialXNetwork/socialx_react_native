@@ -52,11 +52,7 @@ const resetPostsAction: ActionCreator<IResetPostsAction> = () => ({
 	type: ActionTypes.RESET_POSTS,
 });
 
-export const resetPostsAndRefetch = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const resetPostsAndRefetch = (): IThunk => async (dispatch, getState, context) => {
 	dispatch(resetPostsAction);
 	await dispatch(
 		getPublicPostsByDate({
@@ -79,9 +75,11 @@ const syncGetPostsByUsernameAction: ActionCreator<ISyncGetPostsByUserAction> = (
 	payload: posts,
 });
 
-export const getPostsByUsername = (
-	getPostsByUsernameInput: IUsernameInput,
-): IThunk => async (dispatch, getState, context) => {
+export const getPostsByUsername = (getPostsByUsernameInput: IUsernameInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(getPostsByUsernameAction(getPostsByUsernameInput));
@@ -114,16 +112,12 @@ export const getPostsByUsername = (
 	}
 };
 
-const getPostByIdAction: ActionCreator<IGetPostByIdAction> = (
-	getPostByIdInput: IPostIdInput,
-) => ({
+const getPostByIdAction: ActionCreator<IGetPostByIdAction> = (getPostByIdInput: IPostIdInput) => ({
 	type: ActionTypes.GET_POST_BY_ID,
 	payload: getPostByIdInput,
 });
 
-const syncGetPostByIdAction: ActionCreator<ISyncGetPostByIdAction> = (
-	post: IPostReturnData,
-) => ({
+const syncGetPostByIdAction: ActionCreator<ISyncGetPostByIdAction> = (post: IPostReturnData) => ({
 	type: ActionTypes.SYNC_GET_POST_BY_ID,
 	payload: post,
 });
@@ -136,9 +130,7 @@ export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
 	const activityId = uuidv4();
 	try {
 		dispatch(getPostByIdAction(getPostByIdInput));
-		await dispatch(
-			beginActivity({ type: ActionTypes.GET_POST_BY_ID, uuid: activityId }),
-		);
+		await dispatch(beginActivity({ type: ActionTypes.GET_POST_BY_ID, uuid: activityId }));
 		const { dataApi } = context;
 		const post = await dataApi.posts.getPostById(getPostByIdInput);
 		dispatch(syncGetPostByIdAction(post));
@@ -170,9 +162,11 @@ const syncGetPostByPathAction: ActionCreator<ISyncGetPostByPathAction> = (
 	payload: post,
 });
 
-export const getPostByPath = (
-	getPostPathInput: IPostPathInput,
-): IThunk => async (dispatch, getState, context) => {
+export const getPostByPath = (getPostPathInput: IPostPathInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(getPostByPathAction(getPostPathInput));
@@ -210,17 +204,11 @@ const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (
 	payload: posts,
 });
 
-export const loadMorePosts = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 
 	dispatch(loadMorePostsAction());
-	await dispatch(
-		beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }),
-	);
+	await dispatch(beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_POSTS }));
 
 	const { dataApi } = context;
 
@@ -235,9 +223,7 @@ export const loadMorePosts = (): IThunk => async (
 		};
 	};
 	const latestPost =
-		storePosts.length !== 0
-			? lastPostSaneDate()
-			: { timestamp: new Date(Date.now()) };
+		storePosts.length !== 0 ? lastPostSaneDate() : { timestamp: new Date(Date.now()) };
 
 	const lastPostTimestamp = moment(latestPost.timestamp).valueOf();
 	try {
@@ -263,16 +249,18 @@ const getPublicPostsByDateAction: ActionCreator<IGetPublicPostsByDateAction> = (
 	payload: getPostByDateInput,
 });
 
-const syncGetPublicPostsByDateAction: ActionCreator<
-	ISyncGetPublicPostsByDateAction
-> = (posts: IPostArrayData) => ({
+const syncGetPublicPostsByDateAction: ActionCreator<ISyncGetPublicPostsByDateAction> = (
+	posts: IPostArrayData,
+) => ({
 	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE,
 	payload: posts,
 });
 
-export const getPublicPostsByDate = (
-	getPostByDateInput: IDateInput,
-): IThunk => async (dispatch, getState, context) => {
+export const getPublicPostsByDate = (getPostByDateInput: IDateInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(getPublicPostsByDateAction(getPostByDateInput));
@@ -299,9 +287,7 @@ export const getPublicPostsByDate = (
 	}
 };
 
-const createPostAction: ActionCreator<ICreatePostAction> = (
-	createPostInput: ICreatePostInput,
-) => ({
+const createPostAction: ActionCreator<ICreatePostAction> = (createPostInput: ICreatePostInput) => ({
 	type: ActionTypes.CREATE_POST,
 	payload: createPostInput,
 });
@@ -364,11 +350,7 @@ export const createPost = (
 				// TODO @Jake fix obj type
 				const uploadedFiles: IUploadResponse[] = await Promise.all(
 					media.map((obj: any) =>
-						storageApi.uploadFile(
-							obj.contentOptimizedPath,
-							bootstrapStatus,
-							updateStatus,
-						),
+						storageApi.uploadFile(obj.contentOptimizedPath, bootstrapStatus, updateStatus),
 					),
 				);
 
@@ -422,9 +404,7 @@ export const createPost = (
 	}
 };
 
-const likePostAction: ActionCreator<ILikePostAction> = (
-	likePostInput: IPostIdInput,
-) => ({
+const likePostAction: ActionCreator<ILikePostAction> = (likePostInput: IPostIdInput) => ({
 	type: ActionTypes.LIKE_POST,
 	payload: likePostInput,
 });
@@ -464,16 +444,12 @@ export const likePost = (likePostInput: IPostIdInput): IThunk => async (
 	}
 };
 
-const removePostAction: ActionCreator<IRemovePostAction> = (
-	removePostInput: IRemovePostInput,
-) => ({
+const removePostAction: ActionCreator<IRemovePostAction> = (removePostInput: IRemovePostInput) => ({
 	type: ActionTypes.REMOVE_POST,
 	payload: removePostInput,
 });
 
-const syncRemovePostAction: ActionCreator<ISyncRemovePostAction> = (
-	postId: string,
-) => ({
+const syncRemovePostAction: ActionCreator<ISyncRemovePostAction> = (postId: string) => ({
 	type: ActionTypes.SYNC_REMOVE_POST,
 	payload: postId,
 });
@@ -513,9 +489,7 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	}
 };
 
-const unlikePostAction: ActionCreator<IUnlikePostAction> = (
-	unlikePostInput: IUnlikePostInput,
-) => ({
+const unlikePostAction: ActionCreator<IUnlikePostAction> = (unlikePostInput: IUnlikePostInput) => ({
 	type: ActionTypes.UNLIKE_POST,
 	payload: unlikePostInput,
 });
@@ -562,9 +536,11 @@ const createCommentAction: ActionCreator<ICreateCommentAction> = (
 	payload: createCommentInput,
 });
 
-export const createComment = (
-	createCommentInput: ICreateCommentInput,
-): IThunk => async (dispatch, getState, context) => {
+export const createComment = (createCommentInput: ICreateCommentInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -601,17 +577,16 @@ const likeCommentAction: ActionCreator<ILikeCommentAction> = (
 	payload: likeCommentInput,
 });
 
-export const likeComment = (
-	likeCommentInput: ICommentIdInput,
-): IThunk => async (dispatch, getState, context) => {
+export const likeComment = (likeCommentInput: ICommentIdInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const { commentId } = likeCommentInput;
 
 	const storeState = getState();
 	const parentPost = storeState.data.posts.posts.find(
-		(post) =>
-			post.comments.find((comment) => comment.commentId === commentId)
-				? true
-				: false,
+		(post) => (post.comments.find((comment) => comment.commentId === commentId) ? true : false),
 	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -626,9 +601,7 @@ export const likeComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.likeComment(likeCommentInput);
-			await dispatch(
-				getPostById({ postId: parentPost ? parentPost.postId : '' }),
-			);
+			await dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -650,17 +623,16 @@ const removeCommentAction: ActionCreator<IRemoveCommentAction> = (
 	payload: removeCommentInput,
 });
 
-export const removeComment = (
-	removeCommentInput: IRemoveCommentInput,
-): IThunk => async (dispatch, getState, context) => {
+export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const { commentId } = removeCommentInput;
 
 	const storeState = getState();
 	const parentPost = [...storeState.data.posts.posts].find(
-		(post) =>
-			post.comments.find((comment) => comment.commentId === commentId)
-				? true
-				: false,
+		(post) => (post.comments.find((comment) => comment.commentId === commentId) ? true : false),
 	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -675,9 +647,7 @@ export const removeComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.removeComment(removeCommentInput);
-			await dispatch(
-				getPostById({ postId: parentPost ? parentPost.postId : '' }),
-			);
+			await dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -699,17 +669,16 @@ const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
 	payload: unlikeCommentInput,
 });
 
-export const unlikeComment = (
-	unlikeCommentInput: IUnlikeCommentInput,
-): IThunk => async (dispatch, getState, context) => {
+export const unlikeComment = (unlikeCommentInput: IUnlikeCommentInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const { commentId } = unlikeCommentInput;
 
 	const storeState = getState();
 	const parentPost = [...storeState.data.posts.posts].find(
-		(post) =>
-			post.comments.find((comment) => comment.commentId === commentId)
-				? true
-				: false,
+		(post) => (post.comments.find((comment) => comment.commentId === commentId) ? true : false),
 	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -724,9 +693,7 @@ export const unlikeComment = (
 			);
 			const { dataApi } = context;
 			await dataApi.comments.unlikeComment(unlikeCommentInput);
-			await dispatch(
-				getPostById({ postId: parentPost ? parentPost.postId : '' }),
-			);
+			await dispatch(getPostById({ postId: parentPost ? parentPost.postId : '' }));
 		} catch (e) {
 			await dispatch(
 				setError({

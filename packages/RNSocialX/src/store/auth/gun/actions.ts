@@ -4,18 +4,12 @@ import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { ActionTypes, IAuthData, ISetAuthAction } from './Types';
 
-const setAuthAction: ActionCreator<ISetAuthAction> = (
-	authData: IAuthData | null,
-) => ({
+const setAuthAction: ActionCreator<ISetAuthAction> = (authData: IAuthData | null) => ({
 	type: ActionTypes.SET_GUN_AUTH,
 	payload: authData,
 });
 
-export const setGunAuth = (authData: IAuthData): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const setGunAuth = (authData: IAuthData): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(setAuthAction(authData));
 	} catch (e) {
@@ -29,11 +23,7 @@ export const setGunAuth = (authData: IAuthData): IThunk => async (
 	}
 };
 
-export const clearGunAuth = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const clearGunAuth = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(setAuthAction(null));

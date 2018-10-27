@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-	Animated,
-	Dimensions,
-	RefreshControl,
-	ScrollView,
-	View,
-} from 'react-native';
+import { Animated, Dimensions, RefreshControl, ScrollView, View } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 
@@ -18,11 +12,7 @@ import {
 	WallPostCard,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import {
-	IWallPostCardActions,
-	IWallPostCardData,
-	SearchResultKind,
-} from '../../types';
+import { IWallPostCardActions, IWallPostCardData, SearchResultKind } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
 
@@ -109,9 +99,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	}
 
 	const scrollContainerStyles =
-		hasPhotos || hasPosts
-			? styles.scrollContainer
-			: [styles.scrollContainer, { flex: 1 }];
+		hasPhotos || hasPosts ? styles.scrollContainer : [styles.scrollContainer, { flex: 1 }];
 
 	return (
 		<View style={styles.container}>
@@ -124,11 +112,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 				contentContainerStyle={scrollContainerStyles}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						tintColor={colors.white}
-					/>
+					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />
 				}
 				scrollEnabled={hasPhotos || hasPosts}
 			>
@@ -154,10 +138,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 
 				<View style={contentContainerStyle}>
 					<Animated.View
-						style={[
-							styles.postsContainer,
-							{ transform: [{ translateX: listTranslate }] },
-						]}
+						style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
 					>
 						{hasPosts ? (
 							recentPosts.map((post: IWallPostCardData, index: number) => (
@@ -196,10 +177,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 								onLayoutChange(event.nativeEvent.layout.height);
 							}
 						}}
-						style={[
-							styles.gridContainer,
-							{ transform: [{ translateX: gridTranslate }] },
-						]}
+						style={[styles.gridContainer, { transform: [{ translateX: gridTranslate }] }]}
 					>
 						{hasPhotos ? (
 							<ProfilePhotoGrid

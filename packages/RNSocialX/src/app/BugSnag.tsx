@@ -9,9 +9,7 @@ export default class BugSnap extends React.Component<{}> {
 		const packageVersion = DeviceInfo.getVersion();
 		const computedVersion = parseInt(packageVersion.replace(/\D/g, ''), 10);
 		const computedAppVersion =
-			Platform.OS === OS_TYPES.Android
-				? computedVersion * 10 + 2
-				: computedVersion * 10 + 1;
+			Platform.OS === OS_TYPES.Android ? computedVersion * 10 + 2 : computedVersion * 10 + 1;
 
 		if (!__DEV__) {
 			const bugSnagConf = new Configuration();

@@ -45,10 +45,7 @@ export interface ILikesMetasCallback {
 }
 
 export interface IMetasCallback {
-	[key: string]:
-		| IPostMetasCallback
-		| ICommentMetasCallback
-		| ILikesMetasCallback;
+	[key: string]: IPostMetasCallback | ICommentMetasCallback | ILikesMetasCallback;
 }
 
 export interface IMetasTypeCallback<T> {
@@ -79,10 +76,7 @@ export type IGunCallback<T> = (err: string | object | null, result?: T) => void;
 
 export interface IGunInstance {
 	// core api
-	put: (
-		data: IGunDataNode,
-		callback?: (data: IGunSetterCallback) => void,
-	) => IGunInstance;
+	put: (data: IGunDataNode, callback?: (data: IGunSetterCallback) => void) => IGunInstance;
 	get: (path: string) => IGunInstance;
 	opt: (opts: object) => IGunInstance;
 	back: (amount?: number) => IGunInstance;
@@ -90,10 +84,7 @@ export interface IGunInstance {
 	// main api
 	on: (callback?: any, options?: object) => IGunInstance;
 	once: (callback?: any, options?: object) => IGunInstance;
-	set: (
-		data: IGunInstance | object,
-		callback?: (data: IGunSetterCallback) => void,
-	) => void;
+	set: (data: IGunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
 	map: (callback?: any) => IGunInstance;
 
 	// extended api
@@ -107,19 +98,10 @@ export interface IGunInstance {
 		callback: (data: T, key: string) => void,
 		opts?: { wait: number; timeout: number },
 	) => IGunInstance;
-	encrypt: (
-		data: IGunInstance | object,
-		callback?: (data: IGunSetterCallback) => void,
-	) => void;
-	erase: (
-		path: string,
-		callback?: (data: IGunSetterCallback) => void,
-	) => IGunInstance;
+	encrypt: (data: IGunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
+	erase: (path: string, callback?: (data: IGunSetterCallback) => void) => IGunInstance;
 	open: <T>(callback: (data: T) => void) => IGunInstance;
-	find: <T>(
-		query: object,
-		callback: (data: T, key: string) => void,
-	) => IGunInstance;
+	find: <T>(query: object, callback: (data: T, key: string) => void) => IGunInstance;
 	findFriendsSuggestions: <T>(
 		username: string,
 		friendsArray: object,
@@ -141,9 +123,7 @@ export interface IGunAccountInstance extends IGunInstance {
 	create: (
 		username: string,
 		passphrase: string,
-		callback?: (
-			data: { wait?: boolean; err?: string; ok?: number; pub: string },
-		) => void,
+		callback?: (data: { wait?: boolean; err?: string; ok?: number; pub: string }) => void,
 	) => IGunAccountInstance;
 
 	/**
@@ -157,9 +137,7 @@ export interface IGunAccountInstance extends IGunInstance {
 	auth: (
 		username: string,
 		passphrase: string,
-		callback?: (
-			data: { wait?: boolean; err?: string; ok?: number; pub: string },
-		) => void,
+		callback?: (data: { wait?: boolean; err?: string; ok?: number; pub: string }) => void,
 		opts?: { newpass?: string; pin?: string; change?: string },
 	) => IGunAccountInstance;
 
@@ -176,20 +154,14 @@ export interface IGunAccountInstance extends IGunInstance {
 	 * @param passphrase a string containing the password/passphrase
 	 * @return a promise to be resolved into a IGunAccountInstance object
 	 */
-	delete: (
-		username: string,
-		passphrase: string,
-	) => Promise<IGunAccountInstance>;
+	delete: (username: string, passphrase: string) => Promise<IGunAccountInstance>;
 
 	/**
 	 * go back
 	 * @param back a number indicates how much to return from the current index (optional)
 	 * @param opts an object containing properties that extend the functionality of this function
 	 */
-	recall: (
-		back?: number,
-		opts?: { hook?: (props: object) => any },
-	) => Promise<IGunAccountInstance>;
+	recall: (back?: number, opts?: { hook?: (props: object) => any }) => Promise<IGunAccountInstance>;
 
 	/**
 	 * this function returns back to the user root document (with user.back(-1)) and internally calls reAuth on the current user

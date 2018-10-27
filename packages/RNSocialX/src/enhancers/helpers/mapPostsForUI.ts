@@ -18,13 +18,9 @@ export const mapPostsForUI = (
 		.sort((x: any, y: any) => y.timestamp - x.timestamp)
 		.slice(0, returnLength)
 		.map((post) => {
-			const ownerProfile = profiles.find(
-				(profile) => profile.alias === post.owner.alias,
-			);
+			const ownerProfile = profiles.find((profile) => profile.alias === post.owner.alias);
 
-			const foundLike = !!post.likes.find(
-				(like) => like.owner.alias === currentUser!.userId,
-			);
+			const foundLike = !!post.likes.find((like) => like.owner.alias === currentUser!.userId);
 
 			return {
 				postId: post.postId,

@@ -109,19 +109,10 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				getText={getText}
 			/>
 			<SafeAreaView style={{ flex: 1 }}>
-				<View
-					style={styles.carouselContainer}
-					onLayout={carouselContainerOnLayout}
-				>
+				<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
 					<Carousel
 						data={mediaObjects}
-						renderItem={({
-							item,
-							index,
-						}: {
-							item: IMediaProps;
-							index: number;
-						}) => (
+						renderItem={({ item, index }: { item: IMediaProps; index: number }) => (
 							<MediaObjectViewer
 								type={item.type}
 								paused={index !== activeSlide}
@@ -151,10 +142,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							},
 						})}
 					/>
-					<CloseButton
-						isPortrait={isPortrait}
-						onExitFullScreen={onExitFullScreen}
-					/>
+					<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
 					<View style={styles.screenFooter}>
 						<MediaInteractionButtons
 							mediaObjects={mediaObjects}
@@ -166,14 +154,8 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 						/>
 						<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
 					</View>
-					<TouchableOpacity
-						style={styles.infoButton}
-						onPress={showMediaInfoOverlay}
-					>
-						<Icon
-							name={'ios-information-circle-outline'}
-							style={styles.infoIcon}
-						/>
+					<TouchableOpacity style={styles.infoButton} onPress={showMediaInfoOverlay}>
+						<Icon name={'ios-information-circle-outline'} style={styles.infoIcon} />
 					</TouchableOpacity>
 				</View>
 			</SafeAreaView>

@@ -14,10 +14,7 @@ type INewAdSetupAudienceProps = IWithNewAdSetupAudienceEnhancedData &
 
 interface INewAdSetupAudienceState {}
 
-class Screen extends React.Component<
-	INewAdSetupAudienceProps,
-	INewAdSetupAudienceState
-> {
+class Screen extends React.Component<INewAdSetupAudienceProps, INewAdSetupAudienceState> {
 	public render() {
 		const { getText } = this.props;
 		return (

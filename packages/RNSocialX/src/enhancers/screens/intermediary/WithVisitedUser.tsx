@@ -15,10 +15,7 @@ interface IWithVisitedUserProps {
 
 interface IWithVisitedUserState {}
 
-export class WithVisitedUser extends React.Component<
-	IWithVisitedUserProps,
-	IWithVisitedUserState
-> {
+export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWithVisitedUserState> {
 	render() {
 		return (
 			<WithNavigationParams>
@@ -30,19 +27,13 @@ export class WithVisitedUser extends React.Component<
 									<WithAggregations>
 										{({ searchResults }) => {
 											const { navigationParams } = navigationProps;
-											const { userId, origin } = navigationParams[
-												SCREENS.UserProfile
-											];
+											const { userId, origin } = navigationParams[SCREENS.UserProfile];
 
 											let foundProfile: IProfileData | undefined;
 											if (origin === TABS.Feed) {
-												foundProfile = profiles.find(
-													(profile) => profile.alias === userId,
-												);
+												foundProfile = profiles.find((profile) => profile.alias === userId);
 											} else if (origin === TABS.Search) {
-												foundProfile = searchResults.find(
-													(profile) => profile.alias === userId,
-												);
+												foundProfile = searchResults.find((profile) => profile.alias === userId);
 											}
 											// @Alex lets talk over this?
 											// @Jake fixed this

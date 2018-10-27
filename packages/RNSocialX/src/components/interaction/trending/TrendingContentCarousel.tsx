@@ -13,9 +13,7 @@ interface ITrendingContentCarouselProps extends INavigationProps {
 	passContentRef: (ref: React.RefObject<any>) => void;
 }
 
-export class TrendingContentCarousel extends React.Component<
-	ITrendingContentCarouselProps
-> {
+export class TrendingContentCarousel extends React.Component<ITrendingContentCarouselProps> {
 	private contentRef: React.RefObject<any> = React.createRef();
 
 	public componentDidMount() {
@@ -41,10 +39,7 @@ export class TrendingContentCarousel extends React.Component<
 		);
 	}
 
-	private renderItem = (data: {
-		item: ITrendingContentItem;
-		index: number;
-	}) => {
+	private renderItem = (data: { item: ITrendingContentItem; index: number }) => {
 		return <ContentView item={data.item} onItemPress={this.onItemPress} />;
 	};
 

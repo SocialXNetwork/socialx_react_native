@@ -40,18 +40,14 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 		create(
 			username: string,
 			password: string,
-			callback?: (
-				data: { wait?: boolean; err?: string; ok?: number; pub: string },
-			) => void,
+			callback?: (data: { wait?: boolean; err?: string; ok?: number; pub: string }) => void,
 		) {
 			return this;
 		},
 		auth(
 			username: string,
 			passphrase: string,
-			callback?: (
-				data: { wait?: boolean; err?: string; ok?: number; pub: string },
-			) => void,
+			callback?: (data: { wait?: boolean; err?: string; ok?: number; pub: string }) => void,
 			opts?: { newpass?: string; pin?: string; change?: string },
 		) {
 			return this;
@@ -120,8 +116,7 @@ export const dataApiFactory = (accountMock: IAccountMock) => {
 			});
 		});
 
-	const resetAllDatabase: any = () =>
-		Promise.all(Object.values(TABLES).map(resetDatabase));
+	const resetAllDatabase: any = () => Promise.all(Object.values(TABLES).map(resetDatabase));
 
 	return {
 		accounts,

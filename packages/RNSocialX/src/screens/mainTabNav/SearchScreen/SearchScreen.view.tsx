@@ -4,11 +4,7 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SearchHeader, SearchTabResults } from '../../../components';
-import {
-	INavigationProps,
-	ISearchResultData,
-	ITranslatedProps,
-} from '../../../types';
+import { INavigationProps, ISearchResultData, ITranslatedProps } from '../../../types';
 
 import styles from './SearchScreen.style';
 

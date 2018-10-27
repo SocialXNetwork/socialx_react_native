@@ -8,9 +8,5 @@ import CenterView from '../../../helpers/CenterView';
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('DotsMenuButton', () => (
-		<DotsMenuButton
-			iconColor="black"
-			iconName="ios-more"
-			onPress={action('onPress')}
-		/>
+		<DotsMenuButton iconColor="black" iconName="ios-more" onPress={action('onPress')} />
 	));

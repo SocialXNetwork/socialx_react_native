@@ -1,11 +1,4 @@
-import {
-	IContext,
-	IGunCallback,
-	IGunInstance,
-	ILikeData,
-	TABLE_ENUMS,
-	TABLES,
-} from '../../types';
+import { IContext, IGunCallback, IGunInstance, ILikeData, TABLE_ENUMS, TABLES } from '../../types';
 import { ApiError } from '../../utils/errors';
 import { getContextMeta } from '../../utils/helpers';
 import * as postHandles from '../posts/handles';
@@ -42,49 +35,42 @@ export const createComment = (
 	const { postId, text } = createCommentInput;
 
 	const mainRunner = () => {
-		postHandles
-			.postMetaById(context, postId)
-			.docLoad((postMeta: IPostMetasCallback) => {
-				if (!Object.keys(postMeta).length) {
-					return callback(
-						new ApiError(`${errPrefix}, no post found by this id`, {
-							initialRequestBody: createCommentInput,
-						}),
-					);
-				}
+		postHandles.postMetaById(context, postId).docLoad((postMeta: IPostMetasCallback) => {
+			if (!Object.keys(postMeta).length) {
+				return callback(
+					new ApiError(`${errPrefix}, no post found by this id`, {
+						initialRequestBody: createCommentInput,
+					}),
+				);
+			}
 
-				const { postPath } = postMeta;
-				const { owner, ownerPub, timestamp } = getContextMeta(context);
+			const { postPath } = postMeta;
+			const { owner, ownerPub, timestamp } = getContextMeta(context);
 
-				const commentId = uuidv4();
-				const commentData = {
-					text,
-					timestamp,
-					owner: {
-						alias: owner,
-						pub: ownerPub,
-					},
-				};
-				loadAllMetas(gun, () => {
-					createCommentByPostPath(commentData, commentId, postPath);
-				});
+			const commentId = uuidv4();
+			const commentData = {
+				text,
+				timestamp,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+			};
+			loadAllMetas(gun, () => {
+				createCommentByPostPath(commentData, commentId, postPath);
 			});
+		});
 	};
-	const createCommentByPostPath = (
-		commentData: any,
-		commentId: string,
-		postPath: string,
-	) => {
+	const createCommentByPostPath = (commentData: any, commentId: string, postPath: string) => {
 		commentHandles
 			.commentsByPostPath(context, postPath)
 			.get(commentId)
 			.put(commentData, (commentCallback) => {
 				if (commentCallback.err) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, failed to put comment ${commentCallback.err}`,
-							{ initialRequestBody: createCommentInput },
-						),
+						new ApiError(`${errPrefix}, failed to put comment ${commentCallback.err}`, {
+							initialRequestBody: createCommentInput,
+						}),
 					);
 				}
 				const commentMetaIdData = {
@@ -102,12 +88,9 @@ export const createComment = (
 			.put(commentMetaIdData, (putCommentMetaCallback) => {
 				if (putCommentMetaCallback.err) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, failed to put comment meta ${
-								putCommentMetaCallback.err
-							}`,
-							{ initialRequestBody: createCommentInput },
-						),
+						new ApiError(`${errPrefix}, failed to put comment meta ${putCommentMetaCallback.err}`, {
+							initialRequestBody: createCommentInput,
+						}),
 					);
 				}
 				return callback(null);
@@ -165,9 +148,7 @@ export const removeComment = (
 				if (removeCommentCallback.err) {
 					return callback(
 						new ApiError(
-							`${errPrefix}, failed to put null comment record ${
-								removeCommentCallback.err
-							}`,
+							`${errPrefix}, failed to put null comment record ${removeCommentCallback.err}`,
 							{
 								initialRequestBody: { commentId },
 							},
@@ -181,23 +162,19 @@ export const removeComment = (
 	 * erase the comment meta data from the public record
 	 */
 	const eraseCommentMetaNode = () => {
-		commentHandles
-			.commentMetaById(context, commentId)
-			.put(null, (removeCommentMetaCallback) => {
-				if (removeCommentMetaCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, failed to put null comment meta record ${
-								removeCommentMetaCallback.err
-							}`,
-							{
-								initialRequestBody: { commentId },
-							},
-						),
-					);
-				}
-				return callback(null);
-			});
+		commentHandles.commentMetaById(context, commentId).put(null, (removeCommentMetaCallback) => {
+			if (removeCommentMetaCallback.err) {
+				return callback(
+					new ApiError(
+						`${errPrefix}, failed to put null comment meta record ${removeCommentMetaCallback.err}`,
+						{
+							initialRequestBody: { commentId },
+						},
+					),
+				);
+			}
+			return callback(null);
+		});
 	};
 	// run sequence
 	mainRunner();
@@ -240,10 +217,7 @@ export const likeComment = (
 				.get(owner)
 				.docLoad((commentReturnCallback: any) => {
 					if (commentReturnCallback !== null) {
-						if (
-							Object.keys(commentReturnCallback).length &&
-							commentReturnCallback.owner
-						) {
+						if (Object.keys(commentReturnCallback).length && commentReturnCallback.owner) {
 							return callback(
 								new ApiError(`${errPrefix}, this comment is already liked`, {
 									initialRequestBody: { commentId },
@@ -322,10 +296,7 @@ export const unlikeComment = (
 			.commentsByPostPath(context, postPath)
 			.path(`${commentId}.${TABLE_ENUMS.LIKES}.${owner}`)
 			.docLoad((likeReturnCallback: ILikeData) => {
-				if (
-					!Object.keys(likeReturnCallback).length &&
-					!likeReturnCallback.owner
-				) {
+				if (!Object.keys(likeReturnCallback).length && !likeReturnCallback.owner) {
 					return callback(
 						new ApiError(`${errPrefix}, no like found to be erased`, {
 							initialRequestBody: { commentId },
@@ -335,12 +306,9 @@ export const unlikeComment = (
 
 				if (likeReturnCallback.owner.alias !== owner) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, user does not own this like? something is wrong here`,
-							{
-								initialRequestBody: { commentId },
-							},
-						),
+						new ApiError(`${errPrefix}, user does not own this like? something is wrong here`, {
+							initialRequestBody: { commentId },
+						}),
 					);
 				}
 
@@ -359,12 +327,9 @@ export const unlikeComment = (
 			.erase(owner, (unlikeCommentCallback) => {
 				if (unlikeCommentCallback.err) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, like was not removed ${unlikeCommentCallback.err}`,
-							{
-								initialRequestBody: { commentId },
-							},
-						),
+						new ApiError(`${errPrefix}, like was not removed ${unlikeCommentCallback.err}`, {
+							initialRequestBody: { commentId },
+						}),
 					);
 				}
 				return callback(null);

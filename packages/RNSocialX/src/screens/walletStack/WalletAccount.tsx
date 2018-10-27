@@ -20,20 +20,14 @@ interface IWalletAccountScreenState {
 	accountName: string;
 }
 
-class Screen extends React.Component<
-	IWalletAccountScreenProps,
-	IWalletAccountScreenState
-> {
+class Screen extends React.Component<IWalletAccountScreenProps, IWalletAccountScreenState> {
 	public state = {
 		accountName: '',
 	};
 
-	private checkInputForValidity = debounce(
-		SEARCH_DEBOUNCE_TIME_MS,
-		(accountName: string) => {
-			this.props.checkForValidInput(accountName);
-		},
-	);
+	private checkInputForValidity = debounce(SEARCH_DEBOUNCE_TIME_MS, (accountName: string) => {
+		this.props.checkForValidInput(accountName);
+	});
 
 	public render() {
 		return (

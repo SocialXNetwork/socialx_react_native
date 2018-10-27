@@ -15,9 +15,7 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	removeNotification: (
-		removeNotificationInput: IRemoveNotificationInput,
-	) => void;
+	removeNotification: (removeNotificationInput: IRemoveNotificationInput) => void;
 	getNotifications: () => void;
 }
 
@@ -49,10 +47,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getNotifications: () => dispatch(getNotifications()),
 });
 
-export const WithNotifications: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithNotifications: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

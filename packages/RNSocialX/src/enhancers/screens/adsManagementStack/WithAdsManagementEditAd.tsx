@@ -34,8 +34,7 @@ export interface IWithAdsManagementEditAdEnhancedData {
 	adData: IAd;
 }
 
-export interface IWithAdsManagementEditAdEnhancedActions
-	extends ITranslatedProps {}
+export interface IWithAdsManagementEditAdEnhancedActions extends ITranslatedProps {}
 
 interface IWithAdsManagementEditAdEnhancedProps {
 	data: IWithAdsManagementEditAdEnhancedData;

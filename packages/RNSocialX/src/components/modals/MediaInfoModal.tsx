@@ -57,26 +57,16 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 					<Text style={styles.title}>{getText('media.info.title')}</Text>
 					<View style={styles.infoContainer}>
 						<View style={styles.infoTitles}>
-							<Text style={styles.fieldTitle}>
-								{getText('media.info.hash')}
-							</Text>
-							<Text style={styles.fieldTitle}>
-								{getText('media.info.size')}
-							</Text>
-							<Text style={styles.fieldTitle}>
-								{getText('media.info.name')}
-							</Text>
-							<Text style={styles.fieldTitle}>
-								{getText('media.info.type')}
-							</Text>
+							<Text style={styles.fieldTitle}>{getText('media.info.hash')}</Text>
+							<Text style={styles.fieldTitle}>{getText('media.info.size')}</Text>
+							<Text style={styles.fieldTitle}>{getText('media.info.name')}</Text>
+							<Text style={styles.fieldTitle}>{getText('media.info.type')}</Text>
 						</View>
 						<View style={{ flex: 1 }}>
 							<Text
 								style={[styles.fieldValue, styles.filedValueLink]}
 								numberOfLines={1}
-								onPress={() =>
-									openURL(mediaURL, getText('message.link.not.supported'))
-								}
+								onPress={() => openURL(mediaURL, getText('message.link.not.supported'))}
 							>
 								{mediaHash}
 							</Text>

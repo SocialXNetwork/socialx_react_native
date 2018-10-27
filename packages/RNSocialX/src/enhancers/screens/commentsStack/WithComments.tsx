@@ -103,10 +103,7 @@ interface IWithCommentsProps {
 
 interface IWithCommentsState {}
 
-export class WithComments extends React.Component<
-	IWithCommentsProps,
-	IWithCommentsState
-> {
+export class WithComments extends React.Component<IWithCommentsProps, IWithCommentsState> {
 	render() {
 		return (
 			<WithI18n>
@@ -127,15 +124,11 @@ export class WithComments extends React.Component<
 																		{({ currentUser }) => {
 																			const currentPost = postProps.posts.find(
 																				(post) =>
-																					post.postId ===
-																					navigationParams[SCREENS.Comments]
-																						.postId,
+																					post.postId === navigationParams[SCREENS.Comments].postId,
 																			);
 
 																			const ownerProfile = profiles.find(
-																				(profile) =>
-																					profile.alias ===
-																					currentPost!.owner.alias,
+																				(profile) => profile.alias === currentPost!.owner.alias,
 																			);
 
 																			return this.props.children({
@@ -143,31 +136,21 @@ export class WithComments extends React.Component<
 																					...mock.data,
 																					currentUser,
 																					startComment:
-																						navigationParams[SCREENS.Comments]
-																							.startComment,
+																						navigationParams[SCREENS.Comments].startComment,
 																					errors,
 																					post: {
 																						postId: currentPost!.postId,
 																						postText: currentPost!.postText,
-																						timestamp: new Date(
-																							currentPost!.timestamp,
-																						),
-																						media: extractMediaFromPosts(
-																							[currentPost!],
-																							appConfig,
-																						),
-																						likes: currentPost!.likes.map(
-																							(like) => {
-																								return {
-																									userId: like.owner.alias,
-																									userName: like.owner.alias,
-																								};
-																							},
-																						),
+																						timestamp: new Date(currentPost!.timestamp),
+																						media: extractMediaFromPosts([currentPost!], appConfig),
+																						likes: currentPost!.likes.map((like) => {
+																							return {
+																								userId: like.owner.alias,
+																								userName: like.owner.alias,
+																							};
+																						}),
 																						likedByMe: !!currentPost!.likes.find(
-																							(like) =>
-																								like.owner.alias ===
-																								currentUser.userId,
+																							(like) => like.owner.alias === currentUser.userId,
 																						),
 																						comments: getComments(
 																							currentPost!.comments,

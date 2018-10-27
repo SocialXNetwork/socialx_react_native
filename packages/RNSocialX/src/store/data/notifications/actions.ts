@@ -22,9 +22,11 @@ const createNotificationAction: ActionCreator<ICreateNotificationAction> = (
 	payload: createNotificationInput,
 });
 
-export const createNotification = (
-	createNotificationInput: ICreateNotification,
-): IThunk => async (dispatch, getState, context) => {
+export const createNotification = (createNotificationInput: ICreateNotification): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -81,24 +83,18 @@ export const removeNotification = (
 	}
 };
 
-export const getNotificationsAction: ActionCreator<
-	IGetNotificationsAction
-> = () => ({
+export const getNotificationsAction: ActionCreator<IGetNotificationsAction> = () => ({
 	type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
 });
 
-export const syncNotificationsAction: ActionCreator<
-	ISyncNotificationsAction
-> = (notifications: INotificationReturnData[]) => ({
+export const syncNotificationsAction: ActionCreator<ISyncNotificationsAction> = (
+	notifications: INotificationReturnData[],
+) => ({
 	type: ActionTypes.SYNC_CURRENT_NOTIFICATIONS,
 	payload: notifications,
 });
 
-export const getNotifications = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const getNotifications = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;

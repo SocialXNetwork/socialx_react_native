@@ -40,9 +40,7 @@ export const createProfile = (
 				if (createProfileOnAccCallback.err) {
 					return callback(
 						new ApiError(
-							`failed to create user profile on current account ${
-								createProfileOnAccCallback.err
-							}`,
+							`failed to create user profile on current account ${createProfileOnAccCallback.err}`,
 							{
 								initialRequestBody: createProfileInput,
 							},
@@ -60,22 +58,17 @@ export const createProfile = (
 	 * @param ref IGunInstance reference to the private scope user profile
 	 */
 	const createUserProfRaw = (ref: IGunInstance) => {
-		profileHandles
-			.publicProfileByUsername(context, alias)
-			.put(ref, (profileCallback) => {
-				if (profileCallback.err) {
-					return callback(
-						new ApiError(
-							`failed to create user profile ${profileCallback.err}`,
-							{
-								initialRequestBody: createProfileInput,
-							},
-						),
-					);
-				}
+		profileHandles.publicProfileByUsername(context, alias).put(ref, (profileCallback) => {
+			if (profileCallback.err) {
+				return callback(
+					new ApiError(`failed to create user profile ${profileCallback.err}`, {
+						initialRequestBody: createProfileInput,
+					}),
+				);
+			}
 
-				return callback(null);
-			});
+			return callback(null);
+		});
 	};
 	// run sequence
 	mainRunner();
@@ -91,21 +84,16 @@ export const updateProfile = (
 	 * aswell because the public scope has a reference to the private scope record
 	 */
 	const mainRunner = () => {
-		profileHandles
-			.currentUserProfileData(context)
-			.put(updateProfileInput, (updateCallback) => {
-				if (updateCallback.err) {
-					return callback(
-						new ApiError(
-							`failed to update user profile ${updateCallback.err}`,
-							{
-								initialRequestBody: updateProfileInput,
-							},
-						),
-					);
-				}
-				return callback(null);
-			});
+		profileHandles.currentUserProfileData(context).put(updateProfileInput, (updateCallback) => {
+			if (updateCallback.err) {
+				return callback(
+					new ApiError(`failed to update user profile ${updateCallback.err}`, {
+						initialRequestBody: updateProfileInput,
+					}),
+				);
+			}
+			return callback(null);
+		});
 	};
 	// run sequence
 	mainRunner();
@@ -171,18 +159,16 @@ export const addFriend = (
 	 * check if the targeted user exists and get his profile reference then pass it to create profile
 	 */
 	const getTargetedUserAndCreateRequest = () => {
-		profileHandles
-			.publicProfileByUsername(context, username)
-			.once((userProfileCallback: any) => {
-				if (!userProfileCallback) {
-					return callback(
-						new ApiError(`${errPrefix}, user does not exist!`, {
-							initialRequestBody: { username },
-						}),
-					);
-				}
-				createFriend(profileHandles.publicProfileByUsername(context, username));
-			});
+		profileHandles.publicProfileByUsername(context, username).once((userProfileCallback: any) => {
+			if (!userProfileCallback) {
+				return callback(
+					new ApiError(`${errPrefix}, user does not exist!`, {
+						initialRequestBody: { username },
+					}),
+				);
+			}
+			createFriend(profileHandles.publicProfileByUsername(context, username));
+		});
 	};
 	/**
 	 * create a friend record on the current user's private scope and put the friend's entire profile reference
@@ -194,12 +180,9 @@ export const addFriend = (
 			.put(requestedUserRef, (friendCreationCallback) => {
 				if (friendCreationCallback.err) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, something went wrong on creating the friend!`,
-							{
-								initialRequestBody: { username },
-							},
-						),
+						new ApiError(`${errPrefix}, something went wrong on creating the friend!`, {
+							initialRequestBody: { username },
+						}),
 					);
 				}
 				createFriendRequest();
@@ -258,12 +241,9 @@ export const removeFriend = (
 			.once((currentFriendCallback: any) => {
 				if (!currentFriendCallback) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, can not delete a friend that does not exist (sadface)`,
-							{
-								initialRequestBody: { username },
-							},
-						),
+						new ApiError(`${errPrefix}, can not delete a friend that does not exist (sadface)`, {
+							initialRequestBody: { username },
+						}),
 					);
 				}
 				removeFriendFromPrivateRecord();
@@ -273,21 +253,16 @@ export const removeFriend = (
 	 * remove friend from the current user's private friends record
 	 */
 	const removeFriendFromPrivateRecord = () => {
-		profileHandles
-			.currentProfileFriendsRecord(context)
-			.erase(username, (removeFriendCallback) => {
-				if (removeFriendCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, something went wrong on deleting the friend`,
-							{
-								initialRequestBody: { username },
-							},
-						),
-					);
-				}
-				return callback(null);
-			});
+		profileHandles.currentProfileFriendsRecord(context).erase(username, (removeFriendCallback) => {
+			if (removeFriendCallback.err) {
+				return callback(
+					new ApiError(`${errPrefix}, something went wrong on deleting the friend`, {
+						initialRequestBody: { username },
+					}),
+				);
+			}
+			return callback(null);
+		});
 	};
 	// run sequence
 	mainRunner();
@@ -308,12 +283,9 @@ export const acceptFriend = (
 			.once((currentRequestCallback: any) => {
 				if (currentRequestCallback) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, no friend request found from this user`,
-							{
-								initialRequestBody: { username },
-							},
-						),
+						new ApiError(`${errPrefix}, no friend request found from this user`, {
+							initialRequestBody: { username },
+						}),
 					);
 				}
 				userExistsCheck();
@@ -328,17 +300,12 @@ export const acceptFriend = (
 			.once((targetUserProfileCallback: any) => {
 				if (!targetUserProfileCallback) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, user doesnt exist on the current public scope`,
-							{
-								initialRequestBody: { username },
-							},
-						),
+						new ApiError(`${errPrefix}, user doesnt exist on the current public scope`, {
+							initialRequestBody: { username },
+						}),
 					);
 				}
-				removePendingAndProceed(
-					profileHandles.publicCurrentFriendRequests(context),
-				);
+				removePendingAndProceed(profileHandles.publicCurrentFriendRequests(context));
 			});
 	};
 	/**
@@ -354,9 +321,7 @@ export const acceptFriend = (
 					}),
 				);
 			}
-			addRequestedUserAsFriend(
-				profileHandles.publicProfileByUsername(context, username),
-			);
+			addRequestedUserAsFriend(profileHandles.publicProfileByUsername(context, username));
 		});
 	};
 	/**
@@ -369,12 +334,9 @@ export const acceptFriend = (
 			.put(friendProfileReference, (addFriendCallback) => {
 				if (addFriendCallback.err) {
 					return callback(
-						new ApiError(
-							`${errPrefix}, something went wrong, could not add the user as a friend`,
-							{
-								initialRequestBody: { username },
-							},
-						),
+						new ApiError(`${errPrefix}, something went wrong, could not add the user as a friend`, {
+							initialRequestBody: { username },
+						}),
 					);
 				}
 				return callback(null);

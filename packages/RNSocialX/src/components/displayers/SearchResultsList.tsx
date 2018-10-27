@@ -30,9 +30,7 @@ const LoadingFooter: React.SFC<IPaginatedList> = ({ hasMore }) => {
 const renderItem = (
 	item: ISearchResultData,
 	onResultPress: (result: ISearchResultData) => void,
-) => (
-	<SearchResultsItem item={item} onResultPress={() => onResultPress(item)} />
-);
+) => <SearchResultsItem item={item} onResultPress={() => onResultPress(item)} />;
 
 export const SearchResultsList: React.SFC<ISearchResultsListProps> = ({
 	searchResults,

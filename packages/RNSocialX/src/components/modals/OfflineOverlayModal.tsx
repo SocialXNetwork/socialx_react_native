@@ -10,10 +10,7 @@ interface IOfflineOverlayModalProps extends ITranslatedProps {
 	visible: boolean;
 }
 
-export const OfflineOverlayModal: React.SFC<IOfflineOverlayModalProps> = ({
-	visible,
-	getText,
-}) => (
+export const OfflineOverlayModal: React.SFC<IOfflineOverlayModalProps> = ({ visible, getText }) => (
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
@@ -28,9 +25,7 @@ export const OfflineOverlayModal: React.SFC<IOfflineOverlayModalProps> = ({
 				<SafeAreaView>
 					<View style={styles.boxContainer}>
 						<ActivityIndicator size="small" color={defaultColor} />
-						<Text style={styles.message}>
-							{getText('offline.overlay.message')}
-						</Text>
+						<Text style={styles.message}>{getText('offline.overlay.message')}</Text>
 					</View>
 				</SafeAreaView>
 			</Modal>

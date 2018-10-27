@@ -22,9 +22,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME: {
 			const finalProfiles = action.payload.reduce(
 				(updatedProfiles, newProfile) => [
-					...updatedProfiles.filter(
-						(updatedProfile) => updatedProfile.alias !== newProfile.alias,
-					),
+					...updatedProfiles.filter((updatedProfile) => updatedProfile.alias !== newProfile.alias),
 					newProfile,
 				],
 				[...state.searchResults],

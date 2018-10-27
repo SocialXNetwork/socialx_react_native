@@ -41,18 +41,8 @@ import {
 /**
  * create the user's profile
  */
-const createAccountProfile = (
-	context: IContext,
-	createAccountInput: ICreateAccountInput,
-) => {
-	const {
-		username,
-		aboutMeText,
-		miningEnabled,
-		fullName,
-		email,
-		avatar,
-	} = createAccountInput;
+const createAccountProfile = (context: IContext, createAccountInput: ICreateAccountInput) => {
+	const { username, aboutMeText, miningEnabled, fullName, email, avatar } = createAccountInput;
 	const pub = context.account.is.pub;
 	return new Promise((res, rej) =>
 		createProfile(
@@ -82,20 +72,12 @@ const createAccountProfile = (
  */
 const createRecoveryOnAccount = (context: IContext, recoveryData: any) => {
 	return new Promise((res, rej) =>
-		accountHandles
-			.currentAccountRecover(context)
-			.put(recoveryData, (recoverCallback) => {
-				if (recoverCallback.err) {
-					rej(
-						new ApiError(
-							`failed to create account recovery settings ${
-								recoverCallback.err
-							}`,
-						),
-					);
-				}
-				res();
-			}),
+		accountHandles.currentAccountRecover(context).put(recoveryData, (recoverCallback) => {
+			if (recoverCallback.err) {
+				rej(new ApiError(`failed to create account recovery settings ${recoverCallback.err}`));
+			}
+			res();
+		}),
 	);
 };
 
@@ -119,10 +101,7 @@ const decryptRecovery = async (
 		if (!encryptedReminder) {
 			throw new ApiError('no encrypted reminder');
 		}
-		const hint = await decrypt(
-			encryptedReminder,
-			await work(question1, question2),
-		);
+		const hint = await decrypt(encryptedReminder, await work(question1, question2));
 		return { hint };
 	} catch (e) {
 		throw new ApiError(`recovery key not captured ${e.message}`);
@@ -132,10 +111,7 @@ const decryptRecovery = async (
 /**
  * authenticate with the newly created account to have access to the private scope
  */
-const authenticateWithUser = (
-	context: IContext,
-	createAccountInput: ICreateAccountInput,
-) => {
+const authenticateWithUser = (context: IContext, createAccountInput: ICreateAccountInput) => {
 	const { account, encrypt, work } = context;
 	const {
 		username,
@@ -148,10 +124,7 @@ const authenticateWithUser = (
 				rej(new ApiError(`failed authentication ${authAck.err}`));
 			}
 
-			const encryptedReminder = await encrypt(
-				reminder,
-				await work(question1, question2),
-			);
+			const encryptedReminder = await encrypt(reminder, await work(question1, question2));
 			res({
 				encryptedReminder,
 				question1: question1.length,
@@ -164,10 +137,7 @@ const authenticateWithUser = (
 /**
  * create the user account
  */
-const createAccountRecord = (
-	context: IContext,
-	createAccountInput: ICreateAccountInput,
-) => {
+const createAccountRecord = (context: IContext, createAccountInput: ICreateAccountInput) => {
 	const { username, password } = createAccountInput;
 	return new Promise((res, rej) =>
 		context.account.create(username, password, (createAccountCallback) => {
@@ -188,9 +158,7 @@ export const createAccount = async (
 ) => {
 	const { account, encrypt, work } = context;
 	if (account.is) {
-		return callback(
-			new ApiError('cannot create account while a user is logged in.'),
-		);
+		return callback(new ApiError('cannot create account while a user is logged in.'));
 	}
 
 	await createAccountRecord(context, createAccountInput);
@@ -243,9 +211,7 @@ export const changePassword = (
 	const { account } = context;
 
 	if (!account.is) {
-		return callback(
-			new ApiError('failed to change password, user not logged in'),
-		);
+		return callback(new ApiError('failed to change password, user not logged in'));
 	}
 
 	account.auth(
@@ -290,10 +256,7 @@ export const recoverAccount = (
 
 // this function allows the 'governance' to function properly (if something is
 // created privately the trusted user is able to see that)
-export const trustAccount = async (
-	context: IContext,
-	callback: IGunCallback<null>,
-) => {
+export const trustAccount = async (context: IContext, callback: IGunCallback<null>) => {
 	const { account } = context;
 
 	if (!account.is) {

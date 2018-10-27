@@ -84,9 +84,7 @@ export interface IKeyboardContextProps {
 	safeRunAfterKeyboardHide: (handler: () => void) => void;
 }
 
-export const KeyboardContext: React.Context<
-	IKeyboardContextProps
-> = React.createContext({
+export const KeyboardContext: React.Context<IKeyboardContextProps> = React.createContext({
 	marginBottom: 0,
 	safeRunAfterKeyboardHide: (handler: () => void) => {
 		/**/

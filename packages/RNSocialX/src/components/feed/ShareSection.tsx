@@ -17,9 +17,7 @@ export const ShareSection: React.SFC<IShareSectionProps> = ({
 }) => (
 	<View style={styles.container}>
 		<FastImage
-			source={
-				avatarImage.length > 0 ? { uri: avatarImage } : USER_AVATAR_PLACEHOLDER
-			}
+			source={avatarImage.length > 0 ? { uri: avatarImage } : USER_AVATAR_PLACEHOLDER}
 			resizeMode="cover"
 			style={styles.avatar}
 		/>

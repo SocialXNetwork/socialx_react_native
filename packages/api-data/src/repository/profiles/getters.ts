@@ -2,10 +2,7 @@ import { IContext, IGunCallback, TABLES } from '../../types';
 import * as profileHandles from './handles';
 
 import { ApiError } from '../../utils/errors';
-import {
-	cleanGunMetaFromObject,
-	convertGunSetToArrayWithKey,
-} from '../../utils/helpers';
+import { cleanGunMetaFromObject, convertGunSetToArrayWithKey } from '../../utils/helpers';
 import {
 	IFriendData,
 	IFriendReturnData,
@@ -29,22 +26,15 @@ export const getPublicKeyByUsername = (
 };
 
 const friendsToArray = (friends: IFriendsCallbackData) =>
-	convertGunSetToArrayWithKey(friends).map(
-		({ k, ...friend }: IFriendData & { k: string }) => ({
-			friendId: k,
-			...friend,
-		}),
-	);
+	convertGunSetToArrayWithKey(friends).map(({ k, ...friend }: IFriendData & { k: string }) => ({
+		friendId: k,
+		...friend,
+	}));
 
-export const getCurrentProfile = (
-	context: IContext,
-	callback: IGunCallback<IProfileData>,
-) => {
+export const getCurrentProfile = (context: IContext, callback: IGunCallback<IProfileData>) => {
 	const { account } = context;
 	if (!account.is) {
-		return callback(
-			new ApiError('failed to get current profile, user not logged in'),
-		);
+		return callback(new ApiError('failed to get current profile, user not logged in'));
 	}
 	/**
 	 * get the current profile from the private scope
@@ -141,29 +131,22 @@ export const findFriendsSuggestions = (
 	profileHandles
 		.currentUserProfileData(context)
 		.docLoad((currentProfileCallback: IProfileCallbackData) => {
-			if (
-				!currentProfileCallback ||
-				!Object.keys(currentProfileCallback).length
-			) {
+			if (!currentProfileCallback || !Object.keys(currentProfileCallback).length) {
 				return callback(new ApiError('failed to find current profile'));
 			}
 			const friendsData = friendsToArray(currentProfileCallback.friends) || [];
 			profileHandles
 				.publicProfilesRecord(context)
-				.findFriendsSuggestions(
-					currentProfileCallback.alias,
-					friendsData,
-					(data: any) => {
-						const profilesReturned = data.map((profile: any) => ({
-							...profile,
-							friends: friendsToArray(profile.friends) || [],
-						}));
-						if (maxResults) {
-							return callback(null, profilesReturned.slice(0, maxResults));
-						}
-						return callback(null, profilesReturned);
-					},
-				);
+				.findFriendsSuggestions(currentProfileCallback.alias, friendsData, (data: any) => {
+					const profilesReturned = data.map((profile: any) => ({
+						...profile,
+						friends: friendsToArray(profile.friends) || [],
+					}));
+					if (maxResults) {
+						return callback(null, profilesReturned.slice(0, maxResults));
+					}
+					return callback(null, profilesReturned);
+				});
 		});
 };
 

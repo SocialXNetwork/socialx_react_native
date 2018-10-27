@@ -18,30 +18,20 @@ import {
 } from './types';
 
 import { ValidationError } from '../../utils/errors';
-import {
-	getRelatedUsernamesFromPosts,
-	resolveCallback,
-	unique,
-} from '../../utils/helpers';
+import { getRelatedUsernamesFromPosts, resolveCallback, unique } from '../../utils/helpers';
 import { IPostArrayData } from '../posts/types';
 
 export default (context: IContext) => ({
-	createProfile: async (
-		createProfileInput: ICreateProfileInput,
-	): Promise<null> => {
+	createProfile: async (createProfileInput: ICreateProfileInput): Promise<null> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.createProfileInput.validate(
-				createProfileInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.createProfileInput.validate(createProfileInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: createProfileInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: createProfileInput,
+			});
 		}
 		return new Promise<null>((resolve, reject) => {
 			setters.createProfile(
@@ -60,30 +50,20 @@ export default (context: IContext) => ({
 	}): Promise<IProfileData[]> {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.getProfilesByUsernames.validate(
-				getProfilesByUsernamesInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.getProfilesByUsernames.validate(getProfilesByUsernamesInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: getProfilesByUsernamesInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: getProfilesByUsernamesInput,
+			});
 		}
 
 		const { usernames } = getProfilesByUsernamesInput;
-		return Promise.all(
-			usernames.map((username) => this.getProfileByUsername({ username })),
-		);
+		return Promise.all(usernames.map((username) => this.getProfileByUsername({ username })));
 	},
 	//
-	async getUserProfilesByPosts({
-		posts,
-	}: {
-		posts: IPostArrayData;
-	}): Promise<IProfileData[]> {
+	async getUserProfilesByPosts({ posts }: { posts: IPostArrayData }): Promise<IProfileData[]> {
 		// TODO: finish
 		// let validatedInput: any;
 		// try {
@@ -107,17 +87,13 @@ export default (context: IContext) => ({
 	}): Promise<IProfileData> {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.getProfileByUsername.validate(
-				getProfileByUsernameInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.getProfileByUsername.validate(getProfileByUsernameInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: getProfileByUsernameInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: getProfileByUsernameInput,
+			});
 		}
 
 		return new Promise<IProfileData>((resolve, reject) => {
@@ -133,17 +109,13 @@ export default (context: IContext) => ({
 	): Promise<string> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.getProfileByUsername.validate(
-				getPublicKeyByUsernameInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.getProfileByUsername.validate(getPublicKeyByUsernameInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: getPublicKeyByUsernameInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: getPublicKeyByUsernameInput,
+			});
 		}
 
 		return new Promise<string>((resolve, reject) => {
@@ -154,22 +126,16 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	updateProfile: async (
-		updateProfileInput: IUpdateProfileInput,
-	): Promise<null> => {
+	updateProfile: async (updateProfileInput: IUpdateProfileInput): Promise<null> => {
 		let validatedInput: any;
 		try {
-			validatedInput = await schemas.updateProfile.validate(
-				updateProfileInput,
-				{
-					stripUnknown: true,
-				},
-			);
+			validatedInput = await schemas.updateProfile.validate(updateProfileInput, {
+				stripUnknown: true,
+			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: updateProfileInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: updateProfileInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -187,10 +153,9 @@ export default (context: IContext) => ({
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: addFriendInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: addFriendInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -201,19 +166,16 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	removeFriend: async (
-		removeFriendInput: IRemoveFriendInput,
-	): Promise<null> => {
+	removeFriend: async (removeFriendInput: IRemoveFriendInput): Promise<null> => {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.removeFriend.validate(removeFriendInput, {
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: removeFriendInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: removeFriendInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -224,19 +186,16 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	acceptFriend: async (
-		acceptFriendInput: IAcceptFriendInput,
-	): Promise<null> => {
+	acceptFriend: async (acceptFriendInput: IAcceptFriendInput): Promise<null> => {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.acceptFriend.validate(acceptFriendInput, {
 				stripUnknown: true,
 			});
 		} catch (e) {
-			throw new ValidationError(
-				typeof e.errors === 'string' ? e.errors : e.errors.join(),
-				{ validationInput: acceptFriendInput },
-			);
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: acceptFriendInput,
+			});
 		}
 
 		return new Promise<null>((resolve, reject) => {
@@ -249,10 +208,7 @@ export default (context: IContext) => ({
 	},
 	getCurrentProfileFriends: (): Promise<IFriendsCallbackData> =>
 		new Promise((resolve, reject) => {
-			getters.getCurrentProfileFriends(
-				context,
-				resolveCallback(resolve, reject),
-			);
+			getters.getCurrentProfileFriends(context, resolveCallback(resolve, reject));
 		}),
 	searchByFullName: ({
 		textSearch,
@@ -271,10 +227,6 @@ export default (context: IContext) => ({
 		maxResults = 10,
 	}: IFindFriendsSuggestionsInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) =>
-			getters.findFriendsSuggestions(
-				context,
-				{ maxResults },
-				resolveCallback(resolve, reject),
-			),
+			getters.findFriendsSuggestions(context, { maxResults }, resolveCallback(resolve, reject)),
 		),
 });

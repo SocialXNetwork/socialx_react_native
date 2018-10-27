@@ -37,16 +37,18 @@ const getProfilesByPostsAction: ActionCreator<IGetProfilesByPostsAction> = (
 	payload: posts,
 });
 
-const syncGetProfilesByPostsAction: ActionCreator<
-	ISyncGetProfilesByPostsAction
-> = (profiles: IProfileData[]) => ({
+const syncGetProfilesByPostsAction: ActionCreator<ISyncGetProfilesByPostsAction> = (
+	profiles: IProfileData[],
+) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS,
 	payload: profiles,
 });
 
-export const getProfilesByPosts = (
-	getProfileByPostsInput: IPostArrayData,
-): IThunk => async (dispatch, getState, context) => {
+export const getProfilesByPosts = (getProfileByPostsInput: IPostArrayData): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -85,16 +87,18 @@ const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
 	payload: getProfileByUsernameInput,
 });
 
-const syncGetProfileByUsernameAction: ActionCreator<
-	ISyncGetProfileByUsernameAction
-> = (profile: IProfileData) => ({
+const syncGetProfileByUsernameAction: ActionCreator<ISyncGetProfileByUsernameAction> = (
+	profile: IProfileData,
+) => ({
 	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME,
 	payload: profile,
 });
 
-export const getProfileByUsername = (
-	getProfileByUsernameInput: IUsernameInput,
-): IThunk => async (dispatch, getState, context) => {
+export const getProfileByUsername = (getProfileByUsernameInput: IUsernameInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -108,9 +112,7 @@ export const getProfileByUsername = (
 				}),
 			);
 			const { dataApi } = context;
-			const profile = await dataApi.profiles.getProfileByUsername(
-				getProfileByUsernameInput,
-			);
+			const profile = await dataApi.profiles.getProfileByUsername(getProfileByUsernameInput);
 			await dispatch(syncGetProfileByUsernameAction(profile));
 		} catch (e) {
 			await dispatch(
@@ -125,16 +127,16 @@ export const getProfileByUsername = (
 		}
 	}
 };
-const getProfilesByUsernamesAction: ActionCreator<
-	IGetProfilesByUsernamesAction
-> = (getProfilesByUsernamesInput: IUsernamesInput) => ({
+const getProfilesByUsernamesAction: ActionCreator<IGetProfilesByUsernamesAction> = (
+	getProfilesByUsernamesInput: IUsernamesInput,
+) => ({
 	type: ActionTypes.GET_PROFILES_BY_USERNAMES,
 	payload: getProfilesByUsernamesInput,
 });
 
-const syncGetProfilesByUsernamesAction: ActionCreator<
-	ISyncGetProfilesByUsernamesAction
-> = (profiles: IProfileData[]) => ({
+const syncGetProfilesByUsernamesAction: ActionCreator<ISyncGetProfilesByUsernamesAction> = (
+	profiles: IProfileData[],
+) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES,
 	payload: profiles,
 });
@@ -156,9 +158,7 @@ export const getProfilesByUsernames = (
 				}),
 			);
 			const { dataApi } = context;
-			const profiles = await dataApi.profiles.getProfilesByUsernames(
-				getProfileByUsernameInput,
-			);
+			const profiles = await dataApi.profiles.getProfilesByUsernames(getProfileByUsernameInput);
 			dispatch(syncGetProfilesByUsernamesAction(profiles));
 		} catch (e) {
 			await dispatch(
@@ -174,24 +174,18 @@ export const getProfilesByUsernames = (
 	}
 };
 
-const getCurrentProfileAction: ActionCreator<
-	IGetCurrentProfileAction
-> = () => ({
+const getCurrentProfileAction: ActionCreator<IGetCurrentProfileAction> = () => ({
 	type: ActionTypes.GET_CURRENT_PROFILE,
 });
 
-const syncGetCurrentProfileAction: ActionCreator<
-	ISyncGetCurrentProfileAction
-> = (profile: IProfileData) => ({
+const syncGetCurrentProfileAction: ActionCreator<ISyncGetCurrentProfileAction> = (
+	profile: IProfileData,
+) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_PROFILE,
 	payload: profile,
 });
 
-export const getCurrentProfile = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const getCurrentProfile = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -230,9 +224,11 @@ const updateCurrentProfileAction: ActionCreator<IUpdateProfileAction> = (
 	payload: updateProfileInput,
 });
 
-export const updateCurrentProfile = (
-	updateProfileInput: IUpdateProfileInput,
-): IThunk => async (dispatch, getState, context) => {
+export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const { dataApi, storageApi } = context;
 
 	const activityId = uuidv4();
@@ -327,9 +323,7 @@ export const updateCurrentProfile = (
 	}
 };
 
-const addFriendAction: ActionCreator<IAddFriendAction> = (
-	addFriendInput: IAddFriendInput,
-) => ({
+const addFriendAction: ActionCreator<IAddFriendAction> = (addFriendInput: IAddFriendInput) => ({
 	type: ActionTypes.ADD_FRIEND,
 	payload: addFriendInput,
 });
@@ -375,9 +369,11 @@ const removeFriendAction: ActionCreator<IRemoveFriendAction> = (
 	payload: removeFriendInput,
 });
 
-export const removeFriend = (
-	removeFriendInput: IRemoveFriendInput,
-): IThunk => async (dispatch, getState, context) => {
+export const removeFriend = (removeFriendInput: IRemoveFriendInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -414,9 +410,11 @@ const acceptFriendAction: ActionCreator<IAcceptFriendAction> = (
 	payload: acceptFriendInput,
 });
 
-export const acceptFriend = (
-	acceptFriendInput: IAcceptFriendInput,
-): IThunk => async (dispatch, getState, context) => {
+export const acceptFriend = (acceptFriendInput: IAcceptFriendInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
