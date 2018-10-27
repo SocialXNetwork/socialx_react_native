@@ -63,8 +63,7 @@ export class WithSettings extends React.Component<IWithSettingsProps, IWithSetti
 															this.props.children({
 																data: {
 																	currentUser: {
-																		shareDataEnabled:
-																			mock.data.currentUser.shareDataEnabled,
+																		shareDataEnabled: mock.data.currentUser.shareDataEnabled,
 																		...currUser.currentUser!,
 																	},
 																},
