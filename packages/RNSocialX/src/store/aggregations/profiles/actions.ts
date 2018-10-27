@@ -7,12 +7,12 @@ import {
 	ActionTypes,
 	IFindFriendsSuggestionsAction,
 	IFriendSuggestionData,
+	IResetFindFriendsSuggestionsAction,
 	IResetSearchProfilesByFullNameAction,
-	IResetSearchProfilesByFullNameAction,
-	IResetSyncSearchProfilesByFullNameAction,
-	IResetSyncSearchProfilesByFullNameAction,
 	ISearchProfilesByFullNameAction,
 	ISyncFindFriendsSuggestionsAction,
+	ISyncResetFindFriendsSuggestionsAction,
+	ISyncResetSearchProfilesByFullNameAction,
 	ISyncSearchProfilesByFullNameAction,
 } from './Types';
 
@@ -75,14 +75,16 @@ export const resetSearchProfilesByFullNameAction: ActionCreator<
 });
 
 export const syncResetSearchProfilesByFullNameAction: ActionCreator<
-	IResetSyncSearchProfilesByFullNameAction
+	ISyncResetSearchProfilesByFullNameAction
 > = () => ({
 	type: ActionTypes.SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME,
 });
 
-export const resetSearchProfilesByFullName = async () => {
+export const resetSearchProfilesByFullName = (): IThunk => async (dispatch) => {
 	try {
+		const activityId = uuidv4();
 		dispatch(resetSearchProfilesByFullNameAction());
+
 		await dispatch(
 			beginActivity({
 				type: ActionTypes.RESET_SEARCH_PROFILES_BY_FULLNAME,
@@ -147,7 +149,7 @@ export const findFriendsSuggestions = ({
 };
 
 export const resetFindFriendsSuggestionsAction: ActionCreator<
-	IResetFriendsSuggestionsAction
+	IResetFindFriendsSuggestionsAction
 > = () => ({
 	type: ActionTypes.RESET_FIND_FRIENDS_SUGGESTIONS,
 });
@@ -158,7 +160,8 @@ export const syncResetFindFriendsSuggestionsAction: ActionCreator<
 	type: ActionTypes.SYNC_RESET_FIND_FRIENDS_SUGGESTIONS,
 });
 
-export const resetFindFriendsSuggestions = async () => {
+export const resetFindFriendsSuggestions = (): IThunk => async (dispatch) => {
+	const activityId = uuidv4();
 	try {
 		dispatch(resetFindFriendsSuggestionsAction());
 		await dispatch(

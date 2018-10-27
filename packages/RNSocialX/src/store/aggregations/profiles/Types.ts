@@ -40,7 +40,7 @@ export interface ISyncResetSearchProfilesByFullNameAction extends Action {
 	type: ActionTypes.SYNC_RESET_SEARCH_PROFILES_BY_FULLNAME;
 }
 
-export interface IResetFriendsSuggestionsAction extends Action {
+export interface IResetFindFriendsSuggestionsAction extends Action {
 	type: ActionTypes.RESET_FIND_FRIENDS_SUGGESTIONS;
 }
 
@@ -76,6 +76,7 @@ export type IAction =
 	| ISyncSearchProfilesByFullNameAction
 	| IResetFindFriendsSuggestionsAction
 	| ISyncResetFindFriendsSuggestionsAction
+	| ISyncResetSearchProfilesByFullNameAction
 	| IResetStoreAction
 	| IFindFriendsSuggestionsAction
 	| ISyncFindFriendsSuggestionsAction
