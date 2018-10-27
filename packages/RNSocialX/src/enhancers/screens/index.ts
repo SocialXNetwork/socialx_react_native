@@ -40,11 +40,7 @@ export {
 	IWithCommentsEnhancedActions,
 } from './commentsStack/WithComments';
 
-export {
-	WithIntro,
-	IWithIntroEnhancedActions,
-	IWithIntroEnhancedData,
-} from './intro/WithIntro';
+export { WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData } from './intro/WithIntro';
 
 export {
 	WithCreateWallPost,
@@ -129,11 +125,7 @@ export {
 	IWithLaunchEnhancedActions,
 	IWithLaunchEnhancedData,
 } from './preAuth/WithLaunch';
-export {
-	WithLogin,
-	IWithLoginEnhancedActions,
-	IWithLoginEnhancedData,
-} from './preAuth/WithLogin';
+export { WithLogin, IWithLoginEnhancedActions, IWithLoginEnhancedData } from './preAuth/WithLogin';
 export {
 	WithRegister,
 	IWithRegisterEnhancedActions,

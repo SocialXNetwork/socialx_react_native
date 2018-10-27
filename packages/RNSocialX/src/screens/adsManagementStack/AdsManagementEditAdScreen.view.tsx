@@ -8,9 +8,7 @@ import { IAd, IHeaderProps, ITranslatedProps } from '../../types';
 
 import styles from './AdsManagementEditAdScreen.style';
 
-interface IAdsManagementEditAdScreenViewProps
-	extends ITranslatedProps,
-		IHeaderProps {
+interface IAdsManagementEditAdScreenViewProps extends ITranslatedProps, IHeaderProps {
 	editAd: () => void;
 	duplicateAd: () => void;
 	adData: IAd;
@@ -22,9 +20,7 @@ interface IAdsManagementEditAdScreenViewProps
 	budgetAmount: string;
 }
 
-export const AdsManagementEditAdScreenView: React.SFC<
-	IAdsManagementEditAdScreenViewProps
-> = ({
+export const AdsManagementEditAdScreenView: React.SFC<IAdsManagementEditAdScreenViewProps> = ({
 	onGoBack,
 	getText,
 	editAd,
@@ -42,9 +38,7 @@ export const AdsManagementEditAdScreenView: React.SFC<
 			title={getText('ad.management.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
-		<Text style={styles.title}>
-			{getText('ad.management.editad.title').toUpperCase()}
-		</Text>
+		<Text style={styles.title}>{getText('ad.management.editad.title').toUpperCase()}</Text>
 		<View style={styles.separator} />
 		<ScrollView showsVerticalScrollIndicator={false}>
 			<View style={styles.managementContainer}>
@@ -52,9 +46,7 @@ export const AdsManagementEditAdScreenView: React.SFC<
 					<View style={styles.iconsAndTitleAdDirectory}>
 						<Icon name="md-folder" style={styles.icon} />
 						<View style={styles.adDirectoryTextContainer}>
-							<Text style={styles.adText}>
-								{getText('ad.management.title.one').toUpperCase()}
-							</Text>
+							<Text style={styles.adText}>{getText('ad.management.title.one').toUpperCase()}</Text>
 							<Text style={styles.adName}>{adName}</Text>
 						</View>
 						<TouchableOpacity onPress={editAdDirectory}>
@@ -86,12 +78,7 @@ export const AdsManagementEditAdScreenView: React.SFC<
 			</View>
 			<View style={styles.separator} />
 			<View style={styles.buttonsContainer}>
-				<Option
-					type="icon"
-					icon="md-create"
-					text={getText('button.edit')}
-					onPress={editAd}
-				/>
+				<Option type="icon" icon="md-create" text={getText('button.edit')} onPress={editAd} />
 				<View style={styles.separator} />
 				<Option
 					type="icon"
@@ -103,9 +90,7 @@ export const AdsManagementEditAdScreenView: React.SFC<
 			<View style={styles.separator} />
 			<View style={styles.previewContainer}>
 				<View style={styles.header}>
-					<Text style={styles.headerText}>
-						{getText('ad.management.editad.adpreview')}
-					</Text>
+					<Text style={styles.headerText}>{getText('ad.management.editad.adpreview')}</Text>
 				</View>
 				<View style={styles.separator} />
 				<AdPreview {...adData} editable={false} />

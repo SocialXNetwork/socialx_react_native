@@ -2,17 +2,8 @@ import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
-import {
-	FEED_TYPES,
-	OS_TYPES,
-	SCREENS,
-	TABS,
-} from '../../../environment/consts';
-import {
-	IMediaProps,
-	INavigationProps,
-	IWallPostCardData,
-} from '../../../types';
+import { FEED_TYPES, OS_TYPES, SCREENS, TABS } from '../../../environment/consts';
+import { IMediaProps, INavigationProps, IWallPostCardData } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
@@ -37,13 +28,8 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedData &
 	IWithUserFeedEnhancedActions;
 
-export class Screen extends React.Component<
-	IUserFeedScreenProps,
-	IUserFeedScreenState
-> {
-	private readonly scrollRef: React.RefObject<
-		FlatList<IWallPostCardData>
-	> = React.createRef();
+export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
+	private readonly scrollRef: React.RefObject<FlatList<IWallPostCardData>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public render() {
@@ -64,9 +50,7 @@ export class Screen extends React.Component<
 		} = this.props;
 
 		const likeError = !!errors.find(
-			(error) =>
-				error.type === ActionTypes.LIKE_POST ||
-				error.type === ActionTypes.UNLIKE_POST,
+			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
 		);
 
 		return (
@@ -141,13 +125,7 @@ export class Screen extends React.Component<
 	};
 
 	private onUserPressHandler = (userId: string) => {
-		const {
-			navigation,
-			setNavigationParams,
-			currentUser,
-			userPosts,
-			getPostsForUser,
-		} = this.props;
+		const { navigation, setNavigationParams, currentUser, userPosts, getPostsForUser } = this.props;
 
 		if (userId === currentUser.userId) {
 			navigation.navigate(SCREENS.MyProfile);
@@ -164,11 +142,7 @@ export class Screen extends React.Component<
 		}
 	};
 
-	private onMediaObjectPressHandler = (
-		index: number,
-		medias: IMediaProps[],
-		postId: string,
-	) => {
+	private onMediaObjectPressHandler = (index: number, medias: IMediaProps[], postId: string) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.MediaViewer,
@@ -181,10 +155,7 @@ export class Screen extends React.Component<
 		navigation.navigate(SCREENS.MediaViewer);
 	};
 
-	private onCommentsButtonPressHandler = (
-		postId: string,
-		startComment: boolean,
-	) => {
+	private onCommentsButtonPressHandler = (postId: string, startComment: boolean) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.Comments,
@@ -194,11 +165,7 @@ export class Screen extends React.Component<
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		if (
-			!this.props.refreshingFeed &&
-			!this.props.loadingMorePosts &&
-			this.scrollRef.current
-		) {
+		if (!this.props.refreshingFeed && !this.props.loadingMorePosts && this.scrollRef.current) {
 			this.scrollRef.current.scrollToIndex({
 				animated: true,
 				index,
@@ -208,10 +175,7 @@ export class Screen extends React.Component<
 		}
 	};
 
-	private onSubmitCommentHandler = async (
-		escapedComment: string,
-		postId: string,
-	) => {
+	private onSubmitCommentHandler = async (escapedComment: string, postId: string) => {
 		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
 			await this.props.postComment(escapedComment, postId);
 		}
@@ -238,8 +202,7 @@ export class Screen extends React.Component<
 		const offset = (baseScreenHeight * idealOffset) / AVAILABLE_SCREEN_HEIGHT;
 
 		if (Platform.OS === OS_TYPES.Android) {
-			const softwareButtonsBarHeight =
-				TOTAL_SCREEN_HEIGHT - AVAILABLE_SCREEN_HEIGHT;
+			const softwareButtonsBarHeight = TOTAL_SCREEN_HEIGHT - AVAILABLE_SCREEN_HEIGHT;
 			return -(offset - diff + softwareButtonsBarHeight);
 		}
 

@@ -17,10 +17,7 @@ interface ITrendingScreenState {
 	contentRef: React.RefObject<any>;
 }
 
-class Screen extends React.Component<
-	ITrendingScreenProps,
-	ITrendingScreenState
-> {
+class Screen extends React.Component<ITrendingScreenProps, ITrendingScreenState> {
 	public state = {
 		contentRef: React.createRef(),
 	};
@@ -34,9 +31,7 @@ class Screen extends React.Component<
 				trendingCategoriesItems={trendingCategoriesItems}
 				trendingContentItems={trendingContentItems}
 				contentRef={this.state.contentRef}
-				passContentRef={(ref: React.RefObject<any>) =>
-					this.setState({ contentRef: ref })
-				}
+				passContentRef={(ref: React.RefObject<any>) => this.setState({ contentRef: ref })}
 				getText={this.props.getText}
 			/>
 		);
@@ -45,8 +40,6 @@ class Screen extends React.Component<
 
 export const TrendingScreen = ({ navigation }: INavigationProps) => (
 	<WithTrending>
-		{({ data, actions }) => (
-			<Screen navigation={navigation} {...data} {...actions} />
-		)}
+		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithTrending>
 );

@@ -51,10 +51,7 @@ export class TrendingCategoriesCarousel extends React.Component<
 		);
 	}
 
-	private renderItem = (data: {
-		item: ITrendingCategoriesItem;
-		index: number;
-	}) => {
+	private renderItem = (data: { item: ITrendingCategoriesItem; index: number }) => {
 		if (data.index === this.state.activeIndex) {
 			return (
 				<CategoryCard

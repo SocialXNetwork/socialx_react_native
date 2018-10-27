@@ -11,9 +11,11 @@ interface ITermsAndConditionsScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-export const TermsAndConditionsScreenView: React.SFC<
-	ITermsAndConditionsScreenViewProps
-> = ({ localSource, onGoBack, getText }) => (
+export const TermsAndConditionsScreenView: React.SFC<ITermsAndConditionsScreenViewProps> = ({
+	localSource,
+	onGoBack,
+	getText,
+}) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
 			title={getText('terms.and.conditions.screen.title')}

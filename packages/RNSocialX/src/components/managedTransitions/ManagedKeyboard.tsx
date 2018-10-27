@@ -12,10 +12,7 @@ interface IManagedKeyboardState {
 	keyboardIsHidden: boolean;
 }
 
-export class ManagedKeyboard extends React.Component<
-	IManagedKeyboardProps,
-	IManagedKeyboardState
-> {
+export class ManagedKeyboard extends React.Component<IManagedKeyboardProps, IManagedKeyboardState> {
 	public state = {
 		marginBottom: 0,
 		keyboardIsHidden: true,
@@ -27,14 +24,8 @@ export class ManagedKeyboard extends React.Component<
 	private keyboardDidHideListener: any;
 
 	public componentDidMount() {
-		this.keyboardDidShowListener = Keyboard.addListener(
-			'keyboardDidShow',
-			this.keyboardDidShow,
-		);
-		this.keyboardDidHideListener = Keyboard.addListener(
-			'keyboardDidHide',
-			this.keyboardDidHide,
-		);
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
 	}
 
 	public componentWillUnmount() {

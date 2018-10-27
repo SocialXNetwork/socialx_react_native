@@ -29,10 +29,7 @@ type IUserProfileScreenProps = INavigationProps &
 	IWithUserProfileEnhancedData &
 	IWithUserProfileEnhancedActions;
 
-class Screen extends React.Component<
-	IUserProfileScreenProps,
-	IUserProfileScreenState
-> {
+class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
 	private lastLoadedPhotoIndex = 0;
 	private readonly gridPhotosProvider: DataProvider;
 
@@ -137,8 +134,7 @@ class Screen extends React.Component<
 		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia =
-				loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
 			const newMedia = mediaObjects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject: IMediaProps, index: number) => ({
@@ -161,11 +157,7 @@ class Screen extends React.Component<
 		addFriend(visitedUser.userId);
 	};
 
-	private onMediaObjectPressHandler = (
-		index: number,
-		media: IMediaProps[],
-		postId: string,
-	) => {
+	private onMediaObjectPressHandler = (index: number, media: IMediaProps[], postId: string) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.MediaViewer,
@@ -296,8 +288,6 @@ class Screen extends React.Component<
 
 export const UserProfileScreen = ({ navigation }: INavigationProps) => (
 	<WithUserProfile>
-		{({ data, actions }) => (
-			<Screen navigation={navigation} {...data} {...actions} />
-		)}
+		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithUserProfile>
 );

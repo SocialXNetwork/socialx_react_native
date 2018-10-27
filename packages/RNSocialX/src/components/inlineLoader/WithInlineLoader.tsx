@@ -28,9 +28,7 @@ export const WithInlineLoader: React.SFC<IWithLoaderProps> = ({
 			/>
 		)}
 		{!isLoading && (
-			<AnimatedComponent animatedStyle={animatedStyle || { flex: 1 }}>
-				{children}
-			</AnimatedComponent>
+			<AnimatedComponent animatedStyle={animatedStyle || { flex: 1 }}>{children}</AnimatedComponent>
 		)}
 	</React.Fragment>
 );

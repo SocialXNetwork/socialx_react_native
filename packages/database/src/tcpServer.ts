@@ -40,11 +40,7 @@ const server = http.createServer((req, res) => {
 		.on('error', () => {
 			// static files!
 			res.writeHead(200, { 'Content-Type': 'text/html' });
-			res.end(
-				require('fs').readFileSync(
-					require('path').join(__dirname, 'index.html'),
-				),
-			); // or default to index
+			res.end(require('fs').readFileSync(require('path').join(__dirname, 'index.html'))); // or default to index
 		})
 		.pipe(res); // stream
 });

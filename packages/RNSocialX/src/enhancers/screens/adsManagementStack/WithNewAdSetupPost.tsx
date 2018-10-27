@@ -16,9 +16,7 @@ const mock: IWithNewAdSetupPostEnhancedProps = {
 
 export interface IWithNewAdSetupPostEnhancedData {}
 
-export interface IWithNewAdSetupPostEnhancedActions
-	extends ITranslatedProps,
-		IDotsMenuProps {}
+export interface IWithNewAdSetupPostEnhancedActions extends ITranslatedProps, IDotsMenuProps {}
 
 interface IWithNewAdSetupPostEnhancedProps {
 	data: IWithNewAdSetupPostEnhancedData;
@@ -49,8 +47,7 @@ export class WithNewAdSetupPost extends React.Component<
 								actions: {
 									...mock.actions,
 									getText: i18nProps.getText,
-									showDotsMenuModal: (items) =>
-										overlayProps.showOptionsMenu({ items }),
+									showDotsMenuModal: (items) => overlayProps.showOptionsMenu({ items }),
 								},
 							})
 						}

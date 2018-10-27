@@ -13,17 +13,16 @@ interface IChartAccountPerformanceProps {
 	week: string;
 }
 
-export const ChartAccountPerformance: React.SFC<
-	IChartAccountPerformanceProps
-> = ({ performanceValues, week }) => (
+export const ChartAccountPerformance: React.SFC<IChartAccountPerformanceProps> = ({
+	performanceValues,
+	week,
+}) => (
 	<View style={styles.container}>
 		<Text style={styles.weekText}>{week}</Text>
 		<View style={styles.chartWithYAxis}>
 			<YAxis
 				style={styles.chartYAxis}
-				data={performanceValues
-					.map((performanceValue) => performanceValue.value)
-					.concat(0)}
+				data={performanceValues.map((performanceValue) => performanceValue.value).concat(0)}
 				contentInset={chartVerticalInset}
 				svg={customStyleProps.chartYAxisSvgStyle}
 				numberOfTicks={numberOfTicks}
@@ -34,9 +33,7 @@ export const ChartAccountPerformance: React.SFC<
 					yMin={0}
 					numberOfTicks={numberOfTicks}
 					style={styles.chartStyle}
-					data={performanceValues.map(
-						(performanceValue) => performanceValue.value,
-					)}
+					data={performanceValues.map((performanceValue) => performanceValue.value)}
 					svg={{
 						stroke: customStyleProps.chartLineColor,
 						fill: customStyleProps.chartFillColor,
@@ -47,10 +44,9 @@ export const ChartAccountPerformance: React.SFC<
 				</AreaChart>
 				<XAxis
 					data={performanceValues}
-					xAccessor={(obj: {
-						index: number;
-						item: IAdsAccountPerformanceValues;
-					}) => obj.item.date.getDate()}
+					xAccessor={(obj: { index: number; item: IAdsAccountPerformanceValues }) =>
+						obj.item.date.getDate()
+					}
 					formatLabel={(value: number) => value + 'th'}
 					contentInset={{
 						left: customStyleProps.chartXAxisContentInset,

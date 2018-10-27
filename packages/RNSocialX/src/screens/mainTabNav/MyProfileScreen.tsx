@@ -22,10 +22,7 @@ interface IMyProfileScreenState {
 	dataProvider: DataProvider;
 }
 
-class Screen extends React.Component<
-	IMyProfileScreenProps,
-	IMyProfileScreenState
-> {
+class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
 	// todo @serkan @jake why?
 	private lastLoadedPhotoIndex = 0;
 
@@ -43,9 +40,7 @@ class Screen extends React.Component<
 	}
 
 	public componentDidUpdate(prevProps: IMyProfileScreenProps) {
-		if (
-			prevProps.currentUser.mediaObjects !== this.props.currentUser.mediaObjects
-		) {
+		if (prevProps.currentUser.mediaObjects !== this.props.currentUser.mediaObjects) {
 			this.loadMorePhotosHandler();
 		}
 	}
@@ -138,8 +133,7 @@ class Screen extends React.Component<
 		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
 			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia =
-				loadedSize === 0 ? headerElement : dataProvider.getAllData();
+			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
 			const newMedia = mediaObjects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject, index: number) => ({

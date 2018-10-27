@@ -15,16 +15,12 @@ interface IWithManagedTransitionsProps {
 	children(props: IManagedModal): JSX.Element;
 }
 
-export class WithManagedTransitions extends React.Component<
-	IWithManagedTransitionsProps
-> {
+export class WithManagedTransitions extends React.Component<IWithManagedTransitionsProps> {
 	public static defaultProps = {
 		afterDismiss: false,
 	};
 
-	public componentDidUpdate(
-		prevProps: Readonly<IWithManagedTransitionsProps>,
-	): void {
+	public componentDidUpdate(prevProps: Readonly<IWithManagedTransitionsProps>): void {
 		if (!prevProps.modalVisible && this.props.modalVisible) {
 			ModalManager.toggleModalShow(true);
 		}

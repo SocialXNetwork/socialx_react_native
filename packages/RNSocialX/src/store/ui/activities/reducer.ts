@@ -9,9 +9,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				activities: action.payload.type
 					? [...state.activities, action.payload]
-					: state.activities.filter(
-							(activity) => action.payload.uuid !== activity.uuid,
-					  ), // tslint:disable-line indent (tslint bug!!!)
+					: state.activities.filter((activity) => action.payload.uuid !== activity.uuid), // tslint:disable-line indent (tslint bug!!!)
 			};
 		}
 

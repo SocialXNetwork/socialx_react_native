@@ -12,10 +12,7 @@ storiesOf('Screens/mainStack', module).add('CreateWallPostScreen', () => {
 			marginBottom={0}
 			avatarImage={'https://placeimg.com/200/200/people'}
 			shareText={'Here new post content.\nWith two lines.'}
-			mediaObjects={[
-				'https://placeimg.com/300/300/any',
-				'https://placeimg.com/301/301/any',
-			]}
+			mediaObjects={['https://placeimg.com/300/300/any', 'https://placeimg.com/301/301/any']}
 			onShareTextUpdate={action('onShareTextUpdate')}
 			onAddMedia={action('onAddMedia')}
 			onCreatePost={action('onPostMedia')}

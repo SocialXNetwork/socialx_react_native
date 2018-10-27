@@ -42,59 +42,37 @@ const sendToWorker = (message: string) => {
 
 const subtle = {
 	decrypt(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.decrypt(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.decrypt(...args));
 	},
 	deriveKey(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.deriveKey(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.deriveKey(...args));
 	},
 	digest(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.digest(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.digest(...args));
 	},
 	encrypt(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.encrypt(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.encrypt(...args));
 	},
 	exportKey(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.exportKey(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.exportKey(...args));
 	},
 	generateKey(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.generateKey(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.generateKey(...args));
 	},
 	importKey(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.importKey(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.importKey(...args));
 	},
 	sign(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.sign(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.sign(...args));
 	},
 	unwrapKey(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.unwrapKey(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.unwrapKey(...args));
 	},
 	verify(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.verify(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.verify(...args));
 	},
 	wrapKey(...args: any[]) {
-		return workerPromise.then((worker: any) =>
-			worker.crypto.subtle.wrapKey(...args),
-		);
+		return workerPromise.then((worker: any) => worker.crypto.subtle.wrapKey(...args));
 	},
 };
 

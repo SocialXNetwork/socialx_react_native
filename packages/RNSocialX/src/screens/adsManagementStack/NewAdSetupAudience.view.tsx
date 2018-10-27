@@ -39,17 +39,17 @@ const GENDER_SELECTION_BUTTONS = [
 	},
 ];
 
-const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({
-	currentValue,
-}) => (
+const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({ currentValue }) => (
 	<View style={styles.thumbContainer}>
 		<Text>{currentValue}</Text>
 	</View>
 );
 
-export const NewAdSetupAudienceView: React.SFC<
-	INewAdSetupAudienceViewProps
-> = ({ getText, onGoBack, onNavigateToBudgetSection }) => (
+export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = ({
+	getText,
+	onGoBack,
+	onNavigateToBudgetSection,
+}) => (
 	<View style={styles.rootView}>
 		<Formik
 			initialValues={{
@@ -118,9 +118,7 @@ export const NewAdSetupAudienceView: React.SFC<
 								min={10}
 								max={100}
 								step={1}
-								onValuesChange={(values: number[]) =>
-									setFieldValue('ageRange', values)
-								}
+								onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
 								selectedStyle={styles.ageSelectorTrack}
 								containerStyle={styles.ageSelectorContainer}
 								customMarker={SliderMarkerWithValue}
@@ -131,10 +129,7 @@ export const NewAdSetupAudienceView: React.SFC<
 							<Text>{'TBD: figure out best selector here'}</Text>
 						</View>
 					</ScrollView>
-					<CreateAdSteps
-						currentStep={'audience'}
-						onGoToNextStep={handleSubmit}
-					/>
+					<CreateAdSteps currentStep={'audience'} onGoToNextStep={handleSubmit} />
 				</React.Fragment>
 			)}
 		/>

@@ -106,9 +106,7 @@ export interface IDotsMenuProps {
 }
 
 export interface INavigationParamsActions {
-	setNavigationParams: (
-		setNavigationParamsInput: ISetNavigationParamsInput,
-	) => void;
+	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) => void;
 }
 
 export interface IDotsMenuProps {
@@ -255,11 +253,7 @@ export interface IWallPostCardData extends IResizeProps {
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {
-	onImagePress: (
-		index: number,
-		mediaObjects: IMediaProps[],
-		postId: string,
-	) => void;
+	onImagePress: (index: number, mediaObjects: IMediaProps[], postId: string) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
 	onDeletePostPress: (postId: string) => void;
 	onUserPress: (userId: string) => void;

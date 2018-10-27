@@ -8,15 +8,7 @@
 
 import moment from 'moment';
 import * as React from 'react';
-import {
-	Alert,
-	Animated,
-	Keyboard,
-	Linking,
-	Platform,
-	Text,
-	View,
-} from 'react-native';
+import { Alert, Animated, Keyboard, Linking, Platform, Text, View } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { HeartAnimation, ReportProblemModal } from '../../';
@@ -54,10 +46,7 @@ export interface IWallPostCardState {
 	viewOffensiveContent: boolean;
 }
 
-export class WallPostCard extends React.Component<
-	IWallPostCardPropsType,
-	IWallPostCardState
-> {
+export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallPostCardState> {
 	public static defaultProps = {
 		governanceVersion: false,
 		numberOfSuperLikes: 0,
@@ -68,9 +57,7 @@ export class WallPostCard extends React.Component<
 	public state = {
 		fullTextVisible: false,
 		reportProblemModalVisible: false,
-		displayOptions: this.props.displayDots
-			? this.props.governanceVersion || true
-			: false,
+		displayOptions: this.props.displayDots ? this.props.governanceVersion || true : false,
 		disableNavigation: this.props.governanceVersion || false,
 		hidePostActionsAndComments: this.props.governanceVersion || false,
 		disableMediaFullScreen: this.props.governanceVersion || false,
@@ -91,16 +78,10 @@ export class WallPostCard extends React.Component<
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustNothing();
 		}
-		this.keyboardDidHideListener = Keyboard.addListener(
-			'keyboardDidHide',
-			this.keyboardDidHide,
-		);
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
 	}
 
-	public shouldComponentUpdate(
-		nextProps: IWallPostCardProps,
-		nextState: IWallPostCardState,
-	) {
+	public shouldComponentUpdate(nextProps: IWallPostCardProps, nextState: IWallPostCardState) {
 		return (
 			this.state !== nextState ||
 			this.props.postId !== nextProps.postId ||
@@ -208,16 +189,12 @@ export class WallPostCard extends React.Component<
 				{media.length > 0 && (
 					<View style={styles.mediaContainer}>
 						{heartAnimation && (
-							<HeartAnimation
-								ended={(status) => this.setState({ heartAnimation: !status })}
-							/>
+							<HeartAnimation ended={(status) => this.setState({ heartAnimation: !status })} />
 						)}
 						{(!contentOffensive || viewOffensiveContent) && (
 							<WallPostMedia
 								mediaObjects={media}
-								onMediaObjectView={(index: number) =>
-									onImagePress(index, media, postId)
-								}
+								onMediaObjectView={(index: number) => onImagePress(index, media, postId)}
 								onLikeButtonPressed={this.onDoubleTapLikeHandler}
 								noInteraction={disableMediaFullScreen}
 								placeholder={skeleton}
@@ -244,11 +221,7 @@ export class WallPostCard extends React.Component<
 						getText={getText}
 					/>
 				)}
-				<RecentLikes
-					likes={likes}
-					onUserPress={onUserPress}
-					getText={getText}
-				/>
+				<RecentLikes likes={likes} onUserPress={onUserPress} getText={getText} />
 				<ViewAllComments
 					numberOfComments={numberOfComments}
 					onCommentPress={() => onCommentPress(postId, false)}

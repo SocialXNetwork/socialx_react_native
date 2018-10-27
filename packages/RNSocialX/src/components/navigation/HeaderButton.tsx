@@ -24,9 +24,7 @@ export const HeaderButton: React.SFC<IHeaderButtonProps> = ({
 	return (
 		<TouchableOpacity onPress={onPress}>
 			{iconName && <Icon name={iconName} size={iconSize} color={iconColor} />}
-			{iconSource ? (
-				<Image source={iconSource} style={styles.icon} resizeMode="contain" />
-			) : null}
+			{iconSource ? <Image source={iconSource} style={styles.icon} resizeMode="contain" /> : null}
 		</TouchableOpacity>
 	);
 };

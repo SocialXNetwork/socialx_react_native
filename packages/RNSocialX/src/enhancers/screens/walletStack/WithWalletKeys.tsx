@@ -15,12 +15,7 @@ const mock: IWithWalletKeysEnhancedProps = {
 		finalize: () => {
 			/**/
 		},
-		exportKeys: (
-			ownerPub: string,
-			creatorPub: string,
-			ownerPriv: string,
-			creatorPriv: string,
-		) => {
+		exportKeys: (ownerPub: string, creatorPub: string, ownerPriv: string, creatorPriv: string) => {
 			/**/
 		},
 		getText: (value: string, ...args: any[]) => value,
@@ -56,10 +51,7 @@ interface IWithWalletKeysProps {
 
 interface IWithWalletKeysState {}
 
-export class WithWalletKeys extends React.Component<
-	IWithWalletKeysProps,
-	IWithWalletKeysState
-> {
+export class WithWalletKeys extends React.Component<IWithWalletKeysProps, IWithWalletKeysState> {
 	render() {
 		const { children } = this.props;
 		return (

@@ -10,11 +10,7 @@ export const TransactionItem: React.SFC<ITransactionData> = (props) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.leftContainer}>
-				<Image
-					source={CoinIcons[props.firstCoin]}
-					style={styles.coinIcon}
-					resizeMode="contain"
-				/>
+				<Image source={CoinIcons[props.firstCoin]} style={styles.coinIcon} resizeMode="contain" />
 				<View>
 					<Text style={styles.lineText}>
 						{props.type} {props.firstAmount} {props.firstCoin}

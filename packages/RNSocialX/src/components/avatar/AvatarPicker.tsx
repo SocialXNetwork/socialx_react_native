@@ -3,12 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Colors, Sizes } from '../../environment/theme';
-import {
-	getTextSignature,
-	IDotsMenuItem,
-	IDotsMenuProps,
-	ITranslatedProps,
-} from '../../types';
+import { getTextSignature, IDotsMenuItem, IDotsMenuProps, ITranslatedProps } from '../../types';
 import { getCameraMediaObject, getGalleryMediaObject } from '../../utilities';
 import { AvatarImage } from './AvatarImage';
 
@@ -36,9 +31,7 @@ interface IAvatarPickerProps extends ITranslatedProps, IDotsMenuProps {
 	avatarSize?: number;
 }
 
-const showGalleryPhotoPicker = async (
-	afterImagePick: (image: string) => void,
-) => {
+const showGalleryPhotoPicker = async (afterImagePick: (image: string) => void) => {
 	const galleryMediaObject = await getGalleryMediaObject(AVATAR_PICKER_OPTIONS);
 	if (galleryMediaObject) {
 		afterImagePick(galleryMediaObject.path);
@@ -77,8 +70,7 @@ const editAvatar = (
 		actionHandler: () => afterImagePick(''),
 	};
 
-	const items =
-		uri.length > 0 ? [...defaultOptions, removeOption] : defaultOptions;
+	const items = uri.length > 0 ? [...defaultOptions, removeOption] : defaultOptions;
 
 	showDotsMenuModal(items);
 };
@@ -98,9 +90,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 
 	return (
 		<TouchableOpacity
-			onPress={() =>
-				editAvatar(avatarImage.uri, afterImagePick, showDotsMenuModal, getText)
-			}
+			onPress={() => editAvatar(avatarImage.uri, afterImagePick, showDotsMenuModal, getText)}
 		>
 			<AvatarImage image={avatarImage.uri} style={avatarSizeStyle} />
 			<View style={style.editIcon}>

@@ -36,15 +36,9 @@ storiesOf('Screens/adsManagementStack', module)
 					pickerBg: defaultStyles.pickerToolbarAndBgColor,
 					pickerToolBarBg: defaultStyles.pickerToolbarAndBgColor,
 					selectedValue: [1],
-					pickerTitleText: getTextMock(
-						'ad.management.budget.currency.picker.select',
-					),
-					pickerConfirmBtnText: getTextMock(
-						'ad.management.budget.currency.picker.confirm',
-					),
-					pickerCancelBtnText: getTextMock(
-						'ad.management.budget.currency.picker.cancel',
-					),
+					pickerTitleText: getTextMock('ad.management.budget.currency.picker.select'),
+					pickerConfirmBtnText: getTextMock('ad.management.budget.currency.picker.confirm'),
+					pickerCancelBtnText: getTextMock('ad.management.budget.currency.picker.cancel'),
 					onPickerConfirm: () => {
 						action('OnPickerConfirm');
 					},

@@ -11,9 +11,7 @@ interface ICheckboxButtonWithIconProps {
 	text: string;
 }
 
-export const CheckboxButtonWithIcon: React.SFC<
-	ICheckboxButtonWithIconProps
-> = ({
+export const CheckboxButtonWithIcon: React.SFC<ICheckboxButtonWithIconProps> = ({
 	selected,
 	onPress = () => {
 		/**/
@@ -22,19 +20,8 @@ export const CheckboxButtonWithIcon: React.SFC<
 	text,
 }) => (
 	<View style={styles.container}>
-		<CheckBox
-			checked={selected}
-			onPress={onPress}
-			color={defaultColor}
-			style={styles.checkbox}
-		/>
+		<CheckBox checked={selected} onPress={onPress} color={defaultColor} style={styles.checkbox} />
 		<Text style={styles.buttonText}>{text}</Text>
-		{iconSource && (
-			<Image
-				source={iconSource}
-				style={styles.iconStyle}
-				resizeMode={'contain'}
-			/>
-		)}
+		{iconSource && <Image source={iconSource} style={styles.iconStyle} resizeMode={'contain'} />}
 	</View>
 );

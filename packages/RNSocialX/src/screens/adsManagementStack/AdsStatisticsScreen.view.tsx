@@ -1,26 +1,14 @@
 import { Button, Segment, Text } from 'native-base';
 import * as React from 'react';
-import {
-	Animated,
-	LayoutChangeEvent,
-	TouchableHighlight,
-	View,
-} from 'react-native';
+import { Animated, LayoutChangeEvent, TouchableHighlight, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import { Header, HeaderButton } from '../../components';
 import { BarChart } from '../../components/displayers/BarChart';
-import {
-	IMonthlyBarChartData,
-	ISpentTillNow,
-	IWeeklyBarChartData,
-} from '../../environment/consts';
+import { IMonthlyBarChartData, ISpentTillNow, IWeeklyBarChartData } from '../../environment/consts';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
-import styles, {
-	CHART_ITEM_WIDTH,
-	defaultStyles,
-} from './AdsStatisticsScreen.style';
+import styles, { CHART_ITEM_WIDTH, defaultStyles } from './AdsStatisticsScreen.style';
 
 interface IAdsStatisticsScreenViewProps extends ITranslatedProps, IHeaderProps {
 	transactions: Array<{
@@ -50,9 +38,7 @@ const SPENT_TILL_NOW_BUTTONS = [
 	},
 ];
 
-export const AdsStatisticsScreenView: React.SFC<
-	IAdsStatisticsScreenViewProps
-> = ({
+export const AdsStatisticsScreenView: React.SFC<IAdsStatisticsScreenViewProps> = ({
 	transactions,
 	onShowAllTransactions,
 	onGoBack,
@@ -72,24 +58,18 @@ export const AdsStatisticsScreenView: React.SFC<
 			title={getText('ad.management.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
-		<Text style={styles.title}>
-			{getText('ad.statistics.title').toUpperCase()}
-		</Text>
+		<Text style={styles.title}>{getText('ad.statistics.title').toUpperCase()}</Text>
 		<View style={styles.separator} />
 		<View style={styles.transactionsContainer}>
 			<View style={styles.header}>
-				<Text style={styles.headerText}>
-					{getText('ad.statistics.transactions.title')}
-				</Text>
+				<Text style={styles.headerText}>{getText('ad.statistics.transactions.title')}</Text>
 			</View>
 			<View style={styles.separator} />
 			{transactions.map((transaction) => (
 				<View style={styles.transaction} key={transaction.number}>
 					<Text style={styles.text}>
 						{getText('ad.statistics.transactions.transaction')}{' '}
-						{transaction.number < 10
-							? '0' + transaction.number
-							: transaction.number}
+						{transaction.number < 10 ? '0' + transaction.number : transaction.number}
 					</Text>
 					<Text style={styles.textDate}>{transaction.date}</Text>
 				</View>
@@ -109,9 +89,7 @@ export const AdsStatisticsScreenView: React.SFC<
 		<View style={styles.separator} />
 		<View style={styles.spentContainer}>
 			<View style={styles.header}>
-				<Text style={styles.headerText}>
-					{getText('ad.statistics.spent.title')}
-				</Text>
+				<Text style={styles.headerText}>{getText('ad.statistics.spent.title')}</Text>
 			</View>
 			<View style={styles.separator} />
 			<View style={styles.buttonsContainer}>
@@ -145,22 +123,14 @@ export const AdsStatisticsScreenView: React.SFC<
 			</View>
 			<View style={styles.amountContainer}>
 				<Text style={styles.textAmount}>{totalAmountSOCX}</Text>
-				<Text style={styles.textDate}>
-					{getText('ad.statistics.amount.text')}
-				</Text>
+				<Text style={styles.textDate}>{getText('ad.statistics.amount.text')}</Text>
 			</View>
 			<View style={styles.graphContainer}>
 				<View style={styles.animatedViewport}>
 					<Animated.View
-						style={[
-							styles.animatedView,
-							{ transform: [{ translateX: translateXValue }] },
-						]}
+						style={[styles.animatedView, { transform: [{ translateX: translateXValue }] }]}
 					>
-						<View
-							style={styles.fullWidth}
-							onLayout={weeklyChartContainerOnLayout}
-						>
+						<View style={styles.fullWidth} onLayout={weeklyChartContainerOnLayout}>
 							<BarChart
 								dataSeries={weeklySeries}
 								maxDate={maxWeeklyValue}

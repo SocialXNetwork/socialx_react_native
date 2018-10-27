@@ -12,16 +12,9 @@ import { SearchScreenView } from './SearchScreen.view';
 
 const SEARCH_DEBOUNCE_TIME_MS = 300;
 
-const TabsByIndex = [
-	SearchTabs.Top,
-	SearchTabs.People,
-	SearchTabs.Tags,
-	SearchTabs.Places,
-];
+const TabsByIndex = [SearchTabs.Top, SearchTabs.People, SearchTabs.Tags, SearchTabs.Places];
 
-type ISearchScreenProps = INavigationProps &
-	IWithSearchEnhancedData &
-	IWithSearchEnhancedActions;
+type ISearchScreenProps = INavigationProps & IWithSearchEnhancedData & IWithSearchEnhancedActions;
 
 interface IISearchScreenState {
 	loadedTabs: number[];
@@ -89,12 +82,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	};
 
 	private onResultPressHandler = (userId: string) => {
-		const {
-			getPostsForUser,
-			userPosts,
-			setNavigationParams,
-			navigation,
-		} = this.props;
+		const { getPostsForUser, userPosts, setNavigationParams, navigation } = this.props;
 
 		if (!userPosts[userId]) {
 			getPostsForUser(userId);
@@ -109,7 +97,5 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 }
 
 export const SearchScreen = (navProps: INavigationProps) => (
-	<WithSearch>
-		{({ data, actions }) => <Screen {...data} {...actions} {...navProps} />}
-	</WithSearch>
+	<WithSearch>{({ data, actions }) => <Screen {...data} {...actions} {...navProps} />}</WithSearch>
 );

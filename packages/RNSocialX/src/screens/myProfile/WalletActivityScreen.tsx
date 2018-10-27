@@ -52,8 +52,6 @@ export class Screen extends React.Component<IWalletActivityScreenProps> {
 
 export const WalletActivityScreen = ({ navigation }: INavigationProps) => (
 	<WithWallet>
-		{({ data, actions }) => (
-			<Screen navigation={navigation} {...data} {...actions} />
-		)}
+		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithWallet>
 );

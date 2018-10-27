@@ -24,10 +24,7 @@ interface IWithNavigationProps {
 
 interface IWithNavigationState {}
 
-export class WithNavigation extends React.Component<
-	IWithNavigationProps,
-	IWithNavigationState
-> {
+export class WithNavigation extends React.Component<IWithNavigationProps, IWithNavigationState> {
 	render() {
 		const { children } = this.props;
 		return (

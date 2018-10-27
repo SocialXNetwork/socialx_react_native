@@ -6,10 +6,7 @@
 import moment from 'moment';
 import * as React from 'react';
 
-import {
-	IMonthlyBarChartData,
-	IWeeklyBarChartData,
-} from '../../../environment/consts';
+import { IMonthlyBarChartData, IWeeklyBarChartData } from '../../../environment/consts';
 import { ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
@@ -41,9 +38,7 @@ const getRandomMonthlyValuesForLastTwelveMonths = () => {
 		});
 		indexDate.add(1, 'month');
 	}
-	ret.sort((left, right) =>
-		moment.utc(left.label, 'MMM').diff(moment.utc(right.label, 'MMM')),
-	);
+	ret.sort((left, right) => moment.utc(left.label, 'MMM').diff(moment.utc(right.label, 'MMM')));
 	return ret;
 };
 

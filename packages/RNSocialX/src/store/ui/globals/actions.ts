@@ -9,11 +9,7 @@ const setGlobalAction: ActionCreator<ISetGlobalAction> = (global: IGlobal) => ({
 	payload: global,
 });
 
-export const setGlobal = (global: IGlobal): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const setGlobal = (global: IGlobal): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(setGlobalAction(global));
 	} catch (e) {

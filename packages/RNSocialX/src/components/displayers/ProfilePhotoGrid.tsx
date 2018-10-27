@@ -24,11 +24,7 @@ interface IGridItemProps extends ITranslatedProps {
 	onViewMediaFullScreen: (index: number) => void;
 }
 
-const GridItem: React.SFC<IGridItemProps> = ({
-	data,
-	onViewMediaFullScreen,
-	getText,
-}) => {
+const GridItem: React.SFC<IGridItemProps> = ({ data, onViewMediaFullScreen, getText }) => {
 	const styles =
 		(data.index! - 1) % 3 === 0
 			? [style.gridMediaThumb, style.centerGridItem]

@@ -20,10 +20,7 @@ const persistConfig = {
 	whitelist: ['auth'],
 };
 
-export const configureStore = (
-	depsConfig: IContextConfig,
-	appConfig: IApplicationConfig,
-) => {
+export const configureStore = (depsConfig: IContextConfig, appConfig: IApplicationConfig) => {
 	const persistedReducer = persistReducer(persistConfig, rootReducer);
 	const dataApi = dataApiFactory({
 		peers: depsConfig.dataApi.peers,
@@ -42,9 +39,7 @@ export const configureStore = (
 
 	const store = createStore(
 		persistedReducer,
-		composeWithDevTools(
-			applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi })),
-		),
+		composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi }))),
 	);
 
 	if (module.hot) {

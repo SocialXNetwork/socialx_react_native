@@ -35,15 +35,10 @@ ${webViewWorkerStringAndroid}
 }());
 `;
 
-const internalLibAndroid = `eval(window.atob('${base64EncodeString(
-	intermediateLib,
-)}'))`;
+const internalLibAndroid = `eval(window.atob('${base64EncodeString(intermediateLib)}'))`;
 
 // TODO: replace this with a better polly or even better, find a better solution
-export default class PolyfillCrypto extends React.Component<
-	{ debug: boolean },
-	{}
-> {
+export default class PolyfillCrypto extends React.Component<{ debug: boolean }, {}> {
 	public static defaultProps: { debug: boolean } = {
 		debug: false,
 	};
@@ -92,9 +87,7 @@ export default class PolyfillCrypto extends React.Component<
 						}
 					}
 					injectedJavaScript={
-						Platform.OS === OS_TYPES.Android
-							? internalLibAndroid
-							: internalLibIOS
+						Platform.OS === OS_TYPES.Android ? internalLibAndroid : internalLibIOS
 					}
 					onError={(error: string) => {
 						console.warn('Error creating webview: ', error);

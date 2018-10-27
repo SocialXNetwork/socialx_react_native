@@ -26,9 +26,11 @@ const setUploadStatusAction: ActionCreator<ISetUploadStatusAction> = (
 	payload: setUploadProgressInput,
 });
 
-export const setUploadStatus = (
-	setUploadProgressInput: ISetUploadStatusInput,
-): IThunk => async (dispatch, getState, context) => {
+export const setUploadStatus = (setUploadProgressInput: ISetUploadStatusInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
 		dispatch(setUploadStatusAction(setUploadProgressInput));
 	} catch (e) {
@@ -42,17 +44,11 @@ export const setUploadStatus = (
 	}
 };
 
-const removeUploadedFilesAction: ActionCreator<
-	IRemoveUploadedFilesAction
-> = () => ({
+const removeUploadedFilesAction: ActionCreator<IRemoveUploadedFilesAction> = () => ({
 	type: ActionTypes.REMOVE_UPLOADED_FILES,
 });
 
-export const removeUploadedFiles = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const removeUploadedFiles = (): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(removeUploadedFilesAction());
 	} catch (e) {
@@ -60,9 +56,7 @@ export const removeUploadedFiles = (): IThunk => async (
 	}
 };
 
-const uploadFileAction: ActionCreator<IUploadFileAction> = (
-	uploadFileInput: IUploadFileInput,
-) => ({
+const uploadFileAction: ActionCreator<IUploadFileAction> = (uploadFileInput: IUploadFileInput) => ({
 	type: ActionTypes.UPLOAD_FILE,
 	payload: uploadFileInput,
 });

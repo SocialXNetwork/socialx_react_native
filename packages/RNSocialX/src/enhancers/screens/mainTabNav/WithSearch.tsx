@@ -32,9 +32,7 @@ export interface IWithSearchEnhancedData {
 	userPosts: { [owner: string]: IPostReturnData[] };
 }
 
-export interface IWithSearchEnhancedActions
-	extends ITranslatedProps,
-		INavigationParamsActions {
+export interface IWithSearchEnhancedActions extends ITranslatedProps, INavigationParamsActions {
 	search: (term: string, tab: SearchTabs) => void;
 	searchForMoreResults: () => void;
 	findFriendsSuggestions: () => void;
@@ -52,10 +50,7 @@ interface IWithSearchProps {
 
 interface IWithSearchState {}
 
-export class WithSearch extends React.Component<
-	IWithSearchProps,
-	IWithSearchState
-> {
+export class WithSearch extends React.Component<IWithSearchProps, IWithSearchState> {
 	render() {
 		return (
 			<WithNavigationParams>
@@ -76,32 +71,28 @@ export class WithSearch extends React.Component<
 																activities,
 																ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
 															),
-															results: aggregations.searchResults.map(
-																(profile) => ({
-																	userId: profile.alias,
-																	fullName: profile.fullName,
-																	userName: profile.alias,
-																	location: '',
-																	avatarURL:
-																		profile.avatar.length > 0
+															results: aggregations.searchResults.map((profile) => ({
+																userId: profile.alias,
+																fullName: profile.fullName,
+																userName: profile.alias,
+																location: '',
+																avatarURL:
+																	profile.avatar.length > 0
 																			? appConfig.ipfsConfig.ipfs_URL +
 																		  profile.avatar  // tslint:disable-line
-																			: '',
-																}),
-															),
-															suggestions: aggregations.friendsSuggestions.map(
-																(profile) => ({
-																	userId: profile.alias,
-																	fullName: profile.fullName,
-																	userName: profile.alias,
-																	location: '',
-																	avatarURL:
-																		profile.avatar.length > 0
+																		: '',
+															})),
+															suggestions: aggregations.friendsSuggestions.map((profile) => ({
+																userId: profile.alias,
+																fullName: profile.fullName,
+																userName: profile.alias,
+																location: '',
+																avatarURL:
+																	profile.avatar.length > 0
 																			? appConfig.ipfsConfig.ipfs_URL +
 																			  profile.avatar // tslint:disable-line
-																			: '',
-																}),
-															),
+																		: '',
+															})),
 															userPosts: aggregations.userPosts,
 														},
 														actions: {

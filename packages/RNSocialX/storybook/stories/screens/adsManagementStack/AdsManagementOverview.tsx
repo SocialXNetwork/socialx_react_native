@@ -17,9 +17,7 @@ const mockAdCards = [
 	{
 		url: 'https://placeimg.com/301/301/any',
 		title: 'Using SOCX within our Ecosystem',
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipi.\n' +
-			'Second line text goes here',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipi.\n' + 'Second line text goes here',
 		id: '2',
 	},
 	{
@@ -61,24 +59,21 @@ const spentValues = [
 	},
 ];
 
-storiesOf('Screens/adsManagementStack', module).add(
-	'AdsManagementOverviewScreen',
-	() => {
-		return (
-			<AdsManagementOverviewScreenView
-				spentValues={spentValues}
-				impressionsValues={spentValues}
-				peopleReachedValues={spentValues}
-				currentWeek={'Mar 10, 2018 - Mar 16,2018'}
-				currentDate={'Mar 17, 2018'}
-				ads={mockAdCards}
-				getText={getTextMock}
-				onClose={action('onClose')}
-				onCreateAd={action('onCreateAd')}
-				onEditAd={action('onEditAd')}
-				onSeePastPerformance={action('onSeePastPerformance')}
-				lastSevenDays={'Mar 10, 2018 - Mar 16,2018'}
-			/>
-		);
-	},
-);
+storiesOf('Screens/adsManagementStack', module).add('AdsManagementOverviewScreen', () => {
+	return (
+		<AdsManagementOverviewScreenView
+			spentValues={spentValues}
+			impressionsValues={spentValues}
+			peopleReachedValues={spentValues}
+			currentWeek={'Mar 10, 2018 - Mar 16,2018'}
+			currentDate={'Mar 17, 2018'}
+			ads={mockAdCards}
+			getText={getTextMock}
+			onClose={action('onClose')}
+			onCreateAd={action('onCreateAd')}
+			onEditAd={action('onEditAd')}
+			onSeePastPerformance={action('onSeePastPerformance')}
+			lastSevenDays={'Mar 10, 2018 - Mar 16,2018'}
+		/>
+	);
+});

@@ -277,8 +277,7 @@ const Navigation = () => (
 										notifications,
 										getText,
 										setNavigationParams,
-										showDotsMenuModal: (items: IDotsMenuItem[]) =>
-											showOptionsMenu({ items }),
+										showDotsMenuModal: (items: IDotsMenuItem[]) => showOptionsMenu({ items }),
 									}}
 								/>
 							)}
@@ -290,12 +289,7 @@ const Navigation = () => (
 						<WithActivities>
 							{({ activities }) => (
 								<WithOverlays>
-									{({
-										confirmation,
-										hideConfirmation,
-										optionsMenu,
-										hideOptionsMenu,
-									}) => (
+									{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
 										<WithI18n>
 											{(i18n) => (
 												<React.Fragment>
@@ -304,10 +298,7 @@ const Navigation = () => (
 														alpha={globals.transparentOverlay.alpha}
 														loader={globals.transparentOverlay.loader}
 													/>
-													<OfflineOverlayModal
-														visible={!!globals.offline}
-														getText={i18n.getText}
-													/>
+													<OfflineOverlayModal visible={!!globals.offline} getText={i18n.getText} />
 													<ActivityIndicatorModal
 														visible={globals.activity.visible}
 														title={globals.activity.title}

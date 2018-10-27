@@ -20,10 +20,7 @@ interface ISendCoinsScreenState {
 	transferAmount: string;
 }
 
-class Screen extends React.Component<
-	ISendCoinsScreenProps,
-	ISendCoinsScreenState
-> {
+class Screen extends React.Component<ISendCoinsScreenProps, ISendCoinsScreenState> {
 	public state = {
 		user: '',
 		transferAmount: '',
@@ -73,8 +70,6 @@ class Screen extends React.Component<
 
 export const SendCoinsScreen = ({ navigation }: INavigationProps) => (
 	<WithSendCoins>
-		{({ data, actions }) => (
-			<Screen navigation={navigation} {...data} {...actions} />
-		)}
+		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithSendCoins>
 );

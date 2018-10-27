@@ -18,9 +18,7 @@ import {
 	WithLogin,
 } from '../../enhancers/screens';
 
-type ILoginScreenProps = INavigationProps &
-	IWithLoginEnhancedData &
-	IWithLoginEnhancedActions;
+type ILoginScreenProps = INavigationProps & IWithLoginEnhancedData & IWithLoginEnhancedActions;
 
 interface ILoginScreenState {
 	errors: IError[];
@@ -46,13 +44,9 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 			<LoginScreenView
 				errors={this.state.errors}
 				onLogin={this.onLoginHandler}
-				onNavigateToPasswordForgot={() =>
-					this.safeNavigateToScreen(SCREENS.ForgotPassword)
-				}
+				onNavigateToPasswordForgot={() => this.safeNavigateToScreen(SCREENS.ForgotPassword)}
 				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
-				onNavigateToUploadKey={() =>
-					this.safeNavigateToScreen('UploadKeyScreen')
-				}
+				onNavigateToUploadKey={() => this.safeNavigateToScreen('UploadKeyScreen')}
 				onGoBack={this.onGoBackHandler}
 				getText={this.props.getText}
 			/>
@@ -95,7 +89,5 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 }
 
 export const LoginScreen = (navProps: INavigationProps) => (
-	<WithLogin>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithLogin>
+	<WithLogin>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithLogin>
 );

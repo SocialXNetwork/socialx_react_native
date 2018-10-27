@@ -39,10 +39,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	setGlobal: (global: IGlobal) => dispatch(setGlobal(global)),
 });
 
-export const WithGlobals: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithGlobals: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

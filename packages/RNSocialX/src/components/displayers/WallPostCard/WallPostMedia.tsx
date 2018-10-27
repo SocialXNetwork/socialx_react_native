@@ -134,9 +134,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 
 							{numberOfMoreMediaObjects > 0 && (
 								<View style={style.moreOverlay}>
-									<Text
-										style={style.moreText}
-									>{`+${numberOfMoreMediaObjects} more`}</Text>
+									<Text style={style.moreText}>{`+${numberOfMoreMediaObjects} more`}</Text>
 								</View>
 							)}
 						</TouchableOpacity>

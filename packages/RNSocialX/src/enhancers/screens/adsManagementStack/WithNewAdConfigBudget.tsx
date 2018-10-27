@@ -37,8 +37,7 @@ interface IBudgetConfigData {
 
 export interface IWithNewAdConfigBudgetEnhancedData {}
 
-export interface IWithNewAdConfigBudgetEnhancedActions
-	extends ITranslatedProps {
+export interface IWithNewAdConfigBudgetEnhancedActions extends ITranslatedProps {
 	onCreateAdSetBudget: (budgetConfig: IBudgetConfigData) => void;
 	showConfirmation: (confirmation: IConfirmation) => void;
 }

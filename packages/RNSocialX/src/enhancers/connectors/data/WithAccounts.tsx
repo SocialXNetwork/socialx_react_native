@@ -69,10 +69,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getAccountByPub(getAccountByPubInput)),
 });
 
-export const WithAccounts: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithAccounts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

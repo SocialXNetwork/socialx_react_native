@@ -11,9 +11,7 @@ import {
 	WithLaunch,
 } from '../../enhancers/screens';
 
-type ILaunchScreenProps = INavigationProps &
-	IWithLaunchEnhancedData &
-	IWithLaunchEnhancedActions;
+type ILaunchScreenProps = INavigationProps & IWithLaunchEnhancedData & IWithLaunchEnhancedActions;
 
 class Screen extends React.Component<ILaunchScreenProps> {
 	public async componentDidMount() {
@@ -72,7 +70,5 @@ class Screen extends React.Component<ILaunchScreenProps> {
 }
 
 export const LaunchScreen = (navProps: INavigationProps) => (
-	<WithLaunch>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithLaunch>
+	<WithLaunch>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithLaunch>
 );

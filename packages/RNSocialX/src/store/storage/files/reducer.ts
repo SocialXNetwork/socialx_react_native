@@ -7,9 +7,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SET_UPLOAD_STATUS: {
 			return {
 				uploads: [
-					...state.uploads.filter(
-						(upload) => upload.uploadId !== action.payload.uploadId,
-					),
+					...state.uploads.filter((upload) => upload.uploadId !== action.payload.uploadId),
 					action.payload,
 				],
 			};
