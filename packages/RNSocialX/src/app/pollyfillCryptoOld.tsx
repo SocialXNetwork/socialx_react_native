@@ -2,11 +2,15 @@ import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import WebViewBridge from 'react-native-webview-bridge';
 
+// TODO: make this compatible with both android and ios
 import {
-	MainWorker,
+	MainWorker as MainAndroidWorker,
 	webViewWorkerString as webViewWorkerStringAndroid,
 } from '@socialx/webview-crypto';
-import { webViewWorkerString as webViewWorkerStringIOS } from 'webview-crypto';
+import {
+	MainWorker as MainIosWorker,
+	webViewWorkerString as webViewWorkerStringIOS,
+} from 'webview-crypto';
 
 // import { randomBytes } from 'react-native-randombytes';
 
@@ -54,7 +58,7 @@ export default class PolyfillCrypto extends React.Component<{ debug: boolean }, 
 				<WebViewBridge
 					ref={(c: any) => {
 						if (c && !worker) {
-							worker = new MainWorker(c.sendToBridge, this.props.debug);
+							worker = new MainIosWorker(c.sendToBridge, this.props.debug);
 							// @ts-ignore
 							if (window.crypto) {
 								// we are in chrome debugger
