@@ -2,7 +2,7 @@
 import Gun from 'gun/gun';
 
 import 'gun/nts';
-import 'gun/sea';
+import './extensions/sea';
 
 import 'gun/lib/erase';
 import 'gun/lib/path';
