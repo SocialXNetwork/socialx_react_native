@@ -317,6 +317,7 @@ export interface ICurrentUser {
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardData[];
 	miningEnabled: boolean;
+	shareDataEnabled: boolean;
 	pub: string;
 }
 
