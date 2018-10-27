@@ -18,10 +18,7 @@ class CommentInputStory extends React.Component {
 	private keyboardDidHideListener: any;
 
 	public componentDidMount() {
-		this.keyboardDidHideListener = Keyboard.addListener(
-			'keyboardDidHide',
-			this.keyboardDidHide,
-		);
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
 	}
 
 	public componentWillUnmount() {

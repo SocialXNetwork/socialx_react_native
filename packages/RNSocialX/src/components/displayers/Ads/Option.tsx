@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-	Image,
-	ImageSourcePropType,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Image, ImageSourcePropType, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './Option.style';
@@ -17,20 +11,11 @@ interface IOptionProps {
 	onPress: () => void;
 }
 
-export const Option: React.SFC<IOptionProps> = ({
-	type,
-	icon,
-	text,
-	onPress,
-}) => (
+export const Option: React.SFC<IOptionProps> = ({ type, icon, text, onPress }) => (
 	<TouchableOpacity onPress={onPress} style={styles.container}>
 		<View style={styles.optionContainer}>
 			{type === 'image' && (
-				<Image
-					source={icon as ImageSourcePropType}
-					style={styles.image}
-					resizeMode="contain"
-				/>
+				<Image source={icon as ImageSourcePropType} style={styles.image} resizeMode="contain" />
 			)}
 			{type === 'icon' && <Icon name={icon as string} style={styles.icon} />}
 			<Text style={styles.text}>{text}</Text>

@@ -1,8 +1,4 @@
-import {
-	NavigationActions,
-	NavigationScreenProp,
-	StackActions,
-} from 'react-navigation';
+import { NavigationActions, NavigationScreenProp, StackActions } from 'react-navigation';
 
 export const resetNavigationToRoute = (
 	routeName: string,

@@ -25,11 +25,7 @@ export interface IWithResetPasswordEnhancedData {
 }
 
 export interface IWithResetPasswordEnhancedActions extends ITranslatedProps {
-	resetPassword: (
-		userName: string,
-		resetCode: string,
-		password: string,
-	) => void;
+	resetPassword: (userName: string, resetCode: string, password: string) => void;
 }
 
 interface IWithResetPasswordEnhancedProps {

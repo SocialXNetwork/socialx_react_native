@@ -37,9 +37,7 @@ const REPORT_REASONS = [
 	'modal.report.problem.reason.sample4',
 ];
 
-const ReportProblemModalComponent: React.SFC<
-	FormikProps<IReportProblemModalComponentProps>
-> = ({
+const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComponentProps>> = ({
 	values: { visible, declineHandler, marginBottom, getText, description },
 	isValid,
 	handleSubmit,
@@ -64,27 +62,16 @@ const ReportProblemModalComponent: React.SFC<
 						<BlurView style={style.blurView} blurType="dark" blurAmount={2} />
 					</TouchableWithoutFeedback>
 				)}
-				<View
-					style={[
-						style.keyboardView,
-						Platform.OS === OS_TYPES.IOS ? { marginBottom } : {},
-					]}
-				>
+				<View style={[style.keyboardView, Platform.OS === OS_TYPES.IOS ? { marginBottom } : {}]}>
 					<View style={style.boxContainer}>
 						<View style={style.titleContainer}>
-							<Text style={style.title}>
-								{getText('modal.report.problem.title')}
-							</Text>
+							<Text style={style.title}>{getText('modal.report.problem.title')}</Text>
 						</View>
 
 						<View style={style.inputContainer}>
 							<View style={style.pickerContainer}>
 								<View style={style.iconContainer}>
-									<Image
-										source={Icons.iconDropDown}
-										style={style.icon}
-										resizeMode="contain"
-									/>
+									<Image source={Icons.iconDropDown} style={style.icon} resizeMode="contain" />
 								</View>
 								<ModalDropdown
 									keyboardShouldPersistTaps="handled"
@@ -106,9 +93,7 @@ const ReportProblemModalComponent: React.SFC<
 									autoCorrect={true}
 									numberOfLines={3}
 									borderColor={Colors.dustWhite}
-									placeholder={getText(
-										'modal.report.problem.report.description.placeholder',
-									)}
+									placeholder={getText('modal.report.problem.report.description.placeholder')}
 									onChangeText={(value: string) => {
 										setFieldValue('description', value);
 										setFieldTouched('description');
@@ -126,19 +111,13 @@ const ReportProblemModalComponent: React.SFC<
 						</View>
 
 						<View style={style.buttonsContainer}>
-							<TouchableOpacity
-								style={[style.button, style.leftButton]}
-								onPress={declineHandler}
-							>
+							<TouchableOpacity style={[style.button, style.leftButton]} onPress={declineHandler}>
 								<Text style={[style.buttonText, style.buttonTextCancel]}>
 									{getText('button.cancel')}
 								</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={[
-									style.button,
-									!isValid ? ApplicationStyles.buttonDisabled : {},
-								]}
+								style={[style.button, !isValid ? ApplicationStyles.buttonDisabled : {}]}
 								disabled={!isValid}
 								onPress={handleSubmit}
 							>
@@ -169,13 +148,9 @@ const formikSettings = {
 	},
 	handleSubmit: (
 		{ reason, description }: IReportProblemModalComponentProps,
-		{
-			props,
-		}: FormikBag<IReportProblemModalProps, IReportProblemModalComponentProps>,
+		{ props }: FormikBag<IReportProblemModalProps, IReportProblemModalComponentProps>,
 	) => props.confirmHandler(reason, description),
 	enableReinitialize: true,
 };
 
-export const ReportProblemModal = withFormik(formikSettings)(
-	ReportProblemModalComponent as any,
-);
+export const ReportProblemModal = withFormik(formikSettings)(ReportProblemModalComponent as any);

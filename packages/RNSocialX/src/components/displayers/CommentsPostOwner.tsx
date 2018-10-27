@@ -36,9 +36,7 @@ export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 			</TouchableOpacity>
 			<View style={styles.textContainer}>
 				<Text style={styles.user}>{owner.fullName}</Text>
-				<Text
-					style={styles.timestamp}
-				>{`${timeStampDate} at ${timeStampHour}`}</Text>
+				<Text style={styles.timestamp}>{`${timeStampDate} at ${timeStampHour}`}</Text>
 			</View>
 			<View style={styles.dotsContainer}>
 				{/* TODO @Alex replace this with DotsMenuModal */}

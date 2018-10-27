@@ -65,10 +65,7 @@ interface IWithReferralProps {
 
 interface IWithReferralState {}
 
-export class WithReferral extends React.Component<
-	IWithReferralProps,
-	IWithReferralState
-> {
+export class WithReferral extends React.Component<IWithReferralProps, IWithReferralState> {
 	render() {
 		return (
 			<WithI18n>

@@ -49,9 +49,7 @@ export interface IChangePasswordInput {
 	newPassword: string;
 }
 
-export interface ICreateAccountInput
-	extends IRecoverData<string>,
-		ICredentials {
+export interface ICreateAccountInput extends IRecoverData<string>, ICredentials {
 	email: string;
 	avatar: string;
 	fullName: string;

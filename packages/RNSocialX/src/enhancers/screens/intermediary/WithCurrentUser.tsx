@@ -12,10 +12,7 @@ interface IWithCurrentUserProps {
 
 interface IWithCurrentUserState {}
 
-export class WithCurrentUser extends React.Component<
-	IWithCurrentUserProps,
-	IWithCurrentUserState
-> {
+export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWithCurrentUserState> {
 	render() {
 		return (
 			<WithConfig>
@@ -26,9 +23,7 @@ export class WithCurrentUser extends React.Component<
 								{({ profiles }) => {
 									let currentUser;
 									if (auth && profiles.length > 0) {
-										const foundProfile = profiles.find(
-											(profile) => profile.alias === auth.alias,
-										);
+										const foundProfile = profiles.find((profile) => profile.alias === auth.alias);
 
 										if (foundProfile) {
 											currentUser = {

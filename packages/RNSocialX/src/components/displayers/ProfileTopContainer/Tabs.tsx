@@ -12,24 +12,16 @@ interface ITabs {
 
 export const Tabs: React.SFC<ITabs> = ({ onIconPress, activeTab }) => {
 	const listStyle =
-		activeTab === PROFILE_TAB_ICON_TYPES.LIST
-			? [styles.icon, styles.active]
-			: styles.icon;
+		activeTab === PROFILE_TAB_ICON_TYPES.LIST ? [styles.icon, styles.active] : styles.icon;
 	const gridStyle =
-		activeTab === PROFILE_TAB_ICON_TYPES.GRID
-			? [styles.icon, styles.active]
-			: styles.icon;
+		activeTab === PROFILE_TAB_ICON_TYPES.GRID ? [styles.icon, styles.active] : styles.icon;
 
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity
-				onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.LIST)}
-			>
+			<TouchableOpacity onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.LIST)}>
 				<Icon name="md-list-box" style={listStyle} />
 			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.GRID)}
-			>
+			<TouchableOpacity onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.GRID)}>
 				<Icon name="md-grid" style={gridStyle} />
 			</TouchableOpacity>
 		</View>

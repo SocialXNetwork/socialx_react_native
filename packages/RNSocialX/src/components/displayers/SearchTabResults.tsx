@@ -51,13 +51,7 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 				searching={searching}
 				onResultPress={(result) => onResultPress(result.userId)}
 				hasMore={hasMoreResults}
-				onLoadMore={() =>
-					onLoadMoreResultsHandler(
-						searching,
-						hasMoreResults,
-						searchForMoreResults,
-					)
-				}
+				onLoadMore={() => onLoadMoreResultsHandler(searching, hasMoreResults, searchForMoreResults)}
 				getText={getText}
 			/>
 		)}

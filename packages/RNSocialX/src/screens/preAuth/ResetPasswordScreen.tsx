@@ -31,10 +31,7 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 		);
 	}
 
-	private setNewPasswordHandler = async (
-		resetCode: string,
-		password: string,
-	) => {
+	private setNewPasswordHandler = async (resetCode: string, password: string) => {
 		const { resetPassword, getText, userName } = this.props;
 
 		if (!userName) {
@@ -49,10 +46,7 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	};
 }
 
-export const ResetPasswordScreen = ({
-	navigation,
-	navigationOptions,
-}: INavigationProps) => (
+export const ResetPasswordScreen = ({ navigation, navigationOptions }: INavigationProps) => (
 	<WithResetPassword>
 		{({ data, actions }) => (
 			<Screen

@@ -9,11 +9,7 @@ interface IContainerProps {
 	color?: string;
 }
 
-export const Container: React.SFC<IContainerProps> = ({
-	heading,
-	text,
-	color = defaultColor,
-}) => (
+export const Container: React.SFC<IContainerProps> = ({ heading, text, color = defaultColor }) => (
 	<View style={[styles.container, { backgroundColor: color }]}>
 		<Text style={styles.heading}>{heading}</Text>
 		<Text style={styles.text}>{text}</Text>

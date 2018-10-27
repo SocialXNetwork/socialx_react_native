@@ -1,11 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import {
-	boolean,
-	number,
-	select,
-	text,
-	withKnobs,
-} from '@storybook/addon-knobs';
+import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { Animated } from 'react-native';

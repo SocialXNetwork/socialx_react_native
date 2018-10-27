@@ -20,10 +20,7 @@ interface ISearchHeaderState {
 	navigatedFromTrending: boolean;
 }
 
-export class SearchHeader extends Component<
-	ISearchHeaderProps,
-	ISearchHeaderState
-> {
+export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderState> {
 	public static defaultProps = {
 		cancel: false,
 		autoFocus: false,
@@ -37,11 +34,7 @@ export class SearchHeader extends Component<
 	private inputRef: RefObject<PrimaryTextInput> = React.createRef();
 
 	public componentDidUpdate() {
-		if (
-			this.inputRef.current &&
-			this.props.cancel &&
-			!this.state.navigatedFromTrending
-		) {
+		if (this.inputRef.current && this.props.cancel && !this.state.navigatedFromTrending) {
 			this.inputRef.current.focusInput();
 			this.setState({ navigatedFromTrending: true });
 		}
@@ -65,9 +58,7 @@ export class SearchHeader extends Component<
 						<PrimaryTextInput
 							ref={this.inputRef}
 							value={
-								this.props.searchTermValue
-									? this.props.searchTermValue
-									: this.state.searchTerm
+								this.props.searchTermValue ? this.props.searchTermValue : this.state.searchTerm
 							}
 							onChangeText={this.searchInputUpdated}
 							onSubmitPressed={Keyboard.dismiss}

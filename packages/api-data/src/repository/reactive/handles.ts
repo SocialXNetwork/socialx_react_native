@@ -3,19 +3,13 @@ import { datePathFromDate } from '../../utils/helpers';
 
 export const currentFriendRequests = (context: IContext) => {
 	const { gun, account } = context;
-	return gun.path(
-		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${
-			account.is.alias
-		}`,
-	);
+	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${account.is.alias}`);
 };
 
 export const currentFriendReqResponse = (context: IContext) => {
 	const { gun, account } = context;
 	return gun.path(
-		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${
-			account.is.alias
-		}`,
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${account.is.alias}`,
 	);
 };
 
@@ -35,10 +29,7 @@ export const likesByPostPath = (context: IContext, postPath: string) => {
 	return gun.path(`${TABLES.POSTS}.${postPath}.${TABLE_ENUMS.LIKES}`);
 };
 
-export const commentLikesByCommentPath = (
-	context: IContext,
-	commentPath: string,
-) => {
+export const commentLikesByCommentPath = (context: IContext, commentPath: string) => {
 	const { gun } = context;
 	return gun.path(`${TABLES.POSTS}.${commentPath}.${TABLE_ENUMS.LIKES}`);
 };

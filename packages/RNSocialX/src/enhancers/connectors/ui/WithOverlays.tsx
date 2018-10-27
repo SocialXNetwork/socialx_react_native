@@ -14,10 +14,7 @@ import {
 	showMessage,
 	showModal,
 } from '../../../store/ui/overlays';
-import {
-	hideOptionsMenu,
-	showOptionsMenu,
-} from '../../../store/ui/overlays/actions';
+import { hideOptionsMenu, showOptionsMenu } from '../../../store/ui/overlays/actions';
 import { IOptionsMenu } from '../../../store/ui/overlays/Types';
 
 interface IDataProps {
@@ -83,18 +80,13 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	hideMessage: () => dispatch(hideMessage()),
 	showModal: (modal: IModal) => dispatch(showModal(modal)),
 	hideModal: () => dispatch(hideModal()),
-	showConfirmation: (confirmation: IConfirmation) =>
-		dispatch(showConfirmation(confirmation)),
+	showConfirmation: (confirmation: IConfirmation) => dispatch(showConfirmation(confirmation)),
 	hideConfirmation: () => dispatch(hideConfirmation()),
-	showOptionsMenu: (optionsMenu: IOptionsMenu) =>
-		dispatch(showOptionsMenu(optionsMenu)),
+	showOptionsMenu: (optionsMenu: IOptionsMenu) => dispatch(showOptionsMenu(optionsMenu)),
 	hideOptionsMenu: () => dispatch(hideOptionsMenu()),
 });
 
-export const WithOverlays: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithOverlays: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

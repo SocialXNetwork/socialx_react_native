@@ -26,9 +26,7 @@ interface INewAdSetupPostData {
 	description: string;
 }
 
-export const NewAdSetupPostScreenView: React.SFC<
-	INewAdSetupPostScreenViewProps
-> = ({
+export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps> = ({
 	mediaObjects,
 	getText,
 	onGoBack,
@@ -73,24 +71,18 @@ export const NewAdSetupPostScreenView: React.SFC<
 								size={InputSizes.Small}
 								borderColor={customStyleProps.inputBorderColor}
 								borderWidth={customStyleProps.inputBorderWidth}
-								placeholder={getText(
-									'new.ad.setup.post.header.headline.input.placeholder',
-								)}
+								placeholder={getText('new.ad.setup.post.header.headline.input.placeholder')}
 								value={headline}
 								onChangeText={(value: string) => {
 									setFieldValue('headline', value);
 								}}
 							/>
-							{errors.headline && (
-								<Text style={styles.errorText}>{errors.headline}</Text>
-							)}
+							{errors.headline && <Text style={styles.errorText}>{errors.headline}</Text>}
 							<View style={styles.descriptionView}>
 								<PrimaryTextInput
 									borderColor={customStyleProps.inputBorderColor}
 									borderWidth={customStyleProps.inputBorderWidth}
-									placeholder={getText(
-										'new.ad.setup.post.header.description.input.placeholder',
-									)}
+									placeholder={getText('new.ad.setup.post.header.description.input.placeholder')}
 									multiline={true}
 									value={description}
 									onChangeText={(value: string) => {
@@ -99,10 +91,7 @@ export const NewAdSetupPostScreenView: React.SFC<
 								/>
 							</View>
 							<View style={styles.addMediaButtonContainer}>
-								<TouchableOpacity
-									style={styles.addMediaButton}
-									onPress={onAddMedia}
-								>
+								<TouchableOpacity style={styles.addMediaButton} onPress={onAddMedia}>
 									<Icon name={'logo-instagram'} style={styles.photoIcon} />
 									<Text style={styles.addMediaText}>
 										{getText('new.wall.post.screen.attach.media.button')}
@@ -111,10 +100,7 @@ export const NewAdSetupPostScreenView: React.SFC<
 							</View>
 							{mediaObjects.length > 0 && (
 								<View style={styles.mediaContainer}>
-									<MediaHorizontalScroller
-										mediaURIs={mediaObjects}
-										getText={getText}
-									/>
+									<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
 								</View>
 							)}
 						</View>

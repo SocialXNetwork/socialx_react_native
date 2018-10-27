@@ -18,11 +18,7 @@ export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 }) => {
 	if (items && items.length > 0) {
 		const rows = items.map((item: any) => (
-			<SearchResultsItem
-				item={item}
-				key={item.userId}
-				onResultPress={onResultPress}
-			/>
+			<SearchResultsItem item={item} key={item.userId} onResultPress={onResultPress} />
 		));
 
 		return (

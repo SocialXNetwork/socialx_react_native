@@ -77,36 +77,28 @@ const mapStateToProps = (state: IApplicationState) => ({
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	// @Jake fix typing of IMedia
-	createPost: (createPostInput: ICreatePostInput) =>
-		dispatch(createPost(createPostInput as any)),
+	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
-	getPostByPath: (getPostPathInput: IPostPathInput) =>
-		dispatch(getPostByPath(getPostPathInput)),
+	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	loadMorePosts: () => dispatch(loadMorePosts()),
 	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
 	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
-	removePost: (removePostInput: IRemovePostInput) =>
-		dispatch(removePost(removePostInput)),
-	unlikePost: (unlikePostInput: IUnlikePostInput) =>
-		dispatch(unlikePost(unlikePostInput)),
+	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
+	unlikePost: (unlikePostInput: IUnlikePostInput) => dispatch(unlikePost(unlikePostInput)),
 	// comments
 	createComment: (createCommentInput: ICreateCommentInput) =>
 		dispatch(createComment(createCommentInput)),
 	removeComment: (removeCommentInput: IRemoveCommentInput) =>
 		dispatch(removeComment(removeCommentInput)),
-	likeComment: (likeCommentInput: ICommentIdInput) =>
-		dispatch(likeComment(likeCommentInput)),
+	likeComment: (likeCommentInput: ICommentIdInput) => dispatch(likeComment(likeCommentInput)),
 	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
 		dispatch(unlikeComment(unlikeCommentInput)),
 });
 
-export const WithPosts: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithPosts: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

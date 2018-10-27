@@ -69,10 +69,7 @@ interface IWithUserFeedProps {
 
 interface IWithUserFeedState {}
 
-export class WithUserFeed extends React.Component<
-	IWithUserFeedProps,
-	IWithUserFeedState
-> {
+export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserFeedState> {
 	render() {
 		return (
 			<WithI18n>
@@ -114,10 +111,8 @@ export class WithUserFeed extends React.Component<
 																								data: {
 																									currentUser: user,
 																									posts: feedPosts,
-																									skeletonPost:
-																										globals.skeletonPost,
-																									canLoadMorePosts:
-																										globals.canLoadMorePosts,
+																									skeletonPost: globals.skeletonPost,
+																									canLoadMorePosts: globals.canLoadMorePosts,
 																									loadingMorePosts: getActivity(
 																										activities,
 																										ActionTypes.LOAD_MORE_POSTS,
@@ -130,13 +125,11 @@ export class WithUserFeed extends React.Component<
 																										activities,
 																										ActionTypes.CREATE_POST,
 																									),
-																									userPosts:
-																										aggregations.userPosts,
+																									userPosts: aggregations.userPosts,
 																									errors,
 																								},
 																								actions: {
-																									loadMorePosts:
-																										feed.loadMorePosts,
+																									loadMorePosts: feed.loadMorePosts,
 																									refreshFeed: async () => {
 																										await feed.resetPostsAndRefetch();
 																									},
@@ -145,39 +138,27 @@ export class WithUserFeed extends React.Component<
 																											postId,
 																										});
 																									},
-																									unlikePost: async (
-																										postId,
-																									) => {
+																									unlikePost: async (postId) => {
 																										await feed.unlikePost({
 																											postId,
 																										});
 																									},
-																									deletePost: async (
-																										postId,
-																									) => {
+																									deletePost: async (postId) => {
 																										await feed.removePost({
 																											postId,
 																										});
 																									},
-																									postComment: async (
-																										text,
-																										postId,
-																									) => {
+																									postComment: async (text, postId) => {
 																										await feed.createComment({
 																											text,
 																											postId,
 																										});
 																									},
-																									getPostsForUser: async (
-																										username: string,
-																									) => {
-																										await aggregations.getUserPosts(
-																											{ username },
-																										);
+																									getPostsForUser: async (username: string) => {
+																										await aggregations.getUserPosts({ username });
 																									},
 																									blockUser: () => undefined,
-																									reportProblem: () =>
-																										undefined,
+																									reportProblem: () => undefined,
 																									showDotsMenuModal: (items) =>
 																										showOptionsMenu({ items }),
 																									setNavigationParams,

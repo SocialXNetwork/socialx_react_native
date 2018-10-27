@@ -40,9 +40,7 @@ const getSortingItems = (
 	Object.keys(CommentsSortingOptions).map((option: any) => {
 		const optionValue = CommentsSortingOptions[option];
 		return {
-			label: () => (
-				<SortingItem optionValue={optionValue} selectedValue={selectedValue} />
-			),
+			label: () => <SortingItem optionValue={optionValue} selectedValue={selectedValue} />,
 			onPress: () => onValueChange(optionValue),
 		};
 	});
@@ -52,12 +50,12 @@ interface ICommentsHeaderMenuButtonProps extends ITranslatedProps {
 	onValueChange: (value: string) => void;
 }
 
-export const CommentsHeaderMenuButton: React.SFC<
-	ICommentsHeaderMenuButtonProps
-> = ({ getText, sortOption, onValueChange }) => {
-	const headerItem = getSortingSectionHeaderItem(
-		getText('comments.order.title'),
-	);
+export const CommentsHeaderMenuButton: React.SFC<ICommentsHeaderMenuButtonProps> = ({
+	getText,
+	sortOption,
+	onValueChange,
+}) => {
+	const headerItem = getSortingSectionHeaderItem(getText('comments.order.title'));
 	const menuItems = getSortingItems(sortOption, onValueChange);
 	return (
 		<View style={style.rightHeader}>

@@ -1,10 +1,5 @@
 import { Ipfslib } from './ipfslib';
-import {
-	IListenerCompleted,
-	IListenerProgess,
-	IProviderParams,
-	IUploader,
-} from './types';
+import { IListenerCompleted, IListenerProgess, IProviderParams, IUploader } from './types';
 
 export const storageApiFactory = (
 	config: IProviderParams = {

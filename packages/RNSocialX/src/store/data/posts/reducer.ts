@@ -19,9 +19,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE: {
 			const updatedPosts = action.payload.reduce(
 				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter(
-						(updatedPost) => updatedPost.postId !== newPost.postId,
-					),
+					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
 				[...state.posts],
@@ -36,9 +34,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_POST_BY_PATH: {
 			return {
 				posts: [
-					...state.posts.filter(
-						(post) => post.postId !== action.payload.postId,
-					),
+					...state.posts.filter((post) => post.postId !== action.payload.postId),
 					action.payload,
 				],
 			};
@@ -51,9 +47,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_POSTS_BY_USER: {
 			const updatedPosts = action.payload.reduce(
 				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter(
-						(updatedPost) => updatedPost.postId !== newPost.postId,
-					),
+					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
 				[...state.posts],
@@ -68,9 +62,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
 			return {
 				posts: [
-					...state.posts.filter(
-						(post) => post.postId !== action.payload.postId,
-					),
+					...state.posts.filter((post) => post.postId !== action.payload.postId),
 					action.payload,
 				],
 			};
@@ -83,9 +75,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_LOAD_MORE_POSTS: {
 			const updatedPosts = action.payload.reduce(
 				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter(
-						(updatedPost) => updatedPost.postId !== newPost.postId,
-					),
+					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
 				[...state.posts],
@@ -99,9 +89,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_REMOVE_POST: {
 			return {
-				posts: [
-					...state.posts.filter((post) => post.postId !== action.payload),
-				],
+				posts: [...state.posts.filter((post) => post.postId !== action.payload)],
 			};
 		}
 

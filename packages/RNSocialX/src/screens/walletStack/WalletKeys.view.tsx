@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import {
-	Header,
-	HeaderButton,
-	PrimaryButton,
-	PrimaryTextInput,
-} from '../../components';
+import { Header, HeaderButton, PrimaryButton, PrimaryTextInput } from '../../components';
 import { ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './WalletKeys.style';
@@ -82,10 +77,7 @@ export const WalletKeysScreenView: React.SFC<IWalletKeysScreenViewProps> = ({
 					onPress={onExportKeys}
 					containerStyle={styles.button}
 				/>
-				<PrimaryButton
-					label={getText('button.finalize')}
-					onPress={onFinalize}
-				/>
+				<PrimaryButton label={getText('button.finalize')} onPress={onFinalize} />
 			</View>
 		</View>
 	</ScrollView>

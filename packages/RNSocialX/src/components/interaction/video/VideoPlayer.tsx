@@ -8,12 +8,7 @@
  */
 
 import * as React from 'react';
-import {
-	StyleProp,
-	TouchableWithoutFeedback,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { StyleProp, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import Video from 'react-native-video';
 
 import { VideoControls } from './VideoControls';
@@ -44,10 +39,7 @@ interface IVideoPlayerState {
 	resizeMode: 'cover' | 'contain';
 }
 
-export class VideoPlayer extends React.Component<
-	IVideoPlayerProps,
-	IVideoPlayerState
-> {
+export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayerState> {
 	public static defaultProps = {
 		containerStyle: styles.container,
 		muted: false,
@@ -89,14 +81,7 @@ export class VideoPlayer extends React.Component<
 			videoURL,
 			onPressVideo,
 		} = this.props;
-		const {
-			ended,
-			playReady,
-			fullScreen,
-			muted,
-			paused,
-			resizeMode,
-		} = this.state;
+		const { ended, playReady, fullScreen, muted, paused, resizeMode } = this.state;
 
 		const showPlayButton = paused || ended;
 

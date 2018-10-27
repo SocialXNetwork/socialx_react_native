@@ -13,11 +13,7 @@ import { WithCurrentUser } from './WithCurrentUser';
 import { WithVisitedUser } from './WithVisitedUser';
 
 interface IWithVisitedUserContentProps {
-	children({
-		visitedUser,
-	}: {
-		visitedUser: IVisitedUser | undefined;
-	}): JSX.Element;
+	children({ visitedUser }: { visitedUser: IVisitedUser | undefined }): JSX.Element;
 }
 
 interface IWithVisitedUserContentState {}
@@ -62,8 +58,7 @@ export class WithVisitedUserContent extends React.Component<
 																);
 
 																visitedUser.numberOfPhotos = posts.reduce(
-																	(acc, post) =>
-																		post.media ? acc + post.media.length : 0,
+																	(acc, post) => (post.media ? acc + post.media.length : 0),
 																	0,
 																);
 
@@ -72,10 +67,7 @@ export class WithVisitedUserContent extends React.Component<
 																	0,
 																);
 
-																visitedUser.mediaObjects = extractMediaFromPosts(
-																	posts,
-																	appConfig,
-																);
+																visitedUser.mediaObjects = extractMediaFromPosts(posts, appConfig);
 
 																visitedUser.recentPosts = recentPosts;
 															}

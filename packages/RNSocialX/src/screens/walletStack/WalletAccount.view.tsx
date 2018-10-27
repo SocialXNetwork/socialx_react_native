@@ -21,9 +21,7 @@ interface IWalletAccountScreenViewProps extends ITranslatedProps {
 	onGenerateAccountName: () => void;
 }
 
-export const WalletAccountScreenView: React.SFC<
-	IWalletAccountScreenViewProps
-> = ({
+export const WalletAccountScreenView: React.SFC<IWalletAccountScreenViewProps> = ({
 	onGoBack,
 	onGoNext,
 	onChangeAccountName,
@@ -49,9 +47,7 @@ export const WalletAccountScreenView: React.SFC<
 				returnKeyType={TRKeyboardKeys.default}
 			/>
 			{isValid === false && (
-				<Text style={[styles.label, styles.error]}>
-					{getText('wallet.account.not.valid')}
-				</Text>
+				<Text style={[styles.label, styles.error]}>{getText('wallet.account.not.valid')}</Text>
 			)}
 			<View style={styles.buttons}>
 				<PrimaryButton

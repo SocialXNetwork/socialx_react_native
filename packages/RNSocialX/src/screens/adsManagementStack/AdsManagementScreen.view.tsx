@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-	AvatarImage,
-	Header,
-	HeaderButton,
-	Option,
-	PrimaryButton,
-} from '../../components';
+import { AvatarImage, Header, HeaderButton, Option, PrimaryButton } from '../../components';
 import { Icons } from '../../environment/theme';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
@@ -19,9 +13,13 @@ interface IAdsManagementScreenViewProps extends ITranslatedProps, IHeaderProps {
 	userName: string;
 }
 
-export const AdsManagementScreenView: React.SFC<
-	IAdsManagementScreenViewProps
-> = ({ onGoBack, avatarURL, fullName, userName, getText }) => (
+export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> = ({
+	onGoBack,
+	avatarURL,
+	fullName,
+	userName,
+	getText,
+}) => (
 	<View style={styles.container}>
 		<Header
 			title={getText('ad.management.screen.title')}

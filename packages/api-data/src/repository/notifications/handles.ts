@@ -1,10 +1,7 @@
 import { IContext, TABLES } from '../../types';
 import { NOTIFICATION_TABLE_NAMES } from './types';
 
-export const notificationsByUsername = (
-	context: IContext,
-	username: string,
-) => {
+export const notificationsByUsername = (context: IContext, username: string) => {
 	const { gun } = context;
 	return gun.path(`${TABLES.NOTIFICATIONS}.${username}`);
 };
@@ -21,17 +18,15 @@ export const notificationById = (context: IContext, notificationId: string) => {
 export const friendRequests = (context: IContext) => {
 	const { gun, account } = context;
 	return gun.path(
-		`${TABLES.NOTIFICATIONS}.${NOTIFICATION_TABLE_NAMES.FRIEND_REQUEST}.${
-			account.is.alias
-		}`,
+		`${TABLES.NOTIFICATIONS}.${NOTIFICATION_TABLE_NAMES.FRIEND_REQUEST}.${account.is.alias}`,
 	);
 };
 
 export const friendRequestsResponses = (context: IContext) => {
 	const { gun, account } = context;
 	return gun.path(
-		`${TABLES.NOTIFICATIONS}.${
-			NOTIFICATION_TABLE_NAMES.FRIEND_REQUEST_RESPONSE
-		}.${account.is.alias}`,
+		`${TABLES.NOTIFICATIONS}.${NOTIFICATION_TABLE_NAMES.FRIEND_REQUEST_RESPONSE}.${
+			account.is.alias
+		}`,
 	);
 };

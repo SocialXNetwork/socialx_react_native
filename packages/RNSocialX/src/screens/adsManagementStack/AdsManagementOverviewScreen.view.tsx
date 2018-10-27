@@ -10,11 +10,7 @@ import {
 	Header,
 	PrimaryButton,
 } from '../../components';
-import {
-	IAd,
-	IAdsAccountPerformanceValues,
-	ITranslatedProps,
-} from '../../types';
+import { IAd, IAdsAccountPerformanceValues, ITranslatedProps } from '../../types';
 
 import styles, { BUTTON_WIDTH } from './AdsManagementOverviewScreen.style';
 
@@ -32,9 +28,7 @@ interface IAdsManagementOverviewScreenViewProps extends ITranslatedProps {
 	onSeePastPerformance: () => void;
 }
 
-export const AdsManagementOverviewScreenView: React.SFC<
-	IAdsManagementOverviewScreenViewProps
-> = ({
+export const AdsManagementOverviewScreenView: React.SFC<IAdsManagementOverviewScreenViewProps> = ({
 	onClose,
 	getText,
 	currentDate,
@@ -61,12 +55,7 @@ export const AdsManagementOverviewScreenView: React.SFC<
 						{getText('ad.management.overview.screen.ads.list.title')}
 					</Text>
 					{ads.map((ad) => (
-						<AdPreview
-							{...ad}
-							onEditAd={onEditAd}
-							key={ad.id}
-							editable={true}
-						/>
+						<AdPreview {...ad} onEditAd={onEditAd} key={ad.id} editable={true} />
 					))}
 				</View>
 				<View style={styles.section}>
@@ -81,49 +70,32 @@ export const AdsManagementOverviewScreenView: React.SFC<
 							activeTabStyle={styles.tab}
 							textStyle={styles.tabText}
 							activeTextStyle={styles.activeTabText}
-							heading={getText(
-								'ad.management.overview.screen.account.performance.spent',
-							)}
+							heading={getText('ad.management.overview.screen.account.performance.spent')}
 						>
-							<ChartAccountPerformance
-								week={currentWeek}
-								performanceValues={spentValues}
-							/>
+							<ChartAccountPerformance week={currentWeek} performanceValues={spentValues} />
 						</Tab>
 						<Tab
 							tabStyle={styles.tab}
 							activeTabStyle={styles.tab}
 							textStyle={styles.tabText}
 							activeTextStyle={styles.activeTabText}
-							heading={getText(
-								'ad.management.overview.screen.account.performance.people.reached',
-							)}
+							heading={getText('ad.management.overview.screen.account.performance.people.reached')}
 						>
-							<ChartAccountPerformance
-								week={currentWeek}
-								performanceValues={peopleReachedValues}
-							/>
+							<ChartAccountPerformance week={currentWeek} performanceValues={peopleReachedValues} />
 						</Tab>
 						<Tab
 							tabStyle={styles.tab}
 							activeTabStyle={styles.tab}
 							textStyle={styles.tabText}
 							activeTextStyle={styles.activeTabText}
-							heading={getText(
-								'ad.management.overview.screen.account.performance.impressions',
-							)}
+							heading={getText('ad.management.overview.screen.account.performance.impressions')}
 						>
-							<ChartAccountPerformance
-								week={currentWeek}
-								performanceValues={impressionsValues}
-							/>
+							<ChartAccountPerformance week={currentWeek} performanceValues={impressionsValues} />
 						</Tab>
 					</Tabs>
 					<View style={styles.button}>
 						<PrimaryButton
-							label={getText(
-								'ad.management.overview.screen.see.past.performance',
-							)}
+							label={getText('ad.management.overview.screen.see.past.performance')}
 							width={BUTTON_WIDTH}
 							onPress={onSeePastPerformance}
 						/>

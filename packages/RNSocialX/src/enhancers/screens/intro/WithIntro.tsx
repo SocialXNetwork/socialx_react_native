@@ -8,10 +8,7 @@ import { resetNavigationToRoute } from '../../helpers';
 const mock: IWithIntroEnhancedProps = {
 	data: {},
 	actions: {
-		resetNavigationToRoute: (
-			screenName: string,
-			navigation: NavigationScreenProp<any>,
-		) => {
+		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => {
 			/**/
 		},
 		// This is now implemented with the WithI18n connector enhancer
@@ -22,10 +19,7 @@ const mock: IWithIntroEnhancedProps = {
 export interface IWithIntroEnhancedData {}
 
 export interface IWithIntroEnhancedActions extends ITranslatedProps {
-	resetNavigationToRoute: (
-		screenName: string,
-		navigation: NavigationScreenProp<any>,
-	) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 }
 
 interface IWithIntroEnhancedProps {
@@ -39,10 +33,7 @@ interface IWithIntroProps {
 
 interface IWithIntroState {}
 
-export class WithIntro extends React.Component<
-	IWithIntroProps,
-	IWithIntroState
-> {
+export class WithIntro extends React.Component<IWithIntroProps, IWithIntroState> {
 	render() {
 		const { children } = this.props;
 		return (

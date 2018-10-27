@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-	Image,
-	ImageStyle,
-	StyleProp,
-	StyleSheet,
-	TouchableWithoutFeedback,
-} from 'react-native';
+import { Image, ImageStyle, StyleProp, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 import { Sizes } from '../../environment/theme';
 

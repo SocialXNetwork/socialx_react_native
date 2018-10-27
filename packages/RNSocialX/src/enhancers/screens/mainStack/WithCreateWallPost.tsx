@@ -37,9 +37,7 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 	currentUserFullName: string;
 }
 
-export interface IWithCreateWallPostEnhancedActions
-	extends ITranslatedProps,
-		IDotsMenuProps {
+export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IDotsMenuProps {
 	createPost: (post: IWallPostData) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
@@ -79,18 +77,14 @@ export class WithCreateWallPost extends React.Component<
 																{({ createPost }) =>
 																	children({
 																		data: {
-																			currentUserAvatarURL: currentUser!
-																				.avatarURL,
+																			currentUserAvatarURL: currentUser!.avatarURL,
 																			currentUserId: currentUser!.userId,
-																			currentUserFullName: currentUser!
-																				.fullName,
+																			currentUserFullName: currentUser!.fullName,
 																			marginBottom,
 																		},
 																		actions: {
 																			uploadFile,
-																			createPost: async (
-																				post: IWallPostData,
-																			) => {
+																			createPost: async (post: IWallPostData) => {
 																				await createPost({
 																					postText: post.text,
 																					location: post.location,

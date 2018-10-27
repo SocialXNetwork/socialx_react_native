@@ -17,6 +17,7 @@
         "parser": "typescript",
         "trailingComma": "all",
         "tabWidth": 2,
+        "printWidth": 100,
         "useTabs": true,
         "arrowParens": "always"
       }

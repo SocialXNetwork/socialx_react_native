@@ -64,9 +64,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	getText,
 }) => {
 	const relationshipButtonHandler =
-		relationship === SearchResultKind.Friend
-			? onShowFriendshipOptions
-			: onAddFriend;
+		relationship === SearchResultKind.Friend ? onShowFriendshipOptions : onAddFriend;
 
 	return (
 		<View style={styles.container}>

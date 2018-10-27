@@ -7,11 +7,7 @@ export interface ICenterViewProps {
 }
 
 export default function CenterView(props: ICenterViewProps) {
-	return (
-		<SafeAreaView style={[styles.main, props.style]}>
-			{props.children}
-		</SafeAreaView>
-	);
+	return <SafeAreaView style={[styles.main, props.style]}>{props.children}</SafeAreaView>;
 }
 
 const styles = StyleSheet.create({

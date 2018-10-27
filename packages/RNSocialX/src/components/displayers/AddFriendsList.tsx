@@ -15,11 +15,7 @@ export const AddFriendsList: React.SFC<IAddFriendsListProps> = ({
 	showTagFriendsModal,
 }) => (
 	<View style={styles.tagFriendsContainer}>
-		<ScrollView
-			alwaysBounceHorizontal={false}
-			horizontal={true}
-			style={styles.taggedFriendsScroll}
-		>
+		<ScrollView alwaysBounceHorizontal={false} horizontal={true} style={styles.taggedFriendsScroll}>
 			{taggedFriends.map((taggedFriend) => (
 				<Image
 					key={taggedFriend.id}
@@ -29,10 +25,7 @@ export const AddFriendsList: React.SFC<IAddFriendsListProps> = ({
 				/>
 			))}
 		</ScrollView>
-		<TouchableOpacity
-			onPress={showTagFriendsModal}
-			style={styles.tagFriendsButton}
-		>
+		<TouchableOpacity onPress={showTagFriendsModal} style={styles.tagFriendsButton}>
 			<Image source={Icons.tagFriendSmall} />
 		</TouchableOpacity>
 	</View>

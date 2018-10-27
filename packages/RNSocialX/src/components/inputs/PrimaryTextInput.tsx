@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-	Keyboard,
-	Platform,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Keyboard, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { OS_TYPES } from '../../environment/consts';
@@ -94,34 +87,17 @@ const CancelButton: React.SFC<{
 	hasFocus: boolean;
 	onPressCancel: () => void;
 	cancelButtonTextColor: string;
-}> = ({
-	persistCancel,
-	canCancel,
-	hasFocus,
-	onPressCancel,
-	cancelButtonTextColor,
-}) => {
+}> = ({ persistCancel, canCancel, hasFocus, onPressCancel, cancelButtonTextColor }) => {
 	if (persistCancel && canCancel && Platform.OS === OS_TYPES.IOS) {
 		return (
 			<TouchableOpacity style={style.cancelButton} onPress={onPressCancel}>
-				<Text
-					style={[style.cancelButtonText, { color: cancelButtonTextColor }]}
-				>
-					Cancel
-				</Text>
+				<Text style={[style.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
 			</TouchableOpacity>
 		);
 	} else if (hasFocus && canCancel && Platform.OS === OS_TYPES.IOS) {
 		return (
-			<TouchableOpacity
-				style={style.cancelButton}
-				onPress={() => Keyboard.dismiss()}
-			>
-				<Text
-					style={[style.cancelButtonText, { color: cancelButtonTextColor }]}
-				>
-					Cancel
-				</Text>
+			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
+				<Text style={[style.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -215,10 +191,7 @@ export class PrimaryTextInput extends React.Component<
 		const { hasFocus } = this.state;
 
 		const isMultiLine = numberOfLines > 1 || multiline;
-		const inputContainerStyles = [
-			style.inputContainer,
-			{ borderColor, borderWidth },
-		];
+		const inputContainerStyles = [style.inputContainer, { borderColor, borderWidth }];
 		const textInputStyles = [
 			style.textInput,
 			style['textInput' + size],
@@ -226,21 +199,9 @@ export class PrimaryTextInput extends React.Component<
 		];
 
 		return (
-			<View
-				style={[
-					style.container,
-					width ? { width } : {},
-					disabled ? style.disabledInput : {},
-				]}
-			>
+			<View style={[style.container, width ? { width } : {}, disabled ? style.disabledInput : {}]}>
 				<View style={inputContainerStyles}>
-					{icon !== '' && (
-						<InputIcon
-							icon={icon}
-							iconColor={this.state.iconColor}
-							size={size}
-						/>
-					)}
+					{icon !== '' && <InputIcon icon={icon} iconColor={this.state.iconColor} size={size} />}
 					<TextInput
 						allowFontScaling={false}
 						autoFocus={autoFocus}
@@ -289,9 +250,7 @@ export class PrimaryTextInput extends React.Component<
 	private updateFocusHandler = (value: boolean) => {
 		this.setState({
 			hasFocus: value,
-			iconColor: value
-				? defaultStyles.defaultIconActiveColor
-				: this.props.iconColor,
+			iconColor: value ? defaultStyles.defaultIconActiveColor : this.props.iconColor,
 		});
 		this.props.focusUpdateHandler(value);
 	};

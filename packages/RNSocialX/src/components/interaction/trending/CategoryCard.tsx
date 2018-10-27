@@ -10,21 +10,10 @@ interface ICategoryCardProps {
 	active?: boolean;
 }
 
-export const CategoryCard: React.SFC<ICategoryCardProps> = ({
-	item,
-	onCategoryPress,
-	active,
-}) => {
+export const CategoryCard: React.SFC<ICategoryCardProps> = ({ item, onCategoryPress, active }) => {
 	return (
-		<TouchableOpacity
-			activeOpacity={1}
-			style={styles.container}
-			onPress={onCategoryPress}
-		>
-			<Image
-				source={{ uri: item.url }}
-				style={{ width: '100%', height: '100%' }}
-			/>
+		<TouchableOpacity activeOpacity={1} style={styles.container} onPress={onCategoryPress}>
+			<Image source={{ uri: item.url }} style={{ width: '100%', height: '100%' }} />
 			<Text style={styles.name}>{item.name}</Text>
 			{active ? <View style={styles.active} /> : null}
 		</TouchableOpacity>

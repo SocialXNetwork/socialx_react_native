@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-	Image,
-	Platform,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import {
 	ButtonSizes,
@@ -22,9 +15,7 @@ import { IResizeProps, ITranslatedProps } from '../../types';
 
 import style, { buttonWidth } from './CreateWallPostScreen.style';
 
-interface ICreateWallPostScreenViewProps
-	extends ITranslatedProps,
-		IResizeProps {
+interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps {
 	avatarImage?: string;
 	shareText: string;
 	mediaObjects: string[];
@@ -34,9 +25,7 @@ interface ICreateWallPostScreenViewProps
 	onClose: () => void;
 }
 
-export const CreateWallPostScreenView: React.SFC<
-	ICreateWallPostScreenViewProps
-> = ({
+export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps> = ({
 	avatarImage,
 	shareText,
 	onShareTextUpdate,
@@ -48,19 +37,13 @@ export const CreateWallPostScreenView: React.SFC<
 	getText,
 }) => (
 	<View
-		style={[
-			style.safeView,
-			Platform.OS === OS_TYPES.IOS ? { paddingBottom: marginBottom } : {},
-		]}
+		style={[style.safeView, Platform.OS === OS_TYPES.IOS ? { paddingBottom: marginBottom } : {}]}
 	>
 		<Header
 			title={getText('new.wall.post.screen.title')}
 			left={<CloseButton onClose={onClose} />}
 		/>
-		<ScrollView
-			contentContainerStyle={style.container}
-			keyboardShouldPersistTaps="handled"
-		>
+		<ScrollView contentContainerStyle={style.container} keyboardShouldPersistTaps="handled">
 			<SharePostInput
 				avatarSource={avatarImage}
 				placeholder={getText('new.wall.post.screen.input.placeholder')}
@@ -68,11 +51,7 @@ export const CreateWallPostScreenView: React.SFC<
 				onTextUpdate={onShareTextUpdate}
 			/>
 			<TouchableOpacity style={style.addMediaButton} onPress={onAddMedia}>
-				<Image
-					source={Icons.iconNewPostAddMedia}
-					style={style.photoIcon}
-					resizeMode="contain"
-				/>
+				<Image source={Icons.iconNewPostAddMedia} style={style.photoIcon} resizeMode="contain" />
 				<Text style={style.addMediaText}>
 					{getText('new.wall.post.screen.attach.media.button')}
 				</Text>

@@ -35,9 +35,7 @@ export class Screen extends React.Component<
 		const { mediaObjects } = this.state;
 		return (
 			<NewAdSetupPostScreenView
-				mediaObjects={mediaObjects.map(
-					(mediaObject: IWallPostPhotoOptimized) => mediaObject.path,
-				)}
+				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				getText={getText}
 				onGoBack={this.onGoBackHandler}
 				onAddMedia={this.onAddMediaHandler}
@@ -67,9 +65,7 @@ export class Screen extends React.Component<
 		showDotsMenuModal(menuItems);
 	};
 
-	private addToScrollerSelectedMediaObject = async (
-		source: 'gallery' | 'photo',
-	) => {
+	private addToScrollerSelectedMediaObject = async (source: 'gallery' | 'photo') => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
 		if (source === 'gallery') {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();
@@ -78,9 +74,7 @@ export class Screen extends React.Component<
 		}
 		if (selectedMediaObjects.length > 0) {
 			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (mObject) =>
-					getOptimizedMediaObject(mObject),
-				),
+				selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
 			);
 			this.setState({
 				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
@@ -88,10 +82,7 @@ export class Screen extends React.Component<
 		}
 	};
 
-	private onNavigateToAudienceSectionHandler = (
-		headline: string,
-		description: string,
-	) => {
+	private onNavigateToAudienceSectionHandler = (headline: string, description: string) => {
 		console.log('TODO: navigate to audience screen', headline, description);
 		// this.props.navigation.navigate('');
 	};

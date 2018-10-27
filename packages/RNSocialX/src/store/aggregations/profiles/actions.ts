@@ -16,9 +16,9 @@ import {
 	ISyncSearchProfilesByFullNameAction,
 } from './Types';
 
-export const searchProfilesByFullNameAction: ActionCreator<
-	ISearchProfilesByFullNameAction
-> = (searchProfilesByFullNameInput: any) => ({
+export const searchProfilesByFullNameAction: ActionCreator<ISearchProfilesByFullNameAction> = (
+	searchProfilesByFullNameInput: any,
+) => ({
 	type: ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
 	payload: searchProfilesByFullNameInput,
 });
@@ -101,27 +101,23 @@ export const resetSearchProfilesByFullName = async () => {
 	}
 };
 
-export const findFriendsSuggestionsAction: ActionCreator<
-	IFindFriendsSuggestionsAction
-> = (findFriendsSuggestionsInput: any) => ({
+export const findFriendsSuggestionsAction: ActionCreator<IFindFriendsSuggestionsAction> = (
+	findFriendsSuggestionsInput: any,
+) => ({
 	type: ActionTypes.FIND_FRIENDS_SUGGESTIONS,
 	payload: findFriendsSuggestionsInput,
 });
 
-export const syncFindFriendsSuggestionsAction: ActionCreator<
-	ISyncFindFriendsSuggestionsAction
-> = (profiles: IFriendSuggestionData[]) => ({
+export const syncFindFriendsSuggestionsAction: ActionCreator<ISyncFindFriendsSuggestionsAction> = (
+	profiles: IFriendSuggestionData[],
+) => ({
 	type: ActionTypes.SYNC_FIND_FRIENDS_SUGGESTIONS,
 	payload: profiles,
 });
 
 export const findFriendsSuggestions = ({
 	maxResults,
-}: IFindFriendsSuggestionsInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+}: IFindFriendsSuggestionsInput): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 
 	try {

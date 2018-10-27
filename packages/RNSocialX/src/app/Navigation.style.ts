@@ -14,8 +14,7 @@ const styles: any = {
 	upperCaseLabel: false,
 	labelStyle: {
 		fontSize: 14,
-		fontFamily:
-			Platform.OS === OS_TYPES.Android ? 'century_gothic' : 'CenturyGothic',
+		fontFamily: Platform.OS === OS_TYPES.Android ? 'century_gothic' : 'CenturyGothic',
 	},
 	style: {
 		backgroundColor: Colors.white,

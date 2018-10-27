@@ -2,11 +2,7 @@ import moment from 'moment';
 import * as React from 'react';
 import Picker from 'react-native-picker';
 
-import {
-	AdsInitialBudgetValue,
-	Currencies,
-	dateFormatMomentJS,
-} from '../../environment/consts';
+import { AdsInitialBudgetValue, Currencies, dateFormatMomentJS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 
 import { defaultStyles } from './NewAdConfigBudgetScreen.style';
@@ -35,10 +31,7 @@ interface INewAdConfigBudgetScreenState {
 	nextDayFromStartDate: Date;
 }
 
-class Screen extends React.Component<
-	INewAdConfigBudgetScreenProps,
-	INewAdConfigBudgetScreenState
-> {
+class Screen extends React.Component<INewAdConfigBudgetScreenProps, INewAdConfigBudgetScreenState> {
 	public state = {
 		budgetValue: AdsInitialBudgetValue,
 		selectedCurrencyValue: Currencies[0].toUpperCase(),
@@ -125,9 +118,7 @@ class Screen extends React.Component<
 		this.setState({ budgetValue: newBudget.replace(/[^0-9]/g, '') });
 	};
 
-	private handleCheckboxChange = (
-		checkboxName: 'perday' | 'lifetime' | 'runAdContinuously',
-	) => {
+	private handleCheckboxChange = (checkboxName: 'perday' | 'lifetime' | 'runAdContinuously') => {
 		Picker.hide();
 		if (checkboxName) {
 			if (checkboxName === 'perday') {
@@ -156,9 +147,7 @@ class Screen extends React.Component<
 		}
 	};
 
-	private handleDatePicker = (
-		datePicker: 'startDatePicker' | 'stopDatePicker' | 'hidePicker',
-	) => {
+	private handleDatePicker = (datePicker: 'startDatePicker' | 'stopDatePicker' | 'hidePicker') => {
 		if (datePicker) {
 			if (datePicker === 'startDatePicker') {
 				this.setState({
@@ -182,18 +171,14 @@ class Screen extends React.Component<
 	};
 
 	private handleStartDatePicked = (date: Date) => {
-		const formattedStartDate = moment(date).format(
-			dateFormatMomentJS.configBudgetScreen,
-		);
+		const formattedStartDate = moment(date).format(dateFormatMomentJS.configBudgetScreen);
 		this.setState({ selectedStartDate: formattedStartDate });
 		this.calculateStopDateFromStartDate(date);
 		this.handleDatePicker('hidePicker');
 	};
 
 	private handleStopDatePicked = (date: Date) => {
-		const formattedStopDate = moment(date).format(
-			dateFormatMomentJS.configBudgetScreen,
-		);
+		const formattedStopDate = moment(date).format(dateFormatMomentJS.configBudgetScreen);
 		this.setState({ selectedStopDate: formattedStopDate });
 		this.handleDatePicker('hidePicker');
 	};
@@ -202,9 +187,7 @@ class Screen extends React.Component<
 		const newDate = new Date(selectedStartDate);
 		newDate.setDate(selectedStartDate.getDate() + 1);
 
-		const formattedNewDate = moment(newDate).format(
-			dateFormatMomentJS.configBudgetScreen,
-		);
+		const formattedNewDate = moment(newDate).format(dateFormatMomentJS.configBudgetScreen);
 		this.setState({
 			selectedStopDate: formattedNewDate,
 			nextDayFromStartDate: newDate,
@@ -217,12 +200,8 @@ class Screen extends React.Component<
 		this.props.showConfirmation({
 			title: getText('ad.management.budget.modal.confirm.title'),
 			message: getText('ad.management.budget.modal.confirm.message'),
-			confirmButtonLabel: getText(
-				'ad.management.budget.modal.confirm.confirm.label',
-			),
-			cancelButtonLabel: getText(
-				'ad.management.budget.modal.confirm.cancel.label',
-			),
+			confirmButtonLabel: getText('ad.management.budget.modal.confirm.confirm.label'),
+			cancelButtonLabel: getText('ad.management.budget.modal.confirm.cancel.label'),
 			confirmHandler: this.saveAdConfirmedHandler,
 		});
 	};

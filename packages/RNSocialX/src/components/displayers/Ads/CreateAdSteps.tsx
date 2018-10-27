@@ -16,14 +16,8 @@ interface ICreateAdStepsProps {
 	onGoToNextStep: () => void;
 }
 
-export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
-	currentStep,
-	onGoToNextStep,
-}) => (
-	<SafeAreaView
-		style={styles.container}
-		forceInset={{ top: 'never', bottom: 'always' }}
-	>
+export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({ currentStep, onGoToNextStep }) => (
+	<SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
 		<View style={styles.content}>
 			{STEPS_CONFIG.map((step, index: number) => (
 				<React.Fragment key={step.name}>
@@ -35,15 +29,10 @@ export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
 					>
 						<Icon
 							name={step.icon}
-							style={[
-								styles.stepIcon,
-								currentStep === step.name ? styles.stepIconSelected : {},
-							]}
+							style={[styles.stepIcon, currentStep === step.name ? styles.stepIconSelected : {}]}
 						/>
 					</View>
-					{!(index === STEPS_CONFIG.length - 1) && (
-						<View style={styles.connectorView} />
-					)}
+					{!(index === STEPS_CONFIG.length - 1) && <View style={styles.connectorView} />}
 				</React.Fragment>
 			))}
 			<View style={styles.nextIconContainer}>

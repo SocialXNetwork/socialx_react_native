@@ -24,20 +24,14 @@ export const LaunchScreenView: React.SFC<ILaunchScreenViewProps> = ({
 		<View style={style.topPaddingContainer}>
 			<TextGradient
 				text={getText('app.name')}
-				colors={[
-					customStylesProps.gradientTextStartColor,
-					customStylesProps.gradientTextEndColor,
-				]}
+				colors={[customStylesProps.gradientTextStartColor, customStylesProps.gradientTextEndColor]}
 				style={style.socialxGradient}
 			/>
 			<Text style={style.description}>{getText('launch.description')}</Text>
 		</View>
 		<TextGradient
 			text={getText('launch.get.rewarded')}
-			colors={[
-				customStylesProps.gradientTextStartColor,
-				customStylesProps.gradientTextEndColor,
-			]}
+			colors={[customStylesProps.gradientTextStartColor, customStylesProps.gradientTextEndColor]}
 			style={style.getRewardedGradient}
 		/>
 		<View style={style.bottomPaddingContainer}>

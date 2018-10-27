@@ -26,10 +26,7 @@ interface ICreateWallPostScreenState {
 	shareText: string;
 }
 
-class Screen extends React.Component<
-	ICreateWallPostScreenProps,
-	ICreateWallPostScreenState
-> {
+class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
 	public state = {
 		mediaObjects: [],
 		shareText: '',
@@ -53,9 +50,7 @@ class Screen extends React.Component<
 			<CreateWallPostScreenView
 				avatarImage={currentUserAvatarURL}
 				shareText={shareText}
-				mediaObjects={mediaObjects.map(
-					(mediaObject: IWallPostPhotoOptimized) => mediaObject.path,
-				)}
+				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
@@ -78,22 +73,18 @@ class Screen extends React.Component<
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
-				actionHandler: () =>
-					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
+				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
 				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
-				actionHandler: () =>
-					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
+				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
 		showDotsMenuModal(menuItems);
 	};
 
-	private addToScrollerSelectedMediaObject = async (
-		source: IMAGE_PICKER_TYPES,
-	) => {
+	private addToScrollerSelectedMediaObject = async (source: IMAGE_PICKER_TYPES) => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();

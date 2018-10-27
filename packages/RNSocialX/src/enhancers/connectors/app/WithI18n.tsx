@@ -3,12 +3,7 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { compose, mapProps, withHandlers } from 'recompose';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
-import {
-	getText,
-	IAvailableLocales,
-	ISetLocaleInput,
-	setLocale,
-} from '../../../store/app/i18n';
+import { getText, IAvailableLocales, ISetLocaleInput, setLocale } from '../../../store/app/i18n';
 import { ILocaleDictionary } from '../../../store/app/i18n/Types';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -51,25 +46,19 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	setLocale: (setLocaleInput: ISetLocaleInput) =>
-		dispatch(setLocale(setLocaleInput)),
+	setLocale: (setLocaleInput: ISetLocaleInput) => dispatch(setLocale(setLocaleInput)),
 });
 
-export const WithI18n: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = compose(
+export const WithI18n: ConnectedComponentClass<JSX.Element, IChildren> = compose(
 	connect(
 		mapStateToProps,
 		mapDispatchToProps,
 	),
 	withHandlers({
-		getText: ({
-			currentDictionary,
-		}: {
-			currentDictionary: ILocaleDictionary;
-		}) => (key: string, ...args: Array<string | number>) =>
-			getText(currentDictionary, key, ...args),
+		getText: ({ currentDictionary }: { currentDictionary: ILocaleDictionary }) => (
+			key: string,
+			...args: Array<string | number>
+		) => getText(currentDictionary, key, ...args),
 	}),
 	mapProps(({ currentDictionary, ...props }: any) => ({ ...props })),
 )(Enhancer as any) as any;

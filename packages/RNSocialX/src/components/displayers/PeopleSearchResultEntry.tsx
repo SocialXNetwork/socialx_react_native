@@ -51,9 +51,7 @@ const AddFriend: React.SFC<IAddFriendProps> = ({
 			size={ButtonSizes.Small}
 			autoWidth={true}
 			borderColor={Colors.transparent}
-			onPress={() =>
-				addButtonPressedHandler(afterAnimationHandler, animatedButton)
-			}
+			onPress={() => addButtonPressedHandler(afterAnimationHandler, animatedButton)}
 		/>
 	</Animatable.View>
 );
@@ -62,16 +60,19 @@ const addButtonPressedHandler = (
 	afterAnimationHandler: () => void,
 	animatedButton: React.RefObject<any>,
 ) => {
-	animatedButton.current
-		.animate(OUT_ANIMATION_NAME, OUT_ANIMATION_DURATION)
-		.then(() => {
-			afterAnimationHandler();
-		});
+	animatedButton.current.animate(OUT_ANIMATION_NAME, OUT_ANIMATION_DURATION).then(() => {
+		afterAnimationHandler();
+	});
 };
 
-export const PeopleSearchResultEntry: React.SFC<
-	IPeopleSearchResultEntryProps
-> = ({ addHandler, selected, avatarURL, fullName, location, getText }) => {
+export const PeopleSearchResultEntry: React.SFC<IPeopleSearchResultEntryProps> = ({
+	addHandler,
+	selected,
+	avatarURL,
+	fullName,
+	location,
+	getText,
+}) => {
 	const animatedButton: React.RefObject<any> = React.createRef();
 
 	return (

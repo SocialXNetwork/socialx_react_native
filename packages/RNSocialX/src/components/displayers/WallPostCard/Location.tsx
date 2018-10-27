@@ -14,11 +14,7 @@ export const Location: React.SFC<ILocationProps> = ({ location, getText }) => {
 		return (
 			<React.Fragment>
 				<Text style={styles.grayText}> {getText('text.at')} </Text>
-				<Icon
-					name="md-pin"
-					size={Sizes.smartHorizontalScale(12)}
-					color={Colors.paleSky}
-				/>
+				<Icon name="md-pin" size={Sizes.smartHorizontalScale(12)} color={Colors.paleSky} />
 				<Text> {location}</Text>
 			</React.Fragment>
 		);

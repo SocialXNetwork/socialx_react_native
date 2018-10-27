@@ -7,9 +7,7 @@ import styles, { animations } from './MaintenanceScreen.style';
 
 interface IMaintenanceScreenViewProps extends ITranslatedProps {}
 
-export const MaintenanceScreenView: React.SFC<IMaintenanceScreenViewProps> = ({
-	getText,
-}) => (
+export const MaintenanceScreenView: React.SFC<IMaintenanceScreenViewProps> = ({ getText }) => (
 	<View style={styles.container}>
 		<LottieView
 			style={styles.icon}

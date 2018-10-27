@@ -51,10 +51,7 @@ interface IWithUserProfileProps {
 
 interface IWithUserProfileState {}
 
-export class WithUserProfile extends React.Component<
-	IWithUserProfileProps,
-	IWithUserProfileState
-> {
+export class WithUserProfile extends React.Component<IWithUserProfileProps, IWithUserProfileState> {
 	render() {
 		return (
 			<WithI18n>
@@ -75,8 +72,7 @@ export class WithUserProfile extends React.Component<
 																		{({ visitedUser }) =>
 																			this.props.children({
 																				data: {
-																					currentUserAvatarURL: currentUser!
-																						.avatarURL,
+																					currentUserAvatarURL: currentUser!.avatarURL,
 																					visitedUser: visitedUser!,
 																					refreshingProfile: getActivity(
 																						activities,
@@ -84,9 +80,7 @@ export class WithUserProfile extends React.Component<
 																					),
 																				},
 																				actions: {
-																					refreshProfile: async (
-																						username: string,
-																					) => {
+																					refreshProfile: async (username: string) => {
 																						await getProfileByUsername({
 																							username,
 																						});

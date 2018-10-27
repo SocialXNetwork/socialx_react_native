@@ -16,17 +16,12 @@ export interface IAccountCurrencyData {
 	graphData: any[];
 }
 
-export const SocialXAccountCurrencyItem: React.SFC<IAccountCurrencyData> = (
-	props,
-) => {
+export const SocialXAccountCurrencyItem: React.SFC<IAccountCurrencyData> = (props) => {
 	const usdValueWithFormat = numeral(props.usdValue).format('($0.00a)');
 	const coinAmountWithFormat = numeral(props.coinAmount).format('0.00a');
 	const trendIconColor =
-		props.trendPercentage < 0
-			? customStyles.negPercentage
-			: customStyles.pozPercentage;
-	const trendIconValue =
-		props.trendPercentage < 0 ? 'md-arrow-down' : 'md-arrow-up';
+		props.trendPercentage < 0 ? customStyles.negPercentage : customStyles.pozPercentage;
+	const trendIconValue = props.trendPercentage < 0 ? 'md-arrow-down' : 'md-arrow-up';
 	const trendPercentageStyles = [
 		styles.trendPercentage,
 		...(props.trendPercentage < 0 ? [styles.trendGoingDown] : []),
@@ -41,22 +36,14 @@ export const SocialXAccountCurrencyItem: React.SFC<IAccountCurrencyData> = (
 					resizeMode={'contain'}
 				/>
 				<View>
-					<Text style={styles.coinFullName}>
-						{CoinFullName[props.coinSymbol]}
-					</Text>
-					<Text style={styles.coinAmount}>
-						{coinAmountWithFormat + ' ' + props.coinSymbol}
-					</Text>
+					<Text style={styles.coinFullName}>{CoinFullName[props.coinSymbol]}</Text>
+					<Text style={styles.coinAmount}>{coinAmountWithFormat + ' ' + props.coinSymbol}</Text>
 				</View>
 			</View>
 			<View style={styles.centerContainer}>
 				<Text style={styles.usdValue}>{usdValueWithFormat}</Text>
 				<View style={styles.trendContainer}>
-					<Icon
-						name={trendIconValue}
-						size={customStyles.iconSize}
-						color={trendIconColor}
-					/>
+					<Icon name={trendIconValue} size={customStyles.iconSize} color={trendIconColor} />
 					<Text style={trendPercentageStyles}>
 						{Math.abs(props.trendPercentage)}
 						{'%'}

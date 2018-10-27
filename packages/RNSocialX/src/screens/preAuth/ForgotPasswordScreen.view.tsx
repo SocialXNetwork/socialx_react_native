@@ -21,9 +21,11 @@ interface IForgotPasswordData {
 	userName: string;
 }
 
-export const ForgotPasswordScreenView: React.SFC<
-	IForgotPasswordScreenViewProps
-> = ({ onSendResetCode, onGoBack, getText }) => (
+export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps> = ({
+	onSendResetCode,
+	onGoBack,
+	getText,
+}) => (
 	<Formik
 		initialValues={{
 			userName: '',
@@ -54,9 +56,7 @@ export const ForgotPasswordScreenView: React.SFC<
 					alwaysBounceVertical={false}
 					keyboardShouldPersistTaps="handled"
 				>
-					<Text style={style.descriptionText}>
-						{getText('forgot.password.instructions')}
-					</Text>
+					<Text style={style.descriptionText}>{getText('forgot.password.instructions')}</Text>
 					<View style={style.usernameInputContainer}>
 						<PrimaryTextInput
 							placeholder={getText('forgot.password.userName')}
@@ -70,9 +70,7 @@ export const ForgotPasswordScreenView: React.SFC<
 								setFieldValue('userName', value);
 							}}
 						/>
-						{errors.userName && (
-							<Text style={style.errorText}>{errors.userName}</Text>
-						)}
+						{errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
 					</View>
 					<PrimaryButton
 						disabled={!isValid}

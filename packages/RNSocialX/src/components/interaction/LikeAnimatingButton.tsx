@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import {
-	AnimatedFaIcon,
-	Animations,
-	Colors,
-	Fonts,
-	Sizes,
-} from '../../environment/theme';
+import { AnimatedFaIcon, Animations, Colors, Fonts, Sizes } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 
 const PULSATE_PERIOD = 700;
@@ -85,10 +79,7 @@ export class LikeAnimatingButton extends React.Component<
 			};
 		});
 
-		await this.animatedIconRef.current.animate(
-			Animations.custom.pulsate,
-			PULSATE_PERIOD,
-		);
+		await this.animatedIconRef.current.animate(Animations.custom.pulsate, PULSATE_PERIOD);
 		await this.props.onLikePress();
 
 		if (this.state.error) {

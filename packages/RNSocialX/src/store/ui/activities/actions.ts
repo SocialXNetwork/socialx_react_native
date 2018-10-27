@@ -1,17 +1,9 @@
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
 import { defaultClearErrorTimeout } from './constants';
-import {
-	ActionTypes,
-	IActivity,
-	IActivityAction,
-	IError,
-	IErrorAction,
-} from './Types';
+import { ActionTypes, IActivity, IActivityAction, IError, IErrorAction } from './Types';
 
-const activityAction: ActionCreator<IActivityAction> = (
-	activity: IActivity,
-) => ({
+const activityAction: ActionCreator<IActivityAction> = (activity: IActivity) => ({
 	type: ActionTypes.ACTIVITY,
 	payload: activity,
 });
@@ -37,11 +29,7 @@ const errorAction: ActionCreator<IErrorAction> = (error: IError) => ({
 	payload: error,
 });
 
-export const setError = (error: IError): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const setError = (error: IError): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(errorAction(error));
 		setTimeout(async () => {
@@ -50,9 +38,7 @@ export const setError = (error: IError): IThunk => async (
 	} catch (e) {
 		// Dispatching an error here would most probably
 		// create an infinite loop so let's simply log it
-		console.error(
-			`Awkward... an error occured while dispatching an error ${e}`,
-		);
+		console.error(`Awkward... an error occured while dispatching an error ${e}`);
 	}
 };
 

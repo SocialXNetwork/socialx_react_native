@@ -15,10 +15,7 @@ storiesOf('Screens/mainTabNav', module)
 		const refreshing = boolean('refreshing', false);
 		const loadingMorePosts = boolean('loadingMorePosts', false);
 		const canLoadMorePosts = boolean('canLoadMorePosts', false);
-		const shareSectionPlaceholder = text(
-			'shareSectionPlaceholder',
-			'Lorem ipsum dolor sit amet.',
-		);
+		const shareSectionPlaceholder = text('shareSectionPlaceholder', 'Lorem ipsum dolor sit amet.');
 
 		return (
 			<UserFeedScreenView

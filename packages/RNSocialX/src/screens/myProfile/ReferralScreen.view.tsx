@@ -1,12 +1,7 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-import {
-	Header,
-	HeaderButton,
-	ReferralContainer,
-	ReferralRow,
-} from '../../components';
+import { Header, HeaderButton, ReferralContainer, ReferralRow } from '../../components';
 import { ITranslatedProps } from '../../types';
 
 import styles, { shareIcon } from './ReferralScreen.style';
@@ -41,15 +36,8 @@ export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<ReferralContainer heading={HEADING} text={TEXT} />
-		<ReferralRow
-			title={getText('referral.screen.referrals')}
-			value={referrals}
-		/>
-		<ReferralRow
-			title={getText('referral.screen.socx')}
-			value={socx}
-			last={true}
-		/>
+		<ReferralRow title={getText('referral.screen.referrals')} value={referrals} />
+		<ReferralRow title={getText('referral.screen.socx')} value={socx} last={true} />
 		<ReferralContainer heading={getText('referral.screen.share')} text={TEXT} />
 		<ReferralRow
 			title={getText('referral.screen.url')}
@@ -65,9 +53,7 @@ export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({
 			last={true}
 		/>
 		<View style={styles.footer}>
-			<Text style={styles.text}>
-				{getText('referral.screen.invite').toUpperCase()}
-			</Text>
+			<Text style={styles.text}>{getText('referral.screen.invite').toUpperCase()}</Text>
 			<TouchableOpacity onPress={onShare} style={styles.iconContainer}>
 				<Image source={shareIcon} style={styles.icon} resizeMode="contain" />
 			</TouchableOpacity>

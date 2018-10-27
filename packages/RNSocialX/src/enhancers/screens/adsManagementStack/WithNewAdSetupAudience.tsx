@@ -11,8 +11,7 @@ const mock: IWithNewAdSetupAudienceEnhancedProps = {
 
 export interface IWithNewAdSetupAudienceEnhancedData {}
 
-export interface IWithNewAdSetupAudienceEnhancedActions
-	extends ITranslatedProps {}
+export interface IWithNewAdSetupAudienceEnhancedActions extends ITranslatedProps {}
 
 interface IWithNewAdSetupAudienceEnhancedProps {
 	data: IWithNewAdSetupAudienceEnhancedData;
