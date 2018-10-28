@@ -45,7 +45,7 @@ export const getPostPathsByUser = (
 			);
 			return callback(null, paths);
 		},
-		{ wait: 800, timeout: 1000 },
+		{ wait: 400, timeout: 600 },
 	);
 };
 
@@ -90,9 +90,13 @@ const convertCommentsToArray = (comments: any): ICommentData[] =>
 
 export const getPostByPath = (
 	context: IContext,
-	{ postPath }: { postPath: string },
+	{ postPath, wait, timeout }: { postPath: string; wait?: number; timeout?: number },
 	callback: IGunCallback<IPostReturnData>,
 ) => {
+	const docOpts = {
+		wait: wait || 300,
+		timeout: timeout || 600,
+	};
 	postHandles.postByPath(context, postPath).docLoad((postData: IPostCallbackData) => {
 		if (!Object.keys(postData).length) {
 			return callback(
@@ -101,9 +105,9 @@ export const getPostByPath = (
 				}),
 			);
 		}
-		if (!postData.owner) {
-			return callback(null, { deleted: true } as any);
-		}
+
+		let shouldWaitAndTryAgain = false;
+
 		// const keys = Object.keys()
 		const { likes, comments, media, ...restPost } = postData;
 		// convert likes into an array with keys
@@ -113,15 +117,44 @@ export const getPostByPath = (
 		// convert media to an array
 		const mediaReturn = convertMediaToArray(media) || [];
 
-		const post: IPostReturnData = {
-			postId: postPath.split('.').reverse()[0],
-			likes: postLikes,
-			comments: postComments,
-			media: mediaReturn,
-			...restPost,
-		};
-		return callback(null, post);
-	});
+		[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
+			if (propArray && propArray.length) {
+				propArray.forEach((obj: any) => {
+					if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
+						shouldWaitAndTryAgain = true;
+					}
+				});
+			}
+		});
+		// related to the retry checks
+		if (
+			postData.owner &&
+			typeof postData.owner === 'object' &&
+			Object.keys(postData.owner).length === 0
+		) {
+			shouldWaitAndTryAgain = true;
+		}
+
+		if (!shouldWaitAndTryAgain) {
+			const post: IPostReturnData = {
+				postId: postPath.split('.').reverse()[0],
+				likes: postLikes,
+				comments: postComments,
+				media: mediaReturn,
+				...restPost,
+			};
+			return callback(null, post);
+		}
+		getPostByPath(
+			context,
+			{
+				postPath,
+				wait: wait ? wait + 100 : undefined,
+				timeout: timeout ? timeout + 100 : undefined,
+			},
+			callback,
+		);
+	}, docOpts);
 };
 
 export const getPostById = (
@@ -176,7 +209,7 @@ const getAllPostRelevantData = (
 					// If we don't get data proper data i.e. a hashtag key is present,
 					// stop current operation, append 100 to both timeout and wait
 					// Try again the current operation
-					[post.likes, post.comments, post.media].forEach((propArray: any = []) => {
+					[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
 						if (propArray && propArray.length) {
 							propArray.forEach((obj: any) => {
 								if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
@@ -185,6 +218,14 @@ const getAllPostRelevantData = (
 							});
 						}
 					});
+					// related to the retry checks
+					if (
+						post.owner &&
+						typeof post.owner === 'object' &&
+						Object.keys(post.owner).length === 0
+					) {
+						shouldWaitAndTryAgain = true;
+					}
 
 					const { likes, comments, media, ...postRest } = post;
 					if (postRest.owner) {

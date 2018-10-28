@@ -86,13 +86,14 @@ export interface IGunInstance {
 	once: (callback?: any, options?: object) => IGunInstance;
 	set: (data: IGunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
 	map: (callback?: any) => IGunInstance;
+	off: () => void;
 
 	// extended api
 	unset: (node: IGunInstance) => IGunInstance;
 	path: (path: string) => IGunInstance;
 	docLoad: <T>(
 		callback: (data: T, key: string) => void,
-		opts?: { wait: number; timeout: number },
+		opts?: { wait?: number; timeout?: number; off?: number | boolean },
 	) => IGunInstance;
 	docSubscribe: <T>(
 		callback: (data: T, key: string) => void,
@@ -100,7 +101,7 @@ export interface IGunInstance {
 	) => IGunInstance;
 	encrypt: (data: IGunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
 	erase: (path: string, callback?: (data: IGunSetterCallback) => void) => IGunInstance;
-	open: <T>(callback: (data: T) => void) => IGunInstance;
+	open: <T>(callback: (data: T) => void, opts?: any) => IGunInstance;
 	find: <T>(query: object, callback: (data: T, key: string) => void) => IGunInstance;
 	findFriendsSuggestions: <T>(
 		username: string,

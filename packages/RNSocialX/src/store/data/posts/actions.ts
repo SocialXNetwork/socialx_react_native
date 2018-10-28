@@ -230,7 +230,9 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 		const posts = await dataApi.posts.loadMorePosts({
 			timestamp: lastPostTimestamp,
 		});
-		await dispatch(getProfilesByPosts(posts));
+		if (posts.length > 0) {
+			await dispatch(getProfilesByPosts(posts));
+		}
 		await dispatch(
 			setGlobal({
 				canLoadMorePosts: !!posts.length,

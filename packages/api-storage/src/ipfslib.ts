@@ -40,7 +40,8 @@ export class Ipfslib {
 			method: 'POST',
 			type: 'multipart',
 			field: 'file',
-			notification: { enabled: false },
+			// "Android Oreo requires a notification configuration for the service to run. https://developer.android.com/reference/android/content/Context.html#startForegroundService(android.content.Intent)"
+			// notification: { enabled: true },
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},

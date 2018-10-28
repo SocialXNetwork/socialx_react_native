@@ -198,8 +198,7 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			const profile = await dataApi.profiles.getCurrentProfile();
+			const profile = storeState.data.accounts.accounts[0].profile[auth.alias];
 			dispatch(syncGetCurrentProfileAction(profile));
 			await dispatch(getUserPosts({ username: profile.alias }));
 		} catch (e) {
