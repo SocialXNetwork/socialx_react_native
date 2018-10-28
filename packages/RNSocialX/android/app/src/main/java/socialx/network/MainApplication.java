@@ -21,7 +21,6 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.rnfs.RNFSPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
@@ -63,7 +62,6 @@ public class MainApplication extends Application implements ReactApplication {
             new LottiePackage(),
             new ImageResizerPackage(),
             new PickerPackage(),
-            new RNFSPackage(),
             new VectorIconsPackage(),
             new FastImageViewPackage(),
             new RandomBytesPackage()

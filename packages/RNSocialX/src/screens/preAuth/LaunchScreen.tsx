@@ -42,7 +42,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 						resetNavigationToRoute(NAVIGATION.Main, navigation);
 					}
 				}
-			}, 2000);
+			}, 1000);
 		}
 	}
 

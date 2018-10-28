@@ -13,7 +13,6 @@
       "packages/api-storage",
       "packages/api-blockchain",
       "packages/api-data",
-      "packages/api-crypto",
       "packages/webview-crypto",
       "packages/RNSocialX"
     ],
@@ -28,8 +27,6 @@
       "**/api-blockchain/**",
       "**/api-data",
       "**/api-data/**",
-      "**/api-crypto",
-      "**/api-crypto/**",
       "**/webview-crypto",
       "**/webview-crypto/**",
       "**/RNSocialX",

@@ -11,7 +11,7 @@ import Splash from './Splash';
 import StatusBar from './StatusBar';
 import Store from './Store';
 
-import PolyfillCrypto from './pollyfillCryptoOld';
+import PolyfillCrypto from './PolyFillCrypto';
 
 export default class App extends React.Component<{}> {
 	public render() {
