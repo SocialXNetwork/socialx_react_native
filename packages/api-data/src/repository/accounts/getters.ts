@@ -19,28 +19,15 @@ export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAcc
 		return callback(new ApiError('failed to get current account, user not logged in'));
 	}
 
-	profileHandles.currentUserProfileData(context).once(
-		(userProfileCallback: any) => {
-			if (!userProfileCallback) {
+	account.docLoad(
+		(userProfileCallback: IAccountData) => {
+			if (!Object.keys(userProfileCallback).length) {
 				return callback(new ApiError('failed to get current account profile.'));
 			}
-			const { pub } = userProfileCallback;
-			gun
-				.back(-1)
-				.get(`~${pub}`)
-				.docLoad(
-					(userAccountCallback: IAccountData) => {
-						if (!Object.keys(userAccountCallback).length) {
-							return callback(
-								new ApiError('failed to get current account, user document not found'),
-							);
-						}
-						return callback(null, userAccountCallback);
-					},
-					{ wait: 500, timeout: 1000 },
-				);
+
+			return callback(null, userProfileCallback);
 		},
-		{ wait: 500 },
+		{ wait: 2000, timeout: 3000 },
 	);
 };
 

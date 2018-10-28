@@ -1,4 +1,4 @@
-import './shim';
+import './globals';
 import React from 'react';
 import { AppRegistry } from 'react-native';
 

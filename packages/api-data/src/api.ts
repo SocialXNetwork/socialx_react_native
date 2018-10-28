@@ -6,6 +6,7 @@ import './extensions/sea';
 
 import 'gun/lib/erase';
 import 'gun/lib/path';
+import 'gun/lib/open';
 
 
 import './extensions/docload';
@@ -61,10 +62,20 @@ export const dataApiFactory = (config: IApiOptions) => {
 	});
 
 	const gun = rootGun.get(rootdb);
+	// preload the database while the app is starting by simulating it with open
+	gun.open(() => {
+		console.log('*** database updated');
+	});
 
 	let account = rootGun.user();
 
 	const { encrypt, decrypt, work } = Gun.SEA;
+
+	// testing purposes
+	// @ts-ignore
+	window.gun = gun;
+	// @ts-ignore
+	window.user = account;
 
 	const context: IContext = {
 		account,

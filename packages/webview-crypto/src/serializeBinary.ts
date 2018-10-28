@@ -7,21 +7,15 @@ declare const WebViewBridge: any;
 
 export async function parse(text: string): Promise<any> {
 	// need decodeURIComponent so binary strings are transfered properly
-	const deocodedText = decodeURIComponent(text);
+	const deocodedText = unescape(text);
 	const objects = JSON.parse(deocodedText);
 	return fromObjects(serializers(true), objects);
 }
-export async function stringify(
-	value: any,
-	waitForArrayBufferView = true,
-): Promise<string> {
-	const serialized = await toObjects(
-		serializers(waitForArrayBufferView),
-		value,
-	);
+export async function stringify(value: any, waitForArrayBufferView = true): Promise<string> {
+	const serialized = await toObjects(serializers(waitForArrayBufferView), value);
 	// need encodeURIComponent so binary strings are transfered properly
 	const message = JSON.stringify(serialized);
-	return encodeURIComponent(message);
+	return escape(message);
 }
 
 function serializers(waitForArrayBufferView: boolean) {
@@ -59,9 +53,7 @@ interface IArrayBufferViewSerialized {
 export interface IArrayBufferViewWithPromise extends ArrayBufferView {
 	_promise?: Promise<ArrayBufferView>;
 }
-function isArrayBufferViewWithPromise(
-	obj: any,
-): obj is IArrayBufferViewWithPromise {
+function isArrayBufferViewWithPromise(obj: any): obj is IArrayBufferViewWithPromise {
 	return obj.hasOwnProperty('_promise');
 }
 
@@ -142,16 +134,12 @@ interface ICryptoKeySerialized extends ICryptoKeyWithData {
 	serialized: boolean;
 }
 
-const CryptoKeySerializer: ISerializer<
-	ICryptoKeyWithData | CryptoKey,
-	ICryptoKeySerialized
-> = {
+const CryptoKeySerializer: ISerializer<ICryptoKeyWithData | CryptoKey, ICryptoKeySerialized> = {
 	id: 'CryptoKey',
 	isType: (o: any) => {
 		const localStr = o.toLocaleString();
 		// can't use CryptoKey or constructor on WebView iOS
-		const isCryptoKey =
-			localStr === '[object CryptoKey]' || localStr === '[object Key]';
+		const isCryptoKey = localStr === '[object CryptoKey]' || localStr === '[object Key]';
 		const isCryptoKeyWithData = o._import && !o.serialized;
 		return isCryptoKey || isCryptoKeyWithData;
 	},
