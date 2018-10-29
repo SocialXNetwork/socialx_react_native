@@ -20,6 +20,7 @@ import {
 } from '../../components';
 import { DeviceOrientations } from '../../environment/consts';
 import { IMediaProps, ITranslatedProps } from '../../types';
+
 import styles from './MediaViewerScreen.style';
 
 const CloseButton: React.SFC<{
@@ -29,7 +30,7 @@ const CloseButton: React.SFC<{
 	if (!isPortrait) {
 		return (
 			<TouchableOpacity onPress={onExitFullScreen} style={styles.closeButton}>
-				<Icon name={'md-close'} style={styles.infoIcon} />
+				<Icon name="md-close" style={styles.infoIcon} />
 			</TouchableOpacity>
 		);
 	}
@@ -71,7 +72,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	onClose: () => void;
 	onCommentPress: () => void;
 	onLikePress: () => void;
-	canReactOnPost: boolean;
+	canReact: boolean | undefined;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
@@ -83,20 +84,20 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	activeSlide,
 	slideChanged,
 	isInfoOverlayVisible,
-	getText,
 	showMediaInfoOverlay,
 	closeMediaInfoOverlay,
 	onExitFullScreen,
 	onClose,
 	onCommentPress,
 	onLikePress,
-	canReactOnPost,
+	canReact,
+	getText,
 }) => {
 	const currentMediaObject = mediaObjects[activeSlide];
 	const isPortrait = orientation === DeviceOrientations.Portrait;
 
 	return (
-		<View style={styles.rootView}>
+		<View style={styles.container}>
 			{isPortrait && <Header left={<CloseModal onClose={onClose} />} />}
 			<MediaInfoModal
 				visible={isInfoOverlayVisible}
@@ -150,12 +151,12 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							getText={getText}
 							onCommentPress={onCommentPress}
 							onLikePress={onLikePress}
-							canReactOnPost={canReactOnPost}
+							canReact={canReact}
 						/>
 						<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
 					</View>
 					<TouchableOpacity style={styles.infoButton} onPress={showMediaInfoOverlay}>
-						<Icon name={'ios-information-circle-outline'} style={styles.infoIcon} />
+						<Icon name="ios-information-circle-outline" style={styles.infoIcon} />
 					</TouchableOpacity>
 				</View>
 			</SafeAreaView>
