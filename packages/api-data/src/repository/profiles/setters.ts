@@ -103,99 +103,75 @@ export const updateProfile = (
 	mainRunner();
 };
 
-export const addFriend = (
-	context: IContext,
-	{ username }: IAddFriendInput,
-	callback: IGunCallback<null>,
-) => {
-	const { account } = context;
-	if (!account.is) {
-		return callback(
-			new ApiError(`no user logged in`, {
-				initialRequestBody: { username },
-			}),
-		);
-	}
-	const { owner, ownerPub, timestamp } = getContextMeta(context);
-	const errPrefix = 'failed to add friend';
-	if (owner === username) {
-		return callback(
-			new ApiError(`${errPrefix}, can not add self`, {
-				initialRequestBody: { username },
-			}),
-		);
-	}
-	/**
-	 * check if the current user is already friends with the targeted user
-	 */
-	const mainRunner = () => {
+/**
+ * check if the current user is already friends with the targeted user
+ */
+const checkIfProfileExists = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
 		profileHandles
 			.currentProfileFriendByUsername(context, username)
 			.once((currentFriendCallback: any) => {
 				if (currentFriendCallback) {
-					return callback(
-						new ApiError(`${errPrefix}, can not add already existing friend`, {
-							initialRequestBody: { username },
-						}),
-					);
+					rej(new ApiError(`profile already exists`));
 				}
-				checkPending();
-			});
-	};
-	/**
-	 * check if the current user already send a friend request to the targeted user
-	 */
-	const checkPending = () => {
+				res();
+			}),
+	);
+};
+
+/**
+ * check if the current user already send a friend request to the targeted user
+ */
+const checkIfFriendRequestExists = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
 		profileHandles
 			.publicCurrentFriendRequestToUsername(context, username)
 			.once((currentRequestCallback: any) => {
 				if (currentRequestCallback) {
-					return callback(
-						new ApiError(`${errPrefix}, friend request already sent`, {
-							initialRequestBody: { username },
-						}),
-					);
+					rej(new ApiError(`friend request already sent`));
 				}
-				getTargetedUserAndCreateRequest();
-			});
-	};
-	/**
-	 * check if the targeted user exists and get his profile reference then pass it to create profile
-	 */
-	const getTargetedUserAndCreateRequest = () => {
+				res();
+			}),
+	);
+};
+
+/**
+ * check if the targeted user exists and get his profile reference then pass it to create profile
+ */
+const getTargetedUserAndCreateRequest = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
 		profileHandles.publicProfileByUsername(context, username).once((userProfileCallback: any) => {
 			if (!userProfileCallback) {
-				return callback(
-					new ApiError(`${errPrefix}, user does not exist!`, {
-						initialRequestBody: { username },
-					}),
-				);
+				rej(new ApiError(`user does not exist!`));
 			}
-			createFriend(profileHandles.publicProfileByUsername(context, username));
-		});
-	};
-	/**
-	 * create a friend record on the current user's private scope and put the friend's entire profile reference
-	 * @param requestedUserRef object
-	 */
-	const createFriend = (requestedUserRef: any) => {
+			res();
+		}),
+	);
+};
+
+/**
+ * create a friend record on the current user's private scope and put the friend's entire profile reference
+ * @param requestedUserRef object
+ */
+const createFriend = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
 		profileHandles
 			.currentProfileFriendByUsername(context, username)
-			.put(requestedUserRef, (friendCreationCallback) => {
+			.put(profileHandles.publicProfileByUsername(context, username), (friendCreationCallback) => {
 				if (friendCreationCallback.err) {
-					return callback(
-						new ApiError(`${errPrefix}, something went wrong on creating the friend!`, {
-							initialRequestBody: { username },
-						}),
-					);
+					rej(new ApiError(`something went wrong on creating the friend!`));
 				}
-				createFriendRequest();
-			});
-	};
-	/**
-	 * get the public record of friend requests to the user from the current user and put the friend request data
-	 */
-	const createFriendRequest = () => {
+				res();
+			}),
+	);
+};
+
+/**
+ * get the public record of friend requests to the user from the current user and put the friend request data
+ */
+const createFriendRequest = (context: IContext, username: string) => {
+	const { owner, ownerPub, timestamp } = getContextMeta(context);
+	return new Promise((res, rej) =>
 		profileHandles.publicCurrentFriendRequestToUsername(context, username).put(
 			{
 				owner: {
@@ -206,22 +182,50 @@ export const addFriend = (
 			},
 			(friendRequestCreationCallback) => {
 				if (friendRequestCreationCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, something went wrong on creating the friend request to the user!`,
-							{
-								initialRequestBody: { username },
-							},
-						),
-					);
+					rej(new ApiError(`something went wrong on creating the friend request to the user!`));
 				}
-				return callback(null);
+				res();
 			},
-		);
-	};
-	// run the sequence
-	mainRunner();
+		),
+	);
 };
+
+export const addFriend = async (
+	context: IContext,
+	{ username }: IAddFriendInput,
+	callback: IGunCallback<null>,
+) => {
+	try {
+		const { account } = context;
+		if (!account.is) {
+			return callback(
+				new ApiError(`no user logged in`, {
+					initialRequestBody: { username },
+				}),
+			);
+		}
+		const { owner } = getContextMeta(context);
+		const errPrefix = 'failed to add friend';
+		if (owner === username) {
+			return callback(
+				new ApiError(`${errPrefix}, can not add self`, {
+					initialRequestBody: { username },
+				}),
+			);
+		}
+
+		await checkIfProfileExists(context, username);
+		await checkIfFriendRequestExists(context, username);
+		await getTargetedUserAndCreateRequest(context, username);
+		await createFriend(context, username);
+		await createFriendRequest(context, username);
+
+		callback(null);
+	} catch (e) {
+		callback(e);
+	}
+};
+
 export const removeFriend = (
 	context: IContext,
 	{ username }: IRemoveFriendInput,
