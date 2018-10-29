@@ -1,11 +1,7 @@
 /**
- * old screen -> screens/CommentsScreen/index.tsx + data.hoc.tsx
  * TODO list:
- * 1. decide where `marginBottom` should come from?
- * 2. after sendComment optimistically insert that into local database and fix if there is a problem
- * 3. consider adding a global optimistic update handler
- * 4. delete option should be available only for own comments
- * 5. Check navigation usage! Relevant use case.
+ * 1. blockUser should block user?
+ * 2. reportProblem should open a modal ?
  */
 
 import React, { Component } from 'react';
@@ -93,7 +89,15 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const { getText, post, startComment, errors, showDotsMenuModal } = this.props;
+		const {
+			getText,
+			post,
+			startComment,
+			errors,
+			showDotsMenuModal,
+			blockUser,
+			reportProblem,
+		} = this.props;
 
 		const { comment } = this.state;
 
@@ -123,9 +127,6 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
-				// onDeletePostPress={this.onDeletePostPressHandler}
-				// onBlockUser={blockUser}
-				// onReportProblem={reportProblem}
 				getText={getText}
 				showDotsMenuModal={showDotsMenuModal}
 				marginBottom={0}
@@ -235,52 +236,46 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		showDotsMenuModal(menuItems);
 	};
 
-	// private onDeletePostPressHandler = async (postId: string) => {
-	// 	const { setGlobal, deletePost } = this.props;
-	// 	setGlobal({
-	// 		transparentOverlay: {
-	// 			visible: true,
-	// 			alpha: 0.5,
-	// 			loader: true,
-	// 		},
-	// 	});
-	// 	await deletePost(postId);
-	// 	setGlobal({
-	// 		transparentOverlay: {
-	// 			visible: false,
-	// 		},
-	// 	});
-	// };
+	private onDeletePostPressHandler = async (postId: string) => {
+		const { setGlobal, deletePost } = this.props;
+		setGlobal({
+			transparentOverlay: {
+				visible: true,
+				alpha: 0.5,
+				loader: true,
+			},
+		});
+		await deletePost(postId);
+		setGlobal({
+			transparentOverlay: {
+				visible: false,
+			},
+		});
+	};
 
 	private onShowPostOptionsHandler = () => {
-		// 	const { getText, canDelete, showDotsMenuModal } = this.props;
-		// 	const baseItems = [
-		// 		{
-		// 			label: getText('wall.post.menu.block.user'),
-		// 			icon: 'ios-close-circle',
-		// 			// actionHandler: () => this.props.onBlockUser(this.props.owner.userId),
-		// 			actionHandler: () => undefined,
-		// 		},
-		// 		{
-		// 			label: getText('wall.post.menu.report.problem'),
-		// 			icon: 'ios-warning',
-		// 			// actionHandler: () => {
-		// 			// 	this.setState({
-		// 			// 		reportProblemModalVisible: true,
-		// 			// 	});
-		// 			// },
-		// 			actionHandler: () => undefined,
-		// 		},
-		// 	];
-		// 	const deleteItem = {
-		// 		label: getText('wall.post.menu.delete.post'),
-		// 		icon: 'ios-trash',
-		// 		actionHandler: async () => {
-		// 			await this.onDeletePostPressHandler(this.props.postId);
-		// 		},
-		// 	};
-		// 	const items = canDelete ? [...baseItems, deleteItem] : baseItems;
-		// 	showDotsMenuModal(items);
+		const { getText, showDotsMenuModal, post, canDelete } = this.props;
+		const baseItems = [
+			{
+				label: getText('wall.post.menu.block.user'),
+				icon: 'ios-close-circle',
+				actionHandler: () => undefined,
+			},
+			{
+				label: getText('wall.post.menu.report.problem'),
+				icon: 'ios-warning',
+				actionHandler: () => undefined,
+			},
+		];
+		const deleteItem = {
+			label: getText('wall.post.menu.delete.post'),
+			icon: 'ios-trash',
+			actionHandler: async () => {
+				await this.onDeletePostPressHandler(post.postId);
+			},
+		};
+		const items = canDelete ? [...baseItems, deleteItem] : baseItems;
+		showDotsMenuModal(items);
 	};
 
 	private onCommentsBackPressHandler = () => {
