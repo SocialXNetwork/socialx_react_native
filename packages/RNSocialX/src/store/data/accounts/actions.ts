@@ -233,7 +233,9 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 		await dispatch(endActivity({ uuid: activityId }));
 	} catch (e) {
 		if (auth && auth.alias && auth.password) {
+			console.log('login failed with', e);
 			if (auth.alias.length > 0 && auth.password.length > 0) {
+				console.log('retrying');
 				await dispatch(login(credentials));
 				return;
 			} else {

@@ -162,16 +162,18 @@
       const Buffer = USE('./buffer')
       const api = {Buffer: Buffer}
       var o = {};
-  
-      setTimeout(() => {
-        api.crypto = window.crypto || window.msCrypto;
-        api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
-        api.TextEncoder = window.TextEncoder;
-        api.TextDecoder = window.TextDecoder;
-        api.random = (len) => Buffer.from(api.crypto.getRandomValues(new Uint8Array(Buffer.alloc(len))))
-        console.log('*** gun sea crypto set');
-      }, 1500);
-  
+      const interval = setInterval(() => {
+        if (window.crypto.loaded) {
+          api.crypto = window.crypto;
+          api.subtle = api.crypto.subtle;
+          api.TextEncoder = window.TextEncoder;
+          api.TextDecoder = window.TextDecoder;
+          api.random = (len) => Buffer.from(api.crypto.getRandomValues(new Uint8Array(Buffer.alloc(len))))
+          console.log('*** gun sea crypto set', api);
+          clearInterval(interval);
+        }
+      }, 500);
+      
       module.exports = api
     })(USE, './shim');
   
