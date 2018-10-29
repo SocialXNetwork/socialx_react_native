@@ -12,7 +12,7 @@ import StatusBar from './StatusBar';
 import Store from './Store';
 
 import 'react-native-get-random-values';
-import PolyfillCrypto from './polyFillCrypto';
+import PolyfillCrypto from './PolyfillCrypto';
 
 export default class App extends React.Component<{}> {
 	public render() {

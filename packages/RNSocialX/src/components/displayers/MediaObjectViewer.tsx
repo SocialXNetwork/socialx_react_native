@@ -42,12 +42,8 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	thumbOnly,
 	paused = true,
 	resizeToChangeAspectRatio = false,
-	onPress = () => {
-		/**/
-	},
-	onDoublePress = () => {
-		/**/
-	},
+	onPress = () => undefined,
+	onDoublePress = () => undefined,
 }) => {
 	// const ImageComponent =
 	// 	Platform.OS === OS_TYPES.Android && uri.startsWith('https://')

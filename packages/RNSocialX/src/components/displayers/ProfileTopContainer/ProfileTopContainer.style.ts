@@ -31,6 +31,7 @@ const styles: any = {
 		borderColor: Colors.white,
 		justifyContent: 'center',
 		alignItems: 'center',
+		zIndex: 5,
 	},
 	statisticsContainer: {
 		position: 'absolute',
