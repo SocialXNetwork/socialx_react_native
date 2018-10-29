@@ -4,6 +4,8 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { OS_TYPES } from '../environment/consts';
 
+const BUGSNAG_API_KEY = '73245fce110f157e3c5ba0c2ac7154ae';
+
 export default class BugSnap extends React.Component<{}> {
 	componentDidMount() {
 		const packageVersion = DeviceInfo.getVersion();
@@ -12,7 +14,7 @@ export default class BugSnap extends React.Component<{}> {
 			Platform.OS === OS_TYPES.Android ? computedVersion * 10 + 2 : computedVersion * 10 + 1;
 
 		if (!__DEV__) {
-			const bugSnagConf = new Configuration();
+			const bugSnagConf = new Configuration(BUGSNAG_API_KEY);
 			bugSnagConf.appVersion = computedAppVersion.toString();
 			bugSnagConf.autoCaptureSessions = false;
 			const BugSnag = new Client(bugSnagConf);
