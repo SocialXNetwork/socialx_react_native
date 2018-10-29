@@ -55,7 +55,8 @@ const createAccountProfile = (context: IContext, createAccountInput: ICreateAcco
 				email,
 				avatar,
 				pub,
-			},
+				friends: {},
+			} as any,
 			(err) => {
 				if (err) {
 					rej(new ApiError(`failed to set created account ${err}`));

@@ -20,6 +20,7 @@ global.location = {
 const { TextEncoder, TextDecoder } = require('text-encoding');
 
 global.crypto = {
+  loaded: false,
   subtle: {},
 };
 
