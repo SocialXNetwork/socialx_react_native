@@ -11,6 +11,7 @@ storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
 	.add('UserFeedScreen', () => {
 		const avatar = 'https://www.w3schools.com/w3css/img_lights.jpg';
+
 		const refreshing = boolean('refreshing', false);
 		const loadingMorePosts = boolean('loadingMorePosts', false);
 		const canLoadMorePosts = boolean('canLoadMorePosts', false);
@@ -35,6 +36,7 @@ storiesOf('Screens/mainTabNav', module)
 				canLoadMorePosts={canLoadMorePosts}
 				onAddComment={action('onAddComment')}
 				onSubmitComment={action('onSubmitComment')}
+				shareSectionOpacityInterpolation={1}
 				scrollRef={React.createRef()}
 				scrollY={new Animated.Value(0)}
 				getText={getTextMock}
@@ -42,8 +44,6 @@ storiesOf('Screens/mainTabNav', module)
 				onReportProblem={action('onReportProblem')}
 				showDotsMenuModal={action('showDotsMenuModal')}
 				likeError={false}
-				creatingPost={false}
-				skeletonPost={posts[0]}
 			/>
 		);
 	});

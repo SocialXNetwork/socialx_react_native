@@ -65,7 +65,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				onExitFullScreen={this.onExitFullScreenHandler}
 				onClose={this.onCloseHandler}
 				getText={this.props.getText}
-				canReact={!!this.props.postId}
+				canReactOnPost={!!this.props.postId}
 				onLikePress={this.props.onLikePress}
 				onCommentPress={this.openCommentsScreen}
 			/>

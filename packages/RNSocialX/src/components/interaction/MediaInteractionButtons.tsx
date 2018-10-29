@@ -10,7 +10,7 @@ interface IMediaInfoSectionProps extends ITranslatedProps {
 	activeSlide: number;
 	onCommentPress: () => void;
 	onLikePress: () => void;
-	canReact: boolean | undefined;
+	canReactOnPost: boolean;
 }
 
 export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
@@ -19,7 +19,7 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 	getText,
 	onCommentPress,
 	onLikePress,
-	canReact = false,
+	canReactOnPost,
 }) => {
 	const currentMedia = mediaObjects[activeSlide];
 	const numberOfLikes = currentMedia.numberOfLikes || 0;
@@ -31,33 +31,33 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 			{hasLikesOrComments && (
 				<View style={styles.mediaInfoSection}>
 					{numberOfLikes > 0 && (
-						<Text style={styles.infoText}>
-							{getText('media.viewer.screen.likes')} {numberOfLikes}}
-						</Text>
+						<Text style={styles.infoText}>{`${getText(
+							'media.viewer.screen.likes',
+						)} ${numberOfLikes}`}</Text>
 					)}
 					<View style={{ flex: 1 }} />
 					{numberOfComments > 0 && (
 						<Text style={styles.infoText}>
-							{getText('media.viewer.screen.comments')} {numberOfComments}}
+							{`${getText('media.viewer.screen.comments')} ${numberOfComments}`}
 						</Text>
 					)}
 				</View>
 			)}
-			{canReact && (
+			{canReactOnPost && (
 				<View style={styles.actionButtons}>
 					<IconButton
 						label={getText('media.viewer.screen.like.button')}
 						onPress={onLikePress}
-						iconType="fa"
-						iconSource="heart-o"
+						iconType="io"
+						iconSource="md-thumbs-up"
 						iconStyle={styles.iconStyle}
 						textStyle={styles.textStyle}
 					/>
 					<IconButton
 						label={getText('media.viewer.screen.comment.button')}
 						onPress={onCommentPress}
-						iconSource="comment-o"
-						iconType="fa"
+						iconType="io"
+						iconSource="md-chatboxes"
 						iconStyle={styles.iconStyle}
 						textStyle={styles.textStyle}
 					/>
