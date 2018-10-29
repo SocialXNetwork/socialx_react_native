@@ -3,23 +3,51 @@ import * as handles from './handles';
 
 import { ApiError } from '../../utils/errors';
 import { convertGunSetToArrayWithKey } from '../../utils/helpers';
-import { INotificationData, INotificationsReturnData } from './types';
+import { IAllNotificationsData, INotificationData, INotificationsReturnData } from './types';
 
-export const getNotifications = (
+export const getFriendRequests = (context: IContext) => {
+	return new Promise((res, rej) =>
+		handles.friendRequests(context).docLoad((notifications: INotificationsReturnData) => {
+			if (!Object.keys(notifications).length) {
+				rej(new ApiError('failed to find friend requests'));
+			}
+			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
+				({ k, ...notification }: INotificationData & { k: string }) => ({
+					notificationId: k,
+					...notification,
+				}),
+			);
+			res(notifcationsReturnData);
+		}),
+	);
+};
+
+export const getFriendRequestsResponses = (context: IContext) => {
+	return new Promise((res, rej) =>
+		handles.friendRequestsResponses(context).docLoad((notifications: INotificationsReturnData) => {
+			if (!Object.keys(notifications).length) {
+				rej(new ApiError('failed to find friend request responses'));
+			}
+			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
+				({ k, ...notification }: INotificationData & { k: string }) => ({
+					notificationId: k,
+					...notification,
+				}),
+			);
+			res(notifcationsReturnData);
+		}),
+	);
+};
+
+export const getNotifications = async (
 	context: IContext,
-	callback: IGunCallback<INotificationsReturnData[]>,
+	callback: IGunCallback<IAllNotificationsData>,
 ) => {
-	handles.notifications(context).docLoad((notifications: INotificationsReturnData) => {
-		if (!Object.keys(notifications).length) {
-			return callback(new ApiError('failed to find notification'));
-		}
-		const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
-			({ k, ...notification }: INotificationData & { k: string }) => ({
-				notificationId: k,
-				...notification,
-			}),
-		);
-		return callback(null, notifcationsReturnData);
+	const friendRequestsNotifications = await getFriendRequests(context);
+	const friendRequestsResponsesNotifications = await getFriendRequestsResponses(context);
+	return callback(null, {
+		friend_requests: friendRequestsNotifications,
+		friend_requests_responses: friendRequestsResponsesNotifications,
 	});
 };
 
