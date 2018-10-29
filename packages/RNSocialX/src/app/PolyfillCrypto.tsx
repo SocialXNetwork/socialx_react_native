@@ -38,47 +38,42 @@ export default class PolyfillCrypto extends React.Component<{ debug: boolean }, 
 		debug: false,
 	};
 
-	private worker: any;
-
 	shouldComponentUpdate() {
 		return false;
 	}
 
 	render() {
+		let worker: MainWorker;
 		const uri = 'file:///android_asset/html/blank.html';
 		return (
 			<View style={styles.hidden}>
 				<WebViewBridge
 					ref={(c: any) => {
-						if (c && !this.worker) {
-							this.worker = new MainWorker(c.sendToBridge, this.props.debug);
+						if (c && !worker) {
+							worker = new MainWorker(c.sendToBridge, this.props.debug);
+
 							// @ts-ignore
 							if (window.crypto) {
 								// we are in chrome debugger
 								// this means overridng the crypto object itself won't
 								// work, so we have to override all of it's methods
-								console.log(
-									'*** rand',
-									// @ts-ignore
-									window.crypto.getRandomValues(new Uint8Array([11, 15, 20, 50])),
-								);
 								// tslint:disable-next-line
-								for (const name in this.worker.crypto.subtle) {
+								for (const name in worker.crypto.subtle) {
 									// @ts-ignore
-									window.crypto.subtle[name] = this.worker.crypto.subtle[name];
+									window.crypto.subtle[name] = worker.crypto.subtle[name];
 								}
 								// @ts-ignore
 								(window.crypto as any).fake = true;
 								// @ts-ignore
 							} else {
 								// @ts-ignore
-								(window as any).crypto = this.worker.crypto;
+								(window as any).crypto = worker.crypto;
 							}
+
 							// @ts-ignore
 							window.crypto.loaded = true;
-							console.log('*** poly injected');
 							// @ts-ignore
-							console.log('*** poly', window.crypto);
+							console.log('*** poly injected', window.crypto);
 						}
 					}}
 					onBridgeMessage={
@@ -86,7 +81,7 @@ export default class PolyfillCrypto extends React.Component<{ debug: boolean }, 
 						// because it is not defined when this component is first
 						// started, only set in `ref`
 						(message: string) => {
-							this.worker.onWebViewMessage(message);
+							worker.onWebViewMessage(message);
 						}
 					}
 					injectedJavaScript={
