@@ -63,6 +63,7 @@ const mock: IWithCommentsEnhancedProps = {
 	actions: {
 		sendComment: (text: string, postId: string) => undefined,
 		deleteComment: (commentId: string) => undefined,
+		deletePost: (postId: string) => undefined,
 		likeComment: (commentId: string) => undefined,
 		unlikeComment: (commentId: string) => undefined,
 		likePost: (postId: string) => undefined,
@@ -88,6 +89,7 @@ export interface IWithCommentsEnhancedActions
 	likeComment: (commentId: string) => void;
 	unlikeComment: (commentId: string) => void;
 	deleteComment: (commentId: string) => void;
+	deletePost: (postId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
 }
@@ -177,6 +179,11 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 																					deleteComment: async (commentId) => {
 																						await postProps.removeComment({
 																							commentId,
+																						});
+																					},
+																					deletePost: async (postId) => {
+																						await postProps.removePost({
+																							postId,
 																						});
 																					},
 																					likeComment: async (commentId) => {
