@@ -68,7 +68,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
 				shareSectionPlaceholder={shareSectionPlaceholder}
-				onImagePress={this.onImagePress}
+				onImagePress={this.onMediaObjectPressHandler}
 				onLikePress={this.onLikePressHandler}
 				onUserPress={this.onUserPressHandler}
 				onSubmitComment={this.onSubmitCommentHandler}
@@ -142,7 +142,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		}
 	};
 
-	private onImagePress = (index: number, medias: IMediaProps[], postId: string) => {
+	private onMediaObjectPressHandler = (index: number, medias: IMediaProps[], postId: string) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.MediaViewer,

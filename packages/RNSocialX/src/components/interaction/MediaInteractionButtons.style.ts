@@ -23,7 +23,7 @@ const styles: any = {
 		borderTopWidth: Sizes.smartVerticalScale(1),
 	},
 	iconStyle: {
-		fontSize: Sizes.smartHorizontalScale(20),
+		fontSize: Sizes.smartHorizontalScale(25),
 		color: Colors.white,
 	},
 	textStyle: {

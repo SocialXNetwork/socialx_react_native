@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { DataProvider } from 'recyclerlistview';
 
 import { IGridMediaObject, ITranslatedProps } from '../../types';
@@ -8,7 +9,7 @@ import style, { USER_MEDIA_THUMB_SIZE } from './ProfilePhotoGrid.style';
 
 interface IProfilePhotoGridProps extends ITranslatedProps {
 	dataProvider: DataProvider;
-	onLoadMorePhotos: () => void;
+	loadMorePhotosHandler: () => void;
 	onViewMediaFullScreen: (index: number) => void;
 	header: {
 		element: JSX.Element;
@@ -30,19 +31,20 @@ const GridItem: React.SFC<IGridItemProps> = ({ data, onViewMediaFullScreen, getT
 			: style.gridMediaThumb;
 
 	return (
-		<MediaObjectViewer
-			type={data.type}
-			uri={data.url}
-			style={styles}
-			thumbOnly={true}
-			onPress={() => onViewMediaFullScreen(data.index!)}
-			getText={getText}
-		/>
+		<TouchableOpacity onPress={() => onViewMediaFullScreen(data.index!)}>
+			<MediaObjectViewer
+				type={data.type}
+				uri={data.url}
+				style={styles}
+				thumbOnly={true}
+				getText={getText}
+			/>
+		</TouchableOpacity>
 	);
 };
 
 export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
-	onLoadMorePhotos,
+	loadMorePhotosHandler,
 	dataProvider,
 	onViewMediaFullScreen,
 	disabled,
@@ -60,7 +62,7 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 				getText={getText}
 			/>
 		)}
-		onLoadMore={onLoadMorePhotos}
+		onLoadMore={loadMorePhotosHandler}
 		dataProvider={dataProvider}
 		header={header}
 		scrollViewProps={{

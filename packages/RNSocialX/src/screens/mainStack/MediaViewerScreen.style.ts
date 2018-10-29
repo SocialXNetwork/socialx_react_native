@@ -4,8 +4,8 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 const INFO_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
 const styles: any = {
-	container: {
-		backgroundColor: Colors.black,
+	rootView: {
+		backgroundColor: Colors.midnight,
 		flex: 1,
 	},
 	carouselContainer: {
