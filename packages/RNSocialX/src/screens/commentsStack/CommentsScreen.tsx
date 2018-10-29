@@ -93,12 +93,8 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const { getText, post, startComment, errors } = this.props;
+		const { getText, post, startComment, errors, showDotsMenuModal } = this.props;
 
-		const optionsProps = {
-			sortOption: this.state.sortOption,
-			onSelectionChange: this.updateSortingHandler,
-		};
 		const { comment } = this.state;
 
 		const likePostError = !!errors.find(
@@ -118,16 +114,20 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				likePostError={likePostError}
 				likeCommentError={likeCommentError}
 				comment={comment}
-				optionsProps={optionsProps}
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentSend={this.onCommentSendHandler}
 				onViewUserProfile={this.navigateToUserProfile}
 				onCommentInputChange={this.onCommentInputChangeHandler}
-				onShowOptionsMenu={this.onShowOptionsMenuHandler}
+				onShowCommentsOptionsMenu={this.onShowCommentOptionsHandler}
+				onShowPostOptionsMenu={this.onShowPostOptionsHandler}
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
+				// onDeletePostPress={this.onDeletePostPressHandler}
+				// onBlockUser={blockUser}
+				// onReportProblem={reportProblem}
 				getText={getText}
+				showDotsMenuModal={showDotsMenuModal}
 				marginBottom={0}
 			/>
 		);
@@ -216,7 +216,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		});
 	};
 
-	private onShowOptionsMenuHandler = (comment: IWallPostComment) => {
+	private onShowCommentOptionsHandler = (comment: IWallPostComment) => {
 		const { showDotsMenuModal, getText } = this.props;
 		const menuItems = [
 			{
@@ -233,6 +233,54 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			},
 		];
 		showDotsMenuModal(menuItems);
+	};
+
+	// private onDeletePostPressHandler = async (postId: string) => {
+	// 	const { setGlobal, deletePost } = this.props;
+	// 	setGlobal({
+	// 		transparentOverlay: {
+	// 			visible: true,
+	// 			alpha: 0.5,
+	// 			loader: true,
+	// 		},
+	// 	});
+	// 	await deletePost(postId);
+	// 	setGlobal({
+	// 		transparentOverlay: {
+	// 			visible: false,
+	// 		},
+	// 	});
+	// };
+
+	private onShowPostOptionsHandler = () => {
+		// 	const { getText, canDelete, showDotsMenuModal } = this.props;
+		// 	const baseItems = [
+		// 		{
+		// 			label: getText('wall.post.menu.block.user'),
+		// 			icon: 'ios-close-circle',
+		// 			// actionHandler: () => this.props.onBlockUser(this.props.owner.userId),
+		// 			actionHandler: () => undefined,
+		// 		},
+		// 		{
+		// 			label: getText('wall.post.menu.report.problem'),
+		// 			icon: 'ios-warning',
+		// 			// actionHandler: () => {
+		// 			// 	this.setState({
+		// 			// 		reportProblemModalVisible: true,
+		// 			// 	});
+		// 			// },
+		// 			actionHandler: () => undefined,
+		// 		},
+		// 	];
+		// 	const deleteItem = {
+		// 		label: getText('wall.post.menu.delete.post'),
+		// 		icon: 'ios-trash',
+		// 		actionHandler: async () => {
+		// 			await this.onDeletePostPressHandler(this.props.postId);
+		// 		},
+		// 	};
+		// 	const items = canDelete ? [...baseItems, deleteItem] : baseItems;
+		// 	showDotsMenuModal(items);
 	};
 
 	private onCommentsBackPressHandler = () => {

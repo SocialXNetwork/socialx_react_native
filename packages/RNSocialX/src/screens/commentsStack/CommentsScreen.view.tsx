@@ -18,6 +18,7 @@ import {
 } from '../../components';
 import { WallPostMedia } from '../../components/displayers/WallPostCard';
 import {
+	IDotsMenuItem,
 	IMediaProps,
 	IPostForComment,
 	IResizeProps,
@@ -53,13 +54,14 @@ interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 	startComment: boolean;
 	onViewUserProfile: (userId: string) => void;
 	comment: string;
-	onShowOptionsMenu: (comment: IWallPostComment) => void;
+	onShowCommentsOptionsMenu: (comment: IWallPostComment) => void;
+	onShowPostOptionsMenu: () => void;
 	onCommentsBackPress: () => void;
 	onImagePress: (index: number, medias: IMediaProps[]) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
-	optionsProps: object;
 	likePostError: boolean;
 	likeCommentError: boolean;
+	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
@@ -71,11 +73,11 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	onViewUserProfile,
 	comment,
 	onCommentInputChange,
-	onShowOptionsMenu,
+	onShowCommentsOptionsMenu,
+	onShowPostOptionsMenu,
 	onCommentsBackPress,
 	onImagePress,
 	onLikePress,
-	optionsProps,
 	likePostError,
 	likeCommentError,
 	marginBottom,
@@ -92,9 +94,8 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 				owner={owner}
 				timestamp={timestamp}
 				onBackPress={onCommentsBackPress}
-				optionsProps={optionsProps}
 				showUserProfile={onViewUserProfile}
-				getText={getText}
+				onShowPostOptionsMenu={onShowPostOptionsMenu}
 			/>
 			<ScrollView
 				style={{ flex: 1 }}
@@ -139,7 +140,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 							comment={comm}
 							onCommentLike={() => onCommentLike(comm)}
 							onViewUserProfile={onViewUserProfile}
-							onShowOptionsMenu={() => onShowOptionsMenu(comm)}
+							onShowOptionsMenu={() => onShowCommentsOptionsMenu(comm)}
 							likeCommentError={likeCommentError}
 							getText={getText}
 						/>
