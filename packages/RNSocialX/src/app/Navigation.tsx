@@ -107,6 +107,14 @@ const fadeIn = (): TransitionConfig => ({
 	},
 });
 
+const MainStackScreens = {
+	CreateWallPostScreen: { screen: CreateWallPostScreen },
+	PhotoScreen: { screen: PhotoScreen },
+	MediaViewerScreen: { screen: MediaViewerScreen },
+	CommentsScreen: { screen: CommentsScreen },
+	UserProfileScreen: { screen: UserProfileScreen },
+};
+
 const MyProfileStackNavigator = createStackNavigator(
 	{
 		MyProfileScreen: { screen: MyProfileScreen },
@@ -201,39 +209,13 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 	},
 );
 
-const UserProfileStack = createStackNavigator(
+const MainScreenWithModal = createStackNavigator(
 	{
-		UserProfileScreen: { screen: UserProfileScreen },
-		MediaViewerScreen: { screen: MediaViewerScreen },
+		MainScreenTabNavigationWithModal: { screen: MainScreenTabNavigation },
+		...MainStackScreens,
 	},
 	{
-		headerMode: 'none',
 		mode: 'modal',
-	},
-);
-
-const MainScreensWithModal = createStackNavigator(
-	{
-		MainScreenTabNavigation: { screen: MainScreenTabNavigation },
-		CreateWallPostScreen: { screen: CreateWallPostScreen },
-		PhotoScreen: { screen: PhotoScreen },
-		MediaViewerScreen: { screen: MediaViewerScreen },
-	},
-	{
-		headerMode: 'none',
-		mode: 'modal',
-	},
-);
-
-const MainScreens = createStackNavigator(
-	{
-		MainScreensWithModal: {
-			screen: MainScreensWithModal,
-		},
-		UserProfileScreen: UserProfileStack,
-		CommentsScreen: { screen: CommentsScreen },
-	},
-	{
 		headerMode: 'none',
 	},
 );
@@ -272,7 +254,7 @@ const AppNavigation = createStackNavigator(
 		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthNavigator },
 		Intro: { screen: IntroScreen },
-		Main: { screen: MainScreens },
+		Main: { screen: MainScreenWithModal },
 		Maintenance: { screen: MaintenanceScreen },
 	},
 	{

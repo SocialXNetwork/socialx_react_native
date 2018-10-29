@@ -35,6 +35,8 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 											} else if (origin === TABS.Search) {
 												foundProfile = searchResults.find((profile) => profile.alias === userId);
 											}
+											// @Alex lets talk over this?
+											// @Jake fixed this
 
 											let visitedUser = {};
 											if (foundProfile) {
@@ -50,8 +52,7 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 													aboutMeText: foundProfile.aboutMeText,
 													numberOfLikes: 0,
 													numberOfPhotos: 0,
-													// numberOfFriends: foundProfile.friends.length,
-													numberOfFriends: 0,
+													numberOfFriends: foundProfile.friends.length,
 													numberOfComments: 0,
 													mediaObjects: [],
 													recentPosts: [],

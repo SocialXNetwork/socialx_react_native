@@ -12,10 +12,7 @@ import {
 } from '../../../types';
 import { getActivity } from '../../helpers';
 
-import { IPostReturnData } from '../../../store/aggregations/posts';
-import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts/Types';
-import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
+import { ActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
@@ -26,19 +23,15 @@ import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
 export interface IWithUserProfileEnhancedData {
 	currentUserAvatarURL: string;
-	currentUserId: string;
 	visitedUser: IVisitedUser;
-	userPosts: { [owner: string]: IPostReturnData[] };
-	loadingProfile: boolean;
-	loadingPosts: boolean;
+	refreshingProfile: boolean;
 }
 
 export interface IWithUserProfileEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions,
 		IDotsMenuProps {
-	getProfileForUser: (userName: string) => void;
-	getPostsForUser: (userName: string) => void;
+	refreshProfile: (userName: string) => void;
 	addFriend: (userId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
@@ -73,72 +66,59 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 												{({ likePost, unlikePost, createComment }) => (
 													<WithActivities>
 														{({ activities }) => (
-															<WithAggregations>
-																{({ getUserPosts, userPosts }) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) => (
-																			<WithVisitedUserContent>
-																				{({ visitedUser }) =>
-																					this.props.children({
-																						data: {
-																							currentUserAvatarURL: currentUser!.avatarURL,
-																							currentUserId: currentUser!.userId,
-																							visitedUser: visitedUser!,
-																							userPosts,
-																							loadingProfile: getActivity(
-																								activities,
-																								ProfileActionTypes.GET_PROFILE_BY_USERNAME,
-																							),
-																							loadingPosts: getActivity(
-																								activities,
-																								AggActionTypes.GET_USER_POSTS,
-																							),
-																						},
-																						actions: {
-																							getProfileForUser: async (username: string) => {
-																								await getProfileByUsername({
-																									username,
-																								});
-																							},
-																							getPostsForUser: async (username: string) => {
-																								await getUserPosts({ username });
-																							},
-																							addFriend: (username) =>
-																								addFriend({
-																									username,
-																								}),
-																							likePost: async (postId) => {
-																								await likePost({
-																									postId,
-																								});
-																							},
-																							unlikePost: async (postId) => {
-																								await unlikePost({
-																									postId,
-																								});
-																							},
-																							postComment: async (text, postId) => {
-																								await createComment({
-																									text,
-																									postId,
-																								});
-																							},
-																							blockUser: () => undefined,
-																							reportProblem: () => undefined,
-																							showDotsMenuModal: (items) =>
-																								showOptionsMenu({
-																									items,
-																								}),
-																							setNavigationParams,
-																							getText,
-																						},
-																					})
-																				}
-																			</WithVisitedUserContent>
-																		)}
-																	</WithCurrentUser>
+															<WithCurrentUser>
+																{({ currentUser }) => (
+																	<WithVisitedUserContent>
+																		{({ visitedUser }) =>
+																			this.props.children({
+																				data: {
+																					currentUserAvatarURL: currentUser!.avatarURL,
+																					visitedUser: visitedUser!,
+																					refreshingProfile: getActivity(
+																						activities,
+																						ActionTypes.GET_PROFILE_BY_USERNAME,
+																					),
+																				},
+																				actions: {
+																					refreshProfile: async (username: string) => {
+																						await getProfileByUsername({
+																							username,
+																						});
+																					},
+																					addFriend: (username) =>
+																						addFriend({
+																							username,
+																						}),
+																					likePost: async (postId) => {
+																						await likePost({
+																							postId,
+																						});
+																					},
+																					unlikePost: async (postId) => {
+																						await unlikePost({
+																							postId,
+																						});
+																					},
+																					postComment: async (text, postId) => {
+																						await createComment({
+																							text,
+																							postId,
+																						});
+																					},
+																					blockUser: () => undefined,
+																					reportProblem: () => undefined,
+																					showDotsMenuModal: (items) =>
+																						showOptionsMenu({
+																							items,
+																						}),
+																					setNavigationParams,
+																					getText,
+																				},
+																			})
+																		}
+																	</WithVisitedUserContent>
 																)}
-															</WithAggregations>
+															</WithCurrentUser>
 														)}
 													</WithActivities>
 												)}
