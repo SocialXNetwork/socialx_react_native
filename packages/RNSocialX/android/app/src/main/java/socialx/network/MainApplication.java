@@ -3,6 +3,7 @@ package socialx.network;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.linusu.RNGetRandomValuesPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 import com.beefe.picker.PickerViewPackage;
@@ -44,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNGetRandomValuesPackage(),
             new WebViewBridgePackage(),
             new AndroidKeyboardAdjustPackage(),
             new PickerViewPackage(),

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
@@ -14,6 +15,7 @@ import {
 type ILaunchScreenProps = INavigationProps & IWithLaunchEnhancedData & IWithLaunchEnhancedActions;
 
 class Screen extends React.Component<ILaunchScreenProps> {
+	private cryptoLoadedInterval: any;
 	public async componentDidMount() {
 		const {
 			recall,
@@ -26,27 +28,38 @@ class Screen extends React.Component<ILaunchScreenProps> {
 		} = this.props;
 
 		if (auth && !globals.logout) {
-			setTimeout(async () => {
-				await recall({
-					username: auth.alias || '',
-					password: auth.password || '',
-				});
-				await loadFeed();
+			this.cryptoLoadedInterval = setInterval(async () => {
+				// @ts-ignore
+				if (window.crypto.loaded) {
+					clearInterval(this.cryptoLoadedInterval);
+					setTimeout(async () => {
+						console.log('*** logging in');
+						await recall({
+							username: auth.alias || '',
+							password: auth.password || '',
+						});
+						await loadFeed();
 
-				if (__DEV__) {
-					resetNavigationToRoute(NAVIGATION.Main, navigation);
-				} else {
-					if (applicationInMaintenanceMode) {
-						resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
-					} else {
-						resetNavigationToRoute(NAVIGATION.Main, navigation);
-					}
+						if (__DEV__) {
+							resetNavigationToRoute(NAVIGATION.Main, navigation);
+						} else {
+							if (applicationInMaintenanceMode) {
+								resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
+							} else {
+								resetNavigationToRoute(NAVIGATION.Main, navigation);
+							}
+						}
+					}, 200);
 				}
-			}, 1000);
+			}, 500);
 		}
 	}
 
 	public render() {
+		// @ts-ignore
+		if (!window.crypto.loaded) {
+			return <View />;
+		}
 		if (this.props.auth) {
 			return <LoadingScreen />;
 		} else {

@@ -31,6 +31,8 @@ import { IContext, IGunInstance } from './types';
 import adapter from './extensions/asyncStorageAdapter';
 
 Gun.on('create', function(db: any) {
+	// @ts-ignore
+	this.to.next(db);
 	// Allows other plugins to respond concurrently.
 	const pluginInterop = (middleware: any) =>
 		function(request: any) {
@@ -42,9 +44,6 @@ Gun.on('create', function(db: any) {
 	// Register the adapter
 	db.on('get', pluginInterop(adapter.read));
 	db.on('put', pluginInterop(adapter.write));
-
-	// @ts-ignore
-	this.to.next(db);
 });
 
 export interface IApiOptions {

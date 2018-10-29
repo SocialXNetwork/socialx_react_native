@@ -1,9 +1,5 @@
 import serializeError from 'serialize-error';
-import {
-	IArrayBufferViewWithPromise,
-	parse,
-	stringify,
-} from './serializeBinary';
+import { IArrayBufferViewWithPromise, parse, stringify } from './serializeBinary';
 
 const SUBTLE_METHODS = [
 	'encrypt',
@@ -91,10 +87,7 @@ export default class MainWorker {
 	} = {};
 
 	// sendToWebView should take a string and send that message to the webview
-	constructor(
-		private sendToWebView: (message: string) => void,
-		private debug = false,
-	) {}
+	constructor(private sendToWebView: (message: string) => void, private debug = false) {}
 
 	onWebViewMessage(message: string): void {
 		// first message just tells us the webview is ready
@@ -145,9 +138,7 @@ export default class MainWorker {
 			});
 	}
 
-	private getRandomValues(
-		array: IArrayBufferViewWithPromise,
-	): IArrayBufferViewWithPromise {
+	private getRandomValues(array: IArrayBufferViewWithPromise): IArrayBufferViewWithPromise {
 		const promise = this.callMethod('getRandomValues', [array], false);
 
 		// make the _promise not enumerable so it isn't JSON stringified,
@@ -165,11 +156,7 @@ export default class MainWorker {
 		return array;
 	}
 
-	private callMethod(
-		method: string,
-		args: any[],
-		waitForArrayBufferView: boolean,
-	): Promise<any> {
+	private callMethod(method: string, args: any[], waitForArrayBufferView: boolean): Promise<any> {
 		const id = MainWorker.uuid();
 		// store this promise, so we can resolve it when we get a message
 		// back from the web view
