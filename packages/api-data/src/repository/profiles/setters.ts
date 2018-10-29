@@ -167,6 +167,20 @@ const createFriend = (context: IContext, username: string) => {
 };
 
 /**
+ * remove friend from the current user's private friends record
+ */
+const removeFriendFromPrivateRecord = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		profileHandles.currentProfileFriendsRecord(context).erase(username, (removeFriendCallback) => {
+			if (removeFriendCallback.err) {
+				rej(new ApiError(`something went wrong on deleting the friend`));
+			}
+			res();
+		}),
+	);
+};
+
+/**
  * get the public record of friend requests to the user from the current user and put the friend request data
  */
 const createFriendRequest = (context: IContext, username: string) => {
@@ -219,14 +233,13 @@ export const addFriend = async (
 		await getTargetedUserAndCreateRequest(context, username);
 		await createFriend(context, username);
 		await createFriendRequest(context, username);
-
 		callback(null);
 	} catch (e) {
 		callback(e);
 	}
 };
 
-export const removeFriend = (
+export const removeFriend = async (
 	context: IContext,
 	{ username }: IRemoveFriendInput,
 	callback: IGunCallback<null>,
@@ -239,41 +252,13 @@ export const removeFriend = (
 			}),
 		);
 	}
-	const errPrefix = 'failed to remove friend';
-	/**
-	 * check if the current user is not a friend with the targeted user
-	 */
-	const mainRunner = () => {
-		profileHandles
-			.currentProfileFriendByUsername(context, username)
-			.once((currentFriendCallback: any) => {
-				if (!currentFriendCallback) {
-					return callback(
-						new ApiError(`${errPrefix}, can not delete a friend that does not exist (sadface)`, {
-							initialRequestBody: { username },
-						}),
-					);
-				}
-				removeFriendFromPrivateRecord();
-			});
-	};
-	/**
-	 * remove friend from the current user's private friends record
-	 */
-	const removeFriendFromPrivateRecord = () => {
-		profileHandles.currentProfileFriendsRecord(context).erase(username, (removeFriendCallback) => {
-			if (removeFriendCallback.err) {
-				return callback(
-					new ApiError(`${errPrefix}, something went wrong on deleting the friend`, {
-						initialRequestBody: { username },
-					}),
-				);
-			}
-			return callback(null);
-		});
-	};
-	// run sequence
-	mainRunner();
+	try {
+		await checkIfProfileExists(context, username);
+		await removeFriendFromPrivateRecord(context, username);
+		callback(null);
+	} catch (e) {
+		callback(e);
+	}
 };
 
 export const acceptFriend = (
