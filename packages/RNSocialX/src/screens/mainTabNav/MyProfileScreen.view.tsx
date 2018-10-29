@@ -22,10 +22,10 @@ interface IMyProfileScreenViewProps extends ITranslatedProps {
 	numberOfLikes: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	onViewProfilePhoto: () => void;
 	aboutMeText: false | string;
 	dataProvider: DataProvider;
-	loadMorePhotosHandler: () => void;
+	onProfilePhotoPress: () => void;
+	onLoadMorePhotos: () => void;
 	onViewMediaFullScreen: (index: number) => void;
 	onEditProfile: () => void;
 	onSharePress: () => void;
@@ -42,11 +42,11 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	numberOfFriends,
 	numberOfComments,
 	aboutMeText,
-	loadMorePhotosHandler,
 	dataProvider,
-	onViewMediaFullScreen,
-	onViewProfilePhoto,
 	hasPhotos,
+	onLoadMorePhotos,
+	onViewMediaFullScreen,
+	onProfilePhotoPress,
 	onEditProfile,
 	onSharePress,
 	onShowDotsModal,
@@ -84,26 +84,24 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
 					numberOfComments={numberOfComments}
-					onViewProfilePhoto={onViewProfilePhoto}
 					isCurrentUser={true}
 					aboutMeText={aboutMeText}
+					onProfilePhotoPress={onProfilePhotoPress}
+					onAddFriend={() => undefined}
 					onEditProfile={onEditProfile}
 					getText={getText}
-					onAddFriend={() => {
-						/**/
-					}}
 				/>
 				{hasPhotos ? (
 					<View style={styles.gridContainer}>
 						<ProfilePhotoGrid
-							loadMorePhotosHandler={loadMorePhotosHandler}
 							dataProvider={dataProvider}
-							onViewMediaFullScreen={onViewMediaFullScreen}
 							header={{
 								element: <View style={{ width: 1, height: 1 }} />,
 								height: 1,
 							}}
 							disabled={hasPhotos}
+							onLoadMorePhotos={onLoadMorePhotos}
+							onViewMediaFullScreen={onViewMediaFullScreen}
 							getText={getText}
 						/>
 					</View>
