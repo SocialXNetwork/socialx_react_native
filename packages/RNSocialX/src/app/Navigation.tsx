@@ -215,6 +215,7 @@ const MainScreenWithModal = createStackNavigator(
 		...MainStackScreens,
 	},
 	{
+		//
 		mode: 'modal',
 		headerMode: 'none',
 	},
