@@ -9,7 +9,7 @@ import {
 	WithMyProfile,
 } from '../../enhancers/screens';
 import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
+import { INavigationProps, MediaTypeImage } from '../../types';
 import { MyProfileScreenView } from './MyProfileScreen.view';
 
 const GRID_PAGE_SIZE = 20;
@@ -23,7 +23,6 @@ interface IMyProfileScreenState {
 }
 
 class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
-	// todo @serkan @jake why?
 	private lastLoadedPhotoIndex = 0;
 
 	private readonly dataProvider: DataProvider;
@@ -41,7 +40,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 
 	public componentDidUpdate(prevProps: IMyProfileScreenProps) {
 		if (prevProps.currentUser.mediaObjects !== this.props.currentUser.mediaObjects) {
-			this.loadMorePhotosHandler();
+			this.onLoadMorePhotosHandler();
 		}
 	}
 
@@ -70,13 +69,13 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				fullName={fullName}
 				userName={userName}
 				aboutMeText={aboutMeText}
-				loadMorePhotosHandler={this.loadMorePhotosHandler}
+				onLoadMorePhotos={this.onLoadMorePhotosHandler}
 				dataProvider={dataProvider}
 				hasPhotos={mediaObjects.length > 0}
-				onViewMediaFullScreen={this.onPhotoPressHandler}
+				onViewMediaFullScreen={this.onViewMediaFullScreenHandler}
 				onEditProfile={this.onEditProfilePressHandler}
 				onSharePress={this.onSharePressHandler}
-				onViewProfilePhoto={() => undefined}
+				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onShowDotsModal={this.onShowDotsModalHandler}
 				getText={getText}
 			/>
@@ -121,7 +120,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	// Improve this when we have lazy loading
-	private loadMorePhotosHandler = () => {
+	private onLoadMorePhotosHandler = () => {
 		const { dataProvider } = this.state;
 		const { mediaObjects } = this.props.currentUser;
 		const headerElement = [{ index: uuid() }];
@@ -151,7 +150,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		}
 	};
 
-	private onPhotoPressHandler = (index: number) => {
+	private onViewMediaFullScreenHandler = (index: number) => {
 		const {
 			navigation,
 			setNavigationParams,
@@ -163,6 +162,30 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			params: {
 				mediaObjects,
 				startIndex: index,
+			},
+		});
+		navigation.navigate(SCREENS.MediaViewer);
+	};
+
+	private onProfilePhotoPressHandler = () => {
+		const {
+			navigation,
+			setNavigationParams,
+			currentUser: { avatarURL },
+		} = this.props;
+
+		const mediaObjects = [
+			{
+				url: avatarURL,
+				type: MediaTypeImage,
+			},
+		];
+
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects,
+				startIndex: 0,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);

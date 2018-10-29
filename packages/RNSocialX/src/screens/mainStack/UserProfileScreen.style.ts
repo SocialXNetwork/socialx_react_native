@@ -64,6 +64,11 @@ const styles: any = {
 		height: SCREEN_HEIGHT / 2,
 		bottom: 0,
 	},
+	loading: {
+		flex: 1,
+		alignItems: 'center',
+		paddingTop: Sizes.smartVerticalScale(30),
+	},
 };
 
 export default StyleSheet.create(styles);
