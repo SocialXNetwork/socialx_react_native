@@ -10,24 +10,6 @@ import { IMediaProps, INavigationParamsActions, ITranslatedProps } from '../../.
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 
-const mock: IWithMediaViewerEnhancedProps = {
-	data: {
-		mediaObjects: [],
-		startIndex: 1,
-		postId: '2935809jafa%$',
-	},
-	actions: {
-		// This is now implemented with the WithI18n connector enhancer
-		getText: (value: string, ...args: any[]) => value,
-		onLikePress: () => {
-			/**/
-		},
-		setNavigationParams: () => {
-			/**/
-		},
-	},
-};
-
 export interface IWithMediaViewerEnhancedData {
 	mediaObjects: IMediaProps[];
 	startIndex: number;
@@ -61,7 +43,6 @@ export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWit
 						{(i18nProps) =>
 							children({
 								data: {
-									...mock.data,
 									mediaObjects:
 										navigationParamsProps.navigationParams[SCREENS.MediaViewer].mediaObjects,
 									startIndex:
@@ -69,9 +50,9 @@ export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWit
 									postId: navigationParamsProps.navigationParams[SCREENS.MediaViewer].postId,
 								},
 								actions: {
-									...mock.actions,
-									getText: i18nProps.getText,
+									onLikePress: () => undefined,
 									setNavigationParams: navigationParamsProps.setNavigationParams,
+									getText: i18nProps.getText,
 								},
 							})
 						}
