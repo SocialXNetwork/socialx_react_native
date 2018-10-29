@@ -128,9 +128,9 @@ const checkIfFriendRequestExists = (context: IContext, username: string) => {
 			.publicCurrentFriendRequestToUsername(context, username)
 			.once((currentRequestCallback: any) => {
 				if (currentRequestCallback) {
-					rej(new ApiError(`friend request already sent`));
+					res(true);
 				}
-				res();
+				res(false);
 			}),
 	);
 };
@@ -151,9 +151,9 @@ const getTargetedUserAndCreateRequest = (context: IContext, username: string) =>
 
 /**
  * create a friend record on the current user's private scope and put the friend's entire profile reference
- * @param requestedUserRef object
+ * @param
  */
-const createFriend = (context: IContext, username: string) => {
+const createFriendPrivateRecord = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
 		profileHandles
 			.currentProfileFriendByUsername(context, username)
@@ -177,6 +177,38 @@ const removeFriendFromPrivateRecord = (context: IContext, username: string) => {
 			}
 			res();
 		}),
+	);
+};
+
+/**
+ * remove the pending friend request from the public record of friend requests
+ * @param
+ */
+const removePendingAndProceed = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		profileHandles.publicCurrentFriendRequests(context).erase(username, (removePendingCallback) => {
+			if (removePendingCallback.err) {
+				rej(new ApiError(`cannot remove pending friend request`));
+			}
+			res();
+		}),
+	);
+};
+
+/**
+ * adds the targeted user to the current user private scope friends record
+ * @param
+ */
+const addRequestedUserAsFriend = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		profileHandles
+			.currentProfileFriendByUsername(context, username)
+			.put(profileHandles.publicProfileByUsername(context, username), (addFriendCallback) => {
+				if (addFriendCallback.err) {
+					rej(new ApiError('could not add the user as a friend'));
+				}
+				res();
+			}),
 	);
 };
 
@@ -229,9 +261,12 @@ export const addFriend = async (
 		}
 
 		await checkIfProfileExists(context, username);
-		await checkIfFriendRequestExists(context, username);
+		const friendRequestExists = await checkIfFriendRequestExists(context, username);
+		if (friendRequestExists) {
+			return callback(new ApiError(`friend request already exists`));
+		}
 		await getTargetedUserAndCreateRequest(context, username);
-		await createFriend(context, username);
+		await createFriendPrivateRecord(context, username);
 		await createFriendRequest(context, username);
 		callback(null);
 	} catch (e) {
@@ -261,82 +296,23 @@ export const removeFriend = async (
 	}
 };
 
-export const acceptFriend = (
+export const acceptFriend = async (
 	context: IContext,
 	{ username }: IAcceptFriendInput,
 	callback: IGunCallback<null>,
 ) => {
-	const errPrefix = 'failed to accept friend';
-	/**
-	 * check if the current user indeed has a friendrequest from the targeted user
-	 */
-	const mainRunner = () => {
-		profileHandles
-			.publicCurrentFriendRequestFromUsername(context, username)
-			.once((currentRequestCallback: any) => {
-				if (currentRequestCallback) {
-					return callback(
-						new ApiError(`${errPrefix}, no friend request found from this user`, {
-							initialRequestBody: { username },
-						}),
-					);
-				}
-				userExistsCheck();
-			});
-	};
-	/**
-	 * check if the user profile exists within the current database segment
-	 */
-	const userExistsCheck = () => {
-		profileHandles
-			.publicProfileByUsername(context, username)
-			.once((targetUserProfileCallback: any) => {
-				if (!targetUserProfileCallback) {
-					return callback(
-						new ApiError(`${errPrefix}, user doesnt exist on the current public scope`, {
-							initialRequestBody: { username },
-						}),
-					);
-				}
-				removePendingAndProceed(profileHandles.publicCurrentFriendRequests(context));
-			});
-	};
-	/**
-	 * remove the pending friend request from the public record of friend requests
-	 * @param requests IGunInstance the current user public record of friend requests
-	 */
-	const removePendingAndProceed = (requests: IGunInstance) => {
-		requests.erase(username, (removePendingCallback) => {
-			if (removePendingCallback.err) {
-				return callback(
-					new ApiError(`${errPrefix}, cannot remove pending friend request`, {
-						initialRequestBody: { username },
-					}),
-				);
-			}
-			addRequestedUserAsFriend(profileHandles.publicProfileByUsername(context, username));
-		});
-	};
-	/**
-	 * adds the targeted user to the current user private scope friends record
-	 * @param friendProfileReference IGunInstance the reference to the public profile record of the targeted user
-	 */
-	const addRequestedUserAsFriend = (friendProfileReference: IGunInstance) => {
-		profileHandles
-			.currentProfileFriendByUsername(context, username)
-			.put(friendProfileReference, (addFriendCallback) => {
-				if (addFriendCallback.err) {
-					return callback(
-						new ApiError(`${errPrefix}, something went wrong, could not add the user as a friend`, {
-							initialRequestBody: { username },
-						}),
-					);
-				}
-				return callback(null);
-			});
-	};
-	// run sequence
-	mainRunner();
+	try {
+		const friendRequestExists = await checkIfFriendRequestExists(context, username);
+		if (!friendRequestExists) {
+			return callback(new ApiError('friend request does not exist'));
+		}
+		await checkIfProfileExists(context, username);
+		await removePendingAndProceed(context, username);
+		await addRequestedUserAsFriend(context, username);
+		callback(null);
+	} catch (e) {
+		callback(e);
+	}
 };
 
 export default {
