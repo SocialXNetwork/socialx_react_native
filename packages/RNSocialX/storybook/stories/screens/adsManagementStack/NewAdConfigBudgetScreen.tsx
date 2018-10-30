@@ -54,7 +54,6 @@ storiesOf('Screens/adsManagementStack', module)
 
 		return (
 			<NewAdConfigBudgetScreenView
-				onGoBack={action('onGoBackHandler')}
 				getText={getTextMock}
 				currencyButtonPressed={currencyButtonPressed}
 				selectedCurrencyValue={selectedCurrencyValue}
@@ -73,7 +72,6 @@ storiesOf('Screens/adsManagementStack', module)
 				nextDayFromStartDate={defaultDate}
 				handleStartDatePicked={action('handleStartDatePicked')}
 				handleStopDatePicked={action('handleStopDatePicked')}
-				nextButtonPressed={action('nextButtonPressed')}
 			/>
 		);
 	});

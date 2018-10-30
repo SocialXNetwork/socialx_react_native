@@ -3,20 +3,26 @@ import { TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SafeAreaView } from 'react-navigation';
+import { ICreateAdSteps } from '../../../types';
 import styles from './CreateAdSteps.style';
 
 const STEPS_CONFIG = [
-	{ icon: 'ios-create', name: 'post' },
-	{ icon: 'md-people', name: 'audience' },
-	{ icon: 'ios-card', name: 'budget' },
+	{ icon: 'ios-create', name: ICreateAdSteps.SetupPost },
+	{ icon: 'md-people', name: ICreateAdSteps.SetupAudience },
+	{ icon: 'ios-card', name: ICreateAdSteps.SetupBudget },
 ];
 
 interface ICreateAdStepsProps {
-	currentStep: 'post' | 'audience' | 'budget';
+	currentStep: ICreateAdSteps;
+	isOnLastStep: boolean;
 	onGoToNextStep: () => void;
 }
 
-export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({ currentStep, onGoToNextStep }) => (
+export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
+	currentStep,
+	onGoToNextStep,
+	isOnLastStep,
+}) => (
 	<SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
 		<View style={styles.content}>
 			{STEPS_CONFIG.map((step, index: number) => (
@@ -37,7 +43,10 @@ export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({ currentStep, onG
 			))}
 			<View style={styles.nextIconContainer}>
 				<TouchableOpacity onPress={onGoToNextStep}>
-					<Icon name={'ios-arrow-forward'} style={styles.nextIcon} />
+					<Icon
+						name={isOnLastStep ? 'md-checkmark' : 'ios-arrow-forward'}
+						style={styles.nextIcon}
+					/>
 				</TouchableOpacity>
 			</View>
 		</View>

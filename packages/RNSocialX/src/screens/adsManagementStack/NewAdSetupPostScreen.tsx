@@ -1,11 +1,11 @@
 import * as React from 'react';
 
 import {
-	IWithNewAdSetupPostEnhancedActions,
-	IWithNewAdSetupPostEnhancedData,
-	WithNewAdSetupPost,
-} from '../../enhancers/screens';
-import { INavigationProps, IWallPostPhotoOptimized } from '../../types';
+	IAdSetupPostData,
+	IDotsMenuProps,
+	ITranslatedProps,
+	IWallPostPhotoOptimized,
+} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -14,15 +14,16 @@ import {
 } from '../../utilities';
 import { NewAdSetupPostScreenView } from './NewAdSetupPostScreen.view';
 
-type INewAdSetupPostScreenProps = IWithNewAdSetupPostEnhancedData &
-	IWithNewAdSetupPostEnhancedActions &
-	INavigationProps;
+interface INewAdSetupPostScreenProps extends ITranslatedProps, IDotsMenuProps {
+	updateAdSetPost: (data: IAdSetupPostData) => void;
+	adSetupPostFormik: React.RefObject<any>;
+}
 
 interface INewAdSetupPostScreenState {
 	mediaObjects: IWallPostPhotoOptimized[];
 }
 
-export class Screen extends React.Component<
+export class NewAdSetupPostScreen extends React.Component<
 	INewAdSetupPostScreenProps,
 	INewAdSetupPostScreenState
 > {
@@ -31,33 +32,35 @@ export class Screen extends React.Component<
 	};
 
 	public render() {
-		const { getText } = this.props;
+		const { getText, adSetupPostFormik } = this.props;
 		const { mediaObjects } = this.state;
 		return (
 			<NewAdSetupPostScreenView
+				adSetupPostFormik={adSetupPostFormik}
 				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				getText={getText}
-				onGoBack={this.onGoBackHandler}
 				onAddMedia={this.onAddMediaHandler}
-				onNavigateToAudienceSection={this.onNavigateToAudienceSectionHandler}
+				updateAdSetPost={this.updateAdSetPostHandler}
 			/>
 		);
 	}
 
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
+	private updateAdSetPostHandler = (headline: string, description: string) => {
+		const { updateAdSetPost } = this.props;
+		const { mediaObjects } = this.state;
+		updateAdSetPost({ headline, description, mediaObjects });
 	};
 
 	private onAddMediaHandler = () => {
 		const { showDotsMenuModal, getText } = this.props;
 		const menuItems = [
 			{
-				label: getText('new.wall.post.screen.menu.pick.from.gallery'),
+				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
 				actionHandler: () => this.addToScrollerSelectedMediaObject('gallery'),
 			},
 			{
-				label: getText('new.wall.post.screen.menu.take.photo'),
+				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
 				actionHandler: () => this.addToScrollerSelectedMediaObject('photo'),
 			},
@@ -81,15 +84,4 @@ export class Screen extends React.Component<
 			});
 		}
 	};
-
-	private onNavigateToAudienceSectionHandler = (headline: string, description: string) => {
-		console.log('TODO: navigate to audience screen', headline, description);
-		// this.props.navigation.navigate('');
-	};
 }
-
-export const NewAdSetupPostScreen = (navProps: INavigationProps) => (
-	<WithNewAdSetupPost>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithNewAdSetupPost>
-);
