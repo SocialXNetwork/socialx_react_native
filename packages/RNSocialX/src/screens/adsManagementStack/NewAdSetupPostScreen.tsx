@@ -85,5 +85,3 @@ export class NewAdSetupPostScreen extends React.Component<
 		}
 	};
 }
-
-// Ionut test new commit on existing PR
