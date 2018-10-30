@@ -3,11 +3,7 @@ import * as React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {
-	InputSizes,
-	MediaHorizontalScroller,
-	PrimaryTextInput,
-} from '../../components';
+import { InputSizes, MediaHorizontalScroller, PrimaryTextInput } from '../../components';
 import { ITranslatedProps } from '../../types';
 import styles, { customStyleProps } from './NewAdSetupPostScreen.style';
 
@@ -23,9 +19,7 @@ interface INewNewAdSetupPostScreenViewData {
 	description: string;
 }
 
-export const NewAdSetupPostScreenView: React.SFC<
-	INewAdSetupPostScreenViewProps
-> = ({
+export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps> = ({
 	mediaObjects,
 	getText,
 	onAddMedia,
@@ -39,10 +33,7 @@ export const NewAdSetupPostScreenView: React.SFC<
 				headline: '',
 				description: '',
 			}}
-			validate={({
-				headline,
-				description,
-			}: INewNewAdSetupPostScreenViewData) => {
+			validate={({ headline, description }: INewNewAdSetupPostScreenViewData) => {
 				const errors: FormikErrors<INewNewAdSetupPostScreenViewData> = {};
 				if (!headline) {
 					errors.headline = getText('new.ad.setup.post.headline.required');
@@ -72,24 +63,18 @@ export const NewAdSetupPostScreenView: React.SFC<
 							size={InputSizes.Small}
 							borderColor={customStyleProps.inputBorderColor}
 							borderWidth={customStyleProps.inputBorderWidth}
-							placeholder={getText(
-								'new.ad.setup.post.header.headline.input.placeholder',
-							)}
+							placeholder={getText('new.ad.setup.post.header.headline.input.placeholder')}
 							value={headline}
 							onChangeText={(value: string) => {
 								setFieldValue('headline', value);
 							}}
 						/>
-						{errors.headline && (
-							<Text style={styles.errorText}>{errors.headline}</Text>
-						)}
+						{errors.headline && <Text style={styles.errorText}>{errors.headline}</Text>}
 						<View style={styles.descriptionView}>
 							<PrimaryTextInput
 								borderColor={customStyleProps.inputBorderColor}
 								borderWidth={customStyleProps.inputBorderWidth}
-								placeholder={getText(
-									'new.ad.setup.post.header.description.input.placeholder',
-								)}
+								placeholder={getText('new.ad.setup.post.header.description.input.placeholder')}
 								multiline={true}
 								value={description}
 								onChangeText={(value: string) => {
@@ -98,10 +83,7 @@ export const NewAdSetupPostScreenView: React.SFC<
 							/>
 						</View>
 						<View style={styles.addMediaButtonContainer}>
-							<TouchableOpacity
-								style={styles.addMediaButton}
-								onPress={onAddMedia}
-							>
+							<TouchableOpacity style={styles.addMediaButton} onPress={onAddMedia}>
 								<Icon name={'logo-instagram'} style={styles.photoIcon} />
 								<Text style={styles.addMediaText}>
 									{getText('new.wall.post.screen.attach.media.button')}
@@ -110,10 +92,7 @@ export const NewAdSetupPostScreenView: React.SFC<
 						</View>
 						{mediaObjects.length > 0 && (
 							<View style={styles.mediaContainer}>
-								<MediaHorizontalScroller
-									mediaURIs={mediaObjects}
-									getText={getText}
-								/>
+								<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
 							</View>
 						)}
 					</View>

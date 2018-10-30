@@ -37,9 +37,7 @@ export class NewAdSetupPostScreen extends React.Component<
 		return (
 			<NewAdSetupPostScreenView
 				adSetupPostFormik={adSetupPostFormik}
-				mediaObjects={mediaObjects.map(
-					(mediaObject: IWallPostPhotoOptimized) => mediaObject.path,
-				)}
+				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				getText={getText}
 				onAddMedia={this.onAddMediaHandler}
 				updateAdSetPost={this.updateAdSetPostHandler}
@@ -70,9 +68,7 @@ export class NewAdSetupPostScreen extends React.Component<
 		showDotsMenuModal(menuItems);
 	};
 
-	private addToScrollerSelectedMediaObject = async (
-		source: 'gallery' | 'photo',
-	) => {
+	private addToScrollerSelectedMediaObject = async (source: 'gallery' | 'photo') => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
 		if (source === 'gallery') {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();
@@ -81,9 +77,7 @@ export class NewAdSetupPostScreen extends React.Component<
 		}
 		if (selectedMediaObjects.length > 0) {
 			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (mObject) =>
-					getOptimizedMediaObject(mObject),
-				),
+				selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
 			);
 			this.setState({
 				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
