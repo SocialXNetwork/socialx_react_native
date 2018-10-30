@@ -121,7 +121,6 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					canDelete={canDelete}
 					likedByMe={post.likedByMe}
 					listLoading={loadingMorePosts}
-					currentUserAvatarURL={currentUser.avatarURL}
 					onCommentPress={onCommentPress}
 					onImagePress={onImagePress}
 					onDeletePostPress={onDeletePostPress}

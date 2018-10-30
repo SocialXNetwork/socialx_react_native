@@ -44,6 +44,11 @@ export interface IWallPostCardState {
 	inputAvatarSize: Animated.Value;
 	inputAvatarRadius: Animated.Value;
 	viewOffensiveContent: boolean;
+	recentLikes: {
+		first: string | null;
+		second: string | null;
+		total: number;
+	};
 }
 
 export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallPostCardState> {
@@ -69,6 +74,13 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 		inputAvatarRadius: new Animated.Value(12.5),
 		inputIconPosition: new Animated.Value(100),
 		viewOffensiveContent: false,
+		recentLikes: {
+			first:
+				this.props.likes.length > 0 ? this.props.likes[this.props.likes.length - 1].userName : null,
+			second:
+				this.props.likes.length > 1 ? this.props.likes[this.props.likes.length - 2].userName : null,
+			total: this.props.likes.length,
+		},
 	};
 
 	private readonly containerViewRef: React.RefObject<View> = React.createRef();
@@ -117,17 +129,15 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			numberOfWalletCoins,
 			postId,
 			onCommentPress,
-			onLikePress,
 			likedByMe,
 			likeError,
 			media,
 			onImagePress,
-			likes,
 			bestComments,
 			noInput,
 			contentOffensive,
 			listLoading,
-			currentUserAvatarURL,
+			currentUser,
 			skeleton,
 		} = this.props;
 
@@ -214,14 +224,18 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 						likeError={likeError}
 						numberOfSuperLikes={numberOfSuperLikes}
 						numberOfWalletCoins={numberOfWalletCoins}
-						onLikePress={() => onLikePress(likedByMe, postId)}
+						onLikePress={this.onLikePressHandler}
 						onCommentPress={() => onCommentPress(postId, true)}
 						onSuperLikePress={this.superLikeButtonPressedHandler}
 						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
 						getText={getText}
 					/>
 				)}
-				<RecentLikes likes={likes} onUserPress={onUserPress} getText={getText} />
+				<RecentLikes
+					recentLikes={this.state.recentLikes}
+					onUserPress={onUserPress}
+					getText={getText}
+				/>
 				<ViewAllComments
 					numberOfComments={numberOfComments}
 					onCommentPress={() => onCommentPress(postId, false)}
@@ -236,7 +250,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 					noInput={noInput}
 					comment={comment}
 					disabled={listLoading}
-					avatarURL={currentUserAvatarURL}
+					avatarURL={currentUser.avatarURL}
 					animationValues={animationValues}
 					onCommentInputChange={this.onCommentInputChange}
 					onCommentInputPress={this.onCommentInputPress}
@@ -271,6 +285,59 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			]).start();
 			this.setState({ inputFocused: false });
 		}
+	};
+
+	private onLikePressHandler = async () => {
+		const { onLikePress, postId, currentUser, likedByMe, likes } = this.props;
+		const { total } = this.state.recentLikes;
+
+		if (!likedByMe) {
+			this.setState((currentState) => {
+				return {
+					recentLikes: {
+						second: currentState.recentLikes.first,
+						first: currentUser.userName,
+						total: currentState.recentLikes.total + 1,
+					},
+				};
+			});
+		} else {
+			if (total === 1) {
+				this.setState((currentState) => {
+					return {
+						recentLikes: {
+							...currentState.recentLikes,
+							first: null,
+							total: 0,
+						},
+					};
+				});
+			} else if (total === 2) {
+				this.setState((currentState) => {
+					const { first, second } = currentState.recentLikes;
+					return {
+						recentLikes: {
+							first: first === currentUser.userName ? second : first,
+							second: null,
+							total: 1,
+						},
+					};
+				});
+			} else if (total > 2) {
+				this.setState((currentState) => {
+					const { first, second } = currentState.recentLikes;
+					return {
+						recentLikes: {
+							first: first === currentUser.userName ? second : first,
+							second: second === currentUser.userName ? likes[likes.length - 3].userName : second,
+							total: currentState.recentLikes.total - 1,
+						},
+					};
+				});
+			}
+		}
+
+		await onLikePress(likedByMe, postId);
 	};
 
 	private reportProblemHandler = (reason: string, description: string) => {
