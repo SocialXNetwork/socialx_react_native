@@ -24,6 +24,8 @@ import { IAction as IActivitiesActions } from './ui/activities/Types';
 import { IAction as IGlobalsActions } from './ui/globals/Types';
 import { IAction as IOverlaysActions } from './ui/overlays/Types';
 
+import { Client } from 'bugsnag-react-native';
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
@@ -56,4 +58,5 @@ export interface IContextConfig {
 export interface IContext {
 	dataApi: IDataApiFactory;
 	storageApi: IStorageApiFactory;
+	bugsnag: Client | null;
 }
