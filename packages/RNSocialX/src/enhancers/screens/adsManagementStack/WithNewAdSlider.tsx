@@ -1,7 +1,18 @@
+/**
+ * TODO list:
+ * 1. Props actions: createAd
+ */
+
 import * as React from 'react';
 
 import { IConfirmation } from '../../../store/ui/overlays';
-import { IDotsMenuProps, ITranslatedProps } from '../../../types';
+import {
+	IAdSetupAudienceData,
+	IAdSetupBudgetData,
+	IAdSetupPostData,
+	IDotsMenuProps,
+	ITranslatedProps,
+} from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 
@@ -11,6 +22,15 @@ const mock: IWithNewAdSliderEnhancedProps = {
 		getText: (value, ...args) => value,
 		showDotsMenuModal: (items) => undefined,
 		showConfirmation: (confirmation: IConfirmation) => undefined,
+		createAd: (
+			postData: IAdSetupPostData,
+			audienceData: IAdSetupAudienceData,
+			budgetData: IAdSetupBudgetData,
+		) => {
+			console.log('postData', postData);
+			console.log('audienceData', audienceData);
+			console.log('budgetData', budgetData);
+		},
 	},
 };
 
@@ -20,6 +40,11 @@ export interface IWithNewAdSliderEnhancedActions
 	extends ITranslatedProps,
 		IDotsMenuProps {
 	showConfirmation: (confirmation: IConfirmation) => void;
+	createAd: (
+		postData: IAdSetupPostData,
+		audienceData: IAdSetupAudienceData,
+		budgetData: IAdSetupBudgetData,
+	) => void;
 }
 
 interface IWithNewAdSliderEnhancedProps {

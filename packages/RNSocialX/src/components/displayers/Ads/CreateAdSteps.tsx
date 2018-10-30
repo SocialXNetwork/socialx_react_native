@@ -14,12 +14,14 @@ const STEPS_CONFIG = [
 
 interface ICreateAdStepsProps {
 	currentStep: ICreateAdSteps;
+	isOnLastStep: boolean;
 	onGoToNextStep: () => void;
 }
 
 export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
 	currentStep,
 	onGoToNextStep,
+	isOnLastStep,
 }) => (
 	<SafeAreaView
 		style={styles.container}
@@ -49,7 +51,10 @@ export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
 			))}
 			<View style={styles.nextIconContainer}>
 				<TouchableOpacity onPress={onGoToNextStep}>
-					<Icon name={'ios-arrow-forward'} style={styles.nextIcon} />
+					<Icon
+						name={isOnLastStep ? 'md-checkmark' : 'ios-arrow-forward'}
+						style={styles.nextIcon}
+					/>
 				</TouchableOpacity>
 			</View>
 		</View>

@@ -4,23 +4,17 @@ import { Button, Segment } from 'native-base';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import { ITranslatedProps } from '../../types';
+import {
+	IAdSetupAudienceData,
+	IGenderSelect,
+	ITranslatedProps,
+} from '../../types';
 import styles, { nativeBaseStyles } from './NewAdSetupAudience.style';
 
-export interface INewAdSetupAudienceData {
-	selectedGender: IGenderSelect;
-	ageRange: number[];
-}
-
-export enum IGenderSelect {
-	male = 'male',
-	female = 'female',
-	all = 'all',
-}
-
 interface INewAdSetupAudienceViewProps extends ITranslatedProps {
-	updateAdSetAudience: (values: INewAdSetupAudienceData) => void;
+	updateAdSetAudience: (values: IAdSetupAudienceData) => void;
 	adSetupAudienceFormik: React.RefObject<any>;
+	onMultiSliderChange: (isStarting: boolean) => void;
 }
 
 const GENDER_SELECTION_BUTTONS = [
@@ -48,10 +42,16 @@ const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({
 
 export const NewAdSetupAudienceView: React.SFC<
 	INewAdSetupAudienceViewProps
-> = ({ getText, updateAdSetAudience, adSetupAudienceFormik }) => (
+> = ({
+	getText,
+	updateAdSetAudience,
+	adSetupAudienceFormik,
+	onMultiSliderChange,
+}) => (
 	<View style={styles.rootView}>
 		<Formik
 			ref={adSetupAudienceFormik}
+			isInitialValid={true}
 			initialValues={{
 				selectedGender: IGenderSelect.all,
 				ageRange: [20, 80],
@@ -64,7 +64,7 @@ export const NewAdSetupAudienceView: React.SFC<
 				handleSubmit,
 				isValid,
 				setFieldValue,
-			}: FormikProps<INewAdSetupAudienceData>) => (
+			}: FormikProps<IAdSetupAudienceData>) => (
 				<ScrollView
 					style={{ flex: 1 }}
 					keyboardShouldPersistTaps={'handled'}
@@ -119,6 +119,8 @@ export const NewAdSetupAudienceView: React.SFC<
 							selectedStyle={styles.ageSelectorTrack}
 							containerStyle={styles.ageSelectorContainer}
 							customMarker={SliderMarkerWithValue}
+							onValuesChangeStart={() => onMultiSliderChange(true)}
+							onValuesChangeFinish={() => onMultiSliderChange(false)}
 						/>
 						<Text style={styles.sectionLabel}>
 							{getText('new.ad.setup.audience.countries.select')}
