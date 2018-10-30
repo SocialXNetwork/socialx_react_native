@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-	Image,
-	ImageRequireSource,
-	Text,
-	TouchableOpacity,
-} from 'react-native';
+import { Image, ImageRequireSource, Text, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
@@ -41,14 +36,9 @@ export const IconButton: React.SFC<IIconButtonProps> = ({
 				resizeMode="contain"
 			/>
 		)}
-		{iconType === 'io' && (
-			<Ionicon name={iconSource as string} style={[styles.icon, iconStyle]} />
-		)}
+		{iconType === 'io' && <Ionicon name={iconSource as string} style={[styles.icon, iconStyle]} />}
 		{iconType === 'fa' && (
-			<FontAwesome
-				name={iconSource as string}
-				style={[styles.icon, iconStyle]}
-			/>
+			<FontAwesome name={iconSource as string} style={[styles.icon, iconStyle]} />
 		)}
 		{label && <Text style={[styles.label, textStyle]}>{label}</Text>}
 	</TouchableOpacity>

@@ -2,12 +2,7 @@ import * as React from 'react';
 
 import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
-import {
-	ICurrentUser,
-	IDotsMenuProps,
-	IGlobal,
-	ITranslatedProps,
-} from '../../../types';
+import { ICurrentUser, IDotsMenuProps, IGlobal, ITranslatedProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -33,9 +28,7 @@ export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;
 }
 
-export interface IWithSettingsEnhancedActions
-	extends ITranslatedProps,
-		IDotsMenuProps {
+export interface IWithSettingsEnhancedActions extends ITranslatedProps, IDotsMenuProps {
 	setGlobal: (global: IGlobal) => void;
 	updateUserProfile: (user: ISettingsData) => void;
 	logout: () => void;
@@ -52,10 +45,7 @@ interface IWithSettingsProps {
 
 interface IWithSettingsState {}
 
-export class WithSettings extends React.Component<
-	IWithSettingsProps,
-	IWithSettingsState
-> {
+export class WithSettings extends React.Component<IWithSettingsProps, IWithSettingsState> {
 	render() {
 		return (
 			<WithI18n>
@@ -72,7 +62,10 @@ export class WithSettings extends React.Component<
 														{(currUser) =>
 															this.props.children({
 																data: {
-																	currentUser: currUser.currentUser!,
+																	currentUser: {
+																		shareDataEnabled: mock.data.currentUser.shareDataEnabled,
+																		...currUser.currentUser!,
+																	},
 																},
 																actions: {
 																	updateUserProfile: (user) =>
@@ -83,8 +76,7 @@ export class WithSettings extends React.Component<
 																			fullName: user.fullName,
 																		}),
 																	logout,
-																	showDotsMenuModal: (items) =>
-																		showOptionsMenu({ items }),
+																	showDotsMenuModal: (items) => showOptionsMenu({ items }),
 																	setGlobal,
 																	getText,
 																},

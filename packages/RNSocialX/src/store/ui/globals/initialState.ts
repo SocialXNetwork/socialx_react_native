@@ -13,6 +13,7 @@ const initialState: IState = {
 		alpha: 0,
 		loader: false,
 	},
+	skeletonPost: null,
 };
 
 export default initialState;

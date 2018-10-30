@@ -39,10 +39,7 @@ export const IntroFirstSlide: React.SFC<IIntroFirstSlideProps> = ({
 		end={{ x: 0, y: 1 }}
 	>
 		<Image source={customStyleProps.slideLogoImage} style={style.logoImage} />
-		<Image
-			source={customStyleProps.slideBackgroundImage}
-			style={style.slideImage}
-		/>
+		<Image source={customStyleProps.slideBackgroundImage} style={style.slideImage} />
 		<View style={style.textContainer}>
 			<Text style={style.slideTitle}>{title}</Text>
 			<Text style={style.slideDescription}>{description}</Text>

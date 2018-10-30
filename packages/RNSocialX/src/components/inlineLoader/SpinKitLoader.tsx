@@ -42,11 +42,6 @@ export const SpinKitLoader: React.SFC<ISpinKitLoaderProps> = ({
 	spinnerType = SpinnerTypes.NineCubeGrid,
 }) => (
 	<View style={style.spinnerContainer}>
-		<Spinner
-			isVisible={true}
-			size={spinnerSize}
-			type={spinnerType}
-			color={spinnerColor}
-		/>
+		<Spinner isVisible={true} size={spinnerSize} type={spinnerType} color={spinnerColor} />
 	</View>
 );

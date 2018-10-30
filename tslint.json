@@ -17,6 +17,7 @@
         "parser": "typescript",
         "trailingComma": "all",
         "tabWidth": 2,
+        "printWidth": 100,
         "useTabs": true,
         "arrowParens": "always"
       }
@@ -48,6 +49,12 @@
     "jsx-no-multiline-js": false,
     "member-access": false,
     "no-console": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "./packages/**/node_modules/**",
+      "./packages/api-data/**/*.js"
+    ]
   },
   "include": [
     "./packages/**/*.ts",

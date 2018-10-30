@@ -28,8 +28,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				notificationId: '51asfa1',
 				userId: '123tqa5',
 				type: NOTIFICATION_TYPES.RECENT_COMMENT,
-				avatarURL:
-					'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
+				avatarURL: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 				fullName: 'Seth Saunders',
 				userName: 'sethsaunders',
 				timestamp: new Date(2018, 2, 12, 5, 51, 23),
@@ -166,12 +165,9 @@ export class WithNotifications extends React.Component<
 														},
 														actions: {
 															...mock.actions,
-															loadNotifications:
-																notificationsProps.getNotifications,
-															acceptFriendRequest: (input) =>
-																profilesProps.acceptFriend(input),
-															declineFriendRequest: (input) =>
-																profilesProps.removeFriend(input),
+															loadNotifications: notificationsProps.getNotifications,
+															acceptFriendRequest: (input) => profilesProps.acceptFriend(input),
+															declineFriendRequest: (input) => profilesProps.removeFriend(input),
 															removeNotification: (notificationId) =>
 																notificationsProps.removeNotification({
 																	notificationId,

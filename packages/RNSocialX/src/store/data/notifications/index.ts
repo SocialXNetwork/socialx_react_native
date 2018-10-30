@@ -8,8 +8,4 @@ export {
 	ICreateNotification,
 } from '@socialx/api-data';
 
-export {
-	createNotification,
-	getNotifications,
-	removeNotification,
-} from './actions';
+export { createNotification, getNotifications, removeNotification } from './actions';

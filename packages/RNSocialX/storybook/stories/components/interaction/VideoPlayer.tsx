@@ -14,10 +14,7 @@ storiesOf('Components/interaction', module)
 	.add('VideoPlayer', () => {
 		const paused = boolean('paused', false);
 		const muted = boolean('muted', false);
-		const resizeToChangeAspectRatio = boolean(
-			'resizeToChangeAspectRatio',
-			true,
-		);
+		const resizeToChangeAspectRatio = boolean('resizeToChangeAspectRatio', true);
 		return (
 			<VideoPlayer
 				videoURL={VIDEO_URL}

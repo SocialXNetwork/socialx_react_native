@@ -12,11 +12,7 @@ interface INotificationProps extends ITranslatedProps {
 	notification: INotificationData;
 	onViewUserProfile: (userId: string) => void;
 	onFriendRequestApprove: (friendshipId: string, userName: string) => void;
-	onFriendRequestDecline: (
-		friendshipId: string,
-		userName: string,
-		notificationId: string,
-	) => void;
+	onFriendRequestDecline: (friendshipId: string, userName: string, notificationId: string) => void;
 	onGroupRequestApprove: (notificationId: string) => void;
 	onGroupRequestDecline: (notificationId: string) => void;
 }
@@ -70,22 +66,13 @@ export const Notification: React.SFC<INotificationProps> = ({
 	return (
 		<View style={styles.container}>
 			<View style={styles.contentContainer}>
-				<TouchableOpacity
-					style={styles.row}
-					onPress={() => onViewUserProfile(userId)}
-				>
+				<TouchableOpacity style={styles.row} onPress={() => onViewUserProfile(userId)}>
 					<AvatarImage image={avatarURL} style={styles.avatarImage} />
 					<View style={{ flex: 1 }}>
-						<Text
-							style={[styles.fullName, { paddingBottom: groupName ? 5 : 0 }]}
-						>
-							{fullName}
-						</Text>
+						<Text style={[styles.fullName, { paddingBottom: groupName ? 5 : 0 }]}>{fullName}</Text>
 						{userName && <Text style={styles.userName}>{'@' + userName}</Text>}
 						<Text style={styles.text}>{text}</Text>
-						{groupName && (
-							<Text style={styles.userName}>{'@' + groupName}</Text>
-						)}
+						{groupName && <Text style={styles.userName}>{'@' + groupName}</Text>}
 						<Text style={styles.timestamp}>{moment(timestamp).fromNow()}</Text>
 					</View>
 					{buttons && (
@@ -113,12 +100,7 @@ export const Notification: React.SFC<INotificationProps> = ({
 								onPress={
 									groupName
 										? () => onGroupRequestDecline(notificationId)
-										: () =>
-												onFriendRequestDecline(
-													friendshipId!,
-													userName!,
-													notificationId,
-												)
+										: () => onFriendRequestDecline(friendshipId!, userName!, notificationId)
 								}
 							/>
 						</View>

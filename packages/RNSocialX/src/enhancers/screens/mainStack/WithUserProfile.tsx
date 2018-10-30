@@ -1,21 +1,21 @@
 /**
  * TODO list:
- * 1. Props actions: loadMorePhotos, blockUser, reportProblem
+ * 1. Props actions: blockUser, reportProblem
  */
 
 import * as React from 'react';
-import { posts } from '../../../mocks';
 import {
 	IDotsMenuProps,
 	INavigationParamsActions,
 	ITranslatedProps,
 	IVisitedUser,
-	MediaTypeImage,
-	SearchResultKind,
 } from '../../../types';
 import { getActivity } from '../../helpers';
 
-import { ActionTypes } from '../../../store/data/profiles/Types';
+import { IPostReturnData } from '../../../store/aggregations/posts';
+import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts/Types';
+import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
+import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
@@ -24,88 +24,24 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
-const mock: IUserProfileEnhancedProps = {
-	data: {
-		currentUserAvatarURL:
-			'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
-		visitedUser: {
-			userId: '999',
-			avatarURL:
-				'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350',
-			fullName: 'Alex Sirbu',
-			userName: 'alexsirbu',
-			aboutMeText: 'Lorem ipsum dolor sit amet',
-			numberOfLikes: 25,
-			numberOfPhotos: 1,
-			numberOfFriends: 2,
-			numberOfComments: 87,
-			mediaObjects: [
-				{
-					url:
-						'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-					hash: '131289fsdf03yr9hehdiwb32',
-					type: MediaTypeImage,
-					extension: 'jpg',
-					size: 512,
-					numberOfLikes: 0,
-					numberOfComments: 0,
-				},
-			],
-			recentPosts: posts,
-			relationship: SearchResultKind.NotFriend,
-		},
-		refreshingProfile: false,
-	},
-	actions: {
-		addFriend: (userId: string) => {
-			/**/
-		},
-		loadMorePosts: (userId: string) => {
-			/**/
-		},
-		loadMorePhotos: (userId: string) => {
-			/**/
-		},
-		likePost: (postId: string) => {
-			/**/
-		},
-		unlikePost: (postId: string) => {
-			/**/
-		},
-		postComment: (commentText: string, postId: string) => {
-			/**/
-		},
-		blockUser: (userId: string) => {
-			/**/
-		},
-		reportProblem: (reason: string, description: string) => {
-			/**/
-		},
-		getText: (value: string, ...args: any[]) => value,
-		setNavigationParams: () => {
-			/**/
-		},
-		showDotsMenuModal: (items) => {
-			/**/
-		},
-	},
-};
-
 export interface IWithUserProfileEnhancedData {
 	currentUserAvatarURL: string;
+	currentUserId: string;
 	visitedUser: IVisitedUser;
-	refreshingProfile: boolean;
+	userPosts: { [owner: string]: IPostReturnData[] };
+	loadingProfile: boolean;
+	loadingPosts: boolean;
 }
 
 export interface IWithUserProfileEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions,
 		IDotsMenuProps {
+	getProfileForUser: (userName: string) => void;
+	getPostsForUser: (userName: string) => void;
 	addFriend: (userId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
-	loadMorePosts: (userId: string) => void;
-	loadMorePhotos: (userId: string) => void;
 	postComment: (postId: string, commentText: string) => void;
 	blockUser: (userId: string) => void;
 	reportProblem: (reason: string, description: string) => void;
@@ -122,71 +58,87 @@ interface IWithUserProfileProps {
 
 interface IWithUserProfileState {}
 
-export class WithUserProfile extends React.Component<
-	IWithUserProfileProps,
-	IWithUserProfileState
-> {
+export class WithUserProfile extends React.Component<IWithUserProfileProps, IWithUserProfileState> {
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
 									<WithProfiles>
-										{({ addFriend }) => (
+										{({ addFriend, getProfileByUsername }) => (
 											<WithPosts>
-												{({
-													likePost,
-													unlikePost,
-													createComment,
-													loadMorePosts,
-												}) => (
+												{({ likePost, unlikePost, createComment }) => (
 													<WithActivities>
 														{({ activities }) => (
-															<WithCurrentUser>
-																{({ currentUser }) => (
-																	<WithVisitedUserContent>
-																		{({ visitedUser }) => {
-																			return this.props.children({
-																				data: {
-																					currentUserAvatarURL: currentUser!
-																						.avatarURL,
-																					visitedUser: visitedUser!,
-																					refreshingProfile: getActivity(
-																						activities,
-																						ActionTypes.SYNC_GET_CURRENT_PROFILE,
-																					),
-																				},
-																				actions: {
-																					...mock.actions,
-																					addFriend: (username) =>
-																						addFriend({
-																							username,
-																						}),
-																					likePost: (postId) =>
-																						likePost({ postId }),
-																					unlikePost: (postId) =>
-																						unlikePost({ postId }),
-																					postComment: (text, postId) =>
-																						createComment({
-																							text,
-																							postId,
-																						}),
-																					loadMorePosts,
-																					setNavigationParams,
-																					getText: i18nProps.getText,
-																					showDotsMenuModal: (items) =>
-																						showOptionsMenu({
-																							items,
-																						}),
-																				},
-																			});
-																		}}
-																	</WithVisitedUserContent>
+															<WithAggregations>
+																{({ getUserPosts, userPosts }) => (
+																	<WithCurrentUser>
+																		{({ currentUser }) => (
+																			<WithVisitedUserContent>
+																				{({ visitedUser }) =>
+																					this.props.children({
+																						data: {
+																							currentUserAvatarURL: currentUser!.avatarURL,
+																							currentUserId: currentUser!.userId,
+																							visitedUser: visitedUser!,
+																							userPosts,
+																							loadingProfile: getActivity(
+																								activities,
+																								ProfileActionTypes.GET_PROFILE_BY_USERNAME,
+																							),
+																							loadingPosts: getActivity(
+																								activities,
+																								AggActionTypes.GET_USER_POSTS,
+																							),
+																						},
+																						actions: {
+																							getProfileForUser: async (username: string) => {
+																								await getProfileByUsername({
+																									username,
+																								});
+																							},
+																							getPostsForUser: async (username: string) => {
+																								await getUserPosts({ username });
+																							},
+																							addFriend: (username) =>
+																								addFriend({
+																									username,
+																								}),
+																							likePost: async (postId) => {
+																								await likePost({
+																									postId,
+																								});
+																							},
+																							unlikePost: async (postId) => {
+																								await unlikePost({
+																									postId,
+																								});
+																							},
+																							postComment: async (text, postId) => {
+																								await createComment({
+																									text,
+																									postId,
+																								});
+																							},
+																							blockUser: () => undefined,
+																							reportProblem: () => undefined,
+																							showDotsMenuModal: (items) =>
+																								showOptionsMenu({
+																									items,
+																								}),
+																							setNavigationParams,
+																							getText,
+																						},
+																					})
+																				}
+																			</WithVisitedUserContent>
+																		)}
+																	</WithCurrentUser>
 																)}
-															</WithCurrentUser>
+															</WithAggregations>
 														)}
 													</WithActivities>
 												)}

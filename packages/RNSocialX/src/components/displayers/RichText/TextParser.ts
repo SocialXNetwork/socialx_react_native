@@ -74,11 +74,7 @@ export class TextParser {
 	 * @param {String[]} matches - Result of the RegExp.exec
 	 * @return {Object} props for the matched text
 	 */
-	private getMatchedPart = (
-		matchedPattern: any,
-		text: string,
-		matches: string[],
-	) => {
+	private getMatchedPart = (matchedPattern: any, text: string, matches: string[]) => {
 		const props: any = {};
 
 		Object.keys(matchedPattern).forEach((key) => {
@@ -93,10 +89,7 @@ export class TextParser {
 		});
 
 		let children = text;
-		if (
-			matchedPattern.renderText &&
-			typeof matchedPattern.renderText === 'function'
-		) {
+		if (matchedPattern.renderText && typeof matchedPattern.renderText === 'function') {
 			children = matchedPattern.renderText(text, matches);
 		}
 

@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-	ConnectionInfo,
-	ConnectionType,
-	NetInfo,
-	Platform,
-} from 'react-native';
+import { ConnectionInfo, ConnectionType, NetInfo, Platform } from 'react-native';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { OS_TYPES } from '../environment/consts';
 
@@ -21,22 +16,14 @@ class OfflineHandler extends React.Component<IOfflineHandlers> {
 			this.connectionStatusUpdated(connectionInfo);
 		}
 
-		NetInfo.addEventListener(
-			this.CONNECTION_EVENT_NAME,
-			this.connectionStatusUpdated,
-		);
+		NetInfo.addEventListener(this.CONNECTION_EVENT_NAME, this.connectionStatusUpdated);
 	}
 
 	componentWillUnmount() {
-		NetInfo.removeEventListener(
-			this.CONNECTION_EVENT_NAME,
-			this.connectionStatusUpdated,
-		);
+		NetInfo.removeEventListener(this.CONNECTION_EVENT_NAME, this.connectionStatusUpdated);
 	}
 
-	connectionStatusUpdated = (
-		connectionInfo: ConnectionInfo | ConnectionType,
-	) => {
+	connectionStatusUpdated = (connectionInfo: ConnectionInfo | ConnectionType) => {
 		const { type } = connectionInfo as ConnectionInfo;
 		const isOffline = type === 'none' || type === 'unknown';
 		this.props.connectionStatusUpdated(isOffline);

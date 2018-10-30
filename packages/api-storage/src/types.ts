@@ -44,9 +44,5 @@ export interface IUploader {
 	startUpload: (options: IUploadOpts) => Promise<string>;
 	getFileInfo: (path: string) => Promise<IGetFileInfo>;
 	cancelUpload: (uploadId: string) => Promise<boolean>;
-	addListener: (
-		eventType: string,
-		uploadId: string,
-		listener: (data: any) => void,
-	) => void;
+	addListener: (eventType: string, uploadId: string, listener: (data: any) => void) => void;
 }

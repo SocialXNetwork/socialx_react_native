@@ -17,9 +17,11 @@ const setAppConfigAction: ActionCreator<ISetAppConfigAction> = (
 	payload: setAppConfigInput,
 });
 
-export const setAppConfig = (
-	setAppConfigInput: ISetAppConfigInput,
-): IThunk => async (dispatch, getState, context) => {
+export const setAppConfig = (setAppConfigInput: ISetAppConfigInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
 		dispatch(setAppConfigAction(setAppConfigInput));
 	} catch (e) {
@@ -33,9 +35,9 @@ export const setAppConfig = (
 	}
 };
 
-const setCustomGunSuperPeersAction: ActionCreator<
-	ISetCustomGunSuperPeersAction
-> = (setCustomGunSuperPeersInput: ISetCustomGunSuperPeersInput) => ({
+const setCustomGunSuperPeersAction: ActionCreator<ISetCustomGunSuperPeersAction> = (
+	setCustomGunSuperPeersInput: ISetCustomGunSuperPeersInput,
+) => ({
 	type: ActionTypes.SET_CUSTOM_GUN_SUPER_PEERS,
 	payload: setCustomGunSuperPeersInput,
 });

@@ -20,9 +20,7 @@ export const Row: React.SFC<IRowProps> = ({
 		/**/
 	},
 }) => {
-	const containerStyles = last
-		? [styles.container, { borderBottomWidth: 1 }]
-		: styles.container;
+	const containerStyles = last ? [styles.container, { borderBottomWidth: 1 }] : styles.container;
 	const rightStyles = border ? [styles.text, styles.border] : styles.text;
 
 	return (

@@ -15,6 +15,7 @@ export {
 export {
 	ICreatePostInput,
 	IPostArrayData,
+	IPostReturnData,
 	IRemoveCommentInput,
 	IRemovePostInput,
 	IUnlikeCommentInput,

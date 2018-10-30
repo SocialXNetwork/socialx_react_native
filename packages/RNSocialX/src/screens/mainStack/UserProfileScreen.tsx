@@ -1,9 +1,3 @@
-/**
- * TODO list:
- * 1. @Serkan: Take a look over onViewProfilePhotoHandler function, it uses ipfs
- * 2. @Alex: check and implemented onAddComment, similar with what is on UserFeed?
- */
-
 import * as React from 'react';
 import { Alert, Animated, Dimensions } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
@@ -16,8 +10,8 @@ import {
 	WithUserProfile,
 } from '../../enhancers/screens';
 
-import { PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
-import { IMediaProps, INavigationProps } from '../../types';
+import { PROFILE_TAB_ICON_TYPES, SCREENS, TABS } from '../../environment/consts';
+import { IMediaProps, INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -35,10 +29,7 @@ type IUserProfileScreenProps = INavigationProps &
 	IWithUserProfileEnhancedData &
 	IWithUserProfileEnhancedActions;
 
-class Screen extends React.Component<
-	IUserProfileScreenProps,
-	IUserProfileScreenState
-> {
+class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
 	private lastLoadedPhotoIndex = 0;
 	private readonly gridPhotosProvider: DataProvider;
 
@@ -61,7 +52,8 @@ class Screen extends React.Component<
 		const {
 			currentUserAvatarURL,
 			visitedUser,
-			refreshingProfile,
+			loadingProfile,
+			loadingPosts,
 			postComment,
 			blockUser,
 			reportProblem,
@@ -85,9 +77,11 @@ class Screen extends React.Component<
 			aboutMeText,
 			relationship,
 		} = visitedUser;
+
 		return (
 			<UserProfileScreenView
-				refreshing={refreshingProfile}
+				refreshing={loadingProfile && loadingPosts}
+				loadingPosts={loadingPosts}
 				onRefresh={this.onRefreshHandler}
 				numberOfPhotos={numberOfPhotos}
 				numberOfLikes={numberOfLikes}
@@ -98,11 +92,11 @@ class Screen extends React.Component<
 				userName={userName}
 				aboutMeText={aboutMeText}
 				recentPosts={recentPosts}
-				loadMorePhotosHandler={this.loadMorePhotosHandler}
+				onLoadMorePhotos={this.onLoadMorePhotosHandler}
 				onAddFriend={this.onAddFriendHandler}
 				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				relationship={relationship}
-				onViewProfilePhoto={this.onViewProfilePhotoHandler}
+				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onViewMediaFullscreen={this.onViewMediaFullScreenHandler}
 				gridMediaProvider={gridMediaProvider}
 				currentUserAvatarURL={currentUserAvatarURL}
@@ -112,24 +106,23 @@ class Screen extends React.Component<
 				activeTab={activeTab}
 				containerHeight={containerHeight}
 				onLayoutChange={this.onLayoutChangeHandler}
-				onClose={this.onCloseHandler}
-				getText={this.props.getText}
-				onImagePress={this.onMediaObjectPressHandler}
+				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
 				onUserPress={this.onViewUserProfile}
 				onSubmitComment={postComment}
 				onCommentPress={this.onViewCommentsForPost}
-				onAddComment={(height: number) => {
-					/**/
-				}}
+				onAddComment={(height: number) => undefined}
 				onDeletePostPress={() => undefined}
 				onBlockUser={blockUser}
 				onReportProblem={reportProblem}
+				onGoBack={this.onGoBackHandler}
+				getText={this.props.getText}
 			/>
 		);
 	}
 
-	private loadMorePhotosHandler = () => {
+	// Improve this when we have lazy loading
+	private onLoadMorePhotosHandler = () => {
 		const { gridMediaProvider } = this.state;
 		const { visitedUser } = this.props;
 		const { mediaObjects } = visitedUser;
@@ -143,8 +136,7 @@ class Screen extends React.Component<
 		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
 			const loadedSize = gridMediaProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia =
-				loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
 			const newMedia = mediaObjects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject: IMediaProps, index: number) => ({
@@ -167,23 +159,6 @@ class Screen extends React.Component<
 		addFriend(visitedUser.userId);
 	};
 
-	private onMediaObjectPressHandler = (
-		index: number,
-		media: IMediaProps[],
-		postId: string,
-	) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects: media,
-				startIndex: index,
-				postId,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
-	};
-
 	private onViewCommentsForPost = (postId: string, startComment: boolean) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
@@ -200,22 +175,40 @@ class Screen extends React.Component<
 		return !likedByMe;
 	};
 
-	private onRefreshHandler = () => {
-		const { loadMorePosts, loadMorePhotos, visitedUser } = this.props;
+	private onRefreshHandler = async () => {
+		const {
+			visitedUser,
+			loadingProfile,
+			loadingPosts,
+			getProfileForUser,
+			getPostsForUser,
+		} = this.props;
 
-		if (this.state.activeTab === PROFILE_TAB_ICON_TYPES.LIST) {
-			loadMorePosts(visitedUser.userId);
-		} else {
-			loadMorePhotos(visitedUser.userId);
+		if (!loadingProfile && !loadingPosts) {
+			const userId = visitedUser.userId;
+			await getProfileForUser(userId);
+			await getPostsForUser(userId);
 		}
 	};
 
-	private onViewProfilePhotoHandler = () => {
-		// const {navigation, getUserQuery} = this.props;
-		// navigation.navigate('MediaViewerScreen', {
-		// 	mediaObjects: [{type: 'jpg', hash: getUserQuery.getUser.avatarURL.replace(base.ipfs_URL, '')}],
-		// 	startIndex: 0,
-		// });
+	private onProfilePhotoPressHandler = () => {
+		const { navigation, setNavigationParams, visitedUser } = this.props;
+
+		const mediaObjects = [
+			{
+				url: visitedUser.avatarURL,
+				type: MediaTypeImage,
+			},
+		];
+
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects,
+				startIndex: 0,
+			},
+		});
+		navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onViewMediaFullScreenHandler = (index: number) => {
@@ -225,6 +218,19 @@ class Screen extends React.Component<
 			params: {
 				mediaObjects: visitedUser.mediaObjects,
 				startIndex: index,
+			},
+		});
+		navigation.navigate(SCREENS.MediaViewer);
+	};
+
+	private onImagePressHandler = (index: number, media: IMediaProps[], postId: string) => {
+		const { navigation, setNavigationParams } = this.props;
+		setNavigationParams({
+			screenName: SCREENS.MediaViewer,
+			params: {
+				mediaObjects: media,
+				startIndex: index,
+				postId,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);
@@ -287,24 +293,37 @@ class Screen extends React.Component<
 		// TODO: API call to remove + refresh user query so relationship is updated!
 	};
 
-	private onCloseHandler = () => {
+	private onGoBackHandler = () => {
 		this.props.navigation.goBack(null);
 	};
 
 	private onViewUserProfile = (userId: string) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: { userId },
-		});
-		navigation.navigate(SCREENS.UserProfile);
+		const {
+			navigation,
+			setNavigationParams,
+			currentUserId,
+			userPosts,
+			getPostsForUser,
+		} = this.props;
+
+		if (userId === currentUserId) {
+			navigation.navigate(SCREENS.MyProfile);
+		} else {
+			if (!userPosts[userId]) {
+				getPostsForUser(userId);
+			}
+
+			setNavigationParams({
+				screenName: SCREENS.UserProfile,
+				params: { userId, origin: TABS.Feed },
+			});
+			navigation.navigate(SCREENS.UserProfile);
+		}
 	};
 }
 
 export const UserProfileScreen = ({ navigation }: INavigationProps) => (
 	<WithUserProfile>
-		{({ data, actions }) => (
-			<Screen navigation={navigation} {...data} {...actions} />
-		)}
+		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithUserProfile>
 );

@@ -53,10 +53,7 @@ const confirmPasswordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 const EMAIL_SCHEMA = string().email();
 
-const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({
-	text,
-	visible,
-}) => (
+const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({ text, visible }) => (
 	<React.Fragment>
 		{visible && (
 			<View style={style.errorContainer}>
@@ -130,40 +127,23 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								errors.password = getText('register.screen.password.length');
 							}
 							if (!confirmPassword) {
-								errors.confirmPassword = getText(
-									'register.screen.password.required',
-								);
+								errors.confirmPassword = getText('register.screen.password.required');
 							} else if (!errors.password && confirmPassword !== password) {
-								errors.confirmPassword = getText(
-									'register.screen.password.mismatch',
-								);
+								errors.confirmPassword = getText('register.screen.password.mismatch');
 							}
 							if (!termsAccepted) {
-								errors.termsAccepted = getText(
-									'register.screen.terms.accepted',
-								);
+								errors.termsAccepted = getText('register.screen.terms.accepted');
 							}
 							return errors;
 						}}
-						onSubmit={({
-							termsAccepted,
-							...registerData
-						}: IRegisterFormData) => {
+						onSubmit={({ termsAccepted, ...registerData }: IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
 								onRegister(registerData);
 							});
 							Keyboard.dismiss();
 						}}
 						render={({
-							values: {
-								email,
-								name,
-								userName,
-								password,
-								confirmPassword,
-								termsAccepted,
-								avatar,
-							},
+							values: { email, name, userName, password, confirmPassword, termsAccepted, avatar },
 							errors,
 							handleSubmit,
 							isValid,
@@ -182,12 +162,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										showDotsMenuModal={showDotsMenuModal}
 									/>
 								</View>
-								<View
-									style={[
-										style.textInputContainer,
-										style.textInputContainerFirst,
-									]}
-								>
+								<View style={[style.textInputContainer, style.textInputContainerFirst]}>
 									<PrimaryTextInput
 										icon="ios-mail"
 										placeholder={getText('register.email')}
@@ -199,15 +174,10 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('email', value);
 											setFieldTouched('email');
 										}}
-										onSubmitPressed={() =>
-											nameRef.current && nameRef.current.focusInput()
-										}
+										onSubmitPressed={() => nameRef.current && nameRef.current.focusInput()}
 										keyboardType={TKeyboardKeys.emailAddress}
 									/>
-									<ErrorMessage
-										text={errors.email}
-										visible={!!touched.email && !!errors.email}
-									/>
+									<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
 								</View>
 								<View style={style.textInputContainer}>
 									<PrimaryTextInput
@@ -223,14 +193,9 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('name', value);
 											setFieldTouched('name');
 										}}
-										onSubmitPressed={() =>
-											usernameRef.current && usernameRef.current.focusInput()
-										}
+										onSubmitPressed={() => usernameRef.current && usernameRef.current.focusInput()}
 									/>
-									<ErrorMessage
-										text={errors.name}
-										visible={!!touched.name && !!errors.name}
-									/>
+									<ErrorMessage text={errors.name} visible={!!touched.name && !!errors.name} />
 								</View>
 								<View style={style.textInputContainer}>
 									<PrimaryTextInput
@@ -245,9 +210,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldValue('userName', value);
 											setFieldTouched('userName');
 										}}
-										onSubmitPressed={() =>
-											passwordRef.current && passwordRef.current.focusInput()
-										}
+										onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
 									/>
 									<ErrorMessage
 										text={errors.userName}
@@ -269,8 +232,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 											setFieldTouched('password');
 										}}
 										onSubmitPressed={() =>
-											confirmPasswordRef.current &&
-											confirmPasswordRef.current.focusInput()
+											confirmPasswordRef.current && confirmPasswordRef.current.focusInput()
 										}
 									/>
 									<ErrorMessage
@@ -296,25 +258,17 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									/>
 									<ErrorMessage
 										text={errors.confirmPassword}
-										visible={
-											!!touched.confirmPassword && !!errors.confirmPassword
-										}
+										visible={!!touched.confirmPassword && !!errors.confirmPassword}
 									/>
 								</View>
 								<View style={style.termsContainer}>
-									<Text style={style.acceptText}>
-										{getText('register.accept.part1')}
-									</Text>
+									<Text style={style.acceptText}>{getText('register.accept.part1')}</Text>
 									<TouchableOpacity onPress={onNavigateToTermsAndConditions}>
-										<Text style={style.acceptTextLink}>
-											{getText('register.accept.part2')}
-										</Text>
+										<Text style={style.acceptTextLink}>{getText('register.accept.part2')}</Text>
 									</TouchableOpacity>
 									<CheckBox
 										checked={termsAccepted}
-										onPress={() =>
-											setFieldValue('termsAccepted', !termsAccepted)
-										}
+										onPress={() => setFieldValue('termsAccepted', !termsAccepted)}
 										color={colors.pink}
 										style={style.acceptCheckbox}
 									/>

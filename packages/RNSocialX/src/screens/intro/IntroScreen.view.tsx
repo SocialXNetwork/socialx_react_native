@@ -12,29 +12,20 @@ const SLIDES = [
 		key: 'Slide1',
 		title: 'intro.first.slide.title',
 		description: 'intro.first.slide.description',
-		gradient: [
-			customStyleProps.slide1GradientStart,
-			customStyleProps.slide1GradientEnd,
-		],
+		gradient: [customStyleProps.slide1GradientStart, customStyleProps.slide1GradientEnd],
 	},
 	{
 		key: 'Slide2',
 		title: 'intro.second.slide.title',
 		description: 'intro.second.slide.description',
-		gradient: [
-			customStyleProps.slide2GradientStart,
-			customStyleProps.slide2GradientEnd,
-		],
+		gradient: [customStyleProps.slide2GradientStart, customStyleProps.slide2GradientEnd],
 		image: customStyleProps.slide2BackgroundImage,
 	},
 	{
 		key: 'Slide3',
 		title: 'intro.third.slide.title',
 		description: 'intro.third.slide.description',
-		gradient: [
-			customStyleProps.slide3GradientStart,
-			customStyleProps.slide3GradientEnd,
-		],
+		gradient: [customStyleProps.slide3GradientStart, customStyleProps.slide3GradientEnd],
 		image: customStyleProps.slide3BackgroundImage,
 	},
 ];

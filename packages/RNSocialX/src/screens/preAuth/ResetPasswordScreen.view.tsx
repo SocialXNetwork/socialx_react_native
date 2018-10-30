@@ -33,29 +33,22 @@ interface IResetPasswordForm {
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const confirmPasswordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
-const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({
-	text,
-	visible,
-}) => (
-	<React.Fragment>
-		{visible && <Text style={styles.errorText}>{text}</Text>}
-	</React.Fragment>
+const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({ text, visible }) => (
+	<React.Fragment>{visible && <Text style={styles.errorText}>{text}</Text>}</React.Fragment>
 );
 
-export const ResetPasswordScreenView: React.SFC<
-	IResetPasswordScreenViewProps
-> = ({ onSetNewPassword, onGoBack, getText }) => (
+export const ResetPasswordScreenView: React.SFC<IResetPasswordScreenViewProps> = ({
+	onSetNewPassword,
+	onGoBack,
+	getText,
+}) => (
 	<Formik
 		initialValues={{
 			resetCode: '',
 			password: '',
 			confirmPassword: '',
 		}}
-		validate={({
-			resetCode,
-			password,
-			confirmPassword,
-		}: IResetPasswordForm) => {
+		validate={({ resetCode, password, confirmPassword }: IResetPasswordForm) => {
 			const errors: FormikErrors<IResetPasswordForm> = {};
 			if (!resetCode) {
 				errors.resetCode = getText('reset.password.code.required');
@@ -76,17 +69,13 @@ export const ResetPasswordScreenView: React.SFC<
 			}
 
 			if (!confirmPassword) {
-				errors.confirmPassword = getText(
-					'reset.password.confirm.password.required',
-				);
+				errors.confirmPassword = getText('reset.password.confirm.password.required');
 			} else if (!errors.password && confirmPassword !== password) {
 				errors.confirmPassword = getText('reset.password.error.mismatch');
 			}
 			return errors;
 		}}
-		onSubmit={(values: IResetPasswordForm) =>
-			onSetNewPassword(values.resetCode, values.password)
-		}
+		onSubmit={(values: IResetPasswordForm) => onSetNewPassword(values.resetCode, values.password)}
 		render={({
 			values: { resetCode, password, confirmPassword },
 			isValid,
@@ -109,9 +98,7 @@ export const ResetPasswordScreenView: React.SFC<
 					keyboardShouldPersistTaps="handled"
 					enableOnAndroid={true}
 				>
-					<Text style={styles.descriptionText}>
-						{getText('reset.password.description')}
-					</Text>
+					<Text style={styles.descriptionText}>{getText('reset.password.description')}</Text>
 					<View style={styles.inputContainer}>
 						<PrimaryTextInput
 							placeholder={getText('reset.password.reset.code')}
@@ -125,9 +112,7 @@ export const ResetPasswordScreenView: React.SFC<
 								setFieldValue('resetCode', value);
 								setFieldTouched('resetCode');
 							}}
-							onSubmitPressed={() =>
-								passwordRef.current && passwordRef.current.focusInput()
-							}
+							onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
 						/>
 						<ErrorMessage
 							text={errors.resetCode}
@@ -148,8 +133,7 @@ export const ResetPasswordScreenView: React.SFC<
 								setFieldTouched('password');
 							}}
 							onSubmitPressed={() =>
-								confirmPasswordRef.current &&
-								confirmPasswordRef.current.focusInput()
+								confirmPasswordRef.current && confirmPasswordRef.current.focusInput()
 							}
 							ref={passwordRef}
 						/>

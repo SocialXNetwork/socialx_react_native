@@ -33,37 +33,32 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 				onBackdropPress={onBackdropPress}
 				style={styles.container}
 			>
-				<SafeAreaView
-					forceInset={{ bottom: 'always', top: 'never' }}
-					style={styles.innerContainer}
-				>
-					{items.map(
-						({ icon, label, actionHandler }: IDotsMenuItem, index: number) => {
-							const itemStyles = [
-								styles.row,
-								index === 0 ? [styles.first] : {},
-								index !== items.length - 1 ? styles.separator : {},
-							];
+				<SafeAreaView forceInset={{ bottom: 'always', top: 'never' }} style={styles.innerContainer}>
+					{items.map(({ icon, label, actionHandler }: IDotsMenuItem, index: number) => {
+						const itemStyles = [
+							styles.row,
+							index === 0 ? [styles.first] : {},
+							index !== items.length - 1 ? styles.separator : {},
+						];
 
-							return (
-								<TouchableOpacity
-									style={itemStyles}
-									key={index}
-									onPress={() => {
-										onBackdropPress();
-										ModalManager.safeRunAfterModalClosed(actionHandler);
-									}}
-								>
-									<View style={styles.iconContainer}>
-										<Icon name={icon} style={styles.icon} />
-									</View>
-									<View style={styles.textContainer}>
-										<Text>{label}</Text>
-									</View>
-								</TouchableOpacity>
-							);
-						},
-					)}
+						return (
+							<TouchableOpacity
+								style={itemStyles}
+								key={index}
+								onPress={() => {
+									onBackdropPress();
+									ModalManager.safeRunAfterModalClosed(actionHandler);
+								}}
+							>
+								<View style={styles.iconContainer}>
+									<Icon name={icon} style={styles.icon} />
+								</View>
+								<View style={styles.textContainer}>
+									<Text>{label}</Text>
+								</View>
+							</TouchableOpacity>
+						);
+					})}
 				</SafeAreaView>
 			</Modal>
 		)}

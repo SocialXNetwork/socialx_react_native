@@ -9,17 +9,10 @@ export interface ISendCoinsHeaderProps {
 	onDropDownPress?: () => void;
 }
 
-export const SendCoinsHeader: React.SFC<ISendCoinsHeaderProps> = ({
-	coins,
-	onDropDownPress,
-}) => (
+export const SendCoinsHeader: React.SFC<ISendCoinsHeaderProps> = ({ coins, onDropDownPress }) => (
 	<View style={styles.container}>
 		<View style={styles.leftContainer}>
-			<Image
-				source={icons.socxCoinIcon}
-				style={styles.coinIcon}
-				resizeMode="contain"
-			/>
+			<Image source={icons.socxCoinIcon} style={styles.coinIcon} resizeMode="contain" />
 			<View>
 				<Text style={styles.coinTitle}>SOCX</Text>
 				<Text style={styles.coinDetails}>{coins} SOCX in wallet</Text>

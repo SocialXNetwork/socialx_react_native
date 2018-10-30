@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { Dimensions } from 'react-native';
-import {
-	DataProvider,
-	LayoutProvider,
-	RecyclerListView,
-} from 'recyclerlistview';
+import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
 import { Sizes } from '../../environment/theme';
 
@@ -35,11 +31,7 @@ interface IPhotoGridProps {
 let lastKnownGridHeight: number = 0;
 let gridProviderInstance: LayoutProvider | null = null;
 
-const getGridProvider = (
-	thumbWidth: number,
-	thumbHeight: number,
-	header: IHeaderType,
-) => {
+const getGridProvider = (thumbWidth: number, thumbHeight: number, header: IHeaderType) => {
 	lastKnownGridHeight = header && header.height;
 	if (!gridProviderInstance) {
 		gridProviderInstance = new LayoutProvider(
@@ -87,9 +79,7 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 	dataProvider,
 	renderGridItem,
 	onLoadMore,
-	onScroll = () => {
-		/**/
-	},
+	onScroll = () => undefined,
 	extendedState = {},
 	scrollViewProps = {},
 	thumbHeight = Sizes.getThumbSize(),
@@ -100,9 +90,7 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 		renderAheadOffset={1500}
 		layoutProvider={getGridProvider(thumbWidth, thumbHeight, header)}
 		dataProvider={dataProvider}
-		rowRenderer={(...args) =>
-			renderGridItemOrHeader(args[0], args[1], renderGridItem, header)
-		}
+		rowRenderer={(...args) => renderGridItemOrHeader(args[0], args[1], renderGridItem, header)}
 		onEndReached={onLoadMore}
 		onEndReachedThreshold={100} // must be >0 for Android
 		onScroll={onScroll}

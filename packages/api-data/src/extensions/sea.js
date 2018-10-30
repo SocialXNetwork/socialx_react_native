@@ -1,3 +1,4 @@
+// tslint:disable
 ;(function(){
 
     /* UNBUILD */
@@ -7,7 +8,7 @@
     root = root || {};
     var console = root.console || {log: function(){}};
     function USE(arg, req){
-      return req ? () => {} : arg.slice? USE[R(arg)] : function(mod, path){
+      return req? () => {} : arg.slice? USE[R(arg)] : function(mod, path){
         arg(mod = {exports: {}});
         USE[R(path)] = mod.exports;
       }
@@ -161,17 +162,18 @@
       const Buffer = USE('./buffer')
       const api = {Buffer: Buffer}
       var o = {};
-  
-      if(SEA.window){
-        setTimeout(() => {
-            api.crypto = window.crypto || window.msCrypto;
-            api.subtle = (api.crypto||o).subtle || (api.crypto||o).webkitSubtle;
-            api.TextEncoder = window.TextEncoder;
-            api.TextDecoder = window.TextDecoder;
-            api.random = (len) => Buffer.from(api.crypto.getRandomValues(new Uint8Array(Buffer.alloc(len))))
-            console.log('*** sea api', api);
-        }, 2000);
-      }
+      const interval = setInterval(() => {
+        if (window.crypto.loaded) {
+          api.crypto = window.crypto;
+          api.subtle = api.crypto.subtle;
+          api.TextEncoder = window.TextEncoder;
+          api.TextDecoder = window.TextDecoder;
+          api.random = (len) => Buffer.from(api.crypto.getRandomValues(new Uint8Array(Buffer.alloc(len))))
+          console.log('*** gun sea crypto set', api);
+          clearInterval(interval);
+        }
+      }, 500);
+      
       module.exports = api
     })(USE, './shim');
   

@@ -12,8 +12,7 @@ const mock: IWithTermsAndConditionsEnhancedProps = {
 
 export interface IWithTermsAndConditionsEnhancedData {}
 
-export interface IWithTermsAndConditionsEnhancedActions
-	extends ITranslatedProps {}
+export interface IWithTermsAndConditionsEnhancedActions extends ITranslatedProps {}
 
 interface IWithTermsAndConditionsEnhancedProps {
 	data: IWithTermsAndConditionsEnhancedData;

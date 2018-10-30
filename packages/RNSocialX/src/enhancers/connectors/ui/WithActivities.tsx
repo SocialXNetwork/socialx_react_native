@@ -61,10 +61,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	clearError: ({ uuid }: { uuid: string }) => dispatch(clearError({ uuid })),
 });
 
-export const WithActivities: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithActivities: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

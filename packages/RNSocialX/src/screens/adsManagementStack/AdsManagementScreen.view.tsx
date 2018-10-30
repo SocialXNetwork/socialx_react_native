@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-	AvatarImage,
-	Header,
-	HeaderButton,
-	Option,
-	PrimaryButton,
-} from '../../components';
+import { AvatarImage, Header, HeaderButton, Option, PrimaryButton } from '../../components';
 import { Icons } from '../../environment/theme';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
@@ -19,9 +13,13 @@ interface IAdsManagementScreenViewProps extends ITranslatedProps, IHeaderProps {
 	userName: string;
 }
 
-export const AdsManagementScreenView: React.SFC<
-	IAdsManagementScreenViewProps
-> = ({ onGoBack, avatarURL, fullName, userName, getText }) => (
+export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> = ({
+	onGoBack,
+	avatarURL,
+	fullName,
+	userName,
+	getText,
+}) => (
 	<View style={styles.container}>
 		<Header
 			title={getText('ad.management.screen.title')}
@@ -34,6 +32,7 @@ export const AdsManagementScreenView: React.SFC<
 		{userName && <Text style={styles.userName}>@{userName}</Text>}
 		<View style={styles.separator} />
 		<Option
+			type="image"
 			icon={Icons.shareIconGradient}
 			text={getText('ad.management.option.post')}
 			onPress={() => {
@@ -42,6 +41,7 @@ export const AdsManagementScreenView: React.SFC<
 		/>
 		<View style={styles.separator} />
 		<Option
+			type="image"
 			icon={Icons.shareIconGradient}
 			text={getText('ad.management.option.video')}
 			onPress={() => {
@@ -50,6 +50,7 @@ export const AdsManagementScreenView: React.SFC<
 		/>
 		<View style={styles.separator} />
 		<Option
+			type="image"
 			icon={Icons.shareIconGradient}
 			text={getText('ad.management.option.traffic')}
 			onPress={() => {

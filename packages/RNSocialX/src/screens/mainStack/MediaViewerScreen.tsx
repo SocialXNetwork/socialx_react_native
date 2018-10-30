@@ -7,11 +7,7 @@ import {
 	IWithMediaViewerEnhancedData,
 	WithMediaViewer,
 } from '../../enhancers/screens';
-import {
-	DeviceOrientations,
-	OS_TYPES,
-	SCREENS,
-} from '../../environment/consts';
+import { DeviceOrientations, OS_TYPES, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
@@ -28,10 +24,7 @@ type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions;
 
-class Screen extends React.Component<
-	IMediaViewerScreenProps,
-	IMediaViewerScreenState
-> {
+class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
 	public state = {
 		orientation: DeviceOrientations.Portrait,
 		activeSlide: this.props.startIndex,
@@ -72,7 +65,7 @@ class Screen extends React.Component<
 				onExitFullScreen={this.onExitFullScreenHandler}
 				onClose={this.onCloseHandler}
 				getText={this.props.getText}
-				canReactOnPost={!!this.props.postId}
+				canReact={!!this.props.postId}
 				onLikePress={this.props.onLikePress}
 				onCommentPress={this.openCommentsScreen}
 			/>
@@ -98,8 +91,7 @@ class Screen extends React.Component<
 	};
 
 	private onExitFullScreenHandler = () => {
-		const timeoutBeforeAllowAgainAllOrientation =
-			Platform.OS === OS_TYPES.IOS ? 100 : 5000;
+		const timeoutBeforeAllowAgainAllOrientation = Platform.OS === OS_TYPES.IOS ? 100 : 5000;
 		Orientation.lockToPortrait();
 		setTimeout(() => {
 			Orientation.unlockAllOrientations();

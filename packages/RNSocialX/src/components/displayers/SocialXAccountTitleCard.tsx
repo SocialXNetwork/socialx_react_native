@@ -12,9 +12,7 @@ export interface ISocialXAccountTitleCardProps extends ITranslatedProps {
 	returnPercentage: number;
 }
 
-export const SocialXAccountTitleCard: React.SFC<
-	ISocialXAccountTitleCardProps
-> = (props) => (
+export const SocialXAccountTitleCard: React.SFC<ISocialXAccountTitleCardProps> = (props) => (
 	<View style={styles.container}>
 		<Text style={styles.myCoinsValue}>
 			{'SOCX '}

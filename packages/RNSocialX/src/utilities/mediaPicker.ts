@@ -25,9 +25,7 @@ export const getCameraMediaObject = async (
 	options: Partial<Options> = {},
 ): Promise<IPickerImage | undefined> => {
 	try {
-		const mediaObject:
-			| IPickerImage
-			| IPickerImage[] = await ImagePicker.openCamera({
+		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openCamera({
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});
@@ -60,9 +58,7 @@ export const getGalleryMediaObject = async (
 	options: Partial<Options> = {},
 ): Promise<IPickerImage | undefined> => {
 	try {
-		const mediaObject:
-			| IPickerImage
-			| IPickerImage[] = await ImagePicker.openPicker({
+		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openPicker({
 			...DEFAULT_PICKER_OPTIONS,
 			...options,
 		});
@@ -72,13 +68,9 @@ export const getGalleryMediaObject = async (
 	}
 };
 
-export const getCameraMediaObjectMultiple = async (
-	options = {},
-): Promise<IPickerImageMultiple> => {
+export const getCameraMediaObjectMultiple = async (options = {}): Promise<IPickerImageMultiple> => {
 	try {
-		const mediaObject:
-			| IPickerImage
-			| IPickerImage[] = await ImagePicker.openCamera({
+		const mediaObject: IPickerImage | IPickerImage[] = await ImagePicker.openCamera({
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});

@@ -1,13 +1,6 @@
 import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import * as React from 'react';
-import {
-	ActivityIndicator,
-	Platform,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { ActivityIndicator, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { TKeyboardKeys, WithManagedTransitions } from '..';
@@ -17,9 +10,7 @@ import style, { customStyleProps } from './InputSMSCodeModal.style';
 
 const NUMBER_OF_DIGITS = 6;
 
-interface IInputSMSCodeModalComponentProps
-	extends ITranslatedProps,
-		IResizeProps {
+interface IInputSMSCodeModalComponentProps extends ITranslatedProps, IResizeProps {
 	visible: boolean;
 	phoneNumber: string;
 	errorMessage: string | null;
@@ -63,10 +54,7 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 				animationIn="zoomIn"
 				animationOut="zoomOut"
 				onBackdropPress={declineHandler}
-				style={[
-					style.container,
-					Platform.OS === OS_TYPES.IOS ? { marginBottom } : {},
-				]}
+				style={[style.container, Platform.OS === OS_TYPES.IOS ? { marginBottom } : {}]}
 			>
 				<View style={style.boxContainer}>
 					<Text style={style.title}>{getText('modal.sms.code.title')}</Text>
@@ -91,9 +79,7 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 							</TextInput>
 						</View>
 					</View>
-					{errorMessage && (
-						<Text style={style.errorMessage}>{errorMessage}</Text>
-					)}
+					{errorMessage && <Text style={style.errorMessage}>{errorMessage}</Text>}
 					<View style={style.buttonsContainer}>
 						<TouchableOpacity
 							style={[style.button, resendingCode ? style.disabledButton : {}]}
@@ -122,11 +108,7 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={[
-								style.button,
-								style.flexButton,
-								!isValid ? style.disabledButton : {},
-							]}
+							style={[style.button, style.flexButton, !isValid ? style.disabledButton : {}]}
 							onPress={handleSubmit}
 							disabled={!isValid}
 						>
@@ -155,16 +137,9 @@ const formikSettings = {
 	},
 	handleSubmit: async (
 		{ smsCode }: IWithSMSCodeProps,
-		{
-			props,
-		}: FormikBag<
-			IInputSMSCodeModalComponentProps,
-			IInputSMSCodeModalComponentProps
-		>,
+		{ props }: FormikBag<IInputSMSCodeModalComponentProps, IInputSMSCodeModalComponentProps>,
 	) => props.confirmHandler(smsCode),
 	enableReinitialize: true,
 };
 
-export const InputSMSCodeModal = withFormik(formikSettings)(
-	InputSMSCodeModalComponent as any,
-);
+export const InputSMSCodeModal = withFormik(formikSettings)(InputSMSCodeModalComponent as any);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { currentUser } from '../../../mocks';
 import {
 	ICurrentUser,
 	IDotsMenuProps,
@@ -17,33 +16,6 @@ import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { resetNavigationToRoute } from '../../helpers';
 import { WithCurrentUserContent } from '../intermediary';
 
-const mock: IWithMyProfileEnhancedProps = {
-	data: {
-		currentUser,
-	},
-	actions: {
-		showDotsMenuModal: (items) => {
-			/**/
-		},
-		logout: () => {
-			/**/
-		},
-		resetNavigationToRoute: (
-			screenName: string,
-			navigation: NavigationScreenProp<any>,
-		) => {
-			/**/
-		},
-		setGlobal: (input: IGlobal) => {
-			/**/
-		},
-		setNavigationParams: () => {
-			/**/
-		},
-		getText: (value: string, ...args: any[]) => value,
-	},
-};
-
 export interface IWithMyProfileEnhancedData {
 	currentUser: ICurrentUser;
 }
@@ -52,10 +24,7 @@ export interface IWithMyProfileEnhancedActions
 	extends ITranslatedProps,
 		IDotsMenuProps,
 		INavigationParamsActions {
-	resetNavigationToRoute: (
-		screenName: string,
-		navigation: NavigationScreenProp<any>,
-	) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	logout: () => void;
 	setGlobal: (input: IGlobal) => void;
 }
@@ -71,36 +40,32 @@ interface IWithMyProfileProps {
 
 interface IWithMyProfileState {}
 
-export class WithMyProfile extends React.Component<
-	IWithMyProfileProps,
-	IWithMyProfileState
-> {
+export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyProfileState> {
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithNavigationParams>
 						{({ setNavigationParams }) => (
 							<WithGlobals>
 								{({ setGlobal }) => (
 									<WithOverlays>
-										{(overlayProps) => (
+										{({ showOptionsMenu }) => (
 											<WithAccounts>
-												{(accountsProps) => (
+												{({ logout }) => (
 													<WithCurrentUserContent>
-														{(currentUserProps) =>
+														{({ currentUser }) =>
 															this.props.children({
 																data: {
-																	currentUser: currentUserProps.currentUser!,
+																	currentUser: currentUser!,
 																},
 																actions: {
-																	showDotsMenuModal: (items) =>
-																		overlayProps.showOptionsMenu({ items }),
-																	logout: accountsProps.logout,
+																	showDotsMenuModal: (items) => showOptionsMenu({ items }),
+																	logout,
 																	resetNavigationToRoute,
 																	setNavigationParams,
 																	setGlobal,
-																	getText: i18nProps.getText,
+																	getText,
 																},
 															})
 														}

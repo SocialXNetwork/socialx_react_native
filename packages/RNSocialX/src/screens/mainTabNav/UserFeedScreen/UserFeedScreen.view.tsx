@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, FlatList, View } from 'react-native';
+import { Animated, FlatList, ScrollView, View } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
 import {
@@ -19,17 +19,17 @@ import {
 
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps
-	extends IWallPostCardActions,
-		IDotsMenuProps {
+interface IUserFeedScreenViewProps extends IWallPostCardActions, IDotsMenuProps {
 	avatarImage: string;
 	posts: IWallPostCardData[];
+	skeletonPost: IWallPostCardData;
 	refreshing: boolean;
+	creatingPost: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
 	currentUser: ICurrentUser;
-	shareSectionPlaceholder: string | null;
+	shareSectionPlaceholder: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
 	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
@@ -37,9 +37,7 @@ interface IUserFeedScreenViewProps
 	likeError: boolean;
 }
 
-export class UserFeedScreenView extends React.Component<
-	IUserFeedScreenViewProps
-> {
+export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
 	public render() {
 		const {
 			posts,
@@ -52,44 +50,38 @@ export class UserFeedScreenView extends React.Component<
 			shareSectionPlaceholder,
 			scrollRef,
 			scrollY,
+			skeletonPost,
 			getText,
 		} = this.props;
+
+		const allPosts = skeletonPost ? [skeletonPost, ...posts] : posts;
 
 		return (
 			<View style={styles.container}>
 				{posts.length === 0 ? (
-					<FeedWithNoPosts
-						onCreateWallPost={onCreateWallPost}
-						getText={getText}
-					/>
+					<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
 				) : (
 					<FlatList
-						ListHeaderComponent={
-							shareSectionPlaceholder ? (
-								<ShareSection
-									avatarImage={avatarImage}
-									onCreateWallPost={onCreateWallPost}
-									sharePlaceholder={shareSectionPlaceholder}
-								/>
-							) : null
-						}
 						ref={scrollRef}
 						windowSize={10}
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						data={posts}
+						data={allPosts}
 						keyExtractor={(item: IWallPostCardData) => item.postId}
 						renderItem={(data) => this.renderWallPosts(data, getText)}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
 						onEndReachedThreshold={0.5}
 						keyboardShouldPersistTaps="handled"
+						ListHeaderComponent={
+							<ShareSection
+								avatarImage={avatarImage}
+								onCreateWallPost={onCreateWallPost}
+								sharePlaceholder={shareSectionPlaceholder}
+							/>
+						}
 						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-						onScrollToIndexFailed={() => {
-							/**/
-						}}
-						onScroll={Animated.event([
-							{ nativeEvent: { contentOffset: { y: scrollY } } },
-						])}
+						onScrollToIndexFailed={() => undefined}
+						onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
 						scrollEventThrottle={16}
 						showsVerticalScrollIndicator={false}
 					/>
@@ -115,6 +107,7 @@ export class UserFeedScreenView extends React.Component<
 			onBlockUser,
 			onReportProblem,
 			showDotsMenuModal,
+			skeletonPost,
 		} = this.props;
 
 		const post = data.item;
@@ -145,11 +138,9 @@ export class UserFeedScreenView extends React.Component<
 					displayDots={true}
 					getText={getText}
 				/>
+				{skeletonPost && <View style={styles.overlay} />}
 				{post.suggested && (
-					<SuggestionsCarousel
-						items={post.suggested}
-						getText={this.props.getText}
-					/>
+					<SuggestionsCarousel items={post.suggested} getText={this.props.getText} />
 				)}
 			</View>
 		);

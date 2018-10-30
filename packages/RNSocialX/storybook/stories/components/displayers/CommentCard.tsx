@@ -13,15 +13,9 @@ storiesOf('Components/displayers', module)
 	.add('CommentCard', () => {
 		const likedByMe = boolean('likedByMe', false);
 		const likeCommentError = boolean('likeCommentError', false);
-		const commentText = text(
-			'commentText',
-			'Sample comment text here.\nGoing on the second line',
-		);
+		const commentText = text('commentText', 'Sample comment text here.\nGoing on the second line');
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
-		const userAvatarURL = text(
-			'user.avatarURL',
-			'https://avatars2.githubusercontent.com/u/212',
-		);
+		const userAvatarURL = text('user.avatarURL', 'https://avatars2.githubusercontent.com/u/212');
 		const userFullName = text('user.fullName', 'Sharell Watchman');
 		const numberOfLikes = number('numberOfLikes', 10);
 

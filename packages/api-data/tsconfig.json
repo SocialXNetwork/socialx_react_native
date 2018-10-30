@@ -5,10 +5,10 @@
     "lib": ["esnext", "es2015"],
     "module": "es6",
     "moduleResolution": "node",
+    "allowJs": true,
     "sourceMap": true,
     "strict": true,
     "target": "es6",
-    "declaration": true,
     "rootDir": "src",
     "outDir": "dist"
   },

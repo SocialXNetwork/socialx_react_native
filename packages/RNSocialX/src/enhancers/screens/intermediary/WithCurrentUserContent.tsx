@@ -11,11 +11,7 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser } from './WithCurrentUser';
 
 interface IWithCurrentUserContentProps {
-	children({
-		currentUser,
-	}: {
-		currentUser: ICurrentUser | undefined;
-	}): JSX.Element;
+	children({ currentUser }: { currentUser: ICurrentUser | undefined }): JSX.Element;
 }
 
 interface IWithCurrentUserContentState {}
@@ -55,8 +51,7 @@ export class WithCurrentUserContent extends React.Component<
 														);
 
 														currentUser.numberOfPhotos = posts.reduce(
-															(acc, post) =>
-																post.media ? acc + post.media.length : 0,
+															(acc, post) => (post.media ? acc + post.media.length : 0),
 															0,
 														);
 
@@ -65,10 +60,7 @@ export class WithCurrentUserContent extends React.Component<
 															0,
 														);
 
-														currentUser.mediaObjects = extractMediaFromPosts(
-															posts,
-															appConfig,
-														);
+														currentUser.mediaObjects = extractMediaFromPosts(posts, appConfig);
 
 														currentUser.recentPosts = recentPosts;
 													}

@@ -23,9 +23,7 @@ export const postMetasByUsernamesRecord = (context: IContext) => {
 export const postsRecordByPostPath = (context: IContext, postPath: string) => {
 	const { gun } = context;
 	const postPathDeconstructed = postPath.split('.');
-	const postsPath = postPathDeconstructed
-		.slice(0, postPathDeconstructed.length - 1)
-		.join('.');
+	const postsPath = postPathDeconstructed.slice(0, postPathDeconstructed.length - 1).join('.');
 	return gun.path(`${TABLES.POSTS}.${postsPath}`);
 };
 
@@ -34,10 +32,7 @@ export const postMetasByCurrentUser = (context: IContext) => {
 	return gun.path(`${TABLES.POST_METAS_BY_USER}.${account.is.alias}`);
 };
 
-export const postMetasByPostIdOfCurrentAccount = (
-	context: IContext,
-	postId: string,
-) => {
+export const postMetasByPostIdOfCurrentAccount = (context: IContext, postId: string) => {
 	const { gun, account } = context;
 	return gun.path(`${TABLES.POST_METAS_BY_USER}.${account.is.alias}.${postId}`);
 };
@@ -59,7 +54,5 @@ export const likesByPostPath = (context: IContext, postPath: string) => {
 
 export const postLikesByCurrentUser = (context: IContext, postPath: string) => {
 	const { gun, account } = context;
-	return gun.path(
-		`${TABLES.POSTS}.${postPath}.${TABLE_ENUMS.LIKES}.${account.is.alias}`,
-	);
+	return gun.path(`${TABLES.POSTS}.${postPath}.${TABLE_ENUMS.LIKES}.${account.is.alias}`);
 };

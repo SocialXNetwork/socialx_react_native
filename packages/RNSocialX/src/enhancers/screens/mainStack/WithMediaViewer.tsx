@@ -6,31 +6,9 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import {
-	IMediaProps,
-	INavigationParamsActions,
-	ITranslatedProps,
-} from '../../../types';
+import { IMediaProps, INavigationParamsActions, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
-
-const mock: IWithMediaViewerEnhancedProps = {
-	data: {
-		mediaObjects: [],
-		startIndex: 1,
-		postId: '2935809jafa%$',
-	},
-	actions: {
-		// This is now implemented with the WithI18n connector enhancer
-		getText: (value: string, ...args: any[]) => value,
-		onLikePress: () => {
-			/**/
-		},
-		setNavigationParams: () => {
-			/**/
-		},
-	},
-};
 
 export interface IWithMediaViewerEnhancedData {
 	mediaObjects: IMediaProps[];
@@ -55,10 +33,7 @@ interface IWithMediaViewerProps {
 
 interface IWithMediaViewerState {}
 
-export class WithMediaViewer extends React.Component<
-	IWithMediaViewerProps,
-	IWithMediaViewerState
-> {
+export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWithMediaViewerState> {
 	render() {
 		const { children } = this.props;
 		return (
@@ -68,22 +43,16 @@ export class WithMediaViewer extends React.Component<
 						{(i18nProps) =>
 							children({
 								data: {
-									...mock.data,
 									mediaObjects:
-										navigationParamsProps.navigationParams[SCREENS.MediaViewer]
-											.mediaObjects,
+										navigationParamsProps.navigationParams[SCREENS.MediaViewer].mediaObjects,
 									startIndex:
-										navigationParamsProps.navigationParams[SCREENS.MediaViewer]
-											.startIndex,
-									postId:
-										navigationParamsProps.navigationParams[SCREENS.MediaViewer]
-											.postId,
+										navigationParamsProps.navigationParams[SCREENS.MediaViewer].startIndex,
+									postId: navigationParamsProps.navigationParams[SCREENS.MediaViewer].postId,
 								},
 								actions: {
-									...mock.actions,
+									onLikePress: () => undefined,
+									setNavigationParams: navigationParamsProps.setNavigationParams,
 									getText: i18nProps.getText,
-									setNavigationParams:
-										navigationParamsProps.setNavigationParams,
 								},
 							})
 						}

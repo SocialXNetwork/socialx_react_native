@@ -23,19 +23,10 @@ export const AvatarName: React.SFC<IAvatarNameProps> = ({
 }) => {
 	const hasUsername = userName && userName !== '';
 	return (
-		<View
-			style={[
-				styles.container,
-				!hasUsername ? { height: CONTAINER_HEIGHT_NAME_ONLY } : {},
-			]}
-		>
-			<Text style={[styles.fullName, { color: fullNameColor }]}>
-				{fullName}
-			</Text>
+		<View style={[styles.container, !hasUsername ? { height: CONTAINER_HEIGHT_NAME_ONLY } : {}]}>
+			<Text style={[styles.fullName, { color: fullNameColor }]}>{fullName}</Text>
 			{hasUsername && (
-				<Text style={[styles.userName, { color: userNameColor }]}>
-					{'@' + userName}
-				</Text>
+				<Text style={[styles.userName, { color: userNameColor }]}>{'@' + userName}</Text>
 			)}
 		</View>
 	);
