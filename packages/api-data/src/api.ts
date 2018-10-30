@@ -61,12 +61,12 @@ export const dataApiFactory = (config: IApiOptions) => {
 
 	const gun = rootGun.get(rootdb);
 	// preload the database while the app is starting by simulating it with open
-	gun.get('posts').open(() => {
-		console.log('*** database updated');
-	});
-	setTimeout(() => {
-		gun.get('posts').off();
-	}, 4000);
+	// gun.get('posts').open(() => {
+	// 	console.log('*** database updated');
+	// });
+	// setTimeout(() => {
+	// 	gun.get('posts').off();
+	// }, 4000);
 
 	let account = rootGun.user();
 
