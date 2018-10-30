@@ -45,3 +45,7 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
+
+export const defaultStyles = {
+	advancedMenuButtonColor: Colors.cloudBurst,
+};
