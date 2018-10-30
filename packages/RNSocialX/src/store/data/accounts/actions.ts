@@ -48,11 +48,29 @@ export const getCurrentAccount = (): IThunk => async (dispatch, getState, contex
 				uuid: activityId,
 			}),
 		);
-		const { dataApi } = context;
+		const { dataApi, bugsnag } = context;
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
 		await dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
 		await dispatch(getCurrentProfile());
+		// if (bugsnag) {
+		// 	bugsnag.setUser(account.pub, account.alias, account.profile[account.alias].email);
+		// 	const accounts: any = { ...getState().data.accounts.accounts };
+		// 	bugsnag.notify(new Error('this is a test error from this user'), (notify) => {
+		// 		notify.metadata = {
+		// 			testError: {
+		// 				id: activityId,
+		// 				where: 'store.data.accounts.actions.getCurrentAccount()',
+		// 				what: 'account is not persent',
+		// 				context: 'something went wrong while doing stuff',
+		// 				line: 1337,
+		// 			},
+		// 			reduxStore: {
+		// 				accounts,
+		// 			},
+		// 		};
+		// 	});
+		// }
 	} catch (e) {
 		await dispatch(
 			setError({
