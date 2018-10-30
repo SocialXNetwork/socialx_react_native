@@ -6,8 +6,15 @@ import { OS_TYPES } from '../environment/consts';
 
 const BUGSNAG_API_KEY = '73245fce110f157e3c5ba0c2ac7154ae';
 
-export default class BugSnap extends React.Component<{}> {
-	componentDidMount() {
+export default class BugSnap extends React.Component<{
+	// children: (bugsnag: Client | null) => JSX.Element;
+	children: any;
+}> {
+	private BugSnag: Client | null;
+
+	constructor(props: any) {
+		super(props);
+		// setup bugsnag
 		const packageVersion = DeviceInfo.getVersion();
 		const computedVersion = parseInt(packageVersion.replace(/\D/g, ''), 10);
 		const computedAppVersion =
@@ -19,10 +26,13 @@ export default class BugSnap extends React.Component<{}> {
 			bugSnagConf.autoCaptureSessions = false;
 			const BugSnag = new Client(bugSnagConf);
 			BugSnag.startSession();
+			this.BugSnag = BugSnag;
+		} else {
+			this.BugSnag = null;
 		}
 	}
 
 	render() {
-		return this.props.children;
+		return this.props.children(this.BugSnag);
 	}
 }

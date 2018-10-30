@@ -19,21 +19,23 @@ export default class App extends React.Component<{}> {
 		return (
 			<ErrorBoundary>
 				<BugSnag>
-					<Init>
-						<Splash>
-							<Keyboard>
-								<PolyfillCrypto />
-								<Store>
-									<React.Fragment>
-										<StatusBar />
-										<OfflineHandler>
-											<Navigation />
-										</OfflineHandler>
-									</React.Fragment>
-								</Store>
-							</Keyboard>
-						</Splash>
-					</Init>
+					{(bugsnag: any) => (
+						<Init>
+							<Splash>
+								<Keyboard>
+									<PolyfillCrypto />
+									<Store bugsnag={bugsnag}>
+										<React.Fragment>
+											<StatusBar />
+											<OfflineHandler>
+												<Navigation />
+											</OfflineHandler>
+										</React.Fragment>
+									</Store>
+								</Keyboard>
+							</Splash>
+						</Init>
+					)}
 				</BugSnag>
 			</ErrorBoundary>
 		);
