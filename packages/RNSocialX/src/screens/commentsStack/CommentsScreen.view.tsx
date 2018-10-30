@@ -62,6 +62,11 @@ interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 	likePostError: boolean;
 	likeCommentError: boolean;
 	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
+	recentLikes: {
+		first: string | null;
+		second: string | null;
+		total: number;
+	};
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
@@ -80,10 +85,11 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	onLikePress,
 	likePostError,
 	likeCommentError,
+	recentLikes,
 	marginBottom,
 	getText,
 }) => {
-	const { postId, likes, media, postText, timestamp, owner, likedByMe } = post;
+	const { postId, media, postText, timestamp, owner, likedByMe } = post;
 
 	const scrollRef: React.RefObject<ScrollView> = React.createRef();
 	const commentInputRef: React.RefObject<TextInput> = React.createRef();
@@ -124,7 +130,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 						/>
 					</View>
 				)}
-				<RecentLikes likes={likes} onUserPress={onViewUserProfile} getText={getText} />
+				<RecentLikes recentLikes={recentLikes} onUserPress={onViewUserProfile} getText={getText} />
 				<CommentsPostActions
 					likedByMe={likedByMe}
 					likePostError={likePostError}

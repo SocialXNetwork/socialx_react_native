@@ -6,6 +6,7 @@ const styles: any = {
 		backgroundColor: Colors.pink,
 	},
 	headerContainer: {
+		height: Sizes.smartVerticalScale(45),
 		paddingBottom: Sizes.smartVerticalScale(7),
 		paddingTop: Sizes.smartVerticalScale(3),
 		width: '100%',

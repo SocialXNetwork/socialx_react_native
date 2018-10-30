@@ -32,6 +32,11 @@ interface ICommentsScreenState {
 	comments: IWallPostComment[];
 	disabledInput: boolean;
 	error: boolean;
+	recentLikes: {
+		first: string | null;
+		second: string | null;
+		total: number;
+	};
 }
 
 type ICommentsScreenProps = INavigationProps &
@@ -63,6 +68,17 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		comments: this.props.post.comments,
 		disabledInput: false,
 		error: false,
+		recentLikes: {
+			first:
+				this.props.post.likes.length > 0
+					? this.props.post.likes[this.props.post.likes.length - 1].userName
+					: null,
+			second:
+				this.props.post.likes.length > 1
+					? this.props.post.likes[this.props.post.likes.length - 2].userName
+					: null,
+			total: this.props.post.likes.length,
+		},
 	};
 
 	public componentDidMount() {
@@ -89,15 +105,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const {
-			getText,
-			post,
-			startComment,
-			errors,
-			showDotsMenuModal,
-			blockUser,
-			reportProblem,
-		} = this.props;
+		const { getText, post, startComment, errors, showDotsMenuModal } = this.props;
 
 		const { comment } = this.state;
 
@@ -118,6 +126,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				likePostError={likePostError}
 				likeCommentError={likeCommentError}
 				comment={comment}
+				recentLikes={this.state.recentLikes}
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentSend={this.onCommentSendHandler}
 				onViewUserProfile={this.navigateToUserProfile}
@@ -127,15 +136,16 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
-				getText={getText}
 				showDotsMenuModal={showDotsMenuModal}
 				marginBottom={0}
+				getText={getText}
 			/>
 		);
 	}
 
 	private onCommentLikeHandler = (comment: IWallPostComment) => {
 		const { unlikeComment, likeComment } = this.props;
+
 		if (comment.likedByMe) {
 			unlikeComment(comment.commentId);
 		} else {
@@ -295,12 +305,60 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onLikePressHandler = async (likedByMe: boolean, postId: string) => {
-		const { likePost, unlikePost } = this.props;
+		const {
+			likePost,
+			unlikePost,
+			currentUser,
+			post: { likes },
+		} = this.props;
+		const { total } = this.state.recentLikes;
 
-		if (likedByMe) {
-			await unlikePost(postId);
-		} else {
+		if (!likedByMe) {
+			this.setState((currentState) => {
+				return {
+					recentLikes: {
+						second: currentState.recentLikes.first,
+						first: currentUser.userName,
+						total: currentState.recentLikes.total + 1,
+					},
+				};
+			});
 			await likePost(postId);
+		} else {
+			if (total === 1) {
+				this.setState((currentState) => {
+					return {
+						recentLikes: {
+							...currentState.recentLikes,
+							first: null,
+							total: 0,
+						},
+					};
+				});
+			} else if (total === 2) {
+				this.setState((currentState) => {
+					const { first, second } = currentState.recentLikes;
+					return {
+						recentLikes: {
+							first: first === currentUser.userName ? second : first,
+							second: null,
+							total: 1,
+						},
+					};
+				});
+			} else if (total > 2) {
+				this.setState((currentState) => {
+					const { first, second } = currentState.recentLikes;
+					return {
+						recentLikes: {
+							first: first === currentUser.userName ? second : first,
+							second: second === currentUser.userName ? likes[likes.length - 3].userName : second,
+							total: currentState.recentLikes.total - 1,
+						},
+					};
+				});
+			}
+			await unlikePost(postId);
 		}
 	};
 }
