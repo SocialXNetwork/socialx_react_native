@@ -1,4 +1,3 @@
-export { AdSetupPost } from './adsManagement/AdSetupPost';
 export { AvatarImage } from './avatar/AvatarImage';
 export { AvatarName } from './avatar/AvatarName';
 export { AvatarPicker } from './avatar/AvatarPicker';

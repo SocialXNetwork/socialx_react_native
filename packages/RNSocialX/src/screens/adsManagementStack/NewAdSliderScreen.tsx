@@ -1,16 +1,20 @@
 import * as React from 'react';
 
-import { Dimensions, ScrollView } from 'react-native';
+import { Dimensions, NativeScrollEvent, ScrollView } from 'react-native';
 import {
 	IWithNewAdSliderEnhancedActions,
 	IWithNewAdSliderEnhancedData,
 	WithNewAdSlider,
 } from '../../enhancers/screens';
-import { ICreateAdSteps, INavigationProps } from '../../types';
+import {
+	IAdSetupAudienceData,
+	IAdSetupPostData,
+	ICreateAdSteps,
+	INavigationProps,
+} from '../../types';
 import { AdsManagementConfigBudgetScreen } from './AdsManagementConfigBudgetScreen';
 import { NewAdSetupAudience } from './NewAdSetupAudience';
-import { INewAdSetupAudienceData } from './NewAdSetupAudience.view';
-import { IAdSetupPostData, NewAdSetupPostScreen } from './NewAdSetupPostScreen';
+import { NewAdSetupPostScreen } from './NewAdSetupPostScreen';
 import { NewAdSliderScreenView } from './NewAdSliderScreen.view';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -34,6 +38,7 @@ type INewAdSliderScreenProps = INavigationProps &
 
 interface INewAdSliderScreenState {
 	stepIndex: number;
+	swipeEnabled: boolean;
 }
 
 class Screen extends React.Component<
@@ -42,20 +47,24 @@ class Screen extends React.Component<
 > {
 	public state = {
 		stepIndex: 0,
+		swipeEnabled: false,
 	};
 
 	private postData: IAdSetupPostData | null = null;
-	private audienceData: INewAdSetupAudienceData | null = null;
+	private audienceData: IAdSetupAudienceData | null = null;
 
 	private adSetupPostFormik: React.RefObject<IFormikProps> = React.createRef();
 	private adSetupAudienceFormik: React.RefObject<
 		IFormikProps
 	> = React.createRef();
+	private adSetupBudgetScreenRef: React.RefObject<
+		AdsManagementConfigBudgetScreen
+	> = React.createRef();
 	private scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
 	public render() {
 		const { getText, showDotsMenuModal, showConfirmation } = this.props;
-		const { stepIndex } = this.state;
+		const { stepIndex, swipeEnabled } = this.state;
 		return (
 			<NewAdSliderScreenView
 				getText={getText}
@@ -63,6 +72,9 @@ class Screen extends React.Component<
 				onGoToNextStep={this.onGoToNextStepHandler}
 				sliderStep={SLIDER_STEPS[stepIndex]}
 				ref={this.scrollViewRef}
+				canGoBack={swipeEnabled}
+				onMomentumScrollEnd={this.scrollPageChanged}
+				isOnLastSlide={stepIndex === SLIDER_STEPS.length - 1}
 			>
 				<NewAdSetupPostScreen
 					showDotsMenuModal={showDotsMenuModal}
@@ -74,15 +86,34 @@ class Screen extends React.Component<
 					getText={getText}
 					adSetupAudienceFormik={this.adSetupAudienceFormik}
 					updateAdSetAudience={this.updateAdSetAudienceHandler}
+					onMultiSliderChange={this.onMultiSliderChangeHandler}
 				/>
 				<AdsManagementConfigBudgetScreen
 					getText={getText}
 					showConfirmation={showConfirmation}
-					/* TODO: create ref here to read the data! */
+					ref={this.adSetupBudgetScreenRef}
 				/>
 			</NewAdSliderScreenView>
 		);
 	}
+
+	private onMultiSliderChangeHandler = (isStarting: boolean) => {
+		this.setState({
+			swipeEnabled: !isStarting,
+		});
+	};
+
+	private scrollPageChanged = (event: { nativeEvent: NativeScrollEvent }) => {
+		const { stepIndex } = this.state;
+		const scrollXOffset = event.nativeEvent.contentOffset.x;
+		if (scrollXOffset !== stepIndex * SCREEN_WIDTH) {
+			const newStepIndex = Math.round(scrollXOffset / SCREEN_WIDTH);
+			this.setState({
+				stepIndex: newStepIndex,
+				swipeEnabled: newStepIndex > 0,
+			});
+		}
+	};
 
 	private onGoBackHandler = () => {
 		this.props.navigation.goBack(null);
@@ -93,9 +124,7 @@ class Screen extends React.Component<
 		this.postData = postData;
 	};
 
-	private updateAdSetAudienceHandler = (
-		audienceData: INewAdSetupAudienceData,
-	) => {
+	private updateAdSetAudienceHandler = (audienceData: IAdSetupAudienceData) => {
 		console.log('updateAdSetAudienceHandler', audienceData);
 		this.audienceData = audienceData;
 	};
@@ -117,7 +146,9 @@ class Screen extends React.Component<
 	};
 
 	private adCreationConfirmedHandler = () => {
-		console.log('adCreationConfirmedHandler');
+		const { createAd } = this.props;
+		const budgetData = this.adSetupBudgetScreenRef.current!.getAdBudgetData();
+		createAd(this.postData!, this.audienceData!, budgetData);
 	};
 
 	private onGoToNextStepHandler = () => {
@@ -141,7 +172,6 @@ class Screen extends React.Component<
 				adSetupAudienceFormik.submitForm();
 			}
 			if (validationPassed && this.scrollViewRef.current) {
-				this.setState({ stepIndex: stepIndex + 1 });
 				this.scrollViewRef.current.scrollTo({
 					x: SCREEN_WIDTH * (stepIndex + 1),
 					y: 0,
@@ -149,7 +179,6 @@ class Screen extends React.Component<
 				});
 			}
 		} else {
-			console.log('Handle finish action');
 			this.confirmAdCreationHandler();
 		}
 	};

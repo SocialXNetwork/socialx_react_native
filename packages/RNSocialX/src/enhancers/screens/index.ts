@@ -1,9 +1,4 @@
 export {
-	IWithAdsManagementConfigBudgetEnhancedActions,
-	IWithAdsManagementConfigBudgetEnhancedData,
-	WithAdsManagementConfigBudget,
-} from './adsManagementStack/WithAdsManagementConfigBudget';
-export {
 	IWithAdsManagementEnhancedActions,
 	IWithAdsManagementEnhancedData,
 	WithAdsManagement,
@@ -18,17 +13,6 @@ export {
 	IWithAdsStatisticsEnhancedData,
 	WithAdsStatistics,
 } from './adsManagementStack/WithAdsStatistics';
-export {
-	IWithNewAdSetupAudienceEnhancedActions,
-	IWithNewAdSetupAudienceEnhancedData,
-	WithNewAdSetupAudience,
-} from './adsManagementStack/WithNewAdSetupAudience';
-export {
-	IWithNewAdSetupPostEnhancedActions,
-	IWithNewAdSetupPostEnhancedData,
-	WithNewAdSetupPost,
-} from './adsManagementStack/WithNewAdSetupPost';
-
 export {
 	WithNewAdSlider,
 	IWithNewAdSliderEnhancedActions,

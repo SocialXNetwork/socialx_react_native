@@ -396,6 +396,34 @@ export enum ICreateAdSteps {
 	SetupAudience = 'SetupAudience',
 	SetupBudget = 'SetupBudget',
 }
+
+export interface IAdSetupPostData {
+	headline: string;
+	description: string;
+	mediaObjects: IWallPostPhotoOptimized[];
+}
+
+export enum IGenderSelect {
+	male = 'male',
+	female = 'female',
+	all = 'all',
+}
+
+export interface IAdSetupAudienceData {
+	selectedGender: IGenderSelect;
+	ageRange: number[];
+}
+
+export interface IAdSetupBudgetData {
+	currency: string;
+	budget: number;
+	perDay: boolean;
+	lifetime: boolean;
+	runAdContinuously: boolean;
+	start: string;
+	stop: string;
+}
+
 /**
  * TODO list:
  * 1. @Serkan: find better structure to define shared types across components.

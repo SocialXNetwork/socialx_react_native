@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { AdSetupPost } from '../../components';
 import {
+	IAdSetupPostData,
 	IDotsMenuProps,
 	ITranslatedProps,
 	IWallPostPhotoOptimized,
@@ -12,12 +12,7 @@ import {
 	getOptimizedMediaObject,
 	IPickerImageMultiple,
 } from '../../utilities';
-
-export interface IAdSetupPostData {
-	headline: string;
-	description: string;
-	mediaObjects: IWallPostPhotoOptimized[];
-}
+import { NewAdSetupPostScreenView } from './NewAdSetupPostScreen.view';
 
 interface INewAdSetupPostScreenProps extends ITranslatedProps, IDotsMenuProps {
 	updateAdSetPost: (data: IAdSetupPostData) => void;
@@ -40,7 +35,7 @@ export class NewAdSetupPostScreen extends React.Component<
 		const { getText, adSetupPostFormik } = this.props;
 		const { mediaObjects } = this.state;
 		return (
-			<AdSetupPost
+			<NewAdSetupPostScreenView
 				adSetupPostFormik={adSetupPostFormik}
 				mediaObjects={mediaObjects.map(
 					(mediaObject: IWallPostPhotoOptimized) => mediaObject.path,
@@ -96,9 +91,3 @@ export class NewAdSetupPostScreen extends React.Component<
 		}
 	};
 }
-
-// export const NewAdSetupPostScreen = (navProps: INavigationProps) => (
-// 	<WithNewAdSetupPost>
-// 		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-// 	</WithNewAdSetupPost>
-// );
