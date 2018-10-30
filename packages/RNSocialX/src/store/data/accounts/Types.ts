@@ -33,6 +33,7 @@ export interface ICreateAccountInput {
 	avatar: { uri: string };
 	fullName: string;
 	miningEnabled: boolean;
+	shareDataEnabled: boolean;
 	aboutMeText: string;
 	recover: {
 		question1: string;

@@ -43,9 +43,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 			<View style={{ flex: 1 }}>
 				<FastImage
 					source={
-						user.avatarURL.length > 0
-							? { uri: user.avatarURL }
-							: images.user_avatar_placeholder
+						user.avatarURL.length > 0 ? { uri: user.avatarURL } : images.user_avatar_placeholder
 					}
 					style={styles.smallAvatarImage}
 				/>

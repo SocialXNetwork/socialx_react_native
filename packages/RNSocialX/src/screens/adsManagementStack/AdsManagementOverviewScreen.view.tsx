@@ -4,44 +4,17 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
+	AdPreview,
 	ChartAccountPerformance,
 	CloseButton as CloseModal,
 	Header,
 	PrimaryButton,
 } from '../../components';
-import {
-	IAd,
-	IAdsAccountPerformanceValues,
-	ITranslatedProps,
-} from '../../types';
+import { IAd, IAdsAccountPerformanceValues, ITranslatedProps } from '../../types';
 
 import styles, { BUTTON_WIDTH } from './AdsManagementOverviewScreen.style';
 
-interface IAdActions {
-	onEditAd: () => void;
-}
-
-interface IAdProps extends IAd, IAdActions {}
-
-const AdCard: React.SFC<IAdProps> = ({ url, title, description, onEditAd }) => (
-	<View style={styles.card}>
-		<Image source={{ uri: url }} style={styles.image} resizeMode="cover" />
-		<View style={styles.cardHeader}>
-			<Text style={styles.title}>{title}</Text>
-			<TouchableOpacity
-				onPress={onEditAd}
-				hitSlop={{ top: 10, bottom: 10, left: 15, right: 10 }}
-			>
-				<Icon name="md-create" style={styles.editIcon} />
-			</TouchableOpacity>
-		</View>
-		<Text style={styles.description}>{description}</Text>
-	</View>
-);
-
-interface IAdsManagementOverviewScreenViewProps
-	extends IAdActions,
-		ITranslatedProps {
+interface IAdsManagementOverviewScreenViewProps extends ITranslatedProps {
 	currentDate: string;
 	currentWeek: string;
 	lastSevenDays: string;
@@ -51,12 +24,11 @@ interface IAdsManagementOverviewScreenViewProps
 	impressionsValues: IAdsAccountPerformanceValues[];
 	onClose: () => void;
 	onCreateAd: () => void;
+	onEditAd: () => void;
 	onSeePastPerformance: () => void;
 }
 
-export const AdsManagementOverviewScreenView: React.SFC<
-	IAdsManagementOverviewScreenViewProps
-> = ({
+export const AdsManagementOverviewScreenView: React.SFC<IAdsManagementOverviewScreenViewProps> = ({
 	onClose,
 	getText,
 	currentDate,
@@ -83,7 +55,7 @@ export const AdsManagementOverviewScreenView: React.SFC<
 						{getText('ad.management.overview.screen.ads.list.title')}
 					</Text>
 					{ads.map((ad) => (
-						<AdCard {...ad} onEditAd={onEditAd} key={ad.id} />
+						<AdPreview {...ad} onEditAd={onEditAd} key={ad.id} editable={true} />
 					))}
 				</View>
 				<View style={styles.section}>
@@ -98,49 +70,32 @@ export const AdsManagementOverviewScreenView: React.SFC<
 							activeTabStyle={styles.tab}
 							textStyle={styles.tabText}
 							activeTextStyle={styles.activeTabText}
-							heading={getText(
-								'ad.management.overview.screen.account.performance.spent',
-							)}
+							heading={getText('ad.management.overview.screen.account.performance.spent')}
 						>
-							<ChartAccountPerformance
-								week={currentWeek}
-								performanceValues={spentValues}
-							/>
+							<ChartAccountPerformance week={currentWeek} performanceValues={spentValues} />
 						</Tab>
 						<Tab
 							tabStyle={styles.tab}
 							activeTabStyle={styles.tab}
 							textStyle={styles.tabText}
 							activeTextStyle={styles.activeTabText}
-							heading={getText(
-								'ad.management.overview.screen.account.performance.people.reached',
-							)}
+							heading={getText('ad.management.overview.screen.account.performance.people.reached')}
 						>
-							<ChartAccountPerformance
-								week={currentWeek}
-								performanceValues={peopleReachedValues}
-							/>
+							<ChartAccountPerformance week={currentWeek} performanceValues={peopleReachedValues} />
 						</Tab>
 						<Tab
 							tabStyle={styles.tab}
 							activeTabStyle={styles.tab}
 							textStyle={styles.tabText}
 							activeTextStyle={styles.activeTabText}
-							heading={getText(
-								'ad.management.overview.screen.account.performance.impressions',
-							)}
+							heading={getText('ad.management.overview.screen.account.performance.impressions')}
 						>
-							<ChartAccountPerformance
-								week={currentWeek}
-								performanceValues={impressionsValues}
-							/>
+							<ChartAccountPerformance week={currentWeek} performanceValues={impressionsValues} />
 						</Tab>
 					</Tabs>
 					<View style={styles.button}>
 						<PrimaryButton
-							label={getText(
-								'ad.management.overview.screen.see.past.performance',
-							)}
+							label={getText('ad.management.overview.screen.see.past.performance')}
 							width={BUTTON_WIDTH}
 							onPress={onSeePastPerformance}
 						/>

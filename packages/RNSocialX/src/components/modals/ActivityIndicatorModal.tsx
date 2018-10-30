@@ -13,9 +13,12 @@ interface IActivityIndicatorModalProps extends ITranslatedProps {
 	visible: boolean;
 }
 
-export const ActivityIndicatorModal: React.SFC<
-	IActivityIndicatorModalProps
-> = ({ title = null, message = null, visible, getText }) => (
+export const ActivityIndicatorModal: React.SFC<IActivityIndicatorModalProps> = ({
+	title = null,
+	message = null,
+	visible,
+	getText,
+}) => (
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal
@@ -30,10 +33,7 @@ export const ActivityIndicatorModal: React.SFC<
 				<View style={style.boxContainer}>
 					<Text style={style.title}>{title || getText('please.wait')}</Text>
 					{message && <Text style={style.message}>{message}</Text>}
-					<ActivityIndicator
-						size="large"
-						color={customStyleProps.activityIndicatorColor}
-					/>
+					<ActivityIndicator size="large" color={customStyleProps.activityIndicatorColor} />
 				</View>
 			</Modal>
 		)}

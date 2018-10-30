@@ -5,11 +5,7 @@
  */
 
 import * as React from 'react';
-import {
-	IAd,
-	IAdsAccountPerformanceValues,
-	ITranslatedProps,
-} from '../../../types';
+import { IAd, IAdsAccountPerformanceValues, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
 const ads = [
@@ -24,9 +20,7 @@ const ads = [
 	{
 		url: 'https://placeimg.com/301/301/any',
 		title: 'Using SOCX within our Ecosystem',
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipi.\n' +
-			'Second line text goes here',
+		description: 'Lorem ipsum dolor sit amet, consectetur adipi.\n' + 'Second line text goes here',
 		id: '2',
 	},
 	{
@@ -96,8 +90,7 @@ export interface IWithAdsManagementOverviewEnhancedData {
 	impressionsValues: IAdsAccountPerformanceValues[];
 }
 
-export interface IWithAdsManagementOverviewEnhancedActions
-	extends ITranslatedProps {
+export interface IWithAdsManagementOverviewEnhancedActions extends ITranslatedProps {
 	onSeePastPerformance: () => void;
 }
 

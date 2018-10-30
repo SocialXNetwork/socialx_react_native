@@ -14,10 +14,7 @@ storiesOf('Screens/commentsStack', module)
 
 		const likePostError = boolean('likePostError', false);
 		const likeCommentError = boolean('likeCommentError', false);
-		const comment = text(
-			'commentText',
-			'Sample comment text here.\nGoing on the second line',
-		);
+		const comment = text('commentText', 'Sample comment text here.\nGoing on the second line');
 
 		const startComment = boolean('startComment', false);
 

@@ -46,7 +46,4 @@ interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
 
-export type IAction =
-	| IResetStoreAction
-	| IGetUserPostsAction
-	| ISyncGetUserPostsAction;
+export type IAction = IResetStoreAction | IGetUserPostsAction | ISyncGetUserPostsAction;

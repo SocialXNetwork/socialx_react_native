@@ -6,21 +6,15 @@ import {
 	IWithSearchEnhancedData,
 	WithSearch,
 } from '../../../enhancers/screens';
+import { SCREENS, TABS } from '../../../environment/consts';
 import { INavigationProps, SearchTabs } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
 const SEARCH_DEBOUNCE_TIME_MS = 300;
 
-const TabsByIndex = [
-	SearchTabs.Top,
-	SearchTabs.People,
-	SearchTabs.Tags,
-	SearchTabs.Places,
-];
+const TabsByIndex = [SearchTabs.Top, SearchTabs.People, SearchTabs.Tags, SearchTabs.Places];
 
-type ISearchScreenProps = INavigationProps &
-	IWithSearchEnhancedData &
-	IWithSearchEnhancedActions;
+type ISearchScreenProps = INavigationProps & IWithSearchEnhancedData & IWithSearchEnhancedActions;
 
 interface IISearchScreenState {
 	loadedTabs: number[];
@@ -46,7 +40,6 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	public render() {
 		const {
 			navigation,
-			setNavigationParams,
 			results,
 			suggestions,
 			searching,
@@ -59,7 +52,6 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		return (
 			<SearchScreenView
 				navigation={navigation}
-				setNavigationParams={setNavigationParams}
 				loadedTabs={loadedTabs}
 				results={results}
 				suggestions={suggestions}
@@ -68,6 +60,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 				searchForMoreResults={searchForMoreResults}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
+				onResultPress={this.onResultPressHandler}
 				searchTermValue={term}
 				getText={getText}
 			/>
@@ -87,10 +80,22 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		this.debounceSearch(term);
 		this.setState({ term });
 	};
+
+	private onResultPressHandler = (userId: string) => {
+		const { getPostsForUser, userPosts, setNavigationParams, navigation } = this.props;
+
+		if (!userPosts[userId]) {
+			getPostsForUser(userId);
+		}
+
+		setNavigationParams({
+			screenName: SCREENS.UserProfile,
+			params: { userId, origin: TABS.Search },
+		});
+		navigation.navigate(SCREENS.UserProfile);
+	};
 }
 
 export const SearchScreen = (navProps: INavigationProps) => (
-	<WithSearch>
-		{({ data, actions }) => <Screen {...data} {...actions} {...navProps} />}
-	</WithSearch>
+	<WithSearch>{({ data, actions }) => <Screen {...data} {...actions} {...navProps} />}</WithSearch>
 );

@@ -15,9 +15,7 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	setNavigationParams: (
-		setNavigationParamsInput: ISetNavigationParamsInput,
-	) => void;
+	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) => void;
 	clearNavigationParams: ({ screenName }: { screenName: string }) => void;
 }
 
@@ -50,10 +48,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(clearNavigationParams({ screenName })),
 });
 
-export const WithNavigationParams: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithNavigationParams: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

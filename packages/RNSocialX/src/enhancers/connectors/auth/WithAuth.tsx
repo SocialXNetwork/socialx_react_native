@@ -34,10 +34,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({});
 
-export const WithAuth: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithAuth: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

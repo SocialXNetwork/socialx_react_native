@@ -18,9 +18,7 @@ interface IDataProps {
 
 interface IActionProps {
 	setAppConfig: (setAppConfigInput: ISetAppConfigInput) => void;
-	setCustomGunSuperPeers: (
-		setCustomGunSuperPeersInput: ISetCustomGunSuperPeersInput,
-	) => void;
+	setCustomGunSuperPeers: (setCustomGunSuperPeersInput: ISetCustomGunSuperPeersInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -54,15 +52,11 @@ const mapStateToProps = (state: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	setAppConfig: (setAppConfigInput: ISetAppConfigInput) =>
 		dispatch(setAppConfig(setAppConfigInput)),
-	setCustomGunSuperPeers: (
-		setCustomGunSuperPeersInput: ISetCustomGunSuperPeersInput,
-	) => dispatch(setCustomGunSuperPeers(setCustomGunSuperPeersInput)),
+	setCustomGunSuperPeers: (setCustomGunSuperPeersInput: ISetCustomGunSuperPeersInput) =>
+		dispatch(setCustomGunSuperPeers(setCustomGunSuperPeersInput)),
 });
 
-export const WithConfig: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithConfig: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

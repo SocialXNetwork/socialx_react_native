@@ -83,10 +83,7 @@ export const SendCoinsScreenView: React.SFC<ISendCoinsScreenViewProps> = ({
 				</View>
 			</View>
 			<View style={styles.continueButtonContainer}>
-				<PrimaryButton
-					label={getText('button.CONTINUE')}
-					onPress={onSendCoins}
-				/>
+				<PrimaryButton label={getText('button.CONTINUE')} onPress={onSendCoins} />
 			</View>
 		</ScrollView>
 	</SafeAreaView>

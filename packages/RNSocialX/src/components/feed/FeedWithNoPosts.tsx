@@ -10,16 +10,9 @@ interface IFeedWithNoPosts extends ITranslatedProps {
 	onCreateWallPost: () => void;
 }
 
-export const FeedWithNoPosts: React.SFC<IFeedWithNoPosts> = ({
-	onCreateWallPost,
-	getText,
-}) => (
+export const FeedWithNoPosts: React.SFC<IFeedWithNoPosts> = ({ onCreateWallPost, getText }) => (
 	<View style={styles.container}>
-		<Icon
-			name="md-film"
-			size={Sizes.smartHorizontalScale(120)}
-			color={Colors.geyser}
-		/>
+		<Icon name="md-film" size={Sizes.smartHorizontalScale(120)} color={Colors.geyser} />
 		<Text style={styles.text}>{getText('feed.screen.no.posts')}</Text>
 		<View style={styles.button}>
 			<PrimaryButton

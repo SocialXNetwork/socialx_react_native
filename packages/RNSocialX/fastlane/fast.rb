@@ -118,8 +118,8 @@ platform :ios do
     check_build_params options
     version_ios options
     ios_build
-    # send_testflight
-    # ios_bugsnag options
+    send_testflight
+    ios_bugsnag options
   end
 
 end

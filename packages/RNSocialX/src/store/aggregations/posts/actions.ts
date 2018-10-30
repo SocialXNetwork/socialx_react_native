@@ -17,16 +17,19 @@ export const getUserPostsAction: ActionCreator<IGetUserPostsAction> = (
 	payload: getUserPostsInput,
 });
 
-export const syncGetUserPostsAction: ActionCreator<
-	ISyncGetUserPostsAction
-> = (userPosts: { posts: IPostReturnData[]; owner: string }) => ({
+export const syncGetUserPostsAction: ActionCreator<ISyncGetUserPostsAction> = (userPosts: {
+	posts: IPostReturnData[];
+	owner: string;
+}) => ({
 	type: ActionTypes.SYNC_GET_USER_POSTS,
 	payload: userPosts,
 });
 
-export const getUserPosts = (
-	getUserPostsInput: IGetUserPostsInput,
-): IThunk => async (dispatch, getState, context) => {
+export const getUserPosts = (getUserPostsInput: IGetUserPostsInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 
 	try {
@@ -39,7 +42,6 @@ export const getUserPosts = (
 		);
 		const { dataApi } = context;
 		const userPosts = await dataApi.posts.getPostsByUser(getUserPostsInput);
-		console.log('userPosts', userPosts);
 		dispatch(
 			syncGetUserPostsAction({
 				posts: userPosts,

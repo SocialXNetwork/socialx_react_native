@@ -10,18 +10,16 @@ export const createNotification = (
 	callback: IGunCallback<null>,
 ) => {
 	const { to, ...notification } = createNotificationInput;
-	handles
-		.notificationsByUsername(context, to)
-		.set(notification, (notificationCallback) => {
-			if (!notificationCallback) {
-				return callback(
-					new ApiError('failed to set a notification', {
-						initialRequestBody: createNotificationInput,
-					}),
-				);
-			}
-			return callback(null);
-		});
+	handles.notificationsByUsername(context, to).set(notification, (notificationCallback) => {
+		if (!notificationCallback) {
+			return callback(
+				new ApiError('failed to set a notification', {
+					initialRequestBody: createNotificationInput,
+				}),
+			);
+		}
+		return callback(null);
+	});
 };
 
 export const removeNotification = (

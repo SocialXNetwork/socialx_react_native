@@ -1,9 +1,6 @@
 import { ILocaleDictionary } from '../Types';
 
-export const interpolateVariables = (
-	template: string,
-	args: Array<string | number>,
-): string =>
+export const interpolateVariables = (template: string, args: Array<string | number>): string =>
 	args.reduce(
 		(stringBuilder: string, arg: string | number, index: number) =>
 			stringBuilder.replace(`\$\{args[${index}]\}`, arg.toString()),

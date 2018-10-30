@@ -8,8 +8,7 @@ import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
 import { getTextMock } from '../../../../src/mocks';
 import { SearchResultKind } from '../../../../src/types';
 
-const image =
-	'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg';
+const image = 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg';
 
 storiesOf('Components/displayers', module).add('ProfileTopContainer', () => (
 	<View style={{ flex: 1 }}>

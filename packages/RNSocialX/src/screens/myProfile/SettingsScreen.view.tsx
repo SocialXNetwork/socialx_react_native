@@ -28,14 +28,12 @@ export interface ISettingsData {
 	fullName: string;
 	email: string;
 	miningEnabled: boolean;
+	shareDataEnabled: boolean;
 	avatarURL: string;
 	userName: string;
 }
 
-interface ISettingsScreenViewProps
-	extends ISettingsData,
-		ITranslatedProps,
-		IDotsMenuProps {
+interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IDotsMenuProps {
 	onSaveChanges: (values: ISettingsData) => void;
 	onGoBack: () => void;
 }
@@ -47,6 +45,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	avatarURL,
 	userName,
 	miningEnabled,
+	shareDataEnabled,
 	onSaveChanges,
 	onGoBack,
 	showDotsMenuModal,
@@ -60,12 +59,9 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 			avatarURL,
 			userName,
 			miningEnabled,
+			shareDataEnabled,
 		}}
-		validate={({
-			fullName: nameValue,
-			email: emailValue,
-			bio: bioValue,
-		}: ISettingsData) => {
+		validate={({ fullName: nameValue, email: emailValue, bio: bioValue }: ISettingsData) => {
 			const errors: FormikErrors<ISettingsData> = {};
 			if (!emailValue) {
 				errors.email = getText('settings.screen.email.required');
@@ -89,6 +85,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				avatarURL: avatarURLValue,
 				userName: userNameValue,
 				miningEnabled: miningEnabledValue,
+				shareDataEnabled: shareDataEnabledValue,
 			},
 			errors,
 			handleBlur,
@@ -134,9 +131,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<View style={[styles.input, styles.firstInput]}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>
-									{getText('settings.screen.name.placeholder')}
-								</Text>
+								<Text style={styles.label}>{getText('settings.screen.name.placeholder')}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
@@ -148,26 +143,18 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 									borderColor={defaultStyles.userDataInputBorderColor}
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
-									onChangeText={(value: string) =>
-										setFieldValue('fullName', value)
-									}
-									focusUpdateHandler={(value) =>
-										!value && handleBlur('fullName')
-									}
+									onChangeText={(value: string) => setFieldValue('fullName', value)}
+									focusUpdateHandler={(value) => !value && handleBlur('fullName')}
 								/>
 							</View>
 						</View>
-						{errors.fullName && (
-							<Text style={styles.errorText}>{errors.fullName}</Text>
-						)}
+						{errors.fullName && <Text style={styles.errorText}>{errors.fullName}</Text>}
 					</View>
 
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>
-									{getText('settings.screen.email.placeholder')}
-								</Text>
+								<Text style={styles.label}>{getText('settings.screen.email.placeholder')}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
@@ -180,23 +167,17 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 									keyboardType={TKeyboardKeys.emailAddress}
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
-									onChangeText={(value: string) =>
-										setFieldValue('email', value)
-									}
+									onChangeText={(value: string) => setFieldValue('email', value)}
 									focusUpdateHandler={(value) => !value && handleBlur('email')}
 								/>
 							</View>
 						</View>
-						{errors.email && (
-							<Text style={styles.errorText}>{errors.email}</Text>
-						)}
+						{errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 					</View>
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>
-									{getText('settings.screen.bio.placeholder')}
-								</Text>
+								<Text style={styles.label}>{getText('settings.screen.bio.placeholder')}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
@@ -220,8 +201,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							title={getText('settings.screen.mining.title')}
 							description={getText('settings.screen.mining.description')}
 							value={miningEnabledValue}
+							onValueUpdated={() => setFieldValue('miningEnabled', !miningEnabledValue, false)}
+						/>
+						<Checkbox
+							title={getText('settings.screen.sharedata.title')}
+							description={getText('settings.screen.sharedata.description')}
+							value={shareDataEnabledValue}
 							onValueUpdated={() =>
-								setFieldValue('miningEnabled', !miningEnabledValue, false)
+								setFieldValue('shareDataEnabled', !shareDataEnabledValue, false)
 							}
 						/>
 					</View>

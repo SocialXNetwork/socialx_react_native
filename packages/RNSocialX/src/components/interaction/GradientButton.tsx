@@ -11,14 +11,7 @@ interface IGradientButtonProps extends IPrimaryButtonProps {
 }
 
 export const GradientButton: React.SFC<IGradientButtonProps> = (props) => {
-	const {
-		colorStart,
-		colorEnd,
-		disabled,
-		loading,
-		size,
-		...buttonProps
-	} = props;
+	const { colorStart, colorEnd, disabled, loading, size, ...buttonProps } = props;
 
 	const buttonDisabled = disabled || loading;
 
@@ -29,10 +22,7 @@ export const GradientButton: React.SFC<IGradientButtonProps> = (props) => {
 			colors={[colorStart, colorEnd]}
 			style={[styles.container, buttonDisabled ? styles.disabledButton : {}]}
 		>
-			<PrimaryButton
-				{...buttonProps}
-				containerStyle={styles.innerButtonContainer}
-			/>
+			<PrimaryButton {...buttonProps} containerStyle={styles.innerButtonContainer} />
 		</LinearGradient>
 	);
 };

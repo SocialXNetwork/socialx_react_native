@@ -9,17 +9,17 @@ interface IActivityIndicatorModalProps {
 	loader?: boolean;
 }
 
-export const TransparentOverlayModal: React.SFC<
-	IActivityIndicatorModalProps
-> = ({ visible, alpha, loader }) => (
+export const TransparentOverlayModal: React.SFC<IActivityIndicatorModalProps> = ({
+	visible,
+	alpha,
+	loader,
+}) => (
 	<View
 		pointerEvents={visible ? 'auto' : 'none'}
 		style={[
 			styles.container,
 			{
-				backgroundColor: visible
-					? colorWithAlpha(Colors.black, alpha)
-					: Colors.transparent,
+				backgroundColor: visible ? colorWithAlpha(Colors.black, alpha) : Colors.transparent,
 			},
 		]}
 	>

@@ -19,10 +19,6 @@ export const CloseButton: React.SFC<IScreenCloseButtonProps> = ({
 			onClose();
 		}}
 	>
-		<Icon
-			name="md-close"
-			size={Sizes.smartHorizontalScale(25)}
-			color={Colors.white}
-		/>
+		<Icon name="md-close" size={Sizes.smartHorizontalScale(25)} color={Colors.white} />
 	</TouchableOpacity>
 );

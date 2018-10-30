@@ -1,7 +1,6 @@
 /**
  * TODO list:
- * 1. handle sendMessageToUser prop
- * 2. Add icons instead of text for profile statistics
+ * 1. handle onSendMessage prop
  */
 
 import * as React from 'react';
@@ -21,15 +20,15 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	numberOfLikes: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	onAddFriend: () => void;
-	onShowFriendshipOptions?: () => void;
 	relationship?: SearchResultKind;
-	onViewProfilePhoto: () => void;
 	isCurrentUser: boolean;
-	onEditProfile?: () => void;
-	sendMessageToUser?: () => void;
 	tabs?: boolean;
 	activeTab?: string;
+	onAddFriend: () => void;
+	onShowFriendshipOptions?: () => void;
+	onProfilePhotoPress: () => void;
+	onEditProfile?: () => void;
+	onSendMessage?: () => void;
 	onIconPress?: (tab: string) => void;
 	aboutMeText: false | string;
 }
@@ -42,40 +41,26 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	numberOfLikes,
 	numberOfFriends,
 	numberOfComments,
-	onAddFriend,
-	onShowFriendshipOptions = () => {
-		/**/
-	},
 	relationship = SearchResultKind.NotFriend,
-	onViewProfilePhoto,
 	isCurrentUser,
-	onEditProfile = () => {
-		/**/
-	},
-	sendMessageToUser = () => {
-		/**/
-	},
-	onIconPress = () => {
-		/**/
-	},
 	aboutMeText = false,
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
+	onAddFriend,
+	onProfilePhotoPress,
+	onShowFriendshipOptions = () => undefined,
+	onEditProfile = () => undefined,
+	onSendMessage = () => undefined,
+	onIconPress = () => undefined,
 	getText,
 }) => {
 	const relationshipButtonHandler =
-		relationship === SearchResultKind.Friend
-			? onShowFriendshipOptions
-			: onAddFriend;
+		relationship === SearchResultKind.Friend ? onShowFriendshipOptions : onAddFriend;
 
 	return (
-		<View style={styles.topContainer}>
+		<View style={styles.container}>
 			<View style={styles.background} />
-			<TouchableOpacity
-				activeOpacity={1}
-				onPress={onViewProfilePhoto}
-				style={styles.avatarContainer}
-			>
+			<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
 				<AvatarImage image={avatarURL} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.statisticsContainer}>
@@ -120,7 +105,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 					borderColor={colors.pink}
 					textColor={colors.pink}
 					containerStyle={styles.ghostButton}
-					onPress={isCurrentUser ? onEditProfile : sendMessageToUser}
+					onPress={isCurrentUser ? onEditProfile : onSendMessage}
 				/>
 			</View>
 			{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}

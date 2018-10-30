@@ -19,10 +19,7 @@ storiesOf('Components/displayers', module)
 		const location = text('location', 'Timisoara');
 		const timestamp = date('timestamp', new Date('October 17, 2017 04:55:00'));
 		const ownerName = text('owner.name', 'Michael Foucault');
-		const ownerAvatarURL = text(
-			'owner.avatarURL',
-			'https://avatars2.githubusercontent.com/u/2531',
-		);
+		const ownerAvatarURL = text('owner.avatarURL', 'https://avatars2.githubusercontent.com/u/2531');
 		const currentUserAvatarURL = text(
 			'currentUserAvatarURL',
 			'https://avatars2.githubusercontent.com/u/239',
@@ -44,10 +41,7 @@ storiesOf('Components/displayers', module)
 				id="test_post_id"
 				postText={postText}
 				location={location}
-				taggedFriends={[
-					{ fullName: 'Stanley Sater' },
-					{ fullName: 'Yolonda Rodda' },
-				]}
+				taggedFriends={[{ fullName: 'Stanley Sater' }, { fullName: 'Yolonda Rodda' }]}
 				timestamp={timestamp}
 				owner={{
 					userId: 'user_id_test',

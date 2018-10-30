@@ -10,6 +10,7 @@ import {
 	ICurrentUser,
 	IDotsMenuProps,
 	IError,
+	IGlobal,
 	INavigationParamsActions,
 	IPostForComment,
 	ITranslatedProps,
@@ -24,6 +25,7 @@ import { WithNavigationParams } from '../../connectors/app/WithNavigationParams'
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { extractMediaFromPosts, getComments } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
@@ -59,10 +61,12 @@ const mock: IWithCommentsEnhancedProps = {
 			likes: [],
 			comments: [],
 		},
+		canDelete: false,
 	},
 	actions: {
 		sendComment: (text: string, postId: string) => undefined,
 		deleteComment: (commentId: string) => undefined,
+		deletePost: (postId: string) => undefined,
 		likeComment: (commentId: string) => undefined,
 		unlikeComment: (commentId: string) => undefined,
 		likePost: (postId: string) => undefined,
@@ -70,6 +74,9 @@ const mock: IWithCommentsEnhancedProps = {
 		showDotsMenuModal: (items) => undefined,
 		setNavigationParams: () => undefined,
 		getText: (value: string, ...args: any[]) => value,
+		setGlobal: (global: IGlobal) => undefined,
+		blockUser: () => undefined,
+		reportProblem: () => undefined,
 	},
 };
 
@@ -78,6 +85,7 @@ export interface IWithCommentsEnhancedData {
 	currentUser: ICurrentUser;
 	startComment: boolean;
 	errors: IError[];
+	canDelete: boolean;
 }
 
 export interface IWithCommentsEnhancedActions
@@ -88,8 +96,12 @@ export interface IWithCommentsEnhancedActions
 	likeComment: (commentId: string) => void;
 	unlikeComment: (commentId: string) => void;
 	deleteComment: (commentId: string) => void;
+	deletePost: (postId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
+	setGlobal: (global: IGlobal) => void;
+	blockUser: (userId: string) => void;
+	reportProblem: (reason: string, description: string) => void;
 }
 
 interface IWithCommentsEnhancedProps {
@@ -103,139 +115,140 @@ interface IWithCommentsProps {
 
 interface IWithCommentsState {}
 
-export class WithComments extends React.Component<
-	IWithCommentsProps,
-	IWithCommentsState
-> {
+export class WithComments extends React.Component<IWithCommentsProps, IWithCommentsState> {
 	render() {
 		return (
 			<WithI18n>
 				{(i18nProps) => (
 					<WithOverlays>
 						{(overlayProps) => (
-							<WithConfig>
-								{({ appConfig }) => (
-									<WithNavigationParams>
-										{({ setNavigationParams, navigationParams }) => (
-											<WithPosts>
-												{(postProps) => (
-													<WithProfiles>
-														{({ profiles }) => (
-															<WithActivities>
-																{({ errors }) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) => {
-																			const currentPost = postProps.posts.find(
-																				(post) =>
-																					post.postId ===
-																					navigationParams[SCREENS.Comments]
-																						.postId,
-																			);
+							<WithGlobals>
+								{({ setGlobal, globals }) => (
+									<WithConfig>
+										{({ appConfig }) => (
+											<WithNavigationParams>
+												{({ setNavigationParams, navigationParams }) => (
+													<WithPosts>
+														{(postProps) => (
+															<WithProfiles>
+																{({ profiles }) => (
+																	<WithActivities>
+																		{({ errors }) => (
+																			<WithCurrentUser>
+																				{({ currentUser }) => {
+																					const currentPost = postProps.posts.find(
+																						(post) =>
+																							post.postId ===
+																							navigationParams[SCREENS.Comments].postId,
+																					);
 
-																			const ownerProfile = profiles.find(
-																				(profile) =>
-																					profile.alias ===
-																					currentPost!.owner.alias,
-																			);
+																					const ownerProfile = profiles.find(
+																						(profile) => profile.alias === currentPost!.owner.alias,
+																					);
 
-																			return this.props.children({
-																				data: {
-																					...mock.data,
-																					currentUser,
-																					startComment:
-																						navigationParams[SCREENS.Comments]
-																							.startComment,
-																					errors,
-																					post: {
-																						postId: currentPost!.postId,
-																						postText: currentPost!.postText,
-																						timestamp: new Date(
-																							currentPost!.timestamp,
-																						),
-																						media: extractMediaFromPosts(
-																							[currentPost!],
-																							appConfig,
-																						),
-																						likes: currentPost!.likes.map(
-																							(like) => {
-																								return {
-																									userId: like.owner.alias,
-																									userName: like.owner.alias,
-																								};
+																					return this.props.children({
+																						data: {
+																							...mock.data,
+																							currentUser,
+																							startComment:
+																								navigationParams[SCREENS.Comments].startComment,
+																							errors,
+																							canDelete:
+																								currentUser.userId === currentPost!.owner.alias,
+																							post: {
+																								postId: currentPost!.postId,
+																								postText: currentPost!.postText,
+																								timestamp: new Date(currentPost!.timestamp),
+																								media: extractMediaFromPosts(
+																									[currentPost!],
+																									appConfig,
+																								),
+																								likes: currentPost!.likes.map((like) => {
+																									return {
+																										userId: like.owner.alias,
+																										userName: like.owner.alias,
+																									};
+																								}),
+																								likedByMe: !!currentPost!.likes.find(
+																									(like) => like.owner.alias === currentUser.userId,
+																								),
+																								comments: getComments(
+																									currentPost!.comments,
+																									profiles,
+																									currentUser.userId,
+																									appConfig,
+																								),
+																								owner: {
+																									userId: currentPost!.owner.alias,
+																									fullName: ownerProfile!.fullName,
+																									avatarURL:
+																										appConfig.ipfsConfig.ipfs_URL +
+																										ownerProfile!.avatar,
+																								},
 																							},
-																						),
-																						likedByMe: !!currentPost!.likes.find(
-																							(like) =>
-																								like.owner.alias ===
-																								currentUser.userId,
-																						),
-																						comments: getComments(
-																							currentPost!.comments,
-																							profiles,
-																							currentUser.userId,
-																							appConfig,
-																						),
-																						owner: {
-																							userId: currentPost!.owner.alias,
-																							fullName: ownerProfile!.fullName,
-																							avatarURL:
-																								appConfig.ipfsConfig.ipfs_URL +
-																								ownerProfile!.avatar,
 																						},
-																					},
-																				},
-																				actions: {
-																					sendComment: async (text, postId) => {
-																						await postProps.createComment({
-																							text,
-																							postId,
-																						});
-																					},
-																					deleteComment: async (commentId) => {
-																						await postProps.removeComment({
-																							commentId,
-																						});
-																					},
-																					likeComment: async (commentId) => {
-																						await postProps.likeComment({
-																							commentId,
-																						});
-																					},
-																					unlikeComment: async (commentId) => {
-																						await postProps.unlikeComment({
-																							commentId,
-																						});
-																					},
-																					likePost: async (postId) => {
-																						await postProps.likePost({
-																							postId,
-																						});
-																					},
-																					unlikePost: async (postId) => {
-																						await postProps.unlikePost({
-																							postId,
-																						});
-																					},
-																					getText: i18nProps.getText,
-																					showDotsMenuModal: (items) =>
-																						overlayProps.showOptionsMenu({
-																							items,
-																						}),
-																					setNavigationParams,
-																				},
-																			});
-																		}}
-																	</WithCurrentUser>
+																						actions: {
+																							sendComment: async (text, postId) => {
+																								await postProps.createComment({
+																									text,
+																									postId,
+																								});
+																							},
+																							deleteComment: async (commentId) => {
+																								await postProps.removeComment({
+																									commentId,
+																								});
+																							},
+																							deletePost: async (postId) => {
+																								await postProps.removePost({
+																									postId,
+																								});
+																							},
+																							likeComment: async (commentId) => {
+																								await postProps.likeComment({
+																									commentId,
+																								});
+																							},
+																							unlikeComment: async (commentId) => {
+																								await postProps.unlikeComment({
+																									commentId,
+																								});
+																							},
+																							likePost: async (postId) => {
+																								await postProps.likePost({
+																									postId,
+																								});
+																							},
+																							unlikePost: async (postId) => {
+																								await postProps.unlikePost({
+																									postId,
+																								});
+																							},
+																							getText: i18nProps.getText,
+																							showDotsMenuModal: (items) =>
+																								overlayProps.showOptionsMenu({
+																									items,
+																								}),
+																							blockUser: () => undefined,
+																							reportProblem: () => undefined,
+																							setNavigationParams,
+																							setGlobal,
+																						},
+																					});
+																				}}
+																			</WithCurrentUser>
+																		)}
+																	</WithActivities>
 																)}
-															</WithActivities>
+															</WithProfiles>
 														)}
-													</WithProfiles>
+													</WithPosts>
 												)}
-											</WithPosts>
+											</WithNavigationParams>
 										)}
-									</WithNavigationParams>
+									</WithConfig>
 								)}
-							</WithConfig>
+							</WithGlobals>
 						)}
 					</WithOverlays>
 				)}

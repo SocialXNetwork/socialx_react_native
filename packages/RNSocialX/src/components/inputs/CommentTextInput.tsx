@@ -15,14 +15,8 @@ interface ICommentTextInputProps extends ITranslatedProps {
 	onCommentInputChange: (value: string) => void;
 }
 
-export const CommentTextInput = React.forwardRef<
-	TextInput,
-	ICommentTextInputProps
->(
-	(
-		{ autoFocus = true, comment, onCommentInputChange, onCommentSend, getText },
-		ref,
-	) => (
+export const CommentTextInput = React.forwardRef<TextInput, ICommentTextInputProps>(
+	({ autoFocus = true, comment, onCommentInputChange, onCommentSend, getText }, ref) => (
 		<View style={styles.container}>
 			<View style={styles.inputContainer}>
 				<PrimaryTextInput
@@ -33,25 +27,16 @@ export const CommentTextInput = React.forwardRef<
 					autoFocus={autoFocus}
 					onChangeText={onCommentInputChange}
 					returnKeyType={TRKeyboardKeys.send}
-					onSubmitPressed={
-						comment.length > 0 ? onCommentSend : Keyboard.dismiss
-					}
+					onSubmitPressed={comment.length > 0 ? onCommentSend : Keyboard.dismiss}
 					blurOnSubmit={true}
 				/>
 			</View>
 
 			<View style={styles.send}>
-				<TouchableOpacity
-					onPress={onCommentSend}
-					activeOpacity={1}
-					disabled={comment.length === 0}
-				>
+				<TouchableOpacity onPress={onCommentSend} activeOpacity={1} disabled={comment.length === 0}>
 					<Icon
 						name="comment-arrow-right"
-						style={[
-							styles.icon,
-							{ color: comment.length === 0 ? Colors.grayText : Colors.pink },
-						]}
+						style={[styles.icon, { color: comment.length === 0 ? Colors.grayText : Colors.pink }]}
 					/>
 				</TouchableOpacity>
 			</View>

@@ -1,0 +1,27 @@
+{
+  "name": "@socialx/webview-crypto",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saulshanabrook/webview-crypto.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "Helper code for crypto polyfil in a webview ",
+  "author": "Saul Shanabrook",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "js-base64": "^2.4.9",
+    "lodash": "4.17.3",
+    "serialize-error": "2.1.0"
+  },
+  "devDependencies": {
+    "@types/serialize-error": "^2.1.0",
+    "typescript": "^3.0.1"
+  }
+}

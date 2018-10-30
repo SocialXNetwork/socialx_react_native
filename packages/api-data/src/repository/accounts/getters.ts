@@ -13,41 +13,21 @@ export const getIsAccountLoggedIn = (
 	return callback(null, { loggedIn: !!account.is });
 };
 
-export const getCurrentAccount = (
-	context: IContext,
-	callback: IGunCallback<IAccountData>,
-) => {
+export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAccountData>) => {
 	const { account, gun } = context;
 	if (!account.is) {
-		return callback(
-			new ApiError('failed to get current account, user not logged in'),
-		);
+		return callback(new ApiError('failed to get current account, user not logged in'));
 	}
 
-	profileHandles.currentUserProfileData(context).once(
-		(userProfileCallback: any) => {
-			if (!userProfileCallback) {
+	account.docLoad(
+		(userProfileCallback: IAccountData) => {
+			if (!Object.keys(userProfileCallback).length) {
 				return callback(new ApiError('failed to get current account profile.'));
 			}
-			const { pub } = userProfileCallback;
-			gun
-				.back(-1)
-				.get(`~${pub}`)
-				.docLoad(
-					(userAccountCallback: IAccountData) => {
-						if (!Object.keys(userAccountCallback).length) {
-							return callback(
-								new ApiError(
-									'failed to get current account, user document not found',
-								),
-							);
-						}
-						return callback(null, userAccountCallback);
-					},
-					{ wait: 500, timeout: 1000 },
-				);
+
+			return callback(null, userProfileCallback);
 		},
-		{ wait: 500 },
+		{ wait: 2000, timeout: 3000 },
 	);
 };
 
@@ -61,10 +41,9 @@ export const getAccountByPub = (
 	targetUser.docLoad((data: IAccountData) => {
 		if (!Object.keys(data).length) {
 			return callback(
-				new ApiError(
-					'failed to get account, no object for provided public key',
-					{ initialRequestBody: publicKey },
-				),
+				new ApiError('failed to get account, no object for provided public key', {
+					initialRequestBody: publicKey,
+				}),
 			);
 		}
 		return callback(null, data);

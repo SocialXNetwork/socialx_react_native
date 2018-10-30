@@ -7,11 +7,7 @@ import {
 	WithPhoto,
 } from '../../enhancers/screens';
 import { IMAGE_PICKER_TYPES } from '../../environment/consts';
-import {
-	IFriendsSearchResult,
-	INavigationProps,
-	IWallPostPhotoOptimized,
-} from '../../types';
+import { IFriendsSearchResult, INavigationProps, IWallPostPhotoOptimized } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -20,9 +16,7 @@ import {
 } from '../../utilities';
 import { PhotoScreenView } from './PhotoScreen.view';
 
-type IPhotoScreenProps = INavigationProps &
-	IWithPhotoEnhancedActions &
-	IWithPhotoEnhancedData;
+type IPhotoScreenProps = INavigationProps & IWithPhotoEnhancedActions & IWithPhotoEnhancedData;
 
 interface IPhotoScreenState {
 	locationEnabled: boolean;
@@ -45,13 +39,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 
 	public render() {
 		const { currentUserAvatarURL, marginBottom, getText } = this.props;
-		const {
-			locationEnabled,
-			location,
-			tagFriends,
-			shareText,
-			mediaObjects,
-		} = this.state;
+		const { locationEnabled, location, tagFriends, shareText, mediaObjects } = this.state;
 
 		return (
 			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
@@ -112,22 +100,18 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
-				actionHandler: () =>
-					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
+				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
 				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
-				actionHandler: () =>
-					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
+				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
 		showDotsMenuModal(menuItems);
 	};
 
-	private addToScrollerSelectedMediaObject = async (
-		source: IMAGE_PICKER_TYPES,
-	) => {
+	private addToScrollerSelectedMediaObject = async (source: IMAGE_PICKER_TYPES) => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();
@@ -136,9 +120,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 		}
 		if (selectedMediaObjects.length > 0) {
 			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (mObject) =>
-					getOptimizedMediaObject(mObject),
-				),
+				selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
 			);
 			this.setState({
 				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
@@ -147,22 +129,13 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	private sendPostHandler = () => {
-		const {
-			mediaObjects,
-			tagFriends,
-			shareText,
-			locationEnabled,
-			location,
-		} = this.state;
+		const { mediaObjects, tagFriends, shareText, locationEnabled, location } = this.state;
 		const { createPost } = this.props;
 
 		createPost({
 			mediaObjects,
 			location: locationEnabled && location !== '' ? location : undefined,
-			taggedFriends:
-				tagFriends && this.addedFriends.length > 0
-					? this.addedFriends
-					: undefined,
+			taggedFriends: tagFriends && this.addedFriends.length > 0 ? this.addedFriends : undefined,
 			title: shareText ? shareText : undefined,
 		});
 	};
@@ -173,7 +146,5 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 }
 
 export const PhotoScreen = (navProps: INavigationProps) => (
-	<WithPhoto>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithPhoto>
+	<WithPhoto>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
 );

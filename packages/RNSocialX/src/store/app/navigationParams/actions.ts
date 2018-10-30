@@ -1,10 +1,6 @@
 import { ActionCreator } from 'redux';
 import { IThunk } from '../../types';
-import {
-	ActionTypes,
-	ISetNavigationParamsAction,
-	ISetNavigationParamsInput,
-} from './Types';
+import { ActionTypes, ISetNavigationParamsAction, ISetNavigationParamsInput } from './Types';
 
 const setNavigationParamsAction: ActionCreator<ISetNavigationParamsAction> = (
 	setNavigationParamsInput: ISetNavigationParamsInput,
@@ -23,11 +19,11 @@ export const setNavigationParams = (
 	}
 };
 
-export const clearNavigationParams = ({
-	screenName,
-}: {
-	screenName: string;
-}): IThunk => async (dispatch, getState, context) => {
+export const clearNavigationParams = ({ screenName }: { screenName: string }): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
 		await dispatch(setNavigationParams({ screenName, params: {} }));
 	} catch (e) {

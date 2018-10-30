@@ -45,18 +45,9 @@ type IApplicationAction =
 	| IOverlaysActions
 	| IResetStoreAction;
 
-export type IThunk = ThunkAction<
-	Promise<void>,
-	IApplicationState,
-	IContext,
-	IApplicationAction
->;
+export type IThunk = ThunkAction<Promise<void>, IApplicationState, IContext, IApplicationAction>;
 
-export type IThunkDispatch = ThunkDispatch<
-	IApplicationState,
-	IContext,
-	IApplicationAction
->;
+export type IThunkDispatch = ThunkDispatch<IApplicationState, IContext, IApplicationAction>;
 
 export interface IContextConfig {
 	dataApi: IApiOptions;

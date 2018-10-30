@@ -40,7 +40,8 @@ export class Ipfslib {
 			method: 'POST',
 			type: 'multipart',
 			field: 'file',
-			notification: { enabled: false },
+			// "Android Oreo requires a notification configuration for the service to run. https://developer.android.com/reference/android/content/Context.html#startForegroundService(android.content.Intent)"
+			// notification: { enabled: true },
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -51,15 +52,11 @@ export class Ipfslib {
 				onStart(uploadId);
 			}
 
-			this.Upload.addListener(
-				'progress',
-				uploadId,
-				(data: IListenerProgess) => {
-					if (onProgress) {
-						onProgress({ ...data, uploadId });
-					}
-				},
-			);
+			this.Upload.addListener('progress', uploadId, (data: IListenerProgess) => {
+				if (onProgress) {
+					onProgress({ ...data, uploadId });
+				}
+			});
 
 			return new Promise<any>((resolve, reject) => {
 				this.Upload.addListener('error', uploadId, (data: IListenerError) => {
@@ -80,10 +77,8 @@ export class Ipfslib {
 		}
 	};
 
-	public getFileInfo = (path: string): Promise<IGetFileInfo> =>
-		this.Upload.getFileInfo(path);
-	public cancelUpload = (uploadId: string) =>
-		this.Upload.cancelUpload(uploadId);
+	public getFileInfo = (path: string): Promise<IGetFileInfo> => this.Upload.getFileInfo(path);
+	public cancelUpload = (uploadId: string) => this.Upload.cancelUpload(uploadId);
 
 	private apiUrl = (path: string): string => {
 		return `${this.config.protocol}://${this.config.host}${

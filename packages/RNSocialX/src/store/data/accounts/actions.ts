@@ -27,24 +27,18 @@ import {
 	ISyncGetCurrentAccountAction,
 } from './Types';
 
-const getCurrentAccountAction: ActionCreator<
-	IGetCurrentAccountAction
-> = () => ({
+const getCurrentAccountAction: ActionCreator<IGetCurrentAccountAction> = () => ({
 	type: ActionTypes.GET_CURRENT_ACCOUNT,
 });
 
-const syncGetCurrentAccountAction: ActionCreator<
-	ISyncGetCurrentAccountAction
-> = (account: IAccountData) => ({
+const syncGetCurrentAccountAction: ActionCreator<ISyncGetCurrentAccountAction> = (
+	account: IAccountData,
+) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_ACCOUNT,
 	payload: account,
 });
 
-export const getCurrentAccount = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const getCurrentAccount = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(getCurrentAccountAction());
@@ -79,9 +73,11 @@ const createAccountAction: ActionCreator<ICreateAccountAction> = (
 	payload: createAccountInput,
 });
 
-export const createAccount = (
-	createAccountInput: ICreateAccountInput,
-): IThunk => async (dispatch, getState, context) => {
+export const createAccount = (createAccountInput: ICreateAccountInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 
 	try {
@@ -179,9 +175,11 @@ const recoverAccountAction: ActionCreator<IRecoverAccountAction> = (
 	payload: recoverAccountActionInput,
 });
 
-export const recoverAccount = (
-	recoverAccountInput: IRecoverAccountInput,
-): IThunk => async (dispatch, getState, context) => {
+export const recoverAccount = (recoverAccountInput: IRecoverAccountInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(recoverAccountAction(recoverAccountInput));
@@ -192,9 +190,7 @@ export const recoverAccount = (
 			}),
 		);
 		const { dataApi } = context;
-		const recoveryData = await dataApi.accounts.recoverAccount(
-			recoverAccountInput,
-		);
+		const recoveryData = await dataApi.accounts.recoverAccount(recoverAccountInput);
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -208,18 +204,12 @@ export const recoverAccount = (
 	}
 };
 
-const loginAction: ActionCreator<ILoginAction> = (
-	credentials: ICredentials,
-) => ({
+const loginAction: ActionCreator<ILoginAction> = (credentials: ICredentials) => ({
 	type: ActionTypes.LOGIN,
 	payload: credentials,
 });
 
-export const login = (credentials: ICredentials): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const login = (credentials: ICredentials): IThunk => async (dispatch, getState, context) => {
 	const state = getState();
 	const auth = state.auth.database.gun;
 	const activityId = uuidv4();
@@ -243,7 +233,9 @@ export const login = (credentials: ICredentials): IThunk => async (
 		await dispatch(endActivity({ uuid: activityId }));
 	} catch (e) {
 		if (auth && auth.alias && auth.password) {
+			console.log('login failed with', e);
 			if (auth.alias.length > 0 && auth.password.length > 0) {
+				console.log('retrying');
 				await dispatch(login(credentials));
 				return;
 			} else {
@@ -310,9 +302,11 @@ const changePasswordAction: ActionCreator<IChangePasswordAction> = (
 	payload: changePasswordInput,
 });
 
-export const changePassword = (
-	changePasswordInput: IChangePasswordInput,
-): IThunk => async (dispatch, getState, context) => {
+export const changePassword = (changePasswordInput: IChangePasswordInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
@@ -355,19 +349,17 @@ const syncGetAccountByPubAction: ActionCreator<ISyncGetAccountByPubAction> = (
 	payload: account,
 });
 
-export const getAccountByPub = (
-	getAccountByPubInput: IGetAccountByPubInput,
-): IThunk => async (dispatch, getState, context) => {
+export const getAccountByPub = (getAccountByPubInput: IGetAccountByPubInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuidv4();
 	try {
 		dispatch(getAccountByPubAction(getAccountByPubInput));
-		await dispatch(
-			beginActivity({ type: ActionTypes.GET_ACCOUNT_BY_PUB, uuid: activityId }),
-		);
+		await dispatch(beginActivity({ type: ActionTypes.GET_ACCOUNT_BY_PUB, uuid: activityId }));
 		const { dataApi } = context;
-		const account = await dataApi.accounts.getAccountByPub(
-			getAccountByPubInput,
-		);
+		const account = await dataApi.accounts.getAccountByPub(getAccountByPubInput);
 		dispatch(syncGetAccountByPubAction(account));
 	} catch (e) {
 		await dispatch(

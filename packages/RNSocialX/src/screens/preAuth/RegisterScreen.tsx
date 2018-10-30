@@ -19,10 +19,7 @@ interface IRegisterScreenState {
 	errors: IError[];
 }
 
-class Screen extends React.Component<
-	IRegisterScreenProps,
-	IRegisterScreenState
-> {
+class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState> {
 	public static getDerivedStateFromProps(nextProps: IRegisterScreenProps) {
 		if (nextProps.errors.length > 0) {
 			return {
@@ -41,9 +38,7 @@ class Screen extends React.Component<
 		return (
 			<RegisterScreenView
 				onRegister={this.onRegisterHandler}
-				onNavigateToTermsAndConditions={() =>
-					this.safeNavigateToScreen(SCREENS.TermsAndConditions)
-				}
+				onNavigateToTermsAndConditions={() => this.safeNavigateToScreen(SCREENS.TermsAndConditions)}
 				onGoBack={this.onGoBackHandler}
 				showDotsMenuModal={this.props.showDotsMenuModal}
 				getText={this.props.getText}
@@ -52,12 +47,7 @@ class Screen extends React.Component<
 	}
 
 	private onRegisterHandler = async (user: IRegisterData) => {
-		const {
-			register,
-			loadPosts,
-			resetNavigationToRoute,
-			navigation,
-		} = this.props;
+		const { register, loadPosts, resetNavigationToRoute, navigation } = this.props;
 
 		this.setState({ errors: [] });
 		this.switchActivityIndicator(true);
@@ -68,7 +58,7 @@ class Screen extends React.Component<
 		} else {
 			await loadPosts();
 			this.switchActivityIndicator(false);
-			resetNavigationToRoute(NAVIGATION.Main, navigation);
+			resetNavigationToRoute(NAVIGATION.Intro, navigation);
 		}
 	};
 
@@ -92,10 +82,7 @@ class Screen extends React.Component<
 	};
 }
 
-export const RegisterScreen = ({
-	navigation,
-	navigationOptions,
-}: INavigationProps) => (
+export const RegisterScreen = ({ navigation, navigationOptions }: INavigationProps) => (
 	<WithRegister>
 		{({ data, actions }) => (
 			<Screen

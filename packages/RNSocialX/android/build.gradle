@@ -3,10 +3,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        maven { url 'https://maven.google.com' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -24,16 +21,11 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
         maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
-        maven {
             // Local Maven repo containing AARs with JSC library built for Android
             url "$rootDir/../node_modules/jsc-android/dist"
         }
-        maven {
-            url "https://jitpack.io"
-        }
+        maven { url 'https://maven.google.com' }
+        maven { url "https://jitpack.io" }
         jcenter()
     }
 }

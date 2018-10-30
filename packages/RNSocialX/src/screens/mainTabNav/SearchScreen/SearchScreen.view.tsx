@@ -4,12 +4,7 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SearchHeader, SearchTabResults } from '../../../components';
-import {
-	INavigationParamsActions,
-	INavigationProps,
-	ISearchResultData,
-	ITranslatedProps,
-} from '../../../types';
+import { INavigationProps, ISearchResultData, ITranslatedProps } from '../../../types';
 
 import styles from './SearchScreen.style';
 
@@ -20,10 +15,7 @@ export const ComingSoon: React.SFC<{ message: string }> = ({ message }) => (
 	</View>
 );
 
-interface ISearchScreenViewProps
-	extends INavigationProps,
-		ITranslatedProps,
-		INavigationParamsActions {
+interface ISearchScreenViewProps extends INavigationProps, ITranslatedProps {
 	loadedTabs: number[];
 	searchTermValue: string;
 	results: ISearchResultData[];
@@ -32,6 +24,7 @@ interface ISearchScreenViewProps
 	hasMoreResults: boolean;
 	onTabIndexChanged: (value: { i: number }) => void;
 	onSearchTermChange: (value: string) => void;
+	onResultPress: (userId: string) => void;
 	searchForMoreResults: () => void;
 }
 
@@ -46,7 +39,7 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 	hasMoreResults,
 	searching,
 	searchForMoreResults,
-	setNavigationParams,
+	onResultPress,
 	getText,
 }) => (
 	<View style={styles.container}>
@@ -72,13 +65,12 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 				{loadedTabs.includes(0) && (
 					<SearchTabResults
 						searchTermValue={searchTermValue}
-						navigation={navigation}
 						searchResults={results}
 						suggestions={suggestions}
 						searching={searching}
 						hasMoreResults={hasMoreResults}
 						searchForMoreResults={searchForMoreResults}
-						setNavigationParams={setNavigationParams}
+						onResultPress={onResultPress}
 						getText={getText}
 					/>
 				)}
