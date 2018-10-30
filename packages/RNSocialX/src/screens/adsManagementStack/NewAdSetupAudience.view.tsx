@@ -4,11 +4,7 @@ import { Button, Segment } from 'native-base';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import {
-	IAdSetupAudienceData,
-	IGenderSelect,
-	ITranslatedProps,
-} from '../../types';
+import { IAdSetupAudienceData, IGenderSelect, ITranslatedProps } from '../../types';
 import styles, { nativeBaseStyles } from './NewAdSetupAudience.style';
 
 interface INewAdSetupAudienceViewProps extends ITranslatedProps {
@@ -32,17 +28,13 @@ const GENDER_SELECTION_BUTTONS = [
 	},
 ];
 
-const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({
-	currentValue,
-}) => (
+const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({ currentValue }) => (
 	<View style={styles.thumbContainer}>
 		<Text>{currentValue}</Text>
 	</View>
 );
 
-export const NewAdSetupAudienceView: React.SFC<
-	INewAdSetupAudienceViewProps
-> = ({
+export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = ({
 	getText,
 	updateAdSetAudience,
 	adSetupAudienceFormik,
@@ -113,9 +105,7 @@ export const NewAdSetupAudienceView: React.SFC<
 							min={10}
 							max={100}
 							step={1}
-							onValuesChange={(values: number[]) =>
-								setFieldValue('ageRange', values)
-							}
+							onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
 							selectedStyle={styles.ageSelectorTrack}
 							containerStyle={styles.ageSelectorContainer}
 							customMarker={SliderMarkerWithValue}
