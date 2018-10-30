@@ -4,24 +4,13 @@ import { Button, Segment } from 'native-base';
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import { CreateAdSteps, Header, HeaderButton } from '../../components';
-import { ITranslatedProps } from '../../types';
+import { IAdSetupAudienceData, IGenderSelect, ITranslatedProps } from '../../types';
 import styles, { nativeBaseStyles } from './NewAdSetupAudience.style';
 
 interface INewAdSetupAudienceViewProps extends ITranslatedProps {
-	onGoBack: () => void;
-	onNavigateToBudgetSection: (values: INewAdSetupAudienceData) => void;
-}
-
-enum IGenderSelect {
-	male = 'male',
-	female = 'female',
-	all = 'all',
-}
-
-interface INewAdSetupAudienceData {
-	selectedGender: IGenderSelect;
-	ageRange: number[];
+	updateAdSetAudience: (values: IAdSetupAudienceData) => void;
+	adSetupAudienceFormik: React.RefObject<any>;
+	onMultiSliderChange: (isStarting: boolean) => void;
 }
 
 const GENDER_SELECTION_BUTTONS = [
@@ -47,16 +36,19 @@ const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({ currentVal
 
 export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = ({
 	getText,
-	onGoBack,
-	onNavigateToBudgetSection,
+	updateAdSetAudience,
+	adSetupAudienceFormik,
+	onMultiSliderChange,
 }) => (
 	<View style={styles.rootView}>
 		<Formik
+			ref={adSetupAudienceFormik}
+			isInitialValid={true}
 			initialValues={{
 				selectedGender: IGenderSelect.all,
 				ageRange: [20, 80],
 			}}
-			onSubmit={onNavigateToBudgetSection}
+			onSubmit={updateAdSetAudience}
 			render={({
 				values: { selectedGender, ageRange },
 				errors,
@@ -64,73 +56,68 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 				handleSubmit,
 				isValid,
 				setFieldValue,
-			}: FormikProps<INewAdSetupAudienceData>) => (
-				<React.Fragment>
-					<Header
-						title={getText('new.ad.setup.audience.screen.title')}
-						left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-					/>
-					<ScrollView
-						style={{ flex: 1 }}
-						keyboardShouldPersistTaps={'handled'}
-						alwaysBounceVertical={false}
-					>
-						<Text style={styles.headerText}>
-							{getText('new.ad.setup.audience.header.title').toUpperCase()}
+			}: FormikProps<IAdSetupAudienceData>) => (
+				<ScrollView
+					style={{ flex: 1 }}
+					keyboardShouldPersistTaps={'handled'}
+					alwaysBounceVertical={false}
+				>
+					<Text style={styles.headerText}>
+						{getText('new.ad.setup.audience.header.title').toUpperCase()}
+					</Text>
+					<View style={styles.screenContent}>
+						<Text style={styles.sectionLabel}>
+							{getText('new.ad.setup.audience.gender.select')}
 						</Text>
-						<View style={styles.screenContent}>
-							<Text style={styles.sectionLabel}>
-								{getText('new.ad.setup.audience.gender.select')}
-							</Text>
-							<Segment style={nativeBaseStyles.segment}>
-								{GENDER_SELECTION_BUTTONS.map((genderButton, index) => (
-									<Button
-										key={genderButton.value}
-										style={[
+						<Segment style={nativeBaseStyles.segment}>
+							{GENDER_SELECTION_BUTTONS.map((genderButton, index) => (
+								<Button
+									key={genderButton.value}
+									style={[
+										selectedGender === genderButton.value
+											? nativeBaseStyles.segmentButtonActive
+											: nativeBaseStyles.segmentButtonInactive,
+									]}
+									first={index === 0}
+									last={index === GENDER_SELECTION_BUTTONS.length - 1}
+									active={selectedGender === genderButton.value}
+									onPress={() => {
+										setFieldValue('selectedGender', genderButton.value);
+									}}
+								>
+									<Text
+										style={
 											selectedGender === genderButton.value
-												? nativeBaseStyles.segmentButtonActive
-												: nativeBaseStyles.segmentButtonInactive,
-										]}
-										first={index === 0}
-										last={index === GENDER_SELECTION_BUTTONS.length - 1}
-										active={selectedGender === genderButton.value}
-										onPress={() => {
-											setFieldValue('selectedGender', genderButton.value);
-										}}
+												? styles.segmentTitleActive
+												: styles.segmentTitleInactive
+										}
 									>
-										<Text
-											style={
-												selectedGender === genderButton.value
-													? styles.segmentTitleActive
-													: styles.segmentTitleInactive
-											}
-										>
-											{getText(genderButton.label)}
-										</Text>
-									</Button>
-								))}
-							</Segment>
-							<Text style={styles.sectionLabel}>
-								{getText('new.ad.setup.audience.age.range.select')}
-							</Text>
-							<MultiSlider
-								values={ageRange}
-								min={10}
-								max={100}
-								step={1}
-								onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
-								selectedStyle={styles.ageSelectorTrack}
-								containerStyle={styles.ageSelectorContainer}
-								customMarker={SliderMarkerWithValue}
-							/>
-							<Text style={styles.sectionLabel}>
-								{getText('new.ad.setup.audience.countries.select')}
-							</Text>
-							<Text>{'TBD: figure out best selector here'}</Text>
-						</View>
-					</ScrollView>
-					<CreateAdSteps currentStep={'audience'} onGoToNextStep={handleSubmit} />
-				</React.Fragment>
+										{getText(genderButton.label)}
+									</Text>
+								</Button>
+							))}
+						</Segment>
+						<Text style={styles.sectionLabel}>
+							{getText('new.ad.setup.audience.age.range.select')}
+						</Text>
+						<MultiSlider
+							values={ageRange}
+							min={10}
+							max={100}
+							step={1}
+							onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
+							selectedStyle={styles.ageSelectorTrack}
+							containerStyle={styles.ageSelectorContainer}
+							customMarker={SliderMarkerWithValue}
+							onValuesChangeStart={() => onMultiSliderChange(true)}
+							onValuesChangeFinish={() => onMultiSliderChange(false)}
+						/>
+						<Text style={styles.sectionLabel}>
+							{getText('new.ad.setup.audience.countries.select')}
+						</Text>
+						<Text>{'TBD: figure out best selector here'}</Text>
+					</View>
+				</ScrollView>
 			)}
 		/>
 	</View>

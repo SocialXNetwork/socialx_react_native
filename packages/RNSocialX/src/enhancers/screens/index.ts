@@ -4,11 +4,6 @@ export {
 	WithAdsManagementEditAd,
 } from './adsManagementStack/WithAdsManagementEditAd';
 export {
-	IWithNewAdConfigBudgetEnhancedActions,
-	IWithNewAdConfigBudgetEnhancedData,
-	WithNewAdConfigBudget,
-} from './adsManagementStack/WithNewAdConfigBudget';
-export {
 	IWithAdsManagementEnhancedActions,
 	IWithAdsManagementEnhancedData,
 	WithAdsManagement,
@@ -24,15 +19,10 @@ export {
 	WithAdsStatistics,
 } from './adsManagementStack/WithAdsStatistics';
 export {
-	IWithNewAdSetupAudienceEnhancedActions,
-	IWithNewAdSetupAudienceEnhancedData,
-	WithNewAdSetupAudience,
-} from './adsManagementStack/WithNewAdSetupAudience';
-export {
-	IWithNewAdSetupPostEnhancedActions,
-	IWithNewAdSetupPostEnhancedData,
-	WithNewAdSetupPost,
-} from './adsManagementStack/WithNewAdSetupPost';
+	WithNewAdSlider,
+	IWithNewAdSliderEnhancedActions,
+	IWithNewAdSliderEnhancedData,
+} from './adsManagementStack/WithNewAdSlider';
 
 export {
 	WithComments,
