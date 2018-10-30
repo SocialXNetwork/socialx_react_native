@@ -40,9 +40,7 @@ import {
 	MaintenanceScreen,
 	MediaViewerScreen,
 	MyProfileScreen,
-	NewAdConfigBudgetScreen,
-	NewAdSetupAudience,
-	NewAdSetupPostScreen,
+	NewAdSliderScreen,
 	NotificationsScreen,
 	PhotoScreen,
 	ReferralScreen,
@@ -252,15 +250,11 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
-		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
-		AdsManagementScreen: { screen: AdsManagementScreen },
-		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
-		NewAdSetupAudience: { screen: NewAdSetupAudience },
-		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
-		NewAdConfigBudgetScreen: {
-			screen: NewAdConfigBudgetScreen,
-		},
+		NewAdSliderScreen: { screen: NewAdSliderScreen },
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
+		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
+		AdsManagementScreen: { screen: AdsManagementScreen },
+		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 	},
 	{
 		headerMode: 'none',

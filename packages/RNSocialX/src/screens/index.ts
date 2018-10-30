@@ -1,10 +1,8 @@
 export { AdsManagementEditAdScreen } from './adsManagementStack/AdsManagementEditAdScreen';
-export { NewAdConfigBudgetScreen } from './adsManagementStack/NewAdConfigBudgetScreen';
 export { AdsManagementOverviewScreen } from './adsManagementStack/AdsManagementOverviewScreen';
 export { AdsManagementScreen } from './adsManagementStack/AdsManagementScreen';
 export { AdsStatisticsScreen } from './adsManagementStack/AdsStatisticsScreen';
-export { NewAdSetupPostScreen } from './adsManagementStack/NewAdSetupPostScreen';
-export { NewAdSetupAudience } from './adsManagementStack/NewAdSetupAudience';
+export { NewAdSliderScreen } from './adsManagementStack/NewAdSliderScreen';
 
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 
