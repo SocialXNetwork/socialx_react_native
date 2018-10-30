@@ -13,9 +13,7 @@ interface IHeaderButtonProps {
 }
 
 export const HeaderButton: React.SFC<IHeaderButtonProps> = ({
-	onPress = () => {
-		/**/
-	},
+	onPress,
 	iconName = false,
 	iconSource,
 	iconColor = defaultColor,

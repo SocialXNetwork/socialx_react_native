@@ -55,7 +55,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 		return (
 			<UserFeedScreenView
-				avatarImage={currentUser ? currentUser.avatarURL : ''}
+				avatarImage={currentUser.avatarURL}
 				posts={posts}
 				skeletonPost={skeletonPost}
 				likeError={likeError}

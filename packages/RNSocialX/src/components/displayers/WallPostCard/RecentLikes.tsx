@@ -1,42 +1,44 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import { ILike, ITranslatedProps } from '../../../types';
+import { ITranslatedProps } from '../../../types';
 import styles from './RecentLikes.style';
 
 interface IRecentLikesProps extends ITranslatedProps {
-	likes: ILike[];
+	recentLikes: {
+		first: string | null;
+		second: string | null;
+		total: number;
+	};
 	onUserPress: (userId: string) => void;
 }
 
-export const RecentLikes: React.SFC<IRecentLikesProps> = ({ likes, onUserPress, getText }) => {
-	if (likes.length > 0) {
-		const lastLikeUser = likes[likes.length - 1];
-		const numberOfOtherLikes = likes.length - 1;
-		const secondLastLike = likes.length >= 2 ? likes[likes.length - 2] : null;
-
+export const RecentLikes: React.SFC<IRecentLikesProps> = ({
+	recentLikes,
+	onUserPress,
+	getText,
+}) => {
+	if (recentLikes.first) {
 		return (
 			<View style={styles.recentLikesContainer}>
 				<Text style={styles.likedText}>
 					{getText('post.card.liked.by') + ' '}
-					<Text style={styles.likeTextBold} onPress={() => onUserPress(lastLikeUser.userId)}>
-						{lastLikeUser.userName}
+					<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.first!)}>
+						{recentLikes.first}
 					</Text>
 				</Text>
-				{numberOfOtherLikes === 1 && (
+				{recentLikes.second && (
 					<Text style={styles.likedText}>
-						{` ${getText('text.and')} `}
-						{secondLastLike && (
-							<Text style={styles.likeTextBold} onPress={() => onUserPress(secondLastLike.userId)}>
-								{secondLastLike.userName}
-							</Text>
-						)}
+						{' ' + getText('text.and') + ' '}
+						<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.second!)}>
+							{recentLikes.second}
+						</Text>
 					</Text>
 				)}
-				{numberOfOtherLikes > 1 && (
+				{recentLikes.total > 2 && (
 					<Text style={styles.likedText}>
-						{` ${getText('text.and')} `}
-						<Text style={styles.likeTextBold}>{numberOfOtherLikes + ' others'}</Text>
+						{' ' + getText('text.and') + ' '}
+						<Text style={styles.likeTextBold}>{recentLikes.total - 2 + ' others'}</Text>
 					</Text>
 				)}
 			</View>

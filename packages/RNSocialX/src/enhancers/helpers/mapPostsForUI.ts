@@ -64,7 +64,7 @@ export const mapPostsForUI = (
 				suggested: undefined,
 				contentOffensive: false,
 				marginBottom: 0,
-				currentUserAvatarURL: currentUser!.avatarURL,
+				currentUser,
 				likeError: false,
 			};
 		});
