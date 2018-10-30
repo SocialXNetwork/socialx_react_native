@@ -34,7 +34,7 @@ export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAcc
 
 				return callback(null, userProfileCallback);
 			},
-			{ off: 1 },
+			{ off: 1, wait: 500 },
 		);
 	});
 };
