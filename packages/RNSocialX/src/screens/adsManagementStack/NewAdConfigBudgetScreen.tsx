@@ -3,20 +3,14 @@ import * as React from 'react';
 import Picker from 'react-native-picker';
 
 import { AdsInitialBudgetValue, Currencies, dateFormatMomentJS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
-
+import { IConfirmation } from '../../store/ui/overlays';
+import { IAdSetupBudgetData, ITranslatedProps } from '../../types';
 import { defaultStyles } from './NewAdConfigBudgetScreen.style';
 import { NewAdConfigBudgetScreenView } from './NewAdConfigBudgetScreen.view';
 
-import {
-	IWithNewAdConfigBudgetEnhancedActions,
-	IWithNewAdConfigBudgetEnhancedData,
-	WithNewAdConfigBudget,
-} from '../../enhancers/screens';
-
-type INewAdConfigBudgetScreenProps = INavigationProps &
-	IWithNewAdConfigBudgetEnhancedActions &
-	IWithNewAdConfigBudgetEnhancedData;
+interface INewAdConfigBudgetScreenProps extends ITranslatedProps {
+	showConfirmation: (confirmation: IConfirmation) => void;
+}
 
 interface INewAdConfigBudgetScreenState {
 	budgetValue: string;
@@ -31,7 +25,10 @@ interface INewAdConfigBudgetScreenState {
 	nextDayFromStartDate: Date;
 }
 
-class Screen extends React.Component<INewAdConfigBudgetScreenProps, INewAdConfigBudgetScreenState> {
+export class NewAdConfigBudgetScreen extends React.Component<
+	INewAdConfigBudgetScreenProps,
+	INewAdConfigBudgetScreenState
+> {
 	public state = {
 		budgetValue: AdsInitialBudgetValue,
 		selectedCurrencyValue: Currencies[0].toUpperCase(),
@@ -64,7 +61,6 @@ class Screen extends React.Component<INewAdConfigBudgetScreenProps, INewAdConfig
 
 		return (
 			<NewAdConfigBudgetScreenView
-				onGoBack={this.onGoBackHandler}
 				getText={getText}
 				currencyButtonPressed={this.currencyButtonPressed}
 				selectedCurrencyValue={selectedCurrencyValue}
@@ -83,13 +79,30 @@ class Screen extends React.Component<INewAdConfigBudgetScreenProps, INewAdConfig
 				nextDayFromStartDate={nextDayFromStartDate}
 				handleStartDatePicked={this.handleStartDatePicked}
 				handleStopDatePicked={this.handleStopDatePicked}
-				nextButtonPressed={this.nextButtonPressed}
 			/>
 		);
 	}
 
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
+	public getAdBudgetData = (): IAdSetupBudgetData => {
+		const {
+			selectedCurrencyValue,
+			budgetValue,
+			perDayPressed,
+			lifetimePressed,
+			runAdContinuouslyPressed,
+			selectedStartDate,
+			selectedStopDate,
+		} = this.state;
+
+		return {
+			currency: selectedCurrencyValue,
+			budget: parseInt(budgetValue, 10),
+			perDay: perDayPressed,
+			lifetime: lifetimePressed,
+			runAdContinuously: runAdContinuouslyPressed,
+			start: selectedStartDate,
+			stop: selectedStopDate,
+		};
 	};
 
 	private currencyButtonPressed = () => {
@@ -193,46 +206,4 @@ class Screen extends React.Component<INewAdConfigBudgetScreenProps, INewAdConfig
 			nextDayFromStartDate: newDate,
 		});
 	};
-
-	private nextButtonPressed = () => {
-		const { getText } = this.props;
-
-		this.props.showConfirmation({
-			title: getText('ad.management.budget.modal.confirm.title'),
-			message: getText('ad.management.budget.modal.confirm.message'),
-			confirmButtonLabel: getText('ad.management.budget.modal.confirm.confirm.label'),
-			cancelButtonLabel: getText('ad.management.budget.modal.confirm.cancel.label'),
-			confirmHandler: this.saveAdConfirmedHandler,
-		});
-	};
-
-	private saveAdConfirmedHandler = () => {
-		const {
-			selectedCurrencyValue,
-			budgetValue,
-			perDayPressed,
-			lifetimePressed,
-			runAdContinuouslyPressed,
-			selectedStartDate,
-			selectedStopDate,
-		} = this.state;
-
-		const budgetObject = {
-			currency: selectedCurrencyValue,
-			budget: parseInt(budgetValue, 10),
-			perDay: perDayPressed,
-			lifetime: lifetimePressed,
-			runAdContinuously: runAdContinuouslyPressed,
-			start: selectedStartDate,
-			stop: selectedStopDate,
-		};
-
-		this.props.onCreateAdSetBudget(budgetObject);
-	};
 }
-
-export const NewAdConfigBudgetScreen = (navProps: INavigationProps) => (
-	<WithNewAdConfigBudget>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithNewAdConfigBudget>
-);

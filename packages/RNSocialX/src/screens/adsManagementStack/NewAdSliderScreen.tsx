@@ -12,7 +12,7 @@ import {
 	ICreateAdSteps,
 	INavigationProps,
 } from '../../types';
-import { AdsManagementConfigBudgetScreen } from './AdsManagementConfigBudgetScreen';
+import { NewAdConfigBudgetScreen } from './NewAdConfigBudgetScreen';
 import { NewAdSetupAudience } from './NewAdSetupAudience';
 import { NewAdSetupPostScreen } from './NewAdSetupPostScreen';
 import { NewAdSliderScreenView } from './NewAdSliderScreen.view';
@@ -41,10 +41,7 @@ interface INewAdSliderScreenState {
 	swipeEnabled: boolean;
 }
 
-class Screen extends React.Component<
-	INewAdSliderScreenProps,
-	INewAdSliderScreenState
-> {
+class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreenState> {
 	public state = {
 		stepIndex: 0,
 		swipeEnabled: false,
@@ -54,12 +51,8 @@ class Screen extends React.Component<
 	private audienceData: IAdSetupAudienceData | null = null;
 
 	private adSetupPostFormik: React.RefObject<IFormikProps> = React.createRef();
-	private adSetupAudienceFormik: React.RefObject<
-		IFormikProps
-	> = React.createRef();
-	private adSetupBudgetScreenRef: React.RefObject<
-		AdsManagementConfigBudgetScreen
-	> = React.createRef();
+	private adSetupAudienceFormik: React.RefObject<IFormikProps> = React.createRef();
+	private adSetupBudgetScreenRef: React.RefObject<NewAdConfigBudgetScreen> = React.createRef();
 	private scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
 	public render() {
@@ -88,7 +81,7 @@ class Screen extends React.Component<
 					updateAdSetAudience={this.updateAdSetAudienceHandler}
 					onMultiSliderChange={this.onMultiSliderChangeHandler}
 				/>
-				<AdsManagementConfigBudgetScreen
+				<NewAdConfigBudgetScreen
 					getText={getText}
 					showConfirmation={showConfirmation}
 					ref={this.adSetupBudgetScreenRef}
@@ -135,12 +128,8 @@ class Screen extends React.Component<
 		this.props.showConfirmation({
 			title: getText('ad.management.budget.modal.confirm.title'),
 			message: getText('ad.management.budget.modal.confirm.message'),
-			confirmButtonLabel: getText(
-				'ad.management.budget.modal.confirm.confirm.label',
-			),
-			cancelButtonLabel: getText(
-				'ad.management.budget.modal.confirm.cancel.label',
-			),
+			confirmButtonLabel: getText('ad.management.budget.modal.confirm.confirm.label'),
+			cancelButtonLabel: getText('ad.management.budget.modal.confirm.cancel.label'),
 			confirmHandler: this.adCreationConfirmedHandler,
 		});
 	};
@@ -157,18 +146,14 @@ class Screen extends React.Component<
 			let validationPassed = true;
 			const adSetupPostFormik = this.adSetupPostFormik.current;
 			const adSetupAudienceFormik = this.adSetupAudienceFormik.current;
-			if (
-				SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupPost &&
-				adSetupPostFormik
-			) {
+			if (SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupPost && adSetupPostFormik) {
 				validationPassed = adSetupPostFormik.getFormikComputedProps().isValid;
 				adSetupPostFormik.submitForm();
 			} else if (
 				SLIDER_STEPS[stepIndex] === ICreateAdSteps.SetupAudience &&
 				adSetupAudienceFormik
 			) {
-				validationPassed = adSetupAudienceFormik.getFormikComputedProps()
-					.isValid;
+				validationPassed = adSetupAudienceFormik.getFormikComputedProps().isValid;
 				adSetupAudienceFormik.submitForm();
 			}
 			if (validationPassed && this.scrollViewRef.current) {

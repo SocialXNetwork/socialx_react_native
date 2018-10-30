@@ -14,10 +14,7 @@ interface INewAdSliderScreenViewProps extends ITranslatedProps {
 	onMomentumScrollEnd: (event: { nativeEvent: NativeScrollEvent }) => void;
 }
 
-export const NewAdSliderScreenView = React.forwardRef<
-	ScrollView,
-	INewAdSliderScreenViewProps
->(
+export const NewAdSliderScreenView = React.forwardRef<ScrollView, INewAdSliderScreenViewProps>(
 	(
 		{
 			getText,

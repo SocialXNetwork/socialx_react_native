@@ -36,9 +36,7 @@ const mock: IWithNewAdSliderEnhancedProps = {
 
 export interface IWithNewAdSliderEnhancedData {}
 
-export interface IWithNewAdSliderEnhancedActions
-	extends ITranslatedProps,
-		IDotsMenuProps {
+export interface IWithNewAdSliderEnhancedActions extends ITranslatedProps, IDotsMenuProps {
 	showConfirmation: (confirmation: IConfirmation) => void;
 	createAd: (
 		postData: IAdSetupPostData,
@@ -58,10 +56,7 @@ interface IWithNewAdSliderProps {
 
 interface IWithNewAdSliderState {}
 
-export class WithNewAdSlider extends React.Component<
-	IWithNewAdSliderProps,
-	IWithNewAdSliderState
-> {
+export class WithNewAdSlider extends React.Component<IWithNewAdSliderProps, IWithNewAdSliderState> {
 	render() {
 		const { children } = this.props;
 		return (
@@ -74,8 +69,7 @@ export class WithNewAdSlider extends React.Component<
 								actions: {
 									...mock.actions,
 									getText: i18nProps.getText,
-									showDotsMenuModal: (items) =>
-										overlayProps.showOptionsMenu({ items }),
+									showDotsMenuModal: (items) => overlayProps.showOptionsMenu({ items }),
 									showConfirmation: overlayProps.showConfirmation,
 								},
 							})
