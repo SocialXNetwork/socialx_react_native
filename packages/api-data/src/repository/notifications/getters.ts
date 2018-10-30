@@ -9,7 +9,7 @@ export const getFriendRequests = (context: IContext) => {
 	return new Promise((res, rej) =>
 		handles.friendRequests(context).docLoad((notifications: INotificationsReturnData) => {
 			if (!Object.keys(notifications).length) {
-				rej(new ApiError('failed to find friend requests'));
+				return res([]);
 			}
 			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
 				({ k, ...notification }: INotificationData & { k: string }) => ({
@@ -26,7 +26,7 @@ export const getFriendRequestsResponses = (context: IContext) => {
 	return new Promise((res, rej) =>
 		handles.friendRequestsResponses(context).docLoad((notifications: INotificationsReturnData) => {
 			if (!Object.keys(notifications).length) {
-				rej(new ApiError('failed to find friend request responses'));
+				return res([]);
 			}
 			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
 				({ k, ...notification }: INotificationData & { k: string }) => ({
