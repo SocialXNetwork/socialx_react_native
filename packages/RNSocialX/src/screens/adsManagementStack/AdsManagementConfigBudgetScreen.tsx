@@ -6,17 +6,7 @@ import { defaultStyles } from './AdsManagementConfigBudgetScreen.style';
 import { AdsManagementConfigBudgetScreenView } from './AdsManagementConfigBudgetScreen.view';
 
 import { IConfirmation } from '../../store/ui/overlays';
-import { ITranslatedProps } from '../../types';
-
-export interface IBudgetConfigData {
-	currency: string;
-	budget: number;
-	perDay: boolean;
-	lifetime: boolean;
-	runAdContinuously: boolean;
-	start: string;
-	stop: string;
-}
+import { IAdSetupBudgetData, ITranslatedProps } from '../../types';
 
 interface IAdsManagementConfigBudgetScreenProps extends ITranslatedProps {
 	showConfirmation: (confirmation: IConfirmation) => void;
@@ -106,7 +96,7 @@ export class AdsManagementConfigBudgetScreen extends React.Component<
 		);
 	}
 
-	public getAdBudgetData = (): IBudgetConfigData => {
+	public getAdBudgetData = (): IAdSetupBudgetData => {
 		const {
 			selectedCurrencyValue,
 			budgetValue,
