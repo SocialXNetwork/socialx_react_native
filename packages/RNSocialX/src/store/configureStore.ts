@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import { dataApiFactory } from '@socialx/api-data';
 import { storageApiFactory } from '@socialx/api-storage';
 
+import { Client } from 'bugsnag-react-native';
 import { IApplicationConfig, setAppConfig } from './app/config';
 import rootReducer from './rootReducer';
 import { IContextConfig } from './types';
@@ -20,7 +21,11 @@ const persistConfig = {
 	whitelist: ['auth'],
 };
 
-export const configureStore = (depsConfig: IContextConfig, appConfig: IApplicationConfig) => {
+export const configureStore = (
+	depsConfig: IContextConfig,
+	appConfig: IApplicationConfig,
+	bugsnag: Client,
+) => {
 	const persistedReducer = persistReducer(persistConfig, rootReducer);
 	const dataApi = dataApiFactory({
 		peers: depsConfig.dataApi.peers,
@@ -39,7 +44,7 @@ export const configureStore = (depsConfig: IContextConfig, appConfig: IApplicati
 
 	const store = createStore(
 		persistedReducer,
-		composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi }))),
+		composeWithDevTools(applyMiddleware(thunk.withExtraArgument({ dataApi, storageApi, bugsnag }))),
 	);
 
 	if (module.hot) {
