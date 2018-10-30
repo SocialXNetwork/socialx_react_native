@@ -12,6 +12,12 @@ import {
 	IProfileData,
 } from './types';
 
+const preLoadProfiles = (gun: any, cb: any) => {
+	gun.get(TABLES.POSTS).once(() => {
+		cb();
+	});
+};
+
 // * this is used internally, do not remove
 export const getPublicKeyByUsername = (
 	context: IContext,
@@ -31,34 +37,9 @@ const friendsToArray = (friends: IFriendsCallbackData) =>
 		...friend,
 	}));
 
+// ? this is useless, current account obsoletes it
 export const getCurrentProfile = (context: IContext, callback: IGunCallback<IProfileData>) => {
-	const { account } = context;
-	if (!account.is) {
-		return callback(new ApiError('failed to get current profile, user not logged in'));
-	}
-	/**
-	 * get the current profile from the private scope
-	 */
-	const mainRunner = () => {
-		profileHandles
-			.currentUserProfileData(context)
-			.docLoad((currentProfileCallback: IProfileCallbackData) => {
-				if (!Object.keys(currentProfileCallback).length) {
-					return callback(new ApiError('failed to find current profile'));
-				}
-
-				const { friends, username, ...profileRest } = currentProfileCallback;
-
-				const cleanedProfile = cleanGunMetaFromObject(profileRest);
-				const friendsData = friendsToArray(friends) || [];
-				const profileReturnData = {
-					friends: friendsData,
-					...cleanedProfile,
-				};
-				return callback(null, profileReturnData);
-			});
-	};
-	mainRunner();
+	return callback(new ApiError('removed!!'));
 };
 
 export const getProfileByUsername = (
@@ -67,8 +48,9 @@ export const getProfileByUsername = (
 	callback: IGunCallback<IProfileCallbackData>,
 ) => {
 	const mainRunner = () => {
-		profileHandles.publicProfileByUsername(context, username).docLoad(
-			(profile: IProfileCallbackData) => {
+		profileHandles
+			.publicProfileByUsername(context, username)
+			.docLoad((profile: IProfileCallbackData) => {
 				if (!Object.keys(profile).length) {
 					return callback(
 						new ApiError('failed to find profile', {
@@ -86,11 +68,11 @@ export const getProfileByUsername = (
 					...cleanedProfile,
 				};
 				return callback(null, profileReturnData);
-			},
-			{ wait: 500, timeout: 1000 },
-		);
+			});
 	};
-	mainRunner();
+	preLoadProfiles(context.gun, () => {
+		mainRunner();
+	});
 };
 
 // ? this is not needed anymore, should exist?

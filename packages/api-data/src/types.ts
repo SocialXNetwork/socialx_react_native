@@ -98,6 +98,7 @@ export interface IGunInstance {
 	docSubscribe: <T>(
 		callback: (data: T, key: string) => void,
 		opts?: { wait: number; timeout: number },
+		old?: boolean,
 	) => IGunInstance;
 	encrypt: (data: IGunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
 	erase: (path: string, callback?: (data: IGunSetterCallback) => void) => IGunInstance;

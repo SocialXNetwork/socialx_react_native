@@ -25,33 +25,37 @@ export const createProfile = (
 	createProfileInput: ICreateProfileInput,
 	callback: IGunCallback<null>,
 ) => {
-	const { gun } = context;
+	const { gun, account } = context;
 	const { username: alias, ...rest } = createProfileInput;
 	/**
 	 * add the profile data to the current user's private scope profile record
 	 */
 	const mainRunner = () => {
-		profileHandles.currentUserProfileData(context).put(
-			{
-				...rest,
-				alias,
-			},
-			(createProfileOnAccCallback) => {
-				if (createProfileOnAccCallback.err) {
-					return callback(
-						new ApiError(
-							`failed to create user profile on current account ${createProfileOnAccCallback.err}`,
-							{
-								initialRequestBody: createProfileInput,
-							},
-						),
-					);
-				}
-				pollyLoadAccounts(gun, () =>
-					createUserProfRaw(profileHandles.currentUserProfileData(context)),
-				);
-			},
-		);
+		account
+			.get('profile')
+			.get(account.is.alias)
+			.put(
+				{
+					...rest,
+					alias,
+				},
+				(createProfileOnAccCallback) => {
+					if (createProfileOnAccCallback.err) {
+						return callback(
+							new ApiError(
+								`failed to create user profile on current account ${
+									createProfileOnAccCallback.err
+								}`,
+								{
+									initialRequestBody: createProfileInput,
+								},
+							),
+						);
+					}
+					const ref = account.get('profile').get(account.is.alias);
+					createUserProfRaw(ref);
+				},
+			);
 	};
 	/**
 	 * reference the private user's profile to the public profiles record

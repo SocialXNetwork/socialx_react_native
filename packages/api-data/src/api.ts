@@ -4,7 +4,6 @@ import Gun from 'gun/gun';
 import 'gun/nts';
 import './extensions/sea';
 
-import 'gun/lib/erase';
 import 'gun/lib/path';
 import 'gun/lib/open';
 
@@ -62,9 +61,12 @@ export const dataApiFactory = (config: IApiOptions) => {
 
 	const gun = rootGun.get(rootdb);
 	// preload the database while the app is starting by simulating it with open
-	gun.open(() => {
+	gun.get('posts').open(() => {
 		console.log('*** database updated');
 	});
+	setTimeout(() => {
+		gun.get('posts').off();
+	}, 4000);
 
 	let account = rootGun.user();
 
@@ -75,7 +77,7 @@ export const dataApiFactory = (config: IApiOptions) => {
 	window.gun = gun;
 	// @ts-ignore
 	window.user = account;
-
+	
 	const context: IContext = {
 		account,
 		decrypt,
@@ -85,14 +87,26 @@ export const dataApiFactory = (config: IApiOptions) => {
 		work,
 		config
 	};
-
+	
 	const accounts = accountsApi(context);
 	const comments = commentsApi(context);
 	const notifications = notificationsApi(context);
 	const posts = postsApi(context);
 	const profiles = profilesApi(context);
-
+	
 	const resetDatabase = adapter.reset;
+	
+	// testing purposes
+	// @ts-ignore
+	window.accounts = accounts;
+	// @ts-ignore
+	window.comments = comments;
+	// @ts-ignore
+	window.notifications = notifications;
+	// @ts-ignore
+	window.posts = posts;
+	// @ts-ignore
+	window.profiles = profiles;
 
 	return {
 		accounts,

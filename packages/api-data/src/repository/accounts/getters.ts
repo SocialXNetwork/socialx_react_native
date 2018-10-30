@@ -5,6 +5,12 @@ import * as profileHandles from '../profiles/handles';
 import { ApiError } from '../../utils/errors';
 import { IAccountData, IGetAccountByPubInput } from './types';
 
+const preLoadProfile = (user: any, cb: any) => {
+	user.get('profile').once(() => {
+		cb();
+	});
+};
+
 export const getIsAccountLoggedIn = (
 	context: IContext,
 	callback: IGunCallback<{ loggedIn: boolean }>,
@@ -19,16 +25,18 @@ export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAcc
 		return callback(new ApiError('failed to get current account, user not logged in'));
 	}
 
-	account.docLoad(
-		(userProfileCallback: IAccountData) => {
-			if (!Object.keys(userProfileCallback).length) {
-				return callback(new ApiError('failed to get current account profile.'));
-			}
+	preLoadProfile(account, () => {
+		account.open(
+			(userProfileCallback: IAccountData) => {
+				if (!Object.keys(userProfileCallback).length) {
+					return callback(new ApiError('failed to get current account profile.'));
+				}
 
-			return callback(null, userProfileCallback);
-		},
-		{ wait: 2000, timeout: 3000 },
-	);
+				return callback(null, userProfileCallback);
+			},
+			{ off: 1 },
+		);
+	});
 };
 
 export const getAccountByPub = (
