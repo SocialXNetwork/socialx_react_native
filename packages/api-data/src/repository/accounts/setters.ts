@@ -157,16 +157,74 @@ export const createAccount = async (
 	createAccountInput: ICreateAccountInput,
 	callback: IGunCallback<null>,
 ) => {
-	const { account, encrypt, work } = context;
+	const { account, gun, encrypt, work } = context;
 	if (account.is) {
 		return callback(new ApiError('cannot create account while a user is logged in.'));
 	}
 
-	await createAccountRecord(context, createAccountInput);
-	const recoveryData = await authenticateWithUser(context, createAccountInput);
-	await createRecoveryOnAccount(context, recoveryData);
-	await createAccountProfile(context, createAccountInput);
-	return callback(null);
+	const {
+		username,
+		password,
+		aboutMeText,
+		miningEnabled,
+		fullName,
+		email,
+		avatar,
+		recover,
+	} = createAccountInput;
+
+	account.create(username, password, (createAccountCallback: any) => {
+		if (!createAccountCallback.pub) {
+			return callback(new ApiError('cannot create account.'));
+		}
+
+		account.auth(username, password, (authCallback: any) => {
+			if (!authCallback.alias) {
+				return callback(new ApiError('failed to authenticate with the new account.'));
+			}
+
+			account
+				.get('profile')
+				.get(username)
+				.put(
+					{
+						alias: username,
+						aboutMeText,
+						miningEnabled,
+						fullName,
+						email,
+						avatar,
+						friends: null,
+					},
+					(createProfileCallback: any) => {
+						if (createProfileCallback.err) {
+							return callback(
+								new ApiError(`failed to create the user profile. ${createProfileCallback.err}`),
+							);
+						}
+						const ref = account.get('profile').get(username);
+
+						gun.get('profiles').once(() => {
+							gun
+								.get('profiles')
+								.get(username)
+								.put(ref, (pubRecordCallback: any) => {
+									if (pubRecordCallback.err) {
+										return callback(
+											new ApiError(
+												`failed to create the user profile on the pub record. ${
+													pubRecordCallback.err
+												}`,
+											),
+										);
+									}
+									return callback(null);
+								});
+						});
+					},
+				);
+		});
+	});
 };
 
 export const login = (
@@ -174,12 +232,12 @@ export const login = (
 	{ username, password }: ICredentials,
 	callback: IGunCallback<null>,
 ) => {
-	const { account } = context;
+	const { account, gun } = context;
 	if (account.is) {
 		return callback(null);
 	}
-	account.auth(username, password, (authCallback) => {
-		if (authCallback.err) {
+	account.auth(username, password, (authCallback: any) => {
+		if (!authCallback.alias) {
 			return callback(
 				new ApiError('failed to authenticate', {
 					initialRequestBody: { username },

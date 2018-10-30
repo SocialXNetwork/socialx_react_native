@@ -644,7 +644,7 @@
       // This is internal func queries public key(s) for alias.
       const queryGunAliases = (alias, gunRoot) => new Promise((resolve, reject) => {
         // load all public keys associated with the username alias we want to log in with.
-        gunRoot.get('~@'+alias).once((data, key) => {
+        gunRoot.back(-1).get('~@'+alias).once((data, key) => {
           //rev.off();
           if (!data) {
             // if no user, don't do anything.
@@ -677,7 +677,7 @@
           if (!c) {
             reject({ err: 'Public key does not exist!' })
           }
-        })
+        }, {wait: 300})
       })
       module.exports = queryGunAliases
     })(USE, './query');

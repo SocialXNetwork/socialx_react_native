@@ -43,7 +43,7 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNImageCropPicker (0.21.3):
+  - RNImageCropPicker (0.21.2):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
