@@ -1,29 +1,43 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { persistStore } from 'redux-persist';
+import { Persistor, persistStore } from 'redux-persist';
 // tslint:disable-next-line:no-submodule-imports
 import { PersistGate } from 'redux-persist/integration/react';
 import { configureStore } from '../store';
 
 import appConfig from './app.config.json';
 
-const store = configureStore(
+export default class Store extends React.Component<
 	{
-		dataApi: {
-			peers: appConfig.gun.superPeers,
-			rootdb: appConfig.gun.rootdb,
-		},
+		// bugsnag: Client | null;
+		bugsnag: any;
 	},
-	appConfig,
-);
+	{}
+> {
+	private store: any;
+	private persistor: Persistor;
 
-const persistor = persistStore(store);
+	constructor(props: any) {
+		super(props);
+		const { bugsnag } = props;
+		this.store = configureStore(
+			{
+				dataApi: {
+					peers: appConfig.gun.superPeers,
+					rootdb: appConfig.gun.rootdb,
+				},
+			},
+			appConfig,
+			bugsnag,
+		);
 
-export default class Store extends React.Component<{}, {}> {
+		this.persistor = persistStore(this.store);
+	}
+
 	render() {
 		return (
-			<Provider store={store}>
-				<PersistGate loading={null} persistor={persistor}>
+			<Provider store={this.store}>
+				<PersistGate loading={null} persistor={this.persistor}>
 					{this.props.children}
 				</PersistGate>
 			</Provider>
