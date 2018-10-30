@@ -1,11 +1,7 @@
 /**
- * old screen -> screens/CommentsScreen/index.tsx + data.hoc.tsx
  * TODO list:
- * 1. decide where `marginBottom` should come from?
- * 2. after sendComment optimistically insert that into local database and fix if there is a problem
- * 3. consider adding a global optimistic update handler
- * 4. delete option should be available only for own comments
- * 5. Check navigation usage! Relevant use case.
+ * 1. blockUser should block user?
+ * 2. reportProblem should open a modal ?
  */
 
 import React, { Component } from 'react';
@@ -93,12 +89,16 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const { getText, post, startComment, errors } = this.props;
+		const {
+			getText,
+			post,
+			startComment,
+			errors,
+			showDotsMenuModal,
+			blockUser,
+			reportProblem,
+		} = this.props;
 
-		const optionsProps = {
-			sortOption: this.state.sortOption,
-			onSelectionChange: this.updateSortingHandler,
-		};
 		const { comment } = this.state;
 
 		const likePostError = !!errors.find(
@@ -118,16 +118,17 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				likePostError={likePostError}
 				likeCommentError={likeCommentError}
 				comment={comment}
-				optionsProps={optionsProps}
 				onCommentLike={this.onCommentLikeHandler}
 				onCommentSend={this.onCommentSendHandler}
 				onViewUserProfile={this.navigateToUserProfile}
 				onCommentInputChange={this.onCommentInputChangeHandler}
-				onShowOptionsMenu={this.onShowOptionsMenuHandler}
+				onShowCommentsOptionsMenu={this.onShowCommentOptionsHandler}
+				onShowPostOptionsMenu={this.onShowPostOptionsHandler}
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
 				getText={getText}
+				showDotsMenuModal={showDotsMenuModal}
 				marginBottom={0}
 			/>
 		);
@@ -216,7 +217,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		});
 	};
 
-	private onShowOptionsMenuHandler = (comment: IWallPostComment) => {
+	private onShowCommentOptionsHandler = (comment: IWallPostComment) => {
 		const { showDotsMenuModal, getText } = this.props;
 		const menuItems = [
 			{
@@ -233,6 +234,48 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			},
 		];
 		showDotsMenuModal(menuItems);
+	};
+
+	private onDeletePostPressHandler = async (postId: string) => {
+		const { setGlobal, deletePost } = this.props;
+		setGlobal({
+			transparentOverlay: {
+				visible: true,
+				alpha: 0.5,
+				loader: true,
+			},
+		});
+		await deletePost(postId);
+		setGlobal({
+			transparentOverlay: {
+				visible: false,
+			},
+		});
+	};
+
+	private onShowPostOptionsHandler = () => {
+		const { getText, showDotsMenuModal, post, canDelete } = this.props;
+		const baseItems = [
+			{
+				label: getText('wall.post.menu.block.user'),
+				icon: 'ios-close-circle',
+				actionHandler: () => undefined,
+			},
+			{
+				label: getText('wall.post.menu.report.problem'),
+				icon: 'ios-warning',
+				actionHandler: () => undefined,
+			},
+		];
+		const deleteItem = {
+			label: getText('wall.post.menu.delete.post'),
+			icon: 'ios-trash',
+			actionHandler: async () => {
+				await this.onDeletePostPressHandler(post.postId);
+			},
+		};
+		const items = canDelete ? [...baseItems, deleteItem] : baseItems;
+		showDotsMenuModal(items);
 	};
 
 	private onCommentsBackPressHandler = () => {
