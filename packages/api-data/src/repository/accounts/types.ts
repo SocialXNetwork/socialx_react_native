@@ -1,4 +1,4 @@
-import { IProfileCallbackData } from '../profiles';
+import { IProfileCallbackData, IProfileData } from '../profiles';
 
 export interface IAccountData {
 	alias: string;
@@ -17,6 +17,9 @@ export interface IAccountData {
 		encryptedReminder: string;
 		question1: number;
 		question2: number;
+	};
+	profile: {
+		[alias: string]: IProfileData;
 	};
 }
 
