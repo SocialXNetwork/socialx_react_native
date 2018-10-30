@@ -97,10 +97,7 @@ const TagFriendsSection: React.SFC<ITagFriendsSectionProps> = ({
 				onPress={onTagFriendsToggle}
 			/>
 			{tagFriends && (
-				<AddFriendsList
-					taggedFriends={taggedFriends}
-					showTagFriendsModal={showTagFriendsModal}
-				/>
+				<AddFriendsList taggedFriends={taggedFriends} showTagFriendsModal={showTagFriendsModal} />
 			)}
 		</View>
 	);
@@ -152,9 +149,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 						style={style.photoIcon}
 						resizeMode="contain"
 					/>
-					<Text style={style.addMediaText}>
-						{getText('photo.screen.add.media')}
-					</Text>
+					<Text style={style.addMediaText}>{getText('photo.screen.add.media')}</Text>
 				</TouchableOpacity>
 			</View>
 			{/* <View style={style.paddingContainer}>

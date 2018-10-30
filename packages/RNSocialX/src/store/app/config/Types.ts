@@ -48,7 +48,4 @@ export interface ISetCustomGunSuperPeersAction extends Action {
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
-export type IAction =
-	| IResetStoreAction
-	| ISetAppConfigAction
-	| ISetCustomGunSuperPeersAction;
+export type IAction = IResetStoreAction | ISetAppConfigAction | ISetCustomGunSuperPeersAction;

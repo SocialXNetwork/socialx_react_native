@@ -14,30 +14,18 @@ import {
 	WithIntro,
 } from '../../enhancers/screens';
 
-type IIntroScreenProps = IWithIntroEnhancedData &
-	IWithIntroEnhancedActions &
-	INavigationProps;
+type IIntroScreenProps = IWithIntroEnhancedData & IWithIntroEnhancedActions & INavigationProps;
 
-const Screen: React.SFC<IIntroScreenProps> = ({
-	resetNavigationToRoute,
-	navigation,
-	getText,
-}) => (
+const Screen: React.SFC<IIntroScreenProps> = ({ resetNavigationToRoute, navigation, getText }) => (
 	<IntroScreenView
-		doneButtonHandler={() =>
-			resetNavigationToRoute(NAVIGATION.Main, navigation)
-		}
-		skipButtonHandler={() =>
-			resetNavigationToRoute(NAVIGATION.Main, navigation)
-		}
+		doneButtonHandler={() => resetNavigationToRoute(NAVIGATION.Main, navigation)}
+		skipButtonHandler={() => resetNavigationToRoute(NAVIGATION.Main, navigation)}
 		getText={getText}
 	/>
 );
 
 export const IntroScreen = ({ navigation }: INavigationProps) => (
 	<WithIntro>
-		{({ data, actions }) => (
-			<Screen navigation={navigation} {...data} {...actions} />
-		)}
+		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
 	</WithIntro>
 );

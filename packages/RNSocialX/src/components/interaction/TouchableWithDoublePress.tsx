@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-	StyleProp,
-	TouchableOpacity,
-	TouchableOpacityProps,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { StyleProp, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
 
 interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 	onSinglePress: () => void;
@@ -14,9 +8,7 @@ interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 	style: StyleProp<ViewStyle>;
 }
 
-export class TouchableWithDoublePress extends React.Component<
-	ITouchableWithDoublePressProps
-> {
+export class TouchableWithDoublePress extends React.Component<ITouchableWithDoublePressProps> {
 	public static defaultProps = {
 		disabled: false,
 	};
@@ -27,11 +19,7 @@ export class TouchableWithDoublePress extends React.Component<
 		const { children } = this.props;
 
 		return (
-			<TouchableOpacity
-				{...this.props}
-				activeOpacity={1}
-				onPress={this.getTapCount}
-			>
+			<TouchableOpacity {...this.props} activeOpacity={1} onPress={this.getTapCount}>
 				{children}
 			</TouchableOpacity>
 		);

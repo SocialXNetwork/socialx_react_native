@@ -25,7 +25,7 @@ import { IDotsMenuItem, IStackDefaultConfig } from '../types';
 import styles, { tabBarBackgroundColor } from './Navigation.style';
 
 import {
-	AdsManagementConfigBudgetScreen,
+	AdsManagementEditAdScreen,
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
@@ -40,8 +40,6 @@ import {
 	MaintenanceScreen,
 	MediaViewerScreen,
 	MyProfileScreen,
-	NewAdSetupAudience,
-	NewAdSetupPostScreen,
 	NewAdSliderScreen,
 	NotificationsScreen,
 	PhotoScreen,
@@ -106,14 +104,6 @@ const fadeIn = (): TransitionConfig => ({
 		return { opacity };
 	},
 });
-
-const MainStackScreens = {
-	CreateWallPostScreen: { screen: CreateWallPostScreen },
-	PhotoScreen: { screen: PhotoScreen },
-	MediaViewerScreen: { screen: MediaViewerScreen },
-	CommentsScreen: { screen: CommentsScreen },
-	UserProfileScreen: { screen: UserProfileScreen },
-};
 
 const MyProfileStackNavigator = createStackNavigator(
 	{
@@ -209,13 +199,39 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 	},
 );
 
-const MainScreenWithModal = createStackNavigator(
+const UserProfileStack = createStackNavigator(
 	{
-		MainScreenTabNavigationWithModal: { screen: MainScreenTabNavigation },
-		...MainStackScreens,
+		UserProfileScreen: { screen: UserProfileScreen },
+		MediaViewerScreen: { screen: MediaViewerScreen },
 	},
 	{
+		headerMode: 'none',
 		mode: 'modal',
+	},
+);
+
+const MainScreensWithModal = createStackNavigator(
+	{
+		MainScreenTabNavigation: { screen: MainScreenTabNavigation },
+		CreateWallPostScreen: { screen: CreateWallPostScreen },
+		PhotoScreen: { screen: PhotoScreen },
+		MediaViewerScreen: { screen: MediaViewerScreen },
+	},
+	{
+		headerMode: 'none',
+		mode: 'modal',
+	},
+);
+
+const MainScreens = createStackNavigator(
+	{
+		MainScreensWithModal: {
+			screen: MainScreensWithModal,
+		},
+		UserProfileScreen: UserProfileStack,
+		CommentsScreen: { screen: CommentsScreen },
+	},
+	{
 		headerMode: 'none',
 	},
 );
@@ -235,12 +251,8 @@ const PreAuthNavigator = createStackNavigator(
 const HomelessNavigator = createStackNavigator(
 	{
 		NewAdSliderScreen: { screen: NewAdSliderScreen },
-		NewAdSetupPostScreen: { screen: NewAdSetupPostScreen },
-		NewAdSetupAudience: { screen: NewAdSetupAudience },
-		AdsManagementConfigBudgetScreen: {
-			screen: AdsManagementConfigBudgetScreen,
-		},
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
+		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
 		AdsManagementScreen: { screen: AdsManagementScreen },
 		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 	},
@@ -251,10 +263,10 @@ const HomelessNavigator = createStackNavigator(
 
 const AppNavigation = createStackNavigator(
 	{
-		HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
+		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthNavigator },
 		Intro: { screen: IntroScreen },
-		Main: { screen: MainScreenWithModal },
+		Main: { screen: MainScreens },
 		Maintenance: { screen: MaintenanceScreen },
 	},
 	{
@@ -277,8 +289,7 @@ const Navigation = () => (
 										notifications,
 										getText,
 										setNavigationParams,
-										showDotsMenuModal: (items: IDotsMenuItem[]) =>
-											showOptionsMenu({ items }),
+										showDotsMenuModal: (items: IDotsMenuItem[]) => showOptionsMenu({ items }),
 									}}
 								/>
 							)}
@@ -290,12 +301,7 @@ const Navigation = () => (
 						<WithActivities>
 							{({ activities }) => (
 								<WithOverlays>
-									{({
-										confirmation,
-										hideConfirmation,
-										optionsMenu,
-										hideOptionsMenu,
-									}) => (
+									{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
 										<WithI18n>
 											{(i18n) => (
 												<React.Fragment>
@@ -304,10 +310,7 @@ const Navigation = () => (
 														alpha={globals.transparentOverlay.alpha}
 														loader={globals.transparentOverlay.loader}
 													/>
-													<OfflineOverlayModal
-														visible={!!globals.offline}
-														getText={i18n.getText}
-													/>
+													<OfflineOverlayModal visible={!!globals.offline} getText={i18n.getText} />
 													<ActivityIndicatorModal
 														visible={globals.activity.visible}
 														title={globals.activity.title}

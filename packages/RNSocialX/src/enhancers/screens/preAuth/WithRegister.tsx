@@ -11,12 +11,7 @@ import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import {
-	IDotsMenuProps,
-	IError,
-	IGlobal,
-	ITranslatedProps,
-} from '../../../types';
+import { IDotsMenuProps, IError, IGlobal, ITranslatedProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -34,10 +29,8 @@ const mock: IWithRegisterEnhancedProps = {
 		register: (registerData: IRegisterData) => undefined,
 		loadPosts: () => undefined,
 		setGlobal: (global: IGlobal) => undefined,
-		resetNavigationToRoute: (
-			screenName: string,
-			navigation: NavigationScreenProp<any>,
-		) => undefined,
+		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) =>
+			undefined,
 		getText: (value: string, ...args: any[]) => value,
 		showDotsMenuModal: (items) => undefined,
 	},
@@ -47,16 +40,11 @@ export interface IWithRegisterEnhancedData {
 	errors: IError[];
 }
 
-export interface IWithRegisterEnhancedActions
-	extends ITranslatedProps,
-		IDotsMenuProps {
+export interface IWithRegisterEnhancedActions extends ITranslatedProps, IDotsMenuProps {
 	register: (registerData: IRegisterData) => void;
 	loadPosts: () => void;
 	setGlobal: (global: IGlobal) => void;
-	resetNavigationToRoute: (
-		screenName: string,
-		navigation: NavigationScreenProp<any>,
-	) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 }
 
 interface IWithRegisterEnhancedProps {
@@ -70,10 +58,7 @@ interface IWithRegisterProps {
 
 interface IWithRegisterState {}
 
-export class WithRegister extends React.Component<
-	IWithRegisterProps,
-	IWithRegisterState
-> {
+export class WithRegister extends React.Component<IWithRegisterProps, IWithRegisterState> {
 	render() {
 		return (
 			<WithI18n>
@@ -108,6 +93,7 @@ export class WithRegister extends React.Component<
 																			avatar: registerData.avatar,
 																			fullName: registerData.name,
 																			miningEnabled: true,
+																			shareDataEnabled: true,
 																			aboutMeText: 'about me text',
 																		}),
 																	loadPosts: loadMorePosts,

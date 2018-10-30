@@ -1,10 +1,5 @@
 import { IPostReturnData } from '../repository/posts';
-import {
-	IContext,
-	ILikesMetasCallback,
-	IMetasCallback,
-	IMetasTypeCallback,
-} from '../types';
+import { IContext, ILikesMetasCallback, IMetasCallback, IMetasTypeCallback } from '../types';
 
 const onlyUnique = (value: any, index: any, self: any) => {
 	return self.indexOf(value) === index;
@@ -15,9 +10,7 @@ export const unique = (arr: any[]) => arr.filter(onlyUnique);
 export const datePathFromDate = (date: Date) =>
 	`${date.getUTCFullYear()}.${date.getUTCMonth() + 1}.${date.getUTCDate()}`;
 
-export const convertGunSetToArray = <T = {}>(
-	args: IMetasCallback | IMetasTypeCallback<T> = {},
-) => {
+export const convertGunSetToArray = <T = {}>(args: IMetasCallback | IMetasTypeCallback<T> = {}) => {
 	return Object.values(args || {}).map((ob) => ob);
 };
 
@@ -45,10 +38,7 @@ export const cleanGunMetaFromObject = (args: any = {}) => {
 	return rest || {};
 };
 
-export const resolveCallback = (resolve: any, reject: any) => (
-	e: any,
-	r: any,
-) => {
+export const resolveCallback = (resolve: any, reject: any) => (e: any, r: any) => {
 	if (e) {
 		reject(e);
 	}
@@ -70,12 +60,9 @@ const flatten: any = (arr: any[] = []) =>
 
 const getAliasFromLike = (like: any) => (like.owner ? like.owner.alias : '');
 const getAliasFromComment = (cmnt: any) => (cmnt.owner ? cmnt.owner.alias : '');
-const getLikesFromComment = (cmnt: any) =>
-	cmnt.likes ? cmnt.likes.map(getAliasFromLike) : [];
-const getUsersFromCommentLikes = (cmnts: any) =>
-	cmnts ? cmnts.map(getLikesFromComment) : [];
-const getUsersThatLiked = (likes: any) =>
-	likes.length ? likes.map(getAliasFromLike) : [];
+const getLikesFromComment = (cmnt: any) => (cmnt.likes ? cmnt.likes.map(getAliasFromLike) : []);
+const getUsersFromCommentLikes = (cmnts: any) => (cmnts ? cmnts.map(getLikesFromComment) : []);
+const getUsersThatLiked = (likes: any) => (likes.length ? likes.map(getAliasFromLike) : []);
 const getUsersThatCommented = (comments: any) =>
 	comments.length ? comments.map(getAliasFromComment) : [];
 const getUserOwner = (owner: any) => owner.alias;

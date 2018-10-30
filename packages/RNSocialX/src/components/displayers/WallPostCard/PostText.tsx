@@ -31,9 +31,7 @@ export const PostText: React.SFC<IPostTextProps> = ({
 		const numberOfLines = text.split('\n').length;
 
 		const hasMore =
-			(text.length > POST_SHORT_LENGTH ||
-				numberOfLines > POST_SHORT_MAX_LINES) &&
-			!fullTextVisible;
+			(text.length > POST_SHORT_LENGTH || numberOfLines > POST_SHORT_MAX_LINES) && !fullTextVisible;
 
 		let textToRender = text;
 

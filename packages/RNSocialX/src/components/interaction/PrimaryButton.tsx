@@ -41,14 +41,14 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 	loading = false,
 	containerStyle = {},
 }) => {
-	const buttonDisabled = disabled || loading;
+	const disabledButton = disabled || loading;
 
 	const containerStyles = [
 		styles.container,
 		{ borderColor },
 		styles['container' + size],
 		containerStyle ? containerStyle : {},
-		buttonDisabled ? styles.disabledButton : {},
+		disabledButton ? styles.disabledButton : {},
 	];
 
 	let containerWidth: StyleProp<ViewStyle> = { width: '100%' };
@@ -65,19 +65,11 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 	];
 
 	return (
-		<TouchableOpacity
-			disabled={buttonDisabled}
-			onPress={onPress}
-			style={containerWidth}
-		>
+		<TouchableOpacity disabled={disabledButton} onPress={onPress} style={containerWidth}>
 			<View style={containerStyles}>
 				<Text style={textStyles}>{label.toUpperCase()}</Text>
 				{loading && (
-					<ActivityIndicator
-						size="small"
-						color={defaultColor}
-						style={styles.loadingIndicator}
-					/>
+					<ActivityIndicator size="small" color={defaultColor} style={styles.loadingIndicator} />
 				)}
 			</View>
 		</TouchableOpacity>

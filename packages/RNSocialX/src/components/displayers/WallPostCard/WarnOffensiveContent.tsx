@@ -20,10 +20,7 @@ export const WarnOffensiveContent: React.SFC<IWarnOffensiveContentProps> = ({
 				<Text style={styles.offensiveWarningText}>
 					{getText('wall.post.card.offensive.content.warning.text')}
 				</Text>
-				<TouchableOpacity
-					onPress={onShowOffensiveContent}
-					style={styles.viewOffensiveText}
-				>
+				<TouchableOpacity onPress={onShowOffensiveContent} style={styles.viewOffensiveText}>
 					<Text style={styles.viewOffensiveText}>
 						{getText('wall.post.card.offensive.content.button.view')}
 					</Text>

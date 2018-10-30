@@ -36,6 +36,25 @@ export enum CoinFullName {
 	ETH = 'Ethereum',
 }
 
+export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
+
+export const AdsInitialBudgetValue = '458';
+
+export interface IWeeklyBarChartData {
+	value: number;
+	label: string;
+}
+
+export interface IMonthlyBarChartData {
+	value: number;
+	label: string;
+}
+
+export enum ISpentTillNow {
+	weekly = 'weekly',
+	monthly = 'monthly',
+}
+
 export const LOCAL_VIDEO_STREAM = {
 	width: 1280,
 	height: 960,
@@ -55,14 +74,17 @@ export enum NOTIFICATION_TYPES {
 	SUPER_LIKED = 'SUPER_LIKED',
 }
 
+export const dateFormatMomentJS = {
+	configBudgetScreen: 'DD/MM/YYYY',
+	statisticsScreen: 'MMM DD, YYYY',
+};
+
 export interface IKeyboardContextProps {
 	marginBottom: number;
 	safeRunAfterKeyboardHide: (handler: () => void) => void;
 }
 
-export const KeyboardContext: React.Context<
-	IKeyboardContextProps
-> = React.createContext({
+export const KeyboardContext: React.Context<IKeyboardContextProps> = React.createContext({
 	marginBottom: 0,
 	safeRunAfterKeyboardHide: (handler: () => void) => {
 		/**/

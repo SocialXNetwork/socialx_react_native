@@ -12,11 +12,7 @@ interface INotificationsScreenViewProps extends ITranslatedProps {
 	onRefresh: () => void;
 	onSuperLikedPhotoPressed: (postId: string) => void;
 	onFriendRequestApprove: (friendshipId: string, userName: string) => void;
-	onFriendRequestDecline: (
-		friendshipId: string,
-		userName: string,
-		notificationId: string,
-	) => void;
+	onFriendRequestDecline: (friendshipId: string, userName: string, notificationId: string) => void;
 	onGroupRequestApprove: (notificationId: string) => void;
 	onGroupRequestDecline: (notificationId: string) => void;
 	onViewUserProfile: (userId: string) => void;
@@ -24,20 +20,12 @@ interface INotificationsScreenViewProps extends ITranslatedProps {
 
 const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.emptyContainer}>
-		<Image
-			style={styles.noNotificationsIcon}
-			source={emptyListIcon}
-			resizeMode="contain"
-		/>
-		<Text style={styles.noNotificationsText}>
-			{getText('notifications.empty.list')}
-		</Text>
+		<Image style={styles.noNotificationsIcon} source={emptyListIcon} resizeMode="contain" />
+		<Text style={styles.noNotificationsText}>{getText('notifications.empty.list')}</Text>
 	</View>
 );
 
-export const NotificationsScreenView: React.SFC<
-	INotificationsScreenViewProps
-> = ({
+export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> = ({
 	notifications,
 	refreshing,
 	onRefresh,

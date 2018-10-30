@@ -6,10 +6,10 @@
 import * as React from 'react';
 
 import { FEED_TYPES } from '../../../environment/consts';
-import { currentUser, posts } from '../../../mocks';
 import {
 	ICurrentUser,
 	IDotsMenuProps,
+	IError,
 	IGlobal,
 	INavigationParamsActions,
 	ITranslatedProps,
@@ -17,8 +17,9 @@ import {
 } from '../../../types';
 import { getActivity, mapPostsForUI } from '../../helpers';
 
+import { IPostReturnData } from '../../../store/aggregations/posts';
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { IError } from '../../../store/ui/activities';
+import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
@@ -29,37 +30,15 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
-const mock: IWithUserFeedEnhancedProps = {
-	data: {
-		currentUser,
-		posts,
-		canLoadMorePosts: false,
-		refreshingFeed: false,
-		loadingMorePosts: false,
-		errors: [],
-	},
-	actions: {
-		loadMorePosts: () => undefined,
-		refreshFeed: (feed: FEED_TYPES) => undefined,
-		likePost: (postId: string) => undefined,
-		unlikePost: (postId: string) => undefined,
-		postComment: (escapedComment: string, postId: string) => undefined,
-		blockUser: (userId: string) => undefined,
-		reportProblem: (reason: string, description: string) => undefined,
-		deletePost: (postId: string) => undefined,
-		setGlobal: (global: IGlobal) => undefined,
-		setNavigationParams: () => undefined,
-		showDotsMenuModal: (items) => undefined,
-		getText: (value: string, ...args: any[]) => value,
-	},
-};
-
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
 	posts: IWallPostCardData[];
+	skeletonPost: IWallPostCardData;
+	creatingPost: boolean;
 	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
+	userPosts: { [owner: string]: IPostReturnData[] };
 	errors: IError[];
 }
 
@@ -73,6 +52,7 @@ export interface IWithUserFeedEnhancedActions
 	unlikePost: (postId: string) => void;
 	deletePost: (postId: string) => void;
 	postComment: (escapedComment: string, postId: string) => void;
+	getPostsForUser: (userName: string) => void;
 	blockUser: (userId: string) => void;
 	reportProblem: (reason: string, description: string) => void;
 	setGlobal: (global: IGlobal) => void;
@@ -89,10 +69,7 @@ interface IWithUserFeedProps {
 
 interface IWithUserFeedState {}
 
-export class WithUserFeed extends React.Component<
-	IWithUserFeedProps,
-	IWithUserFeedState
-> {
+export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserFeedState> {
 	render() {
 		return (
 			<WithI18n>
@@ -109,84 +86,92 @@ export class WithUserFeed extends React.Component<
 														{({ activities, errors }) => (
 															<WithProfiles>
 																{({ profiles }) => (
-																	<WithPosts>
-																		{(postsProps) => (
-																			<WithCurrentUser>
-																				{(currentUserProps) => {
-																					const user = currentUserProps.currentUser!;
+																	<WithAggregations>
+																		{(aggregations) => (
+																			<WithPosts>
+																				{(feed) => (
+																					<WithCurrentUser>
+																						{({ currentUser }) => {
+																							const user = currentUser!;
 
-																					let feedPosts: IWallPostCardData[] = [];
-																					if (postsProps.posts.length > 0) {
-																						feedPosts = mapPostsForUI(
-																							postsProps.posts,
-																							10,
-																							user,
-																							profiles,
-																							activities,
-																							ActionTypes.GET_POSTS_BY_USER,
-																							appConfig,
-																						);
-																					}
+																							let feedPosts: IWallPostCardData[] = [];
+																							if (feed.posts.length > 0) {
+																								feedPosts = mapPostsForUI(
+																									feed.posts,
+																									10,
+																									user,
+																									profiles,
+																									activities,
+																									ActionTypes.GET_POSTS_BY_USER,
+																									appConfig,
+																								);
+																							}
 
-																					return this.props.children({
-																						data: {
-																							...mock.data,
-																							currentUser: user,
-																							posts: feedPosts,
-																							canLoadMorePosts:
-																								globals.canLoadMorePosts,
-																							loadingMorePosts: getActivity(
-																								activities,
-																								ActionTypes.LOAD_MORE_POSTS,
-																							),
-																							refreshingFeed: getActivity(
-																								activities,
-																								ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																							),
-																							errors,
-																						},
-																						actions: {
-																							...mock.actions,
-																							loadMorePosts:
-																								postsProps.loadMorePosts,
-																							refreshFeed: async () => {
-																								await postsProps.resetPostsAndRefetch();
-																							},
-																							likePost: async (postId) => {
-																								await postsProps.likePost({
-																									postId,
-																								});
-																							},
-																							unlikePost: async (postId) => {
-																								await postsProps.unlikePost({
-																									postId,
-																								});
-																							},
-																							deletePost: async (postId) => {
-																								await postsProps.removePost({
-																									postId,
-																								});
-																							},
-																							postComment: async (
-																								text,
-																								postId,
-																							) => {
-																								await postsProps.createComment({
-																									text,
-																									postId,
-																								});
-																							},
-																							showDotsMenuModal: (items) =>
-																								showOptionsMenu({ items }),
-																							setNavigationParams,
-																							setGlobal,
-																							getText,
-																						},
-																					});
-																				}}
-																			</WithCurrentUser>
+																							return this.props.children({
+																								data: {
+																									currentUser: user,
+																									posts: feedPosts,
+																									skeletonPost: globals.skeletonPost,
+																									canLoadMorePosts: globals.canLoadMorePosts,
+																									loadingMorePosts: getActivity(
+																										activities,
+																										ActionTypes.LOAD_MORE_POSTS,
+																									),
+																									refreshingFeed: getActivity(
+																										activities,
+																										ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																									),
+																									creatingPost: getActivity(
+																										activities,
+																										ActionTypes.CREATE_POST,
+																									),
+																									userPosts: aggregations.userPosts,
+																									errors,
+																								},
+																								actions: {
+																									loadMorePosts: feed.loadMorePosts,
+																									refreshFeed: async () => {
+																										await feed.resetPostsAndRefetch();
+																									},
+																									likePost: async (postId) => {
+																										await feed.likePost({
+																											postId,
+																										});
+																									},
+																									unlikePost: async (postId) => {
+																										await feed.unlikePost({
+																											postId,
+																										});
+																									},
+																									deletePost: async (postId) => {
+																										await feed.removePost({
+																											postId,
+																										});
+																									},
+																									postComment: async (text, postId) => {
+																										await feed.createComment({
+																											text,
+																											postId,
+																										});
+																									},
+																									getPostsForUser: async (username: string) => {
+																										await aggregations.getUserPosts({ username });
+																									},
+																									blockUser: () => undefined,
+																									reportProblem: () => undefined,
+																									showDotsMenuModal: (items) =>
+																										showOptionsMenu({ items }),
+																									setNavigationParams,
+																									setGlobal,
+																									getText,
+																								},
+																							});
+																						}}
+																					</WithCurrentUser>
+																				)}
+																			</WithPosts>
 																		)}
-																	</WithPosts>
+																	</WithAggregations>
 																)}
 															</WithProfiles>
 														)}

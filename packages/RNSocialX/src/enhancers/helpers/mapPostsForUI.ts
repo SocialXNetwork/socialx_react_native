@@ -1,12 +1,12 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
-import { IPostArrayData } from '../../store/data/posts';
+import { IPostReturnData } from '../../store/data/posts';
 import { IProfileData } from '../../store/data/profiles';
 import { IActivity } from '../../store/ui/activities';
 import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
 import { getActivity, getBestComments } from './';
 
 export const mapPostsForUI = (
-	posts: IPostArrayData,
+	posts: IPostReturnData[],
 	returnLength: number,
 	currentUser: ICurrentUser | undefined,
 	profiles: IProfileData[],
@@ -18,13 +18,9 @@ export const mapPostsForUI = (
 		.sort((x: any, y: any) => y.timestamp - x.timestamp)
 		.slice(0, returnLength)
 		.map((post) => {
-			const ownerProfile = profiles.find(
-				(profile) => profile.alias === post.owner.alias,
-			);
+			const ownerProfile = profiles.find((profile) => profile.alias === post.owner.alias);
 
-			const foundLike = !!post.likes.find(
-				(like) => like.owner.alias === currentUser!.userId,
-			);
+			const foundLike = !!post.likes.find((like) => like.owner.alias === currentUser!.userId);
 
 			return {
 				postId: post.postId,

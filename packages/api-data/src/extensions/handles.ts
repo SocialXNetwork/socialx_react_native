@@ -74,10 +74,7 @@ Gun.chain.currentProfileFriendship = function(friendshipId: string) {
 		.get(friendshipId);
 };
 
-Gun.chain.userProfileFriendship = function(
-	username: string,
-	friendshipId: string,
-) {
+Gun.chain.userProfileFriendship = function(username: string, friendshipId: string) {
 	return this.get(TABLES.PROFILES)
 		.get(username)
 		.get(TABLE_ENUMS.FRIENDS)
@@ -116,7 +113,5 @@ Gun.chain.likesByPostPath = function(postPath: string) {
 };
 
 Gun.chain.postLikesByCurrentUser = function(postPath: string) {
-	return this.path(
-		`${TABLES.POSTS}.${postPath}.${TABLE_ENUMS.LIKES}.${this.user().is.alias}`,
-	);
+	return this.path(`${TABLES.POSTS}.${postPath}.${TABLE_ENUMS.LIKES}.${this.user().is.alias}`);
 };

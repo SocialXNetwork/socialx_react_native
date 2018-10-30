@@ -52,18 +52,11 @@ export const ConfirmationModal: React.SFC<IConfirmationModalProps> = ({
 						</View>
 					)}
 					<View style={style.buttonsContainer}>
-						<TouchableOpacity
-							style={[style.button, style.leftButton]}
-							onPress={declineHandler}
-						>
-							<Text style={[style.buttonText, style.buttonTextCancel]}>
-								{cancelButton}
-							</Text>
+						<TouchableOpacity style={[style.button, style.leftButton]} onPress={declineHandler}>
+							<Text style={[style.buttonText, style.buttonTextCancel]}>{cancelButton}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={style.button} onPress={confirmHandler}>
-							<Text style={[style.buttonText, style.buttonTextConfirm]}>
-								{confirmButton}
-							</Text>
+							<Text style={[style.buttonText, style.buttonTextConfirm]}>{confirmButton}</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

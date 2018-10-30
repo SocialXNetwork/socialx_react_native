@@ -15,11 +15,7 @@ import {
 } from '../../utils/helpers';
 
 import moment from 'moment';
-import {
-	ICommentCallbackData,
-	ICommentData,
-	ICommentsPostData,
-} from '../comments';
+import { ICommentCallbackData, ICommentData, ICommentsPostData } from '../comments';
 import {
 	IMedia,
 	IPostArrayData,
@@ -39,9 +35,8 @@ export const getPostPathsByUser = (
 	{ username }: { username: string },
 	callback: IGunCallback<string[]>,
 ) => {
-	postHandles
-		.postMetasByUsername(context, username)
-		.docLoad((postsMeta: IPostUserMetasCallback) => {
+	postHandles.postMetasByUsername(context, username).docLoad(
+		(postsMeta: IPostUserMetasCallback) => {
 			if (!Object.keys(postsMeta).length) {
 				return callback([]);
 			}
@@ -49,7 +44,9 @@ export const getPostPathsByUser = (
 				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
 			);
 			return callback(null, paths);
-		});
+		},
+		{ wait: 400, timeout: 600 },
+	);
 };
 
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
@@ -93,31 +90,52 @@ const convertCommentsToArray = (comments: any): ICommentData[] =>
 
 export const getPostByPath = (
 	context: IContext,
-	{ postPath }: { postPath: string },
+	{ postPath, wait, timeout }: { postPath: string; wait?: number; timeout?: number },
 	callback: IGunCallback<IPostReturnData>,
 ) => {
-	postHandles
-		.postByPath(context, postPath)
-		.docLoad((postData: IPostCallbackData) => {
-			if (!Object.keys(postData).length) {
-				return callback(
-					new ApiError('failed, no post found', {
-						initialRequestBody: { postPath },
-					}),
-				);
-			}
-			if (!postData.owner) {
-				return callback(null, { deleted: true } as any);
-			}
-			// const keys = Object.keys()
-			const { likes, comments, media, ...restPost } = postData;
-			// convert likes into an array with keys
-			const postLikes = convertLikesToArray(likes);
-			// convert comments and their likes into an array with keys
-			const postComments: any = convertCommentsToArray(comments);
-			// convert media to an array
-			const mediaReturn = convertMediaToArray(media) || [];
+	const docOpts = {
+		wait: wait || 300,
+		timeout: timeout || 600,
+	};
+	postHandles.postByPath(context, postPath).docLoad((postData: IPostCallbackData) => {
+		if (!Object.keys(postData).length) {
+			return callback(
+				new ApiError('failed, no post found', {
+					initialRequestBody: { postPath },
+				}),
+			);
+		}
 
+		let shouldWaitAndTryAgain = false;
+
+		// const keys = Object.keys()
+		const { likes, comments, media, ...restPost } = postData;
+		// convert likes into an array with keys
+		const postLikes = convertLikesToArray(likes);
+		// convert comments and their likes into an array with keys
+		const postComments: any = convertCommentsToArray(comments);
+		// convert media to an array
+		const mediaReturn = convertMediaToArray(media) || [];
+
+		[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
+			if (propArray && propArray.length) {
+				propArray.forEach((obj: any) => {
+					if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
+						shouldWaitAndTryAgain = true;
+					}
+				});
+			}
+		});
+		// related to the retry checks
+		if (
+			postData.owner &&
+			typeof postData.owner === 'object' &&
+			Object.keys(postData.owner).length === 0
+		) {
+			shouldWaitAndTryAgain = true;
+		}
+
+		if (!shouldWaitAndTryAgain) {
 			const post: IPostReturnData = {
 				postId: postPath.split('.').reverse()[0],
 				likes: postLikes,
@@ -126,7 +144,17 @@ export const getPostByPath = (
 				...restPost,
 			};
 			return callback(null, post);
-		});
+		}
+		getPostByPath(
+			context,
+			{
+				postPath,
+				wait: wait ? wait + 100 : undefined,
+				timeout: timeout ? timeout + 100 : undefined,
+			},
+			callback,
+		);
+	}, docOpts);
 };
 
 export const getPostById = (
@@ -134,20 +162,18 @@ export const getPostById = (
 	{ postId }: { postId: string },
 	callback: IGunCallback<IPostReturnData>,
 ) => {
-	postHandles
-		.postMetaById(context, postId)
-		.docLoad((postMeta: IPostMetasCallback) => {
-			if (!Object.keys(postMeta).length) {
-				return callback(
-					new ApiError('failed, no post was found with this id', {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
-			const { postPath } = postMeta;
+	postHandles.postMetaById(context, postId).docLoad((postMeta: IPostMetasCallback) => {
+		if (!Object.keys(postMeta).length) {
+			return callback(
+				new ApiError('failed, no post was found with this id', {
+					initialRequestBody: { postId },
+				}),
+			);
+		}
+		const { postPath } = postMeta;
 
-			getPostByPath(context, { postPath }, callback);
-		});
+		getPostByPath(context, { postPath }, callback);
+	});
 };
 
 const getAllPostRelevantData = (
@@ -176,30 +202,30 @@ const getAllPostRelevantData = (
 					// convert likes into an array with keys
 					const postLikes = convertLikesToArray(post.likes);
 					// convert comments and their likes into an array with keys
-					const postComments: ICommentData[] = convertCommentsToArray(
-						post.comments,
-					);
+					const postComments: ICommentData[] = convertCommentsToArray(post.comments);
 					// Convert media to an array
 					const mediaReturn = convertMediaToArray(post.media) || [];
 
 					// If we don't get data proper data i.e. a hashtag key is present,
 					// stop current operation, append 100 to both timeout and wait
 					// Try again the current operation
-					[post.likes, post.comments, post.media].forEach(
-						(propArray: any = []) => {
-							if (propArray && propArray.length) {
-								propArray.forEach((obj: any) => {
-									if (
-										obj &&
-										typeof obj === 'object' &&
-										Object.keys(obj).includes('#')
-									) {
-										shouldWaitAndTryAgain = true;
-									}
-								});
-							}
-						},
-					);
+					[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
+						if (propArray && propArray.length) {
+							propArray.forEach((obj: any) => {
+								if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
+									shouldWaitAndTryAgain = true;
+								}
+							});
+						}
+					});
+					// related to the retry checks
+					if (
+						post.owner &&
+						typeof post.owner === 'object' &&
+						Object.keys(post.owner).length === 0
+					) {
+						shouldWaitAndTryAgain = true;
+					}
 
 					const { likes, comments, media, ...postRest } = post;
 					if (postRest.owner) {
@@ -235,12 +261,7 @@ export const getPublicPostsByDate = (
 	callback: IGunCallback<IPostArrayData>,
 ) => {
 	const datePath = datePathFromDate(date);
-	getAllPostRelevantData(
-		context,
-		datePath,
-		{ timeout: 700, wait: 300, tries: 0 },
-		callback,
-	);
+	getAllPostRelevantData(context, datePath, { timeout: 700, wait: 300, tries: 0 }, callback);
 };
 
 const recursiveSearchForPosts = (
@@ -262,11 +283,7 @@ const recursiveSearchForPosts = (
 		if (posts && posts.length) {
 			return callback(null, posts);
 		}
-		return recursiveSearchForPosts(
-			context,
-			{ startTimestamp, daysBack: daysBack + 1 },
-			callback,
-		);
+		return recursiveSearchForPosts(context, { startTimestamp, daysBack: daysBack + 1 }, callback);
 	});
 };
 
@@ -275,11 +292,7 @@ export const getMostRecentPosts = (
 	{ timestamp }: { timestamp: number },
 	callback: IGunCallback<IPostArrayData>,
 ) => {
-	return recursiveSearchForPosts(
-		context,
-		{ startTimestamp: timestamp, daysBack: 0 },
-		callback,
-	);
+	return recursiveSearchForPosts(context, { startTimestamp: timestamp, daysBack: 0 }, callback);
 };
 
 export default {

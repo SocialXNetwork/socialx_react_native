@@ -65,9 +65,7 @@ export class RichText extends React.Component<ITextParserProps> {
 								/>
 							);
 						}
-						return (
-							<Text key={`pText-${index}`} {...childrenProps} {...props} />
-						);
+						return <Text key={`pText-${index}`} {...childrenProps} {...props} />;
 					})}
 			</Text>
 		);

@@ -14,10 +14,16 @@ const styles: any = {
 	optionContainer: {
 		flex: 8,
 		flexDirection: 'row',
+		alignItems: 'center',
 	},
-	icon: {
+	image: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
+		marginRight: Sizes.smartHorizontalScale(15),
+	},
+	icon: {
+		fontSize: ICON_SIZE,
+		color: Colors.pink,
 		marginRight: Sizes.smartHorizontalScale(15),
 	},
 	text: {

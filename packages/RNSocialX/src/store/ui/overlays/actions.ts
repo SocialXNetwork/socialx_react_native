@@ -23,11 +23,7 @@ const showModalAction: ActionCreator<IShowModalAction> = (modal: IModal) => ({
 	payload: modal,
 });
 
-export const showModal = (modal: IModal): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const showModal = (modal: IModal): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(showModalAction(modal));
 	} catch (e) {
@@ -88,11 +84,7 @@ const hideConfirmationAction: ActionCreator<IHideConfirmationAction> = () => ({
 	type: ActionTypes.HIDE_CONFIRMATION,
 });
 
-export const hideConfirmation = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const hideConfirmation = (): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(hideConfirmationAction());
 	} catch (e) {
@@ -109,18 +101,12 @@ export const hideConfirmation = (): IThunk => async (
 // This can be converted to an array instead of an object, similar to
 // ui/activities so that messages can be stacked and dismissed separately
 // and even auto dismissed after T seconds!
-const showMessageAction: ActionCreator<IShowMessageAction> = (
-	message: IMessage,
-) => ({
+const showMessageAction: ActionCreator<IShowMessageAction> = (message: IMessage) => ({
 	type: ActionTypes.SHOW_MESSAGE,
 	payload: message,
 });
 
-export const showMessage = (message: IMessage): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const showMessage = (message: IMessage): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(showMessageAction(message));
 	} catch (e) {
@@ -138,11 +124,7 @@ const hideMessageAction: ActionCreator<IHideMessageAction> = () => ({
 	type: ActionTypes.HIDE_MESSAGE,
 });
 
-export const hideMessage = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const hideMessage = (): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(hideMessageAction());
 	} catch (e) {
@@ -185,11 +167,7 @@ const hideOptionsMenuAction: ActionCreator<IHideOptionsMenuAction> = () => ({
 	type: ActionTypes.HIDE_OPTIONS_MENU,
 });
 
-export const hideOptionsMenu = (): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const hideOptionsMenu = (): IThunk => async (dispatch, getState, context) => {
 	try {
 		dispatch(hideOptionsMenuAction());
 	} catch (e) {

@@ -10,11 +10,7 @@ interface ISuggestionCardProps extends ITranslatedProps {
 	deleteCard: () => void;
 }
 
-export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({
-	item,
-	deleteCard,
-	getText,
-}) => (
+export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({ item, deleteCard, getText }) => (
 	<View style={styles.container}>
 		<AvatarImage image={item.avatarURL} style={styles.avatar} />
 		<Text style={styles.name}>{item.fullName}</Text>

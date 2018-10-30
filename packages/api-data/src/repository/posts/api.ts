@@ -25,10 +25,9 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: createPostInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: createPostInput,
+				});
 			}
 
 			return new Promise<null>((resolve, reject) => {
@@ -39,19 +38,16 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		getPostById: async (
-			getPostById: IGetPostByIdInput,
-		): Promise<IPostReturnData> => {
+		getPostById: async (getPostById: IGetPostByIdInput): Promise<IPostReturnData> => {
 			let validatedInput: any;
 			try {
 				validatedInput = await schemas.postById.validate(getPostById, {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: validatedInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: validatedInput,
+				});
 			}
 
 			return new Promise<IPostReturnData>((resolve, reject) => {
@@ -62,22 +58,16 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		async getPostByPath(getPostByPathInput: {
-			postPath: string;
-		}): Promise<IPostReturnData> {
+		async getPostByPath(getPostByPathInput: { postPath: string }): Promise<IPostReturnData> {
 			let validatedInput: any;
 			try {
-				validatedInput = await schemas.getPostByPath.validate(
-					getPostByPathInput,
-					{
-						stripUnknown: true,
-					},
-				);
+				validatedInput = await schemas.getPostByPath.validate(getPostByPathInput, {
+					stripUnknown: true,
+				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: getPostByPathInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: getPostByPathInput,
+				});
 			}
 			return new Promise<IPostReturnData>(async (resolve, reject) => {
 				getters.getPostByPath(
@@ -87,23 +77,17 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		async getPostsByUser(getPostByUserInput: {
-			username: string;
-		}): Promise<IPostReturnData[]> {
+		async getPostsByUser(getPostByUserInput: { username: string }): Promise<IPostReturnData[]> {
 			let validatedInput: any;
 			try {
 				// TODO: create a new schema validator for this
-				validatedInput = await schemas.getPostPathsByUser.validate(
-					getPostByUserInput,
-					{
-						stripUnknown: true,
-					},
-				);
+				validatedInput = await schemas.getPostPathsByUser.validate(getPostByUserInput, {
+					stripUnknown: true,
+				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: getPostByUserInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: getPostByUserInput,
+				});
 			}
 
 			// ! keep an eye on this
@@ -113,14 +97,22 @@ export default function(context: IContext) {
 					validatedInput as { username: string },
 					async (err, paths) => {
 						if (err) {
-							reject(err);
+							resolve([]);
 						}
-						const posts = await Promise.all(
-							(paths || [])
-								.filter((v) => v)
-								.map((path: string) => this.getPostByPath({ postPath: path })),
-						);
-						resolve(posts);
+						if (!paths) {
+							resolve([]);
+						}
+						try {
+							const posts = await Promise.all(
+								(paths || [])
+									.filter((v) => v)
+									.map((path: string) => this.getPostByPath({ postPath: path })),
+							);
+							resolve(posts);
+						} catch (e) {
+							// ! BUG: sometimes docLoad doesnt load the document correctly and this is returned..
+							resolve([]);
+						}
 					},
 				);
 			});
@@ -130,17 +122,13 @@ export default function(context: IContext) {
 		}): Promise<IPostArrayData> => {
 			let validatedInput: any;
 			try {
-				validatedInput = await schemas.getPublicPostsByDate.validate(
-					getPublicPostsByDateInput,
-					{
-						stripUnknown: true,
-					},
-				);
+				validatedInput = await schemas.getPublicPostsByDate.validate(getPublicPostsByDateInput, {
+					stripUnknown: true,
+				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: getPublicPostsByDateInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: getPublicPostsByDateInput,
+				});
 			}
 
 			return new Promise<IPostArrayData>((resolve, reject) => {
@@ -158,10 +146,9 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: likePostInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: likePostInput,
+				});
 			}
 			return new Promise<null>((resolve, reject) => {
 				setters.likePost(
@@ -178,10 +165,9 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: removePostInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: removePostInput,
+				});
 			}
 
 			return new Promise<null>((resolve, reject) => {
@@ -192,15 +178,9 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		loadMorePosts: async (
-			loadMorePostsInput: ILoadMorePostsInput,
-		): Promise<IPostArrayData> => {
+		loadMorePosts: async (loadMorePostsInput: ILoadMorePostsInput): Promise<IPostArrayData> => {
 			return new Promise<IPostArrayData>((resolve, reject) => {
-				getters.getMostRecentPosts(
-					context,
-					loadMorePostsInput,
-					resolveCallback(resolve, reject),
-				);
+				getters.getMostRecentPosts(context, loadMorePostsInput, resolveCallback(resolve, reject));
 			});
 		},
 		unlikePost: async (unlikePostInput: IUnlikePostInput): Promise<null> => {
@@ -210,10 +190,9 @@ export default function(context: IContext) {
 					stripUnknown: true,
 				});
 			} catch (e) {
-				throw new ValidationError(
-					typeof e.errors === 'string' ? e.errors : e.errors.join(),
-					{ validationInput: unlikePostInput },
-				);
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: unlikePostInput,
+				});
 			}
 
 			return new Promise<null>((resolve, reject) => {

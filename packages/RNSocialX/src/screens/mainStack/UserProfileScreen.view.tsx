@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+	ActivityIndicator,
 	Animated,
 	Dimensions,
 	RefreshControl,
@@ -10,26 +11,22 @@ import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 
 import {
-	CloseButton,
 	Header,
-	NoPhotos,
+	HeaderButton,
+	NoContent,
 	ProfilePhotoGrid,
 	ProfileTopContainer,
 	WallPostCard,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import {
-	IWallPostCardActions,
-	IWallPostCardData,
-	SearchResultKind,
-} from '../../types';
+import { IWallPostCardActions, IWallPostCardData, SearchResultKind } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 interface IUserProfileScreenViewProps extends IWallPostCardActions {
-	avatarURL: any;
+	avatarURL: string;
 	fullName: string;
 	userName: false | string;
 	numberOfPhotos: number;
@@ -46,12 +43,13 @@ interface IUserProfileScreenViewProps extends IWallPostCardActions {
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
+	loadingPosts: boolean;
 	onRefresh: () => void;
-	onClose: () => void;
+	onGoBack: () => void;
 	onAddFriend: () => void;
 	onShowFriendshipOptions: () => void;
-	onViewProfilePhoto: () => void;
-	loadMorePhotosHandler: () => void;
+	onProfilePhotoPress: () => void;
+	onLoadMorePhotos: () => void;
 	onViewMediaFullscreen: (index: number) => void;
 	onIconPress: (tab: string) => void;
 	onLayoutChange: (height: number) => void;
@@ -59,41 +57,42 @@ interface IUserProfileScreenViewProps extends IWallPostCardActions {
 
 export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	refreshing,
+	loadingPosts,
 	gridMediaProvider,
 	avatarURL,
 	fullName,
 	userName = false,
 	numberOfPhotos,
 	onAddFriend,
-	onShowFriendshipOptions,
 	numberOfLikes,
 	numberOfFriends,
-	onViewProfilePhoto,
 	relationship,
 	onRefresh,
-	onViewMediaFullscreen,
-	loadMorePhotosHandler,
 	recentPosts,
-	onCommentPress,
-	onImagePress,
-	onLikePress,
 	aboutMeText,
 	numberOfComments,
 	currentUserAvatarURL,
-	onIconPress,
 	listTranslate,
 	gridTranslate,
 	activeTab,
 	containerHeight,
+	onShowFriendshipOptions,
+	onProfilePhotoPress,
+	onViewMediaFullscreen,
+	onLoadMorePhotos,
+	onCommentPress,
+	onImagePress,
+	onLikePress,
+	onIconPress,
 	onLayoutChange,
-	getText,
-	onClose,
+	onGoBack,
 	onUserPress,
 	onAddComment,
 	onSubmitComment,
 	onDeletePostPress,
 	onBlockUser,
 	onReportProblem,
+	getText,
 }) => {
 	const hasPhotos = numberOfPhotos > 0;
 	const hasPosts = recentPosts.length > 0;
@@ -109,26 +108,20 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	}
 
 	const scrollContainerStyles =
-		hasPhotos || hasPosts
-			? styles.scrollContainer
-			: [styles.scrollContainer, { flex: 1 }];
+		hasPhotos || hasPosts ? styles.scrollContainer : [styles.scrollContainer, { flex: 1 }];
 
 	return (
 		<View style={styles.container}>
 			<Header
 				title={getText('user.profile.screen.title')}
-				left={<CloseButton onClose={onClose} />}
+				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 			/>
 			<View style={styles.whiteBottomView} />
 			<ScrollView
 				contentContainerStyle={scrollContainerStyles}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						tintColor={colors.white}
-					/>
+					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />
 				}
 				scrollEnabled={hasPhotos || hasPosts}
 			>
@@ -140,7 +133,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
 					numberOfComments={numberOfComments}
-					onViewProfilePhoto={onViewProfilePhoto}
+					onProfilePhotoPress={onProfilePhotoPress}
 					onAddFriend={onAddFriend}
 					onShowFriendshipOptions={onShowFriendshipOptions}
 					relationship={relationship}
@@ -151,40 +144,45 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					activeTab={activeTab}
 					getText={getText}
 				/>
-				{hasPosts && (
+				{loadingPosts ? (
+					<View style={styles.loading}>
+						<ActivityIndicator size="large" />
+					</View>
+				) : (
 					<View style={contentContainerStyle}>
 						<Animated.View
-							style={[
-								styles.postsContainer,
-								{ transform: [{ translateX: listTranslate }] },
-							]}
+							style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
 						>
-							{recentPosts.map((post: IWallPostCardData, index: number) => (
-								<View style={styles.wallPostContainer} key={post.postId}>
-									<WallPostCard
-										{...post}
-										likedByMe={post.likedByMe}
-										canDelete={false}
-										getText={getText}
-										onCommentPress={onCommentPress}
-										onImagePress={onImagePress}
-										onUserPress={onUserPress}
-										/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
-										onAddComment={(dummyIndex: number, cardHeight: number) =>
-											onAddComment(index, cardHeight)
-										}
-										onSubmitComment={onSubmitComment}
-										onLikePress={onLikePress}
-										currentUserAvatarURL={currentUserAvatarURL}
-										onDeletePostPress={onDeletePostPress}
-										onBlockUser={onBlockUser}
-										onReportProblem={onReportProblem}
-										showDotsMenuModal={() => undefined}
-										displayDots={false}
-										noInput={true}
-									/>
-								</View>
-							))}
+							{hasPosts ? (
+								recentPosts.map((post: IWallPostCardData, index: number) => (
+									<View style={styles.wallPostContainer} key={post.postId}>
+										<WallPostCard
+											{...post}
+											likedByMe={post.likedByMe}
+											displayDots={false}
+											noInput={true}
+											canDelete={false}
+											onCommentPress={onCommentPress}
+											onImagePress={onImagePress}
+											onUserPress={onUserPress}
+											/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
+											onAddComment={(dummyIndex: number, cardHeight: number) =>
+												onAddComment(index, cardHeight)
+											}
+											onSubmitComment={onSubmitComment}
+											onLikePress={onLikePress}
+											currentUserAvatarURL={currentUserAvatarURL}
+											onDeletePostPress={() => undefined}
+											onBlockUser={onBlockUser}
+											onReportProblem={onReportProblem}
+											showDotsMenuModal={() => undefined}
+											getText={getText}
+										/>
+									</View>
+								))
+							) : (
+								<NoContent posts={true} getText={getText} />
+							)}
 						</Animated.View>
 						<Animated.View
 							onLayout={(event: any) => {
@@ -192,15 +190,12 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 									onLayoutChange(event.nativeEvent.layout.height);
 								}
 							}}
-							style={[
-								styles.gridContainer,
-								{ transform: [{ translateX: gridTranslate }] },
-							]}
+							style={[styles.gridContainer, { transform: [{ translateX: gridTranslate }] }]}
 						>
 							{hasPhotos ? (
 								<ProfilePhotoGrid
-									loadMorePhotosHandler={loadMorePhotosHandler}
-									gridMediaProvider={gridMediaProvider}
+									onLoadMorePhotos={onLoadMorePhotos}
+									dataProvider={gridMediaProvider}
 									onViewMediaFullScreen={onViewMediaFullscreen}
 									header={{
 										element: <View style={{ width: 1, height: 1 }} />,
@@ -210,7 +205,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 									getText={getText}
 								/>
 							) : (
-								<NoPhotos getText={getText} />
+								<NoContent gallery={true} getText={getText} />
 							)}
 						</Animated.View>
 					</View>

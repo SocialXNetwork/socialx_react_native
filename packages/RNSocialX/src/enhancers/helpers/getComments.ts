@@ -8,9 +8,7 @@ export const getComments = (
 	appConfig: IApplicationConfig,
 ) => {
 	return comments.sort((x, y) => x.timestamp - y.timestamp).map((comment) => {
-		const commentOwner = profiles.find(
-			(profile) => profile.alias === comment.owner.alias,
-		);
+		const commentOwner = profiles.find((profile) => profile.alias === comment.owner.alias);
 
 		return {
 			commentId: comment.commentId,
@@ -32,9 +30,7 @@ export const getComments = (
 					userName: like.owner.alias,
 				};
 			}),
-			likedByMe: !!comment.likes.find(
-				(like) => like.owner.alias === currentUserId,
-			),
+			likedByMe: !!comment.likes.find((like) => like.owner.alias === currentUserId),
 		};
 	});
 };

@@ -12,8 +12,7 @@ const config = {
       path.resolve(__dirname, "../api-storage"),
       path.resolve(__dirname, "../api-blockchain"),
       path.resolve(__dirname, "../api-data"),
-      path.resolve(__dirname, "../api-crypto"),
-      // path.resolve(__dirname, "../webcrypto")
+      path.resolve(__dirname, "../webview-crypto"),
     ];
   },
   getAssetRoots() {
@@ -22,13 +21,8 @@ const config = {
     ];
   },
   extraNodeModules: {
-    crypto: getMod('crypto-browserify'),
-    // stream: getMod('react-native-stream'),
-    // randombytes: getMod('react-native-randombytes'),
-    // vm: getMod('vm-browserify'),
     'node-webcrypto-ossl': getMod('node-webcrypto-ossl'),
     'text-encoding': getMod('text-encoding'),
-    // '@trust/webcrypto': getMod('@socialx/webcrypto'),
   },
   getTransformModulePath() {
     return require.resolve('react-native-typescript-transformer');

@@ -57,8 +57,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) =>
 		dispatch(getProfileByUsername(getProfileByUsernameInput)),
-	addFriend: (addFriendInput: IAddFriendInput) =>
-		dispatch(addFriend(addFriendInput)),
+	addFriend: (addFriendInput: IAddFriendInput) => dispatch(addFriend(addFriendInput)),
 	removeFriend: (removeFriendInput: IRemoveFriendInput) =>
 		dispatch(removeFriend(removeFriendInput)),
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
@@ -67,10 +66,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(updateCurrentProfile(updateProfileInput)),
 });
 
-export const WithProfiles: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

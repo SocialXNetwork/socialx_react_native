@@ -8,11 +8,7 @@ import { PrimaryButton } from '../../components';
 import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
-import styles, {
-	defaultStyles,
-	ELEMENT_WIDTH,
-	QR_WIDTH,
-} from './WalletModal.style';
+import styles, { defaultStyles, ELEMENT_WIDTH, QR_WIDTH } from './WalletModal.style';
 
 interface IWalletModalProps extends ITranslatedProps {
 	visible: boolean;
@@ -42,14 +38,10 @@ export const WalletModal: React.SFC<IWalletModalProps> = ({
 				style={styles.container}
 			>
 				<View style={styles.box}>
-					<Text style={styles.title}>
-						{getText('wallet.receive.coins.title')}
-					</Text>
+					<Text style={styles.title}>{getText('wallet.receive.coins.title')}</Text>
 					<View style={styles.addressContainer}>
 						<View style={styles.textContainer}>
-							<Text style={styles.message}>
-								{getText('wallet.receive.coins.address')}
-							</Text>
+							<Text style={styles.message}>{getText('wallet.receive.coins.address')}</Text>
 							<Text style={styles.address}>{walletAddress}</Text>
 						</View>
 						<Icon

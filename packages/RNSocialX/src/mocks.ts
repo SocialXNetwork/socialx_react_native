@@ -61,8 +61,7 @@ const bestComments: ISimpleComment[] = [
 export const suggestedItems: ISearchResultData[] = [
 	{
 		userId: '101',
-		avatarURL:
-			'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
+		avatarURL: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
 		location: 'New York',
@@ -227,9 +226,9 @@ export const currentUser: ICurrentUser = {
 	userName: 'testgggg',
 	email: 'testgggg@test.com',
 	aboutMeText: 'Lorem ipsum dolor sit amet',
-	pub:
-		'rPZqFYcR01E81UiAtzkY0tV2LmxnNHtQG-UwqfvxLyQ.4Xc5xwCqzFaEOJpu7ftadiXXQLE7sbm7ETs23lzC96E',
+	pub: 'rPZqFYcR01E81UiAtzkY0tV2LmxnNHtQG-UwqfvxLyQ.4Xc5xwCqzFaEOJpu7ftadiXXQLE7sbm7ETs23lzC96E',
 	miningEnabled: false,
+	shareDataEnabled: true,
 	numberOfLikes: 25,
 	numberOfPhotos: 1,
 	numberOfFriends: 2,

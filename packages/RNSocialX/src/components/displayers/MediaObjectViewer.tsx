@@ -1,25 +1,12 @@
 import * as React from 'react';
-import {
-	Image,
-	Platform,
-	StyleProp,
-	StyleSheet,
-	Text,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { Image, Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
 import { OS_TYPES } from '../../environment/consts';
-import {
-	IMediaTypes,
-	ITranslatedProps,
-	MediaTypeImage,
-	MediaTypeVideo,
-} from '../../types';
+import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	uri: string;
@@ -31,11 +18,7 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	canZoom?: boolean;
 }
 
-const getMimeType = (
-	uri: string,
-	type: IMediaTypes | undefined,
-	extension?: string,
-) => {
+const getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: string) => {
 	if (type) {
 		return type.key;
 	} else if (extension) {
@@ -59,12 +42,8 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	thumbOnly,
 	paused = true,
 	resizeToChangeAspectRatio = false,
-	onPress = () => {
-		/**/
-	},
-	onDoublePress = () => {
-		/**/
-	},
+	onPress = () => undefined,
+	onDoublePress = () => undefined,
 }) => {
 	// const ImageComponent =
 	// 	Platform.OS === OS_TYPES.Android && uri.startsWith('https://')

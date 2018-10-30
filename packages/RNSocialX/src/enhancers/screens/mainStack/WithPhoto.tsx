@@ -48,9 +48,7 @@ export interface IWithPhotoEnhancedData extends IResizeProps {
 	mediaObjects: IWallPostPhotoOptimized[];
 }
 
-export interface IWithPhotoEnhancedActions
-	extends ITranslatedProps,
-		IDotsMenuProps {
+export interface IWithPhotoEnhancedActions extends ITranslatedProps, IDotsMenuProps {
 	createPost: (wallPostData: IWallPostPhotoData) => void;
 }
 
@@ -65,10 +63,7 @@ interface IWithPhotoProps {
 
 interface IWithPhotoState {}
 
-export class WithPhoto extends React.Component<
-	IWithPhotoProps,
-	IWithPhotoState
-> {
+export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState> {
 	render() {
 		return (
 			<WithI18n>
@@ -85,8 +80,7 @@ export class WithPhoto extends React.Component<
 														data: {
 															...mock.data,
 															currentUserAvatarURL: currentUser!.avatarURL,
-															mediaObjects:
-																navigationParams[SCREENS.Photo].mediaObjects,
+															mediaObjects: navigationParams[SCREENS.Photo].mediaObjects,
 															marginBottom,
 														},
 														actions: {

@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import { SCREENS } from '../../../environment/consts';
+import { SCREENS, TABS } from '../../../environment/consts';
 import { IVisitedUser, SearchResultKind } from '../../../types';
 
+import { IProfileData } from '@socialx/api-data';
 import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
@@ -14,10 +15,7 @@ interface IWithVisitedUserProps {
 
 interface IWithVisitedUserState {}
 
-export class WithVisitedUser extends React.Component<
-	IWithVisitedUserProps,
-	IWithVisitedUserState
-> {
+export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWithVisitedUserState> {
 	render() {
 		return (
 			<WithNavigationParams>
@@ -29,16 +27,16 @@ export class WithVisitedUser extends React.Component<
 									<WithAggregations>
 										{({ searchResults }) => {
 											const { navigationParams } = navigationProps;
-											const { userId } = navigationParams[SCREENS.UserProfile];
+											const { userId, origin } = navigationParams[SCREENS.UserProfile];
 
-											// @Alex lets talk over this?
-											const foundProfile =
-												profiles.find((profile) => profile.alias === userId) ||
-												searchResults.find(
-													(profile) => profile.alias === userId,
-												);
+											let foundProfile: IProfileData | undefined;
+											if (origin === TABS.Feed) {
+												foundProfile = profiles.find((profile) => profile.alias === userId);
+											} else if (origin === TABS.Search) {
+												foundProfile = searchResults.find((profile) => profile.alias === userId);
+											}
 
-											let visitedUser;
+											let visitedUser = {};
 											if (foundProfile) {
 												visitedUser = {
 													userId: foundProfile!.alias,
@@ -47,12 +45,13 @@ export class WithVisitedUser extends React.Component<
 													avatarURL:
 														foundProfile.avatar.length > 0
 															? appConfig.ipfsConfig.ipfs_URL +
-											  foundProfile.avatar // tslint:disable-line
+											  				  foundProfile.avatar // tslint:disable-line
 															: '',
 													aboutMeText: foundProfile.aboutMeText,
 													numberOfLikes: 0,
 													numberOfPhotos: 0,
-													numberOfFriends: foundProfile.friends.length,
+													// numberOfFriends: foundProfile.friends.length,
+													numberOfFriends: 0,
 													numberOfComments: 0,
 													mediaObjects: [],
 													recentPosts: [],

@@ -14,9 +14,7 @@ export default class ExtensibleError extends Error {
 		this.loggedMessage = [
 			`An Error occured: ${message}`,
 			this.code && process.env.DEBUG ? `Code: ${this.code}` : '',
-			this.details && process.env.DEBUG
-				? `Details: ${JSON.stringify(this.details)}`
-				: '',
+			this.details && process.env.DEBUG ? `Details: ${JSON.stringify(this.details)}` : '',
 		].filter((v: string) => v.length);
 
 		this.log = () => {

@@ -25,10 +25,7 @@ export interface IWithLaunchEnhancedData {
 }
 
 export interface IWithLaunchEnhancedActions extends ITranslatedProps {
-	resetNavigationToRoute: (
-		screenName: string,
-		navigation: NavigationScreenProp<any>,
-	) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	loadFeed: () => void;
 	recall: (creds: ICredentials) => void;
 	setGlobal: (global: IGlobal) => void;
@@ -45,10 +42,7 @@ interface IWithLaunchProps {
 
 interface IWithLaunchState {}
 
-export class WithLaunch extends React.Component<
-	IWithLaunchProps,
-	IWithLaunchState
-> {
+export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchState> {
 	render() {
 		return (
 			<WithI18n>

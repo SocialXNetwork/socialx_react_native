@@ -106,9 +106,7 @@ export interface IDotsMenuProps {
 }
 
 export interface INavigationParamsActions {
-	setNavigationParams: (
-		setNavigationParamsInput: ISetNavigationParamsInput,
-	) => void;
+	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) => void;
 }
 
 export interface IResizeProps {
@@ -247,14 +245,11 @@ export interface IWallPostCardData extends IResizeProps {
 	contentOffensive: boolean;
 	likeError: boolean;
 	displayDots?: boolean;
+	skeleton?: boolean;
 }
 
 export interface IWallPostCardActions extends ITranslatedProps {
-	onImagePress: (
-		index: number,
-		mediaObjects: IMediaProps[],
-		postId: string,
-	) => void;
+	onImagePress: (index: number, mediaObjects: IMediaProps[], postId: string) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
 	onDeletePostPress: (postId: string) => void;
 	onUserPress: (userId: string) => void;
@@ -318,6 +313,7 @@ export interface ICurrentUser {
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostCardData[];
 	miningEnabled: boolean;
+	shareDataEnabled: boolean;
 	pub: string;
 }
 
@@ -385,10 +381,17 @@ export interface IAdsAccountPerformanceValues {
 }
 
 export interface IAd {
+	name?: string;
 	url: string;
+	editable?: boolean;
 	title: string;
 	description: string;
 	id: string;
+	startDate?: string;
+	endDate?: string;
+	amount?: string;
+	currency?: string;
+	numberOfAds?: string;
 }
 
 export enum ICreateAdSteps {

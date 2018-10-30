@@ -1,10 +1,10 @@
 {
-  "name": "socialx_distributed",
+  "name": "socialx_react_native",
   "version": "0.0.1",
   "description": "Monorepo for the SocialX distributed mobile app and its library ecosystem",
-  "repository": "git@bitbucket.org:nolimitdigital/socialx_distributed.git",
-  "homepage": "https://socialx.network",
-  "license": "UNLICENSED",
+  "repository": "git@github.com:SocialXNetwork/socialx_react_native.git",
+  "homepage": "https://socialx.network/",
+  "license": "MIT",
   "private": true,
   "workspaces": {
     "packages": [
@@ -13,7 +13,7 @@
       "packages/api-storage",
       "packages/api-blockchain",
       "packages/api-data",
-      "packages/api-crypto",
+      "packages/webview-crypto",
       "packages/RNSocialX"
     ],
     "nohoist": [
@@ -27,8 +27,8 @@
       "**/api-blockchain/**",
       "**/api-data",
       "**/api-data/**",
-      "**/api-crypto",
-      "**/api-crypto/**",
+      "**/webview-crypto",
+      "**/webview-crypto/**",
       "**/RNSocialX",
       "**/RNSocialX/**"
     ]
@@ -59,6 +59,7 @@
     "build:api-storage": "cd packages/api-storage/ && yarn run build && cd ../../",
     "build:api-blockchain": "cd packages/api-blockchain/ && yarn run build && cd ../../",
     "build:api-data": "cd packages/api-data/ && yarn run build && cd ../../",
+    "build:webview-crypto": "cd packages/webview-crypto/ && yarn run build && cd ../../",
     "build:database": "cd packages/database/ && yarn run build && cd ../../",
     "build": "npm-run-all reset:dists build:*",
     "test:commons": "cd packages/commons/ && yarn run test:all && cd ../../",

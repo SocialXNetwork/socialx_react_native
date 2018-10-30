@@ -20,11 +20,7 @@ const onGoBackHandler = (navigation: any) => {
 	navigation.goBack(null);
 };
 
-const Screen: React.SFC<IForgotPasswordScreenProps> = ({
-	getText,
-	navigation,
-	sendResetCode,
-}) => (
+const Screen: React.SFC<IForgotPasswordScreenProps> = ({ getText, navigation, sendResetCode }) => (
 	<ForgotPasswordScreenView
 		getText={getText}
 		onSendResetCode={sendResetCode}

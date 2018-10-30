@@ -26,11 +26,7 @@ export interface IWithSendCoinsEnhancedData {
 }
 
 export interface IWithSendCoinsEnhancedActions extends ITranslatedProps {
-	sendCoins: (
-		userName: string,
-		transferAmount: number,
-		coin: CoinSymbol,
-	) => void;
+	sendCoins: (userName: string, transferAmount: number, coin: CoinSymbol) => void;
 }
 
 interface IWithSendCoinsEnhancedProps {
@@ -44,10 +40,7 @@ interface IWithSendCoinsProps {
 
 interface IWithSendCoinsState {}
 
-export class WithSendCoins extends React.Component<
-	IWithSendCoinsProps,
-	IWithSendCoinsState
-> {
+export class WithSendCoins extends React.Component<IWithSendCoinsProps, IWithSendCoinsState> {
 	render() {
 		return (
 			<WithI18n>

@@ -22,10 +22,7 @@ export interface ISocialXAccountScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-export class SocialXAccountScreenView extends Component<
-	ISocialXAccountScreenViewProps,
-	any
-> {
+export class SocialXAccountScreenView extends Component<ISocialXAccountScreenViewProps, any> {
 	public render() {
 		const {
 			coins,
@@ -55,9 +52,7 @@ export class SocialXAccountScreenView extends Component<
 						returnPercentage={returnPercentage}
 						getText={getText}
 					/>
-					<Text style={styles.accountTitle}>
-						{getText('socialx.account.screen.account')}
-					</Text>
+					<Text style={styles.accountTitle}>{getText('socialx.account.screen.account')}</Text>
 					{digitalCoins.map((coin, index) => (
 						<SocialXAccountCurrencyItem key={index} {...coin} />
 					))}

@@ -8,10 +8,7 @@ import { ProfilePhotoGrid } from '../../../../src/components';
 import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
-class GithubUsersPhotoGrid extends React.Component<
-	any,
-	{ gridMediaProvider: DataProvider }
-> {
+class GithubUsersPhotoGrid extends React.Component<any, { gridMediaProvider: DataProvider }> {
 	public state = {
 		gridMediaProvider: new DataProvider((row1: any, row2: any) => {
 			return row1.index !== row2.index;
@@ -43,13 +40,10 @@ class GithubUsersPhotoGrid extends React.Component<
 		const headerElement = [{ index: '1da431da-fad41dasg5125' }];
 
 		const loadedSize = gridMediaProvider.getSize();
-		const loadedMedia =
-			loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+		const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
 
 		const newMedia = new Array(20).fill(0).map((val, index) => ({
-			url:
-				'https://avatars2.githubusercontent.com/u/' +
-				(this.lastLoadedPhotoIndex + index),
+			url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedPhotoIndex + index),
 			index: this.lastLoadedPhotoIndex + index,
 		}));
 		const allMedia = [...loadedMedia, ...newMedia];

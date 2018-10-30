@@ -32,9 +32,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_CURRENT_ACCOUNT: {
 			return {
 				accounts: [
-					...state.accounts.filter(
-						(account) => account.alias !== action.payload.alias,
-					),
+					...state.accounts.filter((account) => account.alias !== action.payload.alias),
 					action.payload,
 				],
 			};
@@ -47,9 +45,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_ACCOUNT_BY_PUB: {
 			return {
 				accounts: [
-					...state.accounts.filter(
-						(account) => account.alias !== action.payload.alias,
-					),
+					...state.accounts.filter((account) => account.alias !== action.payload.alias),
 					action.payload,
 				],
 			};

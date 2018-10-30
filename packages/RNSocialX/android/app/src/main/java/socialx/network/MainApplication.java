@@ -3,6 +3,7 @@ package socialx.network;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.linusu.RNGetRandomValuesPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 import com.beefe.picker.PickerViewPackage;
@@ -21,7 +22,6 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.rnfs.RNFSPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
@@ -45,6 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNGetRandomValuesPackage(),
             new WebViewBridgePackage(),
             new AndroidKeyboardAdjustPackage(),
             new PickerViewPackage(),
@@ -63,7 +64,6 @@ public class MainApplication extends Application implements ReactApplication {
             new LottiePackage(),
             new ImageResizerPackage(),
             new PickerPackage(),
-            new RNFSPackage(),
             new VectorIconsPackage(),
             new FastImageViewPackage(),
             new RandomBytesPackage()

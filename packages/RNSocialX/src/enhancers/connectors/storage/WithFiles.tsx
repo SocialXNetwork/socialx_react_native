@@ -51,14 +51,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	uploadFile: (uploadFileInput: IUploadFileInput) =>
-		dispatch(uploadFile(uploadFileInput)),
+	uploadFile: (uploadFileInput: IUploadFileInput) => dispatch(uploadFile(uploadFileInput)),
 });
 
-export const WithFiles: ConnectedComponentClass<
-	JSX.Element,
-	IChildren
-> = connect(
+export const WithFiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(Enhancer as any) as any;

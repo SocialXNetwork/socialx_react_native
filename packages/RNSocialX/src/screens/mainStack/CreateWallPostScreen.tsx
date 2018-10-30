@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Alert, Keyboard } from 'react-native';
+import uuid from 'uuid/v4';
 
 import {
 	IWithCreateWallPostEnhancedActions,
@@ -25,10 +26,7 @@ interface ICreateWallPostScreenState {
 	shareText: string;
 }
 
-class Screen extends React.Component<
-	ICreateWallPostScreenProps,
-	ICreateWallPostScreenState
-> {
+class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
 	public state = {
 		mediaObjects: [],
 		shareText: '',
@@ -52,9 +50,7 @@ class Screen extends React.Component<
 			<CreateWallPostScreenView
 				avatarImage={currentUserAvatarURL}
 				shareText={shareText}
-				mediaObjects={mediaObjects.map(
-					(mediaObject: IWallPostPhotoOptimized) => mediaObject.path,
-				)}
+				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
@@ -77,22 +73,18 @@ class Screen extends React.Component<
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
-				actionHandler: () =>
-					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
+				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
 				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
-				actionHandler: () =>
-					this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
+				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
 		showDotsMenuModal(menuItems);
 	};
 
-	private addToScrollerSelectedMediaObject = async (
-		source: IMAGE_PICKER_TYPES,
-	) => {
+	private addToScrollerSelectedMediaObject = async (source: IMAGE_PICKER_TYPES) => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();
@@ -113,21 +105,52 @@ class Screen extends React.Component<
 
 	private onCreatePostHandler = async () => {
 		const { mediaObjects, shareText } = this.state;
-		const { createPost, getText } = this.props;
+		const {
+			currentUserAvatarURL,
+			currentUserId,
+			currentUserFullName,
+			createPost,
+			setGlobal,
+		} = this.props;
 
-		if (mediaObjects.length < 1 && !shareText) {
-			Alert.alert(
-				getText('new.wall.post.screen.post.not.allowed.title'),
-				getText('new.wall.post.screen.post.not.allowed.message'),
-			);
-		} else {
-			Keyboard.dismiss();
-			await createPost({
-				text: shareText,
+		await setGlobal({
+			skeletonPost: {
+				postId: uuid(),
+				postText: shareText,
+				location: '',
+				taggedFriends: undefined,
+				timestamp: new Date(Date.now()),
+				owner: {
+					userId: currentUserId,
+					fullName: currentUserFullName,
+					avatarURL: currentUserAvatarURL,
+				},
+				currentUserAvatarURL,
+				governanceVersion: false,
+				numberOfSuperLikes: 0,
+				numberOfComments: 0,
+				numberOfWalletCoins: 0,
+				likedByMe: false,
+				canDelete: false,
 				media: mediaObjects,
-			});
-			this.onCloseHandler();
-		}
+				likes: [],
+				bestComments: [],
+				listLoading: false,
+				suggested: undefined,
+				noInput: false,
+				contentOffensive: false,
+				likeError: false,
+				displayDots: true,
+				skeleton: true,
+			},
+		});
+
+		Keyboard.dismiss();
+		createPost({
+			text: shareText,
+			media: mediaObjects,
+		});
+		this.onCloseHandler();
 	};
 
 	private onCloseHandler = () => {

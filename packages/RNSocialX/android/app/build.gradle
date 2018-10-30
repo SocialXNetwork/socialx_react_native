@@ -170,6 +170,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-get-random-values')
     compile project(':react-native-webview-bridge')
     compile project(':react-native-android-keyboard-adjust')
     compile project(':react-native-picker')
@@ -188,7 +189,6 @@ dependencies {
     compile project(':lottie-react-native')
     compile project(':react-native-image-resizer')
     compile project(':react-native-image-crop-picker')
-    compile project(':react-native-fs')
     compile project(':react-native-vector-icons')
     compile project(':react-native-fast-image')
     compile project(':react-native-randombytes')

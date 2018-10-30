@@ -1,12 +1,6 @@
 import moment from 'moment';
 import * as React from 'react';
-import {
-	StyleProp,
-	Text,
-	TouchableOpacity,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { AvatarImage, RichText } from '../../';
 import { ITranslatedProps, IWallPostComment } from '../../../types';
@@ -32,10 +26,7 @@ interface ICommentCardState {
 	commentLikesPosition: StyleProp<ViewStyle>;
 }
 
-export class CommentCard extends React.Component<
-	ICommentCardProps,
-	ICommentCardState
-> {
+export class CommentCard extends React.Component<ICommentCardProps, ICommentCardState> {
 	public static getDerivedStateFromProps(
 		nextProps: ICommentCardProps,
 		currentState: ICommentCardState,
@@ -72,12 +63,7 @@ export class CommentCard extends React.Component<
 	}
 
 	public render() {
-		const {
-			comment,
-			onViewUserProfile,
-			onShowOptionsMenu,
-			getText,
-		} = this.props;
+		const { comment, onViewUserProfile, onShowOptionsMenu, getText } = this.props;
 
 		const { text, user, timestamp } = comment;
 		const commentTimestamp = moment(timestamp).fromNow();
@@ -89,10 +75,7 @@ export class CommentCard extends React.Component<
 				</TouchableOpacity>
 				<View style={styles.rightContainer}>
 					<View>
-						<TouchableOpacity
-							style={styles.commentBackground}
-							onPress={onShowOptionsMenu}
-						>
+						<TouchableOpacity style={styles.commentBackground} onPress={onShowOptionsMenu}>
 							<Text style={styles.userFullName} suppressHighlighting={true}>
 								{user.fullName}
 							</Text>
@@ -131,10 +114,7 @@ export class CommentCard extends React.Component<
 					</View>
 					<View style={styles.actionsContainer}>
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
-						<TouchableOpacity
-							onPress={this.onCommentLikeHandler}
-							disabled={this.state.disabled}
-						>
+						<TouchableOpacity onPress={this.onCommentLikeHandler} disabled={this.state.disabled}>
 							<Text style={styles.actionButtonText}>
 								{this.state.likedByMe
 									? getText('comments.screen.actions.unlike')
@@ -151,9 +131,7 @@ export class CommentCard extends React.Component<
 		this.setState((currentState) => {
 			return {
 				disabled: true,
-				likes: currentState.likedByMe
-					? currentState.likes - 1
-					: currentState.likes + 1,
+				likes: currentState.likedByMe ? currentState.likes - 1 : currentState.likes + 1,
 				likedByMe: !currentState.likedByMe,
 				error: false,
 			};
