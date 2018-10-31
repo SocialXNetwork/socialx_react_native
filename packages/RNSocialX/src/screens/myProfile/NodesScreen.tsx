@@ -1,8 +1,6 @@
 import * as React from 'react';
-import Picker from 'react-native-picker';
 
 import { INavigationProps } from '../../types';
-import { defaultStyles } from './NodesScreen.style';
 import { NodesScreenView } from './NodesScreen.view';
 
 import {
@@ -10,35 +8,53 @@ import {
 	IWithNodesEnhancedData,
 	WithNodes,
 } from '../../enhancers/screens';
-import { setCustomGunSuperPeers } from '../../store/app/config';
 
 type INodesScreenProps = INavigationProps & IWithNodesEnhancedActions & IWithNodesEnhancedData;
 
 interface INodesScreenState {
-	selectedNodeValue: string;
-	hasChanged: boolean;
+	nodeValue: string;
+	isSwiping: boolean;
 }
 
-const dataPicker = ['a', 'b'];
+const mockPeers = [
+	'http://139.59.130.248:8765/gun',
+	'http://128.199.162.85:8765/gun',
+	'http://139.59.130.248:8765/gun',
+	'http://128.199.162.85:8765/gun',
+	'http://139.59.130.248:8765/gun',
+	'http://128.199.162.85:8765/gun',
+	'http://139.59.130.248:8765/gun',
+	'http://128.199.162.85:8765/gun',
+	'http://139.59.130.248:8765/gun',
+	'http://128.199.162.85:8765/gun',
+	'http://139.59.130.248:8765/gun',
+	'http://128.199.162.85:8765/gun',
+];
 
 class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 	public state = {
-		selectedNodeValue: 'initial',
-		hasChanged: false,
+		nodeValue: '',
+		isSwiping: false,
 	};
 
 	public render() {
-		const { navigation, getText } = this.props;
-		const { hasChanged, selectedNodeValue } = this.state;
+		const { navigation, getText, appConfig } = this.props;
+		const { nodeValue, isSwiping } = this.state;
 
 		return (
 			<NodesScreenView
 				onGoBack={() => this.onGoBackHandler(navigation)}
 				getText={getText}
-				onDisplayNodesList={this.onDisplayNodesList}
-				selectedNodeValue={selectedNodeValue}
-				hasChanged={hasChanged}
-				onSaveNewNode={this.onSaveNodePressed}
+				// nodesList={appConfig.gun.superPeers}
+				nodesList={mockPeers}
+				onSaveNewNode={this.onSaveNewNodeHandler}
+				nodeValue={nodeValue}
+				autoFocus={true}
+				onNodeInputChange={this.onNodeInputChange}
+				onSwipeStart={this.onSwipeStartHandler}
+				onSwipeRelease={this.onSwipeReleaseHandler}
+				isSwiping={isSwiping}
+				onDeleteNode={this.onDeleteNode}
 			/>
 		);
 	}
@@ -47,31 +63,28 @@ class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 		navigation.goBack(null);
 	};
 
-	private onDisplayNodesList = () => {
-		const { getText } = this.props;
-		// appConfig.map((value: string) => value.toUpperCase()),
-		Picker.init({
-			pickerData: dataPicker,
-			pickerTitleColor: defaultStyles.pickerTitleColor,
-			pickerConfirmBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
-			pickerCancelBtnColor: defaultStyles.pickerConfirmAndCancelBtnColor,
-			pickerBg: defaultStyles.pickerToolbarAndBgColor,
-			pickerToolBarBg: defaultStyles.pickerToolbarAndBgColor,
-			selectedValue: [1],
-			pickerTitleText: getText('nodes.screen.picker.title'),
-			pickerConfirmBtnText: getText('button.confirm'),
-			pickerCancelBtnText: getText('button.cancel'),
-			onPickerConfirm: (data) => {
-				this.setState({ selectedNodeValue: data[0], hasChanged: true });
-				Picker.hide();
-			},
+	private onNodeInputChange = (value: string) => {
+		this.setState({
+			nodeValue: value,
 		});
-		Picker.show();
 	};
 
-	private onSaveNodePressed = async () => {
+	private onDeleteNode = (value: string) => {
+		mockPeers.splice(mockPeers.findIndex((e) => e === value), 1);
+	};
+
+	private onSwipeStartHandler = () => {
+		this.setState({ isSwiping: true });
+	};
+
+	private onSwipeReleaseHandler = () => {
+		this.setState({ isSwiping: false });
+	};
+
+	private onSaveNewNodeHandler = () => {
 		this.switchActivityIndicator(true);
-		// await setCustomGunSuperPeers();
+		mockPeers.unshift(this.state.nodeValue);
+		// await this.props.onSaveNodes(nodes);
 		this.switchActivityIndicator(false);
 	};
 

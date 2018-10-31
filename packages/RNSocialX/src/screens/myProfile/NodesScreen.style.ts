@@ -17,33 +17,28 @@ const styles: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
 		paddingVertical: Sizes.smartVerticalScale(15),
 	},
-	text: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(15),
-		lineHeight: Sizes.smartHorizontalScale(18),
-		color: Colors.cloudBurst,
-		textAlign: 'left',
+	inputContainer: {
+		paddingBottom: Sizes.smartVerticalScale(20),
 	},
-	nodeContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
+	listContainer: {
 		backgroundColor: Colors.white,
-		paddingHorizontal: Sizes.smartHorizontalScale(24),
-		paddingVertical: Sizes.smartVerticalScale(13),
 	},
-	nodeButton: {
-		flexDirection: 'row',
-		height: Sizes.smartHorizontalScale(18),
-		paddingVertical: 0,
+	listItem: {},
+	separator: {
+		borderWidth: 1,
+		borderColor: Colors.dustWhite,
+		height: Sizes.smartVerticalScale(2),
+		width: '100%',
 	},
-	caretDownIcon: {
-		color: Colors.pink,
-		paddingLeft: Sizes.smartHorizontalScale(5),
-	},
-	saveChangesButton: {
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
-		marginTop: Sizes.smartVerticalScale(20),
+	swiperDeleteButton: {
+		flex: 1,
 		justifyContent: 'center',
+		backgroundColor: Colors.ceriseRed,
+	},
+	swiperDeleteIcon: {
+		paddingLeft: Sizes.smartHorizontalScale(15),
+		color: Colors.white,
+		fontSize: Sizes.smartHorizontalScale(25),
 	},
 };
 
