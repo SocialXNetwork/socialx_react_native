@@ -51,6 +51,10 @@ const styles: any = {
 		marginTop: Sizes.smartVerticalScale(20),
 		justifyContent: 'center',
 	},
+	editNodesButton: {
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 };
 
 export default StyleSheet.create(styles);

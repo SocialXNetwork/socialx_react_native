@@ -35,6 +35,7 @@ export interface ISettingsData {
 interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IOptionsMenuProps {
 	userName: string;
 	onSaveChanges: (values: ISettingsData) => void;
+	onEditNodes: () => void;
 	onGoBack: () => void;
 }
 
@@ -49,6 +50,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	onSaveChanges,
 	onGoBack,
 	showOptionsMenu,
+	onEditNodes,
 	getText,
 }) => (
 	<Formik
@@ -128,6 +130,13 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						fullNameColor={defaultStyles.avatarFullNameColor}
 						userNameColor={defaultStyles.avatarUserNameColor}
 					/>
+					<View style={styles.editNodesButton}>
+						<PrimaryButton
+							label={getText('settings.screen.nodes.button')}
+							size={ButtonSizes.Small}
+							onPress={onEditNodes}
+						/>
+					</View>
 					<View style={[styles.input, styles.firstInput]}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
@@ -216,7 +225,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					{isValid && (
 						<View style={styles.button}>
 							<PrimaryButton
-								label={getText('settings.screen.save.button')}
+								label={getText('button.save.changes')}
 								size={ButtonSizes.Small}
 								onPress={handleSubmit}
 							/>

@@ -95,6 +95,11 @@ export {
 	IWithSettingsEnhancedData,
 } from './myProfile/WithSettings';
 export {
+	IWithNodesEnhancedActions,
+	IWithNodesEnhancedData,
+	WithNodes,
+} from './myProfile/WithNodes';
+export {
 	WithSocialXAccount,
 	IWithSocialXAccountEnhancedActions,
 	IWithSocialXAccountEnhancedData,
