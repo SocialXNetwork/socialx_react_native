@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { ActivityIndicatorModal } from '../../../../src/components';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/modals', module)
@@ -13,9 +14,10 @@ storiesOf('Components/modals', module)
 
 		return (
 			<ActivityIndicatorModal
-				activityIndicatorTitle="Uploading"
-				activityIndicatorMessage="Please wait until the photo is uploaded"
-				showActivityIndicator={visible}
+				title="Uploading"
+				message="Please wait until the photo is uploaded"
+				visible={visible}
+				getText={getTextMock}
 			/>
 		);
 	});

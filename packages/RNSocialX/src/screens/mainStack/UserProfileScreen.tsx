@@ -10,7 +10,7 @@ import {
 	WithUserProfile,
 } from '../../enhancers/screens';
 
-import { PROFILE_TAB_ICON_TYPES, SCREENS, TABS } from '../../environment/consts';
+import { PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
 import { IMediaProps, INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
@@ -18,7 +18,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const GRID_PAGE_SIZE = 20;
 
 interface IUserProfileScreenState {
-	gridMediaProvider: DataProvider;
+	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
 	activeTab: string;
@@ -31,16 +31,16 @@ type IUserProfileScreenProps = INavigationProps &
 
 class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
 	private lastLoadedPhotoIndex = 0;
-	private readonly gridPhotosProvider: DataProvider;
+	private readonly dataProvider: DataProvider;
 
 	constructor(props: IUserProfileScreenProps) {
 		super(props);
-		this.gridPhotosProvider = new DataProvider((row1: any, row2: any) => {
+		this.dataProvider = new DataProvider((row1: any, row2: any) => {
 			return row1.index !== row2.index;
 		});
 
 		this.state = {
-			gridMediaProvider: this.gridPhotosProvider,
+			dataProvider: this.dataProvider,
 			listTranslate: new Animated.Value(0),
 			gridTranslate: new Animated.Value(SCREEN_WIDTH),
 			activeTab: PROFILE_TAB_ICON_TYPES.LIST,
@@ -50,20 +50,14 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	public render() {
 		const { visitedUser, loadingProfile, loadingPosts } = this.props;
-		const {
-			activeTab,
-			listTranslate,
-			gridTranslate,
-			containerHeight,
-			gridMediaProvider,
-		} = this.state;
+		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
 			<UserProfileScreenView
 				visitedUser={visitedUser}
 				refreshing={loadingProfile && loadingPosts}
 				loadingPosts={loadingPosts}
-				gridMediaProvider={gridMediaProvider}
+				dataProvider={dataProvider}
 				listTranslate={listTranslate}
 				gridTranslate={gridTranslate}
 				activeTab={activeTab}
@@ -85,7 +79,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	// Improve this when we have lazy loading
 	private onLoadMorePhotosHandler = () => {
-		const { gridMediaProvider } = this.state;
+		const { dataProvider } = this.state;
 		const { visitedUser } = this.props;
 		const { mediaObjects } = visitedUser;
 
@@ -93,12 +87,12 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 		if (mediaObjects.length === 0) {
 			this.setState({
-				gridMediaProvider: gridMediaProvider.cloneWithRows(headerElement),
+				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
 		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
-			const loadedSize = gridMediaProvider.getSize();
+			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
 			const newMedia = mediaObjects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject: IMediaProps, index: number) => ({
@@ -110,7 +104,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			const allMedia = [...loadedMedia, ...newMedia];
 
 			this.setState({
-				gridMediaProvider: gridMediaProvider.cloneWithRows(allMedia),
+				dataProvider: dataProvider.cloneWithRows(allMedia),
 			});
 			this.lastLoadedPhotoIndex = allMedia.length - 1;
 		}

@@ -8,9 +8,9 @@ import { ProfilePhotoGrid } from '../../../../src/components';
 import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
-class GithubUsersPhotoGrid extends React.Component<any, { gridMediaProvider: DataProvider }> {
+class GithubUsersPhotoGrid extends React.Component<any, { dataProvider: DataProvider }> {
 	public state = {
-		gridMediaProvider: new DataProvider((row1: any, row2: any) => {
+		dataProvider: new DataProvider((row1: any, row2: any) => {
 			return row1.index !== row2.index;
 		}),
 	};
@@ -21,8 +21,8 @@ class GithubUsersPhotoGrid extends React.Component<any, { gridMediaProvider: Dat
 		return (
 			<View style={{ flex: 1, width: '100%' }}>
 				<ProfilePhotoGrid
-					loadMorePhotosHandler={this.loadMorePhotosHandler}
-					gridMediaProvider={this.state.gridMediaProvider}
+					onLoadMorePhotos={this.onLoadMorePhotosHandler}
+					dataProvider={this.state.dataProvider}
 					onViewMediaFullScreen={action('onViewMediaFullScreen')}
 					header={{
 						element: <View style={{ width: 1, height: 1 }} />,
@@ -35,12 +35,12 @@ class GithubUsersPhotoGrid extends React.Component<any, { gridMediaProvider: Dat
 		);
 	}
 
-	private loadMorePhotosHandler = () => {
-		const { gridMediaProvider } = this.state;
+	private onLoadMorePhotosHandler = () => {
+		const { dataProvider } = this.state;
 		const headerElement = [{ index: '1da431da-fad41dasg5125' }];
 
-		const loadedSize = gridMediaProvider.getSize();
-		const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+		const loadedSize = dataProvider.getSize();
+		const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
 
 		const newMedia = new Array(20).fill(0).map((val, index) => ({
 			url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedPhotoIndex + index),
@@ -49,7 +49,7 @@ class GithubUsersPhotoGrid extends React.Component<any, { gridMediaProvider: Dat
 		const allMedia = [...loadedMedia, ...newMedia];
 
 		this.setState({
-			gridMediaProvider: gridMediaProvider.cloneWithRows(allMedia),
+			dataProvider: dataProvider.cloneWithRows(allMedia),
 		});
 		this.lastLoadedPhotoIndex = allMedia.length - 1;
 	};

@@ -34,10 +34,5 @@ const items: ISearchResultData[] = [
 ];
 
 storiesOf('Components/displayers', module).add('SuggestedSearches', () => (
-	<SuggestedSearches
-		items={items}
-		onAddFriend={action('onAddFriend')}
-		onResultPress={action('onResultPress')}
-		getText={getTextMock}
-	/>
+	<SuggestedSearches items={items} onResultPress={action('onResultPress')} getText={getTextMock} />
 ));

@@ -8,13 +8,13 @@ import { LoginScreenView } from '../../../../src/screens/preAuth/LoginScreen.vie
 storiesOf('Screens/preAuth', module).add('LoginScreen', () => {
 	return (
 		<LoginScreenView
-			getText={getTextMock}
-			onStartLogin={action('onStartLogin')}
+			errors={[]}
+			onLogin={action('onLogin')}
 			onNavigateToPasswordForgot={action('onNavigateToPasswordForgot')}
 			onNavigateToRegister={action('onNavigateToRegister')}
 			onNavigateToUploadKey={action('onNavigateToUploadKey')}
 			onGoBack={action('onGoBack')}
-			errors={[]}
+			getText={getTextMock}
 		/>
 	);
 });

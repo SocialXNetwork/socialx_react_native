@@ -46,13 +46,12 @@ storiesOf('Components/displayers', module)
 			<SearchTabResults
 				getText={getTextMock}
 				searching={searching}
-				onAddFriend={action('onAddFriend')}
 				searchResults={items}
 				suggestions={items}
 				searchTermValue={searchTermValue}
-				onResultPress={action('onResultPress')}
-				onLoadMoreResults={action('onLoadMoreResults')}
 				hasMoreResults={hasMoreResults}
+				searchForMoreResults={action('searchForMoreResults')}
+				onResultPress={action('onResultPress')}
 				// @ts-ignore
 				navigation={null}
 			/>

@@ -7,21 +7,22 @@ import CenterView from '../../../helpers/CenterView';
 
 class LikeAnimatingButtonStory extends React.Component {
 	public state = {
-		likedByMe: false,
+		likedByCurrentUser: false,
 	};
 
 	public render() {
 		return (
 			<LikeAnimatingButton
 				label="Like"
-				onPress={() =>
-					this.setState((prevState: { likedByMe: boolean }) => {
+				onLikePress={() =>
+					this.setState((prevState: { likedByCurrentUser: boolean }) => {
 						return {
-							likedByMe: !prevState.likedByMe,
+							likedByCurrentUser: !prevState.likedByCurrentUser,
 						};
 					})
 				}
-				likedByMe={this.state.likedByMe}
+				likedByCurrentUser={this.state.likedByCurrentUser}
+				likeFailed={false}
 				getText={getTextMock}
 			/>
 		);

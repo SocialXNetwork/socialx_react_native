@@ -18,9 +18,5 @@ const item: ISearchResultData = {
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('SearchResultsItem', () => (
-		<SearchResultsItem
-			item={item}
-			onAddFriend={action('onAddFriend')}
-			onResultPress={action('onResultPress')}
-		/>
+		<SearchResultsItem item={item} onResultPress={action('onResultPress')} />
 	));

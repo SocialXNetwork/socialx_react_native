@@ -29,7 +29,6 @@ storiesOf('Screens/mainStack', module)
 		const isInfoOverlayVisible = boolean('isInfoOverlayVisible', false);
 		return (
 			<MediaViewerScreenView
-				getText={getTextMock}
 				mediaObjects={generateMediaObjects(10)}
 				startIndex={7}
 				orientation={DeviceOrientations.Portrait}
@@ -46,7 +45,8 @@ storiesOf('Screens/mainStack', module)
 				onClose={action('onClose')}
 				onCommentPress={action('onCommentPress')}
 				onLikePress={action('onLikePress')}
-				canReactOnPost={true}
+				canReact={true}
+				getText={getTextMock}
 			/>
 		);
 	});

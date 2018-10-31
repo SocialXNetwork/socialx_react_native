@@ -12,12 +12,12 @@ class TrendingScreenStory extends React.Component {
 	public render() {
 		return (
 			<TrendingScreenView
-				// @ts-ignore
-				navigation={null}
 				trendingCategoriesItems={trendingCategoriesItems}
 				trendingContentItems={trendingContentItems}
 				contentRef={this.state.contentRef}
 				passContentRef={this.passContentRef}
+				// @ts-ignore
+				navigation={null}
 			/>
 		);
 	}
