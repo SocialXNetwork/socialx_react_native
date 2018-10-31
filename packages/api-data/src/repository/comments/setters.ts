@@ -36,7 +36,7 @@ export const createComment = (
 
 	const mainRunner = () => {
 		postHandles.postMetaById(context, postId).docLoad((postMeta: IPostMetasCallback) => {
-			if (!Object.keys(postMeta).length) {
+			if (!postMeta || !Object.keys(postMeta).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found by this id`, {
 						initialRequestBody: createCommentInput,
@@ -113,7 +113,7 @@ export const removeComment = (
 		commentHandles
 			.commentMetaById(context, commentId)
 			.docLoad((commentReturnCallback: ICommentMetasCallback) => {
-				if (!Object.keys(commentReturnCallback).length) {
+				if (!commentReturnCallback || !Object.keys(commentReturnCallback).length) {
 					return callback(
 						new ApiError(`${errPrefix}, failed to find comment`, {
 							initialRequestBody: { commentId },
@@ -199,7 +199,7 @@ export const likeComment = (
 	commentHandles
 		.commentMetaById(context, commentId)
 		.docLoad((commentMeta: ICommentMetasCallback) => {
-			if (!Object.keys(commentMeta).length) {
+			if (!commentMeta || !Object.keys(commentMeta).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no comment found by this id`, {
 						initialRequestBody: { commentId },
@@ -273,7 +273,7 @@ export const unlikeComment = (
 		commentHandles
 			.commentMetaById(context, commentId)
 			.docLoad((commentMetaCallback: ICommentMetasCallback) => {
-				if (!Object.keys(commentMetaCallback).length) {
+				if (!commentMetaCallback || !Object.keys(commentMetaCallback).length) {
 					return callback(
 						new ApiError(`${errPrefix}, no comment by this id`, {
 							initialRequestBody: { commentId },
@@ -296,7 +296,10 @@ export const unlikeComment = (
 			.commentsByPostPath(context, postPath)
 			.path(`${commentId}.${TABLE_ENUMS.LIKES}.${owner}`)
 			.docLoad((likeReturnCallback: ILikeData) => {
-				if (!Object.keys(likeReturnCallback).length && !likeReturnCallback.owner) {
+				if (
+					!commentMetaCallback ||
+					(!Object.keys(likeReturnCallback).length && !likeReturnCallback.owner)
+				) {
 					return callback(
 						new ApiError(`${errPrefix}, no like found to be erased`, {
 							initialRequestBody: { commentId },

@@ -7,11 +7,11 @@ const docMatchesQuery = (query: object) => ([key, doc]: [string, any]) => {
     return undefined;
   }
   // If empty query, it matches all docs
-  if (!Object.keys(query).length) {
+  if (!query || !Object.keys(query).length) {
     return doc;
   }
   // If empty object, it does not match any non-empty query
-  if (!Object.keys(doc).length) {
+  if (!doc || !Object.keys(doc).length) {
     return undefined;
   }
   const checks = Object.entries(query).map(([docKey, wantedValue] : [string, any]) => {

@@ -51,7 +51,7 @@ export const getProfileByUsername = (
 		profileHandles
 			.publicProfileByUsername(context, username)
 			.docLoad((profile: IProfileCallbackData) => {
-				if (!Object.keys(profile).length) {
+				if (!profile || !Object.keys(profile).length) {
 					return callback(
 						new ApiError('failed to find profile', {
 							initialRequestBody: { username },

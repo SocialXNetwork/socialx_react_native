@@ -37,7 +37,7 @@ export const getPostPathsByUser = (
 ) => {
 	postHandles.postMetasByUsername(context, username).docLoad(
 		(postsMeta: IPostUserMetasCallback) => {
-			if (!Object.keys(postsMeta).length) {
+			if (!postsMeta || !Object.keys(postsMeta).length) {
 				return callback([]);
 			}
 			const paths = convertGunSetToArray(postsMeta).map(
@@ -98,7 +98,7 @@ export const getPostByPath = (
 		timeout: timeout || 600,
 	};
 	postHandles.postByPath(context, postPath).docLoad((postData: IPostCallbackData) => {
-		if (!Object.keys(postData).length) {
+		if (!postData || !Object.keys(postData).length) {
 			return callback(
 				new ApiError('failed, no post found', {
 					initialRequestBody: { postPath },
@@ -163,7 +163,7 @@ export const getPostById = (
 	callback: IGunCallback<IPostReturnData>,
 ) => {
 	postHandles.postMetaById(context, postId).docLoad((postMeta: IPostMetasCallback) => {
-		if (!Object.keys(postMeta).length) {
+		if (!postMeta || !Object.keys(postMeta).length) {
 			return callback(
 				new ApiError('failed, no post was found with this id', {
 					initialRequestBody: { postId },
@@ -185,7 +185,7 @@ const getAllPostRelevantData = (
 	postHandles.postsByDate(context, datePath).docLoad(
 		(postsData: IPostsDataCallback) => {
 			console.log('getAllPostRelevantData', { timeout, wait, tries });
-			if (!Object.keys(postsData).length) {
+			if (!postsData || !Object.keys(postsData).length) {
 				return callback(null, []);
 			}
 
