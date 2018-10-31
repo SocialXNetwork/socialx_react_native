@@ -142,7 +142,7 @@ export const likePost = (
 
 	const errPrefix = 'failed to like post';
 	postHandles.postMetaById(context, postId).docLoad((postMeta: IPostMetasCallback) => {
-		if (!Object.keys(postMeta).length) {
+		if (!postMeta || !Object.keys(postMeta).length) {
 			return callback(
 				new ApiError(`${errPrefix}, no post found with id`, {
 					initialRequestBody: { postId },
@@ -197,7 +197,7 @@ export const removePost = (
 	 */
 	const mainRunner = () => {
 		postHandles.postMetaById(context, postId).docLoad((postMetaIdCallback: IPostMetasCallback) => {
-			if (!Object.keys(postMetaIdCallback).length) {
+			if (!postMetaIdCallback || !Object.keys(postMetaIdCallback).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found by id`, {
 						initialRequestBody: { postId },
@@ -289,7 +289,7 @@ export const unlikePost = (
 	 */
 	const mainRunner = () => {
 		postHandles.postMetaById(context, postId).docLoad((postMetaCallback: IPostMetasCallback) => {
-			if (!Object.keys(postMetaCallback).length) {
+			if (!postMetaCallback || !Object.keys(postMetaCallback).length) {
 				return callback(
 					new ApiError(`${errPrefix}, no post found by id`, {
 						initialRequestBody: { postId },
@@ -308,7 +308,7 @@ export const unlikePost = (
 	 */
 	const checkIfLikedAndOwned = (postPath: string, owner: string) => {
 		postHandles.postLikesByCurrentUser(context, postPath).docLoad((likeData: ILikeData) => {
-			if (!Object.keys(likeData).length && !likeData.owner) {
+			if (!likeData || (!Object.keys(likeData).length && !likeData.owner)) {
 				return callback(
 					new ApiError(`${errPrefix}, can not remove a like that doesnt exist`, {
 						initialRequestBody: { postId },

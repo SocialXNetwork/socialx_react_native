@@ -91,7 +91,7 @@ const decryptRecovery = async (
 	recoverData: IRecoverData<string>,
 	{ question1, question2 }: { question1: string; question2: string },
 ) => {
-	if (!Object.keys(recoverData).length) {
+	if (!recoverData || !Object.keys(recoverData).length) {
 		throw new ApiError(`account not found`);
 	}
 	const { decrypt, work } = context;

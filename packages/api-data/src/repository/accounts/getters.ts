@@ -28,7 +28,7 @@ export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAcc
 	preLoadProfile(account, () => {
 		account.open(
 			(userProfileCallback: IAccountData) => {
-				if (!Object.keys(userProfileCallback).length) {
+				if (!userProfileCallback || !Object.keys(userProfileCallback).length) {
 					return callback(new ApiError('failed to get current account profile.'));
 				}
 
@@ -47,7 +47,7 @@ export const getAccountByPub = (
 	const { gun } = context;
 	const targetUser = gun.user(publicKey);
 	targetUser.docLoad((data: IAccountData) => {
-		if (!Object.keys(data).length) {
+		if (!data || !Object.keys(data).length) {
 			return callback(
 				new ApiError('failed to get account, no object for provided public key', {
 					initialRequestBody: publicKey,
