@@ -56,7 +56,6 @@ export const publicFriendRequestsByUsers = (context: IContext, from: string, to:
 
 export const publicFriendRequestToFrom = (context: IContext, to: string, from: string) => {
 	const { gun, account } = context;
-	);
 	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`);
 };
 export const publicCurrentFriendRequestFromUsername = (context: IContext, username: string) => {
