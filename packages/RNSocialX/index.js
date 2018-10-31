@@ -9,7 +9,7 @@ import { name as appName } from './app.json';
 
 import { RUN_STORYBOOK } from 'react-native-dotenv';
 
-if (__DEV__ && RUN_STORYBOOK) {
+if (__DEV__ && RUN_STORYBOOK === 'true') {
 	console.log('App started in Storybook mode');
 	AppRegistry.registerComponent(appName, () => StorybookUI);
 } else {
