@@ -1,4 +1,4 @@
-import { IContext, IGunCallback, IGunInstance, TABLES } from '../../types';
+import { IContext, IGunCallback, IGunInstance, TABLE_ENUMS, TABLES } from '../../types';
 import { ApiError } from '../../utils/errors';
 import * as profileHandles from './handles';
 
@@ -20,42 +20,44 @@ const pollyLoadAccounts = (gun: IGunInstance, cb: any) => {
 	});
 };
 
+const preLoadFriendRequests = (gun: IGunInstance, cb: any) => {
+	gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}`).once(() => {
+		cb();
+	});
+};
+
 export const createProfile = (
 	context: IContext,
 	createProfileInput: ICreateProfileInput,
 	callback: IGunCallback<null>,
 ) => {
-	const { gun, account } = context;
+	const { gun } = context;
 	const { username: alias, ...rest } = createProfileInput;
 	/**
 	 * add the profile data to the current user's private scope profile record
 	 */
 	const mainRunner = () => {
-		account
-			.get('profile')
-			.get(account.is.alias)
-			.put(
-				{
-					...rest,
-					alias,
-				},
-				(createProfileOnAccCallback) => {
-					if (createProfileOnAccCallback.err) {
-						return callback(
-							new ApiError(
-								`failed to create user profile on current account ${
-									createProfileOnAccCallback.err
-								}`,
-								{
-									initialRequestBody: createProfileInput,
-								},
-							),
-						);
-					}
-					const ref = account.get('profile').get(account.is.alias);
-					createUserProfRaw(ref);
-				},
-			);
+		profileHandles.currentUserProfileData(context).put(
+			{
+				...rest,
+				alias,
+			},
+			(createProfileOnAccCallback) => {
+				if (createProfileOnAccCallback.err) {
+					return callback(
+						new ApiError(
+							`failed to create user profile on current account ${createProfileOnAccCallback.err}`,
+							{
+								initialRequestBody: createProfileInput,
+							},
+						),
+					);
+				}
+				pollyLoadAccounts(gun, () =>
+					createUserProfRaw(profileHandles.currentUserProfileData(context)),
+				);
+			},
+		);
 	};
 	/**
 	 * reference the private user's profile to the public profiles record
@@ -122,10 +124,10 @@ const checkIfProfileExists = (context: IContext, username: string) => {
 /**
  * check if the current user already send a friend request to the targeted user
  */
-const checkIfFriendRequestExists = (context: IContext, username: string) => {
+const checkIfFriendRequestExists = (context: IContext, to: string, from: string) => {
 	return new Promise((res, rej) =>
 		profileHandles
-			.publicCurrentFriendRequestToUsername(context, username)
+			.publicFriendRequestToFrom(context, to, from)
 			.once((currentRequestCallback: any) => {
 				if (currentRequestCallback) {
 					res(true);
@@ -203,7 +205,8 @@ const addRequestedUserAsFriend = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
 		profileHandles
 			.currentProfileFriendByUsername(context, username)
-			.put(profileHandles.publicProfileByUsername(context, username), (addFriendCallback) => {
+			.put({ username }, (addFriendCallback) => {
+				console.log('addFriendCallback', addFriendCallback);
 				if (addFriendCallback.err) {
 					rej(new ApiError('could not add the user as a friend'));
 				}
@@ -215,7 +218,7 @@ const addRequestedUserAsFriend = (context: IContext, username: string) => {
 /**
  * get the public record of friend requests to the user from the current user and put the friend request data
  */
-const createFriendRequest = (context: IContext, username: string) => {
+const createFriendRequestNotification = (context: IContext, username: string) => {
 	const { owner, ownerPub, timestamp } = getContextMeta(context);
 	return new Promise((res, rej) =>
 		profileHandles.publicCurrentFriendRequestToUsername(context, username).put(
@@ -261,14 +264,21 @@ export const addFriend = async (
 		}
 
 		await checkIfProfileExists(context, username);
-		const friendRequestExists = await checkIfFriendRequestExists(context, username);
+		console.log('current profile exists');
+		const friendRequestExists = await checkIfFriendRequestExists(
+			context,
+			username,
+			account.is.alias,
+		);
 		if (friendRequestExists) {
-			return callback(new ApiError(`friend request already exists`));
+			return callback(new ApiError('friend request already exists'));
 		}
 		await getTargetedUserAndCreateRequest(context, username);
-		await createFriendPrivateRecord(context, username);
-		await createFriendRequest(context, username);
-		callback(null);
+		preLoadFriendRequests(context.gun, async () => {
+			await createFriendPrivateRecord(context, username);
+			await createFriendRequestNotification(context, username);
+			callback(null);
+		});
 	} catch (e) {
 		callback(e);
 	}
@@ -282,7 +292,7 @@ export const removeFriend = async (
 	const { account } = context;
 	if (!account.is) {
 		return callback(
-			new ApiError(`no user logged in`, {
+			new ApiError('no user logged in', {
 				initialRequestBody: { username },
 			}),
 		);
@@ -302,7 +312,19 @@ export const acceptFriend = async (
 	callback: IGunCallback<null>,
 ) => {
 	try {
-		const friendRequestExists = await checkIfFriendRequestExists(context, username);
+		const { account } = context;
+		if (!account.is) {
+			return callback(
+				new ApiError('no user logged in', {
+					initialRequestBody: { username },
+				}),
+			);
+		}
+		const friendRequestExists = await checkIfFriendRequestExists(
+			context,
+			account.is.alias,
+			username,
+		);
 		if (!friendRequestExists) {
 			return callback(new ApiError('friend request does not exist'));
 		}

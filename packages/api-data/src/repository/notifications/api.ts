@@ -31,18 +31,24 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	declineFriendRequest: async (username: string) => {
+	addFriendRequestNotification: async (username: string) => {
 		try {
-			await setters.removeFriendRequest(context, username);
-			await setters.saveFriendRequestResponse(context, username, false);
+			await setters.addFriendRequest(context, username);
 			return null;
 		} catch (e) {
 			throw new ApiError(e);
 		}
 	},
-	acceptFriendRequest: async (username: string) => {
+	removeFriendRequestNotification: async (username: string) => {
 		try {
 			await setters.removeFriendRequest(context, username);
+			return null;
+		} catch (e) {
+			throw new ApiError(e);
+		}
+	},
+	addFriendRequestResponseNotification: async (username: string) => {
+		try {
 			await setters.saveFriendRequestResponse(context, username, true);
 			return null;
 		} catch (e) {
