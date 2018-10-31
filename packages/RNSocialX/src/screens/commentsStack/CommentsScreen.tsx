@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Clipboard, Platform, StatusBar } from 'react-native';
+import { Clipboard, Keyboard, Platform, ScrollView, StatusBar, TextInput } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import uuid from 'uuid/v4';
 
@@ -81,6 +81,9 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 		},
 	};
 
+	private scrollRef: React.RefObject<ScrollView> = React.createRef();
+	private commentInputRef: React.RefObject<TextInput> = React.createRef();
+
 	public componentDidMount() {
 		StatusBar.setBarStyle('dark-content', true);
 		if (Platform.OS === OS_TYPES.Android) {
@@ -137,7 +140,8 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
 				showDotsMenuModal={showDotsMenuModal}
-				marginBottom={0}
+				scrollRef={this.scrollRef}
+				commentInputRef={this.commentInputRef}
 				getText={getText}
 			/>
 		);
@@ -178,8 +182,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				error: false,
 				comment: '',
 			};
-		});
-
+		}, Keyboard.dismiss);
 		await sendComment(escapedCommentText, post.postId);
 
 		if (this.state.error) {

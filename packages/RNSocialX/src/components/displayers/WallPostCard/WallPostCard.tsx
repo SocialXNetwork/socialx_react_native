@@ -49,6 +49,7 @@ export interface IWallPostCardState {
 		second: string | null;
 		total: number;
 	};
+	likeError: boolean;
 }
 
 export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallPostCardState> {
@@ -58,6 +59,19 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 		numberOfComments: 0,
 		numberOfWalletCoins: 0,
 	};
+
+	public static getDerivedStateFromProps(
+		nextProps: IWallPostCardPropsType,
+		currentState: IWallPostCardState,
+	) {
+		if (nextProps.likeError !== currentState.likeError) {
+			return {
+				likeError: true,
+			};
+		}
+
+		return null;
+	}
 
 	public state = {
 		fullTextVisible: false,
@@ -81,6 +95,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 				this.props.likes.length > 1 ? this.props.likes[this.props.likes.length - 2].userName : null,
 			total: this.props.likes.length,
 		},
+		likeError: false,
 	};
 
 	private readonly containerViewRef: React.RefObject<View> = React.createRef();
@@ -294,6 +309,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 		if (!likedByMe) {
 			this.setState((currentState) => {
 				return {
+					likeError: false,
 					recentLikes: {
 						second: currentState.recentLikes.first,
 						first: currentUser.userName,
@@ -305,6 +321,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			if (total === 1) {
 				this.setState((currentState) => {
 					return {
+						likeError: false,
 						recentLikes: {
 							...currentState.recentLikes,
 							first: null,
@@ -316,6 +333,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 				this.setState((currentState) => {
 					const { first, second } = currentState.recentLikes;
 					return {
+						likeError: false,
 						recentLikes: {
 							first: first === currentUser.userName ? second : first,
 							second: null,
@@ -327,6 +345,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 				this.setState((currentState) => {
 					const { first, second } = currentState.recentLikes;
 					return {
+						likeError: false,
 						recentLikes: {
 							first: first === currentUser.userName ? second : first,
 							second: second === currentUser.userName ? likes[likes.length - 3].userName : second,
@@ -338,6 +357,16 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 		}
 
 		await onLikePress(likedByMe, postId);
+
+		if (this.state.likeError) {
+			this.setState({
+				recentLikes: {
+					first: likes.length > 0 ? likes[likes.length - 1].userName : null,
+					second: likes.length > 1 ? likes[likes.length - 2].userName : null,
+					total: likes.length,
+				},
+			});
+		}
 	};
 
 	private reportProblemHandler = (reason: string, description: string) => {

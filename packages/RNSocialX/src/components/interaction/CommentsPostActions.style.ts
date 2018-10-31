@@ -7,10 +7,7 @@ const styles: any = {
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: Sizes.smartVerticalScale(10),
-		paddingVertical: Sizes.smartVerticalScale(5),
-		marginHorizontal: Sizes.smartHorizontalScale(15),
-		borderTopWidth: 0.5,
-		borderColor: Colors.grayNurse,
+		marginHorizontal: Sizes.smartHorizontalScale(10),
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(24),
