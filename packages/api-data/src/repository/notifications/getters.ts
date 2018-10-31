@@ -8,15 +8,16 @@ import { IAllNotificationsData, INotificationData, INotificationsReturnData } fr
 export const getFriendRequests = (context: IContext) => {
 	return new Promise((res, rej) =>
 		handles.friendRequests(context).docLoad((notifications: INotificationsReturnData) => {
-			if (!Object.keys(notifications).length) {
+			if (!notifications || !Object.keys(notifications).length) {
 				return res([]);
 			}
-			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
-				({ k, ...notification }: INotificationData & { k: string }) => ({
+			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications)
+				.filter((o: any) => o && Object.keys(o).length)
+				.map(({ k, ...notification }: INotificationData & { k: string }) => ({
 					notificationId: k,
 					...notification,
-				}),
-			);
+				}))
+				.filter((o: any) => o.notificationId);
 			res(notifcationsReturnData);
 		}),
 	);
@@ -25,15 +26,16 @@ export const getFriendRequests = (context: IContext) => {
 export const getFriendRequestsResponses = (context: IContext) => {
 	return new Promise((res, rej) =>
 		handles.friendRequestsResponses(context).docLoad((notifications: INotificationsReturnData) => {
-			if (!Object.keys(notifications).length) {
+			if (!notifications || !Object.keys(notifications).length) {
 				return res([]);
 			}
-			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications).map(
-				({ k, ...notification }: INotificationData & { k: string }) => ({
+			const notifcationsReturnData = convertGunSetToArrayWithKey(notifications)
+				.filter((o: any) => o && Object.keys(o).length)
+				.map(({ k, ...notification }: INotificationData & { k: string }) => ({
 					notificationId: k,
 					...notification,
-				}),
-			);
+				}))
+				.filter((o: any) => o.notificationId);
 			res(notifcationsReturnData);
 		}),
 	);
