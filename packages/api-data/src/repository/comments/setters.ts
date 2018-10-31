@@ -297,7 +297,7 @@ export const unlikeComment = (
 			.path(`${commentId}.${TABLE_ENUMS.LIKES}.${owner}`)
 			.docLoad((likeReturnCallback: ILikeData) => {
 				if (
-					!commentMetaCallback ||
+					!likeReturnCallback ||
 					(!Object.keys(likeReturnCallback).length && !likeReturnCallback.owner)
 				) {
 					return callback(
