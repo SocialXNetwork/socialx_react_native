@@ -1,12 +1,8 @@
-/**
- * TODO list:
- * 1. Props actions: createPost (should also upload media files)
- */
-
 import * as React from 'react';
 
 import { KeyboardContext } from '../../../environment/consts';
 import {
+	ICurrentUser,
 	IDotsMenuProps,
 	IGlobal,
 	IResizeProps,
@@ -32,9 +28,7 @@ interface IWallPostData {
 }
 
 export interface IWithCreateWallPostEnhancedData extends IResizeProps {
-	currentUserAvatarURL: string;
-	currentUserId: string;
-	currentUserFullName: string;
+	currentUser: ICurrentUser;
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IDotsMenuProps {
@@ -77,9 +71,7 @@ export class WithCreateWallPost extends React.Component<
 																{({ createPost }) =>
 																	children({
 																		data: {
-																			currentUserAvatarURL: currentUser!.avatarURL,
-																			currentUserId: currentUser!.userId,
-																			currentUserFullName: currentUser!.fullName,
+																			currentUser,
 																			marginBottom,
 																		},
 																		actions: {

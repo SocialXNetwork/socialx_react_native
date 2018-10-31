@@ -43,12 +43,12 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	}
 
 	public render() {
-		const { getText, marginBottom, currentUserAvatarURL } = this.props;
+		const { getText, marginBottom, currentUser } = this.props;
 		const { shareText, mediaObjects } = this.state;
 
 		return (
 			<CreateWallPostScreenView
-				avatarImage={currentUserAvatarURL}
+				avatarImage={currentUser.avatarURL}
 				shareText={shareText}
 				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
@@ -105,13 +105,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 
 	private onCreatePostHandler = async () => {
 		const { mediaObjects, shareText } = this.state;
-		const {
-			currentUserAvatarURL,
-			currentUserId,
-			currentUserFullName,
-			createPost,
-			setGlobal,
-		} = this.props;
+		const { currentUser, createPost, setGlobal } = this.props;
 
 		await setGlobal({
 			skeletonPost: {
@@ -121,11 +115,11 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
-					userId: currentUserId,
-					fullName: currentUserFullName,
-					avatarURL: currentUserAvatarURL,
+					userId: currentUser.userId,
+					fullName: currentUser.userName,
+					avatarURL: currentUser.avatarURL,
 				},
-				currentUserAvatarURL,
+				currentUser,
 				governanceVersion: false,
 				numberOfSuperLikes: 0,
 				numberOfComments: 0,
