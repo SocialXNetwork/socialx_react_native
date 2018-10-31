@@ -198,24 +198,6 @@ const removePendingAndProceed = (context: IContext, username: string) => {
 };
 
 /**
- * adds the targeted user to the current user private scope friends record
- * @param
- */
-const addRequestedUserAsFriend = (context: IContext, username: string) => {
-	return new Promise((res, rej) =>
-		profileHandles
-			.currentProfileFriendByUsername(context, username)
-			.put({ username }, (addFriendCallback) => {
-				console.log('addFriendCallback', addFriendCallback);
-				if (addFriendCallback.err) {
-					rej(new ApiError('could not add the user as a friend'));
-				}
-				res();
-			}),
-	);
-};
-
-/**
  * get the public record of friend requests to the user from the current user and put the friend request data
  */
 const createFriendRequestNotification = (context: IContext, username: string) => {
@@ -330,7 +312,7 @@ export const acceptFriend = async (
 		}
 		await checkIfProfileExists(context, username);
 		await removePendingAndProceed(context, username);
-		await addRequestedUserAsFriend(context, username);
+		await createFriendPrivateRecord(context, username);
 		callback(null);
 	} catch (e) {
 		callback(e);
