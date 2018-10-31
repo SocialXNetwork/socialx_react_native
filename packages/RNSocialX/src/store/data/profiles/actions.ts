@@ -12,6 +12,7 @@ import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { getNotifications } from '../notifications/actions';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
@@ -347,6 +348,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 			const { dataApi } = context;
 			await dataApi.profiles.addFriend(addFriendInput);
 			await dispatch(getCurrentProfile());
+			await dispatch(getNotifications());
 		} catch (e) {
 			await dispatch(
 				setError({

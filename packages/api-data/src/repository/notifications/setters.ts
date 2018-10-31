@@ -22,6 +22,17 @@ export const createNotification = (
 	});
 };
 
+export const addFriendRequest = async (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		handles.friendRequests(context).put(username, (ack) => {
+			if (ack.err) {
+				rej(ack.err);
+			}
+			res();
+		}),
+	);
+};
+
 export const removeFriendRequest = async (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
 		handles.friendRequests(context).erase(username, (ack) => {
@@ -54,4 +65,5 @@ export default {
 	createNotification,
 	removeFriendRequest,
 	saveFriendRequestResponse,
+	addFriendRequest,
 };
