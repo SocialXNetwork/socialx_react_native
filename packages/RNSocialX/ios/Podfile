@@ -30,7 +30,6 @@ target 'RNSocialX' do
 
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
 
-  pod 'react-native-background-upload', :path => '../node_modules/react-native-background-upload'
 
   pod 'Picker', :path => '../node_modules/react-native-picker'
 

@@ -350,32 +350,27 @@ export const createPost = (
 				};
 
 				// TODO @Jake fix obj type
-				const uploadedFiles: IUploadResponse[] = await Promise.all(
+				const uploadedFiles: any[] = await Promise.all(
 					media.map((obj: any) =>
 						storageApi.uploadFile(obj.contentOptimizedPath, bootstrapStatus, updateStatus),
 					),
 				);
 
-				const responses = uploadedFiles.map((file) => ({
-					uploadId: file.uploadId,
-					body: JSON.parse(file.responseBody),
-				}));
-
-				responses.forEach(async (resp) => {
+				uploadedFiles.forEach(async (resp) => {
 					await dispatch(
 						setUploadStatus({
-							uploadId: resp.uploadId,
+							uploadId: '',
 							progress: 100,
 							path: '',
 							aborting: false,
 							done: true,
-							hash: resp.body.Hash,
+							hash: resp.Hash,
 						}),
 					);
 				});
 
-				const finalMedia = responses.map((resp, index) => ({
-					hash: resp.body.Hash,
+				const finalMedia = uploadedFiles.map((resp, index) => ({
+					hash: resp.Hash,
 					extension: media[index].type,
 					size: media[index].size,
 					type: {

@@ -276,16 +276,11 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 					);
 				};
 
-				const { uploadId, responseBody } = await storageApi.uploadFile(
-					avatar,
-					bootstrapStatus,
-					updateStatus,
-				);
-				const { Hash: hash } = JSON.parse(responseBody);
+				const { Hash: hash } = await storageApi.uploadFile(avatar, bootstrapStatus, updateStatus);
 
 				await dispatch(
 					setUploadStatus({
-						uploadId,
+						uploadId: '',
 						progress: 100,
 						path: avatar,
 						aborting: false,
@@ -298,6 +293,8 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 					...profileRest,
 					avatar: hash,
 				};
+
+				console.log('*** upload completed', { hash });
 
 				await dataApi.profiles.updateProfile(updateProfileFinal);
 			} else {

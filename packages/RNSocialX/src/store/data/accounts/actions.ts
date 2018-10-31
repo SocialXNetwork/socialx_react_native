@@ -139,16 +139,11 @@ export const createAccount = (createAccountInput: ICreateAccountInput): IThunk =
 				);
 			};
 
-			const { uploadId, responseBody } = await storageApi.uploadFile(
-				avatar.uri,
-				bootstrapStatus,
-				updateStatus,
-			);
-			const { Hash: hash } = JSON.parse(responseBody);
+			const { Hash: hash } = await storageApi.uploadFile(avatar.uri, bootstrapStatus, updateStatus);
 
 			await dispatch(
 				setUploadStatus({
-					uploadId,
+					uploadId: '',
 					progress: 100,
 					path: avatar.uri,
 					aborting: false,

@@ -1,5 +1,5 @@
 import { Ipfslib } from './ipfslib';
-import { IListenerCompleted, IListenerProgess, IProviderParams, IUploader } from './types';
+import { IListenerProgess, IProviderParams } from './types';
 
 export const storageApiFactory = (
 	config: IProviderParams = {
@@ -8,19 +8,16 @@ export const storageApiFactory = (
 		protocol: 'http',
 		root: '/api/v0',
 	},
-	uploader: IUploader,
 ) => {
-	const ipfs = new Ipfslib(config, uploader);
+	const ipfs = new Ipfslib(config);
 
 	return {
 		uploadFile: (
 			path: string,
 			onStart?: (uploadId: string) => void,
 			onProgress?: (data: IListenerProgess & { uploadId: string }) => void,
-		): Promise<IListenerCompleted & { uploadId: string }> =>
+		): Promise<{ Hash: string; Name: string; Size: string }> =>
 			ipfs.addFileBN(path, onStart, onProgress),
-		getFileInfo: (path: string) => ipfs.getFileInfo(path),
-		abortUpload: (uploadId: string) => ipfs.cancelUpload(uploadId),
 	};
 };
 

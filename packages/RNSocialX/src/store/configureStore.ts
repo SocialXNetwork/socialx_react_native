@@ -1,4 +1,3 @@
-import Uploader from 'react-native-background-upload';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistReducer } from 'redux-persist';
@@ -17,7 +16,6 @@ import { IContextConfig } from './types';
 const persistConfig = {
 	key: 'root',
 	storage,
-	// TODO: persist the language setting
 	whitelist: ['auth'],
 };
 
@@ -32,15 +30,12 @@ export const configureStore = (
 		rootdb: depsConfig.dataApi.rootdb,
 	});
 
-	const storageApi = storageApiFactory(
-		{
-			host: appConfig.ipfsConfig.ipfs_server,
-			port: appConfig.ipfsConfig.ipfs_port,
-			protocol: appConfig.ipfsConfig.opts.protocol,
-			root: appConfig.ipfsConfig.opts.root,
-		},
-		Uploader,
-	);
+	const storageApi = storageApiFactory({
+		host: appConfig.ipfsConfig.ipfs_server,
+		port: appConfig.ipfsConfig.ipfs_port,
+		protocol: appConfig.ipfsConfig.opts.protocol,
+		root: appConfig.ipfsConfig.opts.root,
+	});
 
 	const store = createStore(
 		persistedReducer,

@@ -12,6 +12,7 @@
   "dependencies": {
     "@socialx/commons": "^0.0.1",
     "@types/sinon": "^5.0.5",
+    "axios": "^0.18.0",
     "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
