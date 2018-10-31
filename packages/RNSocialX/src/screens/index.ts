@@ -21,6 +21,7 @@ export { NotificationsScreen } from './mainTabNav/NotificationsScreen';
 
 export { ReferralScreen } from './myProfile/ReferralScreen';
 export { SettingsScreen } from './myProfile/SettingsScreen';
+export { NodesScreen } from './myProfile/NodesScreen';
 export { SocialXAccountScreen } from './myProfile/SocialXAccountScreen';
 export { WalletActivityScreen } from './myProfile/WalletActivityScreen';
 
