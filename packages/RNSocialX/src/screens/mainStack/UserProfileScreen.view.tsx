@@ -3,6 +3,7 @@ import {
 	ActivityIndicator,
 	Animated,
 	Dimensions,
+	FlatList,
 	RefreshControl,
 	ScrollView,
 	View,
@@ -16,29 +17,19 @@ import {
 	NoContent,
 	ProfilePhotoGrid,
 	ProfileTopContainer,
-	WallPostCard,
+	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { IWallPostCardActions, IWallPostCardData, SearchResultKind } from '../../types';
+import { INavigationProps, ITranslatedProps, IVisitedUser, IWallPostData } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-interface IUserProfileScreenViewProps extends IWallPostCardActions {
-	avatarURL: string;
-	fullName: string;
-	userName: false | string;
-	numberOfPhotos: number;
-	numberOfLikes: number;
-	numberOfFriends: number;
-	numberOfComments: number;
-	relationship: SearchResultKind;
-	aboutMeText: string;
-	recentPosts: IWallPostCardData[];
+interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps {
+	visitedUser: IVisitedUser;
 	refreshing: boolean;
 	gridMediaProvider: DataProvider;
-	currentUserAvatarURL: string;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
 	activeTab: string;
@@ -56,22 +47,12 @@ interface IUserProfileScreenViewProps extends IWallPostCardActions {
 }
 
 export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
+	visitedUser,
 	refreshing,
 	loadingPosts,
 	gridMediaProvider,
-	avatarURL,
-	fullName,
-	userName = false,
-	numberOfPhotos,
 	onAddFriend,
-	numberOfLikes,
-	numberOfFriends,
-	relationship,
 	onRefresh,
-	recentPosts,
-	aboutMeText,
-	numberOfComments,
-	currentUserAvatarURL,
 	listTranslate,
 	gridTranslate,
 	activeTab,
@@ -80,20 +61,25 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onProfilePhotoPress,
 	onViewMediaFullscreen,
 	onLoadMorePhotos,
-	onCommentPress,
-	onImagePress,
-	onLikePress,
 	onIconPress,
 	onLayoutChange,
 	onGoBack,
-	onUserPress,
-	onAddComment,
-	onSubmitComment,
-	onDeletePostPress,
-	onBlockUser,
-	onReportProblem,
+	navigation,
 	getText,
 }) => {
+	const {
+		recentPosts,
+		numberOfLikes,
+		numberOfPhotos,
+		numberOfFriends,
+		numberOfComments,
+		avatar,
+		fullName,
+		userName,
+		description,
+		relationship,
+	} = visitedUser;
+
 	const hasPhotos = numberOfPhotos > 0;
 	const hasPosts = recentPosts.length > 0;
 
@@ -126,7 +112,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 				scrollEnabled={hasPhotos || hasPosts}
 			>
 				<ProfileTopContainer
-					avatarURL={avatarURL}
+					avatar={avatar}
 					fullName={fullName}
 					userName={userName}
 					numberOfFriends={numberOfFriends}
@@ -139,7 +125,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					relationship={relationship}
 					isCurrentUser={false}
 					onIconPress={onIconPress}
-					aboutMeText={aboutMeText}
+					description={description}
 					tabs={true}
 					activeTab={activeTab}
 					getText={getText}
@@ -154,32 +140,22 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
 						>
 							{hasPosts ? (
-								recentPosts.map((post: IWallPostCardData, index: number) => (
-									<View style={styles.wallPostContainer} key={post.postId}>
-										<WallPostCard
-											{...post}
-											likedByMe={post.likedByMe}
-											displayDots={false}
-											noInput={true}
-											canDelete={false}
-											onCommentPress={onCommentPress}
-											onImagePress={onImagePress}
-											onUserPress={onUserPress}
-											/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as index from recentPosts loop. */
-											onAddComment={(dummyIndex: number, cardHeight: number) =>
-												onAddComment(index, cardHeight)
-											}
-											onSubmitComment={onSubmitComment}
-											onLikePress={onLikePress}
-											currentUserAvatarURL={currentUserAvatarURL}
-											onDeletePostPress={() => undefined}
-											onBlockUser={onBlockUser}
-											onReportProblem={onReportProblem}
-											showDotsMenuModal={() => undefined}
-											getText={getText}
-										/>
-									</View>
-								))
+								<FlatList
+									windowSize={10}
+									data={recentPosts}
+									keyExtractor={(item: IWallPostData) => item.postId}
+									renderItem={(data) => (
+										<View style={styles.wallPostContainer}>
+											<WallPost
+												post={data.item}
+												onAddComment={() => undefined}
+												commentInput={false}
+												navigation={navigation}
+											/>
+										</View>
+									)}
+									showsVerticalScrollIndicator={false}
+								/>
 							) : (
 								<NoContent posts={true} getText={getText} />
 							)}

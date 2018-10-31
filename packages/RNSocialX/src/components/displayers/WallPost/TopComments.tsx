@@ -5,21 +5,21 @@ import { RichText } from '../..';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 import { ISimpleComment } from '../../../types';
 
-interface IBestCommentsProps {
-	bestComments: ISimpleComment[];
+interface ITopCommentsProps {
+	topComments: ISimpleComment[];
 	onUserPress: (userId: string) => void;
 	onCommentPress: () => void;
 }
 
-export const BestComments: React.SFC<IBestCommentsProps> = ({
-	bestComments,
+export const TopComments: React.SFC<ITopCommentsProps> = ({
+	topComments,
 	onUserPress,
 	onCommentPress,
 }) => (
 	<React.Fragment>
-		{bestComments.length > 0 && (
+		{topComments.length > 0 && (
 			<View style={styles.container}>
-				{bestComments.map((comment: ISimpleComment, index: number) => (
+				{topComments.map((comment: ISimpleComment, index: number) => (
 					<Text style={styles.commentContainer} numberOfLines={2} key={index}>
 						<Text
 							style={styles.user}

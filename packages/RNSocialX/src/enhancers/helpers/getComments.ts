@@ -16,7 +16,7 @@ export const getComments = (
 			user: {
 				userId: comment.owner.alias,
 				fullName: commentOwner!.fullName,
-				avatarURL:
+				avatar:
 					commentOwner!.avatar.length > 0
 				? appConfig.ipfsConfig.ipfs_URL +
 				  commentOwner!.avatar  // tslint:disable-line

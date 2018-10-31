@@ -78,7 +78,7 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 						{searchResults.map((searchResult: IFriendsSearchResult, index: number) => (
 							<PeopleSearchResultEntry
 								key={index}
-								avatarURL={searchResult.avatarURL}
+								avatar={searchResult.avatar}
 								fullName={searchResult.fullName}
 								location={searchResult.location}
 								selected={selectedUsers.indexOf(searchResult) > -1}

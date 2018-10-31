@@ -3,7 +3,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { PostText } from '../../../../../src/components/displayers/WallPostCard';
+import { PostText } from '../../../../../src/components/displayers/WallPost';
 import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 

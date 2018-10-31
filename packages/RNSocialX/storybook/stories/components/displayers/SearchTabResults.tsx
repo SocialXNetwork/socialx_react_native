@@ -15,7 +15,7 @@ const items: ISearchResultData[] = [
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		userId: '2',
@@ -23,7 +23,7 @@ const items: ISearchResultData[] = [
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		userId: '3',
@@ -31,7 +31,7 @@ const items: ISearchResultData[] = [
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 ];
 

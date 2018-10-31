@@ -48,7 +48,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 
 		return (
 			<CreateWallPostScreenView
-				avatarImage={currentUser.avatarURL}
+				avatarImage={currentUser.avatar}
 				shareText={shareText}
 				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				onShareTextUpdate={this.onShareTextUpdateHandler}
@@ -68,7 +68,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	private onAddMediaHandler = () => {
-		const { showDotsMenuModal, getText } = this.props;
+		const { showOptionsMenu, getText } = this.props;
 		const menuItems = [
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
@@ -81,7 +81,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	private addToScrollerSelectedMediaObject = async (source: IMAGE_PICKER_TYPES) => {
@@ -117,24 +117,19 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				owner: {
 					userId: currentUser.userId,
 					fullName: currentUser.userName,
-					avatarURL: currentUser.avatarURL,
+					avatar: currentUser.avatar,
 				},
-				currentUser,
-				governanceVersion: false,
 				numberOfSuperLikes: 0,
 				numberOfComments: 0,
 				numberOfWalletCoins: 0,
-				likedByMe: false,
-				canDelete: false,
+				likedByCurrentUser: false,
+				removable: false,
 				media: mediaObjects,
 				likes: [],
-				bestComments: [],
-				listLoading: false,
+				topComments: [],
+				loading: false,
 				suggested: undefined,
-				noInput: false,
-				contentOffensive: false,
-				likeError: false,
-				displayDots: true,
+				likeFailed: false,
 				skeleton: true,
 			},
 		});

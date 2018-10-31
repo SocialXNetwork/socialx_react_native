@@ -17,51 +17,54 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { IDotsMenuProps, ITranslatedProps } from '../../types';
+import { IOptionsMenuProps, ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './SettingsScreen.style';
 
 const EMAIL_SCHEMA = string().email();
 
 export interface ISettingsData {
-	bio: string;
+	description: string;
 	fullName: string;
 	email: string;
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
-	avatarURL: string;
-	userName: string;
+	avatar: string;
 }
 
-interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IDotsMenuProps {
+interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IOptionsMenuProps {
+	userName: string;
 	onSaveChanges: (values: ISettingsData) => void;
 	onGoBack: () => void;
 }
 
 export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
-	bio,
+	userName,
+	description,
 	fullName,
 	email,
-	avatarURL,
-	userName,
+	avatar,
 	miningEnabled,
 	shareDataEnabled,
 	onSaveChanges,
 	onGoBack,
-	showDotsMenuModal,
+	showOptionsMenu,
 	getText,
 }) => (
 	<Formik
 		initialValues={{
-			bio,
+			description,
 			fullName,
 			email,
-			avatarURL,
-			userName,
+			avatar,
 			miningEnabled,
 			shareDataEnabled,
 		}}
-		validate={({ fullName: nameValue, email: emailValue, bio: bioValue }: ISettingsData) => {
+		validate={({
+			fullName: nameValue,
+			email: emailValue,
+			description: descriptionValue,
+		}: ISettingsData) => {
 			const errors: FormikErrors<ISettingsData> = {};
 			if (!emailValue) {
 				errors.email = getText('settings.screen.email.required');
@@ -71,19 +74,18 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 			if (!nameValue) {
 				errors.fullName = getText('settings.screen.name.required');
 			}
-			if (!bioValue) {
-				errors.bio = getText('settings.screen.bio.required');
+			if (!descriptionValue) {
+				errors.description = getText('settings.screen.description.required');
 			}
 			return errors;
 		}}
 		onSubmit={(values: ISettingsData) => onSaveChanges(values)}
 		render={({
 			values: {
-				bio: bioValue,
+				description: descriptionValue,
 				fullName: nameValue,
 				email: emailValue,
-				avatarURL: avatarURLValue,
-				userName: userNameValue,
+				avatar: avatarValue,
 				miningEnabled: miningEnabledValue,
 				shareDataEnabled: shareDataEnabledValue,
 			},
@@ -101,25 +103,23 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					/>
 				}
 				<KeyboardAwareScrollView
-					style={styles.keyboard}
 					contentContainerStyle={styles.container}
 					alwaysBounceVertical={false}
 					enableOnAndroid={true}
 					keyboardShouldPersistTaps="handled"
+					style={styles.keyboard}
 				>
 					<View style={styles.picker}>
 						<AvatarPicker
 							avatarImage={
-								avatarURLValue !== null
-									? { uri: avatarURLValue }
-									: defaultStyles.avatarPlaceholderImg
+								avatarValue !== null ? { uri: avatarValue } : defaultStyles.avatarPlaceholderImg
 							}
 							afterImagePick={(localPhotoPath: string) =>
-								setFieldValue('avatarURL', localPhotoPath, false)
+								setFieldValue('avatar', localPhotoPath, false)
 							}
 							avatarSize={defaultStyles.avatarPickerSize}
+							showOptionsMenu={showOptionsMenu}
 							getText={getText}
-							showDotsMenuModal={showDotsMenuModal}
 						/>
 					</View>
 					<AvatarName
@@ -150,7 +150,6 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						</View>
 						{errors.fullName && <Text style={styles.errorText}>{errors.fullName}</Text>}
 					</View>
-
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
@@ -177,24 +176,26 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>{getText('settings.screen.bio.placeholder')}</Text>
+								<Text style={styles.label}>
+									{getText('settings.screen.description.placeholder')}
+								</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="sentences"
-									value={bioValue}
-									placeholder={getText('settings.screen.bio.placeholder')}
+									value={descriptionValue}
+									placeholder={getText('settings.screen.description.placeholder')}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									borderColor={defaultStyles.userDataInputBorderColor}
 									multiline={true}
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
-									onChangeText={(value: string) => setFieldValue('bio', value)}
-									focusUpdateHandler={(value) => !value && handleBlur('bio')}
+									onChangeText={(value: string) => setFieldValue('description', value)}
+									focusUpdateHandler={(value) => !value && handleBlur('description')}
 								/>
 							</View>
 						</View>
-						{errors.bio && <Text style={styles.errorText}>{errors.bio}</Text>}
+						{errors.description && <Text style={styles.errorText}>{errors.description}</Text>}
 					</View>
 					<View style={styles.mining}>
 						<Checkbox

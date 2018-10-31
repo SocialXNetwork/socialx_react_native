@@ -7,15 +7,15 @@ import { ITranslatedProps } from '../../types';
 const PULSATE_PERIOD = 700;
 
 interface ILikeAnimatingButtonProps extends ITranslatedProps {
-	likedByMe: boolean;
-	likeError: boolean;
+	likedByCurrentUser: boolean;
+	likeFailed: boolean;
 	label: false | string;
 	onLikePress: () => void;
 }
 
 interface ILikeAnimatingButtonState {
 	disabled: boolean;
-	likedByMe: boolean;
+	likedByCurrentUser: boolean;
 	error: boolean;
 }
 
@@ -31,7 +31,7 @@ export class LikeAnimatingButton extends React.Component<
 		nextProps: ILikeAnimatingButtonProps,
 		currentState: ILikeAnimatingButtonState,
 	) {
-		if (nextProps.likeError !== currentState.error) {
+		if (nextProps.likeFailed !== currentState.error) {
 			return {
 				error: true,
 			};
@@ -42,7 +42,7 @@ export class LikeAnimatingButton extends React.Component<
 
 	public state = {
 		disabled: false,
-		likedByMe: this.props.likedByMe,
+		likedByCurrentUser: this.props.likedByCurrentUser,
 		error: false,
 	};
 
@@ -50,7 +50,7 @@ export class LikeAnimatingButton extends React.Component<
 
 	public render() {
 		const { label, onLikePress } = this.props;
-		const { likedByMe } = this.state;
+		const { likedByCurrentUser } = this.state;
 
 		const iconStyles = [styles.icon, { color: Colors.black }];
 
@@ -62,7 +62,7 @@ export class LikeAnimatingButton extends React.Component<
 			>
 				<AnimatedFaIcon
 					ref={this.animatedIconRef}
-					name={likedByMe ? 'heart' : 'heart-o'}
+					name={likedByCurrentUser ? 'heart' : 'heart-o'}
 					style={iconStyles}
 				/>
 				{label && <Text style={styles.label}>{label}</Text>}
@@ -74,7 +74,7 @@ export class LikeAnimatingButton extends React.Component<
 		this.setState((currentState) => {
 			return {
 				disabled: true,
-				likedByMe: !currentState.likedByMe,
+				likedByCurrentUser: !currentState.likedByCurrentUser,
 				error: false,
 			};
 		});
@@ -83,7 +83,7 @@ export class LikeAnimatingButton extends React.Component<
 		await this.props.onLikePress();
 
 		if (this.state.error) {
-			this.setState({ disabled: false, likedByMe: this.props.likedByMe });
+			this.setState({ disabled: false, likedByCurrentUser: this.props.likedByCurrentUser });
 		} else {
 			this.setState({ disabled: false });
 		}

@@ -8,12 +8,12 @@ import * as React from 'react';
 import { FEED_TYPES } from '../../../environment/consts';
 import {
 	ICurrentUser,
-	IDotsMenuProps,
 	IError,
 	IGlobal,
 	INavigationParamsActions,
+	IOptionsMenuProps,
 	ITranslatedProps,
-	IWallPostCardData,
+	IWallPostData,
 } from '../../../types';
 import { getActivity, mapPostsForUI } from '../../helpers';
 
@@ -32,8 +32,8 @@ import { WithCurrentUser } from '../intermediary';
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	posts: IWallPostCardData[];
-	skeletonPost: IWallPostCardData;
+	posts: IWallPostData[];
+	skeletonPost: IWallPostData;
 	creatingPost: boolean;
 	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
@@ -44,7 +44,7 @@ export interface IWithUserFeedEnhancedData {
 
 export interface IWithUserFeedEnhancedActions
 	extends ITranslatedProps,
-		IDotsMenuProps,
+		IOptionsMenuProps,
 		INavigationParamsActions {
 	loadMorePosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
@@ -92,24 +92,22 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				{(feed) => (
 																					<WithCurrentUser>
 																						{({ currentUser }) => {
-																							const user = currentUser!;
+																							let feedPosts: IWallPostData[] = [];
 
-																							let feedPosts: IWallPostCardData[] = [];
 																							if (feed.posts.length > 0) {
 																								feedPosts = mapPostsForUI(
 																									feed.posts,
 																									10,
-																									user,
+																									currentUser,
 																									profiles,
 																									activities,
-																									ActionTypes.GET_POSTS_BY_USER,
 																									appConfig,
 																								);
 																							}
 
 																							return this.props.children({
 																								data: {
-																									currentUser: user,
+																									currentUser: currentUser!,
 																									posts: feedPosts,
 																									skeletonPost: globals.skeletonPost,
 																									canLoadMorePosts: globals.canLoadMorePosts,
@@ -159,7 +157,7 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																									},
 																									blockUser: () => undefined,
 																									reportProblem: () => undefined,
-																									showDotsMenuModal: (items) =>
+																									showOptionsMenu: (items) =>
 																										showOptionsMenu({ items }),
 																									setNavigationParams,
 																									setGlobal,

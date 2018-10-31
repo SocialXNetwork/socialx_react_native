@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
-import { FEED_TYPES, OS_TYPES, SCREENS, TABS } from '../../../environment/consts';
-import { IMediaProps, INavigationProps, IWallPostCardData } from '../../../types';
+import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
+import { INavigationProps, IWallPostData } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
@@ -29,7 +29,7 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
-	private readonly scrollRef: React.RefObject<FlatList<IWallPostCardData>> = React.createRef();
+	private readonly scrollRef: React.RefObject<FlatList<IWallPostData>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public render() {
@@ -43,9 +43,8 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			loadingMorePosts,
 			creatingPost,
 			errors,
-			blockUser,
-			reportProblem,
-			showDotsMenuModal,
+			showOptionsMenu,
+			navigation,
 			getText,
 		} = this.props;
 
@@ -55,31 +54,23 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 		return (
 			<UserFeedScreenView
-				avatarImage={currentUser.avatarURL}
+				avatarImage={currentUser.avatar}
 				posts={posts}
 				skeletonPost={skeletonPost}
 				likeError={likeError}
-				currentUser={currentUser}
 				refreshing={refreshingFeed}
 				creatingPost={creatingPost}
-				onRefresh={this.onRefreshHandler}
 				canLoadMorePosts={canLoadMorePosts}
 				loadingMorePosts={loadingMorePosts}
-				onLoadMorePosts={this.onLoadMorePostsHandler}
-				onCreateWallPost={this.onCreateWallPostHandler}
 				shareSectionPlaceholder={shareSectionPlaceholder}
-				onImagePress={this.onImagePress}
-				onLikePress={this.onLikePressHandler}
-				onUserPress={this.onUserPressHandler}
-				onSubmitComment={this.onSubmitCommentHandler}
-				onCommentPress={this.onCommentsButtonPressHandler}
-				onAddComment={this.onAddCommentPressHandler}
-				onDeletePostPress={this.onDeletePostPressHandler}
-				onBlockUser={blockUser}
-				onReportProblem={reportProblem}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
-				showDotsMenuModal={showDotsMenuModal}
+				showOptionsMenu={showOptionsMenu}
+				onRefresh={this.onRefreshHandler}
+				onLoadMorePosts={this.onLoadMorePostsHandler}
+				onCreateWallPost={this.onCreateWallPostHandler}
+				onAddComment={this.onAddCommentPressHandler}
+				navigation={navigation}
 				getText={getText}
 			/>
 		);
@@ -99,7 +90,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			screenName: SCREENS.CreateWallPost,
 			params: {
 				fullName: currentUser.fullName,
-				avatarImage: currentUser.avatarURL,
+				avatarImage: currentUser.avatar,
 				afterPostCreate: this.onRefreshHandler,
 			},
 		});
@@ -114,56 +105,6 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		}
 	};
 
-	private onLikePressHandler = async (likedByMe: boolean, postId: string) => {
-		const { likePost, unlikePost } = this.props;
-
-		if (likedByMe) {
-			await unlikePost(postId);
-		} else {
-			await likePost(postId);
-		}
-	};
-
-	private onUserPressHandler = (userId: string) => {
-		const { navigation, setNavigationParams, currentUser, userPosts, getPostsForUser } = this.props;
-
-		if (userId === currentUser.userId) {
-			navigation.navigate(SCREENS.MyProfile);
-		} else {
-			if (!userPosts[userId]) {
-				getPostsForUser(userId);
-			}
-
-			setNavigationParams({
-				screenName: SCREENS.UserProfile,
-				params: { userId, origin: TABS.Feed },
-			});
-			navigation.navigate(SCREENS.UserProfile);
-		}
-	};
-
-	private onImagePress = (index: number, medias: IMediaProps[], postId: string) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects: medias,
-				startIndex: index,
-				postId,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
-	};
-
-	private onCommentsButtonPressHandler = (postId: string, startComment: boolean) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.Comments,
-			params: { postId, startComment },
-		});
-		navigation.navigate(SCREENS.Comments);
-	};
-
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
 		if (!this.props.refreshingFeed && !this.props.loadingMorePosts && this.scrollRef.current) {
 			this.scrollRef.current.scrollToIndex({
@@ -175,17 +116,12 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		}
 	};
 
-	private onSubmitCommentHandler = async (escapedComment: string, postId: string) => {
-		if (!this.props.refreshingFeed && !this.props.loadingMorePosts) {
-			await this.props.postComment(escapedComment, postId);
-		}
-	};
-
 	private calculateScrollOffset = (cardHeight: number, index: number) => {
 		const baseScreenHeight = 667;
 		let idealOffset;
 		let idealCardHeight;
 		let diff;
+
 		if (AVAILABLE_SCREEN_HEIGHT >= 667) {
 			if (index === 0 && cardHeight < 300) {
 				return 0;
@@ -207,22 +143,5 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		}
 
 		return -(offset - diff);
-	};
-
-	private onDeletePostPressHandler = async (postId: string) => {
-		const { setGlobal, deletePost } = this.props;
-		setGlobal({
-			transparentOverlay: {
-				visible: true,
-				alpha: 0.5,
-				loader: true,
-			},
-		});
-		await deletePost(postId);
-		setGlobal({
-			transparentOverlay: {
-				visible: false,
-			},
-		});
 	};
 }

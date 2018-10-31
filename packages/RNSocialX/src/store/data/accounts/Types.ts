@@ -34,7 +34,7 @@ export interface ICreateAccountInput {
 	fullName: string;
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
-	aboutMeText: string;
+	description: string;
 	recover: {
 		question1: string;
 		question2: string;

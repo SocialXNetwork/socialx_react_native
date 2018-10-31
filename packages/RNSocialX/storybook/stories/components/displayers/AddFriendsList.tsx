@@ -10,13 +10,13 @@ const taggedFriends = [
 		id: '1',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		id: '2',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 ];
 

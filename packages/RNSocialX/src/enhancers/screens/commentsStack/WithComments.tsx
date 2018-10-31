@@ -8,10 +8,10 @@ import * as React from 'react';
 import { SCREENS } from '../../../environment/consts';
 import {
 	ICurrentUser,
-	IDotsMenuProps,
 	IError,
 	IGlobal,
 	INavigationParamsActions,
+	IOptionsMenuProps,
 	IPostForComment,
 	ITranslatedProps,
 	MediaTypeImage,
@@ -42,7 +42,7 @@ const mock: IWithCommentsEnhancedProps = {
 			owner: {
 				userId: 'testgggg',
 				fullName: 'Test GGGG',
-				avatarURL:
+				avatar:
 					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
 			},
 			media: [
@@ -71,7 +71,7 @@ const mock: IWithCommentsEnhancedProps = {
 		unlikeComment: (commentId: string) => undefined,
 		likePost: (postId: string) => undefined,
 		unlikePost: (postId: string) => undefined,
-		showDotsMenuModal: (items) => undefined,
+		showOptionsMenu: (items) => undefined,
 		setNavigationParams: () => undefined,
 		getText: (value: string, ...args: any[]) => value,
 		setGlobal: (global: IGlobal) => undefined,
@@ -91,7 +91,7 @@ export interface IWithCommentsEnhancedData {
 export interface IWithCommentsEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions,
-		IDotsMenuProps {
+		IOptionsMenuProps {
 	sendComment: (text: string, postId: string) => void;
 	likeComment: (commentId: string) => void;
 	unlikeComment: (commentId: string) => void;
@@ -181,7 +181,7 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 																								owner: {
 																									userId: currentPost!.owner.alias,
 																									fullName: ownerProfile!.fullName,
-																									avatarURL:
+																									avatar:
 																										appConfig.ipfsConfig.ipfs_URL +
 																										ownerProfile!.avatar,
 																								},
@@ -225,7 +225,7 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 																								});
 																							},
 																							getText: i18nProps.getText,
-																							showDotsMenuModal: (items) =>
+																							showOptionsMenu: (items) =>
 																								overlayProps.showOptionsMenu({
 																									items,
 																								}),

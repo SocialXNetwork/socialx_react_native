@@ -32,7 +32,7 @@ const styles: any = {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	bio: {
+	description: {
 		...Fonts.centuryGothic,
 	},
 	mining: {
@@ -59,7 +59,7 @@ export const defaultStyles = {
 	avatarPickerSize: Sizes.smartHorizontalScale(100),
 	avatarFullNameColor: Colors.cloudBurst,
 	avatarUserNameColor: Colors.pink,
-	aboutMeTextBorderColor: Colors.dustWhite,
+	descriptionBorderColor: Colors.dustWhite,
 	userDataInputPlaceholderColor: Colors.paleSky,
 	userDataInputBorderColor: Colors.transparent,
 	avatarPlaceholderImg: Images.user_avatar_placeholder,

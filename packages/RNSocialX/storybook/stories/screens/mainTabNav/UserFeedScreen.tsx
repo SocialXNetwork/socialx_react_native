@@ -40,7 +40,7 @@ storiesOf('Screens/mainTabNav', module)
 				getText={getTextMock}
 				onBlockUser={action('onBlockUser')}
 				onReportProblem={action('onReportProblem')}
-				showDotsMenuModal={action('showDotsMenuModal')}
+				showOptionsMenu={action('showOptionsMenu')}
 				likeError={false}
 				creatingPost={false}
 				skeletonPost={posts[0]}

@@ -10,7 +10,6 @@ export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
 export { CommentsPostOwner } from './displayers/CommentsPostOwner';
 export { CommentCard } from './displayers/CommentCard';
-export { DotsMenuButton } from './displayers/DotsMenuButton';
 export { Header } from './displayers/Header';
 export { HeartAnimation } from './displayers/HeartAnimation';
 export { IntroFirstSlide } from './displayers/IntroFirstSlide';
@@ -20,6 +19,7 @@ export { MediaObjectViewer } from './displayers/MediaObjectViewer';
 export { MyWalletInfo } from './displayers/MyWalletInfo';
 export { NoComments } from './displayers/NoComments';
 export { NoContent } from './displayers/NoContent';
+export { OptionsMenuButton } from './displayers/OptionsMenuButton';
 export { PeopleSearchResultEntry } from './displayers/PeopleSearchResultEntry';
 export { PhotoGrid } from './displayers/PhotoGrid';
 export { ProfilePhotoGrid } from './displayers/ProfilePhotoGrid';
@@ -40,7 +40,7 @@ export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
 export { TransactionItem } from './displayers/TransactionItem';
-export { WallPostCard, PostText, RecentLikes, UserDetails } from './displayers/WallPostCard';
+export { WallPost, PostText, RecentLikes, UserDetails } from './displayers/WallPost';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';
@@ -82,10 +82,10 @@ export {
 
 export { ActivityIndicatorModal } from './modals/ActivityIndicatorModal';
 export { ConfirmationModal } from './modals/ConfirmationModal';
-export { DotsMenuModal } from './modals/DotsMenuModal';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';
 export { MediaInfoModal } from './modals/MediaInfoModal';
 export { OfflineOverlayModal } from './modals/OfflineOverlayModal';
+export { OptionsMenuModal } from './modals/OptionsMenuModal';
 export { ReportProblemModal } from './modals/ReportProblemModal';
 export { TagFriendsModal } from './modals/TagFriendsModal';
 export { TransparentOverlayModal } from './modals/TransparentOverlayModal';

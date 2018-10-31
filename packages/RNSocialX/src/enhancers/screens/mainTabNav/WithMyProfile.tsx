@@ -3,9 +3,9 @@ import { NavigationScreenProp } from 'react-navigation';
 
 import {
 	ICurrentUser,
-	IDotsMenuProps,
 	IGlobal,
 	INavigationParamsActions,
+	IOptionsMenuProps,
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -22,7 +22,7 @@ export interface IWithMyProfileEnhancedData {
 
 export interface IWithMyProfileEnhancedActions
 	extends ITranslatedProps,
-		IDotsMenuProps,
+		IOptionsMenuProps,
 		INavigationParamsActions {
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	logout: () => void;
@@ -60,7 +60,7 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 																	currentUser: currentUser!,
 																},
 																actions: {
-																	showDotsMenuModal: (items) => showOptionsMenu({ items }),
+																	showOptionsMenu: (items) => showOptionsMenu({ items }),
 																	logout,
 																	resetNavigationToRoute,
 																	setNavigationParams,

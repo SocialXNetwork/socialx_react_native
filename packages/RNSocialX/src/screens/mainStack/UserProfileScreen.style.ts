@@ -26,7 +26,7 @@ const styles: any = {
 		color: Colors.cloudBurst,
 		paddingBottom: Sizes.smartVerticalScale(23),
 	},
-	aboutMeText: {
+	description: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(23),

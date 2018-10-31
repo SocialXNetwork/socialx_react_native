@@ -41,7 +41,6 @@ export class WithCurrentUserContent extends React.Component<
 															currentUser,
 															profiles,
 															activities,
-															ActionTypes.GET_POSTS_BY_USER,
 															appConfig,
 														);
 

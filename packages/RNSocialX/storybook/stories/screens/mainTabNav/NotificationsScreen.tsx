@@ -10,7 +10,7 @@ import { NotificationsScreenView } from '../../../../src/screens/mainTabNav/Noti
 const NOTIFICATION_CARDS = [
 	{
 		type: NOTIFICATION_TYPES.RECENT_COMMENT,
-		avatarURL: 'https://placeimg.com/150/150/tech',
+		avatar: 'https://placeimg.com/150/150/tech',
 		fullName: 'Seth Saunders',
 		timestamp: new Date(2018, 2, 12, 5, 51, 23),
 		wallPosts: [
@@ -39,14 +39,14 @@ const NOTIFICATION_CARDS = [
 	},
 	{
 		type: NOTIFICATION_TYPES.FRIEND_REQUEST,
-		avatarURL: 'https://placeimg.com/151/151/people',
+		avatar: 'https://placeimg.com/151/151/people',
 		fullName: 'Teresa Lamb',
 		username: 'terlamb',
 		requestId: '981326537',
 	},
 	{
 		type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
-		avatarURL: 'https://placeimg.com/160/160/people',
+		avatar: 'https://placeimg.com/160/160/people',
 		fullName: 'Teresa Lamb',
 		username: 'terlamb',
 		requestId: '981326538',
@@ -54,7 +54,7 @@ const NOTIFICATION_CARDS = [
 	},
 	{
 		type: NOTIFICATION_TYPES.SUPER_LIKED,
-		avatarURL: 'https://placeimg.com/152/152/tech',
+		avatar: 'https://placeimg.com/152/152/tech',
 		fullName: 'Cory Maxwell',
 		timestamp: new Date(2018, 1, 24, 8, 23, 12),
 		wallPosts: [
@@ -83,7 +83,7 @@ const NOTIFICATION_CARDS = [
 	},
 	{
 		type: NOTIFICATION_TYPES.GROUP_REQUEST,
-		avatarURL: 'https://placeimg.com/150/150/tech',
+		avatar: 'https://placeimg.com/150/150/tech',
 		fullName: 'Claudia Kulmitzer',
 		groupName: 'MfMJAkkAs2jLISYyv',
 		requestId: '990325',

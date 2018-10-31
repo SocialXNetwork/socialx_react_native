@@ -22,7 +22,7 @@ import {
 	TRKeyboardKeys,
 } from '../../components';
 import { KeyboardContext } from '../../environment/consts';
-import { IDotsMenuProps, ITranslatedProps } from '../../types';
+import { IOptionsMenuProps, ITranslatedProps } from '../../types';
 import style, { colors } from './RegisterScreen.style';
 
 export interface IRegisterData {
@@ -40,7 +40,7 @@ interface IRegisterFormData extends IRegisterData {
 	termsAccepted: boolean;
 }
 
-interface IRegisterScreenViewProps extends ITranslatedProps, IDotsMenuProps {
+interface IRegisterScreenViewProps extends ITranslatedProps, IOptionsMenuProps {
 	onRegister: (user: IRegisterData) => void;
 	onNavigateToTermsAndConditions: () => void;
 	onGoBack: () => void;
@@ -68,7 +68,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	onNavigateToTermsAndConditions,
 	onGoBack,
 	getText,
-	showDotsMenuModal,
+	showOptionsMenu,
 }) => (
 	<KeyboardContext.Consumer>
 		{({ safeRunAfterKeyboardHide }) => (
@@ -159,7 +159,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 										afterImagePick={(localPhotoPath: string) =>
 											setFieldValue('avatar', { uri: localPhotoPath }, false)
 										}
-										showDotsMenuModal={showDotsMenuModal}
+										showOptionsMenu={showOptionsMenu}
 									/>
 								</View>
 								<View style={[style.textInputContainer, style.textInputContainerFirst]}>

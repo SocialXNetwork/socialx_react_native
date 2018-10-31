@@ -19,7 +19,7 @@ export const AddFriendsList: React.SFC<IAddFriendsListProps> = ({
 			{taggedFriends.map((taggedFriend) => (
 				<Image
 					key={taggedFriend.id}
-					source={{ uri: taggedFriend.avatarURL }}
+					source={{ uri: taggedFriend.avatar }}
 					resizeMode={'cover'}
 					style={styles.taggedFriendIcon}
 				/>

@@ -7,7 +7,7 @@ const mock: IWithAdsManagementEnhancedProps = {
 	data: {
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
-		avatarURL: 'https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png',
+		avatar: 'https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png',
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
@@ -17,7 +17,7 @@ const mock: IWithAdsManagementEnhancedProps = {
 export interface IWithAdsManagementEnhancedData {
 	fullName: string;
 	userName: string;
-	avatarURL: string;
+	avatar: string;
 }
 
 export interface IWithAdsManagementEnhancedActions extends ITranslatedProps {}

@@ -14,7 +14,7 @@ export interface IFriendsSearchResult {
 	id: string;
 	fullName: string;
 	location: string;
-	avatarURL: string;
+	avatar: string;
 }
 
 export enum SearchResultKind {
@@ -36,7 +36,7 @@ export interface ISearchResultPeople {
 	fullName: string;
 	userName: string;
 	location: string;
-	avatarURL: string;
+	avatar: string;
 }
 
 export interface ISearchResultGroups {
@@ -45,7 +45,7 @@ export interface ISearchResultGroups {
 	fullName: string;
 	userName: string;
 	location: string;
-	avatarURL: string;
+	avatar: string;
 }
 
 export type ISearchResultData = ISearchResultPeople | ISearchResultGroups;
@@ -84,14 +84,14 @@ export interface INotificationData {
 	userId: string;
 	type: NOTIFICATION_TYPES;
 	fullName: string;
-	avatarURL: string;
+	avatar: string;
 	userName?: string;
 	timestamp?: Date;
 	groupName?: string;
 	friendshipId?: string;
 }
 
-export interface IDotsMenuItem {
+export interface IOptionsMenuItem {
 	label: string;
 	icon: string;
 	actionHandler: () => void;
@@ -101,8 +101,8 @@ export interface IHeaderProps {
 	onGoBack: () => void;
 }
 
-export interface IDotsMenuProps {
-	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
+export interface IOptionsMenuProps {
+	showOptionsMenu: (items: IOptionsMenuItem[]) => void;
 }
 
 export interface INavigationParamsActions {
@@ -178,7 +178,7 @@ export interface ISimpleComment {
 export interface IPostOwner {
 	userId: string;
 	fullName: string;
-	avatarURL: string;
+	avatar: string;
 }
 
 export interface IWallPostComment {
@@ -186,7 +186,7 @@ export interface IWallPostComment {
 	text: string;
 	user: {
 		fullName: string;
-		avatarURL: string;
+		avatar: string;
 		userId: string;
 	};
 	timestamp: Date;
@@ -222,45 +222,39 @@ export interface ILike {
 	userName: string;
 }
 
-export interface IWallPostCardData extends IResizeProps {
+export interface IWallPostData {
 	postId: string;
 	postText: string;
 	location: string | undefined;
 	taggedFriends: Array<{ fullName: string }> | undefined;
 	timestamp: Date;
 	owner: IPostOwner;
-	currentUser: ICurrentUser;
-	governanceVersion: boolean;
+	likedByCurrentUser: boolean;
+	removable: boolean;
+	media: IMediaProps[];
+	likes: ILike[];
+	topComments: ISimpleComment[];
 	numberOfSuperLikes: number;
 	numberOfComments: number;
 	numberOfWalletCoins: number;
-	likedByMe: boolean;
-	canDelete: boolean;
-	media: IMediaProps[];
-	likes: ILike[];
-	bestComments: ISimpleComment[];
-	listLoading: boolean;
-	suggested: undefined | ISearchResultData[];
-	noInput?: boolean;
-	contentOffensive: boolean;
-	likeError: boolean;
-	displayDots?: boolean;
-	skeleton?: boolean;
+	suggested: ISearchResultData[] | undefined;
+	loading: boolean;
+	currentUserAvatar: string;
+	currentUserName: string;
+	offensiveContent: boolean;
 }
 
-export interface IWallPostCardActions extends ITranslatedProps {
+export interface IWallPostActions {
 	onImagePress: (index: number, mediaObjects: IMediaProps[], postId: string) => void;
 	onLikePress: (likedByMe: boolean, postId: string) => void;
 	onDeletePostPress: (postId: string) => void;
 	onUserPress: (userId: string) => void;
-	onCommentPress: (postId: string, startComment: boolean) => void; // this actually navigates to comments screen!
+	onCommentPress: (postId: string, startComment: boolean) => void;
 	onAddComment: (index: number, cardHeight: number) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
 	onBlockUser: (userId: string) => void;
 	onReportProblem: (reason: string, description: string) => void;
 }
-
-export type IWallPostCardProps = IWallPostCardData & IWallPostCardActions;
 
 export enum TransactionType {
 	Sold = 'Sold',
@@ -301,17 +295,17 @@ export interface ISearchTabResultsProps {
 
 export interface ICurrentUser {
 	userId: string;
-	avatarURL: string;
+	avatar: string;
 	email: string;
 	fullName: string;
 	userName: string;
-	aboutMeText: string;
+	description: string;
 	numberOfLikes: number;
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
 	mediaObjects: IMediaProps[];
-	recentPosts: IWallPostCardData[];
+	recentPosts: IWallPostData[];
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
 	pub: string;
@@ -319,16 +313,16 @@ export interface ICurrentUser {
 
 export interface IVisitedUser {
 	userId: string;
-	avatarURL: string;
+	avatar: string;
 	fullName: string;
 	userName: string;
-	aboutMeText: string;
+	description: string;
 	numberOfLikes: number;
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
 	mediaObjects: IMediaProps[];
-	recentPosts: IWallPostCardData[];
+	recentPosts: IWallPostData[];
 	relationship: SearchResultKind;
 }
 

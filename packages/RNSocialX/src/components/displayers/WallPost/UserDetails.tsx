@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { IPostOwner, ITranslatedProps } from '../../../types';
-import { DotsMenuButton } from '../DotsMenuButton';
+import { OptionsMenuButton } from '../OptionsMenuButton';
 import { Location, TaggedFriends } from './';
 
 import styles, { defaultStyles, images } from './UserDetails.style';
@@ -12,8 +12,7 @@ import styles, { defaultStyles, images } from './UserDetails.style';
 interface IUserDetailsProps extends ITranslatedProps {
 	user: IPostOwner;
 	timestamp: Date;
-	displayOptions: boolean;
-	disableNavigation: boolean;
+	disableNavigation?: boolean;
 	taggedFriends?: Array<{ fullName: string }>;
 	location?: string;
 	onUserPress: (userId: string) => void;
@@ -23,7 +22,6 @@ interface IUserDetailsProps extends ITranslatedProps {
 export const UserDetails: React.SFC<IUserDetailsProps> = ({
 	user,
 	timestamp,
-	displayOptions,
 	disableNavigation,
 	taggedFriends,
 	location,
@@ -42,9 +40,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 		>
 			<View style={{ flex: 1 }}>
 				<FastImage
-					source={
-						user.avatarURL.length > 0 ? { uri: user.avatarURL } : images.user_avatar_placeholder
-					}
+					source={user.avatar.length > 0 ? { uri: user.avatar } : images.user_avatar_placeholder}
 					style={styles.smallAvatarImage}
 				/>
 			</View>
@@ -57,12 +53,10 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 				<Text style={styles.timestamp}>{`${date} at ${hour}`}</Text>
 			</View>
 			<View style={styles.dotsContainer}>
-				{displayOptions && (
-					<DotsMenuButton
-						iconColor={defaultStyles.advancedMenuButtonColor}
-						onPress={onShowOptions}
-					/>
-				)}
+				<OptionsMenuButton
+					iconColor={defaultStyles.advancedMenuButtonColor}
+					onPress={onShowOptions}
+				/>
 			</View>
 		</TouchableOpacity>
 	);

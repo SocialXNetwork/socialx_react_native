@@ -10,7 +10,7 @@ import {
 	IAdSetupAudienceData,
 	IAdSetupBudgetData,
 	IAdSetupPostData,
-	IDotsMenuProps,
+	IOptionsMenuProps,
 	ITranslatedProps,
 } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -20,7 +20,7 @@ const mock: IWithNewAdSliderEnhancedProps = {
 	data: {},
 	actions: {
 		getText: (value, ...args) => value,
-		showDotsMenuModal: (items) => undefined,
+		showOptionsMenu: (items) => undefined,
 		showConfirmation: (confirmation: IConfirmation) => undefined,
 		createAd: (
 			postData: IAdSetupPostData,
@@ -36,7 +36,7 @@ const mock: IWithNewAdSliderEnhancedProps = {
 
 export interface IWithNewAdSliderEnhancedData {}
 
-export interface IWithNewAdSliderEnhancedActions extends ITranslatedProps, IDotsMenuProps {
+export interface IWithNewAdSliderEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	showConfirmation: (confirmation: IConfirmation) => void;
 	createAd: (
 		postData: IAdSetupPostData,
@@ -69,7 +69,7 @@ export class WithNewAdSlider extends React.Component<IWithNewAdSliderProps, IWit
 								actions: {
 									...mock.actions,
 									getText: i18nProps.getText,
-									showDotsMenuModal: (items) => overlayProps.showOptionsMenu({ items }),
+									showOptionsMenu: (items) => overlayProps.showOptionsMenu({ items }),
 									showConfirmation: overlayProps.showConfirmation,
 								},
 							})

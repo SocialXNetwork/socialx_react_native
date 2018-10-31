@@ -4,18 +4,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Colors, Sizes } from '../../environment/theme';
 
-interface IDotsMenuButtonProps {
+interface IOptionsMenuButtonProps {
+	onPress: () => void;
 	iconColor?: string;
 	iconName?: string;
-	onPress: () => void;
 	disabled?: boolean;
 }
 
-export const DotsMenuButton: React.SFC<IDotsMenuButtonProps> = ({
+export const OptionsMenuButton: React.SFC<IOptionsMenuButtonProps> = ({
+	onPress,
 	iconColor = Colors.white,
 	iconName = 'ios-more',
-	onPress = () => undefined,
-	disabled,
+	disabled = false,
 }) => (
 	<TouchableOpacity onPress={onPress} disabled={disabled}>
 		<Icon name={iconName} color={iconColor} style={styles.icon} />

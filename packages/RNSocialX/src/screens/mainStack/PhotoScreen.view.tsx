@@ -15,7 +15,7 @@ import { IFriendsSearchResult, ITranslatedProps } from '../../types';
 import style, { customStyleProps } from './PhotoScreen.style';
 
 interface IPhotoScreenViewProps extends ITranslatedProps {
-	avatarURL?: string;
+	avatar?: string;
 	mediaObjects: string[];
 	showTagFriendsModal: () => void;
 	taggedFriends: IFriendsSearchResult[];
@@ -104,7 +104,7 @@ const TagFriendsSection: React.SFC<ITagFriendsSectionProps> = ({
 };
 
 export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
-	avatarURL,
+	avatar,
 	mediaObjects,
 	locationEnabled,
 	onLocationToggle,
@@ -134,7 +134,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 			keyboardShouldPersistTaps="handled"
 		>
 			<SharePostInput
-				avatarSource={avatarURL}
+				avatarSource={avatar}
 				placeholder={getText('photo.screen.share.input.placeholder')}
 				text={shareText}
 				onTextUpdate={onShareTextUpdate}

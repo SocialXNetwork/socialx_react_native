@@ -40,7 +40,7 @@ class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState>
 				onRegister={this.onRegisterHandler}
 				onNavigateToTermsAndConditions={() => this.safeNavigateToScreen(SCREENS.TermsAndConditions)}
 				onGoBack={this.onGoBackHandler}
-				showDotsMenuModal={this.props.showDotsMenuModal}
+				showOptionsMenu={this.props.showOptionsMenu}
 				getText={this.props.getText}
 			/>
 		);

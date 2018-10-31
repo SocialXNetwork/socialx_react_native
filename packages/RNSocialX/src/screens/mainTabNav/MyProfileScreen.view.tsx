@@ -3,10 +3,10 @@ import { ScrollView, View } from 'react-native';
 import { DataProvider } from 'recyclerlistview';
 
 import {
-	DotsMenuButton,
 	Header,
 	IconButton,
 	NoContent,
+	OptionsMenuButton,
 	ProfilePhotoGrid,
 	ProfileTopContainer,
 } from '../../components';
@@ -15,14 +15,14 @@ import { ITranslatedProps } from '../../types';
 import styles, { icons } from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends ITranslatedProps {
-	avatarURL: string;
+	avatar: string;
 	fullName: string;
 	userName: false | string;
 	numberOfPhotos: number;
 	numberOfLikes: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	aboutMeText: false | string;
+	description: false | string;
 	dataProvider: DataProvider;
 	onProfilePhotoPress: () => void;
 	onLoadMorePhotos: () => void;
@@ -34,14 +34,14 @@ interface IMyProfileScreenViewProps extends ITranslatedProps {
 }
 
 export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
-	avatarURL,
+	avatar,
 	fullName,
 	userName,
 	numberOfPhotos,
 	numberOfLikes,
 	numberOfFriends,
 	numberOfComments,
-	aboutMeText,
+	description,
 	dataProvider,
 	hasPhotos,
 	onLoadMorePhotos,
@@ -68,7 +68,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						onPress={onSharePress}
 					/>
 				}
-				right={<DotsMenuButton onPress={onShowDotsModal} />}
+				right={<OptionsMenuButton onPress={onShowDotsModal} />}
 			/>
 			<View style={styles.whiteBottomView} />
 			<ScrollView
@@ -77,7 +77,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 				scrollEnabled={hasPhotos}
 			>
 				<ProfileTopContainer
-					avatarURL={avatarURL}
+					avatar={avatar}
 					fullName={fullName}
 					userName={userName}
 					numberOfFriends={numberOfFriends}
@@ -85,7 +85,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					numberOfPhotos={numberOfPhotos}
 					numberOfComments={numberOfComments}
 					isCurrentUser={true}
-					aboutMeText={aboutMeText}
+					description={description}
 					onProfilePhotoPress={onProfilePhotoPress}
 					onAddFriend={() => undefined}
 					onEditProfile={onEditProfile}

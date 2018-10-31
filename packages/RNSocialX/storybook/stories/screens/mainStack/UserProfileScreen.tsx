@@ -33,7 +33,7 @@ storiesOf('Screens/mainStack', module)
 			},
 			SearchResultKind.Friend,
 		);
-		const aboutMeText = text('aboutMeText', 'This is me.');
+		const description = text('description', 'This is me.');
 		const containerHeight = number('containerHeight', 0);
 
 		const gridMediaProvider = new DataProvider((row1: any, row2: any) => {
@@ -46,7 +46,7 @@ storiesOf('Screens/mainStack', module)
 
 		return (
 			<UserProfileScreenView
-				avatarURL={avatar}
+				avatar={avatar}
 				fullName={fullName}
 				userName={userName}
 				numberOfPhotos={numberOfPhotos}
@@ -58,7 +58,7 @@ storiesOf('Screens/mainStack', module)
 				onShowFriendshipOptions={action('onShowFriendshipOptions')}
 				relationship={relationship}
 				onViewProfilePhoto={action('onViewProfilePhoto')}
-				aboutMeText={aboutMeText}
+				description={description}
 				recentPosts={posts}
 				loadMorePhotosHandler={action('loadMorePhotos')}
 				onCommentPress={action('onCommentPress')}

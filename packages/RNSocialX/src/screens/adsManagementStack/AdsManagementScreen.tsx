@@ -15,12 +15,12 @@ type IAdsManagementScreenProps = INavigationProps &
 
 class Screen extends React.Component<IAdsManagementScreenProps> {
 	public render() {
-		const { avatarURL, fullName, userName, getText } = this.props;
+		const { avatar, fullName, userName, getText } = this.props;
 
 		return (
 			<AdsManagementScreenView
 				onGoBack={this.onGoBackHandler}
-				avatarURL={avatarURL}
+				avatar={avatar}
 				fullName={fullName}
 				userName={userName}
 				getText={getText}

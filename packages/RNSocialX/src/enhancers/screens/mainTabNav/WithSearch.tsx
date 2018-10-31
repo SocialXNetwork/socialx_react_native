@@ -76,7 +76,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 																fullName: profile.fullName,
 																userName: profile.alias,
 																location: '',
-																avatarURL:
+																avatar:
 																	profile.avatar.length > 0
 																			? appConfig.ipfsConfig.ipfs_URL +
 																		  profile.avatar  // tslint:disable-line
@@ -87,7 +87,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 																fullName: profile.fullName,
 																userName: profile.alias,
 																location: '',
-																avatarURL:
+																avatar:
 																	profile.avatar.length > 0
 																			? appConfig.ipfsConfig.ipfs_URL +
 																			  profile.avatar // tslint:disable-line

@@ -12,7 +12,7 @@ const item: ISearchResultData = {
 	fullName: 'Alex Sirbu',
 	userName: 'alexsirbu',
 	location: 'Timisoara',
-	avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+	avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 };
 
 storiesOf('Components/displayers', module)

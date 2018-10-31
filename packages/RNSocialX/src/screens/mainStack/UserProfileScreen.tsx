@@ -49,15 +49,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const {
-			currentUserAvatarURL,
-			visitedUser,
-			loadingProfile,
-			loadingPosts,
-			postComment,
-			blockUser,
-			reportProblem,
-		} = this.props;
+		const { visitedUser, loadingProfile, loadingPosts } = this.props;
 		const {
 			activeTab,
 			listTranslate,
@@ -65,57 +57,27 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			containerHeight,
 			gridMediaProvider,
 		} = this.state;
-		const {
-			recentPosts,
-			numberOfLikes,
-			numberOfPhotos,
-			numberOfFriends,
-			numberOfComments,
-			avatarURL,
-			fullName,
-			userName,
-			aboutMeText,
-			relationship,
-		} = visitedUser;
 
 		return (
 			<UserProfileScreenView
+				visitedUser={visitedUser}
 				refreshing={loadingProfile && loadingPosts}
 				loadingPosts={loadingPosts}
-				onRefresh={this.onRefreshHandler}
-				numberOfPhotos={numberOfPhotos}
-				numberOfLikes={numberOfLikes}
-				numberOfFriends={numberOfFriends}
-				numberOfComments={numberOfComments}
-				avatarURL={avatarURL}
-				fullName={fullName}
-				userName={userName}
-				aboutMeText={aboutMeText}
-				recentPosts={recentPosts}
-				onLoadMorePhotos={this.onLoadMorePhotosHandler}
-				onAddFriend={this.onAddFriendHandler}
-				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
-				relationship={relationship}
-				onProfilePhotoPress={this.onProfilePhotoPressHandler}
-				onViewMediaFullscreen={this.onViewMediaFullScreenHandler}
 				gridMediaProvider={gridMediaProvider}
-				currentUserAvatarURL={currentUserAvatarURL}
-				onIconPress={this.onIconPressHandler}
 				listTranslate={listTranslate}
 				gridTranslate={gridTranslate}
 				activeTab={activeTab}
 				containerHeight={containerHeight}
+				onRefresh={this.onRefreshHandler}
+				onLoadMorePhotos={this.onLoadMorePhotosHandler}
+				onAddFriend={this.onAddFriendHandler}
+				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
+				onProfilePhotoPress={this.onProfilePhotoPressHandler}
+				onViewMediaFullscreen={this.onViewMediaFullScreenHandler}
+				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
-				onImagePress={this.onImagePressHandler}
-				onLikePress={this.onLikePressHandler}
-				onUserPress={this.onViewUserProfile}
-				onSubmitComment={postComment}
-				onCommentPress={this.onViewCommentsForPost}
-				onAddComment={(height: number) => undefined}
-				onDeletePostPress={() => undefined}
-				onBlockUser={blockUser}
-				onReportProblem={reportProblem}
 				onGoBack={this.onGoBackHandler}
+				navigation={this.props.navigation}
 				getText={this.props.getText}
 			/>
 		);
@@ -159,22 +121,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		addFriend(visitedUser.userId);
 	};
 
-	private onViewCommentsForPost = (postId: string, startComment: boolean) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.Comments,
-			params: { postId, startComment },
-		});
-		navigation.navigate(SCREENS.Comments);
-	};
-
-	private onLikePressHandler = (likedByMe: boolean, postId: string) => {
-		const { likePost, unlikePost } = this.props;
-
-		likedByMe ? unlikePost(postId) : likePost(postId);
-		return !likedByMe;
-	};
-
 	private onRefreshHandler = async () => {
 		const {
 			visitedUser,
@@ -196,7 +142,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 		const mediaObjects = [
 			{
-				url: visitedUser.avatarURL,
+				url: visitedUser.avatar,
 				type: MediaTypeImage,
 			},
 		];
@@ -218,19 +164,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			params: {
 				mediaObjects: visitedUser.mediaObjects,
 				startIndex: index,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
-	};
-
-	private onImagePressHandler = (index: number, media: IMediaProps[], postId: string) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects: media,
-				startIndex: index,
-				postId,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);
@@ -277,7 +210,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onShowFriendshipOptionsHandler = () => {
-		const { showDotsMenuModal, getText } = this.props;
+		const { showOptionsMenu, getText } = this.props;
 		const menuItems = [
 			{
 				label: getText('friendship.menu.option.remove'),
@@ -285,7 +218,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				actionHandler: () => this.onRemoveFriendshipHandler,
 			},
 		];
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	private onRemoveFriendshipHandler = () => {
@@ -295,30 +228,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onGoBackHandler = () => {
 		this.props.navigation.goBack(null);
-	};
-
-	private onViewUserProfile = (userId: string) => {
-		const {
-			navigation,
-			setNavigationParams,
-			currentUserId,
-			userPosts,
-			getPostsForUser,
-		} = this.props;
-
-		if (userId === currentUserId) {
-			navigation.navigate(SCREENS.MyProfile);
-		} else {
-			if (!userPosts[userId]) {
-				getPostsForUser(userId);
-			}
-
-			setNavigationParams({
-				screenName: SCREENS.UserProfile,
-				params: { userId, origin: TABS.Feed },
-			});
-			navigation.navigate(SCREENS.UserProfile);
-		}
 	};
 }
 

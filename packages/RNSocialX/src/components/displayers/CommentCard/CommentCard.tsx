@@ -71,7 +71,7 @@ export class CommentCard extends React.Component<ICommentCardProps, ICommentCard
 		return (
 			<View style={styles.container}>
 				<TouchableOpacity onPress={() => onViewUserProfile(user.userId)}>
-					<AvatarImage image={user.avatarURL} style={styles.avatarImage} />
+					<AvatarImage image={user.avatar} style={styles.avatarImage} />
 				</TouchableOpacity>
 				<View style={styles.rightContainer}>
 					<View>

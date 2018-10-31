@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 
 import { IMAGE_PICKER_TYPES, SCREENS, TABS } from '../../environment/consts';
 import { Icons } from '../../environment/theme';
-import { IDotsMenuProps, INavigationParamsActions, ITranslatedProps } from '../../types';
+import { INavigationParamsActions, IOptionsMenuProps, ITranslatedProps } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -14,7 +14,7 @@ import {
 
 import styles from './TabIcon.style';
 
-interface ITabIconProps extends IDotsMenuProps, INavigationParamsActions, ITranslatedProps {
+interface ITabIconProps extends IOptionsMenuProps, INavigationParamsActions, ITranslatedProps {
 	navigation: NavigationScreenProp<any>;
 	focused: boolean;
 	notifications: number;
@@ -93,7 +93,7 @@ export class TabIcon extends React.Component<ITabIconProps> {
 	};
 
 	private showPhotoOptionsMenu = () => {
-		const { showDotsMenuModal, getText } = this.props;
+		const { showOptionsMenu, getText } = this.props;
 
 		const menuItems = [
 			{
@@ -107,7 +107,7 @@ export class TabIcon extends React.Component<ITabIconProps> {
 				actionHandler: () => this.continueWithSelectedPhotoOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	private continueWithSelectedPhotoOption = async (source: IMAGE_PICKER_TYPES) => {

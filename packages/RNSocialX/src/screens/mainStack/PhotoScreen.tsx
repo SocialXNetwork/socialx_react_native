@@ -38,7 +38,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	private addedFriends: IFriendsSearchResult[] = [];
 
 	public render() {
-		const { currentUserAvatarURL, marginBottom, getText } = this.props;
+		const { currentUseravatar, marginBottom, getText } = this.props;
 		const { locationEnabled, location, tagFriends, shareText, mediaObjects } = this.state;
 
 		return (
@@ -48,7 +48,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 					return (
 						<PhotoScreenView
 							showTagFriendsModal={showAddFriendsModal}
-							avatarURL={currentUserAvatarURL}
+							avatar={currentUseravatar}
 							mediaObjects={mediaObjects.map((mediaObject) => mediaObject.path)}
 							taggedFriends={addedFriends}
 							locationEnabled={locationEnabled}
@@ -95,7 +95,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	private onAddMediaHandler = () => {
-		const { showDotsMenuModal, getText } = this.props;
+		const { showOptionsMenu, getText } = this.props;
 		const menuItems = [
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
@@ -108,7 +108,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	private addToScrollerSelectedMediaObject = async (source: IMAGE_PICKER_TYPES) => {

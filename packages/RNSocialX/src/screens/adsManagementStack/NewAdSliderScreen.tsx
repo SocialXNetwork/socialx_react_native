@@ -56,7 +56,7 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 	private scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
 	public render() {
-		const { getText, showDotsMenuModal, showConfirmation } = this.props;
+		const { getText, showOptionsMenu, showConfirmation } = this.props;
 		const { stepIndex, swipeEnabled } = this.state;
 		return (
 			<NewAdSliderScreenView
@@ -70,7 +70,7 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 				isOnLastSlide={stepIndex === SLIDER_STEPS.length - 1}
 			>
 				<NewAdSetupPostScreen
-					showDotsMenuModal={showDotsMenuModal}
+					showOptionsMenu={showOptionsMenu}
 					getText={getText}
 					updateAdSetPost={this.updateAdSetPostHandler}
 					adSetupPostFormik={this.adSetupPostFormik}
