@@ -98,7 +98,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 	const numberOfMoreMediaObjects = mediaObjects.length - 3;
 	return (
 		<View style={style.postMediaContainerFullWidth}>
-			{placeholder ? (
+			{!placeholder ? (
 				<React.Fragment>
 					<View style={style.fullHeightHalfWidth}>
 						<MediaObjectViewer

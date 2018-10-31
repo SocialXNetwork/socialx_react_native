@@ -5,7 +5,7 @@ const styles: any = {
 	container: {
 		flexDirection: 'row',
 		width: '100%',
-		paddingTop: Sizes.smartVerticalScale(5),
+		marginTop: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
 	icon: {

@@ -21,7 +21,6 @@ import {
 	IDotsMenuItem,
 	IMediaProps,
 	IPostForComment,
-	IResizeProps,
 	ITranslatedProps,
 	IWallPostComment,
 } from '../../types';
@@ -45,7 +44,7 @@ const onCommentSendHandler = (
 	onCommentSend();
 };
 
-interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
+interface ICommentsScreenComponentProps extends ITranslatedProps {
 	post: IPostForComment;
 	comments: IWallPostComment[];
 	onCommentLike: (comment: IWallPostComment) => void;
@@ -67,6 +66,8 @@ interface ICommentsScreenComponentProps extends ITranslatedProps, IResizeProps {
 		second: string | null;
 		total: number;
 	};
+	scrollRef: React.RefObject<ScrollView>;
+	commentInputRef: React.RefObject<TextInput>;
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
@@ -86,16 +87,14 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	likePostError,
 	likeCommentError,
 	recentLikes,
-	marginBottom,
+	scrollRef,
+	commentInputRef,
 	getText,
 }) => {
 	const { postId, media, postText, timestamp, owner, likedByMe } = post;
 
-	const scrollRef: React.RefObject<ScrollView> = React.createRef();
-	const commentInputRef: React.RefObject<TextInput> = React.createRef();
-
 	return (
-		<SafeAreaView style={[styles.container, Platform.select({ ios: { marginBottom } })]}>
+		<SafeAreaView style={styles.container}>
 			<CommentsPostOwner
 				owner={owner}
 				timestamp={timestamp}
@@ -105,9 +104,9 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 			/>
 			<ScrollView
 				style={{ flex: 1 }}
-				keyboardShouldPersistTaps="handled"
 				ref={scrollRef}
 				onLayout={() => scrollRef.current && scrollRef.current.scrollToEnd()}
+				onContentSizeChange={() => scrollRef.current && scrollRef.current.scrollToEnd()}
 			>
 				<PostText
 					text={postText}
