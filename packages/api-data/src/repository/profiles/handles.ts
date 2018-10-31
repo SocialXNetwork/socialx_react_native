@@ -54,16 +54,20 @@ export const publicFriendRequestsByUsers = (context: IContext, from: string, to:
 	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`);
 };
 
-export const publicCurrentFriendRequestToUsername = (context: IContext, to: string) => {
+export const publicFriendRequestToFrom = (context: IContext, to: string, from: string) => {
 	const { gun, account } = context;
-	return gun.path(
-		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${account.is.alias}`,
-	);
+	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`);
 };
 export const publicCurrentFriendRequestFromUsername = (context: IContext, username: string) => {
 	const { gun, account } = context;
 	return gun.path(
 		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${account.is.alias}.${username}`,
+	);
+};
+export const publicCurrentFriendRequestToUsername = (context: IContext, username: string) => {
+	const { gun, account } = context;
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${username}.${account.is.alias}`,
 	);
 };
 

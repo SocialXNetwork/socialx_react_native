@@ -9,7 +9,7 @@ export enum NOTIFICATION_TYPES {
 export enum NOTIFICATION_TABLE_NAMES {
 	RECENT_COMMENT = 'recent_comments',
 	FRIEND_REQUEST = 'friend_requests',
-	FRIEND_REQUEST_RESPONSE = 'friend_request_responses',
+	FRIEND_REQUEST_RESPONSE = 'friend_requests_responses',
 	GROUP_REQUEST = 'group_requests',
 	SUPER_LIKED = 'super_likes',
 }
@@ -25,6 +25,11 @@ export interface INotificationData {
 		commentId?: string;
 	};
 	timestamp: number;
+}
+
+export interface IAllNotificationsData {
+	friend_requests?: object;
+	friend_requests_responses?: object;
 }
 
 export interface INotificationReturnData extends INotificationData {

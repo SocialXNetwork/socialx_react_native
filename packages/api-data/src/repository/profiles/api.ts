@@ -157,7 +157,6 @@ export default (context: IContext) => ({
 				validationInput: addFriendInput,
 			});
 		}
-
 		return new Promise<null>((resolve, reject) => {
 			setters.addFriend(
 				context,
