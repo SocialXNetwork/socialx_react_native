@@ -22,26 +22,48 @@ export const createNotification = (
 	});
 };
 
-export const removeNotification = (
-	context: IContext,
-	removeNotificationInput: IRemoveNotificationInput,
-	callback: IGunCallback<null>,
-) => {
-	handles
-		.notificationById(context, removeNotificationInput.notificationId)
-		.put(null, (discardCallback) => {
-			if (!discardCallback) {
-				return callback(
-					new ApiError('failed to remove a notification', {
-						initialRequestBody: removeNotificationInput,
-					}),
-				);
+export const addFriendRequest = async (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		handles.friendRequests(context).put(username, (ack) => {
+			if (ack.err) {
+				rej(ack.err);
 			}
-			return callback(null);
-		});
+			res();
+		}),
+	);
+};
+
+export const removeFriendRequest = async (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		handles.friendRequests(context).erase(username, (ack) => {
+			if (ack.err) {
+				rej(ack.err);
+			}
+			res();
+		}),
+	);
+};
+
+export const saveFriendRequestResponse = async (
+	context: IContext,
+	username: string,
+	accepted: boolean,
+) => {
+	return new Promise((res, rej) =>
+		handles
+			.friendRequestResponseByUsername(context, username)
+			.put({ accepted, timestamp: new Date().valueOf() }, (recoverCallback) => {
+				if (recoverCallback.err) {
+					rej(new ApiError(`failed to create friend request response ${recoverCallback.err}`));
+				}
+				res();
+			}),
+	);
 };
 
 export default {
 	createNotification,
-	removeNotification,
+	removeFriendRequest,
+	saveFriendRequestResponse,
+	addFriendRequest,
 };

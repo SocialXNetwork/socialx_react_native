@@ -3,9 +3,9 @@ import { ICreateNotification, INotificationsReturnData, IRemoveNotificationInput
 
 import getters from './getters';
 import schemas from './schemas';
-import setters, { removeNotification } from './setters';
+import setters from './setters';
 
-import { ValidationError } from '../../utils/errors';
+import { ApiError, ValidationError } from '../../utils/errors';
 import { resolveCallback } from '../../utils/helpers';
 
 export default (context: IContext) => ({
@@ -31,25 +31,29 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	removeNotification: async (removeNotifcationInput: IRemoveNotificationInput): Promise<null> => {
-		let validatedInput: any;
+	addFriendRequestNotification: async (username: string) => {
 		try {
-			validatedInput = await schemas.removeNotification.validate(removeNotifcationInput, {
-				stripUnknown: true,
-			});
+			await setters.addFriendRequest(context, username);
+			return null;
 		} catch (e) {
-			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
-				validationInput: removeNotifcationInput,
-			});
+			throw new ApiError(e);
 		}
-
-		return new Promise<null>((resolve, reject) => {
-			setters.removeNotification(
-				context,
-				validatedInput as IRemoveNotificationInput,
-				resolveCallback(resolve, reject),
-			);
-		});
+	},
+	removeFriendRequestNotification: async (username: string) => {
+		try {
+			await setters.removeFriendRequest(context, username);
+			return null;
+		} catch (e) {
+			throw new ApiError(e);
+		}
+	},
+	addFriendRequestResponseNotification: async (username: string) => {
+		try {
+			await setters.saveFriendRequestResponse(context, username, true);
+			return null;
+		} catch (e) {
+			throw new ApiError(e);
+		}
 	},
 	getNotifications: (): Promise<INotificationsReturnData[]> =>
 		new Promise((resolve, reject) => {
