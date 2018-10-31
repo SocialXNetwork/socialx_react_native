@@ -62,3 +62,4 @@ fastlane/tmp/
 *.jsbundle
 
 ios/Pods
+.cache

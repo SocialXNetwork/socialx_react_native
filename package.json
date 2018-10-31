@@ -79,6 +79,7 @@
     "start:database": "cd packages/database/ && NODE_ENV=development yarn run start && cd ../../",
     "start:storybook": "cd packages/RNSocialX/ && yarn run start:storybook && cd ../../",
     "start:js": "cd packages/RNSocialX/ && yarn run start:js && cd ../../",
+    "start:js-for-storybook": "cd packages/RNSocialX/ && yarn run start:js-for-storybook && cd ../../",
     "start:android:emulator": "${ANDROID_HOME}/emulator/emulator -avd $(${ANDROID_HOME}/emulator/emulator -list-avds | head -n 1)",
     "run:android": "cd packages/RNSocialX/ && yarn run run:android && cd ../../",
     "run:ios": "cd packages/RNSocialX/ && yarn run run:ios&& cd ../../"

@@ -10,10 +10,10 @@ storiesOf('Screens/preAuth', module)
 	.addDecorator(withKnobs)
 	.add('RegisterScreen', () => (
 		<RegisterScreenView
-			onStartRegister={action('onStartRegister')}
 			onNavigateToTermsAndConditions={action('onNavigateToTermsAndCond')}
 			onGoBack={action('onGoBack')}
 			getText={getTextMock}
 			showDotsMenuModal={action('showDotsMenuModal')}
+			onRegister={action('onRegister')}
 		/>
 	));
