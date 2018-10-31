@@ -7,7 +7,6 @@ import org.linusu.RNGetRandomValuesPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 import com.beefe.picker.PickerViewPackage;
-import com.vydia.RNUploader.UploaderReactPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import com.bugsnag.BugsnagReactNative;
@@ -49,7 +48,6 @@ public class MainApplication extends Application implements ReactApplication {
             new WebViewBridgePackage(),
             new AndroidKeyboardAdjustPackage(),
             new PickerViewPackage(),
-            new UploaderReactPackage(),
             new OrientationPackage(),
             new RCTSplashScreenPackage(),
             BugsnagReactNative.getPackage(),

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
 	IGetFileInfo,
 	IListenerCompleted,
@@ -8,8 +9,6 @@ import {
 } from './types';
 
 export class Ipfslib {
-	Upload: IUploader;
-
 	private config: IProviderParams = {
 		host: '0.0.0.0',
 		port: '8080',
@@ -17,8 +16,7 @@ export class Ipfslib {
 		root: '/api/v0',
 	};
 
-	constructor(params: IProviderParams, uploader: IUploader) {
-		this.Upload = uploader;
+	constructor(params: IProviderParams) {
 		if (params) {
 			if (!params.protocol || !params.root) {
 				this.config.host = params.host;
@@ -33,52 +31,37 @@ export class Ipfslib {
 		path: string,
 		onStart?: (uploadId: string) => void,
 		onProgress?: (progress: IListenerProgess & { uploadId: string }) => void,
-	): Promise<IListenerCompleted & { uploadId: string }> => {
-		const opts = {
-			url: this.apiUrl('/add'),
-			path: path.replace('file://', ''),
-			method: 'POST',
-			type: 'multipart',
-			field: 'file',
-			// "Android Oreo requires a notification configuration for the service to run. https://developer.android.com/reference/android/content/Context.html#startForegroundService(android.content.Intent)"
-			// notification: { enabled: true },
-			headers: {
-				'Content-Type': 'multipart/form-data',
+	): Promise<{ Hash: string; Name: string; Size: string }> => {
+		const data = new FormData();
+		data.append('file', {
+			uri: path,
+			type: 'file',
+			name: `${new Date().getTime()}.jpg`,
+		} as any);
+
+		const config = {
+			onUploadProgress: (progressEvent: any) => {
+				const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+				if (onProgress) {
+					onProgress({ uploadId: path, progress: percentCompleted, id: '' });
+				}
 			},
 		};
+
+		if (onStart) {
+			onStart(path);
+		}
+
 		try {
-			const uploadId = await this.Upload.startUpload(opts);
-			if (onStart) {
-				onStart(uploadId);
-			}
+			const res = await axios.put(this.apiUrl('/add'), data, config);
+			console.log('*** uploading finished', { res });
 
-			this.Upload.addListener('progress', uploadId, (data: IListenerProgess) => {
-				if (onProgress) {
-					onProgress({ ...data, uploadId });
-				}
-			});
-
-			return new Promise<any>((resolve, reject) => {
-				this.Upload.addListener('error', uploadId, (data: IListenerError) => {
-					reject(data);
-				});
-				this.Upload.addListener(
-					'completed',
-					uploadId,
-					(data: IListenerCompleted & { uploadId: string }) => {
-						resolve({ ...data, uploadId });
-					},
-				);
-			});
+			return res.data;
 		} catch (ex) {
-			return new Promise<any>((_, reject) => {
-				reject(ex);
-			});
+			console.log('*** uploading failed', { ex });
+			return ex;
 		}
 	};
-
-	public getFileInfo = (path: string): Promise<IGetFileInfo> => this.Upload.getFileInfo(path);
-	public cancelUpload = (uploadId: string) => this.Upload.cancelUpload(uploadId);
 
 	private apiUrl = (path: string): string => {
 		return `${this.config.protocol}://${this.config.host}${

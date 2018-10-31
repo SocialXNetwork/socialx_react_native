@@ -5,7 +5,6 @@
  * 2. add a property 'failed' or 'error' on the state to handle errors
  */
 
-import { IListenerProgess } from 'react-native-background-upload';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
