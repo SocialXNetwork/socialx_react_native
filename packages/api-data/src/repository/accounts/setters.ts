@@ -189,6 +189,7 @@ export const createAccount = async (
 				.put(
 					{
 						alias: username,
+						pub: account.is.pub,
 						aboutMeText,
 						miningEnabled,
 						fullName,
