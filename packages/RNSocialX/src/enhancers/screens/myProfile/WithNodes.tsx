@@ -1,36 +1,19 @@
 import * as React from 'react';
 
-import { currentUser } from '../../../mocks';
-import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
-import { ICurrentUser, IGlobal, ITranslatedProps } from '../../../types';
+import { IApplicationConfig, ISetCustomGunSuperPeersInput } from '../../../store/app/config/Types';
+import { IGlobal, ITranslatedProps } from '../../../types';
 
+import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithAccounts } from '../../connectors/data/WithAccounts';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
-import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUser } from '../intermediary';
-
-const mock: IWithNodesEnhancedProps = {
-	data: {
-		currentUser,
-	},
-	actions: {
-		updateUserProfile: (user: ISettingsData) => undefined,
-		logout: () => undefined,
-		setGlobal: (global: IGlobal) => undefined,
-		getText: (value: string, ...args: any[]) => value,
-	},
-};
 
 export interface IWithNodesEnhancedData {
-	currentUser: ICurrentUser;
+	appConfig: IApplicationConfig | {};
 }
 
 export interface IWithNodesEnhancedActions extends ITranslatedProps {
 	setGlobal: (global: IGlobal) => void;
-	updateUserProfile: (user: ISettingsData) => void;
-	logout: () => void;
+	onSaveNodes: (nodes: string[]) => void;
 }
 
 interface IWithNodesEnhancedProps {
@@ -49,46 +32,27 @@ export class WithNodes extends React.Component<IWithNodesProps, IWithNodesState>
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithOverlays>
-						{({ showOptionsMenu }) => (
+					<WithConfig>
+						{({ appConfig, setCustomGunSuperPeers }) => (
 							<WithGlobals>
-								{({ setGlobal }) => (
-									<WithAccounts>
-										{({ logout }) => (
-											<WithProfiles>
-												{({ updateCurrentProfile }) => (
-													<WithCurrentUser>
-														{(currUser) =>
-															this.props.children({
-																data: {
-																	currentUser: {
-																		shareDataEnabled: mock.data.currentUser.shareDataEnabled,
-																		...currUser.currentUser!,
-																	},
-																},
-																actions: {
-																	updateUserProfile: (user) =>
-																		updateCurrentProfile({
-																			aboutMeText: user.bio,
-																			avatar: user.avatarURL,
-																			email: user.email,
-																			fullName: user.fullName,
-																		}),
-																	logout,
-																	setGlobal,
-																	getText,
-																},
-															})
-														}
-													</WithCurrentUser>
-												)}
-											</WithProfiles>
-										)}
-									</WithAccounts>
-								)}
+								{({ setGlobal }) =>
+									this.props.children({
+										data: {
+											appConfig,
+										},
+										actions: {
+											onSaveNodes: (nodes) =>
+												setCustomGunSuperPeers({
+													customGunSuperPeers: nodes,
+												}),
+											setGlobal,
+											getText,
+										},
+									})
+								}
 							</WithGlobals>
 						)}
-					</WithOverlays>
+					</WithConfig>
 				)}
 			</WithI18n>
 		);

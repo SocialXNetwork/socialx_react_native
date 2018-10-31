@@ -1,56 +1,102 @@
 import * as React from 'react';
-import { Text, TouchableHighlight, View } from 'react-native';
+import { Keyboard, ScrollView, Text, TouchableHighlight, View } from 'react-native';
+import Swipeable from 'react-native-swipeable';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { ButtonSizes, Header, HeaderButton, PrimaryButton } from '../../components';
+import {
+	Header,
+	HeaderButton,
+	InputSizes,
+	PrimaryTextInput,
+	TRKeyboardKeys,
+} from '../../components';
 import { ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './NodesScreen.style';
 
 interface INodesScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
-	onDisplayNodesList: () => void;
+	nodesList: string[];
+	nodeValue: string;
 	onSaveNewNode: () => void;
-	selectedNodeValue: string;
-	hasChanged: boolean;
+	autoFocus: boolean;
+	isSwiping: boolean;
+	onNodeInputChange: (value: string) => void;
+	onSwipeStart: () => void;
+	onSwipeRelease: () => void;
+	onDeleteNode: (value: string) => void;
 }
+
+const rightButtons = [];
 
 export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
 	onGoBack,
 	getText,
-	onDisplayNodesList,
-	selectedNodeValue,
-	hasChanged,
+	nodesList,
+	isSwiping,
+	autoFocus,
+	nodeValue,
 	onSaveNewNode,
-}) => (
-	<View style={{ flex: 1 }}>
-		{
-			<Header
-				title={getText('nodes.screen.title')}
-				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-			/>
-		}
+	onNodeInputChange,
+	onSwipeStart,
+	onSwipeRelease,
+	onDeleteNode,
+}) => {
+	const swiperDeleteButton = (node: string, index: number) => {
+		return [
+			<TouchableHighlight
+				style={styles.swiperDeleteButton}
+				key={index}
+				onPress={() => {
+					onDeleteNode(node);
+				}}
+			>
+				<Icon style={styles.swiperDeleteIcon} name="ios-trash" />
+			</TouchableHighlight>,
+		];
+	};
 
-		<View style={styles.container}>
-			<Text style={styles.description}>{getText('nodes.screen.description')}</Text>
-			<TouchableHighlight underlayColor={defaultStyles.highlightColor} onPress={onDisplayNodesList}>
-				<View style={styles.nodeContainer}>
-					<Text style={styles.text}>{getText('nodes.screen.node.text')}</Text>
-					<View style={styles.nodeButton}>
-						<Text style={styles.text}>{selectedNodeValue}</Text>
-						<Icon size={20} name="md-arrow-dropdown" style={styles.caretDownIcon} />
+	return (
+		<View style={{ flex: 1 }}>
+			{
+				<Header
+					title={getText('nodes.screen.title')}
+					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+				/>
+			}
+			<ScrollView scrollEnabled={!isSwiping}>
+				<View style={styles.container}>
+					<Text style={styles.description}>{getText('nodes.screen.description')}</Text>
+					<View style={styles.inputContainer}>
+						<PrimaryTextInput
+							borderWidth={0}
+							size={InputSizes.Small}
+							placeholder={getText('nodes.screen.input.placeholder')}
+							value={nodeValue}
+							autoFocus={autoFocus}
+							onChangeText={onNodeInputChange}
+							returnKeyType={TRKeyboardKeys.send}
+							onSubmitPressed={nodeValue.length > 0 ? onSaveNewNode : Keyboard.dismiss}
+							blurOnSubmit={true}
+						/>
+					</View>
+					<View style={styles.listContainer}>
+						{nodesList.map((node, index) => (
+							<View style={styles.listItem}>
+								<Swipeable
+									rightButtons={swiperDeleteButton(node, index)}
+									key={index}
+									onSwipeStart={onSwipeStart}
+									onSwipeRelease={onSwipeRelease}
+								>
+									<Text style={styles.description}>{node}</Text>
+								</Swipeable>
+								<View style={styles.separator} />
+							</View>
+						))}
 					</View>
 				</View>
-			</TouchableHighlight>
-			{hasChanged && (
-				<View style={styles.saveChangesButton}>
-					<PrimaryButton
-						label={getText('button.save.changes')}
-						size={ButtonSizes.Small}
-						onPress={onSaveNewNode}
-					/>
-				</View>
-			)}
+			</ScrollView>
 		</View>
-	</View>
-);
+	);
+};
