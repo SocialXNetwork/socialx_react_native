@@ -29,7 +29,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps {
 	visitedUser: IVisitedUser;
 	refreshing: boolean;
-	gridMediaProvider: DataProvider;
+	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
 	activeTab: string;
@@ -50,7 +50,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	visitedUser,
 	refreshing,
 	loadingPosts,
-	gridMediaProvider,
+	dataProvider,
 	onAddFriend,
 	onRefresh,
 	listTranslate,
@@ -149,6 +149,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 											<WallPost
 												post={data.item}
 												onAddComment={() => undefined}
+												likeFailed={false}
 												commentInput={false}
 												navigation={navigation}
 											/>
@@ -171,7 +172,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							{hasPhotos ? (
 								<ProfilePhotoGrid
 									onLoadMorePhotos={onLoadMorePhotos}
-									dataProvider={gridMediaProvider}
+									dataProvider={dataProvider}
 									onViewMediaFullScreen={onViewMediaFullscreen}
 									header={{
 										element: <View style={{ width: 1, height: 1 }} />,

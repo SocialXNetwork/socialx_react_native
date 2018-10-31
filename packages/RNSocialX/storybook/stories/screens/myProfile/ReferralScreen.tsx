@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
+import { getTextMock } from '../../../../src/mocks';
 import { ReferralScreenView } from '../../../../src/screens/myProfile/ReferralScreen.view';
 
 storiesOf('Screens/myProfile', module).add('ReferralScreen', () => (
@@ -13,5 +14,6 @@ storiesOf('Screens/myProfile', module).add('ReferralScreen', () => (
 		onShare={async () => action('onShare')}
 		copyToClipboard={action('copyToClipboard')}
 		onGoBack={action('onGoBack')}
+		getText={getTextMock}
 	/>
 ));

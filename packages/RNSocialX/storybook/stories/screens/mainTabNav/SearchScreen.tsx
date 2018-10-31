@@ -9,26 +9,26 @@ import { SearchScreenView } from '../../../../src/screens/mainTabNav/SearchScree
 storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
 	.add('SearchScreenView', () => {
-		const topSearching = boolean('topSearching', false);
-		const topHasMoreResults = boolean('topHasMoreResults', false);
+		const searching = boolean('searching', false);
+		const hasMoreResults = boolean('hasMoreResults', false);
+
 		return (
 			<SearchScreenView
-				getText={getTextMock}
-				setNavigationParams={() => {
-					/**/
-				}}
 				loadedTabs={[0, 1, 2, 3]}
-				searchTermValue={''}
-				topSearchResults={suggestedItems}
-				topSuggestions={suggestedItems}
-				topSearching={topSearching}
-				topHasMoreResults={topHasMoreResults}
+				searchTermValue=""
+				results={suggestedItems}
+				suggestions={suggestedItems}
+				searching={searching}
+				hasMoreResults={hasMoreResults}
+				onResultPress={action('onResultPress')}
 				onTabIndexChanged={action('onTabIndexChanged')}
 				onSearchTermChange={action('onSearchTermChange')}
 				searchForMoreResults={action('searchForMoreResults')}
 				addFriend={action('addFriend')}
-				// @ts-ignore // This is actually ignoring all props!
+				// @ts-ignore
 				navigation={null}
+				setNavigationParams={() => undefined}
+				getText={getTextMock}
 			/>
 		);
 	});

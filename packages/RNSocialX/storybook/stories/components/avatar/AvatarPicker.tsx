@@ -12,9 +12,10 @@ storiesOf('Components/avatar', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('AvatarPicker', () => (
 		<AvatarPicker
-			avatarImage={image}
-			afterImagePick={action('afterImagePick')}
+			avatarImage={{ uri: image }}
 			avatarSize={200}
+			afterImagePick={action('afterImagePick')}
+			showOptionsMenu={action('showOptionsMenu')}
 			getText={getTextMock}
 		/>
 	));

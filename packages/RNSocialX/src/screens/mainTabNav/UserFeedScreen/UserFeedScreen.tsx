@@ -43,21 +43,19 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			loadingMorePosts,
 			creatingPost,
 			errors,
-			showOptionsMenu,
 			navigation,
 			getText,
 		} = this.props;
 
-		const likeError = !!errors.find(
+		const likeFailed = !!errors.find(
 			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
 		);
 
 		return (
 			<UserFeedScreenView
-				avatarImage={currentUser.avatar}
 				posts={posts}
+				avatarImage={currentUser.avatar}
 				skeletonPost={skeletonPost}
-				likeError={likeError}
 				refreshing={refreshingFeed}
 				creatingPost={creatingPost}
 				canLoadMorePosts={canLoadMorePosts}
@@ -65,7 +63,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
-				showOptionsMenu={showOptionsMenu}
+				likeFailed={likeFailed}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}

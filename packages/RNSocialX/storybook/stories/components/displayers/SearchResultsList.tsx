@@ -41,7 +41,6 @@ storiesOf('Components/displayers', module)
 			<SearchResultsList
 				hasMore={hasMore}
 				searchResults={items}
-				onAddFriend={action('onAddFriend')}
 				onResultPress={action('onResultPress')}
 				onLoadMore={action('onLoadMore')}
 			/>

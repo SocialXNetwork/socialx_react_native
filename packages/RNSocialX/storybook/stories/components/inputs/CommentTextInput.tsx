@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { CommentTextInput } from '../../../../src/components/';
+import { getTextMock } from '../../../../src/mocks';
 import CenterView from '../../../helpers/CenterView';
 
 class CommentTextInputStory extends React.Component {
@@ -13,12 +14,11 @@ class CommentTextInputStory extends React.Component {
 	public render() {
 		return (
 			<CommentTextInput
-				placeholder="Type something"
 				autoFocus={true}
-				showSendButton={true}
-				commentText={this.state.value}
-				onCommentTextChange={(value) => this.setState({ value })}
+				comment={this.state.value}
+				onCommentInputChange={(value: string) => this.setState({ value })}
 				onCommentSend={this.onSendHandler}
+				getText={getTextMock}
 			/>
 		);
 	}

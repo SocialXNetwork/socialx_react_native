@@ -45,7 +45,6 @@ storiesOf('Components/displayers', module)
 				searching={searching}
 				hasMore={hasMore}
 				searchResults={items}
-				onAddFriend={action('onAddFriend')}
 				onResultPress={action('onResultPress')}
 				onLoadMore={action('onLoadMore')}
 				getText={getTextMock}

@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { Animated } from 'react-native';
 
-import { currentUser, getTextMock, posts } from '../../../../src/mocks';
+import { getTextMock, posts } from '../../../../src/mocks';
 import { UserFeedScreenView } from '../../../../src/screens/mainTabNav/UserFeedScreen/UserFeedScreen.view';
 
 storiesOf('Screens/mainTabNav', module)
@@ -18,32 +18,24 @@ storiesOf('Screens/mainTabNav', module)
 
 		return (
 			<UserFeedScreenView
-				currentUser={currentUser}
 				avatarImage={avatar}
 				posts={posts}
 				refreshing={refreshing}
+				shareSectionPlaceholder={shareSectionPlaceholder}
+				loadingMorePosts={loadingMorePosts}
+				canLoadMorePosts={canLoadMorePosts}
+				scrollRef={React.createRef()}
+				scrollY={new Animated.Value(0)}
+				likeFailed={false}
+				creatingPost={false}
+				skeletonPost={posts[0]}
 				onRefresh={action('onRefresh')}
 				onLoadMorePosts={action('onLoadMorePosts')}
 				onCreateWallPost={action('onCreateWallPost')}
-				onImagePress={action('onImagePress')}
-				onCommentPress={action('onCommentPress')}
-				shareSectionPlaceholder={shareSectionPlaceholder}
-				onLikePress={(likedByMe: boolean) => !likedByMe}
-				onDeletePostPress={action('onDeletePress')}
-				onUserPress={action('onUserPress')}
-				loadingMorePosts={loadingMorePosts}
-				canLoadMorePosts={canLoadMorePosts}
 				onAddComment={action('onAddComment')}
-				onSubmitComment={action('onSubmitComment')}
-				scrollRef={React.createRef()}
-				scrollY={new Animated.Value(0)}
+				// @ts-ignore
+				navigation={null}
 				getText={getTextMock}
-				onBlockUser={action('onBlockUser')}
-				onReportProblem={action('onReportProblem')}
-				showOptionsMenu={action('showOptionsMenu')}
-				likeError={false}
-				creatingPost={false}
-				skeletonPost={posts[0]}
 			/>
 		);
 	});

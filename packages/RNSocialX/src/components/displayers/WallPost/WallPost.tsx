@@ -1,9 +1,7 @@
 /**
  * TODO List:
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
- * 2. Implement delete option, available for own posts only!
- * 3. Decide if we can make an enhancer to deal with actions for this component. (for the sake of DRY)
- * 4. Take care of activating <ReportProblemModal/> with proper menu items, see method onShowOptions
+ * 2. Take care of activating <ReportProblemModal/> with proper menu items, see method onShowOptions
  */
 
 import moment from 'moment';
@@ -54,13 +52,6 @@ export interface IWallPostCardState {
 }
 
 class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
-	public static defaultProps = {
-		governanceVersion: false,
-		numberOfSuperLikes: 0,
-		numberOfComments: 0,
-		numberOfWalletCoins: 0,
-	};
-
 	public static getDerivedStateFromProps(
 		nextProps: IWallPostCardProps,
 		currentState: IWallPostCardState,
@@ -109,7 +100,11 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 	}
 
 	public shouldComponentUpdate(nextProps: IWallPostCardProps, nextState: IWallPostCardState) {
-		return this.state !== nextState || this.props.post !== nextProps.post;
+		return (
+			this.state !== nextState ||
+			this.props.post !== nextProps.post ||
+			this.props.likeFailed !== nextProps.likeFailed
+		);
 	}
 
 	public componentWillUnmount() {
@@ -457,17 +452,11 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			{
 				label: getText('wall.post.menu.block.user'),
 				icon: 'ios-close-circle',
-				// actionHandler: () => this.props.onBlockUser(this.props.owner.userId),
 				actionHandler: () => undefined,
 			},
 			{
 				label: getText('wall.post.menu.report.problem'),
 				icon: 'ios-warning',
-				// actionHandler: () => {
-				// 	this.setState({
-				// 		reportProblemModalVisible: true,
-				// 	});
-				// },
 				actionHandler: () => undefined,
 			},
 		];
@@ -522,12 +511,14 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 interface IWallPostProps extends INavigationProps {
 	post: IWallPostData;
 	commentInput: boolean;
+	likeFailed: boolean;
 	onAddComment: (cardHeight: number) => void;
 }
 
 export const WallPost: React.SFC<IWallPostProps> = ({
 	post,
 	commentInput,
+	likeFailed,
 	onAddComment,
 	navigation,
 }) => (
@@ -536,6 +527,7 @@ export const WallPost: React.SFC<IWallPostProps> = ({
 			<WallPostCard
 				post={post}
 				commentInput={commentInput}
+				likeFailed={likeFailed}
 				onAddComment={onAddComment}
 				{...data}
 				{...actions}

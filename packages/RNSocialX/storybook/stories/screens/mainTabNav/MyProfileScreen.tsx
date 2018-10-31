@@ -9,7 +9,7 @@ import { MyProfileScreenView } from '../../../../src/screens/mainTabNav/MyProfil
 
 class MyProfileScreenViewStory extends React.Component {
 	public state = {
-		gridMediaProvider: new DataProvider((row1: any, row2: any) => {
+		dataProvider: new DataProvider((row1: any, row2: any) => {
 			return row1.index !== row2.index;
 		}),
 	};
@@ -43,25 +43,25 @@ class MyProfileScreenViewStory extends React.Component {
 				numberOfFriends={numberOfFriends}
 				numberOfComments={numberOfComments}
 				getText={getTextMock}
-				onViewProfilePhoto={action('onViewProfilePhoto')}
 				description={description}
-				gridMediaProvider={this.state.gridMediaProvider}
-				loadMorePhotosHandler={this.loadMorePhotosHandler}
+				dataProvider={this.state.dataProvider}
+				hasPhotos={hasPhotos}
+				onLoadMorePhotos={this.onLoadMorePhotosHandler}
+				onProfilePhotoPress={action('onProfilePhotoPress')}
 				onViewMediaFullScreen={action('onViewMediaFullScreen')}
 				onEditProfile={action('onEditProfile')}
 				onSharePress={action('onSharePress')}
 				onShowDotsModal={action('onShowDotsModal')}
-				hasPhotos={hasPhotos}
 			/>
 		);
 	}
 
-	private loadMorePhotosHandler = () => {
-		const { gridMediaProvider } = this.state;
+	private onLoadMorePhotosHandler = () => {
+		const { dataProvider } = this.state;
 		const headerElement = [{ index: '1da431da-fad41dasg5125' }];
 
-		const loadedSize = gridMediaProvider.getSize();
-		const loadedMedia = loadedSize === 0 ? headerElement : gridMediaProvider.getAllData();
+		const loadedSize = dataProvider.getSize();
+		const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
 
 		const newMedia = new Array(20).fill(0).map((val, index) => ({
 			url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedPhotoIndex + index),
@@ -70,7 +70,7 @@ class MyProfileScreenViewStory extends React.Component {
 		const allMedia = [...loadedMedia, ...newMedia];
 
 		this.setState({
-			gridMediaProvider: gridMediaProvider.cloneWithRows(allMedia),
+			dataProvider: dataProvider.cloneWithRows(allMedia),
 		});
 		this.lastLoadedPhotoIndex = allMedia.length - 1;
 	};
