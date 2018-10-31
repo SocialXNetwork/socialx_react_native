@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {
 	IAdSetupPostData,
-	IDotsMenuProps,
+	IOptionsMenuProps,
 	ITranslatedProps,
 	IWallPostPhotoOptimized,
 } from '../../types';
@@ -14,7 +14,7 @@ import {
 } from '../../utilities';
 import { NewAdSetupPostScreenView } from './NewAdSetupPostScreen.view';
 
-interface INewAdSetupPostScreenProps extends ITranslatedProps, IDotsMenuProps {
+interface INewAdSetupPostScreenProps extends ITranslatedProps, IOptionsMenuProps {
 	updateAdSetPost: (data: IAdSetupPostData) => void;
 	adSetupPostFormik: React.RefObject<any>;
 }
@@ -52,7 +52,7 @@ export class NewAdSetupPostScreen extends React.Component<
 	};
 
 	private onAddMediaHandler = () => {
-		const { showDotsMenuModal, getText } = this.props;
+		const { showOptionsMenu, getText } = this.props;
 		const menuItems = [
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
@@ -65,7 +65,7 @@ export class NewAdSetupPostScreen extends React.Component<
 				actionHandler: () => this.addToScrollerSelectedMediaObject('photo'),
 			},
 		];
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	private addToScrollerSelectedMediaObject = async (source: 'gallery' | 'photo') => {

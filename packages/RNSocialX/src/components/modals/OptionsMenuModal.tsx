@@ -6,17 +6,18 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
-import { IDotsMenuItem } from '../../types';
+import { IOptionsMenuItem } from '../../types';
 import { ModalManager, WithManagedTransitions } from '../managedTransitions';
-import styles from './DotsMenuModal.style';
 
-interface IDotsMenuModalProps {
+import styles from './OptionsMenuModal.style';
+
+interface IOptionsMenuModalProps {
 	visible: boolean;
-	items: IDotsMenuItem[];
+	items: IOptionsMenuItem[];
 	onBackdropPress: () => void;
 }
 
-export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
+export const OptionsMenuModal: React.SFC<IOptionsMenuModalProps> = ({
 	visible,
 	items,
 	onBackdropPress,
@@ -34,7 +35,7 @@ export const DotsMenuModal: React.SFC<IDotsMenuModalProps> = ({
 				style={styles.container}
 			>
 				<SafeAreaView forceInset={{ bottom: 'always', top: 'never' }} style={styles.innerContainer}>
-					{items.map(({ icon, label, actionHandler }: IDotsMenuItem, index: number) => {
+					{items.map(({ icon, label, actionHandler }: IOptionsMenuItem, index: number) => {
 						const itemStyles = [
 							styles.row,
 							index === 0 ? [styles.first] : {},

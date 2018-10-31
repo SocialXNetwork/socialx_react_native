@@ -13,14 +13,14 @@ import { Root } from 'native-base';
 import {
 	ActivityIndicatorModal,
 	ConfirmationModal,
-	DotsMenuModal,
 	Header,
 	OfflineOverlayModal,
+	OptionsMenuModal,
 	TabIcon,
 	TransparentOverlayModal,
 } from '../components';
 import { WithNavigation } from '../enhancers/navigation/WithNavigation';
-import { IDotsMenuItem, IStackDefaultConfig } from '../types';
+import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
 import styles, { tabBarBackgroundColor } from './Navigation.style';
 
@@ -179,7 +179,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 						focused={focused}
 						notifications={props.screenProps.notifications}
 						setNavigationParams={props.screenProps.setNavigationParams}
-						showDotsMenuModal={props.screenProps.showDotsMenuModal}
+						showOptionsMenu={props.screenProps.showOptionsMenu}
 						getText={props.screenProps.getText}
 					/>
 				);
@@ -289,7 +289,7 @@ const Navigation = () => (
 										notifications,
 										getText,
 										setNavigationParams,
-										showDotsMenuModal: (items: IDotsMenuItem[]) => showOptionsMenu({ items }),
+										showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
 									}}
 								/>
 							)}
@@ -334,7 +334,7 @@ const Navigation = () => (
 															hideConfirmation();
 														}}
 													/>
-													<DotsMenuModal
+													<OptionsMenuModal
 														visible={!!optionsMenu}
 														items={(optionsMenu && optionsMenu.items) || []}
 														onBackdropPress={hideOptionsMenu}

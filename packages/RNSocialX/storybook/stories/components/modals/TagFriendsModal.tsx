@@ -12,25 +12,25 @@ const MOCK_SEARCH_RESULTS = [
 		id: '1',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		id: '2',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		id: '3',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		id: '4',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 ];
 
@@ -39,13 +39,13 @@ const MOCK_SELECTED_USERS = [
 		id: '2',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 	{
 		id: '3',
 		fullName: 'Alex Sirbu',
 		location: 'Timisoara',
-		avatarURL: 'https://www.w3schools.com/w3css/img_lights.jpg',
+		avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 	},
 ];
 

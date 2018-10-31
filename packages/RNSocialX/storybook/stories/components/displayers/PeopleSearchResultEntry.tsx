@@ -12,7 +12,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('PeopleSearchResultEntry', () => (
 		<PeopleSearchResultEntry
-			avatarURL={image}
+			avatar={image}
 			fullName="Alex Sirbu"
 			location="Timisoara"
 			selected={true}

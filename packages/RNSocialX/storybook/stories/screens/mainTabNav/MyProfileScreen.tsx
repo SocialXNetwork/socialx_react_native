@@ -28,14 +28,14 @@ class MyProfileScreenViewStory extends React.Component {
 		const numberOfFriends = number('numberOfFriends', 25990);
 		const numberOfComments = number('numberOfComments', 152087);
 
-		const aboutMeText = text(
-			'aboutMeText',
+		const description = text(
+			'description',
 			'This is me fjkasfbasdifbasbdiasbdkabdksabdkabdfkl abflidblifbjlEbdabjILDBNAEDNASDALSNDLANLSDLADNKASDKBAKSDBAKBFK`FLSABdbla.bsdasbj.',
 		);
 
 		return (
 			<MyProfileScreenView
-				avatarURL={userAvatar}
+				avatar={userAvatar}
 				fullName={fullName}
 				userName={userName}
 				numberOfPhotos={numberOfPhotos}
@@ -44,7 +44,7 @@ class MyProfileScreenViewStory extends React.Component {
 				numberOfComments={numberOfComments}
 				getText={getTextMock}
 				onViewProfilePhoto={action('onViewProfilePhoto')}
-				aboutMeText={aboutMeText}
+				description={description}
 				gridMediaProvider={this.state.gridMediaProvider}
 				loadMorePhotosHandler={this.loadMorePhotosHandler}
 				onViewMediaFullScreen={action('onViewMediaFullScreen')}

@@ -7,8 +7,8 @@ import * as React from 'react';
 
 import { KeyboardContext, SCREENS } from '../../../environment/consts';
 import {
-	IDotsMenuProps,
 	IFriendsSearchResult,
+	IOptionsMenuProps,
 	IResizeProps,
 	ITranslatedProps,
 	IWallPostPhotoOptimized,
@@ -28,13 +28,13 @@ interface IWallPostPhotoData {
 const mock: IWithPhotoEnhancedProps = {
 	data: {
 		marginBottom: 0,
-		currentUserAvatarURL: 'https://placeimg.com/200/200/people',
+		currentUseravatar: 'https://placeimg.com/200/200/people',
 		mediaObjects: [],
 	},
 	actions: {
 		getText: (value: string, ...args: any[]) => value,
 		// This is now implemented with the WithOverlays connector enhancer
-		showDotsMenuModal: (items) => {
+		showOptionsMenu: (items) => {
 			/**/
 		},
 		createPost: (wallPostData: IWallPostPhotoData) => {
@@ -44,11 +44,11 @@ const mock: IWithPhotoEnhancedProps = {
 };
 
 export interface IWithPhotoEnhancedData extends IResizeProps {
-	currentUserAvatarURL?: string;
+	currentUseravatar?: string;
 	mediaObjects: IWallPostPhotoOptimized[];
 }
 
-export interface IWithPhotoEnhancedActions extends ITranslatedProps, IDotsMenuProps {
+export interface IWithPhotoEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	createPost: (wallPostData: IWallPostPhotoData) => void;
 }
 
@@ -79,14 +79,14 @@ export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState>
 													this.props.children({
 														data: {
 															...mock.data,
-															currentUserAvatarURL: currentUser!.avatarURL,
+															currentUseravatar: currentUser!.avatar,
 															mediaObjects: navigationParams[SCREENS.Photo].mediaObjects,
 															marginBottom,
 														},
 														actions: {
 															...mock.actions,
 															getText,
-															showDotsMenuModal: (items) =>
+															showOptionsMenu: (items) =>
 																showOptionsMenu({
 																	items,
 																}),

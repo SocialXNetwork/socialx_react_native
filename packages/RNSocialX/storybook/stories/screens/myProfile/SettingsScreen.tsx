@@ -9,7 +9,7 @@ import { SettingsScreenView } from '../../../../src/screens/myProfile/SettingsSc
 storiesOf('Screens/myProfile', module)
 	.addDecorator(withKnobs)
 	.add('SettingsScreen', () => {
-		const aboutMeText = text('aboutMeText', 'Lorem ipsum dolor sit amet.');
+		const description = text('description', 'Lorem ipsum dolor sit amet.');
 		const fullName = text('fullName', 'Alex Sirbu');
 		const userName = text('userName', 'alexsirbu');
 		const email = text('email', 'alex@test.com');
@@ -24,13 +24,13 @@ storiesOf('Screens/myProfile', module)
 				onSaveChanges={action('onSaveChanges')}
 				onGoBack={action('onGoBack')}
 				getText={getTextMock}
-				bio={aboutMeText}
+				description={description}
 				userName={userName}
 				email={email}
 				miningEnabled={mining}
 				shareDataEnabled={shareData}
-				avatarURL={userAvatar}
-				showDotsMenuModal={action('showDotsMenuModal')}
+				avatar={userAvatar}
+				showOptionsMenu={action('showOptionsMenu')}
 				fullName={fullName}
 			/>
 		);

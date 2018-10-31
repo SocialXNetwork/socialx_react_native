@@ -108,7 +108,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	}
 
 	public render() {
-		const { getText, post, startComment, errors, showDotsMenuModal } = this.props;
+		const { getText, post, startComment, errors, showOptionsMenu } = this.props;
 
 		const { comment } = this.state;
 
@@ -139,7 +139,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				onCommentsBackPress={this.onCommentsBackPressHandler}
 				onImagePress={this.onImagePressHandler}
 				onLikePress={this.onLikePressHandler}
-				showDotsMenuModal={showDotsMenuModal}
+				showOptionsMenu={showOptionsMenu}
 				scrollRef={this.scrollRef}
 				commentInputRef={this.commentInputRef}
 				getText={getText}
@@ -167,7 +167,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			user: {
 				userId: currentUser.userId,
 				fullName: currentUser.fullName,
-				avatarURL: currentUser.avatarURL,
+				avatar: currentUser.avatar,
 			},
 			timestamp: new Date(Date.now()),
 			numberOfLikes: 0,
@@ -231,7 +231,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onShowCommentOptionsHandler = (comment: IWallPostComment) => {
-		const { showDotsMenuModal, getText } = this.props;
+		const { showOptionsMenu, getText } = this.props;
 		const menuItems = [
 			{
 				label: getText('comments.screen.advanced.menu.copy'),
@@ -246,7 +246,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 				},
 			},
 		];
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	private onDeletePostPressHandler = async (postId: string) => {
@@ -267,7 +267,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 	};
 
 	private onShowPostOptionsHandler = () => {
-		const { getText, showDotsMenuModal, post, canDelete } = this.props;
+		const { getText, showOptionsMenu, post, canDelete } = this.props;
 		const baseItems = [
 			{
 				label: getText('wall.post.menu.block.user'),
@@ -288,7 +288,7 @@ class Screen extends Component<ICommentsScreenProps, ICommentsScreenState> {
 			},
 		};
 		const items = canDelete ? [...baseItems, deleteItem] : baseItems;
-		showDotsMenuModal(items);
+		showOptionsMenu(items);
 	};
 
 	private onCommentsBackPressHandler = () => {

@@ -3,7 +3,12 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Colors, Sizes } from '../../environment/theme';
-import { getTextSignature, IDotsMenuItem, IDotsMenuProps, ITranslatedProps } from '../../types';
+import {
+	getTextSignature,
+	IOptionsMenuItem,
+	IOptionsMenuProps,
+	ITranslatedProps,
+} from '../../types';
 import { getCameraMediaObject, getGalleryMediaObject } from '../../utilities';
 import { AvatarImage } from './AvatarImage';
 
@@ -25,7 +30,7 @@ const AVATAR_CAMERA_OPTIONS = {
 	useFrontCamera: true,
 };
 
-interface IAvatarPickerProps extends ITranslatedProps, IDotsMenuProps {
+interface IAvatarPickerProps extends ITranslatedProps, IOptionsMenuProps {
 	avatarImage: { uri: string };
 	afterImagePick: (image: string) => void;
 	avatarSize?: number;
@@ -48,7 +53,7 @@ const takeCameraPhoto = async (afterImagePick: (image: string) => void) => {
 const editAvatar = (
 	uri: string,
 	afterImagePick: (image: string) => void,
-	showDotsMenuModal: (items: IDotsMenuItem[]) => void,
+	showOptionsMenu: (items: IOptionsMenuItem[]) => void,
 	getText: getTextSignature,
 ) => {
 	const defaultOptions = [
@@ -72,7 +77,7 @@ const editAvatar = (
 
 	const items = uri.length > 0 ? [...defaultOptions, removeOption] : defaultOptions;
 
-	showDotsMenuModal(items);
+	showOptionsMenu(items);
 };
 
 export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
@@ -80,7 +85,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 	avatarSize = Sizes.smartHorizontalScale(80),
 	afterImagePick,
 	getText,
-	showDotsMenuModal,
+	showOptionsMenu,
 }) => {
 	const avatarSizeStyle = {
 		width: avatarSize,
@@ -90,7 +95,7 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 
 	return (
 		<TouchableOpacity
-			onPress={() => editAvatar(avatarImage.uri, afterImagePick, showDotsMenuModal, getText)}
+			onPress={() => editAvatar(avatarImage.uri, afterImagePick, showOptionsMenu, getText)}
 		>
 			<AvatarImage image={avatarImage.uri} style={avatarSizeStyle} />
 			<View style={style.editIcon}>

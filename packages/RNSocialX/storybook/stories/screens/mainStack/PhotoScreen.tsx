@@ -20,19 +20,19 @@ storiesOf('Screens/mainStack', module)
 				id: '1',
 				fullName: 'Lorem Ipsum',
 				location: 'Nowhere',
-				avatarURL: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
+				avatar: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
 			},
 			{
 				id: '2',
 				fullName: 'Lorem Ipsum',
 				location: 'Nowhere',
-				avatarURL: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
+				avatar: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
 			},
 			{
 				id: '3',
 				fullName: 'Lorem Ipsum',
 				location: 'Nowhere',
-				avatarURL: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
+				avatar: 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg',
 			},
 		];
 		const locationEnabled = boolean('locationEnabled', false);
@@ -42,7 +42,7 @@ storiesOf('Screens/mainStack', module)
 
 		return (
 			<PhotoScreenView
-				avatarURL={avatar}
+				avatar={avatar}
 				mediaObjects={mediaObjects}
 				showTagFriendsModal={action('showTagFriendsModal')}
 				taggedFriends={taggedFriends}

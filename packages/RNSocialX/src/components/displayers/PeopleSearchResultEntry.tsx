@@ -13,7 +13,7 @@ const OUT_ANIMATION_NAME = 'fadeOutRight';
 const OUT_ANIMATION_DURATION = 300;
 
 interface IPeopleSearchResultEntryProps extends ITranslatedProps {
-	avatarURL: string;
+	avatar: string;
 	fullName: string;
 	location: string;
 	selected: boolean;
@@ -68,7 +68,7 @@ const addButtonPressedHandler = (
 export const PeopleSearchResultEntry: React.SFC<IPeopleSearchResultEntryProps> = ({
 	addHandler,
 	selected,
-	avatarURL,
+	avatar,
 	fullName,
 	location,
 	getText,
@@ -78,7 +78,7 @@ export const PeopleSearchResultEntry: React.SFC<IPeopleSearchResultEntryProps> =
 	return (
 		<View style={[style.container, selected ? style.containerSelected : {}]}>
 			<View style={style.leftContainer}>
-				<AvatarImage image={avatarURL} style={style.avatarImage} />
+				<AvatarImage image={avatar} style={style.avatarImage} />
 				<View style={style.avatarNameContainer}>
 					<Text style={style.fullName}>{fullName}</Text>
 					<Text style={style.location}>{location}</Text>

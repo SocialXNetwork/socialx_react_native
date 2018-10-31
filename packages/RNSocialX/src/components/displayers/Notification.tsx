@@ -29,7 +29,7 @@ export const Notification: React.SFC<INotificationProps> = ({
 	const {
 		notificationId,
 		userId,
-		avatarURL,
+		avatar,
 		fullName,
 		userName,
 		type,
@@ -67,7 +67,7 @@ export const Notification: React.SFC<INotificationProps> = ({
 		<View style={styles.container}>
 			<View style={styles.contentContainer}>
 				<TouchableOpacity style={styles.row} onPress={() => onViewUserProfile(userId)}>
-					<AvatarImage image={avatarURL} style={styles.avatarImage} />
+					<AvatarImage image={avatar} style={styles.avatarImage} />
 					<View style={{ flex: 1 }}>
 						<Text style={[styles.fullName, { paddingBottom: groupName ? 5 : 0 }]}>{fullName}</Text>
 						{userName && <Text style={styles.userName}>{'@' + userName}</Text>}

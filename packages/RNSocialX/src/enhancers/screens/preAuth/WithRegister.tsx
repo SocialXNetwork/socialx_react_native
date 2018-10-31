@@ -11,7 +11,7 @@ import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import { IDotsMenuProps, IError, IGlobal, ITranslatedProps } from '../../../types';
+import { IError, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -32,7 +32,7 @@ const mock: IWithRegisterEnhancedProps = {
 		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) =>
 			undefined,
 		getText: (value: string, ...args: any[]) => value,
-		showDotsMenuModal: (items) => undefined,
+		showOptionsMenu: (items) => undefined,
 	},
 };
 
@@ -40,7 +40,7 @@ export interface IWithRegisterEnhancedData {
 	errors: IError[];
 }
 
-export interface IWithRegisterEnhancedActions extends ITranslatedProps, IDotsMenuProps {
+export interface IWithRegisterEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	register: (registerData: IRegisterData) => void;
 	loadPosts: () => void;
 	setGlobal: (global: IGlobal) => void;
@@ -94,13 +94,13 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 																			fullName: registerData.name,
 																			miningEnabled: true,
 																			shareDataEnabled: true,
-																			aboutMeText: 'about me text',
+																			description: 'about me text',
 																		}),
 																	loadPosts: loadMorePosts,
 																	setGlobal,
 																	resetNavigationToRoute,
 																	getText: i18nProps.getText,
-																	showDotsMenuModal: (items) =>
+																	showOptionsMenu: (items) =>
 																		overlayProps.showOptionsMenu({ items }),
 																},
 															})

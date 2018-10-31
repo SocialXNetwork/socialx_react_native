@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { currentUser } from '../../../mocks';
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
-import { ICurrentUser, IDotsMenuProps, IGlobal, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -11,27 +10,14 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
-const mock: IWithSettingsEnhancedProps = {
-	data: {
-		currentUser,
-	},
-	actions: {
-		updateUserProfile: (user: ISettingsData) => undefined,
-		logout: () => undefined,
-		setGlobal: (global: IGlobal) => undefined,
-		showDotsMenuModal: (items) => undefined,
-		getText: (value: string, ...args: any[]) => value,
-	},
-};
-
 export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;
 }
 
-export interface IWithSettingsEnhancedActions extends ITranslatedProps, IDotsMenuProps {
-	setGlobal: (global: IGlobal) => void;
+export interface IWithSettingsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	updateUserProfile: (user: ISettingsData) => void;
 	logout: () => void;
+	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithSettingsEnhancedProps {
@@ -63,20 +49,20 @@ export class WithSettings extends React.Component<IWithSettingsProps, IWithSetti
 															this.props.children({
 																data: {
 																	currentUser: {
-																		shareDataEnabled: mock.data.currentUser.shareDataEnabled,
+																		shareDataEnabled: false,
 																		...currUser.currentUser!,
 																	},
 																},
 																actions: {
 																	updateUserProfile: (user) =>
 																		updateCurrentProfile({
-																			aboutMeText: user.bio,
-																			avatar: user.avatarURL,
+																			aboutMeText: user.description,
+																			avatar: user.avatar,
 																			email: user.email,
 																			fullName: user.fullName,
 																		}),
 																	logout,
-																	showDotsMenuModal: (items) => showOptionsMenu({ items }),
+																	showOptionsMenu: (items) => showOptionsMenu({ items }),
 																	setGlobal,
 																	getText,
 																},

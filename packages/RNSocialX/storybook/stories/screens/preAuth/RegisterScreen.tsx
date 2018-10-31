@@ -12,8 +12,8 @@ storiesOf('Screens/preAuth', module)
 		<RegisterScreenView
 			onNavigateToTermsAndConditions={action('onNavigateToTermsAndCond')}
 			onGoBack={action('onGoBack')}
-			getText={getTextMock}
-			showDotsMenuModal={action('showDotsMenuModal')}
 			onRegister={action('onRegister')}
+			showOptionsMenu={action('showOptionsMenu')}
+			getText={getTextMock}
 		/>
 	));

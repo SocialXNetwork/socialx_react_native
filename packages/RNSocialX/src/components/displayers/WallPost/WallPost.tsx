@@ -11,14 +11,13 @@ import * as React from 'react';
 import { Alert, Animated, Keyboard, Linking, Platform, Text, View } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
-import { HeartAnimation, ReportProblemModal } from '../../';
+import { HeartAnimation } from '../../';
 import { OS_TYPES } from '../../../environment/consts';
-import { IDotsMenuProps, IWallPostCardProps } from '../../../types';
 import {
-	BestComments,
 	CommentInput,
 	PostText,
 	RecentLikes,
+	TopComments,
 	UserDetails,
 	ViewAllComments,
 	WallPostActions,
@@ -26,17 +25,19 @@ import {
 	WarnOffensiveContent,
 } from './';
 
-import styles from './WallPostCard.style';
+import {
+	IWallPostEnhancedActions,
+	IWallPostEnhancedData,
+	WithWallPost,
+} from '../../../enhancers/components/WithWallPost';
 
-type IWallPostCardPropsType = IWallPostCardProps & IDotsMenuProps;
+import { INavigationProps, IWallPostData } from '../../../types';
+import styles from './WallPost.style';
+
+type IWallPostCardProps = IWallPostEnhancedActions & IWallPostEnhancedData;
 
 export interface IWallPostCardState {
 	fullTextVisible: boolean;
-	reportProblemModalVisible: boolean;
-	displayOptions: boolean;
-	disableNavigation: boolean;
-	hidePostActionsAndComments: boolean;
-	disableMediaFullScreen: boolean;
 	heartAnimation: boolean;
 	comment: string;
 	inputFocused: boolean;
@@ -49,10 +50,10 @@ export interface IWallPostCardState {
 		second: string | null;
 		total: number;
 	};
-	likeError: boolean;
+	likeFailed: boolean;
 }
 
-export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallPostCardState> {
+class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
 	public static defaultProps = {
 		governanceVersion: false,
 		numberOfSuperLikes: 0,
@@ -61,12 +62,12 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 	};
 
 	public static getDerivedStateFromProps(
-		nextProps: IWallPostCardPropsType,
+		nextProps: IWallPostCardProps,
 		currentState: IWallPostCardState,
 	) {
-		if (nextProps.likeError !== currentState.likeError) {
+		if (nextProps.likeFailed !== currentState.likeFailed) {
 			return {
-				likeError: true,
+				likeFailed: true,
 			};
 		}
 
@@ -75,11 +76,6 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 
 	public state = {
 		fullTextVisible: false,
-		reportProblemModalVisible: false,
-		displayOptions: this.props.displayDots ? this.props.governanceVersion || true : false,
-		disableNavigation: this.props.governanceVersion || false,
-		hidePostActionsAndComments: this.props.governanceVersion || false,
-		disableMediaFullScreen: this.props.governanceVersion || false,
 		heartAnimation: false,
 		comment: '',
 		inputFocused: false,
@@ -90,12 +86,16 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 		viewOffensiveContent: false,
 		recentLikes: {
 			first:
-				this.props.likes.length > 0 ? this.props.likes[this.props.likes.length - 1].userName : null,
+				this.props.post.likes.length > 0
+					? this.props.post.likes[this.props.post.likes.length - 1].userName
+					: null,
 			second:
-				this.props.likes.length > 1 ? this.props.likes[this.props.likes.length - 2].userName : null,
-			total: this.props.likes.length,
+				this.props.post.likes.length > 1
+					? this.props.post.likes[this.props.post.likes.length - 2].userName
+					: null,
+			total: this.props.post.likes.length,
 		},
-		likeError: false,
+		likeFailed: false,
 	};
 
 	private readonly containerViewRef: React.RefObject<View> = React.createRef();
@@ -109,17 +109,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 	}
 
 	public shouldComponentUpdate(nextProps: IWallPostCardProps, nextState: IWallPostCardState) {
-		return (
-			this.state !== nextState ||
-			this.props.postId !== nextProps.postId ||
-			this.props.numberOfComments !== nextProps.numberOfComments ||
-			this.props.bestComments !== nextProps.bestComments ||
-			this.props.likes !== nextProps.likes ||
-			this.props.likedByMe !== nextProps.likedByMe ||
-			this.props.listLoading !== nextProps.listLoading ||
-			this.props.likeError !== nextProps.likeError ||
-			this.props.owner !== nextProps.owner
-		);
+		return this.state !== nextState || this.props.post !== nextProps.post;
 	}
 
 	public componentWillUnmount() {
@@ -131,30 +121,33 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 
 	public render() {
 		const {
-			getText,
-			timestamp,
-			marginBottom,
-			owner,
-			taggedFriends,
-			location,
+			post,
+			skeletonPost,
+			commentInput,
+			likeFailed,
+			onCommentsPress,
 			onUserPress,
-			postText,
-			numberOfComments,
-			numberOfSuperLikes,
-			numberOfWalletCoins,
-			postId,
-			onCommentPress,
-			likedByMe,
-			likeError,
-			media,
 			onImagePress,
-			bestComments,
-			noInput,
-			contentOffensive,
-			listLoading,
-			currentUser,
-			skeleton,
+			getText,
 		} = this.props;
+
+		const {
+			postId,
+			postText,
+			location,
+			taggedFriends,
+			timestamp,
+			owner,
+			likedByCurrentUser,
+			media,
+			topComments,
+			numberOfSuperLikes,
+			numberOfComments,
+			numberOfWalletCoins,
+			loading,
+			currentUserAvatar,
+			offensiveContent,
+		} = post;
 
 		const {
 			viewOffensiveContent,
@@ -162,13 +155,8 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			inputAvatarSize,
 			inputBorderWidth,
 			inputIconPosition,
-			displayOptions,
-			reportProblemModalVisible,
-			disableNavigation,
 			fullTextVisible,
-			hidePostActionsAndComments,
 			heartAnimation,
-			disableMediaFullScreen,
 			comment,
 		} = this.state;
 
@@ -182,20 +170,9 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 
 		return (
 			<View style={styles.container} ref={this.containerViewRef}>
-				{!displayOptions && (
-					<ReportProblemModal
-						visible={reportProblemModalVisible}
-						confirmHandler={this.reportProblemHandler}
-						declineHandler={this.toggleDeclineReportModal}
-						marginBottom={marginBottom}
-						getText={getText}
-					/>
-				)}
 				<UserDetails
 					user={owner}
 					timestamp={timestamp}
-					displayOptions={displayOptions}
-					disableNavigation={disableNavigation}
 					taggedFriends={taggedFriends}
 					location={location}
 					onUserPress={onUserPress}
@@ -216,36 +193,33 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 						{heartAnimation && (
 							<HeartAnimation ended={(status) => this.setState({ heartAnimation: !status })} />
 						)}
-						{(!contentOffensive || viewOffensiveContent) && (
+						{(!offensiveContent || viewOffensiveContent) && (
 							<WallPostMedia
 								mediaObjects={media}
 								onMediaObjectView={(index: number) => onImagePress(index, media, postId)}
 								onLikeButtonPressed={this.onDoubleTapLikeHandler}
-								noInteraction={disableMediaFullScreen}
-								placeholder={skeleton}
+								placeholder={!!skeletonPost}
 								getText={getText}
 							/>
 						)}
 						<WarnOffensiveContent
 							getText={getText}
 							onShowOffensiveContent={this.showOffensiveContent}
-							visible={contentOffensive && !viewOffensiveContent}
+							visible={offensiveContent && !viewOffensiveContent}
 						/>
 					</View>
 				)}
-				{!hidePostActionsAndComments && (
-					<WallPostActions
-						likedByMe={likedByMe}
-						likeError={likeError}
-						numberOfSuperLikes={numberOfSuperLikes}
-						numberOfWalletCoins={numberOfWalletCoins}
-						onLikePress={this.onLikePressHandler}
-						onCommentPress={() => onCommentPress(postId, true)}
-						onSuperLikePress={this.superLikeButtonPressedHandler}
-						onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
-						getText={getText}
-					/>
-				)}
+				<WallPostActions
+					likedByCurrentUser={likedByCurrentUser}
+					likeFailed={likeFailed}
+					numberOfSuperLikes={numberOfSuperLikes}
+					numberOfWalletCoins={numberOfWalletCoins}
+					onLikePress={this.onLikePressHandler}
+					onCommentPress={() => onCommentsPress(postId, true)}
+					onSuperLikePress={this.superLikeButtonPressedHandler}
+					onWalletCoinsButtonPress={this.walletCoinsButtonPressedHandler}
+					getText={getText}
+				/>
 				<RecentLikes
 					recentLikes={this.state.recentLikes}
 					onUserPress={onUserPress}
@@ -253,19 +227,19 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 				/>
 				<ViewAllComments
 					numberOfComments={numberOfComments}
-					onCommentPress={() => onCommentPress(postId, false)}
+					onCommentPress={() => onCommentsPress(postId, false)}
 					getText={getText}
 				/>
-				<BestComments
-					bestComments={bestComments}
+				<TopComments
+					topComments={topComments}
 					onUserPress={onUserPress}
-					onCommentPress={() => onCommentPress(postId, false)}
+					onCommentPress={() => onCommentsPress(postId, false)}
 				/>
 				<CommentInput
-					noInput={noInput}
+					commentInput={commentInput}
 					comment={comment}
-					disabled={listLoading}
-					avatarURL={currentUser.avatarURL}
+					disabled={loading}
+					avatar={currentUserAvatar}
 					animationValues={animationValues}
 					onCommentInputChange={this.onCommentInputChange}
 					onCommentInputPress={this.onCommentInputPress}
@@ -303,16 +277,17 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 	};
 
 	private onLikePressHandler = async () => {
-		const { onLikePress, postId, currentUser, likedByMe, likes } = this.props;
+		const { post, onLikePress } = this.props;
+		const { postId, currentUserName, likedByCurrentUser, likes } = post;
 		const { total } = this.state.recentLikes;
 
-		if (!likedByMe) {
+		if (!likedByCurrentUser) {
 			this.setState((currentState) => {
 				return {
-					likeError: false,
+					likeFailed: false,
 					recentLikes: {
 						second: currentState.recentLikes.first,
-						first: currentUser.userName,
+						first: currentUserName,
 						total: currentState.recentLikes.total + 1,
 					},
 				};
@@ -321,7 +296,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			if (total === 1) {
 				this.setState((currentState) => {
 					return {
-						likeError: false,
+						likeFailed: false,
 						recentLikes: {
 							...currentState.recentLikes,
 							first: null,
@@ -333,9 +308,9 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 				this.setState((currentState) => {
 					const { first, second } = currentState.recentLikes;
 					return {
-						likeError: false,
+						likeFailed: false,
 						recentLikes: {
-							first: first === currentUser.userName ? second : first,
+							first: first === currentUserName ? second : first,
 							second: null,
 							total: 1,
 						},
@@ -345,10 +320,10 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 				this.setState((currentState) => {
 					const { first, second } = currentState.recentLikes;
 					return {
-						likeError: false,
+						likeFailed: false,
 						recentLikes: {
-							first: first === currentUser.userName ? second : first,
-							second: second === currentUser.userName ? likes[likes.length - 3].userName : second,
+							first: first === currentUserName ? second : first,
+							second: second === currentUserName ? likes[likes.length - 3].userName : second,
 							total: currentState.recentLikes.total - 1,
 						},
 					};
@@ -356,9 +331,9 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			}
 		}
 
-		await onLikePress(likedByMe, postId);
+		await onLikePress(likedByCurrentUser, postId);
 
-		if (this.state.likeError) {
+		if (this.state.likeFailed) {
 			this.setState({
 				recentLikes: {
 					first: likes.length > 0 ? likes[likes.length - 1].userName : null,
@@ -369,82 +344,42 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 		}
 	};
 
-	private reportProblemHandler = (reason: string, description: string) => {
-		this.props.onReportProblem(reason, description);
-		this.toggleDeclineReportModal();
-	};
-
-	private toggleDeclineReportModal = () => {
-		this.setState((prevState) => ({
-			reportProblemModalVisible: !prevState.reportProblemModalVisible,
-		}));
-	};
-
-	private toggleShowFullText = () => {
-		this.setState({
-			fullTextVisible: true,
-		});
-	};
-
-	private handleHashTag = (hashTag: string) => {
-		Alert.alert('Hashtags coming soon.' + hashTag);
-	};
-
-	private handleUserTag = (userTag: string) => {
-		Alert.alert('Tags coming soon.' + userTag);
-	};
-
-	private launchExternalURL = async (url: string) => {
-		try {
-			const supported = await Linking.canOpenURL(url);
-			if (!supported) {
-				Alert.alert('Cannot open link, URL not supported');
-			} else {
-				return Linking.openURL(url);
-			}
-		} catch (ex) {
-			console.log(ex);
-		}
-	};
-
-	private superLikeButtonPressedHandler = () => {
-		Alert.alert('Coming soon.');
-	};
-
-	private walletCoinsButtonPressedHandler = () => {
-		Alert.alert('Comming soon.');
-	};
-
 	private onDoubleTapLikeHandler = async () => {
-		const { likedByMe, postId, onLikePress } = this.props;
+		const { post, onLikePress } = this.props;
+		const { likedByCurrentUser, postId } = post;
 
-		if (likedByMe) {
+		if (likedByCurrentUser) {
 			this.setState({ heartAnimation: true });
 		} else {
 			this.setState({ heartAnimation: true });
-			onLikePress(likedByMe, postId);
+			onLikePress(likedByCurrentUser, postId);
 		}
 	};
 
 	private onCommentInputChange = (comment: string) => {
-		if (!this.props.listLoading) {
+		if (!this.props.post.loading) {
 			this.setState({ comment });
 		}
 	};
 
 	private onSubmitCommentHandler = async () => {
-		const { postId, onSubmitComment } = this.props;
+		const {
+			post: { postId },
+			onSubmitComment,
+		} = this.props;
 		const escapedComment = this.state.comment.replace(/\n/g, '\\n');
+
 		this.setState({ comment: '' });
 		Keyboard.dismiss();
+
 		await onSubmitComment(escapedComment, postId);
 	};
 
 	private onCommentInputPress = () => {
-		if (!this.props.listLoading && this.containerViewRef.current) {
+		if (!this.props.post.loading && this.containerViewRef.current) {
 			this.containerViewRef.current.measure(
 				(x: number, y: number, width: number, height: number) => {
-					this.props.onAddComment(0, height);
+					this.props.onAddComment!(height);
 				},
 			);
 			if (!this.state.inputFocused) {
@@ -516,7 +451,7 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 	};
 
 	private onShowOptions = () => {
-		const { getText, canDelete, showDotsMenuModal } = this.props;
+		const { getText, showOptionsMenu, post } = this.props;
 
 		const baseItems = [
 			{
@@ -540,11 +475,71 @@ export class WallPostCard extends React.Component<IWallPostCardPropsType, IWallP
 			label: getText('wall.post.menu.delete.post'),
 			icon: 'ios-trash',
 			actionHandler: async () => {
-				await this.props.onDeletePostPress(this.props.postId);
+				await this.props.onDeletePostPress(post.postId);
 			},
 		};
 
-		const items = canDelete ? [...baseItems, deleteItem] : baseItems;
-		showDotsMenuModal(items);
+		const items = post.removable ? [...baseItems, deleteItem] : baseItems;
+		showOptionsMenu(items);
+	};
+
+	private toggleShowFullText = () => {
+		this.setState({
+			fullTextVisible: true,
+		});
+	};
+
+	private handleHashTag = (hashTag: string) => {
+		Alert.alert('Hashtags coming soon.' + hashTag);
+	};
+
+	private handleUserTag = (userTag: string) => {
+		Alert.alert('Tags coming soon.' + userTag);
+	};
+
+	private launchExternalURL = async (url: string) => {
+		try {
+			const supported = await Linking.canOpenURL(url);
+			if (!supported) {
+				Alert.alert('Cannot open link, URL not supported');
+			} else {
+				return Linking.openURL(url);
+			}
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+
+	private superLikeButtonPressedHandler = () => {
+		Alert.alert('Coming soon.');
+	};
+
+	private walletCoinsButtonPressedHandler = () => {
+		Alert.alert('Comming soon.');
 	};
 }
+
+interface IWallPostProps extends INavigationProps {
+	post: IWallPostData;
+	commentInput: boolean;
+	onAddComment: (cardHeight: number) => void;
+}
+
+export const WallPost: React.SFC<IWallPostProps> = ({
+	post,
+	commentInput,
+	onAddComment,
+	navigation,
+}) => (
+	<WithWallPost navigation={navigation}>
+		{({ data, actions }) => (
+			<WallPostCard
+				post={post}
+				commentInput={commentInput}
+				onAddComment={onAddComment}
+				{...data}
+				{...actions}
+			/>
+		)}
+	</WithWallPost>
+);

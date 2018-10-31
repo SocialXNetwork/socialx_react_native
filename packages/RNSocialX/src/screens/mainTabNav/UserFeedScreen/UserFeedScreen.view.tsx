@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, FlatList, ScrollView, View } from 'react-native';
+import { Animated, FlatList, View } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
 import {
@@ -7,34 +7,33 @@ import {
 	LoadingFooter,
 	ShareSection,
 	SuggestionsCarousel,
-	WallPostCard,
+	WallPost,
 } from '../../../components';
 import {
-	getTextSignature,
-	ICurrentUser,
-	IDotsMenuProps,
-	IWallPostCardActions,
-	IWallPostCardData,
+	INavigationProps,
+	IOptionsMenuProps,
+	ITranslatedProps,
+	IWallPostData,
 } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps extends IWallPostCardActions, IDotsMenuProps {
+interface IUserFeedScreenViewProps extends INavigationProps, IOptionsMenuProps, ITranslatedProps {
 	avatarImage: string;
-	posts: IWallPostCardData[];
-	skeletonPost: IWallPostCardData;
+	posts: IWallPostData[];
+	skeletonPost: IWallPostData;
 	refreshing: boolean;
 	creatingPost: boolean;
-	onRefresh: () => void;
-	onLoadMorePosts: () => void;
-	onCreateWallPost: () => void;
-	currentUser: ICurrentUser;
 	shareSectionPlaceholder: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
-	scrollRef: React.RefObject<FlatList<IWallPostCardData>>;
+	scrollRef: React.RefObject<FlatList<IWallPostData>>;
 	scrollY: AnimatedValue;
 	likeError: boolean;
+	onRefresh: () => void;
+	onLoadMorePosts: () => void;
+	onCreateWallPost: () => void;
+	onAddComment: (index: number, cardHeight: number) => void;
 }
 
 export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
@@ -67,8 +66,8 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 						refreshing={refreshing}
 						onRefresh={onRefresh}
 						data={allPosts}
-						keyExtractor={(item: IWallPostCardData) => item.postId}
-						renderItem={(data) => this.renderWallPosts(data, getText)}
+						keyExtractor={(item: IWallPostData) => item.postId}
+						renderItem={(data) => this.renderWallPosts(data)}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
 						onEndReachedThreshold={0.5}
 						keyboardShouldPersistTaps="handled"
@@ -90,52 +89,18 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		);
 	}
 
-	private renderWallPosts = (
-		data: { item: IWallPostCardData; index: number },
-		getText: getTextSignature,
-	) => {
-		const {
-			currentUser,
-			likeError,
-			loadingMorePosts,
-			onCommentPress,
-			onImagePress,
-			onDeletePostPress,
-			onLikePress,
-			onUserPress,
-			onSubmitComment,
-			onBlockUser,
-			onReportProblem,
-			showDotsMenuModal,
-			skeletonPost,
-		} = this.props;
+	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
+		const { skeletonPost, navigation } = this.props;
 
 		const post = data.item;
-		const canDelete = currentUser.userId === post.owner.userId;
 
 		return (
 			<View style={styles.post}>
-				<WallPostCard
-					{...post}
-					likeError={likeError}
-					canDelete={canDelete}
-					likedByMe={post.likedByMe}
-					listLoading={loadingMorePosts}
-					onCommentPress={onCommentPress}
-					onImagePress={onImagePress}
-					onDeletePostPress={onDeletePostPress}
-					onLikePress={onLikePress}
-					onUserPress={(userId: string) => onUserPress(userId)}
-					/* Just for interface compatibility onAddComment dummyIndex will be 0 all the time. Read it as data.index */
-					onAddComment={(dummyIndex: number, cardHeight: number) =>
-						this.props.onAddComment(data.index, cardHeight)
-					}
-					onSubmitComment={onSubmitComment}
-					onBlockUser={onBlockUser}
-					onReportProblem={onReportProblem}
-					showDotsMenuModal={showDotsMenuModal}
-					displayDots={true}
-					getText={getText}
+				<WallPost
+					post={post}
+					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
+					commentInput={true}
+					navigation={navigation}
 				/>
 				{skeletonPost && <View style={styles.overlay} />}
 				{post.suggested && (

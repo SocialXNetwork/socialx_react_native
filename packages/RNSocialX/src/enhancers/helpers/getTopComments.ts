@@ -1,6 +1,6 @@
 import { ICommentsArray } from '@socialx/api-data';
 
-export const getBestComments = (comments: ICommentsArray) => {
+export const getTopComments = (comments: ICommentsArray) => {
 	return comments
 		.sort((x, y) => y.timestamp - x.timestamp)
 		.sort((x, y) => y.likes.length - x.likes.length)

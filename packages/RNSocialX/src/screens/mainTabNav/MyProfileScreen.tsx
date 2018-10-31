@@ -52,10 +52,10 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			numberOfPhotos,
 			numberOfFriends,
 			numberOfComments,
-			avatarURL,
+			avatar,
 			fullName,
 			userName,
-			aboutMeText,
+			description,
 			mediaObjects,
 		} = currentUser;
 
@@ -65,10 +65,10 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				numberOfLikes={numberOfLikes}
 				numberOfFriends={numberOfFriends}
 				numberOfComments={numberOfComments}
-				avatarURL={avatarURL}
+				avatar={avatar}
 				fullName={fullName}
 				userName={userName}
-				aboutMeText={aboutMeText}
+				description={description}
 				onLoadMorePhotos={this.onLoadMorePhotosHandler}
 				dataProvider={dataProvider}
 				hasPhotos={mediaObjects.length > 0}
@@ -113,10 +113,10 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	private onShowDotsModalHandler = () => {
-		const { showDotsMenuModal } = this.props;
+		const { showOptionsMenu } = this.props;
 
 		const menuItems = this.getDotsModalItems();
-		showDotsMenuModal(menuItems);
+		showOptionsMenu(menuItems);
 	};
 
 	// Improve this when we have lazy loading
@@ -171,12 +171,12 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		const {
 			navigation,
 			setNavigationParams,
-			currentUser: { avatarURL },
+			currentUser: { avatar },
 		} = this.props;
 
 		const mediaObjects = [
 			{
-				url: avatarURL,
+				url: avatar,
 				type: MediaTypeImage,
 			},
 		];

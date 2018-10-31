@@ -32,13 +32,13 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 				<View style={styles.mediaInfoSection}>
 					{numberOfLikes > 0 && (
 						<Text style={styles.infoText}>
-							{getText('media.viewer.screen.likes')} {numberOfLikes}}
+							{getText('media.viewer.screen.likes')} {numberOfLikes}
 						</Text>
 					)}
 					<View style={{ flex: 1 }} />
 					{numberOfComments > 0 && (
 						<Text style={styles.infoText}>
-							{getText('media.viewer.screen.comments')} {numberOfComments}}
+							{getText('media.viewer.screen.comments')} {numberOfComments}
 						</Text>
 					)}
 				</View>

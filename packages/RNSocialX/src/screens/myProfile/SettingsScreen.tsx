@@ -15,21 +15,21 @@ type ISettingsScreenProps = INavigationProps &
 
 class Screen extends React.Component<ISettingsScreenProps> {
 	public render() {
-		const { currentUser, navigation, getText, showDotsMenuModal } = this.props;
+		const { currentUser, navigation, getText, showOptionsMenu } = this.props;
 		console.log('shareDataEnabled', currentUser.shareDataEnabled);
 
 		return (
 			<SettingsScreenView
-				bio={currentUser.aboutMeText}
+				description={currentUser.description}
 				fullName={currentUser.fullName}
 				email={currentUser.email}
 				miningEnabled={currentUser.miningEnabled}
 				shareDataEnabled={currentUser.shareDataEnabled}
-				avatarURL={currentUser.avatarURL}
+				avatar={currentUser.avatar}
 				userName={currentUser.userName}
 				onSaveChanges={this.onSaveChangesHandler}
 				onGoBack={() => this.onGoBackHandler(navigation)}
-				showDotsMenuModal={showDotsMenuModal}
+				showOptionsMenu={showOptionsMenu}
 				getText={getText}
 			/>
 		);

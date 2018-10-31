@@ -28,7 +28,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				notificationId: '51asfa1',
 				userId: '123tqa5',
 				type: NOTIFICATION_TYPES.RECENT_COMMENT,
-				avatarURL: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
+				avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 				fullName: 'Seth Saunders',
 				userName: 'sethsaunders',
 				timestamp: new Date(2018, 2, 12, 5, 51, 23),
@@ -38,7 +38,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				userId: '981326537',
 				friendshipId: '2adsasdas',
 				type: NOTIFICATION_TYPES.FRIEND_REQUEST,
-				avatarURL:
+				avatar:
 					'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
 				fullName: 'Teresa Lamb',
 				userName: 'terlamb',
@@ -48,7 +48,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				notificationId: '51asfa3',
 				userId: '981326538',
 				type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
-				avatarURL:
+				avatar:
 					'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhxxOvVEmfKWgIxdz1Xvd0zTKY4oHlC8E709FF91o5FMTirI2T',
 				fullName: 'Sophie Smith',
 				userName: 'sophsmt',
@@ -58,7 +58,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				notificationId: '51asfa4',
 				userId: 'a24362',
 				type: NOTIFICATION_TYPES.SUPER_LIKED,
-				avatarURL:
+				avatar:
 					'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlhQDjvfpOkYBNz_sFX6egUWv-tKgr9iwb9S0ECK5Ll8C-I9Oj',
 				fullName: 'Cory Maxwell',
 				userName: 'corymaxwell',
@@ -68,7 +68,7 @@ const mock: IWithNotificationsEnhancedProps = {
 				notificationId: '51asfa5',
 				userId: '990325',
 				type: NOTIFICATION_TYPES.GROUP_REQUEST,
-				avatarURL:
+				avatar:
 					'https://yt3.ggpht.com/a-/AN66SAyxvKvpstRZN6-LzcuggRm6kEQs-lKW5cOg6g=s900-mo-c-c0xffffffff-rj-k-no',
 				fullName: 'Claudia Kulmitzer',
 				groupName: 'MfMJAkkAs2jLISYyv',
@@ -157,7 +157,7 @@ export class WithNotifications extends React.Component<
 															// 			type: notification.type,
 															// 			fullName: profile!.fullName,
 															// 			userName: notification.from.alias,
-															// 			avatarURL: profile!.avatar,
+															// 			avatar: profile!.avatar,
 															// 			timestamp: new Date(notification.timestamp),
 															// 		};
 															// 	},

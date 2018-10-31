@@ -16,10 +16,10 @@ interface IAnimationValues {
 }
 
 interface ICommentInputProps extends ITranslatedProps {
-	noInput: boolean | undefined;
+	commentInput: boolean;
 	comment: string;
 	disabled: boolean;
-	avatarURL: string;
+	avatar: string;
 	animationValues: IAnimationValues;
 	onCommentInputChange: (comment: string) => void;
 	onCommentInputPress: () => void;
@@ -27,23 +27,21 @@ interface ICommentInputProps extends ITranslatedProps {
 }
 
 export const CommentInput: React.SFC<ICommentInputProps> = ({
-	noInput,
+	commentInput,
 	comment,
 	disabled,
-	avatarURL,
+	avatar,
 	animationValues,
 	onCommentInputChange,
 	onCommentInputPress,
 	onSubmitComment,
 	getText,
 }) => {
-	if (noInput) {
-		return null;
-	} else {
+	if (commentInput) {
 		return (
 			<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
 				<AnimatedFastImage
-					source={avatarURL.length > 0 ? { uri: avatarURL } : Images.user_avatar_placeholder}
+					source={avatar.length > 0 ? { uri: avatar } : Images.user_avatar_placeholder}
 					style={[
 						styles.avatar,
 						{
@@ -90,6 +88,8 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 			</TouchableOpacity>
 		);
 	}
+
+	return null;
 };
 
 const styles: any = StyleSheet.create({

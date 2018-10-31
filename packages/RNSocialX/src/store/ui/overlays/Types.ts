@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
-import { IDotsMenuItem } from '../../../types';
+import { IOptionsMenuItem } from '../../../types';
 
 export interface IMessage {
 	text: string;
@@ -21,7 +21,7 @@ export interface IConfirmation {
 }
 
 export interface IOptionsMenu {
-	items: IDotsMenuItem[];
+	items: IOptionsMenuItem[];
 }
 
 export type IState = DeepReadonly<{

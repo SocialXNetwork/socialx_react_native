@@ -16,10 +16,10 @@ import {
 	PostText,
 	RecentLikes,
 } from '../../components';
-import { WallPostMedia } from '../../components/displayers/WallPostCard';
+import { WallPostMedia } from '../../components/displayers/WallPost';
 import {
-	IDotsMenuItem,
 	IMediaProps,
+	IOptionsMenuItem,
 	IPostForComment,
 	ITranslatedProps,
 	IWallPostComment,
@@ -60,7 +60,7 @@ interface ICommentsScreenComponentProps extends ITranslatedProps {
 	onLikePress: (likedByMe: boolean, postId: string) => void;
 	likePostError: boolean;
 	likeCommentError: boolean;
-	showDotsMenuModal: (items: IDotsMenuItem[]) => void;
+	showOptionsMenu: (items: IOptionsMenuItem[]) => void;
 	recentLikes: {
 		first: string | null;
 		second: string | null;
@@ -129,7 +129,6 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 						/>
 					</View>
 				)}
-				<RecentLikes recentLikes={recentLikes} onUserPress={onViewUserProfile} getText={getText} />
 				<CommentsPostActions
 					likedByMe={likedByMe}
 					likePostError={likePostError}
@@ -137,7 +136,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 					onStartComment={() => onStartCommentHandler(commentInputRef)}
 					getText={getText}
 				/>
-
+				<RecentLikes recentLikes={recentLikes} onUserPress={onViewUserProfile} getText={getText} />
 				{comments.length > 0 &&
 					comments.map((comm) => (
 						<CommentCard

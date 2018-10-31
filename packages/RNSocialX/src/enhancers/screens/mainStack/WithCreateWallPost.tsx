@@ -3,8 +3,8 @@ import * as React from 'react';
 import { KeyboardContext } from '../../../environment/consts';
 import {
 	ICurrentUser,
-	IDotsMenuProps,
 	IGlobal,
+	IOptionsMenuProps,
 	IResizeProps,
 	ITranslatedProps,
 	IUploadFileInput,
@@ -31,7 +31,7 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 	currentUser: ICurrentUser;
 }
 
-export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IDotsMenuProps {
+export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	createPost: (post: IWallPostData) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
@@ -87,7 +87,7 @@ export class WithCreateWallPost extends React.Component<
 																			},
 																			setGlobal,
 																			getText,
-																			showDotsMenuModal: (items) =>
+																			showOptionsMenu: (items) =>
 																				showOptionsMenu({
 																					items,
 																				}),

@@ -31,12 +31,12 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 												email: foundProfile.email,
 												fullName: foundProfile.fullName,
 												userName: auth.alias || '',
-												avatarURL:
+												avatar:
 													foundProfile.avatar.length > 0
 														? appConfig.ipfsConfig.ipfs_URL +
 													  foundProfile.avatar // tslint:disable-line
 														: '',
-												aboutMeText: foundProfile.aboutMeText,
+												description: foundProfile.aboutMeText,
 												numberOfLikes: 0,
 												numberOfPhotos: 0,
 												// numberOfFriends: foundProfile.friends.length,

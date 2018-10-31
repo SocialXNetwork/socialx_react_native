@@ -15,7 +15,7 @@ storiesOf('Components/displayers', module)
 		const likeCommentError = boolean('likeCommentError', false);
 		const commentText = text('commentText', 'Sample comment text here.\nGoing on the second line');
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
-		const userAvatarURL = text('user.avatarURL', 'https://avatars2.githubusercontent.com/u/212');
+		const useravatar = text('user.avatar', 'https://avatars2.githubusercontent.com/u/212');
 		const userFullName = text('user.fullName', 'Sharell Watchman');
 		const numberOfLikes = number('numberOfLikes', 10);
 
@@ -26,7 +26,7 @@ storiesOf('Components/displayers', module)
 					text: commentText,
 					user: {
 						fullName: userFullName,
-						avatarURL: userAvatarURL,
+						avatar: useravatar,
 						userId: 'user_11',
 					},
 					timestamp,

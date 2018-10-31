@@ -8,14 +8,14 @@ import { IHeaderProps, ITranslatedProps } from '../../types';
 import styles, { BUTTON_WIDTH } from './AdsManagementScreen.style';
 
 interface IAdsManagementScreenViewProps extends ITranslatedProps, IHeaderProps {
-	avatarURL: string;
+	avatar: string;
 	fullName: string;
 	userName: string;
 }
 
 export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> = ({
 	onGoBack,
-	avatarURL,
+	avatar,
 	fullName,
 	userName,
 	getText,
@@ -26,7 +26,7 @@ export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> =
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.avatarContainer}>
-			<AvatarImage image={avatarURL} style={styles.avatar} />
+			<AvatarImage image={avatar} style={styles.avatar} />
 		</View>
 		<Text style={styles.name}>{fullName}</Text>
 		{userName && <Text style={styles.userName}>@{userName}</Text>}

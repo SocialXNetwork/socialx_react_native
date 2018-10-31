@@ -3,8 +3,9 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { AvatarImage, DotsMenuButton } from '../';
+import { AvatarImage, OptionsMenuButton } from '../';
 import { IPostOwner } from '../../types';
+
 import styles, { defaultStyles } from './CommentsPostOwner.style';
 
 interface IPostOwnerProps {
@@ -30,14 +31,14 @@ export const CommentsPostOwner: React.SFC<IPostOwnerProps> = ({
 				<Icon name="ios-arrow-back" style={styles.arrow} />
 			</TouchableOpacity>
 			<TouchableOpacity onPress={() => showUserProfile(owner.userId)}>
-				<AvatarImage image={owner.avatarURL} style={styles.avatar} />
+				<AvatarImage image={owner.avatar} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.textContainer}>
 				<Text style={styles.user}>{owner.fullName}</Text>
 				<Text style={styles.timestamp}>{`${timeStampDate} at ${timeStampHour}`}</Text>
 			</View>
 			<View style={styles.dotsContainer}>
-				<DotsMenuButton
+				<OptionsMenuButton
 					iconColor={defaultStyles.advancedMenuButtonColor}
 					onPress={onShowPostOptionsMenu}
 				/>

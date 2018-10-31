@@ -8,7 +8,7 @@ import {
 	ITransactionData,
 	ITrendingCategoriesItem,
 	ITrendingContentItem,
-	IWallPostCardData,
+	IWallPostData,
 	MediaTypeImage,
 	MediaTypeVideo,
 	TransactionType,
@@ -37,7 +37,7 @@ const likes: ILike[] = [
 	},
 ];
 
-const bestComments: ISimpleComment[] = [
+const topComments: ISimpleComment[] = [
 	{
 		commentId: '1',
 		text: 'Lorem ipsum dolor sit amet',
@@ -61,14 +61,14 @@ const bestComments: ISimpleComment[] = [
 export const suggestedItems: ISearchResultData[] = [
 	{
 		userId: '101',
-		avatarURL: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
+		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
 		location: 'New York',
 	},
 	{
 		userId: '102',
-		avatarURL:
+		avatar:
 			'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
 		fullName: 'Teresa Lamb',
 		userName: 'terlamb',
@@ -76,7 +76,7 @@ export const suggestedItems: ISearchResultData[] = [
 	},
 	{
 		userId: '103',
-		avatarURL:
+		avatar:
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhxxOvVEmfKWgIxdz1Xvd0zTKY4oHlC8E709FF91o5FMTirI2T',
 		fullName: 'Sophie Smith',
 		userName: 'sophsmt',
@@ -84,7 +84,7 @@ export const suggestedItems: ISearchResultData[] = [
 	},
 	{
 		userId: '104',
-		avatarURL:
+		avatar:
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlhQDjvfpOkYBNz_sFX6egUWv-tKgr9iwb9S0ECK5Ll8C-I9Oj',
 		fullName: 'Cory Maxwell',
 		userName: 'corymaxwell',
@@ -92,7 +92,7 @@ export const suggestedItems: ISearchResultData[] = [
 	},
 	{
 		userId: '105',
-		avatarURL:
+		avatar:
 			'https://yt3.ggpht.com/a-/AN66SAyxvKvpstRZN6-LzcuggRm6kEQs-lKW5cOg6g=s900-mo-c-c0xffffffff-rj-k-no',
 		fullName: 'Claudia Kulmitzer',
 		userName: 'claudiam',
@@ -100,7 +100,7 @@ export const suggestedItems: ISearchResultData[] = [
 	},
 ];
 
-export const posts: IWallPostCardData[] = [
+export const posts: IWallPostData[] = [
 	{
 		postId: '1',
 		postText: 'Lorem ipsum dolor sit amet.',
@@ -110,14 +110,13 @@ export const posts: IWallPostCardData[] = [
 		owner: {
 			userId: 'testgggg',
 			fullName: 'Test GGGG',
-			avatarURL: avatar,
+			avatar,
 		},
-		governanceVersion: false,
 		numberOfSuperLikes: 0,
 		numberOfComments: 1,
 		numberOfWalletCoins: 0,
-		likedByMe: false,
-		canDelete: false,
+		likedByCurrentUser: false,
+		removable: false,
 		media: [
 			{
 				url: 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4',
@@ -130,14 +129,12 @@ export const posts: IWallPostCardData[] = [
 			},
 		],
 		likes,
-		bestComments,
-		listLoading: false,
+		topComments,
+		loading: false,
 		suggested: undefined,
-		noInput: false,
-		marginBottom: 0,
-		currentUserAvatarURL: avatar,
-		contentOffensive: false,
-		likeError: false,
+		currentUserAvatar: avatar,
+		currentUserName: 'Alex',
+		offensiveContent: false,
 	},
 	{
 		postId: '2',
@@ -148,14 +145,13 @@ export const posts: IWallPostCardData[] = [
 		owner: {
 			userId: 'testgggg',
 			fullName: 'Test GGGG',
-			avatarURL: avatar,
+			avatar,
 		},
-		governanceVersion: false,
 		numberOfSuperLikes: 0,
 		numberOfComments: 1,
 		numberOfWalletCoins: 0,
-		likedByMe: false,
-		canDelete: false,
+		likedByCurrentUser: false,
+		removable: false,
 		media: [
 			{
 				url:
@@ -169,14 +165,12 @@ export const posts: IWallPostCardData[] = [
 			},
 		],
 		likes,
-		bestComments,
-		listLoading: false,
+		topComments,
+		loading: false,
 		suggested: suggestedItems,
-		noInput: false,
-		marginBottom: 0,
-		currentUserAvatarURL: avatar,
-		contentOffensive: true,
-		likeError: false,
+		currentUserAvatar: avatar,
+		currentUserName: 'Alex',
+		offensiveContent: true,
 	},
 	{
 		postId: '3',
@@ -187,14 +181,13 @@ export const posts: IWallPostCardData[] = [
 		owner: {
 			userId: 'testgggg',
 			fullName: 'Test GGGG',
-			avatarURL: avatar,
+			avatar,
 		},
-		governanceVersion: false,
 		numberOfSuperLikes: 0,
 		numberOfComments: 1,
 		numberOfWalletCoins: 0,
-		likedByMe: false,
-		canDelete: false,
+		likedByCurrentUser: false,
+		removable: false,
 		media: [
 			{
 				url:
@@ -208,24 +201,22 @@ export const posts: IWallPostCardData[] = [
 			},
 		],
 		likes,
-		bestComments,
-		listLoading: false,
+		topComments,
+		loading: false,
 		suggested: undefined,
-		noInput: false,
-		marginBottom: 0,
-		currentUserAvatarURL: avatar,
-		contentOffensive: false,
-		likeError: false,
+		currentUserAvatar: avatar,
+		currentUserName: 'Alex',
+		offensiveContent: false,
 	},
 ];
 
 export const currentUser: ICurrentUser = {
 	userId: '999',
-	avatarURL: avatar,
+	avatar,
 	fullName: 'Test GGGG',
 	userName: 'testgggg',
 	email: 'testgggg@test.com',
-	aboutMeText: 'Lorem ipsum dolor sit amet',
+	description: 'Lorem ipsum dolor sit amet',
 	pub: 'rPZqFYcR01E81UiAtzkY0tV2LmxnNHtQG-UwqfvxLyQ.4Xc5xwCqzFaEOJpu7ftadiXXQLE7sbm7ETs23lzC96E',
 	miningEnabled: false,
 	shareDataEnabled: true,

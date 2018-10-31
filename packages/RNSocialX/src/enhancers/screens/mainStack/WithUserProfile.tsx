@@ -5,8 +5,8 @@
 
 import * as React from 'react';
 import {
-	IDotsMenuProps,
 	INavigationParamsActions,
+	IOptionsMenuProps,
 	ITranslatedProps,
 	IVisitedUser,
 } from '../../../types';
@@ -25,7 +25,6 @@ import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
 
 export interface IWithUserProfileEnhancedData {
-	currentUserAvatarURL: string;
 	currentUserId: string;
 	visitedUser: IVisitedUser;
 	userPosts: { [owner: string]: IPostReturnData[] };
@@ -36,15 +35,12 @@ export interface IWithUserProfileEnhancedData {
 export interface IWithUserProfileEnhancedActions
 	extends ITranslatedProps,
 		INavigationParamsActions,
-		IDotsMenuProps {
+		IOptionsMenuProps {
 	getProfileForUser: (userName: string) => void;
 	getPostsForUser: (userName: string) => void;
 	addFriend: (userId: string) => void;
 	likePost: (postId: string) => void;
 	unlikePost: (postId: string) => void;
-	postComment: (postId: string, commentText: string) => void;
-	blockUser: (userId: string) => void;
-	reportProblem: (reason: string, description: string) => void;
 }
 
 interface IUserProfileEnhancedProps {
@@ -81,7 +77,6 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 																				{({ visitedUser }) =>
 																					this.props.children({
 																						data: {
-																							currentUserAvatarURL: currentUser!.avatarURL,
 																							currentUserId: currentUser!.userId,
 																							visitedUser: visitedUser!,
 																							userPosts,
@@ -117,15 +112,7 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 																									postId,
 																								});
 																							},
-																							postComment: async (text, postId) => {
-																								await createComment({
-																									text,
-																									postId,
-																								});
-																							},
-																							blockUser: () => undefined,
-																							reportProblem: () => undefined,
-																							showDotsMenuModal: (items) =>
+																							showOptionsMenu: (items) =>
 																								showOptionsMenu({
 																									items,
 																								}),

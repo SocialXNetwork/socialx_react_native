@@ -4,7 +4,8 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 import { Animated, Keyboard } from 'react-native';
 
-import { CommentInput } from '../../../../../src/components/displayers/WallPostCard';
+import { CommentInput } from '../../../../../src/components/displayers/WallPost';
+import { getTextMock } from '../../../../../src/mocks';
 import CenterView from '../../../../helpers/CenterView';
 
 class CommentInputStory extends React.Component {
@@ -13,6 +14,7 @@ class CommentInputStory extends React.Component {
 		inputBorderWidth: new Animated.Value(0),
 		inputAvatarSize: new Animated.Value(25),
 		inputAvatarRadius: new Animated.Value(12.5),
+		inputSend: new Animated.Value(0),
 	};
 
 	private keyboardDidHideListener: any;
@@ -28,18 +30,20 @@ class CommentInputStory extends React.Component {
 	public render() {
 		return (
 			<CommentInput
-				noInput={false}
+				commentInput={false}
 				comment=""
 				disabled={false}
-				avatarURL={'https://avatars2.githubusercontent.com/u/212'}
+				avatar={'https://avatars2.githubusercontent.com/u/212'}
 				animationValues={{
 					size: this.state.inputAvatarSize,
 					radius: this.state.inputAvatarRadius,
 					border: this.state.inputBorderWidth,
+					send: this.state.inputSend,
 				}}
 				onCommentInputPress={this.onCommentInputPressHandler}
 				onCommentInputChange={action('onCommentInputChange')}
 				onSubmitComment={action('onSubmitComment')}
+				getText={getTextMock}
 			/>
 		);
 	}

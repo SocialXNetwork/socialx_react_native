@@ -1,9 +1,11 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
 import { IPostReturnData } from '../../store/data/posts';
+import { ActionTypes } from '../../store/data/posts/Types';
 import { IProfileData } from '../../store/data/profiles';
 import { IActivity } from '../../store/ui/activities';
+
 import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
-import { getActivity, getBestComments } from './';
+import { getActivity, getTopComments } from './';
 
 export const mapPostsForUI = (
 	posts: IPostReturnData[],
@@ -11,7 +13,6 @@ export const mapPostsForUI = (
 	currentUser: ICurrentUser | undefined,
 	profiles: IProfileData[],
 	activities: IActivity[],
-	activityType: string | null,
 	appConfig: IApplicationConfig,
 ) => {
 	return posts
@@ -19,7 +20,6 @@ export const mapPostsForUI = (
 		.slice(0, returnLength)
 		.map((post) => {
 			const ownerProfile = profiles.find((profile) => profile.alias === post.owner.alias);
-
 			const foundLike = !!post.likes.find((like) => like.owner.alias === currentUser!.userId);
 
 			return {
@@ -31,19 +31,13 @@ export const mapPostsForUI = (
 				owner: {
 					userId: post.owner.alias,
 					fullName: ownerProfile!.fullName,
-					avatarURL:
+					avatar:
 						ownerProfile!.avatar.length > 0
 							? appConfig.ipfsConfig.ipfs_URL + ownerProfile!.avatar
 							: '',
 				},
-				governanceVersion: false,
-				// TODO: add this later when data is available
-				numberOfSuperLikes: 0,
-				numberOfComments: post.comments.length,
-				// TODO: add this later when data is available
-				numberOfWalletCoins: 0,
-				likedByMe: foundLike,
-				canDelete: post.owner.alias === currentUser!.userId,
+				likedByCurrentUser: foundLike,
+				removable: post.owner.alias === currentUser!.userId,
 				media: post.media.map((media) => ({
 					url: appConfig.ipfsConfig.ipfs_URL + media.hash,
 					hash: media.hash,
@@ -59,13 +53,17 @@ export const mapPostsForUI = (
 						userName: like.owner.alias,
 					};
 				}),
-				bestComments: getBestComments(post.comments),
-				listLoading: getActivity(activities, activityType),
+				topComments: getTopComments(post.comments),
+				// TODO: add this later when data is available
+				numberOfSuperLikes: 0,
+				numberOfComments: post.comments.length,
+				// TODO: add this later when data is available
+				numberOfWalletCoins: 0,
 				suggested: undefined,
-				contentOffensive: false,
-				marginBottom: 0,
-				currentUser,
-				likeError: false,
+				loading: getActivity(activities, ActionTypes.LOAD_MORE_POSTS),
+				currentUserAvatar: currentUser!.avatar,
+				currentUserName: currentUser!.userName,
+				offensiveContent: false,
 			};
 		});
 };

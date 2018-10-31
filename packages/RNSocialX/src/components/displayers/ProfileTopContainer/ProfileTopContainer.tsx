@@ -13,7 +13,7 @@ import { Statistics, Tabs } from './';
 import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 
 interface IProfileTopContainerProps extends ITranslatedProps {
-	avatarURL: string;
+	avatar: string;
 	fullName: string;
 	userName: false | string;
 	numberOfPhotos: number;
@@ -30,11 +30,11 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	onEditProfile?: () => void;
 	onSendMessage?: () => void;
 	onIconPress?: (tab: string) => void;
-	aboutMeText: false | string;
+	description: false | string;
 }
 
 export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
-	avatarURL,
+	avatar,
 	fullName,
 	userName = false,
 	numberOfPhotos,
@@ -43,7 +43,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	numberOfComments,
 	relationship = SearchResultKind.NotFriend,
 	isCurrentUser,
-	aboutMeText = false,
+	description = false,
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
 	onAddFriend,
@@ -61,7 +61,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 		<View style={styles.container}>
 			<View style={styles.background} />
 			<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
-				<AvatarImage image={avatarURL} style={styles.avatar} />
+				<AvatarImage image={avatar} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={styles.statisticsContainer}>
 				<View style={styles.leftStatistics}>
@@ -76,7 +76,7 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{fullName}</Text>
 				{userName && <Text style={styles.userName}>@{userName}</Text>}
-				{aboutMeText && <Text style={styles.about}>{aboutMeText}</Text>}
+				{description && <Text style={styles.about}>{description}</Text>}
 			</View>
 			<View style={styles.buttonsContainer}>
 				{!isCurrentUser && (
