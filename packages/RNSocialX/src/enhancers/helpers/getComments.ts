@@ -23,14 +23,13 @@ export const getComments = (
 						: '',
 			},
 			timestamp: new Date(comment.timestamp),
-			numberOfLikes: comment.likes.length,
 			likes: comment.likes.map((like) => {
 				return {
 					userId: like.owner.alias,
 					userName: like.owner.alias,
 				};
 			}),
-			likedByMe: !!comment.likes.find((like) => like.owner.alias === currentUserId),
+			likedByCurrentUser: !!comment.likes.find((like) => like.owner.alias === currentUserId),
 		};
 	});
 };

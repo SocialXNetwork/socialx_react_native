@@ -1,23 +1,29 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Images, Sizes } from '../../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const SIDE_PADDING = Sizes.smartHorizontalScale(16);
+const AVATAR_SIZE = Sizes.smartHorizontalScale(40);
 
 const styles: any = {
 	container: {
 		flexDirection: 'row',
-		paddingHorizontal: Sizes.smartHorizontalScale(SIDE_PADDING),
-		paddingVertical: Sizes.smartHorizontalScale(16),
+		paddingHorizontal: SIDE_PADDING,
+		paddingBottom: SIDE_PADDING,
 		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
-	smallAvatarImage: {
-		width: Sizes.smartHorizontalScale(40),
-		height: Sizes.smartHorizontalScale(40),
-		borderRadius: Sizes.smartHorizontalScale(40) / 2,
+	arrow: {
+		fontSize: Sizes.smartHorizontalScale(30),
+		color: Colors.black,
+		paddingRight: Sizes.smartHorizontalScale(20),
+	},
+	avatar: {
+		width: AVATAR_SIZE,
+		height: AVATAR_SIZE,
+		borderRadius: AVATAR_SIZE / 2,
 	},
 	details: {
-		flex: 6,
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		flex: 8,
 		justifyContent: 'center',
 	},
 	fullName: {
@@ -33,14 +39,10 @@ const styles: any = {
 		color: Colors.paleSky,
 		paddingTop: Sizes.smartVerticalScale(3),
 	},
-	dotsContainer: {
+	options: {
 		flex: 1,
-		alignItems: 'center',
+		justifyContent: 'flex-end',
 	},
 };
 
 export default StyleSheet.create(styles);
-export const images = Images;
-export const defaultStyles = {
-	advancedMenuButtonColor: Colors.cloudBurst,
-};

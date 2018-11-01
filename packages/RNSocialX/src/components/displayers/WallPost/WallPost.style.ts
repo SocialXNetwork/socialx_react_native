@@ -1,10 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../../environment/theme';
 
 const styles: any = {
 	container: {
+		flex: 1,
 		width: '100%',
-		backgroundColor: Colors.white,
+		paddingVertical: Sizes.smartVerticalScale(16),
 	},
 	mediaContainer: {
 		marginTop: Sizes.smartVerticalScale(10),
@@ -20,3 +21,4 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
+export const SCREEN_WIDTH = Dimensions.get('window').width;

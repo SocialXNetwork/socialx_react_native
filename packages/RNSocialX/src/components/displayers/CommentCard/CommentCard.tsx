@@ -12,7 +12,7 @@ const TEXT_LENGTH_TRESHOLD = 15;
 
 interface ICommentCardProps extends ITranslatedProps {
 	comment: IWallPostComment;
-	onCommentLike: () => void;
+	onLikeComment: () => void;
 	onViewUserProfile: (userId: string) => void;
 	onShowOptionsMenu: () => void;
 	likeCommentError: boolean;
@@ -20,7 +20,7 @@ interface ICommentCardProps extends ITranslatedProps {
 
 interface ICommentCardState {
 	likes: number;
-	likedByMe: boolean;
+	likedByCurrentUser: boolean;
 	error: boolean;
 	disabled: boolean;
 	commentLikesPosition: StyleProp<ViewStyle>;
@@ -41,8 +41,8 @@ export class CommentCard extends React.Component<ICommentCardProps, ICommentCard
 	}
 
 	public state = {
-		likes: this.props.comment.numberOfLikes,
-		likedByMe: this.props.comment.likedByMe,
+		likes: this.props.comment.likes.length,
+		likedByCurrentUser: this.props.comment.likedByCurrentUser,
 		error: false,
 		disabled: false,
 		commentLikesPosition: {
@@ -116,7 +116,7 @@ export class CommentCard extends React.Component<ICommentCardProps, ICommentCard
 						<Text style={styles.timestamp}>{commentTimestamp}</Text>
 						<TouchableOpacity onPress={this.onCommentLikeHandler} disabled={this.state.disabled}>
 							<Text style={styles.actionButtonText}>
-								{this.state.likedByMe
+								{this.state.likedByCurrentUser
 									? getText('comments.screen.actions.unlike')
 									: getText('comments.screen.actions.like')}
 							</Text>
@@ -131,19 +131,19 @@ export class CommentCard extends React.Component<ICommentCardProps, ICommentCard
 		this.setState((currentState) => {
 			return {
 				disabled: true,
-				likes: currentState.likedByMe ? currentState.likes - 1 : currentState.likes + 1,
-				likedByMe: !currentState.likedByMe,
+				likes: currentState.likedByCurrentUser ? currentState.likes - 1 : currentState.likes + 1,
+				likedByCurrentUser: !currentState.likedByCurrentUser,
 				error: false,
 			};
 		});
 
-		await this.props.onCommentLike();
+		await this.props.onLikeComment();
 
 		if (this.state.error) {
 			this.setState({
 				disabled: false,
-				likes: this.props.comment.numberOfLikes,
-				likedByMe: this.props.comment.likedByMe,
+				likes: this.props.comment.likes.length,
+				likedByCurrentUser: this.props.comment.likedByCurrentUser,
 			});
 		} else {
 			this.setState({ disabled: false });

@@ -33,7 +33,6 @@ export const LoadingScreen = () => (
 				<View style={styles.smallAvatar} />
 				<View style={styles.input} />
 			</View>
-			<View style={styles.shortDate} />
 		</View>
 		<View style={styles.separator} />
 		<View style={styles.post}>
@@ -51,7 +50,6 @@ export const LoadingScreen = () => (
 				<View style={styles.smallAvatar} />
 				<View style={styles.input} />
 			</View>
-			<View style={styles.shortDate} />
 		</View>
 		<View style={styles.separator} />
 		<View style={styles.post}>
@@ -69,7 +67,6 @@ export const LoadingScreen = () => (
 				<View style={styles.smallAvatar} />
 				<View style={styles.input} />
 			</View>
-			<View style={styles.shortDate} />
 		</View>
 		<View style={styles.separator} />
 		<SafeAreaView style={styles.bottomTabs}>

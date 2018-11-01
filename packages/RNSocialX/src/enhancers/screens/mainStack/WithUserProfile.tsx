@@ -39,8 +39,6 @@ export interface IWithUserProfileEnhancedActions
 	getProfileForUser: (userName: string) => void;
 	getPostsForUser: (userName: string) => void;
 	addFriend: (userId: string) => void;
-	likePost: (postId: string) => void;
-	unlikePost: (postId: string) => void;
 }
 
 interface IUserProfileEnhancedProps {
@@ -65,71 +63,57 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 								{({ setNavigationParams }) => (
 									<WithProfiles>
 										{({ addFriend, getProfileByUsername }) => (
-											<WithPosts>
-												{({ likePost, unlikePost, createComment }) => (
-													<WithActivities>
-														{({ activities }) => (
-															<WithAggregations>
-																{({ getUserPosts, userPosts }) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) => (
-																			<WithVisitedUserContent>
-																				{({ visitedUser }) =>
-																					this.props.children({
-																						data: {
-																							currentUserId: currentUser!.userId,
-																							visitedUser: visitedUser!,
-																							userPosts,
-																							loadingProfile: getActivity(
-																								activities,
-																								ProfileActionTypes.GET_PROFILE_BY_USERNAME,
-																							),
-																							loadingPosts: getActivity(
-																								activities,
-																								AggActionTypes.GET_USER_POSTS,
-																							),
-																						},
-																						actions: {
-																							getProfileForUser: async (username: string) => {
-																								await getProfileByUsername({
-																									username,
-																								});
-																							},
-																							getPostsForUser: async (username: string) => {
-																								await getUserPosts({ username });
-																							},
-																							addFriend: (username) =>
-																								addFriend({
-																									username,
-																								}),
-																							likePost: async (postId) => {
-																								await likePost({
-																									postId,
-																								});
-																							},
-																							unlikePost: async (postId) => {
-																								await unlikePost({
-																									postId,
-																								});
-																							},
-																							showOptionsMenu: (items) =>
-																								showOptionsMenu({
-																									items,
-																								}),
-																							setNavigationParams,
-																							getText,
-																						},
-																					})
-																				}
-																			</WithVisitedUserContent>
-																		)}
-																	</WithCurrentUser>
+											<WithActivities>
+												{({ activities }) => (
+													<WithAggregations>
+														{({ getUserPosts, userPosts }) => (
+															<WithCurrentUser>
+																{({ currentUser }) => (
+																	<WithVisitedUserContent>
+																		{({ visitedUser }) =>
+																			this.props.children({
+																				data: {
+																					currentUserId: currentUser!.userId,
+																					visitedUser: visitedUser!,
+																					userPosts,
+																					loadingProfile: getActivity(
+																						activities,
+																						ProfileActionTypes.GET_PROFILE_BY_USERNAME,
+																					),
+																					loadingPosts: getActivity(
+																						activities,
+																						AggActionTypes.GET_USER_POSTS,
+																					),
+																				},
+																				actions: {
+																					getProfileForUser: async (username: string) => {
+																						await getProfileByUsername({
+																							username,
+																						});
+																					},
+																					getPostsForUser: async (username: string) => {
+																						await getUserPosts({ username });
+																					},
+																					addFriend: (username) =>
+																						addFriend({
+																							username,
+																						}),
+																					showOptionsMenu: (items) =>
+																						showOptionsMenu({
+																							items,
+																						}),
+																					setNavigationParams,
+																					getText,
+																				},
+																			})
+																		}
+																	</WithVisitedUserContent>
 																)}
-															</WithAggregations>
+															</WithCurrentUser>
 														)}
-													</WithActivities>
+													</WithAggregations>
 												)}
-											</WithPosts>
+											</WithActivities>
 										)}
 									</WithProfiles>
 								)}

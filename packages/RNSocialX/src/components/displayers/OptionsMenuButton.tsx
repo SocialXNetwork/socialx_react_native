@@ -6,6 +6,7 @@ import { Colors, Sizes } from '../../environment/theme';
 
 interface IOptionsMenuButtonProps {
 	onPress: () => void;
+	dark?: boolean;
 	iconColor?: string;
 	iconName?: string;
 	disabled?: boolean;
@@ -13,12 +14,13 @@ interface IOptionsMenuButtonProps {
 
 export const OptionsMenuButton: React.SFC<IOptionsMenuButtonProps> = ({
 	onPress,
+	dark = false,
 	iconColor = Colors.white,
 	iconName = 'ios-more',
 	disabled = false,
 }) => (
 	<TouchableOpacity onPress={onPress} disabled={disabled}>
-		<Icon name={iconName} color={iconColor} style={styles.icon} />
+		<Icon name={iconName} color={dark ? Colors.cloudBurst : iconColor} style={styles.icon} />
 	</TouchableOpacity>
 );
 

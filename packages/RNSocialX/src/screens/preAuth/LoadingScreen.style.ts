@@ -54,7 +54,6 @@ const styles: any = {
 	},
 	row: {
 		flexDirection: 'row',
-		marginBottom: Sizes.smartVerticalScale(10),
 	},
 	column: { flex: 1 },
 	name: {
@@ -81,7 +80,7 @@ const styles: any = {
 		borderRadius: Sizes.smartHorizontalScale(3),
 		backgroundColor: Colors.geyser,
 		width: '100%',
-		marginBottom: Sizes.smartVerticalScale(10),
+		marginVertical: Sizes.smartVerticalScale(10),
 	},
 	shortText: {
 		height: Sizes.smartHorizontalScale(15),

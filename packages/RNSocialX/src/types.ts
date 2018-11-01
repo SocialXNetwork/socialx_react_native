@@ -190,25 +190,8 @@ export interface IWallPostComment {
 		userId: string;
 	};
 	timestamp: Date;
-	numberOfLikes: number;
 	likes: ILike[];
-	likedByMe: boolean;
-}
-
-export interface IPostForComment {
-	postId: string;
-	postText: string;
-	owner: IPostOwner;
-	likedByMe: boolean;
-	timestamp: Date;
-	media: IMediaProps[];
-	likes: ILike[];
-	comments: IWallPostComment[];
-}
-
-export enum CommentsSortingOptions {
-	Likes = 'Likes',
-	Recent = 'Recent',
+	likedByCurrentUser: boolean;
 }
 
 export interface IWallPostPhotoOptimized extends PickerImage {
@@ -242,18 +225,6 @@ export interface IWallPostData {
 	currentUserAvatar: string;
 	currentUserName: string;
 	offensiveContent: boolean;
-}
-
-export interface IWallPostActions {
-	onImagePress: (index: number, mediaObjects: IMediaProps[], postId: string) => void;
-	onLikePress: (likedByMe: boolean, postId: string) => void;
-	onDeletePostPress: (postId: string) => void;
-	onUserPress: (userId: string) => void;
-	onCommentPress: (postId: string, startComment: boolean) => void;
-	onAddComment: (index: number, cardHeight: number) => void;
-	onSubmitComment: (commentText: string, postId: string) => void;
-	onBlockUser: (userId: string) => void;
-	onReportProblem: (reason: string, description: string) => void;
 }
 
 export enum TransactionType {

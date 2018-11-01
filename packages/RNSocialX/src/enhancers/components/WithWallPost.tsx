@@ -2,16 +2,18 @@ import * as React from 'react';
 
 import { SCREENS, TABS } from '../../environment/consts';
 import {
+	ICurrentUser,
+	IError,
 	IGlobal,
 	IMediaProps,
 	INavigationProps,
 	IOptionsMenuProps,
 	ITranslatedProps,
+	IWallPostComment,
 	IWallPostData,
 } from '../../types';
 
 import { IPostReturnData } from '@socialx/api-data';
-import { ActionTypes } from '../../store/data/posts/Types';
 import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
@@ -23,21 +25,28 @@ import { WithCurrentUser } from '../screens';
 
 export interface IWallPostEnhancedData {
 	post: IWallPostData;
+	currentUser: ICurrentUser;
+	errors: IError[];
 	skeletonPost: IWallPostData;
-	likeFailed: boolean;
-	commentInput: boolean;
+	commentInput?: boolean;
+	comments?: IWallPostComment[];
+	keyboardRaised?: boolean;
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	onImagePress: (index: number, mediaObjects: IMediaProps[], postId: string) => void;
-	onLikePress: (likedByCurrentUser: boolean, postId: string) => void;
-	onDeletePostPress: (postId: string) => void;
+	onLikePost: (likedByCurrentUser: boolean, postId: string) => void;
+	onDoubleTapLike: (postId: string) => void;
+	onRemovePost: (postId: string) => void;
 	onUserPress: (userId: string) => void;
-	onCommentsPress: (postId: string, startComment: boolean) => void;
+	onCommentsPress: (postId: IWallPostData, keyboardRaised: boolean) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
+	onLikeComment: (comment: IWallPostComment) => void;
+	onRemoveComment: (commentId: string) => void;
 	onBlockUser: (userId: string) => void;
 	onReportProblem: (reason: string, description: string) => void;
 	onAddComment?: (cardHeight: number) => void;
+	onGoBack: () => void;
 }
 
 interface IWithWallPostEnhancedProps {
@@ -67,18 +76,14 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 													<WithAggregations>
 														{({ userPosts, getUserPosts }) => (
 															<WithPosts>
-																{({ likePost, unlikePost, removePost, createComment }) => (
+																{(feed) => (
 																	<WithCurrentUser>
 																		{({ currentUser }) =>
 																			this.props.children({
 																				data: {
+																					currentUser,
 																					skeletonPost: globals.skeletonPost,
-																					likeFailed: !!errors.find(
-																						(error) =>
-																							error.type === ActionTypes.LIKE_POST ||
-																							error.type === ActionTypes.UNLIKE_POST,
-																					),
-																					commentInput: false,
+																					errors,
 																				} as any,
 																				actions: {
 																					onImagePress: (
@@ -92,17 +97,19 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																							mediaObjects,
 																							postId,
 																						),
-																					onLikePress: (likedByCurrentUser, postId) =>
-																						this.onLikePressHandler(
-																							likePost,
-																							unlikePost,
+																					onLikePost: (likedByCurrentUser, postId) =>
+																						this.onLikePostHandler(
+																							feed.likePost,
+																							feed.unlikePost,
 																							likedByCurrentUser,
 																							postId,
 																						),
-																					onDeletePostPress: (postId) =>
-																						this.onDeletePostPressHandler(
+																					onDoubleTapLike: (postId) =>
+																						this.onDoubleTapLikeHandler(feed.likePost, postId),
+																					onRemovePost: (postId) =>
+																						this.onRemovePostHandler(
 																							setGlobal,
-																							removePost,
+																							feed.removePost,
 																							postId,
 																						),
 																					onUserPress: (userId) =>
@@ -113,21 +120,29 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																							getUserPosts,
 																							userId,
 																						),
-																					onCommentsPress: (postId, start) =>
+																					onCommentsPress: (post, keyboardRaised) =>
 																						this.onCommentsPressHandler(
 																							setNavigationParams,
-																							postId,
-																							start,
+																							post,
+																							keyboardRaised,
 																						),
 																					onSubmitComment: (text, postId) =>
 																						this.onSubmitCommentHandler(
-																							createComment,
+																							feed.createComment,
 																							text,
 																							postId,
 																						),
-																					onAddComment: () => undefined,
+																					onLikeComment: (comment) =>
+																						this.onLikeCommentHandler(
+																							feed.likeComment,
+																							feed.unlikeComment,
+																							comment,
+																						),
+																					onRemoveComment: (commentId) =>
+																						feed.removeComment({ commentId }),
 																					onBlockUser: () => undefined,
 																					onReportProblem: () => undefined,
+																					onGoBack: () => this.onGoBackHandler(),
 																					showOptionsMenu: (items) => showOptionsMenu({ items }),
 																					getText,
 																				},
@@ -151,6 +166,11 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		);
 	}
 
+	private onGoBackHandler = () => {
+		const { navigation } = this.props;
+		navigation.goBack(null);
+	};
+
 	private onImagePressHandler = (
 		setNavigationParams: (input: any) => void,
 		index: number,
@@ -169,7 +189,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		navigation.navigate(SCREENS.MediaViewer);
 	};
 
-	private onLikePressHandler = async (
+	private onLikePostHandler = async (
 		likePost: ({ postId }: { postId: string }) => void,
 		unlikePost: ({ postId }: { postId: string }) => void,
 		likedByCurrentUser: boolean,
@@ -182,7 +202,14 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		}
 	};
 
-	private onDeletePostPressHandler = async (
+	private onDoubleTapLikeHandler = async (
+		likePost: ({ postId }: { postId: string }) => void,
+		postId: string,
+	) => {
+		await likePost({ postId });
+	};
+
+	private onRemovePostHandler = async (
 		setGlobal: (global: IGlobal) => void,
 		removePost: ({ postId }: { postId: string }) => void,
 		postId: string,
@@ -194,7 +221,9 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 				loader: true,
 			},
 		});
+
 		await removePost({ postId });
+
 		setGlobal({
 			transparentOverlay: {
 				visible: false,
@@ -228,14 +257,14 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 
 	private onCommentsPressHandler = (
 		setNavigationParams: (input: any) => void,
-		postId: string,
-		start: boolean,
+		post: IWallPostData,
+		keyboardRaised: boolean,
 	) => {
 		const { navigation } = this.props;
 
 		setNavigationParams({
 			screenName: SCREENS.Comments,
-			params: { postId, start },
+			params: { post, keyboardRaised },
 		});
 		navigation.navigate(SCREENS.Comments);
 	};
@@ -246,5 +275,19 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		postId: string,
 	) => {
 		await createComment({ text, postId });
+	};
+
+	private onLikeCommentHandler = async (
+		likeComment: ({ commentId }: { commentId: string }) => void,
+		unlikeComment: ({ commentId }: { commentId: string }) => void,
+		comment: IWallPostComment,
+	) => {
+		const { likedByCurrentUser, commentId } = comment;
+
+		if (likedByCurrentUser) {
+			unlikeComment({ commentId });
+		} else {
+			likeComment({ commentId });
+		}
 	};
 }
