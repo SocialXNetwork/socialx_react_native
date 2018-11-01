@@ -15,15 +15,21 @@ import * as postHandles from './handles';
 import { ICreatePostInput, IPostMetasCallback, IRemovePostInput, IUnlikePostInput } from './types';
 
 const loadMetaIdAndPass = (gun: IGunInstance, cb: any) => {
-	gun.get(TABLES.POST_META_BY_ID).once(() => {
-		cb();
-	});
+	gun.get(TABLES.POST_META_BY_ID).once(
+		() => {
+			cb();
+		},
+		{ wait: 1000 },
+	);
 };
 
 const loadMetaUserAndPass = (gun: IGunInstance, cb: any) => {
-	gun.get(TABLES.POST_METAS_BY_USER).once(() => {
-		cb();
-	});
+	gun.get(TABLES.POST_METAS_BY_USER).once(
+		() => {
+			cb();
+		},
+		{ wait: 1000 },
+	);
 };
 
 export const createPost = (
@@ -84,60 +90,50 @@ export const createPost = (
 		);
 	};
 	const createPostMetaByUser = () =>
-		postHandles.postMetasByUsernamesRecord(context).once(
-			() => {
-				postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
-					{
-						postPath,
-						privatePost,
-						timestamp,
-						owner: {
-							alias: owner,
-							pub: ownerPub,
-						},
-					},
-					(createPostMetaByUserCallback) => {
-						if (createPostMetaByUserCallback.err) {
-							return callback(
-								new ApiError(
-									`${errPrefix}, error creating post meta of current account ${
-										createPostMetaByUserCallback.err
-									}`,
-								),
-							);
-						}
-						loadMetaIdAndPass(gun, createPostMetaById);
-					},
-				);
+		postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
+			{
+				postPath,
+				privatePost,
+				timestamp,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
 			},
-			{ wait: 1000 },
+			(createPostMetaByUserCallback) => {
+				if (createPostMetaByUserCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error creating post meta of current account ${
+								createPostMetaByUserCallback.err
+							}`,
+						),
+					);
+				}
+				loadMetaIdAndPass(gun, createPostMetaById);
+			},
 		);
 
 	const createPostMetaById = () =>
-		postHandles.postMetaIdsRecord(context).once(
-			() => {
-				postHandles.postMetaById(context, postId).put(
-					{
-						postPath,
-						privatePost,
-						owner: {
-							alias: owner,
-							pub: ownerPub,
-						},
-					},
-					(createOistMetaByIdCallback) => {
-						if (createOistMetaByIdCallback.err) {
-							return callback(
-								new ApiError(
-									`${errPrefix}, error creating post meta ${createOistMetaByIdCallback.err}`,
-								),
-							);
-						}
-						return callback(null);
-					},
-				);
+		postHandles.postMetaById(context, postId).put(
+			{
+				postPath,
+				privatePost,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
 			},
-			{ wait: 1000 },
+			(createOistMetaByIdCallback) => {
+				if (createOistMetaByIdCallback.err) {
+					return callback(
+						new ApiError(
+							`${errPrefix}, error creating post meta ${createOistMetaByIdCallback.err}`,
+						),
+					);
+				}
+				return callback(null);
+			},
 		);
 	mainRunner();
 };
