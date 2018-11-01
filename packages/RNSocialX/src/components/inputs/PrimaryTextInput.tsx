@@ -113,9 +113,7 @@ export class PrimaryTextInput extends React.Component<
 		width: 0,
 		icon: '',
 		value: '',
-		onChangeText: () => {
-			/**/
-		},
+		onChangeText: () => undefined,
 		iconColor: defaultStyles.defaultIconColor,
 		placeholder: '',
 		placeholderColor: defaultStyles.defaultPlaceholderColor,
@@ -136,18 +134,10 @@ export class PrimaryTextInput extends React.Component<
 		autoCorrect: false,
 		autoCapitalize: 'none',
 		persistCancel: false,
-		focusUpdateHandler: (hasFocus: boolean) => {
-			/**/
-		},
-		onPressCancel: () => {
-			/**/
-		},
-		onSubmitPressed: (event: any) => {
-			/**/
-		},
-		getRef: () => {
-			/**/
-		},
+		focusUpdateHandler: (hasFocus: boolean) => undefined,
+		onPressCancel: () => undefined,
+		onSubmitPressed: (event: any) => undefined,
+		getRef: () => undefined,
 	};
 
 	public state = {

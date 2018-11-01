@@ -24,7 +24,6 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	canLoadMorePosts: boolean;
 	scrollRef: React.RefObject<FlatList<IWallPostData>>;
 	scrollY: AnimatedValue;
-	likeFailed: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
@@ -85,7 +84,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 	}
 
 	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
-		const { skeletonPost, likeFailed, navigation } = this.props;
+		const { skeletonPost, navigation } = this.props;
 
 		const post = data.item;
 
@@ -95,7 +94,6 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					post={post}
 					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
 					commentInput={true}
-					likeFailed={likeFailed}
 					navigation={navigation}
 				/>
 				{skeletonPost && <View style={styles.overlay} />}

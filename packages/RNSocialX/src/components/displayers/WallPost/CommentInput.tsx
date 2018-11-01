@@ -1,75 +1,62 @@
 import * as React from 'react';
-import { Animated, Dimensions, Keyboard, StyleSheet, TouchableOpacity } from 'react-native';
+import { Animated, Dimensions, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
-import { AnimatedFastImage, Colors, Images, Sizes } from '../../../environment/theme';
+import { AvatarImage, InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
+import { Colors, Sizes } from '../../../environment/theme';
 import { ITranslatedProps } from '../../../types';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface IAnimationValues {
-	size: Animated.Value;
-	radius: Animated.Value;
-	border: Animated.Value;
+	width: Animated.Value;
 	send: Animated.Value;
 }
 
 interface ICommentInputProps extends ITranslatedProps {
-	commentInput: boolean;
 	comment: string;
-	disabled: boolean;
-	avatar: string;
-	animationValues: IAnimationValues;
+	feed?: boolean;
+	avatar?: string;
+	animationValues?: IAnimationValues;
+	disabled?: boolean;
+	autoFocus?: boolean;
 	onCommentInputChange: (comment: string) => void;
 	onCommentInputPress: () => void;
 	onSubmitComment: () => void;
 }
 
 export const CommentInput: React.SFC<ICommentInputProps> = ({
-	commentInput,
 	comment,
-	disabled,
-	avatar,
-	animationValues,
+	feed = false,
+	avatar = '',
+	animationValues = {
+		width: 0,
+		send: 0,
+	},
+	disabled = false,
+	autoFocus = false,
 	onCommentInputChange,
 	onCommentInputPress,
 	onSubmitComment,
 	getText,
-}) => {
-	if (commentInput) {
-		return (
-			<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
-				<AnimatedFastImage
-					source={avatar.length > 0 ? { uri: avatar } : Images.user_avatar_placeholder}
-					style={[
-						styles.avatar,
-						{
-							width: animationValues.size,
-							height: animationValues.size,
-							borderRadius: animationValues.radius,
-						},
-					]}
-				/>
-				<Animated.View
-					style={[
-						styles.inputContainer,
-						{
-							borderWidth: animationValues.border,
-						},
-					]}
-				>
+}) => (
+	<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
+		{feed && (
+			<React.Fragment>
+				<AvatarImage image={avatar} style={styles.avatar} />
+				<Animated.View style={[styles.inputContainer, { width: animationValues.width }]}>
 					<PrimaryTextInput
-						width={SCREEN_WIDTH - 115}
 						borderWidth={0}
 						size={InputSizes.Small}
 						placeholder={getText('comments.screen.comment.input.placeholder')}
 						value={comment}
+						autoFocus={autoFocus}
 						onChangeText={onCommentInputChange}
 						focusUpdateHandler={onCommentInputPress}
 						returnKeyType={TRKeyboardKeys.send}
 						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
 						blurOnSubmit={true}
+						multiline={true}
 						disabled={disabled}
 					/>
 				</Animated.View>
@@ -85,12 +72,42 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						/>
 					</TouchableOpacity>
 				</Animated.View>
-			</TouchableOpacity>
-		);
-	}
-
-	return null;
-};
+			</React.Fragment>
+		)}
+		{!feed && (
+			<React.Fragment>
+				<View style={styles.inputContainer}>
+					<PrimaryTextInput
+						borderWidth={0}
+						size={InputSizes.Small}
+						placeholder={getText('comments.screen.comment.input.placeholder')}
+						value={comment}
+						autoFocus={autoFocus}
+						onChangeText={onCommentInputChange}
+						focusUpdateHandler={onCommentInputPress}
+						returnKeyType={TRKeyboardKeys.send}
+						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						blurOnSubmit={true}
+						multiline={true}
+						disabled={disabled}
+					/>
+				</View>
+				<View style={styles.send}>
+					<TouchableOpacity
+						onPress={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						activeOpacity={1}
+						disabled={comment.length === 0}
+					>
+						<Icon
+							name="comment-arrow-right"
+							style={[styles.icon, { color: comment.length === 0 ? Colors.grayText : Colors.pink }]}
+						/>
+					</TouchableOpacity>
+				</View>
+			</React.Fragment>
+		)}
+	</TouchableOpacity>
+);
 
 const styles: any = StyleSheet.create({
 	container: {
@@ -100,14 +117,17 @@ const styles: any = StyleSheet.create({
 		marginTop: Sizes.smartVerticalScale(5),
 	},
 	inputContainer: {
+		borderWidth: Sizes.smartHorizontalScale(1),
 		borderRadius: Sizes.smartHorizontalScale(6),
 		borderColor: Colors.grayText,
+		width: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
+		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
 	},
 	avatar: {
-		width: Sizes.smartHorizontalScale(25),
-		height: Sizes.smartHorizontalScale(25),
-		borderRadius: Sizes.smartHorizontalScale(25) / 2,
-		marginRight: Sizes.smartHorizontalScale(8),
+		width: Sizes.smartHorizontalScale(35),
+		height: Sizes.smartHorizontalScale(35),
+		borderRadius: Sizes.smartHorizontalScale(35) / 2,
+		marginRight: Sizes.smartHorizontalScale(10),
 	},
 	send: {
 		flex: 1,

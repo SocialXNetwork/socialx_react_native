@@ -46,7 +46,7 @@ export class TrendingContentCarousel extends React.Component<ITrendingContentCar
 	private onItemPress = (postId: string) => {
 		this.props.navigation.navigate(SCREENS.Comments, {
 			postId,
-			startComment: false,
+			keyboardRaised: false,
 		});
 	};
 }

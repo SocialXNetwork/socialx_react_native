@@ -38,24 +38,11 @@ export interface IWithUserFeedEnhancedData {
 	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
-	userPosts: { [owner: string]: IPostReturnData[] };
-	errors: IError[];
 }
 
-export interface IWithUserFeedEnhancedActions
-	extends ITranslatedProps,
-		IOptionsMenuProps,
-		INavigationParamsActions {
+export interface IWithUserFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
 	loadMorePosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
-	likePost: (postId: string) => void;
-	unlikePost: (postId: string) => void;
-	deletePost: (postId: string) => void;
-	postComment: (escapedComment: string, postId: string) => void;
-	getPostsForUser: (userName: string) => void;
-	blockUser: (userId: string) => void;
-	reportProblem: (reason: string, description: string) => void;
-	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithUserFeedEnhancedProps {
@@ -78,106 +65,67 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 						{({ appConfig }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
-									<WithOverlays>
-										{({ showOptionsMenu }) => (
-											<WithGlobals>
-												{({ setGlobal, globals }) => (
-													<WithActivities>
-														{({ activities, errors }) => (
-															<WithProfiles>
-																{({ profiles }) => (
-																	<WithAggregations>
-																		{(aggregations) => (
-																			<WithPosts>
-																				{(feed) => (
-																					<WithCurrentUser>
-																						{({ currentUser }) => {
-																							let feedPosts: IWallPostData[] = [];
+									<WithGlobals>
+										{({ globals }) => (
+											<WithActivities>
+												{({ activities }) => (
+													<WithProfiles>
+														{({ profiles }) => (
+															<WithPosts>
+																{(feed) => (
+																	<WithCurrentUser>
+																		{({ currentUser }) => {
+																			let feedPosts: IWallPostData[] = [];
 
-																							if (feed.posts.length > 0) {
-																								feedPosts = mapPostsForUI(
-																									feed.posts,
-																									10,
-																									currentUser,
-																									profiles,
-																									activities,
-																									appConfig,
-																								);
-																							}
+																			if (feed.posts.length > 0) {
+																				feedPosts = mapPostsForUI(
+																					feed.posts,
+																					10,
+																					currentUser,
+																					profiles,
+																					activities,
+																					appConfig,
+																				);
+																			}
 
-																							return this.props.children({
-																								data: {
-																									currentUser: currentUser!,
-																									posts: feedPosts,
-																									skeletonPost: globals.skeletonPost,
-																									canLoadMorePosts: globals.canLoadMorePosts,
-																									loadingMorePosts: getActivity(
-																										activities,
-																										ActionTypes.LOAD_MORE_POSTS,
-																									),
-																									refreshingFeed: getActivity(
-																										activities,
-																										ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																									),
-																									creatingPost: getActivity(
-																										activities,
-																										ActionTypes.CREATE_POST,
-																									),
-																									userPosts: aggregations.userPosts,
-																									errors,
-																								},
-																								actions: {
-																									loadMorePosts: feed.loadMorePosts,
-																									refreshFeed: async () => {
-																										await feed.resetPostsAndRefetch();
-																									},
-																									likePost: async (postId) => {
-																										await feed.likePost({
-																											postId,
-																										});
-																									},
-																									unlikePost: async (postId) => {
-																										await feed.unlikePost({
-																											postId,
-																										});
-																									},
-																									deletePost: async (postId) => {
-																										await feed.removePost({
-																											postId,
-																										});
-																									},
-																									postComment: async (text, postId) => {
-																										await feed.createComment({
-																											text,
-																											postId,
-																										});
-																									},
-																									getPostsForUser: async (username: string) => {
-																										await aggregations.getUserPosts({ username });
-																									},
-																									blockUser: () => undefined,
-																									reportProblem: () => undefined,
-																									showOptionsMenu: (items) =>
-																										showOptionsMenu({ items }),
-																									setNavigationParams,
-																									setGlobal,
-																									getText,
-																								},
-																							});
-																						}}
-																					</WithCurrentUser>
-																				)}
-																			</WithPosts>
-																		)}
-																	</WithAggregations>
+																			return this.props.children({
+																				data: {
+																					currentUser: currentUser!,
+																					posts: feedPosts,
+																					skeletonPost: globals.skeletonPost,
+																					canLoadMorePosts: globals.canLoadMorePosts,
+																					loadingMorePosts: getActivity(
+																						activities,
+																						ActionTypes.LOAD_MORE_POSTS,
+																					),
+																					refreshingFeed: getActivity(
+																						activities,
+																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																					),
+																					creatingPost: getActivity(
+																						activities,
+																						ActionTypes.CREATE_POST,
+																					),
+																				},
+																				actions: {
+																					loadMorePosts: feed.loadMorePosts,
+																					refreshFeed: async () => {
+																						await feed.resetPostsAndRefetch();
+																					},
+																					setNavigationParams,
+																					getText,
+																				},
+																			});
+																		}}
+																	</WithCurrentUser>
 																)}
-															</WithProfiles>
+															</WithPosts>
 														)}
-													</WithActivities>
+													</WithProfiles>
 												)}
-											</WithGlobals>
+											</WithActivities>
 										)}
-									</WithOverlays>
+									</WithGlobals>
 								)}
 							</WithNavigationParams>
 						)}

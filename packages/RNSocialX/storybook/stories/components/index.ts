@@ -32,14 +32,13 @@ import './displayers/WallPost/TaggedFriends';
 import './displayers/WallPost/TopComments';
 import './displayers/WallPost/UserDetails';
 import './displayers/WallPost/ViewAllComments';
+import './displayers/WallPost/WallPost';
 import './displayers/WallPost/WallPostActions';
-import './displayers/WallPost/WallPostCard';
 import './displayers/WallPost/WallPostMedia';
 
 import './hocs/WithInlineLoader';
 
 import './inputs/Checkbox';
-import './inputs/CommentTextInput';
 import './inputs/PrimaryTextInput';
 import './inputs/SharePostInput';
 

@@ -11,13 +11,12 @@ storiesOf('Components/displayers', module)
 	.addDecorator(withKnobs)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('CommentCard', () => {
-		const likedByMe = boolean('likedByMe', false);
+		const likedByCurrentUser = boolean('likedByCurrentUser', false);
 		const likeCommentError = boolean('likeCommentError', false);
 		const commentText = text('commentText', 'Sample comment text here.\nGoing on the second line');
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
 		const useravatar = text('user.avatar', 'https://avatars2.githubusercontent.com/u/212');
 		const userFullName = text('user.fullName', 'Sharell Watchman');
-		const numberOfLikes = number('numberOfLikes', 10);
 
 		return (
 			<CommentCard
@@ -30,14 +29,13 @@ storiesOf('Components/displayers', module)
 						userId: 'user_11',
 					},
 					timestamp,
-					numberOfLikes,
 					likes: [
 						{
 							userId: 'randomUserId',
 							userName: 'randomUserName',
 						},
 					],
-					likedByMe,
+					likedByCurrentUser,
 				}}
 				onCommentLike={action('onCommentLike')}
 				onViewUserProfile={action('onViewUserProfile')}

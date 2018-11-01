@@ -12,19 +12,19 @@ const POST_SHORT_MAX_LINES = 3;
 interface IPostTextProps extends ITranslatedProps {
 	text: string;
 	fullTextVisible: boolean;
-	toggleShowFullText: () => void;
 	handleHashTag: (hashTag: string) => void;
 	handleUserTag: (userTag: string) => void;
-	launchExternalUrl: (url: string) => void;
+	handleUrls: (url: string) => void;
+	onShowFullText: () => void;
 }
 
 export const PostText: React.SFC<IPostTextProps> = ({
 	text,
 	fullTextVisible,
-	toggleShowFullText,
 	handleHashTag,
 	handleUserTag,
-	launchExternalUrl,
+	handleUrls,
+	onShowFullText,
 	getText,
 }) => {
 	if (text) {
@@ -70,14 +70,14 @@ export const PostText: React.SFC<IPostTextProps> = ({
 							{
 								type: 'url',
 								style: styles.url,
-								onPress: launchExternalUrl,
+								onPress: handleUrls,
 							},
 						]}
 					>
 						{textToRender}
 					</RichText>
 					{hasMore && (
-						<Text style={styles.showMoreText} onPress={toggleShowFullText}>
+						<Text style={styles.showMoreText} onPress={onShowFullText}>
 							{getText('text.more')}
 						</Text>
 					)}

@@ -12,6 +12,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator(withKnobs)
 	.add('PostText', () => {
 		const fullTextVisible = boolean('fullTextVisible', false);
+
 		return (
 			<PostText
 				getText={getTextMock}
@@ -22,10 +23,10 @@ storiesOf('Components/displayers', module)
 					'\nhttps://socialx.network @user11 #hashTagText'
 				}
 				fullTextVisible={fullTextVisible}
-				toggleShowFullText={action('toggleShowFullText')}
+				onShowFullText={action('onShowFullText')}
 				handleHashTag={action('handleHashTag')}
 				handleUserTag={action('handleUserTag')}
-				launchExternalUrl={action('launchExternalUrl')}
+				handleUrls={action('handleUrls')}
 			/>
 		);
 	});

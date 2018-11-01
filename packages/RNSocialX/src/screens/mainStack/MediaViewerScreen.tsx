@@ -118,7 +118,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 		const { navigation, setNavigationParams, postId } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.Comments,
-			params: { postId, startComment: true },
+			params: { postId, keyboardRaised: true },
 		});
 		navigation.navigate(SCREENS.Comments);
 	};

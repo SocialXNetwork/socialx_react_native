@@ -8,7 +8,6 @@ export { CreateAdSteps } from './displayers/Ads/CreateAdSteps';
 export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
-export { CommentsPostOwner } from './displayers/CommentsPostOwner';
 export { CommentCard } from './displayers/CommentCard';
 export { Header } from './displayers/Header';
 export { HeartAnimation } from './displayers/HeartAnimation';
@@ -17,7 +16,6 @@ export { IntroGenericSlide } from './displayers/IntroGenericSlide';
 export { MediaHorizontalScroller } from './displayers/MediaHorizontalScroller';
 export { MediaObjectViewer } from './displayers/MediaObjectViewer';
 export { MyWalletInfo } from './displayers/MyWalletInfo';
-export { NoComments } from './displayers/NoComments';
 export { NoContent } from './displayers/NoContent';
 export { OptionsMenuButton } from './displayers/OptionsMenuButton';
 export { PeopleSearchResultEntry } from './displayers/PeopleSearchResultEntry';
@@ -48,7 +46,6 @@ export { ShareSection } from './feed/ShareSection';
 
 export { WithInlineLoader, IWithLoaderProps, SpinnerTypes } from './inlineLoader';
 
-export { CommentTextInput } from './inputs/CommentTextInput';
 export { Checkbox } from './inputs/Checkbox';
 export { SharePostInput } from './inputs/SharePostInput';
 export {
@@ -59,8 +56,6 @@ export {
 } from './inputs/PrimaryTextInput';
 
 export { CloseButton } from './interaction/CloseButton';
-export { CommentsHeaderMenuButton } from './interaction/CommentsHeaderMenuButton';
-export { CommentsPostActions } from './interaction/CommentsPostActions';
 export { GradientButton } from './interaction/GradientButton';
 export { IconButton } from './interaction/IconButton';
 export { LikeAnimatingButton } from './interaction/LikeAnimatingButton';

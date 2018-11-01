@@ -149,7 +149,6 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 											<WallPost
 												post={data.item}
 												onAddComment={() => undefined}
-												likeFailed={false}
 												commentInput={false}
 												navigation={navigation}
 											/>

@@ -8,7 +8,7 @@ import CenterView from '../../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-	.add('WallPostCard', () => (
+	.add('WallPost', () => (
 		<WallPost
 			post={posts[0]}
 			commentInput={false}

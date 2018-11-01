@@ -11,7 +11,6 @@ import {
 	IWithUserFeedEnhancedActions,
 	IWithUserFeedEnhancedData,
 } from '../../../enhancers/screens';
-import { ActionTypes } from '../../../store/data/posts/Types';
 
 const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
@@ -42,14 +41,9 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			refreshingFeed,
 			loadingMorePosts,
 			creatingPost,
-			errors,
 			navigation,
 			getText,
 		} = this.props;
-
-		const likeFailed = !!errors.find(
-			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
-		);
 
 		return (
 			<UserFeedScreenView
@@ -63,7 +57,6 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
-				likeFailed={likeFailed}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}

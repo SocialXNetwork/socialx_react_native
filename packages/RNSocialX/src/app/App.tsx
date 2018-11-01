@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View } from 'react-native';
 
 import BugSnag from './BugSnag';
 import ErrorBoundary from './ErrorBoundary';

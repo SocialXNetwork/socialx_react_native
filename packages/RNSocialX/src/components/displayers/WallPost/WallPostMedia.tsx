@@ -122,6 +122,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						</View>
 						<TouchableOpacity
 							style={style.fullWidthHalfHeight}
+							activeOpacity={1}
 							onPress={() => onMediaObjectView(2)}
 						>
 							<MediaObjectViewer
