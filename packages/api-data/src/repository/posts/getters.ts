@@ -45,7 +45,7 @@ export const getPostPathsByUser = (
 			);
 			return callback(null, paths);
 		},
-		{ wait: 400, timeout: 600 },
+		{ wait: 800, timeout: 1000 },
 	);
 };
 
