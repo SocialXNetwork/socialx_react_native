@@ -1,10 +1,3 @@
-/**
- * TODO
- * 0. extract the hash from the response of the api
- * 1. add abort action 'abortUpload
- * 2. add a property 'failed' or 'error' on the state to handle errors
- */
-
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
@@ -86,7 +79,7 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 		const updateStatus = async ({
 			uploadId: uploadIdUpdated,
 			progress,
-		}: IListenerProgess & { uploadId: string }) => {
+		}: any & { uploadId: string }) => {
 			await dispatch(
 				setUploadStatus({
 					uploadId: uploadIdUpdated,
@@ -99,16 +92,11 @@ export const uploadFile = (uploadFileInput: IUploadFileInput): IThunk => async (
 			);
 		};
 
-		const { uploadId, responseBody } = await storageApi.uploadFile(
-			path,
-			bootstrapStatus,
-			updateStatus,
-		);
-		const { Hash: hash } = JSON.parse(responseBody);
+		const { Hash: hash } = await storageApi.uploadFile(path, bootstrapStatus, updateStatus);
 
 		await dispatch(
 			setUploadStatus({
-				uploadId,
+				uploadId: '',
 				progress: 100,
 				path,
 				aborting: false,
