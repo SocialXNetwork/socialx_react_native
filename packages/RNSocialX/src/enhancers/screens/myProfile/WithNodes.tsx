@@ -8,11 +8,10 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 
 export interface IWithNodesEnhancedData {
-	appConfig: IApplicationConfig | {};
+	appConfig: IApplicationConfig;
 }
 
 export interface IWithNodesEnhancedActions extends ITranslatedProps {
-	setGlobal: (global: IGlobal) => void;
 	onSaveNodes: (nodes: string[]) => void;
 }
 
@@ -33,25 +32,21 @@ export class WithNodes extends React.Component<IWithNodesProps, IWithNodesState>
 			<WithI18n>
 				{({ getText }) => (
 					<WithConfig>
-						{({ appConfig, setCustomGunSuperPeers }) => (
-							<WithGlobals>
-								{({ setGlobal }) =>
-									this.props.children({
-										data: {
-											appConfig,
-										},
-										actions: {
-											onSaveNodes: (nodes) =>
-												setCustomGunSuperPeers({
-													customGunSuperPeers: nodes,
-												}),
-											setGlobal,
-											getText,
-										},
-									})
-								}
-							</WithGlobals>
-						)}
+						{({ appConfig, setCustomGunSuperPeers }) =>
+							this.props.children({
+								data: {
+									appConfig,
+								},
+								actions: {
+									onSaveNodes: async (nodes) => {
+										await setCustomGunSuperPeers({
+											customGunSuperPeers: nodes,
+										});
+									},
+									getText,
+								},
+							})
+						}
 					</WithConfig>
 				)}
 			</WithI18n>

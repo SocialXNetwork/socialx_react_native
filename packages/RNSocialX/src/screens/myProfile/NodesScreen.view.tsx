@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Keyboard, ScrollView, Text, TouchableHighlight, View } from 'react-native';
-import Swipeable from 'react-native-swipeable';
+import { FlatList, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
@@ -12,7 +11,7 @@ import {
 } from '../../components';
 import { ITranslatedProps } from '../../types';
 
-import styles, { defaultStyles } from './NodesScreen.style';
+import styles from './NodesScreen.style';
 
 interface INodesScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
@@ -20,83 +19,60 @@ interface INodesScreenViewProps extends ITranslatedProps {
 	nodeValue: string;
 	onSaveNewNode: () => void;
 	autoFocus: boolean;
-	isSwiping: boolean;
 	onNodeInputChange: (value: string) => void;
-	onSwipeStart: () => void;
-	onSwipeRelease: () => void;
 	onDeleteNode: (value: string) => void;
 }
-
-const rightButtons = [];
 
 export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
 	onGoBack,
 	getText,
 	nodesList,
-	isSwiping,
 	autoFocus,
 	nodeValue,
 	onSaveNewNode,
 	onNodeInputChange,
-	onSwipeStart,
-	onSwipeRelease,
 	onDeleteNode,
-}) => {
-	const swiperDeleteButton = (node: string, index: number) => {
-		return [
-			<TouchableHighlight
-				style={styles.swiperDeleteButton}
-				key={index}
-				onPress={() => {
-					onDeleteNode(node);
-				}}
-			>
-				<Icon style={styles.swiperDeleteIcon} name="ios-trash" />
-			</TouchableHighlight>,
-		];
-	};
-
-	return (
-		<View style={{ flex: 1 }}>
-			{
-				<Header
-					title={getText('nodes.screen.title')}
-					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+}) => (
+	<View style={{ flex: 1 }}>
+		{
+			<Header
+				title={getText('nodes.screen.title')}
+				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+			/>
+		}
+		<View style={styles.container}>
+			<Text style={styles.description}>{getText('nodes.screen.description').toUpperCase()}</Text>
+			<View style={styles.separator} />
+			<View style={styles.marginBetweenTitleAndInput} />
+			<ScrollView>
+				<PrimaryTextInput
+					borderWidth={0}
+					size={InputSizes.Normal}
+					placeholder={getText('nodes.screen.input.placeholder')}
+					value={nodeValue}
+					autoFocus={autoFocus}
+					onChangeText={onNodeInputChange}
+					returnKeyType={TRKeyboardKeys.send}
+					onSubmitPressed={nodeValue.length > 0 ? onSaveNewNode : Keyboard.dismiss}
+					blurOnSubmit={true}
 				/>
-			}
-			<ScrollView scrollEnabled={!isSwiping}>
-				<View style={styles.container}>
-					<Text style={styles.description}>{getText('nodes.screen.description')}</Text>
-					<View style={styles.inputContainer}>
-						<PrimaryTextInput
-							borderWidth={0}
-							size={InputSizes.Small}
-							placeholder={getText('nodes.screen.input.placeholder')}
-							value={nodeValue}
-							autoFocus={autoFocus}
-							onChangeText={onNodeInputChange}
-							returnKeyType={TRKeyboardKeys.send}
-							onSubmitPressed={nodeValue.length > 0 ? onSaveNewNode : Keyboard.dismiss}
-							blurOnSubmit={true}
-						/>
-					</View>
-					<View style={styles.listContainer}>
-						{nodesList.map((node, index) => (
-							<View style={styles.listItem}>
-								<Swipeable
-									rightButtons={swiperDeleteButton(node, index)}
-									key={index}
-									onSwipeStart={onSwipeStart}
-									onSwipeRelease={onSwipeRelease}
-								>
-									<Text style={styles.description}>{node}</Text>
-								</Swipeable>
-								<View style={styles.separator} />
-							</View>
-						))}
-					</View>
-				</View>
+				<Text style={styles.currentNodesText}>
+					{getText('nodes.screen.current.text').toUpperCase()}
+				</Text>
+				<FlatList
+					data={nodesList}
+					keyExtractor={(item) => item.toString()}
+					style={styles.listContainer}
+					renderItem={({ item }) => (
+						<View style={styles.listItem}>
+							<Text style={styles.node}>{item}</Text>
+							<TouchableOpacity style={styles.iconContainer} onPress={() => onDeleteNode(item)}>
+								<Icon style={styles.deleteIcon} name="ios-trash" />
+							</TouchableOpacity>
+						</View>
+					)}
+				/>
 			</ScrollView>
 		</View>
-	);
-};
+	</View>
+);
