@@ -205,23 +205,26 @@ export const createAccount = async (
 						}
 						const ref = account.get('profile').get(username);
 
-						gun.get('profiles').once(() => {
-							gun
-								.get('profiles')
-								.get(username)
-								.put(ref, (pubRecordCallback: any) => {
-									if (pubRecordCallback.err) {
-										return callback(
-											new ApiError(
-												`failed to create the user profile on the pub record. ${
-													pubRecordCallback.err
-												}`,
-											),
-										);
-									}
-									return callback(null);
-								});
-						});
+						gun.get('profiles').once(
+							() => {
+								gun
+									.get('profiles')
+									.get(username)
+									.put(ref, (pubRecordCallback: any) => {
+										if (pubRecordCallback.err) {
+											return callback(
+												new ApiError(
+													`failed to create the user profile on the pub record. ${
+														pubRecordCallback.err
+													}`,
+												),
+											);
+										}
+										return callback(null);
+									});
+							},
+							{ wait: 1000 },
+						);
 					},
 				);
 		});
