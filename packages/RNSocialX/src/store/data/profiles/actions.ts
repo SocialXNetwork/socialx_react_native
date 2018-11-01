@@ -307,7 +307,6 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 				}
 			}
 			await dispatch(getCurrentAccount());
-			await dispatch(getCurrentProfile());
 		} catch (e) {
 			await dispatch(
 				setError({

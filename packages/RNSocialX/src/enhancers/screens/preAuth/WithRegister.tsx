@@ -94,7 +94,7 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 																			fullName: registerData.name,
 																			miningEnabled: true,
 																			shareDataEnabled: true,
-																			description: 'about me text',
+																			aboutMeText: 'about me text',
 																		}),
 																	loadPosts: loadMorePosts,
 																	setGlobal,
