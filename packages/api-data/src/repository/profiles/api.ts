@@ -79,7 +79,7 @@ export default (context: IContext) => ({
 		// 		{ validationInput: createProfileInput },
 		// 	);
 		// }
-		const usernames = unique(getRelatedUsernamesFromPosts(posts) || []);
+		const usernames = unique(getRelatedUsernamesFromPosts(posts) || []).filter((v) => v.length);
 		return this.getProfilesByUsernames({ usernames });
 	},
 	async getProfileByUsername(getProfileByUsernameInput: {
