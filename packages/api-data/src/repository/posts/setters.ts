@@ -83,53 +83,62 @@ export const createPost = (
 			},
 		);
 	};
-	const createPostMetaByUser = () => {
-		postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
-			{
-				postPath,
-				privatePost,
-				timestamp,
-				owner: {
-					alias: owner,
-					pub: ownerPub,
-				},
+	const createPostMetaByUser = () =>
+		postHandles.postMetasByUsernamesRecord(context).once(
+			() => {
+				postHandles.postMetasByPostIdOfCurrentAccount(context, postId).put(
+					{
+						postPath,
+						privatePost,
+						timestamp,
+						owner: {
+							alias: owner,
+							pub: ownerPub,
+						},
+					},
+					(createPostMetaByUserCallback) => {
+						if (createPostMetaByUserCallback.err) {
+							return callback(
+								new ApiError(
+									`${errPrefix}, error creating post meta of current account ${
+										createPostMetaByUserCallback.err
+									}`,
+								),
+							);
+						}
+						loadMetaIdAndPass(gun, createPostMetaById);
+					},
+				);
 			},
-			(createPostMetaByUserCallback) => {
-				if (createPostMetaByUserCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, error creating post meta of current account ${
-								createPostMetaByUserCallback.err
-							}`,
-						),
-					);
-				}
-				loadMetaIdAndPass(gun, createPostMetaById);
-			},
+			{ wait: 1000 },
 		);
-	};
-	const createPostMetaById = () => {
-		postHandles.postMetaById(context, postId).put(
-			{
-				postPath,
-				privatePost,
-				owner: {
-					alias: owner,
-					pub: ownerPub,
-				},
+
+	const createPostMetaById = () =>
+		postHandles.postMetaIdsRecord(context).once(
+			() => {
+				postHandles.postMetaById(context, postId).put(
+					{
+						postPath,
+						privatePost,
+						owner: {
+							alias: owner,
+							pub: ownerPub,
+						},
+					},
+					(createOistMetaByIdCallback) => {
+						if (createOistMetaByIdCallback.err) {
+							return callback(
+								new ApiError(
+									`${errPrefix}, error creating post meta ${createOistMetaByIdCallback.err}`,
+								),
+							);
+						}
+						return callback(null);
+					},
+				);
 			},
-			(createOistMetaByIdCallback) => {
-				if (createOistMetaByIdCallback.err) {
-					return callback(
-						new ApiError(
-							`${errPrefix}, error creating post meta ${createOistMetaByIdCallback.err}`,
-						),
-					);
-				}
-				return callback(null);
-			},
+			{ wait: 1000 },
 		);
-	};
 	mainRunner();
 };
 
