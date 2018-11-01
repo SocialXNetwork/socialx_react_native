@@ -7,7 +7,6 @@ import {
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
-import { ISetAuthAction } from '../../app/auth/Types';
 
 export type IState = DeepReadonly<{
 	accounts: IAccountData[];
@@ -34,7 +33,7 @@ export interface ICreateAccountInput {
 	fullName: string;
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
-	description: string;
+	aboutMeText: string;
 	recover: {
 		question1: string;
 		question2: string;
