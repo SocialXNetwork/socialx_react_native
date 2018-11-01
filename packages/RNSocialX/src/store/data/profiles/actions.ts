@@ -12,6 +12,7 @@ import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { getCurrentAccount } from '../accounts/actions';
 import { getNotifications } from '../notifications/actions';
 import {
 	ActionTypes,
@@ -199,6 +200,7 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 					uuid: activityId,
 				}),
 			);
+
 			const profile = storeState.data.accounts.accounts[0].profile[auth.alias];
 			dispatch(syncGetCurrentProfileAction(profile));
 			await dispatch(getUserPosts({ username: profile.alias }));
@@ -304,7 +306,7 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 					await dataApi.profiles.updateProfile(updateProfileInput);
 				}
 			}
-
+			await dispatch(getCurrentAccount());
 			await dispatch(getCurrentProfile());
 		} catch (e) {
 			await dispatch(

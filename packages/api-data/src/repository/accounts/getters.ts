@@ -6,9 +6,12 @@ import { ApiError } from '../../utils/errors';
 import { IAccountData, IGetAccountByPubInput } from './types';
 
 const preLoadProfile = (user: any, cb: any) => {
-	user.get('profile').once(() => {
-		cb();
-	});
+	user.get('profile').once(
+		() => {
+			cb();
+		},
+		{ wait: 400 },
+	);
 };
 
 export const getIsAccountLoggedIn = (
