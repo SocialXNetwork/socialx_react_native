@@ -9,6 +9,7 @@ import { dataApiFactory } from '@socialx/api-data';
 import { storageApiFactory } from '@socialx/api-storage';
 
 import { Client } from 'bugsnag-react-native';
+import { Platform } from 'react-native';
 import { IApplicationConfig, setAppConfig } from './app/config';
 import rootReducer from './rootReducer';
 import { IContextConfig } from './types';
@@ -30,12 +31,15 @@ export const configureStore = (
 		rootdb: depsConfig.dataApi.rootdb,
 	});
 
-	const storageApi = storageApiFactory({
-		host: appConfig.ipfsConfig.ipfs_server,
-		port: appConfig.ipfsConfig.ipfs_port,
-		protocol: appConfig.ipfsConfig.opts.protocol,
-		root: appConfig.ipfsConfig.opts.root,
-	});
+	const storageApi = storageApiFactory(
+		{
+			host: appConfig.ipfsConfig.ipfs_server,
+			port: appConfig.ipfsConfig.ipfs_port,
+			protocol: appConfig.ipfsConfig.opts.protocol,
+			root: appConfig.ipfsConfig.opts.root,
+		},
+		Platform.OS,
+	);
 
 	const store = createStore(
 		persistedReducer,

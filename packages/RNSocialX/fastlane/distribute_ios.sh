@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-export IOS_VERSION_STRING="0.1.0"
-export IOS_VERSION_CODE=1
+export IOS_VERSION_STRING="0.1.5"
+export IOS_VERSION_CODE=15
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8

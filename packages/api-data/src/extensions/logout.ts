@@ -1,5 +1,4 @@
 import * as Gun from 'gun/gun';
-import 'gun/sea';
 import { IContext } from '../types';
 
 // tslint:disable

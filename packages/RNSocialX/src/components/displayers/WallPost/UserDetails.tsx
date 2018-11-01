@@ -39,7 +39,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 
 	return (
 		<View style={styles.container}>
-			{canBack && (
+			{!!canBack && (
 				<TouchableOpacity onPress={onGoBack} style={{ flex: 1 }}>
 					<Icon name="ios-arrow-back" style={styles.arrow} />
 				</TouchableOpacity>

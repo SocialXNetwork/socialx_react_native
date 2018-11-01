@@ -210,7 +210,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 					onGoBack={onGoBack}
 					getText={getText}
 				/>
-				{comments && (
+				{!!comments && (
 					<React.Fragment>
 						<ScrollView
 							style={{ flex: 1 }}
@@ -231,7 +231,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							/>
 							{media.length > 0 && (
 								<View style={styles.mediaContainer}>
-									{heartAnimation && (
+									{!!heartAnimation && (
 										<HeartAnimation
 											ended={(status) => this.setState({ heartAnimation: !status })}
 										/>
@@ -273,7 +273,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 										getText={getText}
 									/>
 								))}
-							}
 						</ScrollView>
 						<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={50}>
 							<CommentInput
@@ -346,7 +345,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							onUserPress={onUserPress}
 							onCommentPress={() => onCommentsPress(post, false)}
 						/>
-						{commentInput && (
+						{!!commentInput && (
 							<CommentInput
 								feed={true}
 								comment={comment}

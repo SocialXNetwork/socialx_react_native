@@ -8,8 +8,9 @@ export const storageApiFactory = (
 		protocol: 'http',
 		root: '/api/v0',
 	},
+	platform: string,
 ) => {
-	const ipfs = new Ipfslib(config);
+	const ipfs = new Ipfslib(config, platform);
 
 	return {
 		uploadFile: (
