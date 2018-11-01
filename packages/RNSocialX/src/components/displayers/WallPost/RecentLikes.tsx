@@ -27,7 +27,7 @@ export const RecentLikes: React.SFC<IRecentLikesProps> = ({
 						{recentLikes.first}
 					</Text>
 				</Text>
-				{recentLikes.second && (
+				{!!recentLikes.second && (
 					<Text style={styles.likedText}>
 						{' ' + getText('text.and') + ' '}
 						<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.second!)}>

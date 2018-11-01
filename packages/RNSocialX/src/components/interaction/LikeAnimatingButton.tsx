@@ -65,7 +65,7 @@ export class LikeAnimatingButton extends React.Component<
 					name={likedByCurrentUser ? 'heart' : 'heart-o'}
 					style={iconStyles}
 				/>
-				{label && <Text style={styles.label}>{label}</Text>}
+				{!!label && <Text style={styles.label}>{label}</Text>}
 			</TouchableOpacity>
 		);
 	}

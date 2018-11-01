@@ -41,7 +41,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	getText,
 }) => (
 	<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
-		{feed && (
+		{!!feed && (
 			<React.Fragment>
 				<AvatarImage image={avatar} style={styles.avatar} />
 				<Animated.View style={[styles.inputContainer, { width: animationValues.width }]}>

@@ -48,9 +48,8 @@ export const getProfileByUsername = (
 	callback: IGunCallback<IProfileCallbackData>,
 ) => {
 	const mainRunner = () => {
-		profileHandles
-			.publicProfileByUsername(context, username)
-			.docLoad((profile: IProfileCallbackData) => {
+		profileHandles.publicProfileByUsername(context, username).open(
+			(profile: IProfileCallbackData) => {
 				if (!profile || !Object.keys(profile).length) {
 					return callback(
 						new ApiError('failed to find profile', {
@@ -68,7 +67,9 @@ export const getProfileByUsername = (
 					...cleanedProfile,
 				};
 				return callback(null, profileReturnData);
-			});
+			},
+			{ off: 1, wait: 400 },
+		);
 	};
 	preLoadProfiles(context.gun, () => {
 		mainRunner();

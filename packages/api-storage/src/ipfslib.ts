@@ -15,8 +15,9 @@ export class Ipfslib {
 		protocol: 'http',
 		root: '/api/v0',
 	};
+	private platform: string;
 
-	constructor(params: IProviderParams) {
+	constructor(params: IProviderParams, platform: string) {
 		if (params) {
 			if (!params.protocol || !params.root) {
 				this.config.host = params.host;
@@ -25,6 +26,7 @@ export class Ipfslib {
 				this.config = params;
 			}
 		}
+		this.platform = platform;
 	}
 
 	public addFileBN = async (
@@ -33,10 +35,14 @@ export class Ipfslib {
 		onProgress?: (progress: IListenerProgess & { uploadId: string }) => void,
 	): Promise<{ Hash: string; Name: string; Size: string }> => {
 		const data = new FormData();
+		const filePath =
+			this.platform === 'android' ? (path.includes('file') ? path : `file://${path}`) : path;
 		data.append('file', {
-			uri: path,
+			uri: filePath,
 			type: 'file',
-			name: `${new Date().getTime()}.jpg`,
+			name: `${new Date().getTime()}.${path.split('.').reverse()[0]}`,
+			// @ts-ignore
+			type: 'image/jpeg',
 		} as any);
 
 		const config = {

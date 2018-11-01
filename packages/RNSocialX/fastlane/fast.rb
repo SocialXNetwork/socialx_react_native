@@ -118,8 +118,8 @@ platform :ios do
     check_build_params options
     version_ios options
     ios_build
-    send_testflight
-    ios_bugsnag options
+    # send_testflight
+    # ios_bugsnag options
   end
 
 end
@@ -137,15 +137,19 @@ platform :android do
 
 end
 
-desc 'Android+iOS build and upload flow + Bugsnag'
-lane :release do |options|
-  install_dev
-  check_build_params options
-  version_ios options
-  ios_build
-  send_testflight
-  ios_bugsnag options
-  android_build options
-  send_play_store
-  android_bugsnag options
+platform :cross do 
+
+  desc 'Android+iOS build and upload flow + Bugsnag'
+  lane :release do |options|
+    install_dev
+    check_build_params options
+    version_ios options
+    ios_build
+    send_testflight
+    ios_bugsnag options
+    android_build options
+    send_play_store
+    android_bugsnag options
+  end
+
 end

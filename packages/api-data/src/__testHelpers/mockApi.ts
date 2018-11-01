@@ -3,8 +3,6 @@ import Gun from 'gun/gun';
 import 'gun/lib/path';
 import 'gun/lib/store';
 
-import 'gun/sea';
-
 import '../extensions/docload';
 import '../extensions/encrypt';
 import '../extensions/erase';
