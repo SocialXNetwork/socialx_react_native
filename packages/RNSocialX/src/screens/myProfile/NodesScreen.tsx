@@ -13,47 +13,28 @@ type INodesScreenProps = INavigationProps & IWithNodesEnhancedActions & IWithNod
 
 interface INodesScreenState {
 	nodeValue: string;
-	isSwiping: boolean;
+	superPeers: string[];
 }
-
-const mockPeers = [
-	'http://139.59.130.248:8765/gun',
-	'http://128.199.162.85:8765/gun',
-	'http://139.59.130.248:8765/gun',
-	'http://128.199.162.85:8765/gun',
-	'http://139.59.130.248:8765/gun',
-	'http://128.199.162.85:8765/gun',
-	'http://139.59.130.248:8765/gun',
-	'http://128.199.162.85:8765/gun',
-	'http://139.59.130.248:8765/gun',
-	'http://128.199.162.85:8765/gun',
-	'http://139.59.130.248:8765/gun',
-	'http://128.199.162.85:8765/gun',
-];
 
 class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 	public state = {
 		nodeValue: '',
-		isSwiping: false,
+		superPeers: this.props.appConfig.gun.superPeers,
 	};
 
 	public render() {
-		const { navigation, getText, appConfig } = this.props;
-		const { nodeValue, isSwiping } = this.state;
+		const { navigation, getText } = this.props;
+		const { nodeValue, superPeers } = this.state;
 
 		return (
 			<NodesScreenView
 				onGoBack={() => this.onGoBackHandler(navigation)}
 				getText={getText}
-				// nodesList={appConfig.gun.superPeers}
-				nodesList={mockPeers}
+				nodesList={superPeers}
 				onSaveNewNode={this.onSaveNewNodeHandler}
 				nodeValue={nodeValue}
 				autoFocus={true}
 				onNodeInputChange={this.onNodeInputChange}
-				onSwipeStart={this.onSwipeStartHandler}
-				onSwipeRelease={this.onSwipeReleaseHandler}
-				isSwiping={isSwiping}
 				onDeleteNode={this.onDeleteNode}
 			/>
 		);
@@ -69,31 +50,26 @@ class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 		});
 	};
 
-	private onDeleteNode = (value: string) => {
-		mockPeers.splice(mockPeers.findIndex((e) => e === value), 1);
+	private onDeleteNode = async (value: string) => {
+		const { superPeers } = this.state;
+
+		const newNodesArray = superPeers.filter((e: string) => e !== value);
+
+		await this.props.onSaveNodes(newNodesArray);
+		this.setState({
+			superPeers: newNodesArray,
+		});
 	};
 
-	private onSwipeStartHandler = () => {
-		this.setState({ isSwiping: true });
-	};
+	private onSaveNewNodeHandler = async () => {
+		const { superPeers, nodeValue } = this.state;
 
-	private onSwipeReleaseHandler = () => {
-		this.setState({ isSwiping: false });
-	};
+		const newNodesArray = superPeers.slice();
+		newNodesArray.unshift(nodeValue);
 
-	private onSaveNewNodeHandler = () => {
-		this.switchActivityIndicator(true);
-		mockPeers.unshift(this.state.nodeValue);
-		// await this.props.onSaveNodes(nodes);
-		this.switchActivityIndicator(false);
-	};
-
-	private switchActivityIndicator = (state: boolean) => {
-		this.props.setGlobal({
-			activity: {
-				visible: state,
-				title: this.props.getText('nodes.progress.message'),
-			},
+		await this.props.onSaveNodes(newNodesArray);
+		this.setState({
+			superPeers: newNodesArray,
 		});
 	};
 }

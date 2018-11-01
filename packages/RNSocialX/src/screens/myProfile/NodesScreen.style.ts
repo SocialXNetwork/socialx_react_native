@@ -14,43 +14,49 @@ const styles: any = {
 		lineHeight: Sizes.smartHorizontalScale(18),
 		color: Colors.cloudBurst,
 		textAlign: 'left',
-		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		paddingVertical: Sizes.smartVerticalScale(15),
+		paddingLeft: Sizes.smartVerticalScale(24),
+		paddingVertical: Sizes.smartVerticalScale(20),
+		backgroundColor: Colors.white,
 	},
-	inputContainer: {
-		paddingBottom: Sizes.smartVerticalScale(20),
+	marginBetweenTitleAndInput: {
+		marginBottom: Sizes.smartVerticalScale(29),
+	},
+	currentNodesText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(15),
+		lineHeight: Sizes.smartHorizontalScale(18),
+		color: Colors.cloudBurst,
+		textAlign: 'center',
+		paddingHorizontal: Sizes.smartHorizontalScale(15),
+		paddingVertical: Sizes.smartVerticalScale(20),
 	},
 	listContainer: {
 		backgroundColor: Colors.white,
 	},
-	listItem: {},
-	separator: {
-		borderWidth: 1,
-		borderColor: Colors.dustWhite,
-		height: Sizes.smartVerticalScale(2),
-		width: '100%',
+	listItem: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingHorizontal: Sizes.smartHorizontalScale(15),
+		paddingVertical: Sizes.smartVerticalScale(20),
+		borderBottomWidth: 1,
+		borderBottomColor: Colors.dustWhite,
+		lineHeight: Sizes.smartVerticalScale(2),
 	},
-	swiperDeleteButton: {
-		flex: 1,
-		justifyContent: 'center',
-		backgroundColor: Colors.ceriseRed,
+	node: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(15),
+		lineHeight: Sizes.smartHorizontalScale(18),
+		color: Colors.cloudBurst,
+		textAlign: 'left',
 	},
-	swiperDeleteIcon: {
-		paddingLeft: Sizes.smartHorizontalScale(15),
-		color: Colors.white,
+	iconContainer: {
+		justifyContent: 'flex-end',
+	},
+	deleteIcon: {
+		color: Colors.ceriseRed,
 		fontSize: Sizes.smartHorizontalScale(25),
 	},
 };
 
 export default StyleSheet.create(styles);
-
-export const defaultStyles = {
-	highlightColor: Colors.pink,
-	datePickerConfirmAndCancelBtnColor: {
-		color: Colors.pink,
-	},
-	highlightButton: Colors.pinkLace,
-	pickerTitleColor: colorWithAlphaArray(Colors.cloudBurst, 1),
-	pickerToolbarAndBgColor: colorWithAlphaArray(Colors.white, 1),
-	pickerConfirmAndCancelBtnColor: colorWithAlphaArray(Colors.pink, 1),
-};
