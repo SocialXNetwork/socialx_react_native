@@ -14,17 +14,19 @@ type INodesScreenProps = INavigationProps & IWithNodesEnhancedActions & IWithNod
 interface INodesScreenState {
 	nodeValue: string;
 	superPeers: string[];
+	selectedCheckList: string[];
 }
 
 class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 	public state = {
 		nodeValue: '',
 		superPeers: this.props.appConfig.gun.superPeers,
+		selectedCheckList: [] as string[],
 	};
 
 	public render() {
 		const { navigation, getText } = this.props;
-		const { nodeValue, superPeers } = this.state;
+		const { nodeValue, superPeers, selectedCheckList } = this.state;
 
 		return (
 			<NodesScreenView
@@ -35,7 +37,9 @@ class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 				nodeValue={nodeValue}
 				autoFocus={true}
 				onNodeInputChange={this.onNodeInputChange}
-				onDeleteNode={this.onDeleteNode}
+				onDeleteNodes={this.onDeleteNodes}
+				onCheckedNode={this.onCheckedNode}
+				selectedCheckList={selectedCheckList}
 			/>
 		);
 	}
@@ -50,24 +54,38 @@ class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 		});
 	};
 
-	private onDeleteNode = async (value: string) => {
-		const { superPeers } = this.state;
+	private onCheckedNode = (value: string) => {
+		const { selectedCheckList } = this.state;
 
-		const newNodesArray = superPeers.filter((e: string) => e !== value);
+		const newList = selectedCheckList;
 
-		await this.props.onSaveNodes(newNodesArray);
+		if (newList.includes(value)) {
+			newList.splice(newList.indexOf(value), 1);
+		} else {
+			newList.push(value);
+		}
+
+		this.setState({ selectedCheckList: newList });
+	};
+
+	private onDeleteNodes = () => {
+		const { selectedCheckList, superPeers } = this.state;
+
+		const newNodesArray = superPeers.filter((e: string) => !selectedCheckList.includes(e));
+		this.props.onSaveNodes(newNodesArray);
 		this.setState({
 			superPeers: newNodesArray,
+			selectedCheckList: [],
 		});
 	};
 
-	private onSaveNewNodeHandler = async () => {
+	private onSaveNewNodeHandler = () => {
 		const { superPeers, nodeValue } = this.state;
 
 		const newNodesArray = superPeers.slice();
 		newNodesArray.unshift(nodeValue);
 
-		await this.props.onSaveNodes(newNodesArray);
+		this.props.onSaveNodes(newNodesArray);
 		this.setState({
 			superPeers: newNodesArray,
 		});
