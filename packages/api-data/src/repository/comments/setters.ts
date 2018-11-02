@@ -196,68 +196,77 @@ export const likeComment = (
 		);
 	}
 
-	commentHandles
-		.commentMetaById(context, commentId)
-		.docLoad((commentMeta: ICommentMetasCallback) => {
-			if (!commentMeta || !Object.keys(commentMeta).length) {
-				return callback(
-					new ApiError(`${errPrefix}, no comment found by this id`, {
-						initialRequestBody: { commentId },
-					}),
-				);
-			}
+	const mainRunner = () => {
+		commentHandles
+			.commentMetaById(context, commentId)
+			.docLoad((commentMeta: ICommentMetasCallback) => {
+				if (!commentMeta || !Object.keys(commentMeta).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no comment found by this id`, {
+							initialRequestBody: { commentId },
+						}),
+					);
+				}
+				checkIfLikedAlready(commentMeta);
+			});
+	};
 
-			const { owner, ownerPub, timestamp } = getContextMeta(context);
-			const { postPath } = commentMeta;
+	const checkIfLikedAlready = (commentMeta: ICommentMetasCallback) => {
+		const { owner, ownerPub, timestamp } = getContextMeta(context);
+		const { postPath } = commentMeta;
+		commentHandles
+			.commentsByPostPath(context, postPath)
+			.get(commentId)
+			.get(TABLE_ENUMS.LIKES)
+			.get(owner)
+			.docLoad((commentReturnCallback: any) => {
+				if (commentReturnCallback !== null) {
+					if (Object.keys(commentReturnCallback).length && commentReturnCallback.owner) {
+						return callback(
+							new ApiError(`${errPrefix}, this comment is already liked`, {
+								initialRequestBody: { commentId },
+							}),
+						);
+					}
+				}
+				addLikeToCommentRecod(commentMeta);
+			});
+	};
 
-			commentHandles
-				.commentsByPostPath(context, postPath)
-				.get(commentId)
-				.get(TABLE_ENUMS.LIKES)
-				.get(owner)
-				.docLoad((commentReturnCallback: any) => {
-					if (commentReturnCallback !== null) {
-						if (Object.keys(commentReturnCallback).length && commentReturnCallback.owner) {
-							return callback(
-								new ApiError(`${errPrefix}, this comment is already liked`, {
+	const addLikeToCommentRecod = (commentMeta: ICommentMetasCallback) => {
+		const { owner, ownerPub, timestamp } = getContextMeta(context);
+		const { postPath } = commentMeta;
+		commentHandles
+			.commentsByPostPath(context, postPath)
+			.get(commentId)
+			.get(TABLE_ENUMS.LIKES)
+			.get(owner)
+			.put(
+				{
+					owner: {
+						alias: owner,
+						pub: ownerPub,
+					},
+					timestamp,
+				},
+				(setCommentLikeCallback) => {
+					if (setCommentLikeCallback.err) {
+						return callback(
+							new ApiError(
+								`${errPrefix}, failed to put new comment like record ${setCommentLikeCallback.err}`,
+								{
 									initialRequestBody: { commentId },
-								}),
-							);
-						}
+								},
+							),
+						);
 					}
 
-					commentHandles
-						.commentsByPostPath(context, postPath)
-						.get(commentId)
-						.get(TABLE_ENUMS.LIKES)
-						.get(owner)
-						.put(
-							{
-								owner: {
-									alias: owner,
-									pub: ownerPub,
-								},
-								timestamp,
-							},
-							(setCommentLikeCallback) => {
-								if (setCommentLikeCallback.err) {
-									return callback(
-										new ApiError(
-											`${errPrefix}, failed to put new comment record ${
-												setCommentLikeCallback.err
-											}`,
-											{
-												initialRequestBody: { commentId },
-											},
-										),
-									);
-								}
-
-								return callback(null);
-							},
-						);
-				});
-		});
+					return callback(null);
+				},
+			);
+	};
+	// run sequence
+	mainRunner();
 };
 
 export const unlikeComment = (

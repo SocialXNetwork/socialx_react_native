@@ -173,6 +173,34 @@ export const createAccount = async (
 		recover,
 	} = createAccountInput;
 
+	const createPublicRecord = (createProfileCallback: any) => {
+		if (createProfileCallback.err) {
+			return callback(
+				new ApiError(`failed to create the user profile. ${createProfileCallback.err}`),
+			);
+		}
+		const ref = account.get('profile').get(username);
+
+		gun.get('profiles').once(
+			() => {
+				gun
+					.get('profiles')
+					.get(username)
+					.put(ref, (pubRecordCallback: any) => {
+						if (pubRecordCallback.err) {
+							return callback(
+								new ApiError(
+									`failed to create the user profile on the pub record. ${pubRecordCallback.err}`,
+								),
+							);
+						}
+						return callback(null);
+					});
+			},
+			{ wait: 1000 },
+		);
+	};
+
 	account.create(username, password, (createAccountCallback: any) => {
 		if (!createAccountCallback.pub) {
 			return callback(new ApiError('cannot create account.'));
@@ -197,35 +225,7 @@ export const createAccount = async (
 						avatar,
 						friends: null,
 					},
-					(createProfileCallback: any) => {
-						if (createProfileCallback.err) {
-							return callback(
-								new ApiError(`failed to create the user profile. ${createProfileCallback.err}`),
-							);
-						}
-						const ref = account.get('profile').get(username);
-
-						gun.get('profiles').once(
-							() => {
-								gun
-									.get('profiles')
-									.get(username)
-									.put(ref, (pubRecordCallback: any) => {
-										if (pubRecordCallback.err) {
-											return callback(
-												new ApiError(
-													`failed to create the user profile on the pub record. ${
-														pubRecordCallback.err
-													}`,
-												),
-											);
-										}
-										return callback(null);
-									});
-							},
-							{ wait: 1000 },
-						);
-					},
+					createPublicRecord,
 				);
 		});
 	});
