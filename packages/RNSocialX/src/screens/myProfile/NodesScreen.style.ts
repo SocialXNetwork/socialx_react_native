@@ -21,19 +21,33 @@ const styles: any = {
 	marginBetweenTitleAndInput: {
 		marginBottom: Sizes.smartVerticalScale(29),
 	},
+	textContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		paddingHorizontal: Sizes.smartHorizontalScale(15),
+		paddingVertical: Sizes.smartVerticalScale(20),
+	},
 	currentNodesText: {
+		flex: 1,
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 		lineHeight: Sizes.smartHorizontalScale(18),
+		paddingVertical: Sizes.smartVerticalScale(7),
 		color: Colors.cloudBurst,
-		textAlign: 'center',
-		paddingHorizontal: Sizes.smartHorizontalScale(15),
-		paddingVertical: Sizes.smartVerticalScale(20),
+		textAlign: 'left',
+	},
+	button: {
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+		height: Sizes.smartVerticalScale(30),
+		backgroundColor: Colors.ceriseRed,
 	},
 	listContainer: {
 		backgroundColor: Colors.white,
 	},
 	listItem: {
+		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -50,13 +64,17 @@ const styles: any = {
 		color: Colors.cloudBurst,
 		textAlign: 'left',
 	},
-	iconContainer: {
-		justifyContent: 'flex-end',
-	},
-	deleteIcon: {
-		color: Colors.ceriseRed,
-		fontSize: Sizes.smartHorizontalScale(25),
+	checkbox: {
+		left: 0,
 	},
 };
 
+export const buttonWidth = Sizes.smartHorizontalScale(110);
+
 export default StyleSheet.create(styles);
+
+export const defaultStyles = {
+	checkboxColor: Colors.pink,
+	buttonBorderColor: Colors.white,
+	buttonTextColor: Colors.white,
+};

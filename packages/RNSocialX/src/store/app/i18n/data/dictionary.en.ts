@@ -219,6 +219,7 @@ export default {
 	'nodes.progress.message': 'Updating nodes',
 	'nodes.screen.input.placeholder': 'Add a new node',
 	'nodes.screen.current.text': 'Current nodes',
+	'nodes.screen.button.text': 'Delete nodes',
 	'avatar.picker.camera': 'Take a photo',
 	'avatar.picker.gallery': 'Pick from gallery',
 	'avatar.picker.remove': 'Remove profile picture',

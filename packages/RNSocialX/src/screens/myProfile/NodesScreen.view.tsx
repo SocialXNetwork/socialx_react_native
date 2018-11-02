@@ -1,17 +1,19 @@
+import { CheckBox } from 'native-base';
 import * as React from 'react';
-import { FlatList, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import {
+	ButtonSizes,
 	Header,
 	HeaderButton,
 	InputSizes,
+	PrimaryButton,
 	PrimaryTextInput,
 	TRKeyboardKeys,
 } from '../../components';
 import { ITranslatedProps } from '../../types';
 
-import styles from './NodesScreen.style';
+import styles, { buttonWidth, defaultStyles } from './NodesScreen.style';
 
 interface INodesScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
@@ -20,7 +22,9 @@ interface INodesScreenViewProps extends ITranslatedProps {
 	onSaveNewNode: () => void;
 	autoFocus: boolean;
 	onNodeInputChange: (value: string) => void;
-	onDeleteNode: (value: string) => void;
+	onDeleteNodes: () => void;
+	onCheckedNode: (value: string) => void;
+	selectedCheckList: string[];
 }
 
 export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
@@ -31,7 +35,9 @@ export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
 	nodeValue,
 	onSaveNewNode,
 	onNodeInputChange,
-	onDeleteNode,
+	onDeleteNodes,
+	onCheckedNode,
+	selectedCheckList,
 }) => (
 	<View style={{ flex: 1 }}>
 		{
@@ -56,22 +62,43 @@ export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
 					onSubmitPressed={nodeValue.length > 0 ? onSaveNewNode : Keyboard.dismiss}
 					blurOnSubmit={true}
 				/>
-				<Text style={styles.currentNodesText}>
-					{getText('nodes.screen.current.text').toUpperCase()}
-				</Text>
-				<FlatList
-					data={nodesList}
-					keyExtractor={(item) => item.toString()}
-					style={styles.listContainer}
-					renderItem={({ item }) => (
-						<View style={styles.listItem}>
-							<Text style={styles.node}>{item}</Text>
-							<TouchableOpacity style={styles.iconContainer} onPress={() => onDeleteNode(item)}>
-								<Icon style={styles.deleteIcon} name="ios-trash" />
-							</TouchableOpacity>
-						</View>
+				<View style={styles.textContainer}>
+					<Text style={styles.currentNodesText}>
+						{getText('nodes.screen.current.text').toUpperCase()}
+					</Text>
+					{selectedCheckList.length > 0 && (
+						<PrimaryButton
+							width={buttonWidth}
+							label={getText('nodes.screen.button.text')}
+							size={ButtonSizes.Small}
+							borderColor={defaultStyles.buttonBorderColor}
+							textColor={defaultStyles.buttonBorderColor}
+							containerStyle={styles.button}
+							onPress={onDeleteNodes}
+						/>
 					)}
-				/>
+				</View>
+				<View style={styles.listContainer}>
+					{nodesList.map((e) => (
+						<TouchableOpacity
+							key={e}
+							style={styles.listItem}
+							onPress={() => {
+								onCheckedNode(e);
+							}}
+						>
+							<Text style={styles.node}>{e}</Text>
+							<CheckBox
+								checked={selectedCheckList.includes(e) ? true : false}
+								color={defaultStyles.checkboxColor}
+								style={styles.checkbox}
+								onPress={() => {
+									onCheckedNode(e);
+								}}
+							/>
+						</TouchableOpacity>
+					))}
+				</View>
 			</ScrollView>
 		</View>
 	</View>
