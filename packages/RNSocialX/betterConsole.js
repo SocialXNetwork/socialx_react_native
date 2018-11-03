@@ -23,7 +23,7 @@ if (console && console.log && console.group) {
                     return;
                 }
                 console.groupCollapsed(`%c${key}`, styleLog);
-                expandObject(value);
+                oldLog(value)
                 console.groupEnd();
             } else if (typeof value === 'function') {
                 console.groupCollapsed(`%c${key}();`, styleLog);

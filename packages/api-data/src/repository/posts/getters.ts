@@ -88,6 +88,73 @@ const convertCommentsToArray = (comments: any): ICommentData[] =>
 		[],
 	);
 
+export const fastGetPostByPath = (
+	context: IContext,
+	{ postPath, wait }: { postPath: string; wait?: number },
+	callback: IGunCallback<IPostReturnData>,
+) => {
+	postHandles.postByPath(context, postPath).open(
+		(postData: IPostCallbackData) => {
+			if (!postData || !Object.keys(postData).length) {
+				return callback(
+					new ApiError('failed, no post found', {
+						initialRequestBody: { postPath },
+					}),
+				);
+			}
+
+			let shouldWaitAndTryAgain = false;
+
+			// const keys = Object.keys()
+			const { likes, comments, media, ...restPost } = postData;
+			// convert likes into an array with keys
+			const postLikes = convertLikesToArray(likes);
+			// convert comments and their likes into an array with keys
+			const postComments: any = convertCommentsToArray(comments);
+			// convert media to an array
+			const mediaReturn = convertMediaToArray(media) || [];
+
+			[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
+				if (propArray && propArray.length) {
+					propArray.forEach((obj: any) => {
+						if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
+							shouldWaitAndTryAgain = true;
+						}
+					});
+				}
+			});
+			// related to the retry checks
+			if (
+				postData.owner &&
+				typeof postData.owner === 'object' &&
+				Object.keys(postData.owner).length === 0
+			) {
+				shouldWaitAndTryAgain = true;
+			}
+
+			if (!shouldWaitAndTryAgain) {
+				const post: IPostReturnData = {
+					postId: postPath.split('.').reverse()[0],
+					likes: postLikes,
+					comments: postComments,
+					media: mediaReturn,
+					...restPost,
+				};
+				return callback(null, post);
+			}
+			getPostByPath(
+				context,
+				{
+					wait: wait ? wait + 100 : 400,
+					postPath,
+				},
+				callback,
+			);
+		},
+		{ off: 1, wait: wait || 400 },
+	);
+};
+
 export const getPostByPath = (
 	context: IContext,
 	{ postPath, wait, timeout }: { postPath: string; wait?: number; timeout?: number },
@@ -301,4 +368,5 @@ export default {
 	getPostById,
 	getPostPathsByUser,
 	getPublicPostsByDate,
+	fastGetPostByPath,
 };

@@ -1,5 +1,4 @@
-import moment from 'moment';
-import { IContext, ILikesMetasCallback } from '../../types';
+import { IContext } from '../../types';
 import getters from './getters';
 import schemas from './schemas';
 import setters from './setters';
@@ -77,6 +76,25 @@ export default function(context: IContext) {
 				);
 			});
 		},
+		async fastGetPostByPath(getPostByPathInput: { postPath: string }): Promise<IPostReturnData> {
+			let validatedInput: any;
+			try {
+				validatedInput = await schemas.getPostByPath.validate(getPostByPathInput, {
+					stripUnknown: true,
+				});
+			} catch (e) {
+				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+					validationInput: getPostByPathInput,
+				});
+			}
+			return new Promise<IPostReturnData>(async (resolve, reject) => {
+				getters.fastGetPostByPath(
+					context,
+					validatedInput as { postPath: string },
+					resolveCallback(resolve, reject),
+				);
+			});
+		},
 		async getPostsByUser(getPostByUserInput: { username: string }): Promise<IPostReturnData[]> {
 			let validatedInput: any;
 			try {
@@ -106,7 +124,7 @@ export default function(context: IContext) {
 							const posts = await Promise.all(
 								(paths || [])
 									.filter((v) => v)
-									.map((path: string) => this.getPostByPath({ postPath: path })),
+									.map((path: string) => this.fastGetPostByPath({ postPath: path })),
 							);
 							resolve(posts);
 						} catch (e) {

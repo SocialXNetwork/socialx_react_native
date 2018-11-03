@@ -10,7 +10,7 @@ const preLoadProfile = (user: any, cb: any) => {
 		() => {
 			cb();
 		},
-		{ wait: 400 },
+		{ wait: 500 },
 	);
 };
 
