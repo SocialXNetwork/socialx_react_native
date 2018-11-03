@@ -33,12 +33,13 @@ Gun.on('create', function(db: any) {
 	// @ts-ignore
 	this.to.next(db);
 	// Allows other plugins to respond concurrently.
-	const pluginInterop = (middleware: any) =>
-		function(request: any) {
+	const pluginInterop = function(middleware: any) {
+		return function(request: any) {
 			// @ts-ignore
 			this.to.next(request);
 			return middleware(request, db);
 		};
+	}
 
 	// Register the adapter
 	db.on('get', pluginInterop(adapter.read));
