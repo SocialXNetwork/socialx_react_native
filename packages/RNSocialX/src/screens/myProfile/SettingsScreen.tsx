@@ -8,6 +8,7 @@ import {
 	IWithSettingsEnhancedData,
 	WithSettings,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 
 type ISettingsScreenProps = INavigationProps &
 	IWithSettingsEnhancedActions &
@@ -31,6 +32,7 @@ class Screen extends React.Component<ISettingsScreenProps> {
 				onGoBack={() => this.onGoBackHandler(navigation)}
 				showOptionsMenu={showOptionsMenu}
 				getText={getText}
+				onEditNodes={() => this.onEditNodesHandler(navigation)}
 			/>
 		);
 	}
@@ -43,6 +45,10 @@ class Screen extends React.Component<ISettingsScreenProps> {
 
 	private onGoBackHandler = (navigation: any) => {
 		navigation.goBack(null);
+	};
+
+	private onEditNodesHandler = (navigation: any) => {
+		navigation.navigate(SCREENS.Nodes);
 	};
 
 	private switchActivityIndicator = (state: boolean) => {

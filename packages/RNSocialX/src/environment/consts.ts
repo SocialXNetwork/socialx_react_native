@@ -114,6 +114,7 @@ export enum SCREENS {
 	Register = 'RegisterScreen',
 	ResetPassword = 'ResetPasswordScreen',
 	Settings = 'SettingsScreen',
+	Nodes = 'NodesScreen',
 	SocialXAccount = 'SocialXAccountScreen',
 	TermsAndConditions = 'TermsAndConditionsScreen',
 	UserProfile = 'UserProfileScreen',

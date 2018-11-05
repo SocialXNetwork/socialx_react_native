@@ -41,6 +41,7 @@ import {
 	MediaViewerScreen,
 	MyProfileScreen,
 	NewAdSliderScreen,
+	NodesScreen,
 	NotificationsScreen,
 	PhotoScreen,
 	ReferralScreen,
@@ -109,6 +110,7 @@ const MyProfileStackNavigator = createStackNavigator(
 	{
 		MyProfileScreen: { screen: MyProfileScreen },
 		SettingsScreen: { screen: SettingsScreen },
+		NodesScreen: { screen: NodesScreen },
 		SocialXAccountScreen: { screen: SocialXAccountScreen },
 		ReferralScreen: { screen: ReferralScreen },
 		WalletActivityScreen: { screen: WalletActivityScreen },
