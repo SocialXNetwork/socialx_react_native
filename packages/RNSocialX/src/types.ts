@@ -197,7 +197,7 @@ export interface IWallPostComment {
 }
 
 export interface IWallPostPhotoOptimized extends PickerImage {
-	contentOptimizedPath?: string;
+	contentOptimizedPath: string;
 	type: string;
 	pathx: string;
 }

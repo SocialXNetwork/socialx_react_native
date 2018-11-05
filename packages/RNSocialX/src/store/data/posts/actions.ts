@@ -319,6 +319,7 @@ export const createPost = (
 
 			if (createPostInput.media && createPostInput.media.length > 0) {
 				const { media, ...postRest } = createPostInput;
+				console.log('Media', media);
 
 				const bootstrapStatus = async (uploadIdStarted: string) => {
 					await dispatch(
@@ -349,10 +350,15 @@ export const createPost = (
 					);
 				};
 
-				// TODO @Jake fix obj type
-				const uploadedFiles: any[] = await Promise.all(
-					media.map((obj: any) =>
-						storageApi.uploadFile(obj.contentOptimizedPath, bootstrapStatus, updateStatus),
+				const uploadedFiles = await Promise.all(
+					// TODO: fix the media type
+					media.map((obj: IWallPostPhotoOptimized | any) =>
+						storageApi.uploadFile(
+							obj.type.includes('gif') ? obj.sourceURL : obj.contentOptimizedPath,
+							obj.type,
+							bootstrapStatus,
+							updateStatus,
+						),
 					),
 				);
 

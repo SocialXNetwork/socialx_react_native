@@ -139,7 +139,13 @@ export const createAccount = (createAccountInput: ICreateAccountInput): IThunk =
 				);
 			};
 
-			const { Hash: hash } = await storageApi.uploadFile(avatar.uri, bootstrapStatus, updateStatus);
+			const { Hash: hash } = await storageApi.uploadFile(
+				avatar.uri,
+				// ? TODO: should we also pass in the extension here? (jpeg/png)
+				'image/jpeg',
+				bootstrapStatus,
+				updateStatus,
+			);
 
 			await dispatch(
 				setUploadStatus({

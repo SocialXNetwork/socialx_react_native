@@ -31,6 +31,7 @@ export class Ipfslib {
 
 	public addFileBN = async (
 		path: string,
+		extension: string,
 		onStart?: (uploadId: string) => void,
 		onProgress?: (progress: IListenerProgess & { uploadId: string }) => void,
 	): Promise<{ Hash: string; Name: string; Size: string }> => {
@@ -39,11 +40,11 @@ export class Ipfslib {
 			this.platform === 'android' ? (path.includes('file') ? path : `file://${path}`) : path;
 		data.append('file', {
 			uri: filePath,
-			type: 'file',
 			name: `${new Date().getTime()}.${path.split('.').reverse()[0]}`,
 			// @ts-ignore
-			type: 'image/jpeg',
+			type: extension,
 		} as any);
+		console.log('uploading..', { name: path, extension });
 
 		const config = {
 			onUploadProgress: (progressEvent: any) => {

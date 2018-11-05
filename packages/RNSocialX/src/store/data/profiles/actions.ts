@@ -278,7 +278,13 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 					);
 				};
 
-				const { Hash: hash } = await storageApi.uploadFile(avatar, bootstrapStatus, updateStatus);
+				const { Hash: hash } = await storageApi.uploadFile(
+					avatar,
+					// ? TODO: should we also pass in the extension here? (jpeg/png)
+					'image/jpeg',
+					bootstrapStatus,
+					updateStatus,
+				);
 
 				await dispatch(
 					setUploadStatus({
