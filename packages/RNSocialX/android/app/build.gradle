@@ -131,12 +131,10 @@ android {
     }
     signingConfigs {
         release {
-            if (project.hasProperty('SOCIALX_RELEASE_STORE_FILE')) {
-                storeFile file(SOCIALX_RELEASE_STORE_FILE)
-                storePassword SOCIALX_RELEASE_STORE_PASSWORD
-                keyAlias SOCIALX_RELEASE_KEY_ALIAS
-                keyPassword SOCIALX_RELEASE_KEY_PASSWORD
-            }
+             storeFile file(String.valueOf(System.getenv("SOCIALX_RELEASE_STORE_FILE")))
+             storePassword String.valueOf(System.getenv("SOCIALX_RELEASE_STORE_PASSWORD"))
+             keyAlias String.valueOf(System.getenv("SOCIALX_RELEASE_KEY_ALIAS"))
+             keyPassword String.valueOf(System.getenv("SOCIALX_RELEASE_KEY_PASSWORD"))
         }
     }
     buildTypes {

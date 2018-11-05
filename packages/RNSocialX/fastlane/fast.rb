@@ -1,6 +1,5 @@
 fastlane_version '2.100.1'
 
-APPLE_USER = 'christian@socialx.network'
 GOOGLE_JSON_KEY_PATH = "#{Dir.pwd}/android_google_play/gp-api-key.json"
 
 ENV['LC_ALL'] = 'en_US.UTF-8'
@@ -94,7 +93,6 @@ end
 desc 'Upload to TestFlight'
 private_lane :send_testflight do
   upload_to_testflight(
-      username: "#{APPLE_USER}",
       app_identifier: 'socialxnetwork',
       ipa: 'RNSocialX.ipa',
       skip_submission: true,
