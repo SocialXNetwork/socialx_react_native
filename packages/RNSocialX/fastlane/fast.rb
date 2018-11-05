@@ -1,6 +1,6 @@
 fastlane_version '2.100.1'
 
-GOOGLE_JSON_KEY_PATH = "#{Dir.pwd}/android_google_play/gp-api-key.json"
+GOOGLE_JSON_KEY_PATH = "#{Dir.pwd}/creds/android_google_play/gp-api-key.json"
 
 ENV['LC_ALL'] = 'en_US.UTF-8'
 ENV['LANG'] = 'en_US.UTF-8'
@@ -72,7 +72,7 @@ end
 desc 'Send Android sources to BugSnag'
 private_lane :android_bugsnag do |options|
   Dir.chdir("..") do
-    bugsnag_version=options[:version_string].tr('^0-9', '').to_i 
+    bugsnag_version=options[:version_string].tr('^0-9', '').to_i
     sh("./fastlane/scripts/android-bugsnag.sh '#{bugsnag_version*10+2}'")
   end
 end
@@ -103,7 +103,7 @@ end
 desc 'Send iOS sources to BugSnag'
 private_lane :ios_bugsnag do |options|
   Dir.chdir("..") do
-    bugsnag_version=options[:version_string].tr('^0-9', '').to_i 
+    bugsnag_version=options[:version_string].tr('^0-9', '').to_i
     sh("./fastlane/scripts/ios-bugsnag.sh '#{bugsnag_version*10+1}'")
   end
 end
@@ -116,8 +116,8 @@ platform :ios do
     check_build_params options
     version_ios options
     ios_build
-    # send_testflight
-    # ios_bugsnag options
+    send_testflight
+    ios_bugsnag options
   end
 
 end
@@ -126,16 +126,16 @@ platform :android do
 
   desc 'Android build and upload flow'
   lane :release do |options|
-    # install_dev
+    install_dev
     check_build_params options
     android_build options
-    # send_play_store
-    # android_bugsnag options
+    send_play_store
+    android_bugsnag options
   end
 
 end
 
-platform :cross do 
+platform :cross do
 
   desc 'Android+iOS build and upload flow + Bugsnag'
   lane :release do |options|
