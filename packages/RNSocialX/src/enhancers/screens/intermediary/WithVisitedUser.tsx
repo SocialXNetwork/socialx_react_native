@@ -45,9 +45,9 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 													avatar:
 														foundProfile.avatar.length > 0
 															? appConfig.ipfsConfig.ipfs_URL +
-											  				  foundProfile.avatar // tslint:disable-line
+															  foundProfile.avatar // tslint:disable-line
 															: '',
-													description: foundProfile.description,
+													description: foundProfile.aboutMeText,
 													numberOfLikes: 0,
 													numberOfPhotos: 0,
 													// numberOfFriends: foundProfile.friends.length,

@@ -48,7 +48,6 @@ export class WithVisitedUserContent extends React.Component<
 																	currentUser,
 																	profiles,
 																	activities,
-																	ActionTypes.GET_POSTS_BY_USER,
 																	appConfig,
 																);
 
@@ -67,7 +66,11 @@ export class WithVisitedUserContent extends React.Component<
 																	0,
 																);
 
-																visitedUser.mediaObjects = extractMediaFromPosts(posts, appConfig);
+																visitedUser.mediaObjects = extractMediaFromPosts(
+																	posts,
+																	currentUser.userId,
+																	appConfig,
+																);
 
 																visitedUser.recentPosts = recentPosts;
 															}

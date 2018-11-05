@@ -10,6 +10,7 @@ interface ILikeAnimatingButtonProps extends ITranslatedProps {
 	likedByCurrentUser: boolean;
 	likeFailed: boolean;
 	label: false | string;
+	secondary?: boolean;
 	onLikePress: () => void;
 }
 
@@ -49,10 +50,10 @@ export class LikeAnimatingButton extends React.Component<
 	private animatedIconRef: any = React.createRef();
 
 	public render() {
-		const { label, onLikePress } = this.props;
+		const { label, secondary, onLikePress } = this.props;
 		const { likedByCurrentUser } = this.state;
 
-		const iconStyles = [styles.icon, { color: Colors.black }];
+		const iconStyles = [styles.icon, { color: secondary ? Colors.white : Colors.black }];
 
 		return (
 			<TouchableOpacity

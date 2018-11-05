@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Animated, Dimensions, FlatList, Platform } from 'react-native';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { AnimatedValue } from 'react-navigation';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
@@ -30,6 +31,18 @@ type IUserFeedScreenProps = INavigationProps &
 export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
 	private readonly scrollRef: React.RefObject<FlatList<IWallPostData>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
+
+	public componentDidMount() {
+		if (Platform.OS === OS_TYPES.Android) {
+			AndroidKeyboardAdjust.setAdjustNothing();
+		}
+	}
+
+	public componentWillUnmount() {
+		if (Platform.OS === OS_TYPES.Android) {
+			AndroidKeyboardAdjust.setAdjustPan();
+		}
+	}
 
 	public render() {
 		const {
@@ -97,6 +110,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
+		console.log(cardHeight, index);
 		if (!this.props.refreshingFeed && !this.props.loadingMorePosts && this.scrollRef.current) {
 			this.scrollRef.current.scrollToIndex({
 				animated: true,

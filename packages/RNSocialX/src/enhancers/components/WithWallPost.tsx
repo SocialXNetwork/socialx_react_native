@@ -34,12 +34,12 @@ export interface IWallPostEnhancedData {
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	onImagePress: (index: number, mediaObjects: IMediaProps[], postId: string) => void;
+	onImagePress: (index: number, mediaObjects: IMediaProps[], post: IWallPostData) => void;
 	onLikePost: (likedByCurrentUser: boolean, postId: string) => void;
 	onDoubleTapLike: (postId: string) => void;
 	onRemovePost: (postId: string) => void;
 	onUserPress: (userId: string) => void;
-	onCommentsPress: (postId: IWallPostData, keyboardRaised: boolean) => void;
+	onCommentsPress: (post: IWallPostData, keyboardRaised: boolean) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
 	onLikeComment: (comment: IWallPostComment) => void;
 	onRemoveComment: (commentId: string) => void;
@@ -89,13 +89,13 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																					onImagePress: (
 																						index: number,
 																						mediaObjects: IMediaProps[],
-																						postId: string,
+																						post: IWallPostData,
 																					) =>
 																						this.onImagePressHandler(
 																							setNavigationParams,
 																							index,
 																							mediaObjects,
-																							postId,
+																							post,
 																						),
 																					onLikePost: (likedByCurrentUser, postId) =>
 																						this.onLikePostHandler(
@@ -175,7 +175,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		setNavigationParams: (input: any) => void,
 		index: number,
 		mediaObjects: IMediaProps[],
-		postId: string,
+		post: IWallPostData,
 	) => {
 		const { navigation } = this.props;
 		setNavigationParams({
@@ -183,7 +183,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 			params: {
 				mediaObjects,
 				startIndex: index,
-				postId,
+				post,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);

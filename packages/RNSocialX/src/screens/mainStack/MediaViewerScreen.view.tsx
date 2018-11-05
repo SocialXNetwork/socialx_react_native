@@ -63,34 +63,38 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	viewport: {
 		width: number;
 	};
-	slideChanged: (index: number) => void;
-	isInfoOverlayVisible: boolean;
-	showMediaInfoOverlay: () => void;
-	closeMediaInfoOverlay: () => void;
-	carouselContainerOnLayout: (event: any) => void;
+	infoVisible: boolean;
+	canReact: boolean | undefined;
+	postId?: string;
+	likeFailed: boolean;
+	onChangeSlide: (index: number) => void;
+	onLayout: (event: any) => void;
+	onShowInfo: () => void;
+	onCloseInfo: () => void;
 	onExitFullScreen: () => void;
 	onClose: () => void;
 	onCommentPress: () => void;
-	onLikePress: () => void;
-	canReact: boolean | undefined;
+	onLikePress: (likedByCurrentUser: boolean, postId: string) => void;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	mediaObjects,
-	carouselContainerOnLayout,
 	orientation,
 	startIndex,
 	viewport,
 	activeSlide,
-	slideChanged,
-	isInfoOverlayVisible,
-	showMediaInfoOverlay,
-	closeMediaInfoOverlay,
+	onChangeSlide,
+	infoVisible,
+	canReact,
+	postId,
+	likeFailed,
+	onLayout,
+	onShowInfo,
+	onCloseInfo,
 	onExitFullScreen,
 	onClose,
 	onCommentPress,
 	onLikePress,
-	canReact,
 	getText,
 }) => {
 	const currentMediaObject = mediaObjects[activeSlide];
@@ -100,8 +104,8 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 		<View style={styles.container}>
 			{isPortrait && <Header left={<CloseModal onClose={onClose} />} />}
 			<MediaInfoModal
-				visible={isInfoOverlayVisible}
-				closeHandler={closeMediaInfoOverlay}
+				visible={infoVisible}
+				closeHandler={onCloseInfo}
 				mediaHash={currentMediaObject.hash}
 				mediaSize={currentMediaObject.size}
 				mediaType={currentMediaObject.type}
@@ -110,7 +114,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				getText={getText}
 			/>
 			<SafeAreaView style={{ flex: 1 }}>
-				<View style={styles.carouselContainer} onLayout={carouselContainerOnLayout}>
+				<View style={styles.carouselContainer} onLayout={onLayout}>
 					<Carousel
 						data={mediaObjects}
 						renderItem={({ item, index }: { item: IMediaProps; index: number }) => (
@@ -129,7 +133,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 						sliderWidth={viewport.width}
 						itemWidth={viewport.width}
 						firstItem={startIndex}
-						onSnapToItem={slideChanged}
+						onSnapToItem={onChangeSlide}
 						{...Platform.select({
 							android: {
 								windowSize: 5,
@@ -148,14 +152,16 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 						<MediaInteractionButtons
 							mediaObjects={mediaObjects}
 							activeSlide={activeSlide}
-							getText={getText}
+							canReact={canReact}
+							postId={postId}
+							likeFailed={likeFailed}
 							onCommentPress={onCommentPress}
 							onLikePress={onLikePress}
-							canReact={canReact}
+							getText={getText}
 						/>
 						<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
 					</View>
-					<TouchableOpacity style={styles.infoButton} onPress={showMediaInfoOverlay}>
+					<TouchableOpacity style={styles.infoButton} onPress={onShowInfo}>
 						<Icon name="ios-information-circle-outline" style={styles.infoIcon} />
 					</TouchableOpacity>
 				</View>

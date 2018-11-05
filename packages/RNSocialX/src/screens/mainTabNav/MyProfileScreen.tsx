@@ -154,14 +154,18 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		const {
 			navigation,
 			setNavigationParams,
-			currentUser: { mediaObjects },
+			currentUser: { mediaObjects, recentPosts },
 		} = this.props;
+
+		const selectedMedia = mediaObjects[index];
+		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
 
 		setNavigationParams({
 			screenName: SCREENS.MediaViewer,
 			params: {
 				mediaObjects,
 				startIndex: index,
+				post,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);
@@ -174,21 +178,23 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			currentUser: { avatar },
 		} = this.props;
 
-		const mediaObjects = [
-			{
-				url: avatar,
-				type: MediaTypeImage,
-			},
-		];
+		if (avatar.length > 0) {
+			const mediaObjects = [
+				{
+					url: avatar,
+					type: MediaTypeImage,
+				},
+			];
 
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects,
-				startIndex: 0,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
+			setNavigationParams({
+				screenName: SCREENS.MediaViewer,
+				params: {
+					mediaObjects,
+					startIndex: 0,
+				},
+			});
+			navigation.navigate(SCREENS.MediaViewer);
+		}
 	};
 
 	private onEditProfilePressHandler = () => {

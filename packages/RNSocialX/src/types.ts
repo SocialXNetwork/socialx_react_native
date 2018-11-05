@@ -163,6 +163,8 @@ export interface IMediaProps {
 	size: number;
 	numberOfLikes: number;
 	numberOfComments: number;
+	likedByCurrentUser: boolean;
+	postId: string;
 }
 
 export interface ISimpleComment {

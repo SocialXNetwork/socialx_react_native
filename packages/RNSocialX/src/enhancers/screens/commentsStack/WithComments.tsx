@@ -37,13 +37,13 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 					<WithNavigationParams>
 						{({ navigationParams }) => (
 							<WithPosts>
-								{(postProps) => (
+								{({ posts }) => (
 									<WithProfiles>
 										{({ profiles }) => (
 											<WithCurrentUser>
 												{({ currentUser }) => {
 													const currentPost = navigationParams[SCREENS.Comments].post;
-													const post = postProps.posts.find((p) => p.postId === currentPost.postId);
+													const post = posts.find((p) => p.postId === currentPost.postId);
 
 													return this.props.children({
 														data: {

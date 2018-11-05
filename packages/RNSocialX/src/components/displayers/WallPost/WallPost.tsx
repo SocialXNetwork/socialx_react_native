@@ -14,11 +14,9 @@ import {
 	ScrollView,
 	View,
 } from 'react-native';
-import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import uuid from 'uuid/v4';
 
 import { CommentCard, HeartAnimation } from '../../';
-import { OS_TYPES } from '../../../environment/consts';
 import {
 	CommentInput,
 	PostText,
@@ -37,6 +35,8 @@ import {
 	WithWallPost,
 } from '../../../enhancers/components/WithWallPost';
 
+import { OS_TYPES } from '../../../environment/consts';
+import { Sizes } from '../../../environment/theme';
 import { ActionTypes } from '../../../store/data/posts/Types';
 import { INavigationProps, IWallPostComment, IWallPostData } from '../../../types';
 
@@ -85,7 +85,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 		if (likePostFailed !== currentState.likePostFailed) {
 			return {
-				likeFailed: true,
+				likePostFailed: true,
 			};
 		}
 
@@ -130,21 +130,15 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		comments: this.props.comments!,
 	};
 
-	private readonly containerViewRef: React.RefObject<View> = React.createRef();
 	private keyboardDidHideListener: any;
+	private containerViewRef: React.RefObject<View> = React.createRef();
 	private scrollRef: React.RefObject<ScrollView> = React.createRef();
 
 	public componentDidMount() {
-		if (Platform.OS === OS_TYPES.Android) {
-			AndroidKeyboardAdjust.setAdjustNothing();
-		}
 		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
 	}
 
 	public componentWillUnmount() {
-		if (Platform.OS === OS_TYPES.Android) {
-			AndroidKeyboardAdjust.setAdjustPan();
-		}
 		this.keyboardDidHideListener.remove();
 	}
 
@@ -198,7 +192,12 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		};
 
 		return (
-			<View style={styles.container} ref={this.containerViewRef}>
+			<View
+				style={styles.container}
+				ref={this.containerViewRef}
+				// Measuring the element doesn't work on Android without this
+				renderToHardwareTextureAndroid={true}
+			>
 				<UserDetails
 					canBack={!!comments}
 					user={owner}
@@ -238,7 +237,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 									)}
 									<WallPostMedia
 										mediaObjects={media}
-										onMediaObjectView={(index: number) => onImagePress(index, media, postId)}
+										onMediaObjectView={(index: number) => onImagePress(index, media, post)}
 										onLikeButtonPressed={this.onDoubleTapLikeHandler}
 										placeholder={!!skeletonPost}
 										getText={getText}
@@ -274,7 +273,11 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 									/>
 								))}
 						</ScrollView>
-						<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={50}>
+						<KeyboardAvoidingView
+							behavior="padding"
+							keyboardVerticalOffset={50}
+							enabled={Platform.OS === OS_TYPES.IOS ? true : false}
+						>
 							<CommentInput
 								comment={comment}
 								autoFocus={keyboardRaised}
@@ -306,7 +309,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 								{(!offensiveContent || viewOffensiveContent) && (
 									<WallPostMedia
 										mediaObjects={media}
-										onMediaObjectView={(index: number) => onImagePress(index, media, postId)}
+										onMediaObjectView={(index: number) => onImagePress(index, media, post)}
 										onLikeButtonPressed={this.onDoubleTapLikeHandler}
 										placeholder={!!skeletonPost}
 										getText={getText}
@@ -368,7 +371,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		if (this.state.inputFocused) {
 			Animated.parallel([
 				Animated.timing(this.state.inputWidth, {
-					toValue: SCREEN_WIDTH - 80,
+					toValue: SCREEN_WIDTH,
 					duration: 250,
 				}),
 				Animated.timing(this.state.inputIconPosition, {
@@ -390,7 +393,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			if (!this.state.inputFocused) {
 				Animated.parallel([
 					Animated.timing(this.state.inputWidth, {
-						toValue: SCREEN_WIDTH - 115,
+						toValue: SCREEN_WIDTH - Sizes.smartHorizontalScale(115),
 						duration: 250,
 					}),
 					Animated.timing(this.state.inputIconPosition, {
@@ -559,7 +562,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 			this.setState((currentState) => {
 				return {
-					likeCommentFailed: false,
+					sendCommentFailed: false,
 					commentInputDisabled: true,
 					comments: [...currentState.comments, newComment],
 					comment: '',
@@ -568,13 +571,28 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 			await onSubmitComment(escapedCommentText, post.postId);
 
-			if (this.state.likeCommentFailed) {
+			if (this.state.sendCommentFailed) {
 				this.setState({
 					comments: this.props.comments!,
 				});
 			}
 		} else {
+			this.setState(
+				{
+					sendCommentFailed: false,
+					commentInputDisabled: true,
+					comment: '',
+				},
+				Keyboard.dismiss,
+			);
+
 			await onSubmitComment(escapedCommentText, post.postId);
+
+			if (this.state.sendCommentFailed) {
+				this.setState({
+					comments: this.props.comments!,
+				});
+			}
 		}
 	};
 

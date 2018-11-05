@@ -132,32 +132,47 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onProfilePhotoPressHandler = () => {
-		const { navigation, setNavigationParams, visitedUser } = this.props;
+		const {
+			navigation,
+			setNavigationParams,
+			visitedUser: { avatar },
+		} = this.props;
 
-		const mediaObjects = [
-			{
-				url: visitedUser.avatar,
-				type: MediaTypeImage,
-			},
-		];
+		if (avatar.length > 0) {
+			const mediaObjects = [
+				{
+					url: avatar,
+					type: MediaTypeImage,
+				},
+			];
+
+			setNavigationParams({
+				screenName: SCREENS.MediaViewer,
+				params: {
+					mediaObjects,
+					startIndex: 0,
+				},
+			});
+			navigation.navigate(SCREENS.MediaViewer);
+		}
+	};
+
+	private onViewMediaFullScreenHandler = (index: number) => {
+		const {
+			navigation,
+			setNavigationParams,
+			visitedUser: { mediaObjects, recentPosts },
+		} = this.props;
+
+		const selectedMedia = mediaObjects[index];
+		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
 
 		setNavigationParams({
 			screenName: SCREENS.MediaViewer,
 			params: {
 				mediaObjects,
-				startIndex: 0,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
-	};
-
-	private onViewMediaFullScreenHandler = (index: number) => {
-		const { navigation, setNavigationParams, visitedUser } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects: visitedUser.mediaObjects,
 				startIndex: index,
+				post,
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);

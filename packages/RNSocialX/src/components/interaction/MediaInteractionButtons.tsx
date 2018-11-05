@@ -3,23 +3,29 @@ import { Text, View } from 'react-native';
 
 import { IMediaProps, ITranslatedProps } from '../../types';
 import { IconButton } from './IconButton';
+import { LikeAnimatingButton } from './LikeAnimatingButton';
+
 import styles from './MediaInteractionButtons.style';
 
 interface IMediaInfoSectionProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
 	activeSlide: number;
-	onCommentPress: () => void;
-	onLikePress: () => void;
 	canReact: boolean | undefined;
+	postId?: string;
+	likeFailed: boolean;
+	onCommentPress: () => void;
+	onLikePress: (likedByCurrentUser: boolean, postId: string) => void;
 }
 
 export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 	mediaObjects,
 	activeSlide,
-	getText,
+	canReact = false,
+	postId,
+	likeFailed,
 	onCommentPress,
 	onLikePress,
-	canReact = false,
+	getText,
 }) => {
 	const currentMedia = mediaObjects[activeSlide];
 	const numberOfLikes = currentMedia.numberOfLikes || 0;
@@ -45,13 +51,12 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 			)}
 			{canReact && (
 				<View style={styles.actionButtons}>
-					<IconButton
-						label={getText('media.viewer.screen.like.button')}
-						onPress={onLikePress}
-						iconType="fa"
-						iconSource="heart-o"
-						iconStyle={styles.iconStyle}
-						textStyle={styles.textStyle}
+					<LikeAnimatingButton
+						onLikePress={() => onLikePress(currentMedia.likedByCurrentUser, postId!)}
+						likedByCurrentUser={currentMedia.likedByCurrentUser}
+						likeFailed={likeFailed}
+						secondary={true}
+						getText={getText}
 					/>
 					<IconButton
 						label={getText('media.viewer.screen.comment.button')}

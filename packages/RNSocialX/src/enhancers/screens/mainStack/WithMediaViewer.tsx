@@ -1,25 +1,27 @@
-/**
- * TODO list:
- * 1. LATER - Action props: onLikePress
- */
-
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IMediaProps, INavigationParamsActions, ITranslatedProps } from '../../../types';
+import {
+	IError,
+	IMediaProps,
+	INavigationParamsActions,
+	ITranslatedProps,
+	IWallPostData,
+} from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithActivities } from '../../connectors/ui/WithActivities';
 
 export interface IWithMediaViewerEnhancedData {
+	errors: IError[];
 	mediaObjects: IMediaProps[];
 	startIndex: number;
-	postId?: string;
+	post?: IWallPostData;
 }
 
-export interface IWithMediaViewerEnhancedActions
-	extends ITranslatedProps,
-		INavigationParamsActions {
-	onLikePress: () => void;
+export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {
+	onLikePost: (likedByCurrentUser: boolean, postId: string) => void;
+	onCommentsPress: (postId: IWallPostData, keyboardRaised: boolean) => void;
 }
 
 interface IWithMediaViewerEnhancedProps {
@@ -35,30 +37,30 @@ interface IWithMediaViewerState {}
 
 export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWithMediaViewerState> {
 	render() {
-		const { children } = this.props;
 		return (
-			<WithNavigationParams>
-				{(navigationParamsProps) => (
-					<WithI18n>
-						{(i18nProps) =>
-							children({
-								data: {
-									mediaObjects:
-										navigationParamsProps.navigationParams[SCREENS.MediaViewer].mediaObjects,
-									startIndex:
-										navigationParamsProps.navigationParams[SCREENS.MediaViewer].startIndex,
-									postId: navigationParamsProps.navigationParams[SCREENS.MediaViewer].postId,
-								},
-								actions: {
-									onLikePress: () => undefined,
-									setNavigationParams: navigationParamsProps.setNavigationParams,
-									getText: i18nProps.getText,
-								},
-							})
-						}
-					</WithI18n>
+			<WithI18n>
+				{({ getText }) => (
+					<WithNavigationParams>
+						{({ navigationParams }) => (
+							<WithActivities>
+								{({ errors }) =>
+									this.props.children({
+										data: {
+											errors,
+											mediaObjects: navigationParams[SCREENS.MediaViewer].mediaObjects,
+											startIndex: navigationParams[SCREENS.MediaViewer].startIndex,
+											post: navigationParams[SCREENS.MediaViewer].post,
+										},
+										actions: {
+											getText,
+										} as any,
+									})
+								}
+							</WithActivities>
+						)}
+					</WithNavigationParams>
 				)}
-			</WithNavigationParams>
+			</WithI18n>
 		);
 	}
 }

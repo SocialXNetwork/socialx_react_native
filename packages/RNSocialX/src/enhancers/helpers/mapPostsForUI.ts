@@ -46,6 +46,8 @@ export const mapPostsForUI = (
 					size: media.size,
 					numberOfLikes: post.likes.length,
 					numberOfComments: post.comments.length,
+					likedByCurrentUser: foundLike,
+					postId: post.postId,
 				})),
 				likes: post.likes.map((like) => {
 					return {
