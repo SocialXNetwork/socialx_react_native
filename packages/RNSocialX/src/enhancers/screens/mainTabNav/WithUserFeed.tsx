@@ -8,18 +8,13 @@ import * as React from 'react';
 import { FEED_TYPES } from '../../../environment/consts';
 import {
 	ICurrentUser,
-	IError,
-	IGlobal,
 	INavigationParamsActions,
-	IOptionsMenuProps,
 	ITranslatedProps,
 	IWallPostData,
 } from '../../../types';
 import { getActivity, mapPostsForUI } from '../../helpers';
 
-import { IPostReturnData } from '../../../store/aggregations/posts';
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
@@ -27,12 +22,12 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
-import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	posts: IWallPostData[];
+	friendsPosts: IWallPostData[];
+	globalPosts: IWallPostData[];
 	skeletonPost: IWallPostData;
 	creatingPost: boolean;
 	canLoadMorePosts: boolean;
@@ -75,10 +70,10 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																{(feed) => (
 																	<WithCurrentUser>
 																		{({ currentUser }) => {
-																			let feedPosts: IWallPostData[] = [];
+																			let globalPosts: IWallPostData[] = [];
 
 																			if (feed.posts.length > 0) {
-																				feedPosts = mapPostsForUI(
+																				globalPosts = mapPostsForUI(
 																					feed.posts,
 																					10,
 																					currentUser,
@@ -91,7 +86,8 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																			return this.props.children({
 																				data: {
 																					currentUser: currentUser!,
-																					posts: feedPosts,
+																					globalPosts,
+																					friendsPosts: [],
 																					skeletonPost: globals.skeletonPost,
 																					canLoadMorePosts: globals.canLoadMorePosts,
 																					loadingMorePosts: getActivity(

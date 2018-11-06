@@ -46,8 +46,10 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 	public render() {
 		const {
+			feedType,
 			currentUser,
-			posts,
+			globalPosts,
+			friendsPosts,
 			skeletonPost,
 			shareSectionPlaceholder,
 			canLoadMorePosts,
@@ -60,7 +62,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 		return (
 			<UserFeedScreenView
-				posts={posts}
+				posts={feedType === FEED_TYPES.FRIENDS ? friendsPosts : globalPosts}
 				avatarImage={currentUser.avatar}
 				skeletonPost={skeletonPost}
 				refreshing={refreshingFeed}
