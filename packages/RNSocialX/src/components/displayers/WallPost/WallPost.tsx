@@ -1,7 +1,6 @@
 /**
  * TODO List:
  * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
- * 2. Take care of activating <ReportProblemModal/> with proper menu items, see method onShowOptions
  */
 
 import * as React from 'react';
@@ -39,6 +38,7 @@ import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
 import { ActionTypes } from '../../../store/data/posts/Types';
 import { INavigationProps, IWallPostComment, IWallPostData } from '../../../types';
+import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import styles, { SCREEN_WIDTH } from './WallPost.style';
 
@@ -62,6 +62,7 @@ interface IWallPostCardState {
 	sendCommentFailed: boolean;
 	commentInputDisabled: boolean;
 	comments: IWallPostComment[];
+	reportAProblem: boolean;
 }
 
 class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
@@ -128,6 +129,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		sendCommentFailed: false,
 		commentInputDisabled: false,
 		comments: this.props.comments!,
+		reportAProblem: false,
 	};
 
 	private keyboardDidHideListener: any;
@@ -154,6 +156,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			onLikeComment,
 			onGoBack,
 			getText,
+			marginBottom,
 		} = this.props;
 
 		const {
@@ -184,6 +187,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			comments,
 			likePostFailed,
 			commentInputDisabled,
+			reportAProblem,
 		} = this.state;
 
 		const animationValues = {
@@ -207,6 +211,15 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 					onUserPress={onUserPress}
 					onShowOptions={this.onShowPostOptionsHandler}
 					onGoBack={onGoBack}
+					getText={getText}
+				/>
+				<ReportProblemModal
+					visible={reportAProblem}
+					confirmHandler={(subject, description) =>
+						this.onReportAProblemHandler(true, subject, description)
+					}
+					declineHandler={() => this.onReportAProblemHandler(false)}
+					marginBottom={marginBottom}
 					getText={getText}
 				/>
 				{!!comments && (
@@ -520,7 +533,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			{
 				label: getText('wall.post.menu.report.problem'),
 				icon: 'ios-warning',
-				actionHandler: () => undefined,
+				actionHandler: () => this.setState({ reportAProblem: true }),
 			},
 		];
 		const deleteItem = {
@@ -632,6 +645,18 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		];
 
 		showOptionsMenu(menuItems);
+	};
+
+	private onReportAProblemHandler = async (
+		confirm: boolean,
+		subject?: string,
+		description?: string,
+	) => {
+		if (confirm && subject && description) {
+			this.props.onReportProblem(subject, description);
+		} else {
+			this.setState({ reportAProblem: false });
+		}
 	};
 }
 
