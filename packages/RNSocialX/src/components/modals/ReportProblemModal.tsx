@@ -1,15 +1,7 @@
 import * as React from 'react';
-import {
-	Image,
-	Platform,
-	Text,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	View,
-} from 'react-native';
+import { Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import Modal from 'react-native-modal';
-import ModalDropdown from 'react-native-modal-dropdown';
 
 import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import { PrimaryTextInput } from '..';
@@ -21,24 +13,17 @@ import style from './ReportProblemModal.style';
 
 interface IReportProblemModalProps extends IResizeProps, ITranslatedProps {
 	visible: boolean;
-	confirmHandler: (reason: string, description: string) => void;
+	confirmHandler: (subject: string, description: string) => void;
 	declineHandler: () => void;
 }
 
 interface IReportProblemModalComponentProps extends IReportProblemModalProps {
-	reason: string;
+	subject: string;
 	description: string;
 }
 
-const REPORT_REASONS = [
-	'modal.report.problem.reason.sample1',
-	'modal.report.problem.reason.sample2',
-	'modal.report.problem.reason.sample3',
-	'modal.report.problem.reason.sample4',
-];
-
 const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComponentProps>> = ({
-	values: { visible, declineHandler, marginBottom, getText, description },
+	values: { visible, declineHandler, marginBottom, getText, description, subject },
 	isValid,
 	handleSubmit,
 	errors,
@@ -65,35 +50,35 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 				<View style={[style.keyboardView, Platform.OS === OS_TYPES.IOS ? { marginBottom } : {}]}>
 					<View style={style.boxContainer}>
 						<View style={style.titleContainer}>
-							<Text style={style.title}>{getText('modal.report.problem.title')}</Text>
+							<Text style={style.title}>{getText('modal.report.title')}</Text>
 						</View>
-
 						<View style={style.inputContainer}>
-							<View style={style.pickerContainer}>
-								<View style={style.iconContainer}>
-									<Image source={Icons.iconDropDown} style={style.icon} resizeMode="contain" />
-								</View>
-								<ModalDropdown
-									keyboardShouldPersistTaps="handled"
-									style={style.pickerStyle}
-									dropdownStyle={style.dropdownStyle}
-									dropdownTextStyle={style.dropdownTextStyle}
-									textStyle={style.dropdownTextStyle}
-									options={REPORT_REASONS.map((reason) => getText(reason))}
-									defaultValue={getText(REPORT_REASONS[0])}
-									onSelect={(index: number, value: string) => {
-										setFieldValue('reason', value);
-										setFieldTouched('reason');
+							<View style={style.subjectContainer}>
+								<PrimaryTextInput
+									autoCapitalize="sentences"
+									autoCorrect={true}
+									numberOfLines={2}
+									borderColor={Colors.dustWhite}
+									placeholder={getText('modal.report.subject.placeholder')}
+									onChangeText={(value: string) => {
+										setFieldValue('subject', value);
+										setFieldTouched('subject');
 									}}
+									value={subject}
+									blurOnSubmit={false}
 								/>
+								{touched.subject &&
+									errors.subject && (
+										<Text style={ApplicationStyles.inputErrorText}>{getText(errors.subject)}</Text>
+									)}
 							</View>
 							<View style={style.descriptionContainer}>
 								<PrimaryTextInput
 									autoCapitalize="sentences"
 									autoCorrect={true}
-									numberOfLines={3}
+									multiline={true}
 									borderColor={Colors.dustWhite}
-									placeholder={getText('modal.report.problem.report.description.placeholder')}
+									placeholder={getText('modal.report.description.placeholder')}
 									onChangeText={(value: string) => {
 										setFieldValue('description', value);
 										setFieldTouched('description');
@@ -109,7 +94,6 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 									)}
 							</View>
 						</View>
-
 						<View style={style.buttonsContainer}>
 							<TouchableOpacity style={[style.button, style.leftButton]} onPress={declineHandler}>
 								<Text style={[style.buttonText, style.buttonTextCancel]}>
@@ -122,7 +106,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 								onPress={handleSubmit}
 							>
 								<Text style={[style.buttonText, style.buttonTextConfirm]}>
-									{getText('button.send')}
+									{getText('button.SEND')}
 								</Text>
 							</TouchableOpacity>
 						</View>
@@ -136,20 +120,24 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 const formikSettings = {
 	mapPropsToValues: (props: IReportProblemModalProps) => ({
 		...props,
-		reason: REPORT_REASONS[0],
+		subject: '',
 		description: '',
 	}),
-	validate: ({ reason, description }: IReportProblemModalComponentProps) => {
+	validate: ({ subject, description }: IReportProblemModalComponentProps) => {
 		const errors: FormikErrors<IReportProblemModalComponentProps> = {};
-		if (!description) {
-			errors.description = 'modal.report.problem.description.required';
+		if (!subject) {
+			errors.subject = 'modal.report.subject.required';
 		}
+		if (!description) {
+			errors.description = 'modal.report.description.required';
+		}
+
 		return errors;
 	},
 	handleSubmit: (
-		{ reason, description }: IReportProblemModalComponentProps,
+		{ subject, description }: IReportProblemModalComponentProps,
 		{ props }: FormikBag<IReportProblemModalProps, IReportProblemModalComponentProps>,
-	) => props.confirmHandler(reason, description),
+	) => props.confirmHandler(subject, description),
 	enableReinitialize: true,
 };
 

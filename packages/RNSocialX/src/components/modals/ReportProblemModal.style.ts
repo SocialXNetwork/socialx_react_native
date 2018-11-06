@@ -44,49 +44,17 @@ const style: any = {
 		paddingBottom: Sizes.smartVerticalScale(21),
 	},
 	inputContainer: {
-		paddingHorizontal: Sizes.smartHorizontalScale(24),
-		paddingTop: Sizes.smartVerticalScale(40),
-	},
-	pickerContainer: {
 		alignItems: 'center',
-		justifyContent: 'space-between',
-		flexDirection: 'row',
+		paddingHorizontal: Sizes.smartHorizontalScale(24),
+		paddingVertical: Sizes.smartVerticalScale(40),
+	},
+	subjectContainer: {
+		maxHeight: Sizes.smartVerticalScale(150),
 		width: '100%',
-		borderRadius: Sizes.smartHorizontalScale(6),
-		borderColor: Colors.mercury,
-		borderWidth: Sizes.smartHorizontalScale(2),
-		padding: Sizes.smartVerticalScale(5),
-		height: Sizes.smartVerticalScale(30),
-	},
-	pickerStyle: {
-		position: 'absolute',
-		width: '100%',
-	},
-	dropdownStyle: {
-		width: '68%',
-	},
-	dropdownTextStyle: {
-		...Fonts.centuryGothic,
-		color: Colors.cloudBurst,
-		fontSize: Sizes.smartHorizontalScale(14),
-		lineHeight: Sizes.smartHorizontalScale(18),
-		paddingRight: '10%',
-		paddingLeft: Sizes.smartHorizontalScale(10),
-	},
-	iconContainer: {
-		width: '100%',
-		alignItems: 'flex-end',
-	},
-	icon: {
-		height: Sizes.smartVerticalScale(5),
-		width: Sizes.smartHorizontalScale(8),
-		marginLeft: Sizes.smartHorizontalScale(5),
-		marginRight: Sizes.smartHorizontalScale(10),
 	},
 	descriptionContainer: {
 		maxHeight: Sizes.smartVerticalScale(150),
 		paddingTop: Sizes.smartVerticalScale(9),
-		paddingBottom: Sizes.smartVerticalScale(21),
 		width: '100%',
 	},
 	buttonsContainer: {
@@ -114,6 +82,7 @@ const style: any = {
 	},
 	buttonTextConfirm: {
 		color: Colors.postHour,
+		textTransform: 'capitalize',
 	},
 	buttonTextCancel: {
 		color: Colors.cloudBurst,

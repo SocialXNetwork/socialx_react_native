@@ -1,6 +1,11 @@
+/*
+* TO DO:
+* 1. Link onReportProblem with backend to send notification to SocialX / send e-mail to SocialX
+*/
+
 import * as React from 'react';
 
-import { SCREENS, TABS } from '../../environment/consts';
+import { KeyboardContext, SCREENS, TABS } from '../../environment/consts';
 import {
 	ICurrentUser,
 	IError,
@@ -31,6 +36,7 @@ export interface IWallPostEnhancedData {
 	commentInput?: boolean;
 	comments?: IWallPostComment[];
 	keyboardRaised?: boolean;
+	marginBottom: number;
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
@@ -44,7 +50,7 @@ export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenu
 	onLikeComment: (comment: IWallPostComment) => void;
 	onRemoveComment: (commentId: string) => void;
 	onBlockUser: (userId: string) => void;
-	onReportProblem: (reason: string, description: string) => void;
+	onReportProblem: (subject: string, description: string) => void;
 	onAddComment?: (cardHeight: number) => void;
 	onGoBack: () => void;
 }
@@ -73,86 +79,92 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 										{({ globals, setGlobal }) => (
 											<WithActivities>
 												{({ errors }) => (
-													<WithAggregations>
-														{({ userPosts, getUserPosts }) => (
-															<WithPosts>
-																{(feed) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) =>
-																			this.props.children({
-																				data: {
-																					currentUser,
-																					skeletonPost: globals.skeletonPost,
-																					errors,
-																				} as any,
-																				actions: {
-																					onImagePress: (
-																						index: number,
-																						mediaObjects: IMediaProps[],
-																						post: IWallPostData,
-																					) =>
-																						this.onImagePressHandler(
-																							setNavigationParams,
-																							index,
-																							mediaObjects,
-																							post,
-																						),
-																					onLikePost: (likedByCurrentUser, postId) =>
-																						this.onLikePostHandler(
-																							feed.likePost,
-																							feed.unlikePost,
-																							likedByCurrentUser,
-																							postId,
-																						),
-																					onDoubleTapLike: (postId) =>
-																						this.onDoubleTapLikeHandler(feed.likePost, postId),
-																					onRemovePost: (postId) =>
-																						this.onRemovePostHandler(
-																							setGlobal,
-																							feed.removePost,
-																							postId,
-																						),
-																					onUserPress: (userId) =>
-																						this.onUserPressHandler(
-																							setNavigationParams,
-																							currentUser.userId,
-																							userPosts,
-																							getUserPosts,
-																							userId,
-																						),
-																					onCommentsPress: (post, keyboardRaised) =>
-																						this.onCommentsPressHandler(
-																							setNavigationParams,
-																							post,
-																							keyboardRaised,
-																						),
-																					onSubmitComment: (text, postId) =>
-																						this.onSubmitCommentHandler(
-																							feed.createComment,
-																							text,
-																							postId,
-																						),
-																					onLikeComment: (comment) =>
-																						this.onLikeCommentHandler(
-																							feed.likeComment,
-																							feed.unlikeComment,
-																							comment,
-																						),
-																					onRemoveComment: (commentId) =>
-																						feed.removeComment({ commentId }),
-																					onBlockUser: () => undefined,
-																					onReportProblem: () => undefined,
-																					onGoBack: () => this.onGoBackHandler(),
-																					showOptionsMenu: (items) => showOptionsMenu({ items }),
-																					getText,
-																				},
-																			})
-																		}
-																	</WithCurrentUser>
+													<KeyboardContext.Consumer>
+														{({ marginBottom }) => (
+															<WithAggregations>
+																{({ userPosts, getUserPosts }) => (
+																	<WithPosts>
+																		{(feed) => (
+																			<WithCurrentUser>
+																				{({ currentUser }) =>
+																					this.props.children({
+																						data: {
+																							currentUser,
+																							skeletonPost: globals.skeletonPost,
+																							errors,
+																							marginBottom,
+																						} as any,
+																						actions: {
+																							onImagePress: (
+																								index: number,
+																								mediaObjects: IMediaProps[],
+																								post: IWallPostData,
+																							) =>
+																								this.onImagePressHandler(
+																									setNavigationParams,
+																									index,
+																									mediaObjects,
+																									post,
+																								),
+																							onLikePost: (likedByCurrentUser, postId) =>
+																								this.onLikePostHandler(
+																									feed.likePost,
+																									feed.unlikePost,
+																									likedByCurrentUser,
+																									postId,
+																								),
+																							onDoubleTapLike: (postId) =>
+																								this.onDoubleTapLikeHandler(feed.likePost, postId),
+																							onRemovePost: (postId) =>
+																								this.onRemovePostHandler(
+																									setGlobal,
+																									feed.removePost,
+																									postId,
+																								),
+																							onUserPress: (userId) =>
+																								this.onUserPressHandler(
+																									setNavigationParams,
+																									currentUser.userId,
+																									userPosts,
+																									getUserPosts,
+																									userId,
+																								),
+																							onCommentsPress: (post, keyboardRaised) =>
+																								this.onCommentsPressHandler(
+																									setNavigationParams,
+																									post,
+																									keyboardRaised,
+																								),
+																							onSubmitComment: (text, postId) =>
+																								this.onSubmitCommentHandler(
+																									feed.createComment,
+																									text,
+																									postId,
+																								),
+																							onLikeComment: (comment) =>
+																								this.onLikeCommentHandler(
+																									feed.likeComment,
+																									feed.unlikeComment,
+																									comment,
+																								),
+																							onRemoveComment: (commentId) =>
+																								feed.removeComment({ commentId }),
+																							onBlockUser: () => undefined,
+																							onReportProblem: () => undefined,
+																							onGoBack: () => this.onGoBackHandler(),
+																							showOptionsMenu: (items) =>
+																								showOptionsMenu({ items }),
+																							getText,
+																						},
+																					})
+																				}
+																			</WithCurrentUser>
+																		)}
+																	</WithPosts>
 																)}
-															</WithPosts>
+															</WithAggregations>
 														)}
-													</WithAggregations>
+													</KeyboardContext.Consumer>
 												)}
 											</WithActivities>
 										)}
