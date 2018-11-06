@@ -58,10 +58,10 @@ export default class PolyfillCrypto extends React.Component<{ debug: boolean }, 
 								// this means overridng the crypto object itself won't
 								// work, so we have to override all of it's methods
 								// tslint:disable-next-line
-								// for (const name in worker.crypto.subtle) {
-								// 	// @ts-ignore
-								// 	window.crypto.subtle[name] = worker.crypto.subtle[name];
-								// }
+								for (const name in worker.crypto.subtle) {
+									// @ts-ignore
+									window.crypto.subtle[name] = worker.crypto.subtle[name];
+								}
 								// @ts-ignore
 								(window.crypto as any).fake = true;
 								// @ts-ignore
