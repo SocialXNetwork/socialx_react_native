@@ -22,7 +22,7 @@ import {
 import { WithNavigation } from '../enhancers/navigation/WithNavigation';
 import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
-import styles, { tabBarBackgroundColor } from './Navigation.style';
+import styles, { tabStyles } from './Navigation.style';
 
 import {
 	AdsManagementEditAdScreen,
@@ -193,9 +193,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 			},
 			tabBarOptions: {
 				showLabel: false,
-				style: {
-					backgroundColor: tabBarBackgroundColor,
-				},
+				style: tabStyles,
 			},
 		}),
 	},

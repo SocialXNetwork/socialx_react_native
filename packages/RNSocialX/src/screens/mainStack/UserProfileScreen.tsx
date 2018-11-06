@@ -67,7 +67,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onAddFriend={this.onAddFriendHandler}
 				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
-				onViewMediaFullscreen={this.onViewMediaFullScreenHandler}
+				onViewMediaFullScreen={this.onViewMediaFullScreenHandler}
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
 				onGoBack={this.onGoBackHandler}
@@ -110,11 +110,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		}
 	};
 
-	private onAddFriendHandler = () => {
-		const { visitedUser, addFriend } = this.props;
-		addFriend(visitedUser.userId);
-	};
-
 	private onRefreshHandler = async () => {
 		const {
 			visitedUser,
@@ -129,6 +124,11 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			await getProfileForUser(userId);
 			await getPostsForUser(userId);
 		}
+	};
+
+	private onAddFriendHandler = () => {
+		const { visitedUser, addFriend } = this.props;
+		addFriend(visitedUser.userId);
 	};
 
 	private onProfilePhotoPressHandler = () => {

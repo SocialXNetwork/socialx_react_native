@@ -1,8 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Icons, Sizes } from '../../environment/theme';
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-
+export const SCREEN_HEIGHT = Dimensions.get('window').height;
+export const SCREEN_WIDTH = Dimensions.get('window').width;
 const ICON_SIZE = Sizes.smartHorizontalScale(20);
 
 const styles: any = {
@@ -10,16 +10,30 @@ const styles: any = {
 		flex: 1,
 		backgroundColor: Colors.pink,
 	},
+	icon: {
+		width: ICON_SIZE,
+		height: ICON_SIZE,
+	},
 	scrollContainer: {
 		width: '100%',
 		backgroundColor: Colors.white,
 	},
-	gridContainer: {
-		width: '100%',
-		minHeight: 1,
+	wallPostContainer: {
+		paddingBottom: Sizes.smartVerticalScale(25),
 	},
-	titleBarRightButton: {
-		marginRight: Sizes.smartHorizontalScale(13),
+	contentContainer: {
+		flex: 1,
+		flexDirection: 'row',
+	},
+	postsContainer: {
+		width: '100%',
+	},
+	gridContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		minHeight: 1,
+		width: '100%',
 	},
 	whiteBottomView: {
 		position: 'absolute',
@@ -28,9 +42,10 @@ const styles: any = {
 		height: SCREEN_HEIGHT / 2,
 		bottom: 0,
 	},
-	icon: {
-		width: ICON_SIZE,
-		height: ICON_SIZE,
+	loading: {
+		flex: 1,
+		alignItems: 'center',
+		paddingTop: Sizes.smartVerticalScale(30),
 	},
 };
 

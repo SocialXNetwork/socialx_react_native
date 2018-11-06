@@ -23,25 +23,24 @@ import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { INavigationProps, ITranslatedProps, IVisitedUser, IWallPostData } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
-
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps {
 	visitedUser: IVisitedUser;
 	refreshing: boolean;
+	loadingPosts: boolean;
 	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
-	loadingPosts: boolean;
 	onRefresh: () => void;
 	onGoBack: () => void;
 	onAddFriend: () => void;
 	onShowFriendshipOptions: () => void;
 	onProfilePhotoPress: () => void;
 	onLoadMorePhotos: () => void;
-	onViewMediaFullscreen: (index: number) => void;
+	onViewMediaFullScreen: (index: number) => void;
 	onIconPress: (tab: string) => void;
 	onLayoutChange: (height: number) => void;
 }
@@ -51,15 +50,15 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	refreshing,
 	loadingPosts,
 	dataProvider,
-	onAddFriend,
-	onRefresh,
 	listTranslate,
 	gridTranslate,
 	activeTab,
 	containerHeight,
+	onAddFriend,
+	onRefresh,
 	onShowFriendshipOptions,
 	onProfilePhotoPress,
-	onViewMediaFullscreen,
+	onViewMediaFullScreen,
 	onLoadMorePhotos,
 	onIconPress,
 	onLayoutChange,
@@ -115,19 +114,19 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					avatar={avatar}
 					fullName={fullName}
 					userName={userName}
+					description={description}
+					relationship={relationship}
 					numberOfFriends={numberOfFriends}
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
 					numberOfComments={numberOfComments}
+					isCurrentUser={false}
+					tabs={true}
+					activeTab={activeTab}
 					onProfilePhotoPress={onProfilePhotoPress}
 					onAddFriend={onAddFriend}
 					onShowFriendshipOptions={onShowFriendshipOptions}
-					relationship={relationship}
-					isCurrentUser={false}
 					onIconPress={onIconPress}
-					description={description}
-					tabs={true}
-					activeTab={activeTab}
 					getText={getText}
 				/>
 				{loadingPosts ? (
@@ -172,7 +171,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 								<ProfilePhotoGrid
 									onLoadMorePhotos={onLoadMorePhotos}
 									dataProvider={dataProvider}
-									onViewMediaFullScreen={onViewMediaFullscreen}
+									onViewMediaFullScreen={onViewMediaFullScreen}
 									header={{
 										element: <View style={{ width: 1, height: 1 }} />,
 										height: hasPhotos ? 1 : SCREEN_HEIGHT,

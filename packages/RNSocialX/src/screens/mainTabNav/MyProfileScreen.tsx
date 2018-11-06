@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Animated } from 'react-native';
+import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 import uuid from 'uuid/v4';
 
@@ -8,10 +10,11 @@ import {
 	IWithMyProfileEnhancedData,
 	WithMyProfile,
 } from '../../enhancers/screens';
-import { NAVIGATION, SCREENS } from '../../environment/consts';
+import { NAVIGATION, PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
 import { INavigationProps, MediaTypeImage } from '../../types';
 import { MyProfileScreenView } from './MyProfileScreen.view';
 
+import { SCREEN_WIDTH } from './MyProfileScreen.style';
 const GRID_PAGE_SIZE = 20;
 
 type IMyProfileScreenProps = INavigationProps &
@@ -20,6 +23,10 @@ type IMyProfileScreenProps = INavigationProps &
 
 interface IMyProfileScreenState {
 	dataProvider: DataProvider;
+	listTranslate: AnimatedValue;
+	gridTranslate: AnimatedValue;
+	activeTab: string;
+	containerHeight: number;
 }
 
 class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
@@ -35,6 +42,10 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 
 		this.state = {
 			dataProvider: this.dataProvider,
+			listTranslate: new Animated.Value(0),
+			gridTranslate: new Animated.Value(SCREEN_WIDTH),
+			activeTab: PROFILE_TAB_ICON_TYPES.LIST,
+			containerHeight: 0,
 		};
 	}
 
@@ -45,46 +56,45 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public render() {
-		const { currentUser, getText } = this.props;
-		const { dataProvider } = this.state;
-		const {
-			numberOfLikes,
-			numberOfPhotos,
-			numberOfFriends,
-			numberOfComments,
-			avatar,
-			fullName,
-			userName,
-			description,
-			mediaObjects,
-		} = currentUser;
+		const { currentUser, loadingProfile, loadingPosts, navigation, getText } = this.props;
+		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
 			<MyProfileScreenView
-				numberOfPhotos={numberOfPhotos}
-				numberOfLikes={numberOfLikes}
-				numberOfFriends={numberOfFriends}
-				numberOfComments={numberOfComments}
-				avatar={avatar}
-				fullName={fullName}
-				userName={userName}
-				description={description}
-				onLoadMorePhotos={this.onLoadMorePhotosHandler}
+				currentUser={currentUser}
+				refreshing={loadingProfile && loadingPosts}
+				loadingPosts={loadingPosts}
 				dataProvider={dataProvider}
-				hasPhotos={mediaObjects.length > 0}
+				listTranslate={listTranslate}
+				gridTranslate={gridTranslate}
+				activeTab={activeTab}
+				containerHeight={containerHeight}
+				onRefresh={this.onRefreshHandler}
+				onLoadMorePhotos={this.onLoadMorePhotosHandler}
+				onIconPress={this.onIconPressHandler}
+				onLayoutChange={this.onLayoutChangeHandler}
 				onViewMediaFullScreen={this.onViewMediaFullScreenHandler}
 				onEditProfile={this.onEditProfilePressHandler}
 				onSharePress={this.onSharePressHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
-				onShowDotsModal={this.onShowDotsModalHandler}
+				onShowOptionsMenu={this.onShowOptionsMenuHandler}
+				navigation={navigation}
 				getText={getText}
 			/>
 		);
 	}
 
-	private getDotsModalItems = () => {
-		const { navigation, getText, logout, setGlobal } = this.props;
-		return [
+	private onRefreshHandler = async () => {
+		const { currentUser, loadingProfile, loadingPosts, getPostsForUser } = this.props;
+
+		if (!loadingProfile && !loadingPosts) {
+			await getPostsForUser(currentUser.userId);
+		}
+	};
+
+	private onShowOptionsMenuHandler = () => {
+		const { showOptionsMenu, logout, setGlobal, navigation, getText } = this.props;
+		const menuItems = [
 			{
 				label: getText('my.profile.screen.menu.profile.analytics'),
 				icon: 'ios-analytics',
@@ -110,12 +120,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				},
 			},
 		];
-	};
 
-	private onShowDotsModalHandler = () => {
-		const { showOptionsMenu } = this.props;
-
-		const menuItems = this.getDotsModalItems();
 		showOptionsMenu(menuItems);
 	};
 
@@ -194,6 +199,46 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				},
 			});
 			navigation.navigate(SCREENS.MediaViewer);
+		}
+	};
+
+	private onIconPressHandler = (tab: string) => {
+		if (this.state.activeTab !== tab) {
+			this.setState({ activeTab: tab });
+		}
+
+		if (tab === PROFILE_TAB_ICON_TYPES.GRID) {
+			Animated.parallel([
+				Animated.timing(this.state.listTranslate, {
+					toValue: -SCREEN_WIDTH,
+					duration: 300,
+					useNativeDriver: true,
+				}),
+				Animated.timing(this.state.gridTranslate, {
+					toValue: 0,
+					duration: 300,
+					useNativeDriver: true,
+				}),
+			]).start();
+		} else {
+			Animated.parallel([
+				Animated.timing(this.state.listTranslate, {
+					toValue: 0,
+					duration: 300,
+					useNativeDriver: true,
+				}),
+				Animated.timing(this.state.gridTranslate, {
+					toValue: SCREEN_WIDTH,
+					duration: 300,
+					useNativeDriver: true,
+				}),
+			]).start();
+		}
+	};
+
+	private onLayoutChangeHandler = (height: number) => {
+		if (this.state.containerHeight !== height) {
+			this.setState({ containerHeight: height });
 		}
 	};
 

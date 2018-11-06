@@ -4,6 +4,9 @@
  */
 
 import * as React from 'react';
+
+import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts/Types';
+import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import {
 	INavigationParamsActions,
 	IOptionsMenuProps,
@@ -13,12 +16,9 @@ import {
 import { getActivity } from '../../helpers';
 
 import { IPostReturnData } from '../../../store/aggregations/posts';
-import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts/Types';
-import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
-import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';

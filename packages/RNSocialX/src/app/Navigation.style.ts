@@ -21,5 +21,7 @@ const styles: any = {
 	},
 };
 
-export const tabBarBackgroundColor = Colors.alabaster;
+export const tabStyles = {
+	backgroundColor: Colors.alabaster,
+};
 export default styles;
