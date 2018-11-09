@@ -48,7 +48,7 @@ export const getProfileByUsername = (
 	callback: IGunCallback<IProfileCallbackData>,
 ) => {
 	const mainRunner = () => {
-		profileHandles.publicProfileByUsername(context, username).open(
+		profileHandles.publicProfileByUsername(context, username).docLoad(
 			(profile: IProfileCallbackData) => {
 				if (!profile || !Object.keys(profile).length) {
 					return callback(
@@ -68,7 +68,7 @@ export const getProfileByUsername = (
 				};
 				return callback(null, profileReturnData);
 			},
-			{ off: 1, wait: 400 },
+			{ wait: 400, timeout: 800 },
 		);
 	};
 	preLoadProfiles(context.gun, () => {
