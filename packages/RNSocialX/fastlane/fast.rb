@@ -126,7 +126,7 @@ platform :android do
 
   desc 'Android build and upload flow'
   lane :release do |options|
-    install_dev
+    # install_dev
     check_build_params options
     android_build options
     send_play_store
@@ -139,7 +139,7 @@ platform :cross do
 
   desc 'Android+iOS build and upload flow + Bugsnag'
   lane :release do |options|
-    install_dev
+    # install_dev
     check_build_params options
     version_ios options
     ios_build
