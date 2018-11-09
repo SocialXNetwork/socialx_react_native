@@ -12,6 +12,7 @@ import {
 	IGetPublicKeyInput,
 	IProfileCallbackData,
 	IProfileData,
+	IRejectFriendInput,
 	IRemoveFriendInput,
 	ISearchProfilesByFullNameInput,
 	IUpdateProfileInput,
@@ -199,6 +200,27 @@ export default (context: IContext) => ({
 
 		return new Promise<null>((resolve, reject) => {
 			setters.acceptFriend(
+				context,
+				validatedInput as IAcceptFriendInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	rejectFriend: async (rejectFriendInput: IRejectFriendInput): Promise<null> => {
+		let validatedInput: any;
+		try {
+			// same check
+			validatedInput = await schemas.acceptFriend.validate(rejectFriendInput, {
+				stripUnknown: true,
+			});
+		} catch (e) {
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: rejectFriendInput,
+			});
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.rejectFriend(
 				context,
 				validatedInput as IAcceptFriendInput,
 				resolveCallback(resolve, reject),

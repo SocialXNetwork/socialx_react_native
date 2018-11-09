@@ -184,23 +184,11 @@ describe('profiles api', () => {
 				username: 'bopybopy',
 			});
 
-			expect(thisProfile).toHaveProperty(
-				['friends', 0, 'relation'],
-				FRIEND_TYPES.PENDING,
-			);
-			expect(thisProfile).toHaveProperty(
-				['friends', 0, 'username'],
-				friendProfile.username,
-			);
+			expect(thisProfile).toHaveProperty(['friends', 0, 'relation'], FRIEND_TYPES.PENDING);
+			expect(thisProfile).toHaveProperty(['friends', 0, 'username'], friendProfile.username);
 
-			expect(targetProfile).toHaveProperty(
-				['friends', 0, 'relation'],
-				FRIEND_TYPES.PENDING,
-			);
-			expect(targetProfile).toHaveProperty(
-				['friends', 0, 'username'],
-				mockProfile.username,
-			);
+			expect(targetProfile).toHaveProperty(['friends', 0, 'relation'], FRIEND_TYPES.PENDING);
+			expect(targetProfile).toHaveProperty(['friends', 0, 'username'], mockProfile.username);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}
@@ -262,7 +250,6 @@ describe('profiles api', () => {
 			]);
 			// NOTE: this succeeds even if friend does not exist?
 			await mockApi.profiles.acceptFriend({
-				friendshipId: '',
 				username: friendProfile.username,
 			});
 		} catch (e) {
@@ -296,7 +283,6 @@ describe('profiles api', () => {
 			mockApi = dataApiFactory(testAccount2);
 
 			await mockApi.profiles.acceptFriend({
-				friendshipId: newProfile.friends[0].friendId,
 				username: 'blahblah',
 			});
 
@@ -305,23 +291,11 @@ describe('profiles api', () => {
 			});
 			newProfile = await mockApi.profiles.getCurrentProfile();
 
-			expect(newProfile).toHaveProperty(
-				['friends', 0, 'relation'],
-				FRIEND_TYPES.MUTUAL,
-			);
-			expect(newProfile).toHaveProperty(
-				['friends', 0, 'username'],
-				mockProfile.username,
-			);
+			expect(newProfile).toHaveProperty(['friends', 0, 'relation'], FRIEND_TYPES.MUTUAL);
+			expect(newProfile).toHaveProperty(['friends', 0, 'username'], mockProfile.username);
 
-			expect(newFriendProfile).toHaveProperty(
-				['friends', 0, 'relation'],
-				FRIEND_TYPES.MUTUAL,
-			);
-			expect(newFriendProfile).toHaveProperty(
-				['friends', 0, 'username'],
-				friendProfile.username,
-			);
+			expect(newFriendProfile).toHaveProperty(['friends', 0, 'relation'], FRIEND_TYPES.MUTUAL);
+			expect(newFriendProfile).toHaveProperty(['friends', 0, 'username'], friendProfile.username);
 		} catch (e) {
 			expect(e).toBeUndefined();
 		}

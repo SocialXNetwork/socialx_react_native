@@ -7,6 +7,7 @@ import uuidv4 from 'uuid/v4';
 import { getContextMeta } from '../../utils/helpers';
 import {
 	FRIEND_TYPES,
+	FriendResponses,
 	IAcceptFriendInput,
 	IAddFriendInput,
 	ICreateProfileInput,
@@ -221,6 +222,32 @@ const createFriendRequestNotification = (context: IContext, username: string) =>
 	);
 };
 
+const createFriendRequestResponse = (context: IContext, to: string, response: FriendResponses) => {
+	const { owner, ownerPub, timestamp } = getContextMeta(context);
+	return new Promise((res, rej) =>
+		profileHandles.publicFriendResponseToFrom(context, owner, to).put(
+			{
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+				timestamp,
+				type: response,
+			},
+			(friendResponseCallback) => {
+				if (friendResponseCallback.err) {
+					rej(
+						new ApiError(
+							`something went wrong while creating a response -> ${friendResponseCallback.err}`,
+						),
+					);
+				}
+				res();
+			},
+		),
+	);
+};
+
 export const addFriend = async (
 	context: IContext,
 	{ username }: IAddFriendInput,
@@ -312,7 +339,39 @@ export const acceptFriend = async (
 		}
 		await checkIfProfileExists(context, username);
 		await removePendingAndProceed(context, username);
+		await createFriendRequestResponse(context, username, FriendResponses.Accepted);
 		await createFriendPrivateRecord(context, username);
+		callback(null);
+	} catch (e) {
+		callback(e);
+	}
+};
+
+export const rejectFriend = async (
+	context: IContext,
+	{ username }: IAcceptFriendInput,
+	callback: IGunCallback<null>,
+) => {
+	try {
+		const { account } = context;
+		if (!account.is) {
+			return callback(
+				new ApiError('no user logged in', {
+					initialRequestBody: { username },
+				}),
+			);
+		}
+		const friendRequestExists = await checkIfFriendRequestExists(
+			context,
+			account.is.alias,
+			username,
+		);
+		if (!friendRequestExists) {
+			return callback(new ApiError('friend request does not exist'));
+		}
+		await checkIfProfileExists(context, username);
+		await removePendingAndProceed(context, username);
+		await createFriendRequestResponse(context, username, FriendResponses.Rejected);
 		callback(null);
 	} catch (e) {
 		callback(e);
@@ -325,4 +384,5 @@ export default {
 	addFriend,
 	removeFriend,
 	acceptFriend,
+	rejectFriend,
 };

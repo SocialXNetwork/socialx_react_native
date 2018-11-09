@@ -1,5 +1,7 @@
 import { IContext, TABLE_ENUMS, TABLES } from '../../types';
 
+// User records
+
 export const currentUserProfileData = (context: IContext) => {
 	const { account } = context;
 	return account.path(`${TABLES.PROFILE}.${account.is.alias}`);
@@ -35,6 +37,8 @@ export const profileFriendsByUsername = (context: IContext, username: string) =>
 	return gun.path(`${TABLES.PROFILES}.${username}.${TABLE_ENUMS.FRIENDS}`);
 };
 
+// User friendship records
+
 export const currentProfileFriendship = (context: IContext, friendshipId: string) => {
 	const { account } = context;
 	return account.path(`${TABLES.PROFILE}.${TABLE_ENUMS.FRIENDS}.${friendshipId}`);
@@ -49,21 +53,22 @@ export const userProfileFriendship = (
 	return gun.path(`${TABLES.PROFILES}.${username}.${TABLE_ENUMS.FRIENDS}.${friendshipId}`);
 };
 
-export const publicFriendRequestsByUsers = (context: IContext, from: string, to: string) => {
-	const { gun } = context;
-	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`);
-};
+// User Requests records
+
+// friend requests records
 
 export const publicFriendRequestToFrom = (context: IContext, to: string, from: string) => {
 	const { gun, account } = context;
 	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`);
 };
+
 export const publicCurrentFriendRequestFromUsername = (context: IContext, username: string) => {
 	const { gun, account } = context;
 	return gun.path(
 		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${account.is.alias}.${username}`,
 	);
 };
+
 export const publicCurrentFriendRequestToUsername = (context: IContext, username: string) => {
 	const { gun, account } = context;
 	return gun.path(
@@ -74,4 +79,25 @@ export const publicCurrentFriendRequestToUsername = (context: IContext, username
 export const publicCurrentFriendRequests = (context: IContext) => {
 	const { gun, account } = context;
 	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${account.is.alias}`);
+};
+
+// friend requests responses records
+
+export const publicFriendResponseToFrom = (context: IContext, to: string, from: string) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${to}.${from}`);
+};
+
+export const publicCurrentFriendResponse = (context: IContext) => {
+	const { gun, account } = context;
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${account.is.alias}`,
+	);
+};
+
+export const publicCurrentFriendResponseTo = (context: IContext, to: string) => {
+	const { gun, account } = context;
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${to}.${account.is.alias}`,
+	);
 };

@@ -13,6 +13,7 @@ import { clearGunAuth, setGunAuth } from '../../auth/gun';
 import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { hookNotifications } from '../notifications/actions';
 import {
 	ActionTypes,
 	IChangePasswordAction,
@@ -173,6 +174,7 @@ export const createAccount = (createAccountInput: ICreateAccountInput): IThunk =
 		}
 		await dispatch(setGunAuth({ password: createAccountInput.password }));
 		await dispatch(getCurrentAccount());
+		dispatch(hookNotifications());
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -250,6 +252,8 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 		);
 		await dispatch(getCurrentAccount());
 		await dispatch(endActivity({ uuid: activityId }));
+		// debounce hook
+		dispatch(hookNotifications());
 	} catch (e) {
 		if (auth && auth.alias && auth.password) {
 			console.log('login failed with', e);
@@ -300,6 +304,7 @@ export const logout = (): IThunk => async (dispatch, getState, context) => {
 			dataApi.accounts.logout();
 
 			await dispatch(clearGunAuth());
+			dataApi.hooks.unhookNotifications();
 		} catch (e) {
 			await dispatch(
 				setError({

@@ -9,6 +9,7 @@ export {
 	IFindFriendsSuggestionsInput,
 	IUpdateProfileInput,
 	IPostArrayData,
+	IRejectFriendInput,
 } from '@socialx/api-data';
 export {
 	getCurrentProfile,
@@ -19,4 +20,5 @@ export {
 	getProfilesByPosts,
 	removeFriend,
 	getProfilesByUsernames,
+	rejectFriend,
 } from './actions';

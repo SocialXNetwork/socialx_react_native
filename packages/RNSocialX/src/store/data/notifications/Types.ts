@@ -1,4 +1,7 @@
 import {
+	FriendResponses,
+	IFriendRequest,
+	IFriendResponse,
 	INotificationData,
 	INotificationReturnData,
 	IRemoveNotificationInput,
@@ -7,7 +10,8 @@ import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
-	notifications: INotificationReturnData[];
+	friend_requests: IFriendRequest[];
+	friend_responses: IFriendResponse[];
 }>;
 
 export const enum ActionTypes {
@@ -15,6 +19,10 @@ export const enum ActionTypes {
 	REMOVE_NOTIFICATION = 'data/notifications/REMOVE_NOTIFICATION',
 	SYNC_CURRENT_NOTIFICATIONS = 'data/notifications/SYNC_CURRENT_NOTIFICATIONS',
 	GET_CURRENT_NOTIFICATIONS = 'data/notifications/GET_CURRENT_NOTIFICATIONS',
+	// hooks
+	HOOK_NOTIFICATIONS = 'data/notifications/HOOK_NOTIFICATIONS',
+	SYNC_FRIEND_REQUESTS = 'data/notifications/SYNC_FRIEND_REQUESTS',
+	SYNC_FRIEND_RESPONSES = 'data/notifications/SYNC_FRIEND_RESPONSES',
 }
 
 export interface ICreateNotificationAction extends Action {
@@ -36,6 +44,20 @@ export interface ISyncNotificationsAction extends Action {
 	payload: INotificationReturnData[];
 }
 
+export interface IHookNotificationsAction extends Action {
+	type: ActionTypes.HOOK_NOTIFICATIONS;
+}
+
+export interface ISyncFriendRequestsAction extends Action {
+	type: ActionTypes.SYNC_FRIEND_REQUESTS;
+	payload: IFriendRequest[];
+}
+
+export interface ISyncFriendResponsesAction extends Action {
+	type: ActionTypes.SYNC_FRIEND_RESPONSES;
+	payload: IFriendResponse[];
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
@@ -44,4 +66,7 @@ export type IAction =
 	| ICreateNotificationAction
 	| IRemoveNotificationAction
 	| IGetNotificationsAction
-	| ISyncNotificationsAction;
+	| ISyncNotificationsAction
+	| IHookNotificationsAction
+	| ISyncFriendRequestsAction
+	| ISyncFriendResponsesAction;

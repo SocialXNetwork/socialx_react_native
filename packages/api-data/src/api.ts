@@ -22,6 +22,7 @@ import { api as commentsApi } from './repository/comments';
 import { api as notificationsApi } from './repository/notifications';
 import { api as postsApi } from './repository/posts';
 import { api as profilesApi } from './repository/profiles';
+import { hooks as reactiveHooks } from './repository/reactive';
 
 import { IContext, IGunInstance } from './types';
 
@@ -94,6 +95,7 @@ export const dataApiFactory = (config: IApiOptions) => {
 	const notifications = notificationsApi(context);
 	const posts = postsApi(context);
 	const profiles = profilesApi(context);
+	const hooks = reactiveHooks(context);
 	
 	const resetDatabase = adapter.reset;
 	
@@ -115,6 +117,7 @@ export const dataApiFactory = (config: IApiOptions) => {
 		notifications,
 		posts,
 		profiles,
+		hooks,
 		resetDatabase,
 	};
 };

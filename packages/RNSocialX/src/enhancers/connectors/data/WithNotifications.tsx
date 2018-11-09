@@ -4,14 +4,16 @@ import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
 	getNotifications,
-	INotificationReturnData,
+	IFriendRequest,
+	IFriendResponse,
 	IRemoveNotificationInput,
 	removeNotification,
 } from '../../../store/data/notifications';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	notifications: INotificationReturnData[];
+	friend_requests: IFriendRequest[];
+	friend_responses: IFriendResponse[];
 }
 
 interface IActionProps {
@@ -32,13 +34,19 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectNotifications = createSelector(
-	(state: IApplicationState) => state.data.notifications.notifications,
-	(notifications) => notifications,
+const selectFriendRequests = createSelector(
+	(state: IApplicationState) => state.data.notifications.friend_requests,
+	(friendRequests) => friendRequests,
+);
+
+const selectFriendResponses = createSelector(
+	(state: IApplicationState) => state.data.notifications.friend_responses,
+	(friendResponses) => friendResponses,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	notifications: selectNotifications(state),
+	friend_requests: selectFriendRequests(state),
+	friend_responses: selectFriendResponses(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({

@@ -59,13 +59,16 @@ export interface IAddFriendInput {
 	username: string;
 }
 
+export interface IRejectFriendInput {
+	username: string;
+}
+
 export interface IRemoveFriendInput {
 	friendshipId: string;
 	username: string;
 }
 
 export interface IAcceptFriendInput {
-	friendshipId: string;
 	username: string;
 }
 
@@ -82,4 +85,9 @@ export interface IFriendData {
 
 export interface IFriendsCallbackData {
 	[key: string]: IFriendData;
+}
+
+export enum FriendResponses {
+	Accepted = 'accepted',
+	Rejected = 'rejected',
 }

@@ -3,6 +3,7 @@ import {
 	IAddFriendInput,
 	IPostArrayData,
 	IProfileData,
+	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
@@ -34,6 +35,7 @@ export const enum ActionTypes {
 	ADD_FRIEND = 'app/data/profiles/ADD_FRIEND',
 	REMOVE_FRIEND = 'app/data/profiles/REMOVE_FRIEND',
 	ACCEPT_FRIEND = 'app/data/profiles/ACCEPT_FRIEND',
+	REJECT_FRIEND = 'app/data/profiles/REJECT_FRIEND',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -95,6 +97,11 @@ export interface IAcceptFriendAction extends Action {
 	payload: IAcceptFriendInput;
 }
 
+export interface IRejectFriendAction extends Action {
+	type: ActionTypes.REJECT_FRIEND;
+	payload: IRejectFriendInput;
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
@@ -111,4 +118,5 @@ export type IAction =
 	| IRemoveFriendAction
 	| IGetProfilesByPostsAction
 	| ISyncGetProfilesByPostsAction
-	| IAcceptFriendAction;
+	| IAcceptFriendAction
+	| IRejectFriendAction;

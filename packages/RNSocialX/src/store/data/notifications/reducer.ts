@@ -18,7 +18,40 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_CURRENT_NOTIFICATIONS: {
 			const notifications = action.payload;
-			return { ...state, notifications };
+			// return { ...state, notifications };
+			return state;
+		}
+
+		case ActionTypes.HOOK_NOTIFICATIONS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_FRIEND_REQUESTS: {
+			const updatedRequests = action.payload.reduce(
+				(requests, newRequest) => [
+					...requests.filter((oldRequest) => oldRequest.owner !== newRequest.owner),
+					newRequest,
+				],
+				[...state.friend_requests],
+			);
+			return {
+				...state,
+				friend_requests: updatedRequests,
+			};
+		}
+
+		case ActionTypes.SYNC_FRIEND_RESPONSES: {
+			const updatedResponses = action.payload.reduce(
+				(responses, newResponse) => [
+					...responses.filter((oldResponse) => oldResponse.owner !== newResponse.owner),
+					newResponse,
+				],
+				[...state.friend_responses],
+			);
+			return {
+				...state,
+				friend_responses: updatedResponses,
+			};
 		}
 
 		case 'RESET_STORE': {

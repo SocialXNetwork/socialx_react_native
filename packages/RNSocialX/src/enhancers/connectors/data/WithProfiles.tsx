@@ -10,9 +10,11 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IProfileData,
+	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 	IUsernameInput,
+	rejectFriend,
 	removeFriend,
 	updateCurrentProfile,
 } from '../../../store/data/profiles';
@@ -29,6 +31,7 @@ interface IActionProps {
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
+	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -62,6 +65,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(removeFriend(removeFriendInput)),
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
 		dispatch(acceptFriend(acceptFriendInput)),
+	rejectFriend: (rejectFriendInput: IRejectFriendInput) =>
+		dispatch(rejectFriend(rejectFriendInput)),
 	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) =>
 		dispatch(updateCurrentProfile(updateProfileInput)),
 });

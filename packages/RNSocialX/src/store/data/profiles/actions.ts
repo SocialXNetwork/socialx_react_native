@@ -3,6 +3,7 @@ import {
 	IAddFriendInput,
 	IPostArrayData,
 	IProfileData,
+	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
@@ -13,7 +14,6 @@ import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { getCurrentAccount } from '../accounts/actions';
-import { getNotifications } from '../notifications/actions';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
@@ -22,6 +22,7 @@ import {
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
 	IGetProfilesByUsernamesAction,
+	IRejectFriendAction,
 	IRemoveFriendAction,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByUsernameAction,
@@ -152,7 +153,7 @@ export const getProfilesByUsernames = (
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		try {
-			dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
+			dispatch(getProfilesByUsernamesAction(getProfileByUsernameInput));
 			await dispatch(
 				beginActivity({
 					type: ActionTypes.GET_PROFILE_BY_USERNAME,
@@ -351,8 +352,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.addFriend(addFriendInput);
-			await dispatch(getCurrentProfile());
-			await dispatch(getNotifications());
+			await dispatch(getCurrentAccount());
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -393,7 +393,7 @@ export const removeFriend = (removeFriendInput: IRemoveFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.removeFriend(removeFriendInput);
-			await dispatch(getCurrentProfile());
+			await dispatch(getCurrentAccount());
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -434,7 +434,48 @@ export const acceptFriend = (acceptFriendInput: IAcceptFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.acceptFriend(acceptFriendInput);
-			await dispatch(getCurrentProfile());
+			await dispatch(getCurrentAccount());
+		} catch (e) {
+			await dispatch(
+				setError({
+					type: ActionTypes.ACCEPT_FRIEND,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			await dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
+
+const rejectFriendAction: ActionCreator<IRejectFriendAction> = (
+	rejectFriendInput: IRejectFriendInput,
+) => ({
+	type: ActionTypes.REJECT_FRIEND,
+	payload: rejectFriendInput,
+});
+
+export const rejectFriend = (rejectFriendInput: IRejectFriendInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.auth.database.gun;
+	if (auth && auth.alias) {
+		try {
+			dispatch(rejectFriendAction(rejectFriendInput));
+			await dispatch(
+				beginActivity({
+					type: ActionTypes.REJECT_FRIEND,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.rejectFriend(rejectFriendInput);
+			await dispatch(getCurrentAccount());
 		} catch (e) {
 			await dispatch(
 				setError({

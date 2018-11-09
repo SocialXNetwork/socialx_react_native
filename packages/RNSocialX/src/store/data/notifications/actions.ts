@@ -1,5 +1,7 @@
 import {
 	ICreateNotification,
+	IFriendRequest,
+	IFriendResponse,
 	INotificationReturnData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
@@ -11,7 +13,10 @@ import {
 	ActionTypes,
 	ICreateNotificationAction,
 	IGetNotificationsAction,
+	IHookNotificationsAction,
 	IRemoveNotificationAction,
+	ISyncFriendRequestsAction,
+	ISyncFriendResponsesAction,
 	ISyncNotificationsAction,
 } from './Types';
 
@@ -57,30 +62,31 @@ const removeNotificationAction: ActionCreator<IRemoveNotificationAction> = (
 	payload: removeNotificationInput,
 });
 
+// ! not in use
 export const removeNotification = (
 	removeNotificationInput: IRemoveNotificationInput,
 ): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(removeNotificationAction(removeNotificationInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.REMOVE_NOTIFICATION,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.notifications.removeNotification(removeNotificationInput);
-			await dispatch(getNotifications());
-		} catch (e) {
-			/**/
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
+	// const activityId = uuidv4();
+	// const storeState = getState();
+	// const auth = storeState.auth.database.gun;
+	// if (auth && auth.alias) {
+	// 	try {
+	// 		dispatch(removeNotificationAction(removeNotificationInput));
+	// 		await dispatch(
+	// 			beginActivity({
+	// 				type: ActionTypes.REMOVE_NOTIFICATION,
+	// 				uuid: activityId,
+	// 			}),
+	// 		);
+	// 		const { dataApi } = context;
+	// 		await dataApi.notifications.removeNotification(removeNotificationInput);
+	// 		await dispatch(getNotifications());
+	// 	} catch (e) {
+	// 		/**/
+	// 	} finally {
+	// 		await dispatch(endActivity({ uuid: activityId }));
+	// 	}
+	// }
 };
 
 export const getNotificationsAction: ActionCreator<IGetNotificationsAction> = () => ({
@@ -116,4 +122,33 @@ export const getNotifications = (): IThunk => async (dispatch, getState, context
 			await dispatch(endActivity({ uuid: activityId }));
 		}
 	}
+};
+
+export const hookNotificationsAction: ActionCreator<IHookNotificationsAction> = () => ({
+	type: ActionTypes.HOOK_NOTIFICATIONS,
+});
+
+export const syncFriendRequestsAction: ActionCreator<ISyncFriendRequestsAction> = (
+	friendRequests: IFriendRequest[],
+) => ({
+	type: ActionTypes.SYNC_FRIEND_REQUESTS,
+	payload: friendRequests,
+});
+
+export const syncFriendResponsesAction: ActionCreator<ISyncFriendResponsesAction> = (
+	friendResponses: IFriendResponse[],
+) => ({
+	type: ActionTypes.SYNC_FRIEND_RESPONSES,
+	payload: friendResponses,
+});
+
+export const hookNotifications = (): IThunk => async (dispatch, getState, context) => {
+	dispatch(hookNotificationsAction());
+	const { dataApi } = context;
+	dataApi.hooks.hookFriendRequests((friendRequests) =>
+		dispatch(syncFriendRequestsAction(friendRequests)),
+	);
+	dataApi.hooks.hookFriendResponses((friendResponses) =>
+		dispatch(syncFriendResponsesAction(friendResponses)),
+	);
 };

@@ -6,6 +6,8 @@ export {
 	INotificationReturnData,
 	IRemoveNotificationInput,
 	ICreateNotification,
+	IFriendRequest,
+	IFriendResponse,
 } from '@socialx/api-data';
 
 export { createNotification, getNotifications, removeNotification } from './actions';

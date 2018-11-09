@@ -58,6 +58,7 @@ import {
 
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
+import { WithNotifications } from '../enhancers/connectors/data/WithNotifications';
 import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
@@ -274,83 +275,88 @@ const AppNavigation = createStackNavigator(
 	},
 );
 
-// TODO @jake @serkan @alex when jake completes the notifications provider and redux api,
-// we will remove WithNavigation from here and instead directly use WithI18n and WithNotifications
 const Navigation = () => (
-	<WithNavigation>
-		{({ notifications, getText }) => (
-			<Root>
-				<WithNavigationParams>
-					{({ setNavigationParams }) => (
-						<WithOverlays>
-							{({ showOptionsMenu }) => (
-								<AppNavigation
-									screenProps={{
-										notifications,
-										getText,
-										setNavigationParams,
-										showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
-									}}
-								/>
-							)}
-						</WithOverlays>
-					)}
-				</WithNavigationParams>
-				<WithGlobals>
-					{({ globals }) => (
-						<WithActivities>
-							{({ activities }) => (
+	<WithNotifications>
+		{({ friend_requests, friend_responses }) => (
+			<WithI18n>
+				{({ getText }) => (
+					<Root>
+						<WithNavigationParams>
+							{({ setNavigationParams }) => (
 								<WithOverlays>
-									{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
-										<WithI18n>
-											{(i18n) => (
-												<React.Fragment>
-													<TransparentOverlayModal
-														visible={globals.transparentOverlay.visible}
-														alpha={globals.transparentOverlay.alpha}
-														loader={globals.transparentOverlay.loader}
-													/>
-													<OfflineOverlayModal visible={!!globals.offline} getText={i18n.getText} />
-													<ActivityIndicatorModal
-														visible={globals.activity.visible}
-														title={globals.activity.title}
-														message={globals.activity.message}
-														getText={i18n.getText}
-													/>
-													<ConfirmationModal
-														title={confirmation && confirmation.title}
-														message={confirmation && confirmation.message}
-														confirmActive={!!confirmation}
-														confirmHandler={() => {
-															if (confirmation) {
-																confirmation.confirmHandler();
-															}
-															hideConfirmation();
-														}}
-														declineHandler={() => {
-															if (confirmation && confirmation.cancelHandler) {
-																confirmation.cancelHandler();
-															}
-															hideConfirmation();
-														}}
-													/>
-													<OptionsMenuModal
-														visible={!!optionsMenu}
-														items={(optionsMenu && optionsMenu.items) || []}
-														onBackdropPress={hideOptionsMenu}
-													/>
-												</React.Fragment>
-											)}
-										</WithI18n>
+									{({ showOptionsMenu }) => (
+										<AppNavigation
+											screenProps={{
+												notifications: friend_requests.length + friend_responses.length,
+												getText,
+												setNavigationParams,
+												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
+											}}
+										/>
 									)}
 								</WithOverlays>
 							)}
-						</WithActivities>
-					)}
-				</WithGlobals>
-			</Root>
+						</WithNavigationParams>
+						<WithGlobals>
+							{({ globals }) => (
+								<WithActivities>
+									{({ activities }) => (
+										<WithOverlays>
+											{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
+												<WithI18n>
+													{(i18n) => (
+														<React.Fragment>
+															<TransparentOverlayModal
+																visible={globals.transparentOverlay.visible}
+																alpha={globals.transparentOverlay.alpha}
+																loader={globals.transparentOverlay.loader}
+															/>
+															<OfflineOverlayModal
+																visible={!!globals.offline}
+																getText={i18n.getText}
+															/>
+															<ActivityIndicatorModal
+																visible={globals.activity.visible}
+																title={globals.activity.title}
+																message={globals.activity.message}
+																getText={i18n.getText}
+															/>
+															<ConfirmationModal
+																title={confirmation && confirmation.title}
+																message={confirmation && confirmation.message}
+																confirmActive={!!confirmation}
+																confirmHandler={() => {
+																	if (confirmation) {
+																		confirmation.confirmHandler();
+																	}
+																	hideConfirmation();
+																}}
+																declineHandler={() => {
+																	if (confirmation && confirmation.cancelHandler) {
+																		confirmation.cancelHandler();
+																	}
+																	hideConfirmation();
+																}}
+															/>
+															<OptionsMenuModal
+																visible={!!optionsMenu}
+																items={(optionsMenu && optionsMenu.items) || []}
+																onBackdropPress={hideOptionsMenu}
+															/>
+														</React.Fragment>
+													)}
+												</WithI18n>
+											)}
+										</WithOverlays>
+									)}
+								</WithActivities>
+							)}
+						</WithGlobals>
+					</Root>
+				)}
+			</WithI18n>
 		)}
-	</WithNavigation>
+	</WithNotifications>
 );
 
 export default Navigation;

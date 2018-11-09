@@ -1,0 +1,55 @@
+import { IContext, IGunCallback } from '../../types';
+import { convertGunSetToArray } from '../../utils/helpers';
+import {
+	IFriendRequest,
+	IFriendRequests,
+	IFriendResponse,
+	IFriendResponses,
+	INotificationHookArgs,
+	NotificationType,
+} from './types';
+
+import { currentFriendReqResponse, currentFriendRequests } from './handles';
+
+export const hookNotifications = (
+	context: IContext,
+	hookRequested: INotificationHookArgs,
+	callback: IGunCallback<IFriendRequest[] | IFriendResponse[]>,
+) => {
+	switch (hookRequested.type) {
+		case NotificationType.FriendRequests: {
+			currentFriendRequests(context).open(
+				(friendRequests: IFriendRequests) => {
+					callback(null, convertGunSetToArray(friendRequests));
+				},
+				{ wait: 200 },
+			);
+			break;
+		}
+
+		case NotificationType.FriendRequestResponses: {
+			currentFriendReqResponse(context).open(
+				(friendResponses: IFriendResponses) => {
+					callback(null, convertGunSetToArray(friendResponses));
+				},
+				{ wait: 200 },
+			);
+			break;
+		}
+
+		default: {
+			callback(null);
+			break;
+		}
+	}
+};
+
+export const unHookNotifications = (context: IContext) => {
+	currentFriendRequests(context).off();
+	currentFriendReqResponse(context).off();
+};
+
+export default {
+	hookNotifications,
+	unHookNotifications,
+};
