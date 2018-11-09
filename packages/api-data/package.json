@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "transfer:sea": "cp ./src/extensions/sea.js ./dist/extensions/sea.js",
+    "build": "tsc && yarn transfer:sea",
     "test": "jest --runInBand --onlyChanged --detectOpenHandles",
     "test:all": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watch --silent"

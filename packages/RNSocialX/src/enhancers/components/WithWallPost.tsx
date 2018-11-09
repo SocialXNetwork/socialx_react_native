@@ -1,7 +1,7 @@
 /*
-* TO DO:
-* 1. Link onReportProblem with backend to send notification to SocialX / send e-mail to SocialX
-*/
+ * TO DO:
+ * 1. Link onReportProblem with backend to send notification to SocialX / send e-mail to SocialX
+ */
 
 import * as React from 'react';
 
