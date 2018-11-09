@@ -11,8 +11,8 @@ interface INotificationsScreenViewProps extends ITranslatedProps {
 	refreshing: boolean;
 	onRefresh: () => void;
 	onSuperLikedPhotoPressed: (postId: string) => void;
-	onFriendRequestApprove: (friendshipId: string, userName: string) => void;
-	onFriendRequestDecline: (friendshipId: string, userName: string, notificationId: string) => void;
+	onFriendRequestApprove: (userName: string) => void;
+	onFriendRequestDecline: (userName: string, notificationId: string) => void;
 	onGroupRequestApprove: (notificationId: string) => void;
 	onGroupRequestDecline: (notificationId: string) => void;
 	onViewUserProfile: (userId: string) => void;

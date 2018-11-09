@@ -75,7 +75,6 @@ export interface IUploadFileInput {
 }
 
 export interface IFriendshipInput {
-	friendshipId: string;
 	username: string;
 }
 

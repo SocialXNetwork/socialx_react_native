@@ -32,16 +32,9 @@ class Screen extends React.Component<INotificationsScreenProps> {
 				refreshing={refreshing}
 				onRefresh={loadNotifications}
 				onSuperLikedPhotoPressed={this.superLikedPhotoPressedHandler}
-				onFriendRequestApprove={(friendshipId, username) =>
-					acceptFriendRequest({ friendshipId, username })
-				}
-				onFriendRequestDecline={(
-					friendshipId: string,
-					username: string,
-					notificationId: string,
-				) => {
-					declineFriendRequest({ friendshipId, username });
-					removeNotification(notificationId);
+				onFriendRequestApprove={(username) => acceptFriendRequest({ username })}
+				onFriendRequestDecline={(username: string) => {
+					declineFriendRequest({ username });
 				}}
 				onGroupRequestApprove={this.onGroupRequestApprovedHandler}
 				onGroupRequestDecline={this.onGroupRequestDeclinedHandler}

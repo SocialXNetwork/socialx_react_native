@@ -167,11 +167,8 @@ export class WithNotifications extends React.Component<
 															...mock.actions,
 															loadNotifications: notificationsProps.getNotifications,
 															acceptFriendRequest: (input) => profilesProps.acceptFriend(input),
-															declineFriendRequest: (input) => profilesProps.removeFriend(input),
-															removeNotification: (notificationId) =>
-																notificationsProps.removeNotification({
-																	notificationId,
-																}),
+															declineFriendRequest: (input) => profilesProps.rejectFriend(input),
+															removeNotification: (notificationId) => undefined,
 															setNavigationParams,
 															getText: i18nProps.getText,
 														},
