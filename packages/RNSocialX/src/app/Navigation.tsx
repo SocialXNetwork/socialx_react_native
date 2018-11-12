@@ -121,8 +121,8 @@ const MyProfileStackNavigator = createStackNavigator(
 
 const TabbedFeedNavigator = createMaterialTopTabNavigator(
 	{
-		Friends: FriendsUserFeed,
 		Global: GlobalUserFeed,
+		Friends: FriendsUserFeed,
 	},
 	{
 		animationEnabled: true,
