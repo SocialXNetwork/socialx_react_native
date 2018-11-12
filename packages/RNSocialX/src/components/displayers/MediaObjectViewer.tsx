@@ -54,49 +54,53 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	return (
 		<View>
 			{!mediaMimeType && <Text>{getText('message.media.not.supported')}</Text>}
-			{mediaMimeType && mediaMimeType.startsWith(MediaTypeImage.key) && (
-				<TouchableWithDoublePress
-					onSinglePress={onPress}
-					onDoublePress={onDoublePress}
-					disabled={!onPress}
-					style={customStyle}
-				>
-					{canZoom && (
-						<PhotoView
-							source={{ uri }}
-							style={styles.photoStyle}
-							minimumZoomScale={1}
-							maximumZoomScale={3}
-							androidScaleType="center"
-							showsHorizontalScrollIndicator={false}
-							showsVerticalScrollIndicator={false}
-							androidZoomTransitionDuration={200}
-						/>
-					)}
-					{!canZoom && (
-						<FastImage
-							source={{ uri }}
-							resizeMode={
-								resizeMode === 'contain' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover
-							}
-							style={styles.photoStyle}
-							// resizeMethod="resize"
-						/>
-					)}
-				</TouchableWithDoublePress>
-			)}
-			{mediaMimeType && mediaMimeType.startsWith(MediaTypeVideo.key) && (
-				<VideoPlayer
-					videoURL={uri}
-					onPressVideo={onPress}
-					containerStyle={customStyle}
-					muted={muted}
-					thumbOnly={thumbOnly}
-					resizeMode={resizeMode}
-					resizeToChangeAspectRatio={resizeToChangeAspectRatio}
-					paused={paused}
-				/>
-			)}
+			{mediaMimeType &&
+				mediaMimeType.startsWith(MediaTypeImage.key) && (
+					<TouchableWithDoublePress
+						onSinglePress={onPress}
+						onDoublePress={onDoublePress}
+						disabled={!onPress}
+						style={customStyle}
+					>
+						{canZoom && (
+							<PhotoView
+								source={{ uri }}
+								style={styles.photoStyle}
+								minimumZoomScale={1}
+								maximumZoomScale={3}
+								androidScaleType="center"
+								showsHorizontalScrollIndicator={false}
+								showsVerticalScrollIndicator={false}
+								androidZoomTransitionDuration={200}
+							/>
+						)}
+						{!canZoom && (
+							<FastImage
+								source={{ uri }}
+								resizeMode={
+									resizeMode === 'contain'
+										? FastImage.resizeMode.contain
+										: FastImage.resizeMode.cover
+								}
+								style={styles.photoStyle}
+								// resizeMethod="resize"
+							/>
+						)}
+					</TouchableWithDoublePress>
+				)}
+			{mediaMimeType &&
+				mediaMimeType.startsWith(MediaTypeVideo.key) && (
+					<VideoPlayer
+						videoURL={uri}
+						onPressVideo={onPress}
+						containerStyle={customStyle}
+						muted={muted}
+						thumbOnly={thumbOnly}
+						resizeMode={resizeMode}
+						resizeToChangeAspectRatio={resizeToChangeAspectRatio}
+						paused={paused}
+					/>
+				)}
 		</View>
 	);
 };

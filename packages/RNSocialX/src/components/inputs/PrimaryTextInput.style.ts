@@ -28,11 +28,9 @@ const style: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 		color: Colors.shuttleGray,
 		flex: 1,
-		maxHeight: '100%',
 	},
 	multilineTextInput: {
-		paddingBottom: Sizes.smartVerticalScale(7),
-		paddingTop: Sizes.smartVerticalScale(7),
+		paddingVertical: Sizes.smartVerticalScale(7),
 	},
 	textInputNormal: {
 		paddingVertical:
