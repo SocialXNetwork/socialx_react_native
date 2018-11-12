@@ -303,49 +303,42 @@ const Navigation = () => (
 									{({ activities }) => (
 										<WithOverlays>
 											{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
-												<WithI18n>
-													{(i18n) => (
-														<React.Fragment>
-															<TransparentOverlayModal
-																visible={globals.transparentOverlay.visible}
-																alpha={globals.transparentOverlay.alpha}
-																loader={globals.transparentOverlay.loader}
-															/>
-															<OfflineOverlayModal
-																visible={!!globals.offline}
-																getText={i18n.getText}
-															/>
-															<ActivityIndicatorModal
-																visible={globals.activity.visible}
-																title={globals.activity.title}
-																message={globals.activity.message}
-																getText={i18n.getText}
-															/>
-															<ConfirmationModal
-																title={confirmation && confirmation.title}
-																message={confirmation && confirmation.message}
-																confirmActive={!!confirmation}
-																confirmHandler={() => {
-																	if (confirmation) {
-																		confirmation.confirmHandler();
-																	}
-																	hideConfirmation();
-																}}
-																declineHandler={() => {
-																	if (confirmation && confirmation.cancelHandler) {
-																		confirmation.cancelHandler();
-																	}
-																	hideConfirmation();
-																}}
-															/>
-															<OptionsMenuModal
-																visible={!!optionsMenu}
-																items={(optionsMenu && optionsMenu.items) || []}
-																onBackdropPress={hideOptionsMenu}
-															/>
-														</React.Fragment>
-													)}
-												</WithI18n>
+												<React.Fragment>
+													<TransparentOverlayModal
+														visible={globals.transparentOverlay.visible}
+														alpha={globals.transparentOverlay.alpha}
+														loader={globals.transparentOverlay.loader}
+													/>
+													<OfflineOverlayModal visible={!!globals.offline} getText={getText} />
+													<ActivityIndicatorModal
+														visible={globals.activity.visible}
+														title={globals.activity.title}
+														message={globals.activity.message}
+														getText={getText}
+													/>
+													<ConfirmationModal
+														title={confirmation && confirmation.title}
+														message={confirmation && confirmation.message}
+														confirmActive={!!confirmation}
+														confirmHandler={() => {
+															if (confirmation) {
+																confirmation.confirmHandler();
+															}
+															hideConfirmation();
+														}}
+														declineHandler={() => {
+															if (confirmation && confirmation.cancelHandler) {
+																confirmation.cancelHandler();
+															}
+															hideConfirmation();
+														}}
+													/>
+													<OptionsMenuModal
+														visible={!!optionsMenu}
+														items={(optionsMenu && optionsMenu.items) || []}
+														onBackdropPress={hideOptionsMenu}
+													/>
+												</React.Fragment>
 											)}
 										</WithOverlays>
 									)}

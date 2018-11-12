@@ -53,8 +53,7 @@ interface IWallPostCardState {
 	inputIconPosition: Animated.Value;
 	viewOffensiveContent: boolean;
 	recentLikes: {
-		first: string | null;
-		second: string | null;
+		name: string | null;
 		total: number;
 	};
 	likePostFailed: boolean;
@@ -114,13 +113,9 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		inputIconPosition: new Animated.Value(100),
 		viewOffensiveContent: false,
 		recentLikes: {
-			first:
+			name:
 				this.props.post.likes.length > 0
 					? this.props.post.likes[this.props.post.likes.length - 1].userName
-					: null,
-			second:
-				this.props.post.likes.length > 1
-					? this.props.post.likes[this.props.post.likes.length - 2].userName
 					: null,
 			total: this.props.post.likes.length,
 		},
@@ -160,7 +155,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		} = this.props;
 
 		const {
-			postId,
 			postText,
 			location,
 			taggedFriends,
@@ -429,8 +423,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 				return {
 					likePostFailed: false,
 					recentLikes: {
-						second: currentState.recentLikes.first,
-						first: currentUserName,
+						name: currentUserName,
 						total: currentState.recentLikes.total + 1,
 					},
 				};
@@ -442,31 +435,19 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 						likePostFailed: false,
 						recentLikes: {
 							...currentState.recentLikes,
-							first: null,
+							name: null,
 							total: 0,
 						},
 					};
 				});
-			} else if (total === 2) {
+			} else if (total > 1) {
 				this.setState((currentState) => {
-					const { first, second } = currentState.recentLikes;
+					const { name } = currentState.recentLikes;
+
 					return {
 						likePostFailed: false,
 						recentLikes: {
-							first: first === currentUserName ? second : first,
-							second: null,
-							total: 1,
-						},
-					};
-				});
-			} else if (total > 2) {
-				this.setState((currentState) => {
-					const { first, second } = currentState.recentLikes;
-					return {
-						likePostFailed: false,
-						recentLikes: {
-							first: first === currentUserName ? second : first,
-							second: second === currentUserName ? likes[likes.length - 3].userName : second,
+							name: name === currentUserName ? likes[likes.length - 2].userName : name,
 							total: currentState.recentLikes.total - 1,
 						},
 					};
@@ -479,8 +460,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		if (this.state.likePostFailed) {
 			this.setState({
 				recentLikes: {
-					first: likes.length > 0 ? likes[likes.length - 1].userName : null,
-					second: likes.length > 1 ? likes[likes.length - 2].userName : null,
+					name: likes.length > 0 ? likes[likes.length - 1].userName : null,
 					total: likes.length,
 				},
 			});
@@ -497,8 +477,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 					heartAnimation: true,
 					likePostFailed: false,
 					recentLikes: {
-						second: currentState.recentLikes.first,
-						first: currentUserName,
+						name: currentUserName,
 						total: currentState.recentLikes.total + 1,
 					},
 				};

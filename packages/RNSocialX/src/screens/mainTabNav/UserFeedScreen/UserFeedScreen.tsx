@@ -112,7 +112,6 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		console.log(cardHeight, index);
 		if (!this.props.refreshingFeed && !this.props.loadingMorePosts && this.scrollRef.current) {
 			this.scrollRef.current.scrollToIndex({
 				animated: true,

@@ -31,26 +31,27 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 	onVideoEnterFullScreen,
 }) => (
 	<React.Fragment>
-		{playReady && !thumbOnly && (
-			<View style={styles.container}>
-				{showPlayButton && (
-					<TouchableOpacity onPress={onVideoPlayStart}>
-						<Icon name="md-play" style={styles.playIcon} />
+		{playReady &&
+			!thumbOnly && (
+				<View style={styles.container}>
+					{showPlayButton && (
+						<TouchableOpacity onPress={onVideoPlayStart}>
+							<Icon name="md-play" style={styles.playIcon} />
+						</TouchableOpacity>
+					)}
+					<TouchableOpacity style={styles.muteButton} onPress={onVideoMuteToggle}>
+						<Icon
+							name={muted ? 'ios-volume-off' : 'ios-volume-high'}
+							style={styles.smallControlIcon}
+						/>
 					</TouchableOpacity>
-				)}
-				<TouchableOpacity style={styles.muteButton} onPress={onVideoMuteToggle}>
-					<Icon
-						name={muted ? 'ios-volume-off' : 'ios-volume-high'}
-						style={styles.smallControlIcon}
-					/>
-				</TouchableOpacity>
-				{(resizeToChangeAspectRatio || Platform.OS === OS_TYPES.IOS) && (
-					<TouchableOpacity style={styles.resizeButton} onPress={onVideoEnterFullScreen}>
-						<Icon name="md-resize" style={styles.smallControlIcon} />
-					</TouchableOpacity>
-				)}
-			</View>
-		)}
+					{(resizeToChangeAspectRatio || Platform.OS === OS_TYPES.IOS) && (
+						<TouchableOpacity style={styles.resizeButton} onPress={onVideoEnterFullScreen}>
+							<Icon name="md-resize" style={styles.smallControlIcon} />
+						</TouchableOpacity>
+					)}
+				</View>
+			)}
 		{thumbOnly && (
 			<View style={styles.thumbOverlay}>
 				<Icon name="md-videocam" style={styles.thumbVideoIcon} />

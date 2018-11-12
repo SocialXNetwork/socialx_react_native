@@ -6,8 +6,7 @@ import styles from './RecentLikes.style';
 
 interface IRecentLikesProps extends ITranslatedProps {
 	recentLikes: {
-		first: string | null;
-		second: string | null;
+		name: string | null;
 		total: number;
 	};
 	onUserPress: (userId: string) => void;
@@ -18,27 +17,19 @@ export const RecentLikes: React.SFC<IRecentLikesProps> = ({
 	onUserPress,
 	getText,
 }) => {
-	if (recentLikes.first) {
+	if (recentLikes.name) {
 		return (
 			<View style={styles.recentLikesContainer}>
 				<Text style={styles.likedText}>
 					{getText('post.card.liked.by') + ' '}
-					<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.first!)}>
-						{recentLikes.first}
+					<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.name!)}>
+						{recentLikes.name}
 					</Text>
 				</Text>
-				{!!recentLikes.second && (
+				{recentLikes.total > 1 && (
 					<Text style={styles.likedText}>
 						{' ' + getText('text.and') + ' '}
-						<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.second!)}>
-							{recentLikes.second}
-						</Text>
-					</Text>
-				)}
-				{recentLikes.total > 2 && (
-					<Text style={styles.likedText}>
-						{' ' + getText('text.and') + ' '}
-						<Text style={styles.likeTextBold}>{recentLikes.total - 2 + ' others'}</Text>
+						<Text style={styles.likeTextBold}>{recentLikes.total - 1 + ' others'}</Text>
 					</Text>
 				)}
 			</View>

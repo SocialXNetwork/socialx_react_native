@@ -23,7 +23,7 @@ export const mapRequestsToNotifications = (
 		return {
 			notificationId: res.id,
 			userId: res.owner.alias,
-			type: NOTIFICATION_TYPES.FRIEND_REQUEST,
+			type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
 			fullName: res!.fullName,
 			userName: res.owner.alias,
 			avatar: url + res!.avatar,

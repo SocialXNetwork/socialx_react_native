@@ -37,8 +37,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 				// TODO: later remove isInitialValid + set initialValues to ''
 				isInitialValid={true}
 				initialValues={{
-					userName: 'jaakee',
-					password: 'password',
+					userName: '',
+					password: '',
 				}}
 				validate={({ userName, password }: ILoginScreenData) => {
 					const errors: FormikErrors<ILoginScreenData> = {};
@@ -79,9 +79,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 							onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
 							ref={usernameRef}
 						/>
-						{touched.userName && errors.userName && (
-							<Text style={style.errorText}>{errors.userName}</Text>
-						)}
+						{touched.userName &&
+							errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
 						<View style={style.passwordContainer}>
 							<PrimaryTextInput
 								icon="ios-lock"
@@ -99,9 +98,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 								focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('password')}
 								ref={passwordRef}
 							/>
-							{touched.password && errors.password && (
-								<Text style={style.errorText}>{errors.password}</Text>
-							)}
+							{touched.password &&
+								errors.password && <Text style={style.errorText}>{errors.password}</Text>}
 						</View>
 						<View style={style.authErrorContainer}>
 							{authErrors.map((error) => (
