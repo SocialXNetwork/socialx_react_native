@@ -294,7 +294,7 @@ const createFriendRequestResponse = (
 ) => {
 	const { owner, ownerPub, timestamp } = getContextMeta(context);
 	return new Promise((res, rej) =>
-		profileHandles.publicFriendResponseToFrom(context, owner, to).put(
+		profileHandles.publicFriendResponseToFrom(context, to, owner).put(
 			{
 				id: uuid,
 				fullName,
