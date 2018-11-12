@@ -11,8 +11,8 @@ import styles, { buttonWidth, colors } from './Notification.style';
 interface INotificationProps extends ITranslatedProps {
 	notification: INotificationData;
 	onViewUserProfile: (userId: string) => void;
-	onFriendRequestApprove: (friendshipId: string, userName: string) => void;
-	onFriendRequestDecline: (friendshipId: string, userName: string, notificationId: string) => void;
+	onFriendRequestApprove: (userName: string) => void;
+	onFriendRequestDecline: (userName: string) => void;
 	onGroupRequestApprove: (notificationId: string) => void;
 	onGroupRequestDecline: (notificationId: string) => void;
 }
@@ -35,7 +35,6 @@ export const Notification: React.SFC<INotificationProps> = ({
 		type,
 		timestamp,
 		groupName,
-		friendshipId,
 	} = notification;
 
 	let text = '';
@@ -87,7 +86,7 @@ export const Notification: React.SFC<INotificationProps> = ({
 								onPress={
 									groupName
 										? () => onGroupRequestApprove(notificationId)
-										: () => onFriendRequestApprove(friendshipId!, userName!)
+										: () => onFriendRequestApprove(userName!)
 								}
 							/>
 							<PrimaryButton
@@ -100,7 +99,7 @@ export const Notification: React.SFC<INotificationProps> = ({
 								onPress={
 									groupName
 										? () => onGroupRequestDecline(notificationId)
-										: () => onFriendRequestDecline(friendshipId!, userName!, notificationId)
+										: () => onFriendRequestDecline(userName!)
 								}
 							/>
 						</View>

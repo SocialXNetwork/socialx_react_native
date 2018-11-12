@@ -15,6 +15,18 @@ type INotificationsScreenProps = INavigationProps &
 	IWithNotificationsEnhancedActions;
 
 class Screen extends React.Component<INotificationsScreenProps> {
+	private willFocusScreen: any;
+
+	public componentDidMount() {
+		this.willFocusScreen = this.props.navigation.addListener('willFocus', (payload) => {
+			console.log('willFocus', payload);
+		});
+	}
+
+	public componentWillUnmount() {
+		this.willFocusScreen.remove();
+	}
+
 	public render() {
 		const {
 			notifications,

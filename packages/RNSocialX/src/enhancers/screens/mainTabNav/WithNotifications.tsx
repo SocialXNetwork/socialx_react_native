@@ -14,12 +14,13 @@ import {
 } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/notifications/Types';
+import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
-import { getActivity } from '../../helpers';
+import { getActivity, mapRequestsToNotifications } from '../../helpers';
 
 const mock: IWithNotificationsEnhancedProps = {
 	data: {
@@ -36,7 +37,6 @@ const mock: IWithNotificationsEnhancedProps = {
 			{
 				notificationId: '51asfa2',
 				userId: '981326537',
-				friendshipId: '2adsasdas',
 				type: NOTIFICATION_TYPES.FRIEND_REQUEST,
 				avatar:
 					'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
@@ -77,21 +77,11 @@ const mock: IWithNotificationsEnhancedProps = {
 		refreshing: false,
 	},
 	actions: {
-		loadNotifications: () => {
-			/**/
-		},
-		acceptFriendRequest: (input: IFriendshipInput) => {
-			/**/
-		},
-		declineFriendRequest: (input: IFriendshipInput) => {
-			/**/
-		},
-		removeNotification: (notificationId: string) => {
-			/** */
-		},
-		setNavigationParams: () => {
-			/**/
-		},
+		loadNotifications: () => undefined,
+		acceptFriendRequest: (input: IFriendshipInput) => undefined,
+		declineFriendRequest: (input: IFriendshipInput) => undefined,
+		removeNotification: (notificationId: string) => undefined,
+		setNavigationParams: () => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -127,62 +117,51 @@ export class WithNotifications extends React.Component<
 > {
 	render() {
 		return (
-			<WithI18n>
-				{(i18nProps) => (
-					<WithNavigationParams>
-						{({ setNavigationParams }) => (
-							<WithActivities>
-								{({ activities }) => (
-									<WithProfiles>
-										{(profilesProps) => (
-											<WithNotificationsData>
-												{({ getNotifications }) => {
-													return this.props.children({
-														data: {
-															...mock.data,
-															refreshing: getActivity(
-																activities,
-																ActionTypes.GET_CURRENT_NOTIFICATIONS,
-															),
-															// notifications: notificationsProps.notifications.map(
-															// 	(notification) => {
-															// 		const profile = profilesProps.profiles.find(
-															// 			(prof) =>
-															// 				prof.alias === notification.from.alias,
-															// 		);
-
-															// 		return {
-															// 			notificationId: notification.notificationId,
-															// 			userId: notification.from.alias,
-															// 			type: notification.type,
-															// 			fullName: profile!.fullName,
-															// 			userName: notification.from.alias,
-															// 			avatar: profile!.avatar,
-															// 			timestamp: new Date(notification.timestamp),
-															// 		};
-															// 	},
-															// ),
-														},
-														actions: {
-															...mock.actions,
-															loadNotifications: getNotifications,
-															acceptFriendRequest: (input) => profilesProps.acceptFriend(input),
-															declineFriendRequest: (input) => profilesProps.rejectFriend(input),
-															removeNotification: (notificationId) => undefined,
-															setNavigationParams,
-															getText: i18nProps.getText,
-														},
-													});
-												}}
-											</WithNotificationsData>
+			<WithConfig>
+				{({ appConfig }) => (
+					<WithI18n>
+						{({ getText }) => (
+							<WithNavigationParams>
+								{({ setNavigationParams }) => (
+									<WithActivities>
+										{({ activities }) => (
+											<WithProfiles>
+												{({ acceptFriend, rejectFriend }) => (
+													<WithNotificationsData>
+														{({ friendRequests, friendResponses, getNotifications }) => {
+															return this.props.children({
+																data: {
+																	refreshing: getActivity(
+																		activities,
+																		ActionTypes.GET_CURRENT_NOTIFICATIONS,
+																	),
+																	notifications: mapRequestsToNotifications(
+																		friendRequests,
+																		friendResponses,
+																		appConfig.ipfsConfig.ipfs_URL,
+																	),
+																},
+																actions: {
+																	loadNotifications: getNotifications,
+																	acceptFriendRequest: (input) => acceptFriend(input),
+																	declineFriendRequest: (input) => rejectFriend(input),
+																	removeNotification: (notificationId) => undefined,
+																	setNavigationParams,
+																	getText,
+																},
+															});
+														}}
+													</WithNotificationsData>
+												)}
+											</WithProfiles>
 										)}
-									</WithProfiles>
+									</WithActivities>
 								)}
-							</WithActivities>
+							</WithNavigationParams>
 						)}
-					</WithNavigationParams>
+					</WithI18n>
 				)}
-			</WithI18n>
+			</WithConfig>
 		);
 	}
 }

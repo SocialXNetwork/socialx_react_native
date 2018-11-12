@@ -588,8 +588,8 @@ export const likeComment = (likeCommentInput: ICommentIdInput): IThunk => async 
 	const { commentId } = likeCommentInput;
 
 	const storeState = getState();
-	const parentPost = storeState.data.posts.posts.find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
+	const parentPost = storeState.data.posts.posts.find(
+		(post) => (post.comments.find((comment) => comment.commentId === commentId) ? true : false),
 	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -634,8 +634,8 @@ export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk =
 	const { commentId } = removeCommentInput;
 
 	const storeState = getState();
-	const parentPost = [...storeState.data.posts.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
+	const parentPost = [...storeState.data.posts.posts].find(
+		(post) => (post.comments.find((comment) => comment.commentId === commentId) ? true : false),
 	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -680,8 +680,8 @@ export const unlikeComment = (unlikeCommentInput: IUnlikeCommentInput): IThunk =
 	const { commentId } = unlikeCommentInput;
 
 	const storeState = getState();
-	const parentPost = [...storeState.data.posts.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
+	const parentPost = [...storeState.data.posts.posts].find(
+		(post) => (post.comments.find((comment) => comment.commentId === commentId) ? true : false),
 	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {

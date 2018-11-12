@@ -87,7 +87,6 @@ export interface INotificationData {
 	userName?: string;
 	timestamp?: Date;
 	groupName?: string;
-	friendshipId?: string;
 }
 
 export interface IOptionsMenuItem {

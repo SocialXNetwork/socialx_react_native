@@ -186,7 +186,7 @@ export class PrimaryTextInput extends React.Component<
 			style.textInput,
 			style['textInput' + size],
 			...(isMultiLine ? [style.multilineTextInput] : []),
-			{ height: isMultiLine && 'auto' },
+			isMultiLine && { height: 'auto' },
 		] as any;
 
 		return (
