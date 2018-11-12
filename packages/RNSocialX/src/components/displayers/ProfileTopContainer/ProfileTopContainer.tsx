@@ -1,6 +1,7 @@
 /**
  * TODO list:
  * 1. handle onSendMessage prop
+ * 2. implement onSendMessage handler
  */
 
 import * as React from 'react';
@@ -94,19 +95,21 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 						onPress={relationshipButtonHandler}
 					/>
 				)}
-				<PrimaryButton
-					width={buttonWidth}
-					label={
-						isCurrentUser
-							? getText('profile.top.container.button.edit.profile')
-							: getText('profile.top.container.button.send.message')
-					}
-					size={ButtonSizes.Small}
-					borderColor={colors.pink}
-					textColor={colors.pink}
-					containerStyle={styles.ghostButton}
-					onPress={isCurrentUser ? onEditProfile : onSendMessage}
-				/>
+				{isCurrentUser && (
+					<PrimaryButton
+						width={buttonWidth}
+						label={
+							isCurrentUser
+								? getText('profile.top.container.button.edit.profile')
+								: getText('profile.top.container.button.send.message')
+						}
+						size={ButtonSizes.Small}
+						borderColor={colors.pink}
+						textColor={colors.pink}
+						containerStyle={styles.ghostButton}
+						onPress={isCurrentUser ? onEditProfile : onSendMessage}
+					/>
+				)}
 			</View>
 			{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
 		</View>
