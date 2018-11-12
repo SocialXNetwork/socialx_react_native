@@ -236,13 +236,38 @@ const removeFriendResponse = (context: IContext, username: string) => {
 };
 
 /**
+ * remove the friend response from the current users public record
+ * @param
+ */
+const getCurrentUserProfile = (context: IContext) => {
+	const { account } = context;
+	return new Promise((res, rej) =>
+		account.path(`profile.${account.is.alias}`).open(
+			(profile) => {
+				res(profile);
+			},
+			{ off: 1, wait: 400 },
+		),
+	);
+};
+
+/**
  * get the public record of friend requests to the user from the current user and put the friend request data
  */
-const createFriendRequestNotification = (context: IContext, username: string) => {
+const createFriendRequestNotification = (
+	context: IContext,
+	username: string,
+	uuid: string,
+	fullName: string,
+	avatar: string,
+) => {
 	const { owner, ownerPub, timestamp } = getContextMeta(context);
 	return new Promise((res, rej) =>
 		profileHandles.publicCurrentFriendRequestToUsername(context, username).put(
 			{
+				id: uuid,
+				fullName,
+				avatar,
 				owner: {
 					alias: owner,
 					pub: ownerPub,
@@ -259,11 +284,21 @@ const createFriendRequestNotification = (context: IContext, username: string) =>
 	);
 };
 
-const createFriendRequestResponse = (context: IContext, to: string, response: FriendResponses) => {
+const createFriendRequestResponse = (
+	context: IContext,
+	to: string,
+	response: FriendResponses,
+	uuid: string,
+	fullName: string,
+	avatar: string,
+) => {
 	const { owner, ownerPub, timestamp } = getContextMeta(context);
 	return new Promise((res, rej) =>
 		profileHandles.publicFriendResponseToFrom(context, owner, to).put(
 			{
+				id: uuid,
+				fullName,
+				avatar,
 				owner: {
 					alias: owner,
 					pub: ownerPub,
@@ -322,7 +357,14 @@ export const addFriend = async (
 		await getTargetedUserAndCreateRequest(context, username);
 		preLoadFriendRequests(context.gun, async () => {
 			await createFriendPrivateRecord(context, username);
-			await createFriendRequestNotification(context, username);
+			const profile: any = await getCurrentUserProfile(context);
+			await createFriendRequestNotification(
+				context,
+				username,
+				uuidv4(),
+				profile.fullName,
+				profile.avatar,
+			);
 			callback(null);
 		});
 	} catch (e) {
@@ -376,7 +418,15 @@ export const acceptFriend = async (
 		}
 		await checkIfProfileExists(context, username);
 		await removePendingAndProceed(context, username);
-		await createFriendRequestResponse(context, username, FriendResponses.Accepted);
+		const profile: any = await getCurrentUserProfile(context);
+		await createFriendRequestResponse(
+			context,
+			username,
+			FriendResponses.Accepted,
+			uuidv4(),
+			profile.fullName,
+			profile.avatar,
+		);
 		await createFriendPrivateRecord(context, username);
 		callback(null);
 	} catch (e) {
@@ -408,7 +458,15 @@ export const rejectFriend = async (
 		}
 		await checkIfProfileExists(context, username);
 		await removePendingAndProceed(context, username);
-		await createFriendRequestResponse(context, username, FriendResponses.Rejected);
+		const profile: any = await getCurrentUserProfile(context);
+		await createFriendRequestResponse(
+			context,
+			username,
+			FriendResponses.Rejected,
+			uuidv4(),
+			profile.fullName,
+			profile.avatar,
+		);
 		callback(null);
 	} catch (e) {
 		callback(e);

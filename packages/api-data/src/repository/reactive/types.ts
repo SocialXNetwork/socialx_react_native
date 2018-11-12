@@ -18,6 +18,9 @@ export interface INotificationHookArgs {
 // data stuff
 
 export interface IFriendRequest {
+	id: string;
+	fullName: string;
+	avatar: string;
 	owner: {
 		alias: string;
 		pub: string;
@@ -30,6 +33,9 @@ export interface IFriendRequests {
 }
 
 export interface IFriendResponse {
+	id: string;
+	fullName: string;
+	avatar: string;
 	owner: {
 		alias: string;
 		pub: string;
