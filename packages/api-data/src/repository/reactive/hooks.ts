@@ -20,7 +20,11 @@ export const hookNotifications = (
 		case NotificationType.FriendRequests: {
 			currentFriendRequests(context).open(
 				(friendRequests: IFriendRequests) => {
-					callback(null, convertGunSetToArray(friendRequests));
+					if (Object.keys(friendRequests).length === 0) {
+						callback(null);
+					} else {
+						callback(null, convertGunSetToArray(friendRequests));
+					}
 				},
 				{ wait: 200 },
 			);
@@ -30,7 +34,11 @@ export const hookNotifications = (
 		case NotificationType.FriendRequestResponses: {
 			currentFriendReqResponse(context).open(
 				(friendResponses: IFriendResponses) => {
-					callback(null, convertGunSetToArray(friendResponses));
+					if (Object.keys(friendResponses).length === 0) {
+						callback(null);
+					} else {
+						callback(null, convertGunSetToArray(friendResponses));
+					}
 				},
 				{ wait: 200 },
 			);
