@@ -80,6 +80,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.REJECT_FRIEND: {
+			return state;
+		}
+
+		case ActionTypes.CLEAR_FRIEND_RESPONSE: {
+			return state;
+		}
+
 		case 'RESET_STORE': {
 			return initialState;
 		}

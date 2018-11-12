@@ -6,11 +6,11 @@ import setters from './setters';
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendResponseInput,
 	ICreateProfileInput,
 	IFindFriendsSuggestionsInput,
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
-	IProfileCallbackData,
 	IProfileData,
 	IRejectFriendInput,
 	IRemoveFriendInput,
@@ -222,7 +222,28 @@ export default (context: IContext) => ({
 		return new Promise<null>((resolve, reject) => {
 			setters.rejectFriend(
 				context,
-				validatedInput as IAcceptFriendInput,
+				validatedInput as IRejectFriendInput,
+				resolveCallback(resolve, reject),
+			);
+		});
+	},
+	clearFriendResponse: async (clearResponseInput: IClearFriendResponseInput) => {
+		let validatedInput: any;
+		try {
+			// same check
+			validatedInput = await schemas.acceptFriend.validate(clearResponseInput, {
+				stripUnknown: true,
+			});
+		} catch (e) {
+			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
+				validationInput: clearResponseInput,
+			});
+		}
+
+		return new Promise<null>((resolve, reject) => {
+			setters.clearFriendResponse(
+				context,
+				validatedInput as IClearFriendResponseInput,
 				resolveCallback(resolve, reject),
 			);
 		});

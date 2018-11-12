@@ -72,6 +72,10 @@ export interface IAcceptFriendInput {
 	username: string;
 }
 
+export interface IClearFriendResponseInput {
+	username: string;
+}
+
 export enum FRIEND_TYPES {
 	PENDING = 'pending',
 	MUTUAL = 'mutual',

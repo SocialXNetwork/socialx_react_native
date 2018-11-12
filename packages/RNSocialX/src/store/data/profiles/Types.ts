@@ -1,6 +1,7 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendResponseInput,
 	IPostArrayData,
 	IProfileData,
 	IRejectFriendInput,
@@ -36,6 +37,7 @@ export const enum ActionTypes {
 	REMOVE_FRIEND = 'app/data/profiles/REMOVE_FRIEND',
 	ACCEPT_FRIEND = 'app/data/profiles/ACCEPT_FRIEND',
 	REJECT_FRIEND = 'app/data/profiles/REJECT_FRIEND',
+	CLEAR_FRIEND_RESPONSE = 'app/data/profiles/CLEAR_FRIEND_RESPONSE',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -102,6 +104,11 @@ export interface IRejectFriendAction extends Action {
 	payload: IRejectFriendInput;
 }
 
+export interface IClearFriendResponseAction extends Action {
+	type: ActionTypes.CLEAR_FRIEND_RESPONSE;
+	payload: IClearFriendResponseInput;
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
@@ -119,4 +126,5 @@ export type IAction =
 	| IGetProfilesByPostsAction
 	| ISyncGetProfilesByPostsAction
 	| IAcceptFriendAction
-	| IRejectFriendAction;
+	| IRejectFriendAction
+	| IClearFriendResponseAction;

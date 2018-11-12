@@ -101,3 +101,10 @@ export const publicCurrentFriendResponseTo = (context: IContext, to: string) => 
 		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${to}.${account.is.alias}`,
 	);
 };
+
+export const publicCurrentFriendResponseFrom = (context: IContext, from: string) => {
+	const { gun, account } = context;
+	return gun.path(
+		`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS_RESPONSE}.${account.is.alias}.${from}`,
+	);
+};

@@ -1,13 +1,14 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendResponseInput,
 	IPostArrayData,
 	IProfileData,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
-import { ActionCreator } from 'redux';
+import { Action, ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
@@ -18,6 +19,7 @@ import {
 	ActionTypes,
 	IAcceptFriendAction,
 	IAddFriendAction,
+	IClearFriendResponseAction,
 	IGetCurrentProfileAction,
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
@@ -475,11 +477,48 @@ export const rejectFriend = (rejectFriendInput: IRejectFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.rejectFriend(rejectFriendInput);
-			await dispatch(getCurrentAccount());
 		} catch (e) {
 			await dispatch(
 				setError({
 					type: ActionTypes.ACCEPT_FRIEND,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			await dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
+
+const clearFriendResponseAction: ActionCreator<IClearFriendResponseAction> = (
+	clearFriendResponseInput: IClearFriendResponseInput,
+) => ({
+	type: ActionTypes.CLEAR_FRIEND_RESPONSE,
+	payload: clearFriendResponseInput,
+});
+
+export const clearFriendResponse = (
+	clearFriendResponseInput: IClearFriendResponseInput,
+): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.auth.database.gun;
+	if (auth && auth.alias) {
+		try {
+			dispatch(clearFriendResponseAction(clearFriendResponseInput));
+			await dispatch(
+				beginActivity({
+					type: ActionTypes.CLEAR_FRIEND_RESPONSE,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.clearFriendResponse(clearFriendResponseInput);
+		} catch (e) {
+			await dispatch(
+				setError({
+					type: ActionTypes.CLEAR_FRIEND_RESPONSE,
 					error: e.message,
 					uuid: uuidv4(),
 				}),
