@@ -17,8 +17,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_CURRENT_NOTIFICATIONS: {
-			const notifications = action.payload;
-			// return { ...state, notifications };
 			return state;
 		}
 
@@ -32,11 +30,11 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...requests.filter((oldRequest) => oldRequest.owner !== newRequest.owner),
 					newRequest,
 				],
-				[...state.friend_requests],
+				[...state.friendRequests],
 			);
 			return {
 				...state,
-				friend_requests: updatedRequests,
+				friendRequests: updatedRequests,
 			};
 		}
 
@@ -46,11 +44,11 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...responses.filter((oldResponse) => oldResponse.owner !== newResponse.owner),
 					newResponse,
 				],
-				[...state.friend_responses],
+				[...state.friendResponses],
 			);
 			return {
 				...state,
-				friend_responses: updatedResponses,
+				friendResponses: updatedResponses,
 			};
 		}
 

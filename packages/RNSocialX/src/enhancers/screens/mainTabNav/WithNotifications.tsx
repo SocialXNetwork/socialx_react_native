@@ -136,7 +136,7 @@ export class WithNotifications extends React.Component<
 									<WithProfiles>
 										{(profilesProps) => (
 											<WithNotificationsData>
-												{(notificationsProps) => {
+												{({ getNotifications }) => {
 													return this.props.children({
 														data: {
 															...mock.data,
@@ -165,7 +165,7 @@ export class WithNotifications extends React.Component<
 														},
 														actions: {
 															...mock.actions,
-															loadNotifications: notificationsProps.getNotifications,
+															loadNotifications: getNotifications,
 															acceptFriendRequest: (input) => profilesProps.acceptFriend(input),
 															declineFriendRequest: (input) => profilesProps.rejectFriend(input),
 															removeNotification: (notificationId) => undefined,

@@ -10,8 +10,8 @@ import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
-	friend_requests: IFriendRequest[];
-	friend_responses: IFriendResponse[];
+	friendRequests: IFriendRequest[];
+	friendResponses: IFriendResponse[];
 }>;
 
 export const enum ActionTypes {

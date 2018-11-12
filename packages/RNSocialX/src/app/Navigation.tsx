@@ -277,7 +277,7 @@ const AppNavigation = createStackNavigator(
 
 const Navigation = () => (
 	<WithNotifications>
-		{({ friend_requests, friend_responses }) => (
+		{({ friendRequests, friendResponses }) => (
 			<WithI18n>
 				{({ getText }) => (
 					<Root>
@@ -287,10 +287,10 @@ const Navigation = () => (
 									{({ showOptionsMenu }) => (
 										<AppNavigation
 											screenProps={{
-												notifications: friend_requests.length + friend_responses.length,
-												getText,
-												setNavigationParams,
+												notifications: friendRequests.length + friendResponses.length,
 												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
+												setNavigationParams,
+												getText,
 											}}
 										/>
 									)}

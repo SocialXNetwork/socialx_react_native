@@ -12,8 +12,8 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	friend_requests: IFriendRequest[];
-	friend_responses: IFriendResponse[];
+	friendRequests: IFriendRequest[];
+	friendResponses: IFriendResponse[];
 }
 
 interface IActionProps {
@@ -35,18 +35,18 @@ class Enhancer extends React.Component<IProps & IChildren> {
 }
 
 const selectFriendRequests = createSelector(
-	(state: IApplicationState) => state.data.notifications.friend_requests,
+	(state: IApplicationState) => state.data.notifications.friendRequests,
 	(friendRequests) => friendRequests,
 );
 
 const selectFriendResponses = createSelector(
-	(state: IApplicationState) => state.data.notifications.friend_responses,
+	(state: IApplicationState) => state.data.notifications.friendResponses,
 	(friendResponses) => friendResponses,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	friend_requests: selectFriendRequests(state),
-	friend_responses: selectFriendResponses(state),
+	friendRequests: selectFriendRequests(state),
+	friendResponses: selectFriendResponses(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
