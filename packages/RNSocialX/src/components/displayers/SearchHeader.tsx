@@ -48,12 +48,11 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 		return (
 			<SafeAreaView style={styles.container}>
 				<View style={styles.headerContainer}>
-					{this.props.cancel &&
-						Platform.OS === OS_TYPES.Android && (
-							<TouchableOpacity onPress={this.onBackHandler}>
-								<Icon name="md-arrow-back" style={styles.backIcon} />
-							</TouchableOpacity>
-						)}
+					{this.props.cancel && Platform.OS === OS_TYPES.Android && (
+						<TouchableOpacity onPress={this.onBackHandler}>
+							<Icon name="md-arrow-back" style={styles.backIcon} />
+						</TouchableOpacity>
+					)}
 					<View style={{ flex: 1 }}>
 						<PrimaryTextInput
 							ref={this.inputRef}

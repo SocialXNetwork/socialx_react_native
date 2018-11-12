@@ -95,11 +95,11 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	private onShowOptionsMenuHandler = () => {
 		const { showOptionsMenu, logout, setGlobal, navigation, getText } = this.props;
 		const menuItems = [
-			{
-				label: getText('my.profile.screen.menu.profile.analytics'),
-				icon: 'ios-analytics',
-				actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
-			},
+			// {
+			// 	label: getText('my.profile.screen.menu.profile.analytics'),
+			// 	icon: 'ios-analytics',
+			// 	actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
+			// },
 			{
 				label: getText('my.profile.screen.menu.wallet'),
 				icon: 'ios-wallet',
