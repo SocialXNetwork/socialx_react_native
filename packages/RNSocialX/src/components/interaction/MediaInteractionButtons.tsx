@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { IMediaProps, ITranslatedProps } from '../../types';
-import { IconButton } from './IconButton';
 import { LikeAnimatingButton } from './LikeAnimatingButton';
 
 import styles from './MediaInteractionButtons.style';
@@ -34,37 +34,27 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 
 	return (
 		<React.Fragment>
-			{hasLikesOrComments && (
-				<View style={styles.mediaInfoSection}>
-					{numberOfLikes > 0 && (
-						<Text style={styles.infoText}>
-							{getText('media.viewer.screen.likes')} {numberOfLikes}
-						</Text>
-					)}
-					<View style={{ flex: 1 }} />
-					{numberOfComments > 0 && (
-						<Text style={styles.infoText}>
-							{getText('media.viewer.screen.comments')} {numberOfComments}
-						</Text>
-					)}
-				</View>
-			)}
 			{canReact && (
 				<View style={styles.actionButtons}>
-					<LikeAnimatingButton
-						likedByCurrentUser={likedByCurrentUser}
-						secondary={true}
-						disabled={likeDisabled}
-						onLikePost={onLikePress}
-					/>
-					<IconButton
-						label={getText('media.viewer.screen.comment.button')}
-						onPress={onCommentPress}
-						iconSource="comment-o"
-						iconType="fa"
-						iconStyle={styles.iconStyle}
-						textStyle={styles.textStyle}
-					/>
+					<View style={styles.likesContainer}>
+						<LikeAnimatingButton
+							likedByCurrentUser={likedByCurrentUser}
+							secondary={true}
+							disabled={likeDisabled}
+							onLikePost={onLikePress}
+						/>
+						{hasLikesOrComments && numberOfLikes > 0 && (
+							<Text style={styles.infoText}>{numberOfLikes}</Text>
+						)}
+					</View>
+					<TouchableOpacity style={styles.commentsContainer} onPress={onCommentPress}>
+						<View style={styles.commentsIconContainer}>
+							<Icon name="comment-o" style={styles.iconStyle} />
+						</View>
+						{hasLikesOrComments && numberOfComments > 0 && (
+							<Text style={styles.infoText}>{numberOfComments}</Text>
+						)}
+					</TouchableOpacity>
 				</View>
 			)}
 		</React.Fragment>

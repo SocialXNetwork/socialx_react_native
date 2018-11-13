@@ -38,14 +38,13 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 	<View style={styles.container}>
 		{searching && <SearchingLoader getText={getText} />}
 		{!searching && searchResults.length === 0 && <SearchNoResults getText={getText} />}
-		{!searching &&
-			searchResults.length > 0 && (
-				<SearchResultsList
-					searchResults={searchResults}
-					onResultPress={onResultPress}
-					onLoadMore={onLoadMore}
-					hasMore={hasMore}
-				/>
-			)}
+		{!searching && searchResults.length > 0 && (
+			<SearchResultsList
+				searchResults={searchResults}
+				onResultPress={onResultPress}
+				onLoadMore={onLoadMore}
+				hasMore={hasMore}
+			/>
+		)}
 	</View>
 );
