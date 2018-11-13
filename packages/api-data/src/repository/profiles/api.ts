@@ -16,10 +16,11 @@ import {
 	IRemoveFriendInput,
 	ISearchProfilesByFullNameInput,
 	IUpdateProfileInput,
+	IUserObject,
 } from './types';
 
 import { ValidationError } from '../../utils/errors';
-import { getRelatedUsernamesFromPosts, resolveCallback, unique } from '../../utils/helpers';
+import { getRelatedUserObjectsFromPosts, resolveCallback, unique } from '../../utils/helpers';
 import { IPostArrayData } from '../posts/types';
 
 export default (context: IContext) => ({
@@ -63,7 +64,17 @@ export default (context: IContext) => ({
 		const { usernames } = getProfilesByUsernamesInput;
 		return Promise.all(usernames.map((username) => this.getProfileByUsername({ username })));
 	},
-	//
+	async getProfileByUserObject(userObject: IUserObject): Promise<IProfileData> {
+		return new Promise<IProfileData>((res, rej) => {
+			getters.getProfileByUserObject(context, userObject, resolveCallback(res, rej));
+		});
+	},
+	async getProfilesByUserObjects(userObjects: IUserObject[]): Promise<IProfileData[]> {
+		const uniqueUsers = userObjects.filter(
+			(v, i, self) => i === self.findIndex((o) => o.alias === v.alias && o.pub === v.pub),
+		);
+		return Promise.all(uniqueUsers.map((userOb) => this.getProfileByUserObject(userOb)));
+	},
 	async getUserProfilesByPosts({ posts }: { posts: IPostArrayData }): Promise<IProfileData[]> {
 		// TODO: finish
 		// let validatedInput: any;
@@ -80,8 +91,13 @@ export default (context: IContext) => ({
 		// 		{ validationInput: createProfileInput },
 		// 	);
 		// }
-		const usernames = unique(getRelatedUsernamesFromPosts(posts) || []).filter((v) => v.length);
-		return this.getProfilesByUsernames({ usernames });
+		// const usernames = unique(getRelatedUsernamesFromPosts(posts) || []).filter((v) => v.length);
+		// return this.getProfilesByUsernames({ usernames });
+		const userObjects: IUserObject[] = (getRelatedUserObjectsFromPosts(posts) || []).filter(
+			(v: object) => !!Object.keys(v).length,
+		);
+		return this.getProfilesByUserObjects(userObjects);
+		//
 	},
 	async getProfileByUsername(getProfileByUsernameInput: {
 		username: string;

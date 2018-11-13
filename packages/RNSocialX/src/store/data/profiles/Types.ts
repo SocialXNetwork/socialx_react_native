@@ -13,6 +13,9 @@ import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
 	profiles: IProfileData[];
+	friends: {
+		[username: string]: IProfileData[];
+	};
 }>;
 
 export interface IUsernameInput {
@@ -32,6 +35,8 @@ export const enum ActionTypes {
 	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
 	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
 	SYNC_GET_PROFILES_BY_POSTS = 'app/data/profiles/SYNC_GET_PROFILES_BY_POSTS',
+	GET_CURRENT_FRIENDS = 'app/data/profiles/GET_CURRENT_FRIENDS',
+	SYNC_GET_CURRENT_FRIENDS = 'app/data/profiles/SYNC_GET_CURRENT_FRIENDS',
 	UPDATE_PROFILE = 'app/data/profiles/UPDATE_PROFILE',
 	ADD_FRIEND = 'app/data/profiles/ADD_FRIEND',
 	REMOVE_FRIEND = 'app/data/profiles/REMOVE_FRIEND',
@@ -79,6 +84,15 @@ export interface ISyncGetCurrentProfileAction extends Action {
 	payload: IProfileData;
 }
 
+export interface IGetCurrentFriendsAction extends Action {
+	type: ActionTypes.GET_CURRENT_FRIENDS;
+}
+
+export interface ISyncGetCurrentFriendsAction extends Action {
+	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS;
+	payload: { username: string; friends: IProfileData[] };
+}
+
 export interface IUpdateProfileAction extends Action {
 	type: ActionTypes.UPDATE_PROFILE;
 	payload: IUpdateProfileInput;
@@ -120,6 +134,8 @@ export type IAction =
 	| ISyncGetProfilesByUsernamesAction
 	| IGetCurrentProfileAction
 	| ISyncGetCurrentProfileAction
+	| IGetCurrentFriendsAction
+	| ISyncGetCurrentFriendsAction
 	| IUpdateProfileAction
 	| IAddFriendAction
 	| IRemoveFriendAction

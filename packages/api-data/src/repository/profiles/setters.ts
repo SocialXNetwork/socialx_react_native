@@ -28,6 +28,8 @@ const preLoadFriendRequests = (gun: IGunInstance, cb: any) => {
 	});
 };
 
+// TODO: clean this up
+
 export const createProfile = (
 	context: IContext,
 	createProfileInput: ICreateProfileInput,
@@ -140,6 +142,22 @@ const checkIfFriendRequestExists = (context: IContext, to: string, from: string)
 };
 
 /**
+ * check if the current user is already friends with the targeted user
+ */
+const checkIfAlreadyFriends = (context: IContext, username: string) => {
+	return new Promise((res, rej) =>
+		profileHandles
+			.currentProfileFriendByUsername(context, username)
+			.once((currentTargetedFriend: any) => {
+				if (currentTargetedFriend) {
+					res(true);
+				}
+				res(false);
+			}),
+	);
+};
+
+/**
  * check if the current user has this specific friend response
  */
 const checkIfFriendResponseExists = (context: IContext, from: string) => {
@@ -177,16 +195,18 @@ const getTargetedUserAndCreateRequest = (context: IContext, username: string) =>
  * @param
  */
 const createFriendPrivateRecord = (context: IContext, username: string) => {
-	return new Promise((res, rej) =>
+	return new Promise((res, rej) => {
+		const { gun } = context;
+		const ref = gun.get(TABLES.PROFILES).get(username);
 		profileHandles
 			.currentProfileFriendByUsername(context, username)
-			.put(profileHandles.publicProfileByUsername(context, username), (friendCreationCallback) => {
+			.put(ref, (friendCreationCallback) => {
 				if (friendCreationCallback.err) {
 					rej(new ApiError(`something went wrong on creating the friend!`));
 				}
 				res();
-			}),
-	);
+			});
+	});
 };
 
 /**
@@ -194,12 +214,14 @@ const createFriendPrivateRecord = (context: IContext, username: string) => {
  */
 const removeFriendFromPrivateRecord = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
-		profileHandles.currentProfileFriendsRecord(context).erase(username, (removeFriendCallback) => {
-			if (removeFriendCallback.err) {
-				rej(new ApiError(`something went wrong on deleting the friend`));
-			}
-			res();
-		}),
+		profileHandles
+			.currentProfileFriendsRecord(context)
+			.put({ [username]: null }, (removeFriendCallback) => {
+				if (removeFriendCallback.err) {
+					rej(new ApiError(`something went wrong on deleting the friend`));
+				}
+				res();
+			}),
 	);
 };
 
@@ -209,12 +231,14 @@ const removeFriendFromPrivateRecord = (context: IContext, username: string) => {
  */
 const removePendingAndProceed = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
-		profileHandles.publicCurrentFriendRequests(context).erase(username, (removePendingCallback) => {
-			if (removePendingCallback.err) {
-				rej(new ApiError(`cannot remove pending friend request`));
-			}
-			res();
-		}),
+		profileHandles
+			.publicCurrentFriendRequests(context)
+			.put({ [username]: null }, (removePendingCallback) => {
+				if (removePendingCallback.err) {
+					rej(new ApiError(`cannot remove pending friend request`));
+				}
+				res();
+			}),
 	);
 };
 
@@ -354,6 +378,10 @@ export const addFriend = async (
 		if (friendRequestExists) {
 			return callback(new ApiError('friend request already exists'));
 		}
+		const alreadyFriends = await checkIfAlreadyFriends(context, username);
+		if (alreadyFriends) {
+			return callback(new ApiError('friend already exists'));
+		}
 		await getTargetedUserAndCreateRequest(context, username);
 		preLoadFriendRequests(context.gun, async () => {
 			await createFriendPrivateRecord(context, username);
@@ -386,7 +414,13 @@ export const removeFriend = async (
 		);
 	}
 	try {
-		await checkIfProfileExists(context, username);
+		if (account.is.alias === username) {
+			return callback(new ApiError('wut?'));
+		}
+		const alreadyFriends = await checkIfAlreadyFriends(context, username);
+		if (!alreadyFriends) {
+			return callback(new ApiError('cannot remove a friend that doesnt exist on the record'));
+		}
 		await removeFriendFromPrivateRecord(context, username);
 		callback(null);
 	} catch (e) {

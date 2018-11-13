@@ -10,6 +10,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
 			return {
+				...state,
 				profiles: [
 					...state.profiles.filter((profile) => profile.alias !== action.payload.alias),
 					action.payload,
@@ -30,6 +31,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 				[...state.profiles],
 			);
 			return {
+				...state,
 				profiles: finalProfiles,
 			};
 		}
@@ -40,6 +42,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_GET_PROFILE_BY_USERNAME: {
 			return {
+				...state,
 				profiles: [
 					...state.profiles.filter((profile) => profile.alias !== action.payload.alias),
 					action.payload,
@@ -60,7 +63,32 @@ export default (state: IState = initialState, action: IAction): IState => {
 				[...state.profiles],
 			);
 			return {
+				...state,
 				profiles: finalProfiles,
+			};
+		}
+
+		case ActionTypes.GET_CURRENT_FRIENDS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_GET_CURRENT_FRIENDS: {
+			const friends = action.payload.friends;
+			const username = action.payload.username;
+			const oldFriends = state.friends[username] || [];
+			const finalFriends = friends.reduce(
+				(updatedFriends, newFriend) => [
+					...updatedFriends.filter((friend) => friend.alias !== newFriend.alias),
+					newFriend,
+				],
+				[...oldFriends],
+			);
+			return {
+				...state,
+				friends: {
+					...state.friends,
+					[username]: finalFriends,
+				},
 			};
 		}
 

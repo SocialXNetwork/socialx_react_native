@@ -58,8 +58,30 @@ const flatten: any = (arr: any[] = []) =>
 		[],
 	);
 
-const getAliasFromLike = (like: any) => (like.owner ? like.owner.alias : '');
-const getAliasFromComment = (cmnt: any) => (cmnt.owner ? cmnt.owner.alias : '');
+// const getAliasFromLike = (like: any) => (like.owner ? like.owner.alias : '');
+// const getAliasFromComment = (cmnt: any) => (cmnt.owner ? cmnt.owner.alias : '');
+// const getLikesFromComment = (cmnt: any) => (cmnt.likes ? cmnt.likes.map(getAliasFromLike) : []);
+// const getUsersFromCommentLikes = (cmnts: any) => (cmnts ? cmnts.map(getLikesFromComment) : []);
+// const getUsersThatLiked = (likes: any) => (likes.length ? likes.map(getAliasFromLike) : []);
+// const getUsersThatCommented = (comments: any) =>
+// 	comments.length ? comments.map(getAliasFromComment) : [];
+// const getUserOwner = (owner: any) => owner.alias;
+
+// const getRelatedUsernamesFromPost = (post: any) => {
+// 	return [
+// 		...getUsersThatLiked(post.likes || []),
+// 		...getUsersThatCommented(post.comments || []),
+// 		...getUsersFromCommentLikes(post.comments || []),
+// 		getUserOwner(post.owner),
+// 	].filter((v) => v);
+// };
+
+// export const getRelatedUsernamesFromPosts = (posts: object[] = []) => {
+// 	return flatten(posts.map(getRelatedUsernamesFromPost));
+// };
+
+const getAliasFromLike = (like: any) => (like.owner ? like.owner : null);
+const getAliasFromComment = (cmnt: any) => (cmnt.owner ? cmnt.owner : null);
 const getLikesFromComment = (cmnt: any) => (cmnt.likes ? cmnt.likes.map(getAliasFromLike) : []);
 const getUsersFromCommentLikes = (cmnts: any) => (cmnts ? cmnts.map(getLikesFromComment) : []);
 const getUsersThatLiked = (likes: any) => (likes.length ? likes.map(getAliasFromLike) : []);
@@ -72,10 +94,10 @@ const getRelatedUsernamesFromPost = (post: any) => {
 		...getUsersThatLiked(post.likes || []),
 		...getUsersThatCommented(post.comments || []),
 		...getUsersFromCommentLikes(post.comments || []),
-		getUserOwner(post.owner),
+		post.owner,
 	].filter((v) => v);
 };
 
-export const getRelatedUsernamesFromPosts = (posts: object[] = []) => {
+export const getRelatedUserObjectsFromPosts = (posts: object[] = []) => {
 	return flatten(posts.map(getRelatedUsernamesFromPost));
 };

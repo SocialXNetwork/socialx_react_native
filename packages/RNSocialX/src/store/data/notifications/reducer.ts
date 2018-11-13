@@ -25,7 +25,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_REQUESTS: {
-			const updatedRequests = action.payload.reduce(
+			const sanitizedRequests = action.payload.filter((request) => !!Object.keys(request).length);
+			const updatedRequests = sanitizedRequests.reduce(
 				(requests, newRequest) => [
 					...requests.filter((oldRequest) => oldRequest.owner !== newRequest.owner),
 					newRequest,
@@ -39,7 +40,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_RESPONSES: {
-			const updatedResponses = action.payload.reduce(
+			const sanitizedRequests = action.payload.filter((request) => !!Object.keys(request).length);
+			const updatedResponses = sanitizedRequests.reduce(
 				(responses, newResponse) => [
 					...responses.filter((oldResponse) => oldResponse.owner !== newResponse.owner),
 					newResponse,

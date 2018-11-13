@@ -23,4 +23,5 @@ export {
 	getProfilesByUsernames,
 	rejectFriend,
 	clearFriendResponse,
+	getCurrentFriends,
 } from './actions';

@@ -1,4 +1,5 @@
 import { IContext, TABLE_ENUMS, TABLES } from '../../types';
+import { IUserObject } from './types';
 
 // User records
 
@@ -22,35 +23,34 @@ export const publicProfileByUsername = (context: IContext, username: string) => 
 	return gun.path(`${TABLES.PROFILES}.${username}`);
 };
 
-export const currentProfileFriendsRecord = (context: IContext) => {
-	const { account } = context;
-	return account.path(`${TABLES.PROFILE}.${account.is.alias}.${TABLE_ENUMS.FRIENDS}`);
-};
-
-export const currentProfileFriendByUsername = (context: IContext, username: string) => {
-	const { account } = context;
-	return account.path(`${TABLES.PROFILE}.${account.is.alias}.${TABLE_ENUMS.FRIENDS}.${username}`);
-};
-
-export const profileFriendsByUsername = (context: IContext, username: string) => {
+export const privateUserProfileByUserObj = (context: IContext, userObject: IUserObject) => {
 	const { gun } = context;
-	return gun.path(`${TABLES.PROFILES}.${username}.${TABLE_ENUMS.FRIENDS}`);
+	const { alias, pub } = userObject;
+	return gun
+		.back(-1)
+		.get(`~${pub}`)
+		.get(TABLES.PROFILE)
+		.get(alias);
+};
+
+export const privateUserProfileByPub = (context: IContext, pub: string) => {
+	const { gun } = context;
+	return gun
+		.back(-1)
+		.get(`~${pub}`)
+		.get(TABLES.PROFILE);
 };
 
 // User friendship records
 
-export const currentProfileFriendship = (context: IContext, friendshipId: string) => {
+export const currentProfileFriendsRecord = (context: IContext) => {
 	const { account } = context;
-	return account.path(`${TABLES.PROFILE}.${TABLE_ENUMS.FRIENDS}.${friendshipId}`);
+	return account.path(`${TABLE_ENUMS.FRIENDS}`);
 };
 
-export const userProfileFriendship = (
-	context: IContext,
-	username: string,
-	friendshipId: string,
-) => {
-	const { gun } = context;
-	return gun.path(`${TABLES.PROFILES}.${username}.${TABLE_ENUMS.FRIENDS}.${friendshipId}`);
+export const currentProfileFriendByUsername = (context: IContext, username: string) => {
+	const { account } = context;
+	return account.path(`${TABLE_ENUMS.FRIENDS}.${username}`);
 };
 
 // User Requests records

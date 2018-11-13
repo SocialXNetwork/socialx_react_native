@@ -25,7 +25,6 @@ export interface IProfileData {
 	fullName: string;
 	miningEnabled: boolean;
 	aboutMeText: string;
-	friends: IFriendReturnData[];
 	alias: string;
 }
 
@@ -53,6 +52,11 @@ export interface IUpdateProfileInput {
 	fullName?: string;
 	email?: string;
 	avatar?: string;
+}
+
+export interface IUserObject {
+	alias: string;
+	pub: string;
 }
 
 export interface IAddFriendInput {
@@ -88,7 +92,7 @@ export interface IFriendData {
 }
 
 export interface IFriendsCallbackData {
-	[key: string]: IFriendData;
+	[alias: string]: IProfileData;
 }
 
 export enum FriendResponses {

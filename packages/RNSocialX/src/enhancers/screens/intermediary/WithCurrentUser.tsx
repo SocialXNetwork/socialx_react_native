@@ -20,7 +20,7 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 					<WithAuth>
 						{({ auth }) => (
 							<WithProfiles>
-								{({ profiles }) => {
+								{({ profiles, friends }) => {
 									let currentUser;
 									if (auth && profiles.length > 0) {
 										const foundProfile = profiles.find((profile) => profile.alias === auth.alias);
@@ -39,8 +39,7 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 												description: foundProfile.aboutMeText,
 												numberOfLikes: 0,
 												numberOfPhotos: 0,
-												// numberOfFriends: foundProfile.friends.length,
-												numberOfFriends: 0,
+												numberOfFriends: friends.length,
 												numberOfComments: 0,
 												mediaObjects: [],
 												recentPosts: [],

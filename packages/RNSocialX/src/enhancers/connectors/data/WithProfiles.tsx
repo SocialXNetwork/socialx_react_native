@@ -6,6 +6,7 @@ import {
 	acceptFriend,
 	addFriend,
 	clearFriendResponse,
+	getCurrentFriends,
 	getCurrentProfile,
 	getProfileByUsername,
 	IAcceptFriendInput,
@@ -24,10 +25,12 @@ import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	profiles: IProfileData[];
+	friends: IProfileData[];
 }
 
 interface IActionProps {
 	getCurrentProfile: () => void;
+	getCurrentFriends: () => void;
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) => void;
 	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
@@ -55,12 +58,20 @@ const selectProfiles = createSelector(
 	(profiles) => profiles,
 );
 
+const selectFriends = (username: string) =>
+	createSelector(
+		(state: IApplicationState) => state.data.profiles.friends[username],
+		(friends) => friends,
+	);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
+	friends: selectFriends(state.auth.database.gun ? state.auth.database.gun.alias || '' : '')(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
+	getCurrentFriends: () => dispatch(getCurrentFriends()),
 	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) =>
 		dispatch(getProfileByUsername(getProfileByUsernameInput)),
 	addFriend: (addFriendInput: IAddFriendInput) => dispatch(addFriend(addFriendInput)),

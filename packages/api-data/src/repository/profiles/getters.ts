@@ -1,15 +1,15 @@
-import { IContext, IGunCallback, TABLES } from '../../types';
+import { IContext, IGunCallback, TABLE_ENUMS, TABLES } from '../../types';
 import * as profileHandles from './handles';
 
 import { ApiError } from '../../utils/errors';
-import { cleanGunMetaFromObject, convertGunSetToArrayWithKey } from '../../utils/helpers';
+import { cleanGunMetaFromObject, convertGunSetToArray } from '../../utils/helpers';
 import {
-	IFriendData,
 	IFriendReturnData,
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
 	IProfileCallbackData,
 	IProfileData,
+	IUserObject,
 } from './types';
 
 const preLoadProfiles = (gun: any, cb: any) => {
@@ -31,15 +31,17 @@ export const getPublicKeyByUsername = (
 		});
 };
 
-const friendsToArray = (friends: IFriendsCallbackData) =>
-	convertGunSetToArrayWithKey(friends).map(({ k, ...friend }: IFriendData & { k: string }) => ({
-		friendId: k,
-		...friend,
-	}));
-
-// ? this is useless, current account obsoletes it
 export const getCurrentProfile = (context: IContext, callback: IGunCallback<IProfileData>) => {
-	return callback(new ApiError('removed!!'));
+	profileHandles.currentUserProfileData(context).once(
+		(currentProfileData: IProfileData) => {
+			if (!currentProfileData) {
+				return callback(new ApiError('failed to fetch the current profile'));
+			}
+			const sanitizedProfile = cleanGunMetaFromObject(currentProfileData);
+			return callback(null, sanitizedProfile);
+		},
+		{ wait: 400 },
+	);
 };
 
 export const getProfileByUsername = (
@@ -48,7 +50,7 @@ export const getProfileByUsername = (
 	callback: IGunCallback<IProfileCallbackData>,
 ) => {
 	const mainRunner = () => {
-		profileHandles.publicProfileByUsername(context, username).docLoad(
+		profileHandles.publicProfileByUsername(context, username).once(
 			(profile: IProfileCallbackData) => {
 				if (!profile || !Object.keys(profile).length) {
 					return callback(
@@ -57,33 +59,48 @@ export const getProfileByUsername = (
 						}),
 					);
 				}
-				const { friends, ...profileRest } = profile;
 
-				const cleanedProfile = cleanGunMetaFromObject(profileRest);
+				const cleanedProfile = cleanGunMetaFromObject(profile);
 
-				const friendsData = friendsToArray(friends);
-				const profileReturnData = {
-					friends: friendsData,
-					...cleanedProfile,
-				};
-				return callback(null, profileReturnData);
+				return callback(null, cleanedProfile);
 			},
-			{ wait: 500, timeout: 1000 },
+			{ wait: 400 },
 		);
 	};
-	preLoadProfiles(context.gun, () => {
-		mainRunner();
-	});
+	mainRunner();
 };
 
-// ? this is not needed anymore, should exist?
+export const getProfileByUserObject = (
+	context: IContext,
+	userObject: IUserObject,
+	callback: IGunCallback<IProfileData>,
+) => {
+	profileHandles.privateUserProfileByUserObj(context, userObject).open(
+		(profileData: IProfileData) => {
+			return callback(null, profileData);
+		},
+		{ off: 1 },
+	);
+};
+
 export const getCurrentProfileFriends = (
 	context: IContext,
 	callback: IGunCallback<IFriendReturnData[]>,
 ) => {
-	//
+	profileHandles.currentProfileFriendsRecord(context).docLoad(
+		(friendsRecordCallback: IFriendsCallbackData) => {
+			if (!Object.keys(friendsRecordCallback).length) {
+				// no friends, sadlife
+				return callback(null, []);
+			}
+			const sanitizedFriendsArray = convertGunSetToArray(friendsRecordCallback);
+			return callback(null, sanitizedFriendsArray.filter((friend) => friend !== null));
+		},
+		{ wait: 400, timeout: 800 },
+	);
 };
 
+// ? needs review
 export const findProfilesByFullName = (
 	context: IContext,
 	{ textSearch, maxResults }: { textSearch: string; maxResults?: number },
@@ -96,7 +113,6 @@ export const findProfilesByFullName = (
 			const profilesReturned = data
 				.map((profile: any) => ({
 					...profile,
-					friends: friendsToArray(profile.friends) || [],
 				}))
 				.filter((profile: any) => profile.alias !== currentAlias);
 			if (maxResults) {
@@ -111,26 +127,28 @@ export const findFriendsSuggestions = (
 	{ maxResults }: { maxResults?: number },
 	callback: IGunCallback<any[]>,
 ) => {
-	profileHandles
-		.currentUserProfileData(context)
-		.docLoad((currentProfileCallback: IProfileCallbackData) => {
-			if (!currentProfileCallback || !Object.keys(currentProfileCallback).length) {
-				return callback(new ApiError('failed to find current profile'));
-			}
-			const friendsData = friendsToArray(currentProfileCallback.friends) || [];
-			profileHandles
-				.publicProfilesRecord(context)
-				.findFriendsSuggestions(currentProfileCallback.alias, friendsData, (data: any) => {
-					const profilesReturned = data.map((profile: any) => ({
-						...profile,
-						friends: friendsToArray(profile.friends) || [],
-					}));
-					if (maxResults) {
-						return callback(null, profilesReturned.slice(0, maxResults));
-					}
-					return callback(null, profilesReturned);
-				});
-		});
+	// OUTDATED!!
+	return callback(null, []);
+	// profileHandles
+	// 	.currentUserProfileData(context)
+	// 	.docLoad((currentProfileCallback: IProfileCallbackData) => {
+	// 		if (!currentProfileCallback || !Object.keys(currentProfileCallback).length) {
+	// 			return callback(new ApiError('failed to find current profile'));
+	// 		}
+	// 		const friendsData = friendsToArray(currentProfileCallback.friends) || [];
+	// 		profileHandles
+	// 			.publicProfilesRecord(context)
+	// 			.findFriendsSuggestions(currentProfileCallback.alias, friendsData, (data: any) => {
+	// 				const profilesReturned = data.map((profile: any) => ({
+	// 					...profile,
+	// 					friends: friendsToArray(profile.friends) || [],
+	// 				}));
+	// 				if (maxResults) {
+	// 					return callback(null, profilesReturned.slice(0, maxResults));
+	// 				}
+	// 				return callback(null, profilesReturned);
+	// 			});
+	// 	});
 };
 
 export default {
@@ -140,4 +158,5 @@ export default {
 	getCurrentProfileFriends,
 	findProfilesByFullName,
 	findFriendsSuggestions,
+	getProfileByUserObject,
 };

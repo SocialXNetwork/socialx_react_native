@@ -14,6 +14,7 @@ import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { hookNotifications } from '../notifications/actions';
+import { getCurrentFriends } from '../profiles/actions';
 import {
 	ActionTypes,
 	IChangePasswordAction,
@@ -251,6 +252,7 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 			}),
 		);
 		await dispatch(getCurrentAccount());
+		await dispatch(getCurrentFriends());
 		await dispatch(endActivity({ uuid: activityId }));
 		// debounce hook
 		dispatch(hookNotifications());

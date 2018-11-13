@@ -29,16 +29,13 @@ export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAcc
 	}
 
 	preLoadProfile(account, () => {
-		account.open(
-			(userProfileCallback: IAccountData) => {
-				if (!userProfileCallback || !Object.keys(userProfileCallback).length) {
-					return callback(new ApiError('failed to get current account profile.'));
-				}
+		account.once((userProfileCallback: IAccountData) => {
+			if (!userProfileCallback || !Object.keys(userProfileCallback).length) {
+				return callback(new ApiError('failed to get current account profile.'));
+			}
 
-				return callback(null, userProfileCallback);
-			},
-			{ off: 1, wait: 2000 },
-		);
+			return callback(null, userProfileCallback);
+		});
 	});
 };
 

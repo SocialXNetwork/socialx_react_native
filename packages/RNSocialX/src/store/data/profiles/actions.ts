@@ -8,24 +8,25 @@ import {
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
-import { Action, ActionCreator } from 'redux';
+import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
-import { getCurrentAccount } from '../accounts/actions';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
 	IAddFriendAction,
 	IClearFriendResponseAction,
+	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
 	IGetProfilesByUsernamesAction,
 	IRejectFriendAction,
 	IRemoveFriendAction,
+	ISyncGetCurrentFriendsAction,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByUsernameAction,
 	ISyncGetProfilesByPostsAction,
@@ -204,7 +205,8 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 				}),
 			);
 
-			const profile = storeState.data.accounts.accounts[0].profile[auth.alias];
+			const { dataApi } = context;
+			const profile = await dataApi.profiles.getCurrentProfile();
 			dispatch(syncGetCurrentProfileAction(profile));
 			await dispatch(getUserPosts({ username: profile.alias }));
 		} catch (e) {
@@ -219,6 +221,45 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 		} finally {
 			await dispatch(endActivity({ uuid: activityId }));
 		}
+	}
+};
+
+const getCurrentFriendsAction: ActionCreator<IGetCurrentFriendsAction> = () => ({
+	type: ActionTypes.GET_CURRENT_FRIENDS,
+});
+
+const syncGetCurrentFriendsAction: ActionCreator<ISyncGetCurrentFriendsAction> = (syncFriends: {
+	username: string;
+	friends: IProfileData[];
+}) => ({
+	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS,
+	payload: syncFriends,
+});
+
+export const getCurrentFriends = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+	const state = getState();
+	const currentUser = state.auth.database.gun;
+	try {
+		dispatch(getCurrentFriendsAction());
+		await dispatch(
+			beginActivity({
+				uuid: activityId,
+				type: ActionTypes.GET_CURRENT_FRIENDS,
+			}),
+		);
+
+		const { dataApi } = context;
+		const friends = await dataApi.profiles.getCurrentProfileFriends();
+		dispatch(syncGetCurrentFriendsAction({ username: currentUser!.alias, friends }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.GET_CURRENT_FRIENDS,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };
 
@@ -315,7 +356,7 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 					await dataApi.profiles.updateProfile(updateProfileInput);
 				}
 			}
-			await dispatch(getCurrentAccount());
+			await dispatch(getCurrentProfile());
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -354,7 +395,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.addFriend(addFriendInput);
-			await dispatch(getCurrentAccount());
+			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -395,7 +436,7 @@ export const removeFriend = (removeFriendInput: IRemoveFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.removeFriend(removeFriendInput);
-			await dispatch(getCurrentAccount());
+			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -436,7 +477,7 @@ export const acceptFriend = (acceptFriendInput: IAcceptFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.acceptFriend(acceptFriendInput);
-			await dispatch(getCurrentAccount());
+			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
 				setError({
