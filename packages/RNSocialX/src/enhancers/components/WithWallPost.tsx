@@ -41,8 +41,6 @@ export interface IWallPostEnhancedData {
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	onImagePress: (index: number, mediaObjects: IMediaProps[], post: IWallPostData) => void;
-	onLikePost: (likedByCurrentUser: boolean, postId: string) => void;
-	onDoubleTapLike: (postId: string) => void;
 	onRemovePost: (postId: string) => void;
 	onUserPress: (userId: string) => void;
 	onCommentsPress: (post: IWallPostData, keyboardRaised: boolean) => void;
@@ -106,15 +104,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																									mediaObjects,
 																									post,
 																								),
-																							onLikePost: (likedByCurrentUser, postId) =>
-																								this.onLikePostHandler(
-																									feed.likePost,
-																									feed.unlikePost,
-																									likedByCurrentUser,
-																									postId,
-																								),
-																							onDoubleTapLike: (postId) =>
-																								this.onDoubleTapLikeHandler(feed.likePost, postId),
 																							onRemovePost: (postId) =>
 																								this.onRemovePostHandler(
 																									setGlobal,
@@ -199,26 +188,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 			},
 		});
 		navigation.navigate(SCREENS.MediaViewer);
-	};
-
-	private onLikePostHandler = async (
-		likePost: ({ postId }: { postId: string }) => void,
-		unlikePost: ({ postId }: { postId: string }) => void,
-		likedByCurrentUser: boolean,
-		postId: string,
-	) => {
-		if (likedByCurrentUser) {
-			await unlikePost({ postId });
-		} else {
-			await likePost({ postId });
-		}
-	};
-
-	private onDoubleTapLikeHandler = async (
-		likePost: ({ postId }: { postId: string }) => void,
-		postId: string,
-	) => {
-		await likePost({ postId });
 	};
 
 	private onRemovePostHandler = async (

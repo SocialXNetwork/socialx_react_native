@@ -9,7 +9,7 @@ import {
 	SuggestionsCarousel,
 	WallPost,
 } from '../../../components';
-import { INavigationProps, ITranslatedProps, IWallPostData } from '../../../types';
+import { IError, INavigationProps, ITranslatedProps, IWallPostData } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
@@ -24,6 +24,7 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	canLoadMorePosts: boolean;
 	scrollRef: React.RefObject<FlatList<IWallPostData>>;
 	scrollY: AnimatedValue;
+	errors: IError[];
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
@@ -84,7 +85,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 	}
 
 	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
-		const { skeletonPost, navigation } = this.props;
+		const { skeletonPost, errors, navigation } = this.props;
 
 		const post = data.item;
 
@@ -94,6 +95,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					post={post}
 					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
 					commentInput={true}
+					errors={errors}
 					navigation={navigation}
 				/>
 				{skeletonPost && <View style={styles.overlay} />}

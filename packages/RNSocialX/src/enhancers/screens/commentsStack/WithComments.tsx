@@ -1,18 +1,20 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IWallPostComment, IWallPostData } from '../../../types';
+import { IError, IWallPostComment, IWallPostData } from '../../../types';
 
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithActivities } from '../../connectors/ui/WithActivities';
 import { getComments } from '../../helpers';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithCommentsEnhancedData {
 	post: IWallPostData;
 	comments: IWallPostComment[];
+	errors: IError[];
 	keyboardRaised: boolean;
 }
 
@@ -36,34 +38,39 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 				{({ appConfig }) => (
 					<WithNavigationParams>
 						{({ navigationParams }) => (
-							<WithPosts>
-								{({ posts }) => (
-									<WithProfiles>
-										{({ profiles }) => (
-											<WithCurrentUser>
-												{({ currentUser }) => {
-													const currentPost = navigationParams[SCREENS.Comments].post;
-													const post = posts.find((p) => p.postId === currentPost.postId);
+							<WithActivities>
+								{({ errors }) => (
+									<WithPosts>
+										{({ posts }) => (
+											<WithProfiles>
+												{({ profiles }) => (
+													<WithCurrentUser>
+														{({ currentUser }) => {
+															const currentPost = navigationParams[SCREENS.Comments].post;
+															const post = posts.find((p) => p.postId === currentPost.postId);
 
-													return this.props.children({
-														data: {
-															post: currentPost,
-															comments: getComments(
-																post!.comments,
-																profiles,
-																currentUser.userId,
-																appConfig,
-															),
-															keyboardRaised: navigationParams[SCREENS.Comments].keyboardRaised,
-														},
-														actions: {},
-													});
-												}}
-											</WithCurrentUser>
+															return this.props.children({
+																data: {
+																	post: currentPost,
+																	comments: getComments(
+																		post!.comments,
+																		profiles,
+																		currentUser.userId,
+																		appConfig,
+																	),
+																	errors,
+																	keyboardRaised: navigationParams[SCREENS.Comments].keyboardRaised,
+																},
+																actions: {},
+															});
+														}}
+													</WithCurrentUser>
+												)}
+											</WithProfiles>
 										)}
-									</WithProfiles>
+									</WithPosts>
 								)}
-							</WithPosts>
+							</WithActivities>
 						)}
 					</WithNavigationParams>
 				)}

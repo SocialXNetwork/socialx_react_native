@@ -8,6 +8,7 @@ import * as React from 'react';
 import { FEED_TYPES } from '../../../environment/consts';
 import {
 	ICurrentUser,
+	IError,
 	INavigationParamsActions,
 	ITranslatedProps,
 	IWallPostData,
@@ -28,6 +29,7 @@ export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
 	friendsPosts: IWallPostData[];
 	globalPosts: IWallPostData[];
+	errors: IError[];
 	skeletonPost: IWallPostData;
 	creatingPost: boolean;
 	canLoadMorePosts: boolean;
@@ -63,7 +65,7 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 									<WithGlobals>
 										{({ globals }) => (
 											<WithActivities>
-												{({ activities }) => (
+												{({ activities, errors }) => (
 													<WithProfiles>
 														{({ profiles }) => (
 															<WithPosts>
@@ -88,6 +90,7 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																					currentUser: currentUser!,
 																					globalPosts,
 																					friendsPosts: [],
+																					errors,
 																					skeletonPost: globals.skeletonPost,
 																					canLoadMorePosts: globals.canLoadMorePosts,
 																					loadingMorePosts: getActivity(

@@ -198,7 +198,7 @@ export default {
 	'new.wall.post.screen.title': 'SHARE',
 	'new.wall.post.screen.input.placeholder': 'Write a caption',
 	'new.wall.post.screen.attach.media.button': 'Attach Photo/Video',
-	'new.wall.post.screen.send.button': 'SEND',
+	'new.wall.post.screen.create.button': 'CREATE POST',
 	'new.wall.post.screen.post.not.allowed.title': 'Not allowed',
 	'new.wall.post.screen.post.not.allowed.message':
 		'Empty post are not allowed, please add one photo and/or message!',

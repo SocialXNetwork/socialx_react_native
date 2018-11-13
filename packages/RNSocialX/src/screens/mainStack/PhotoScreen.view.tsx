@@ -1,34 +1,35 @@
 import * as React from 'react';
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import {
 	AddFriendsList,
+	ButtonSizes,
 	CheckboxButtonWithIcon,
 	CloseButton,
 	Header,
-	HeaderButton,
 	MediaHorizontalScroller,
+	PrimaryButton,
 	SharePostInput,
 } from '../../components';
 import { IFriendsSearchResult, ITranslatedProps } from '../../types';
-import style, { customStyleProps } from './PhotoScreen.style';
+
+import styles, { defaultStyles } from './PhotoScreen.style';
 
 interface IPhotoScreenViewProps extends ITranslatedProps {
-	avatar?: string;
+	avatar: string;
 	mediaObjects: string[];
-	showTagFriendsModal: () => void;
 	taggedFriends: IFriendsSearchResult[];
 	locationEnabled: boolean;
 	tagFriends: boolean;
 	location: string;
+	caption: string;
+	onShowTagFriends: () => void;
 	onLocationToggle: () => void;
 	onLocationTextUpdate: (value: string) => void;
 	onTagFriendsToggle: () => void;
-	shareText: string;
-	onShareTextUpdate: (value: string) => void;
+	onChangeText: (value: string) => void;
 	onAddMedia: () => void;
-	sendPost: () => void;
+	onCreatePost: () => void;
 	onClose: () => void;
 }
 
@@ -47,24 +48,24 @@ const LocationSection: React.SFC<ILocationSectionProps> = ({
 	locationLabel,
 	checkboxLabel,
 }) => (
-	<View style={style.checkboxButtonContainer}>
+	<View style={styles.checkboxButtonContainer}>
 		<CheckboxButtonWithIcon
-			iconSource={customStyleProps.iconLocationPin}
+			iconSource={defaultStyles.location}
 			selected={locationEnabled}
 			text={checkboxLabel}
 			onPress={onLocationToggle}
 		/>
 		{locationEnabled && (
 			<View>
-				<Text style={style.smallText}>{locationLabel}</Text>
-				<View style={style.withMaxHeight}>
+				<Text style={styles.smallText}>{locationLabel}</Text>
+				<View style={styles.withMaxHeight}>
 					<TextInput
 						autoFocus={true}
 						autoCorrect={true}
-						underlineColorAndroid={customStyleProps.underlineColorTransparent}
+						underlineColorAndroid={defaultStyles.transparent}
 						numberOfLines={2}
 						multiline={true}
-						style={style.multilineTextInput}
+						style={styles.multilineTextInput}
 						onChangeText={onLocationTextUpdate}
 					/>
 				</View>
@@ -75,29 +76,29 @@ const LocationSection: React.SFC<ILocationSectionProps> = ({
 
 interface ITagFriendsSectionProps {
 	tagFriends: boolean;
-	onTagFriendsToggle: () => void;
 	taggedFriends: IFriendsSearchResult[];
-	showTagFriendsModal: () => void;
 	checkboxLabel: string;
+	onTagFriendsToggle: () => void;
+	onShowTagFriends: () => void;
 }
 
 const TagFriendsSection: React.SFC<ITagFriendsSectionProps> = ({
 	onTagFriendsToggle,
 	tagFriends,
 	taggedFriends,
-	showTagFriendsModal,
+	onShowTagFriends,
 	checkboxLabel,
 }) => {
 	return (
-		<View style={style.checkboxButtonContainer}>
+		<View style={styles.checkboxButtonContainer}>
 			<CheckboxButtonWithIcon
-				iconSource={customStyleProps.iconInviteFriends}
+				iconSource={defaultStyles.inviteFriends}
 				selected={tagFriends}
 				text={checkboxLabel}
 				onPress={onTagFriendsToggle}
 			/>
 			{tagFriends && (
-				<AddFriendsList taggedFriends={taggedFriends} showTagFriendsModal={showTagFriendsModal} />
+				<AddFriendsList taggedFriends={taggedFriends} onShowTagFriends={onShowTagFriends} />
 			)}
 		</View>
 	);
@@ -112,47 +113,33 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 	taggedFriends,
 	onTagFriendsToggle,
 	tagFriends,
-	showTagFriendsModal,
-	shareText,
-	onShareTextUpdate,
+	onShowTagFriends,
+	caption,
+	onChangeText,
 	onAddMedia,
-	getText,
-	sendPost,
+	onCreatePost,
 	onClose,
+	getText,
 }) => (
-	<React.Fragment>
-		{
-			<Header
-				title={getText('photo.screen.title')}
-				left={<CloseButton onClose={onClose} />}
-				right={<HeaderButton iconName="md-checkmark" onPress={sendPost} />}
-			/>
-		}
-		<KeyboardAwareScrollView
-			style={style.scrollView}
-			alwaysBounceVertical={true}
-			keyboardShouldPersistTaps="handled"
-		>
+	<View style={styles.container}>
+		<Header title={getText('photo.screen.title')} left={<CloseButton onClose={onClose} />} />
+		<ScrollView contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps="handled">
 			<SharePostInput
-				avatarSource={avatar}
+				avatar={avatar}
 				placeholder={getText('photo.screen.share.input.placeholder')}
-				text={shareText}
-				onTextUpdate={onShareTextUpdate}
+				value={caption}
+				onChangeText={onChangeText}
 			/>
-			<View style={style.photoContainer}>
+			<View style={styles.photoContainer}>
 				<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
 			</View>
-			<View style={style.addMediaContainer}>
-				<TouchableOpacity style={style.addMediaButton} onPress={onAddMedia}>
-					<Image
-						source={customStyleProps.iconNewPostAddMedia}
-						style={style.photoIcon}
-						resizeMode="contain"
-					/>
-					<Text style={style.addMediaText}>{getText('photo.screen.add.media')}</Text>
+			<View style={styles.addMediaContainer}>
+				<TouchableOpacity style={styles.addMediaButton} onPress={onAddMedia}>
+					<Image source={defaultStyles.addMedia} style={styles.photoIcon} resizeMode="contain" />
+					<Text style={styles.addMediaText}>{getText('photo.screen.add.media')}</Text>
 				</TouchableOpacity>
 			</View>
-			{/* <View style={style.paddingContainer}>
+			{/* <View style={styles.paddingContainer}>
 				<LocationSection
 					locationEnabled={locationEnabled}
 					onLocationToggle={onLocationToggle}
@@ -164,10 +151,20 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 					tagFriends={tagFriends}
 					taggedFriends={taggedFriends}
 					onTagFriendsToggle={onTagFriendsToggle}
-					showTagFriendsModal={showTagFriendsModal}
+					onShowTagFriends={onShowTagFriends}
 					checkboxLabel={getText('photo.screen.tag.friends.checkbox')}
 				/>
 			</View> */}
-		</KeyboardAwareScrollView>
-	</React.Fragment>
+			<View style={styles.buttonContainer}>
+				<PrimaryButton
+					label={getText('new.wall.post.screen.create.button')}
+					size={ButtonSizes.Small}
+					width={defaultStyles.buttonWidth}
+					onPress={onCreatePost}
+					borderColor={defaultStyles.transparent}
+					disabled={caption.length === 0}
+				/>
+			</View>
+		</ScrollView>
+	</View>
 );

@@ -5,6 +5,7 @@ import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts
 import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import {
 	ICurrentUser,
+	IError,
 	IGlobal,
 	INavigationParamsActions,
 	IOptionsMenuProps,
@@ -25,6 +26,7 @@ export interface IWithMyProfileEnhancedData {
 	currentUser: ICurrentUser;
 	loadingProfile: boolean;
 	loadingPosts: boolean;
+	errors: IError[];
 }
 
 export interface IWithMyProfileEnhancedActions
@@ -62,7 +64,7 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 											<WithAccounts>
 												{({ logout }) => (
 													<WithActivities>
-														{({ activities }) => (
+														{({ activities, errors }) => (
 															<WithAggregations>
 																{({ getUserPosts }) => (
 																	<WithCurrentUserContent>
@@ -70,6 +72,7 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 																			this.props.children({
 																				data: {
 																					currentUser: currentUser!,
+																					errors,
 																					loadingProfile: getActivity(
 																						activities,
 																						ProfileActionTypes.GET_PROFILE_BY_USERNAME,

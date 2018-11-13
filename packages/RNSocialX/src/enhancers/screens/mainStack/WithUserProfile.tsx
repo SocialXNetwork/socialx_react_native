@@ -8,6 +8,7 @@ import * as React from 'react';
 import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts/Types';
 import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
 import {
+	IError,
 	INavigationParamsActions,
 	IOptionsMenuProps,
 	ITranslatedProps,
@@ -28,6 +29,7 @@ export interface IWithUserProfileEnhancedData {
 	currentUserId: string;
 	visitedUser: IVisitedUser;
 	userPosts: { [owner: string]: IPostReturnData[] };
+	errors: IError[];
 	loadingProfile: boolean;
 	loadingPosts: boolean;
 }
@@ -64,7 +66,7 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 									<WithProfiles>
 										{({ addFriend, getProfileByUsername }) => (
 											<WithActivities>
-												{({ activities }) => (
+												{({ activities, errors }) => (
 													<WithAggregations>
 														{({ getUserPosts, userPosts }) => (
 															<WithCurrentUser>
@@ -76,6 +78,7 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 																					currentUserId: currentUser!.userId,
 																					visitedUser: visitedUser!,
 																					userPosts,
+																					errors,
 																					loadingProfile: getActivity(
 																						activities,
 																						ProfileActionTypes.GET_PROFILE_BY_USERNAME,

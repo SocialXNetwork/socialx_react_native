@@ -5,31 +5,28 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 const USER_AVATAR_SIZE = Sizes.smartHorizontalScale(40);
 
 const style: any = {
-	shareMessageContainer: {
+	container: {
 		width: '100%',
 		flexDirection: 'row',
-		alignItems: 'flex-start',
+		alignItems: 'center',
 		paddingVertical: Sizes.smartVerticalScale(9),
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		borderBottomColor: Colors.geyser,
 		borderBottomWidth: Sizes.smartHorizontalScale(0.5),
 	},
-	textInput: {
+	input: {
 		padding: 0,
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(14),
+		color: Colors.cloudBurst,
 	},
-	captionContainer: {
+	inputContainer: {
 		minHeight: USER_AVATAR_SIZE,
 		maxHeight: Sizes.smartVerticalScale(120),
 		flex: 1,
 		justifyContent: 'center',
 	},
-	captionTextInput: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(14),
-		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.cloudBurst,
-	},
-	avatarImage: {
+	avatar: {
 		width: USER_AVATAR_SIZE,
 		height: USER_AVATAR_SIZE,
 		borderRadius: USER_AVATAR_SIZE / 2,

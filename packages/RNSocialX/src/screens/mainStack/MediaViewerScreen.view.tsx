@@ -65,8 +65,8 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	};
 	infoVisible: boolean;
 	canReact: boolean | undefined;
-	postId?: string;
-	likeFailed: boolean;
+	likeDisabled: boolean;
+	likedByCurrentUser: boolean;
 	onChangeSlide: (index: number) => void;
 	onLayout: (event: any) => void;
 	onShowInfo: () => void;
@@ -74,7 +74,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	onExitFullScreen: () => void;
 	onClose: () => void;
 	onCommentPress: () => void;
-	onLikePress: (likedByCurrentUser: boolean, postId: string) => void;
+	onLikePress: () => void;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
@@ -86,8 +86,8 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	onChangeSlide,
 	infoVisible,
 	canReact,
-	postId,
-	likeFailed,
+	likeDisabled,
+	likedByCurrentUser,
 	onLayout,
 	onShowInfo,
 	onCloseInfo,
@@ -152,8 +152,8 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							mediaObjects={mediaObjects}
 							activeSlide={activeSlide}
 							canReact={canReact}
-							postId={postId}
-							likeFailed={likeFailed}
+							likeDisabled={likeDisabled}
+							likedByCurrentUser={likedByCurrentUser}
 							onCommentPress={onCommentPress}
 							onLikePress={onLikePress}
 							getText={getText}

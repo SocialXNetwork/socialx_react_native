@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Keyboard } from 'react-native';
+import { Keyboard } from 'react-native';
 import uuid from 'uuid/v4';
 
 import {
@@ -23,13 +23,13 @@ type ICreateWallPostScreenProps = INavigationProps &
 
 interface ICreateWallPostScreenState {
 	mediaObjects: IWallPostPhotoOptimized[];
-	shareText: string;
+	caption: string;
 }
 
 class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
 	public state = {
 		mediaObjects: [],
-		shareText: '',
+		caption: '',
 	};
 
 	public componentDidMount() {
@@ -44,14 +44,14 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 
 	public render() {
 		const { getText, marginBottom, currentUser } = this.props;
-		const { shareText, mediaObjects } = this.state;
+		const { caption, mediaObjects } = this.state;
 
 		return (
 			<CreateWallPostScreenView
-				avatarImage={currentUser.avatar}
-				shareText={shareText}
+				avatar={currentUser.avatar}
+				caption={caption}
 				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
-				onShareTextUpdate={this.onShareTextUpdateHandler}
+				onChangeText={this.onChangeTextHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
 				onClose={this.onCloseHandler}
@@ -61,9 +61,9 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 		);
 	}
 
-	private onShareTextUpdateHandler = (value: string) => {
+	private onChangeTextHandler = (value: string) => {
 		this.setState({
-			shareText: value,
+			caption: value,
 		});
 	};
 
@@ -73,18 +73,18 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
-				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Gallery),
+				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
 				label: getText('new.wall.post.screen.menu.photo'),
 				icon: 'md-camera',
-				actionHandler: () => this.addToScrollerSelectedMediaObject(IMAGE_PICKER_TYPES.Camera),
+				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
 		showOptionsMenu(menuItems);
 	};
 
-	private addToScrollerSelectedMediaObject = async (source: IMAGE_PICKER_TYPES) => {
+	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
 		let selectedMediaObjects: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
 			selectedMediaObjects = await getGalleryMediaObjectMultiple();
@@ -104,19 +104,19 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	private onCreatePostHandler = async () => {
-		const { mediaObjects, shareText } = this.state;
+		const { mediaObjects, caption } = this.state;
 		const { currentUser, createPost, setGlobal } = this.props;
 
 		await setGlobal({
 			skeletonPost: {
 				postId: uuid(),
-				postText: shareText,
+				postText: caption,
 				location: '',
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
 					userId: currentUser.userId,
-					fullName: currentUser.userName,
+					fullName: currentUser.fullName,
 					avatar: currentUser.avatar,
 				},
 				numberOfSuperLikes: 0,
@@ -128,15 +128,15 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				likes: [],
 				topComments: [],
 				loading: false,
+				currentUserAvatar: currentUser.avatar,
 				suggested: undefined,
 				likeFailed: false,
 				skeleton: true,
 			},
 		});
 
-		Keyboard.dismiss();
 		createPost({
-			text: shareText,
+			text: caption,
 			media: mediaObjects,
 		});
 		this.onCloseHandler();

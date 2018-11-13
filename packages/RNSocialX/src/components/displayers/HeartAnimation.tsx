@@ -1,40 +1,22 @@
 import LottieView from 'lottie-react-native';
 import * as React from 'react';
-import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { AnimatedValue } from 'react-navigation';
 
 import { Animations, Sizes } from '../../environment/theme';
 
 interface IHeartAnimationProps {
-	ended: (status: boolean) => void;
+	animationProgress: AnimatedValue;
 }
 
 export class HeartAnimation extends React.Component<IHeartAnimationProps> {
-	public static defaultProps = {
-		ended: () => {
-			/**/
-		},
-	};
-
-	private animationProgress = new Animated.Value(0);
-
-	componentDidMount() {
-		Animated.timing(this.animationProgress, {
-			toValue: 1,
-			duration: 1000,
-			easing: Easing.linear,
-		}).start(() => {
-			this.animationProgress.setValue(0);
-			this.props.ended(true);
-		});
-	}
-
-	render() {
+	public render() {
 		return (
 			<View style={style.container}>
 				<View style={style.animation}>
 					<LottieView
 						source={Animations.lottie.heart}
-						progress={this.animationProgress}
+						progress={this.props.animationProgress}
 						style={style.animation}
 					/>
 				</View>

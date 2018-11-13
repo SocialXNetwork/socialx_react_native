@@ -49,7 +49,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const { visitedUser, loadingProfile, loadingPosts } = this.props;
+		const { visitedUser, loadingProfile, loadingPosts, errors } = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -71,6 +71,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
 				onGoBack={this.onGoBackHandler}
+				errors={errors}
 				navigation={this.props.navigation}
 				getText={this.props.getText}
 			/>

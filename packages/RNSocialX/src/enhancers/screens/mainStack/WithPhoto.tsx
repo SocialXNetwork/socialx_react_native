@@ -1,55 +1,34 @@
-/**
- * TODO list:
- * 1. Props actions: createPost (should also upload media files)
- */
-
 import * as React from 'react';
 
 import { KeyboardContext, SCREENS } from '../../../environment/consts';
 import {
-	IFriendsSearchResult,
+	ICreateWallPostData,
+	ICurrentUser,
+	IGlobal,
 	IOptionsMenuProps,
 	IResizeProps,
 	ITranslatedProps,
+	IUploadFileInput,
 	IWallPostPhotoOptimized,
 } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithFiles } from '../../connectors/storage/WithFiles';
+import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
-interface IWallPostPhotoData {
-	mediaObjects: IWallPostPhotoOptimized[];
-	title?: string;
-	location?: string;
-	taggedFriends?: IFriendsSearchResult[];
-}
-
-const mock: IWithPhotoEnhancedProps = {
-	data: {
-		marginBottom: 0,
-		currentUseravatar: 'https://placeimg.com/200/200/people',
-		mediaObjects: [],
-	},
-	actions: {
-		getText: (value: string, ...args: any[]) => value,
-		// This is now implemented with the WithOverlays connector enhancer
-		showOptionsMenu: (items) => {
-			/**/
-		},
-		createPost: (wallPostData: IWallPostPhotoData) => {
-			/**/
-		},
-	},
-};
-
 export interface IWithPhotoEnhancedData extends IResizeProps {
-	currentUseravatar?: string;
+	currentUser: ICurrentUser;
 	mediaObjects: IWallPostPhotoOptimized[];
 }
 
 export interface IWithPhotoEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (wallPostData: IWallPostPhotoData) => void;
+	createPost: (post: ICreateWallPostData) => void;
+	uploadFile: (input: IUploadFileInput) => void;
+	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithPhotoEnhancedProps {
@@ -68,38 +47,60 @@ export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState>
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithOverlays>
-						{({ showOptionsMenu }) => (
-							<KeyboardContext.Consumer>
-								{({ marginBottom }) => (
-									<WithNavigationParams>
-										{({ navigationParams }) => (
-											<WithCurrentUser>
-												{({ currentUser }) =>
-													this.props.children({
-														data: {
-															...mock.data,
-															currentUseravatar: currentUser!.avatar,
-															mediaObjects: navigationParams[SCREENS.Photo].mediaObjects,
-															marginBottom,
-														},
-														actions: {
-															...mock.actions,
-															getText,
-															showOptionsMenu: (items) =>
-																showOptionsMenu({
-																	items,
-																}),
-														},
-													})
-												}
-											</WithCurrentUser>
+					<WithGlobals>
+						{({ setGlobal }) => (
+							<WithOverlays>
+								{({ showOptionsMenu }) => (
+									<KeyboardContext.Consumer>
+										{({ marginBottom }) => (
+											<WithNavigationParams>
+												{({ navigationParams }) => (
+													<WithFiles>
+														{({ uploadFile }) => (
+															<WithPosts>
+																{({ createPost }) => (
+																	<WithCurrentUser>
+																		{({ currentUser }) =>
+																			this.props.children({
+																				data: {
+																					currentUser: currentUser!,
+																					mediaObjects:
+																						navigationParams[SCREENS.Photo].mediaObjects,
+																					marginBottom,
+																				},
+																				actions: {
+																					uploadFile,
+																					createPost: async (post: ICreateWallPostData) => {
+																						await createPost({
+																							postText: post.text,
+																							location: post.location,
+																							taggedFriends: post.taggedFriends,
+																							media: post.media,
+																							privatePost: false,
+																						} as any);
+																					},
+																					showOptionsMenu: (items) =>
+																						showOptionsMenu({
+																							items,
+																						}),
+																					setGlobal,
+																					getText,
+																				},
+																			})
+																		}
+																	</WithCurrentUser>
+																)}
+															</WithPosts>
+														)}
+													</WithFiles>
+												)}
+											</WithNavigationParams>
 										)}
-									</WithNavigationParams>
+									</KeyboardContext.Consumer>
 								)}
-							</KeyboardContext.Consumer>
+							</WithOverlays>
 						)}
-					</WithOverlays>
+					</WithGlobals>
 				)}
 			</WithI18n>
 		);

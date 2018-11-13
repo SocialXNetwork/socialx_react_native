@@ -195,7 +195,7 @@ export interface IWallPostComment {
 }
 
 export interface IWallPostPhotoOptimized extends PickerImage {
-	contentOptimizedPath: string;
+	contentOptimizedPath?: string;
 	type: string;
 	pathx: string;
 }
@@ -225,6 +225,15 @@ export interface IWallPostData {
 	currentUserAvatar: string;
 	currentUserName: string;
 	offensiveContent: boolean;
+}
+
+export interface ICreateWallPostData {
+	text: string;
+	media: IWallPostPhotoOptimized[];
+	taggedFriends?: Array<{
+		fullName: string;
+	}>;
+	location?: string;
 }
 
 export enum TransactionType {

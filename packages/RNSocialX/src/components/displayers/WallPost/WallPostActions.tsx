@@ -2,43 +2,39 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { IconButton, LikeAnimatingButton } from '../../';
-import { ITranslatedProps } from '../../../types';
-// import {Icons} from '../../../environment/theme';
 
 import styles from './WallPostActions.style';
 
-export interface IWallPostActions extends ITranslatedProps {
+export interface IWallPostActions {
 	likedByCurrentUser: boolean;
-	likeFailed: boolean;
+	likeDisabled: boolean;
 	numberOfSuperLikes: number;
 	numberOfWalletCoins: number;
-	onLikePress: () => void;
-	onSuperLikePress: () => void;
+	onLikePost: () => void;
 	onCommentPress: () => void;
-	onWalletCoinsButtonPress: () => void;
+	onSuperLikePress: () => void;
+	onWalletCoinsPress: () => void;
 }
 
 export const WallPostActions: React.SFC<IWallPostActions> = ({
 	likedByCurrentUser,
-	likeFailed,
-	onLikePress,
+	likeDisabled,
+	onLikePost,
 	onCommentPress,
-	getText,
 }) => {
 	return (
 		<View style={styles.container}>
 			{/* TODO: add when implmented: Socx Wallet / Post Total Rewards
 				 <IconButton
 					iconSource={Icons.iconPostWalletCoins}
-					onPress={onWalletCoinsButtonPress}
+					onPress={onWalletCoinsPress}
 					label={numberOfWalletCoins + ' SOCX'}
 				/> */}
 
 			<LikeAnimatingButton
-				onLikePress={onLikePress}
 				likedByCurrentUser={likedByCurrentUser}
-				likeFailed={likeFailed}
-				getText={getText}
+				disabled={likeDisabled}
+				onLikePost={onLikePost}
 			/>
 			{/* TODO: add when implemented: SuperLikes
 					 <IconButton

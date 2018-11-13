@@ -1,8 +1,3 @@
-/**
- * TODO List:
- * 1. @Serkan: decide how we configure moment.js to avoid hack in method getFormattedPostTime.
- */
-
 import * as React from 'react';
 import {
 	Animated,
@@ -33,29 +28,32 @@ import {
 	IWallPostEnhancedData,
 	WithWallPost,
 } from '../../../enhancers/components/WithWallPost';
+import {
+	IWithLikesEnhancedActions,
+	IWithLikesEnhancedData,
+	WithLikes,
+} from '../../../enhancers/logic/WithLikes';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { INavigationProps, IWallPostComment, IWallPostData } from '../../../types';
+import { IError, INavigationProps, IWallPostComment, IWallPostData } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import styles, { SCREEN_WIDTH } from './WallPost.style';
 
-type IWallPostCardProps = IWallPostEnhancedActions & IWallPostEnhancedData;
+type IWallPostCardProps = IWallPostEnhancedActions &
+	IWallPostEnhancedData &
+	IWithLikesEnhancedActions &
+	IWithLikesEnhancedData;
 
 interface IWallPostCardState {
 	fullTextVisible: boolean;
-	heartAnimation: boolean;
 	comment: string;
 	inputFocused: boolean;
 	inputWidth: Animated.Value;
 	inputIconPosition: Animated.Value;
 	viewOffensiveContent: boolean;
-	recentLikes: {
-		name: string | null;
-		total: number;
-	};
 	likePostFailed: boolean;
 	likeCommentFailed: boolean;
 	sendCommentFailed: boolean;
@@ -106,19 +104,11 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 	public state = {
 		fullTextVisible: false,
-		heartAnimation: false,
 		comment: '',
 		inputFocused: false,
 		inputWidth: new Animated.Value(SCREEN_WIDTH),
 		inputIconPosition: new Animated.Value(100),
 		viewOffensiveContent: false,
-		recentLikes: {
-			name:
-				this.props.post.likes.length > 0
-					? this.props.post.likes[this.props.post.likes.length - 1].userName
-					: null,
-			total: this.props.post.likes.length,
-		},
 		likePostFailed: false,
 		likeCommentFailed: false,
 		sendCommentFailed: false,
@@ -145,6 +135,13 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			skeletonPost,
 			commentInput,
 			keyboardRaised,
+			optLikedByCurrentUser,
+			likeDisabled,
+			recentLikes,
+			animationProgress,
+			heartAnimation,
+			onLikePost,
+			onDoubleTapLikePost,
 			onCommentsPress,
 			onUserPress,
 			onImagePress,
@@ -160,7 +157,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			taggedFriends,
 			timestamp,
 			owner,
-			likedByCurrentUser,
 			media,
 			topComments,
 			numberOfSuperLikes,
@@ -176,7 +172,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			inputWidth,
 			inputIconPosition,
 			fullTextVisible,
-			heartAnimation,
 			comment,
 			comments,
 			likePostFailed,
@@ -237,36 +232,27 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							/>
 							{media.length > 0 && (
 								<View style={styles.mediaContainer}>
-									{!!heartAnimation && (
-										<HeartAnimation
-											ended={(status) => this.setState({ heartAnimation: !status })}
-										/>
-									)}
+									{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 									<WallPostMedia
 										mediaObjects={media}
 										onMediaObjectView={(index: number) => onImagePress(index, media, post)}
-										onLikeButtonPressed={this.onDoubleTapLikeHandler}
+										onDoublePress={() => onDoubleTapLikePost(post.postId)}
 										placeholder={!!skeletonPost}
 										getText={getText}
 									/>
 								</View>
 							)}
 							<WallPostActions
-								likedByCurrentUser={likedByCurrentUser}
-								likeFailed={likePostFailed}
+								likedByCurrentUser={optLikedByCurrentUser}
+								likeDisabled={likeDisabled}
 								numberOfSuperLikes={numberOfSuperLikes}
 								numberOfWalletCoins={numberOfWalletCoins}
-								onLikePress={this.onLikePressHandler}
+								onLikePost={() => onLikePost(post.postId)}
 								onCommentPress={() => onCommentsPress(post, true)}
 								onSuperLikePress={() => undefined}
-								onWalletCoinsButtonPress={() => undefined}
-								getText={getText}
+								onWalletCoinsPress={() => undefined}
 							/>
-							<RecentLikes
-								recentLikes={this.state.recentLikes}
-								onUserPress={onUserPress}
-								getText={getText}
-							/>
+							<RecentLikes recentLikes={recentLikes} onUserPress={onUserPress} getText={getText} />
 							{comments.length > 0 &&
 								comments.map((comm) => (
 									<CommentCard
@@ -310,14 +296,12 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 						/>
 						{media.length > 0 && (
 							<View style={styles.mediaContainer}>
-								{heartAnimation && (
-									<HeartAnimation ended={(status) => this.setState({ heartAnimation: !status })} />
-								)}
+								{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 								{(!offensiveContent || viewOffensiveContent) && (
 									<WallPostMedia
 										mediaObjects={media}
 										onMediaObjectView={(index: number) => onImagePress(index, media, post)}
-										onLikeButtonPressed={this.onDoubleTapLikeHandler}
+										onDoublePress={() => onDoubleTapLikePost(post.postId)}
 										placeholder={!!skeletonPost}
 										getText={getText}
 									/>
@@ -330,21 +314,16 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							</View>
 						)}
 						<WallPostActions
-							likedByCurrentUser={likedByCurrentUser}
-							likeFailed={likePostFailed}
+							likedByCurrentUser={optLikedByCurrentUser}
+							likeDisabled={likeDisabled}
 							numberOfSuperLikes={numberOfSuperLikes}
 							numberOfWalletCoins={numberOfWalletCoins}
-							onLikePress={this.onLikePressHandler}
+							onLikePost={() => onLikePost(post.postId)}
 							onCommentPress={() => onCommentsPress(post, true)}
 							onSuperLikePress={() => undefined}
-							onWalletCoinsButtonPress={() => undefined}
-							getText={getText}
+							onWalletCoinsPress={() => undefined}
 						/>
-						<RecentLikes
-							recentLikes={this.state.recentLikes}
-							onUserPress={onUserPress}
-							getText={getText}
-						/>
+						<RecentLikes recentLikes={recentLikes} onUserPress={onUserPress} getText={getText} />
 						<ViewAllComments
 							numberOfComments={numberOfComments}
 							onCommentPress={() => onCommentsPress(post, false)}
@@ -397,6 +376,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 					this.props.onAddComment!(height);
 				},
 			);
+
 			if (!this.state.inputFocused) {
 				Animated.parallel([
 					Animated.timing(this.state.inputWidth, {
@@ -410,81 +390,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 				]).start();
 				this.setState({ inputFocused: true });
 			}
-		}
-	};
-
-	private onLikePressHandler = async () => {
-		const { post, onLikePost } = this.props;
-		const { postId, currentUserName, likedByCurrentUser, likes } = post;
-		const { total } = this.state.recentLikes;
-
-		if (!likedByCurrentUser) {
-			this.setState((currentState) => {
-				return {
-					likePostFailed: false,
-					recentLikes: {
-						name: currentUserName,
-						total: currentState.recentLikes.total + 1,
-					},
-				};
-			});
-		} else {
-			if (total === 1) {
-				this.setState((currentState) => {
-					return {
-						likePostFailed: false,
-						recentLikes: {
-							...currentState.recentLikes,
-							name: null,
-							total: 0,
-						},
-					};
-				});
-			} else if (total > 1) {
-				this.setState((currentState) => {
-					const { name } = currentState.recentLikes;
-
-					return {
-						likePostFailed: false,
-						recentLikes: {
-							name: name === currentUserName ? likes[likes.length - 2].userName : name,
-							total: currentState.recentLikes.total - 1,
-						},
-					};
-				});
-			}
-		}
-
-		await onLikePost(likedByCurrentUser, postId);
-
-		if (this.state.likePostFailed) {
-			this.setState({
-				recentLikes: {
-					name: likes.length > 0 ? likes[likes.length - 1].userName : null,
-					total: likes.length,
-				},
-			});
-		}
-	};
-
-	private onDoubleTapLikeHandler = async () => {
-		const { post, onDoubleTapLike } = this.props;
-		const { postId, currentUserName, likedByCurrentUser } = post;
-
-		if (!likedByCurrentUser) {
-			this.setState((currentState) => {
-				return {
-					heartAnimation: true,
-					likePostFailed: false,
-					recentLikes: {
-						name: currentUserName,
-						total: currentState.recentLikes.total + 1,
-					},
-				};
-			});
-			await onDoubleTapLike(postId);
-		} else {
-			this.setState({ heartAnimation: true });
 		}
 	};
 
@@ -644,6 +549,7 @@ interface IWallPostProps extends INavigationProps {
 	commentInput?: boolean;
 	comments?: IWallPostComment[];
 	keyboardRaised?: boolean;
+	errors: IError[];
 	onAddComment?: (cardHeight: number) => void;
 }
 
@@ -652,20 +558,32 @@ export const WallPost: React.SFC<IWallPostProps> = ({
 	commentInput,
 	comments,
 	keyboardRaised,
+	errors,
 	onAddComment,
 	navigation,
 }) => (
 	<WithWallPost navigation={navigation}>
-		{({ data, actions }) => (
-			<WallPostCard
-				post={post}
-				commentInput={commentInput}
-				comments={comments}
-				keyboardRaised={keyboardRaised}
-				onAddComment={onAddComment}
-				{...data}
-				{...actions}
-			/>
+		{(wallPost) => (
+			<WithLikes
+				likedByCurrentUser={post.likedByCurrentUser}
+				likes={post.likes}
+				currentUserName={post.currentUserName}
+				errors={errors}
+			>
+				{(likes) => (
+					<WallPostCard
+						post={post}
+						commentInput={commentInput}
+						comments={comments}
+						keyboardRaised={keyboardRaised}
+						onAddComment={onAddComment}
+						{...wallPost.data}
+						{...wallPost.actions}
+						{...likes.data}
+						{...likes.actions}
+					/>
+				)}
+			</WithLikes>
 		)}
 	</WithWallPost>
 );

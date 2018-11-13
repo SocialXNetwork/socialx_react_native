@@ -11,20 +11,20 @@ interface IMediaInfoSectionProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
 	activeSlide: number;
 	canReact: boolean | undefined;
-	postId?: string;
-	likeFailed: boolean;
+	likeDisabled: boolean;
+	likedByCurrentUser: boolean;
 	onCommentPress: () => void;
-	onLikePress: (likedByCurrentUser: boolean, postId: string) => void;
+	onLikePress: () => void;
 }
 
 export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 	mediaObjects,
 	activeSlide,
 	canReact = false,
-	postId,
-	likeFailed,
-	onCommentPress,
+	likeDisabled,
+	likedByCurrentUser,
 	onLikePress,
+	onCommentPress,
 	getText,
 }) => {
 	const currentMedia = mediaObjects[activeSlide];
@@ -52,11 +52,10 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 			{canReact && (
 				<View style={styles.actionButtons}>
 					<LikeAnimatingButton
-						onLikePress={() => onLikePress(currentMedia.likedByCurrentUser, postId!)}
-						likedByCurrentUser={currentMedia.likedByCurrentUser}
-						likeFailed={likeFailed}
+						likedByCurrentUser={likedByCurrentUser}
 						secondary={true}
-						getText={getText}
+						disabled={likeDisabled}
+						onLikePost={onLikePress}
 					/>
 					<IconButton
 						label={getText('media.viewer.screen.comment.button')}

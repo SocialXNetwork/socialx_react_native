@@ -6,13 +6,13 @@ import { IFriendsSearchResult } from '../../types';
 import styles from './AddFriendsList.style';
 
 interface IAddFriendsListProps {
-	showTagFriendsModal: () => void;
 	taggedFriends: IFriendsSearchResult[];
+	onShowTagFriends: () => void;
 }
 
 export const AddFriendsList: React.SFC<IAddFriendsListProps> = ({
 	taggedFriends,
-	showTagFriendsModal,
+	onShowTagFriends,
 }) => (
 	<View style={styles.tagFriendsContainer}>
 		<ScrollView alwaysBounceHorizontal={false} horizontal={true} style={styles.taggedFriendsScroll}>
@@ -25,7 +25,7 @@ export const AddFriendsList: React.SFC<IAddFriendsListProps> = ({
 				/>
 			))}
 		</ScrollView>
-		<TouchableOpacity onPress={showTagFriendsModal} style={styles.tagFriendsButton}>
+		<TouchableOpacity onPress={onShowTagFriends} style={styles.tagFriendsButton}>
 			<Image source={Icons.tagFriendSmall} />
 		</TouchableOpacity>
 	</View>

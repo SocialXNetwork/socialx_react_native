@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Dimensions, Platform } from 'react-native';
 import Orientation, { orientation } from 'react-native-orientation';
 
-import { DeviceOrientations, OS_TYPES, SCREENS } from '../../environment/consts';
-import { ActionTypes } from '../../store/data/posts/Types';
+import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 import { WithWallPost } from '../../enhancers/components/WithWallPost';
+import { IWithLikesEnhancedData, WithLikes } from '../../enhancers/logic/WithLikes';
 import {
 	IWithMediaViewerEnhancedActions,
 	IWithMediaViewerEnhancedData,
@@ -25,7 +25,8 @@ interface IMediaViewerScreenState {
 
 type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
-	IWithMediaViewerEnhancedActions;
+	IWithMediaViewerEnhancedActions &
+	IWithLikesEnhancedData;
 
 class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
 	public state = {
@@ -53,10 +54,6 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	}
 
 	public render() {
-		const likeFailed = !!this.props.errors.find(
-			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
-		);
-
 		return (
 			<MediaViewerScreenView
 				mediaObjects={this.props.mediaObjects}
@@ -66,14 +63,14 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				viewport={this.state.viewport}
 				infoVisible={this.state.infoVisible}
 				canReact={!!this.props.post}
-				postId={this.props.post ? this.props.post.postId : undefined}
-				likeFailed={likeFailed}
+				likeDisabled={this.props.likeDisabled}
+				likedByCurrentUser={this.props.optLikedByCurrentUser}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
 				onLayout={this.onLayoutHandler}
 				onExitFullScreen={this.onExitFullScreenHandler}
-				onLikePress={this.props.onLikePost}
+				onLikePress={() => this.props.onLikePost(this.props.post!.postId)}
 				onCommentPress={this.onCommentPressHandler}
 				onClose={this.onCloseHandler}
 				getText={this.props.getText}
@@ -134,16 +131,26 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 
 export const MediaViewerScreen = (navProps: INavigationProps) => (
 	<WithWallPost navigation={navProps.navigation}>
-		{(props) => (
+		{(wallPost) => (
 			<WithMediaViewer>
-				{({ data, actions }) => (
-					<Screen
-						{...navProps}
-						{...data}
-						{...actions}
-						onLikePost={props.actions.onLikePost}
-						onCommentsPress={props.actions.onCommentsPress}
-					/>
+				{(media) => (
+					<WithLikes
+						likedByCurrentUser={media.data.post!.likedByCurrentUser}
+						likes={media.data.post!.likes}
+						currentUserName={media.data.post!.currentUserName}
+						errors={media.data.errors}
+					>
+						{(likes) => (
+							<Screen
+								{...navProps}
+								{...media.data}
+								{...media.actions}
+								{...likes.data}
+								onLikePost={likes.actions.onLikePost}
+								onCommentsPress={wallPost.actions.onCommentsPress}
+							/>
+						)}
+					</WithLikes>
 				)}
 			</WithMediaViewer>
 		)}

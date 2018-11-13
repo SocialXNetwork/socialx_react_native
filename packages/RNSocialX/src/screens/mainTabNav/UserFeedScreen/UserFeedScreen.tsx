@@ -50,6 +50,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			currentUser,
 			globalPosts,
 			friendsPosts,
+			errors,
 			skeletonPost,
 			shareSectionPlaceholder,
 			canLoadMorePosts,
@@ -76,6 +77,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
 				onAddComment={this.onAddCommentPressHandler}
+				errors={errors}
 				navigation={navigation}
 				getText={getText}
 			/>

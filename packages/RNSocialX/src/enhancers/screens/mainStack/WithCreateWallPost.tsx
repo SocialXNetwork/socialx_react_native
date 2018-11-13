@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import { KeyboardContext } from '../../../environment/consts';
 import {
+	ICreateWallPostData,
 	ICurrentUser,
 	IGlobal,
 	IOptionsMenuProps,
 	IResizeProps,
 	ITranslatedProps,
 	IUploadFileInput,
-	IWallPostPhotoOptimized,
 } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -18,21 +18,12 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
-interface IWallPostData {
-	text: string;
-	media: IWallPostPhotoOptimized[];
-	taggedFriends?: Array<{
-		fullName: string;
-	}>;
-	location?: string;
-}
-
 export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 	currentUser: ICurrentUser;
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: IWallPostData) => void;
+	createPost: (post: ICreateWallPostData) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
 }
@@ -53,7 +44,6 @@ export class WithCreateWallPost extends React.Component<
 	IWithCreateWallPostState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
 				{({ getText }) => (
@@ -69,14 +59,14 @@ export class WithCreateWallPost extends React.Component<
 														{({ currentUser }) => (
 															<WithPosts>
 																{({ createPost }) =>
-																	children({
+																	this.props.children({
 																		data: {
 																			currentUser,
 																			marginBottom,
 																		},
 																		actions: {
 																			uploadFile,
-																			createPost: async (post: IWallPostData) => {
+																			createPost: async (post: ICreateWallPostData) => {
 																				await createPost({
 																					postText: post.text,
 																					location: post.location,
@@ -85,12 +75,12 @@ export class WithCreateWallPost extends React.Component<
 																					privatePost: false,
 																				} as any);
 																			},
-																			setGlobal,
-																			getText,
 																			showOptionsMenu: (items) =>
 																				showOptionsMenu({
 																					items,
 																				}),
+																			setGlobal,
+																			getText,
 																		},
 																	})
 																}

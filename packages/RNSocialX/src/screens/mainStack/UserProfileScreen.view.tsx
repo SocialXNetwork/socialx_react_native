@@ -20,7 +20,13 @@ import {
 	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { INavigationProps, ITranslatedProps, IVisitedUser, IWallPostData } from '../../types';
+import {
+	IError,
+	INavigationProps,
+	ITranslatedProps,
+	IVisitedUser,
+	IWallPostData,
+} from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -34,6 +40,7 @@ interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
+	errors: IError[];
 	onRefresh: () => void;
 	onGoBack: () => void;
 	onAddFriend: () => void;
@@ -63,6 +70,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onIconPress,
 	onLayoutChange,
 	onGoBack,
+	errors,
 	navigation,
 	getText,
 }) => {
@@ -149,6 +157,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												post={data.item}
 												onAddComment={() => undefined}
 												commentInput={false}
+												errors={errors}
 												navigation={navigation}
 											/>
 										</View>

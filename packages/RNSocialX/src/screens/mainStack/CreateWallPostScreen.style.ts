@@ -2,12 +2,12 @@ import { StyleSheet } from 'react-native';
 
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
-	safeView: {
+const styles: any = {
+	container: {
 		backgroundColor: Colors.white,
 		flex: 1,
 	},
-	container: {
+	contentContainer: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
@@ -42,5 +42,5 @@ const style: any = {
 	},
 };
 
-export const buttonWidth = Sizes.smartHorizontalScale(100);
-export default StyleSheet.create(style);
+export const buttonWidth = Sizes.smartHorizontalScale(150);
+export default StyleSheet.create(styles);

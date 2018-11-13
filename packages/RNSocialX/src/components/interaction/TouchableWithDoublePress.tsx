@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleProp, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
 interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 	onSinglePress: () => void;
@@ -9,17 +9,13 @@ interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
 }
 
 export class TouchableWithDoublePress extends React.Component<ITouchableWithDoublePressProps> {
-	public static defaultProps = {
-		disabled: false,
-	};
-
 	private tapCount: number = 0;
 
 	public render() {
-		const { children } = this.props;
+		const { children, ...props } = this.props;
 
 		return (
-			<TouchableOpacity {...this.props} activeOpacity={1} onPress={this.getTapCount}>
+			<TouchableOpacity {...props} activeOpacity={1} onPress={this.getTapCount}>
 				{children}
 			</TouchableOpacity>
 		);
@@ -27,12 +23,12 @@ export class TouchableWithDoublePress extends React.Component<ITouchableWithDoub
 
 	private getTapCount = () => {
 		let taps = this.tapCount;
-		let singleTapTimer: any;
+		let timeout: any;
 		taps++;
 		this.tapCount++;
 
 		if (taps === 1) {
-			singleTapTimer = setTimeout(() => {
+			timeout = setTimeout(() => {
 				if (this.tapCount === 1) {
 					taps = 0;
 					this.tapCount = 0;
@@ -44,7 +40,8 @@ export class TouchableWithDoublePress extends React.Component<ITouchableWithDoub
 				}
 			}, 300);
 		} else if (taps === 2) {
-			clearTimeout(singleTapTimer);
+			clearTimeout(timeout);
+
 			taps = 0;
 			this.tapCount = 0;
 

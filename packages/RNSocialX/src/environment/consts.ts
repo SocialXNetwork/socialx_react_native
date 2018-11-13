@@ -146,3 +146,5 @@ export enum IMAGE_PICKER_TYPES {
 	Camera = 'Camera',
 	Gallery = 'Gallery',
 }
+
+export const HEART_ANIMATION_TIME = 1000;

@@ -10,7 +10,7 @@ interface ISingleMediaPostProps extends ITranslatedProps {
 	noInteraction: boolean;
 	placeholder: boolean;
 	onMediaObjectView: (index: number) => void;
-	onLikeButtonPressed: () => void;
+	onDoublePress: () => void;
 }
 
 const Placeholder: React.SFC<{ extraStyle?: object }> = ({ extraStyle }) => (
@@ -24,13 +24,13 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	noInteraction,
 	placeholder,
 	onMediaObjectView,
-	onLikeButtonPressed,
+	onDoublePress,
 	getText,
 }) => {
 	return !placeholder ? (
 		<MediaObjectViewer
 			onPress={() => onMediaObjectView(0)}
-			onDoublePress={onLikeButtonPressed}
+			onDoublePress={onDoublePress}
 			thumbOnly={noInteraction}
 			uri={mediaObject.url}
 			style={style.postMediaContainerFullWidth}
@@ -151,7 +151,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 interface IWallPostMediaProps extends ITranslatedProps {
 	mediaObjects: IMediaProps[];
 	onMediaObjectView: (index: number) => void;
-	onLikeButtonPressed: () => void;
+	onDoublePress: () => void;
 	noInteraction?: boolean;
 	placeholder?: boolean;
 }
@@ -160,9 +160,9 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 	mediaObjects,
 	noInteraction = false,
 	placeholder = false,
-	getText,
 	onMediaObjectView = () => undefined,
-	onLikeButtonPressed = () => undefined,
+	onDoublePress = () => undefined,
+	getText,
 }) => {
 	return (
 		<React.Fragment>
@@ -187,7 +187,7 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 					mediaObject={mediaObjects[0]}
 					noInteraction={noInteraction}
 					onMediaObjectView={onMediaObjectView}
-					onLikeButtonPressed={onLikeButtonPressed}
+					onDoublePress={onDoublePress}
 					placeholder={placeholder}
 					getText={getText}
 				/>

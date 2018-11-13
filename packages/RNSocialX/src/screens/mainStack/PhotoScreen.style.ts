@@ -2,13 +2,16 @@ import { StyleSheet } from 'react-native';
 
 import { Colors, Fonts, Icons, Sizes } from '../../environment/theme';
 
-const style: any = {
+const styles: any = {
 	container: {
 		flex: 1,
-		width: '100%',
-	},
-	scrollView: {
 		backgroundColor: Colors.white,
+	},
+	contentContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingHorizontal: Sizes.smartHorizontalScale(20),
+		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 	photoContainer: {
 		marginTop: Sizes.smartVerticalScale(11),
@@ -57,13 +60,18 @@ const style: any = {
 		fontSize: Sizes.smartHorizontalScale(12),
 		color: Colors.paleSky,
 	},
+	buttonContainer: {
+		width: '100%',
+		alignItems: 'center',
+		marginTop: Sizes.smartVerticalScale(10),
+	},
 };
 
-export default StyleSheet.create(style);
-
-export const customStyleProps = {
-	iconLocationPin: Icons.iconLocationPin,
-	underlineColorTransparent: Colors.transparent,
-	iconInviteFriends: Icons.iconInviteFriends,
-	iconNewPostAddMedia: Icons.iconNewPostAddMedia,
+export default StyleSheet.create(styles);
+export const defaultStyles = {
+	buttonWidth: Sizes.smartHorizontalScale(150),
+	transparent: Colors.transparent,
+	location: Icons.iconLocationPin,
+	inviteFriends: Icons.iconInviteFriends,
+	addMedia: Icons.iconNewPostAddMedia,
 };

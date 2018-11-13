@@ -56,7 +56,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public render() {
-		const { currentUser, loadingProfile, loadingPosts, navigation, getText } = this.props;
+		const { currentUser, loadingProfile, loadingPosts, errors, navigation, getText } = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -78,6 +78,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				onSharePress={this.onSharePressHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
+				errors={errors}
 				navigation={navigation}
 				getText={getText}
 			/>

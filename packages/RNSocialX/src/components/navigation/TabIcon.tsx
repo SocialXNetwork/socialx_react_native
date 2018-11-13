@@ -99,18 +99,18 @@ export class TabIcon extends React.Component<ITabIconProps> {
 			{
 				label: getText('tab.bar.bottom.photo.picker.use.gallery'),
 				icon: 'md-photos',
-				actionHandler: () => this.continueWithSelectedPhotoOption(IMAGE_PICKER_TYPES.Gallery),
+				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
 				label: getText('tab.bar.bottom.photo.picker.use.camera'),
 				icon: 'md-camera',
-				actionHandler: () => this.continueWithSelectedPhotoOption(IMAGE_PICKER_TYPES.Camera),
+				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
 		showOptionsMenu(menuItems);
 	};
 
-	private continueWithSelectedPhotoOption = async (source: IMAGE_PICKER_TYPES) => {
+	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
 		const { navigation, setNavigationParams } = this.props;
 
 		let selectedMediaObjects: IPickerImageMultiple = [];

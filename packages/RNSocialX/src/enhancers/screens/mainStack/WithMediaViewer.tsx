@@ -1,13 +1,7 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import {
-	IError,
-	IMediaProps,
-	INavigationParamsActions,
-	ITranslatedProps,
-	IWallPostData,
-} from '../../../types';
+import { IError, IMediaProps, ITranslatedProps, IWallPostData } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithActivities } from '../../connectors/ui/WithActivities';
@@ -20,7 +14,7 @@ export interface IWithMediaViewerEnhancedData {
 }
 
 export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {
-	onLikePost: (likedByCurrentUser: boolean, postId: string) => void;
+	onLikePost: (postId: string) => void;
 	onCommentsPress: (postId: IWallPostData, keyboardRaised: boolean) => void;
 }
 

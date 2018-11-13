@@ -59,7 +59,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 					<TouchableWithDoublePress
 						onSinglePress={onPress}
 						onDoublePress={onDoublePress}
-						disabled={!onPress}
+						disabled={!onPress && !onDoublePress}
 						style={customStyle}
 					>
 						{canZoom && (
