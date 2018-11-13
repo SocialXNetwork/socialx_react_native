@@ -54,7 +54,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	return (
 		<View>
 			{!mediaMimeType && <Text>{getText('message.media.not.supported')}</Text>}
-			{mediaMimeType && mediaMimeType.startsWith(MediaTypeImage.key) && (
+			{!!mediaMimeType && mediaMimeType.startsWith(MediaTypeImage.key) && (
 				<TouchableWithDoublePress
 					onSinglePress={onPress}
 					onDoublePress={onDoublePress}

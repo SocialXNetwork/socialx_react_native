@@ -1,4 +1,3 @@
-import { Row } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { Colors, colorWithAlpha, Fonts, Sizes } from '../../environment/theme';
 
