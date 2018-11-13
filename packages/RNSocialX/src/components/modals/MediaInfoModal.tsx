@@ -11,7 +11,6 @@ interface IMediaInfoModalProps extends ITranslatedProps {
 	visible: boolean;
 	mediaHash: string;
 	mediaSize: number;
-	mediaName: string | null;
 	mediaType: IMediaTypes;
 	mediaURL: string;
 	closeHandler: () => void;
@@ -34,7 +33,6 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 	visible,
 	mediaHash,
 	mediaSize,
-	mediaName = null,
 	mediaType,
 	mediaURL,
 	closeHandler,
@@ -59,7 +57,6 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 						<View style={styles.infoTitles}>
 							<Text style={styles.fieldTitle}>{getText('media.info.hash')}</Text>
 							<Text style={styles.fieldTitle}>{getText('media.info.size')}</Text>
-							<Text style={styles.fieldTitle}>{getText('media.info.name')}</Text>
 							<Text style={styles.fieldTitle}>{getText('media.info.type')}</Text>
 						</View>
 						<View style={{ flex: 1 }}>
@@ -72,9 +69,6 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 							</Text>
 							<Text style={styles.fieldValue} numberOfLines={1}>
 								{numeral(mediaSize).format('0.00 b')}
-							</Text>
-							<Text style={styles.fieldValue} numberOfLines={1}>
-								{mediaName || '-'}
 							</Text>
 							<Text style={styles.fieldValue} numberOfLines={1}>
 								{getText('media.types.' + mediaType.name.toLowerCase())}

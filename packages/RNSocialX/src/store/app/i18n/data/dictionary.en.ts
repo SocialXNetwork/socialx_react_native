@@ -137,7 +137,6 @@ export default {
 	'media.info.title': 'Media Info',
 	'media.info.hash': 'Hash',
 	'media.info.size': 'Size',
-	'media.info.name': 'Name',
 	'media.info.type': 'Type',
 	'media.types.photo': 'Photo',
 	'media.types.video': 'Video',

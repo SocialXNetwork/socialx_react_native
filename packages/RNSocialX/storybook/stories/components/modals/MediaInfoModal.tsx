@@ -19,7 +19,6 @@ storiesOf('Components/modals', module)
 				visible={visible}
 				mediaHash="d89c92b4400b15c39e462a8caa939ab40c3aeeea:1234"
 				mediaSize={88152}
-				mediaName={null}
 				mediaType={MediaTypeImage}
 				mediaURL="https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=350"
 				closeHandler={action('Close!')}

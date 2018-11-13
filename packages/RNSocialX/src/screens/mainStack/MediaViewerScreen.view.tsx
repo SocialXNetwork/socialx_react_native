@@ -109,7 +109,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				mediaHash={currentMediaObject.hash}
 				mediaSize={currentMediaObject.size}
 				mediaType={currentMediaObject.type}
-				mediaName={null}
 				mediaURL={currentMediaObject.url}
 				getText={getText}
 			/>
