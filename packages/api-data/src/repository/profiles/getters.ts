@@ -68,7 +68,7 @@ export const getProfileByUsername = (
 				};
 				return callback(null, profileReturnData);
 			},
-			{ wait: 400, timeout: 800 },
+			{ wait: 500, timeout: 1000 },
 		);
 	};
 	preLoadProfiles(context.gun, () => {
