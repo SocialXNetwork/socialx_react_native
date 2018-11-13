@@ -5,7 +5,7 @@ import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 import { IAdSetupAudienceData, IGenderSelect, ITranslatedProps } from '../../types';
-import styles, { nativeBaseStyles } from './NewAdSetupAudience.style';
+import styles, { nativeBaseStyles, SLIDER_LENGTH } from './NewAdSetupAudience.style';
 
 interface INewAdSetupAudienceViewProps extends ITranslatedProps {
 	updateAdSetAudience: (values: IAdSetupAudienceData) => void;
@@ -28,12 +28,6 @@ const GENDER_SELECTION_BUTTONS = [
 	},
 ];
 
-const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({ currentValue }) => (
-	<View style={styles.thumbContainer}>
-		<Text>{currentValue}</Text>
-	</View>
-);
-
 export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = ({
 	getText,
 	updateAdSetAudience,
@@ -46,7 +40,7 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 			isInitialValid={true}
 			initialValues={{
 				selectedGender: IGenderSelect.all,
-				ageRange: [20, 80],
+				ageRange: [13, 65],
 			}}
 			onSubmit={updateAdSetAudience}
 			render={({
@@ -100,18 +94,22 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 						<Text style={styles.sectionLabel}>
 							{getText('new.ad.setup.audience.age.range.select')}
 						</Text>
-						<MultiSlider
-							values={ageRange}
-							min={10}
-							max={100}
-							step={1}
-							onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
-							selectedStyle={styles.ageSelectorTrack}
-							containerStyle={styles.ageSelectorContainer}
-							customMarker={SliderMarkerWithValue}
-							onValuesChangeStart={() => onMultiSliderChange(true)}
-							onValuesChangeFinish={() => onMultiSliderChange(false)}
-						/>
+						<View style={styles.ageRangeContainer}>
+							<Text style={styles.ageRangeText}>13</Text>
+							<MultiSlider
+								values={ageRange}
+								min={13}
+								max={65}
+								step={1}
+								sliderLength={SLIDER_LENGTH}
+								onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
+								selectedStyle={styles.ageSelectorTrack}
+								containerStyle={styles.ageSelectorContainer}
+								onValuesChangeStart={() => onMultiSliderChange(true)}
+								onValuesChangeFinish={() => onMultiSliderChange(false)}
+							/>
+							<Text style={styles.ageRangeText}>65+</Text>
+						</View>
 						<Text style={styles.sectionLabel}>
 							{getText('new.ad.setup.audience.countries.select')}
 						</Text>

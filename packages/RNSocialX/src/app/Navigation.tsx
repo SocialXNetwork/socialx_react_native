@@ -265,7 +265,7 @@ const HomelessNavigator = createStackNavigator(
 
 const AppNavigation = createStackNavigator(
 	{
-		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
+		HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthNavigator },
 		Intro: { screen: IntroScreen },
 		Main: { screen: MainScreens },

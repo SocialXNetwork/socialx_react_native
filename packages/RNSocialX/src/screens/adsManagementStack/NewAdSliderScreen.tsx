@@ -63,10 +63,11 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 				getText={getText}
 				onGoBack={this.onGoBackHandler}
 				onGoToNextStep={this.onGoToNextStepHandler}
+				onGoToPreviousStep={this.onGoToPreviousStepHandler}
 				sliderStep={SLIDER_STEPS[stepIndex]}
 				ref={this.scrollViewRef}
-				canGoBack={swipeEnabled}
 				onMomentumScrollEnd={this.scrollPageChanged}
+				isOnFirstSlide={stepIndex === 0}
 				isOnLastSlide={stepIndex === SLIDER_STEPS.length - 1}
 			>
 				<NewAdSetupPostScreen
@@ -165,6 +166,19 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 			}
 		} else {
 			this.confirmAdCreationHandler();
+		}
+	};
+
+	private onGoToPreviousStepHandler = () => {
+		const { stepIndex } = this.state;
+		if (stepIndex > 0) {
+			if (this.scrollViewRef.current) {
+				this.scrollViewRef.current.scrollTo({
+					x: SCREEN_WIDTH * (stepIndex - 1),
+					y: 0,
+					animated: true,
+				});
+			}
 		}
 	};
 }
