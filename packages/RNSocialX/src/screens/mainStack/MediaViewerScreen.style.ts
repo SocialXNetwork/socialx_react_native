@@ -39,6 +39,7 @@ const styles: any = {
 	},
 	infoButton: {
 		position: 'absolute',
+		right: 0,
 		width: INFO_BUTTON_SIZE,
 		height: INFO_BUTTON_SIZE,
 		alignItems: 'center',

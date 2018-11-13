@@ -1,3 +1,4 @@
+import { Row } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { Colors, colorWithAlpha, Fonts, Sizes } from '../../environment/theme';
 
@@ -22,8 +23,26 @@ const styles: any = {
 		borderTopColor: colorWithAlpha(Colors.white, 0.5),
 		borderTopWidth: Sizes.smartVerticalScale(1),
 	},
+	likesContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	commentsContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginRight: Sizes.smartHorizontalScale(5),
+	},
+	commentsIconContainer: {
+		flexDirection: 'row',
+		paddingHorizontal: Sizes.smartHorizontalScale(5),
+		marginRight: Sizes.smartHorizontalScale(5),
+		marginBottom: Sizes.smartVerticalScale(2),
+		paddingVertical: Sizes.smartVerticalScale(5),
+	},
 	iconStyle: {
-		fontSize: Sizes.smartHorizontalScale(20),
+		fontSize: Sizes.smartHorizontalScale(26),
 		color: Colors.white,
 	},
 	textStyle: {
