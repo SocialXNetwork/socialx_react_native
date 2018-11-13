@@ -135,9 +135,9 @@ export const MediaViewerScreen = (navProps: INavigationProps) => (
 			<WithMediaViewer>
 				{(media) => (
 					<WithLikes
-						likedByCurrentUser={media.data.post!.likedByCurrentUser}
-						likes={media.data.post!.likes}
-						currentUserName={media.data.post!.currentUserName}
+						likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}
+						likes={media.data.post ? media.data.post.likes : []}
+						currentUserName={media.data.post ? media.data.post.currentUserName : ''}
 						errors={media.data.errors}
 					>
 						{(likes) => (

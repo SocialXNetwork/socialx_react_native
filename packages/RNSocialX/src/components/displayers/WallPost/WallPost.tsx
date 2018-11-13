@@ -54,8 +54,6 @@ interface IWallPostCardState {
 	inputWidth: Animated.Value;
 	inputIconPosition: Animated.Value;
 	viewOffensiveContent: boolean;
-	likePostFailed: boolean;
-	likeCommentFailed: boolean;
 	sendCommentFailed: boolean;
 	commentInputDisabled: boolean;
 	comments: IWallPostComment[];
@@ -67,33 +65,12 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		nextProps: IWallPostCardProps,
 		currentState: IWallPostCardState,
 	) {
-		const likePostFailed = !!nextProps.errors.find(
-			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
-		);
-
-		const likeCommentFailed = !!nextProps.errors.find(
-			(error) =>
-				error.type === ActionTypes.LIKE_COMMENT || error.type === ActionTypes.UNLIKE_COMMENT,
-		);
-
 		const sendCommentFailed = !!nextProps.errors.find(
 			(error) =>
 				error.type === ActionTypes.CREATE_COMMENT || error.type === ActionTypes.REMOVE_COMMENT,
 		);
 
-		if (likePostFailed !== currentState.likePostFailed) {
-			return {
-				likePostFailed: true,
-			};
-		}
-
-		if (likeCommentFailed !== currentState.likePostFailed) {
-			return {
-				likeCommentFailed: true,
-			};
-		}
-
-		if (sendCommentFailed !== currentState.likePostFailed) {
+		if (sendCommentFailed !== currentState.sendCommentFailed) {
 			return {
 				sendCommentFailed: true,
 			};
@@ -174,7 +151,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			fullTextVisible,
 			comment,
 			comments,
-			likePostFailed,
 			commentInputDisabled,
 			reportAProblem,
 		} = this.state;
