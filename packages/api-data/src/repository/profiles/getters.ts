@@ -1,10 +1,11 @@
-import { IContext, IGunCallback, TABLE_ENUMS, TABLES } from '../../types';
+import { IContext, IGunCallback, IMetasTypeCallback, TABLE_ENUMS, TABLES } from '../../types';
 import * as profileHandles from './handles';
 
 import { ApiError } from '../../utils/errors';
 import { cleanGunMetaFromObject, convertGunSetToArray } from '../../utils/helpers';
 import {
-	IFriendReturnData,
+	FRIEND_TYPES,
+	IFriendData,
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
 	IProfileCallbackData,
@@ -16,6 +17,79 @@ const preLoadProfiles = (gun: any, cb: any) => {
 	gun.get(TABLES.POSTS).once(() => {
 		cb();
 	});
+};
+
+const getProfileNumberOfFriends = (
+	context: IContext,
+	profile: IProfileData,
+	callback: (numberOfFriends: number) => void,
+) => {
+	profileHandles
+		.privateUserFriendsRecordByPub(context, profile.pub)
+		.once((friendsRecord: IMetasTypeCallback<IProfileData>) => {
+			if (!friendsRecord) {
+				callback(0);
+			}
+			callback(convertGunSetToArray(friendsRecord).length);
+		});
+};
+
+const asyncFriendWithMutualStatus = (context: IContext, friend: IProfileData) =>
+	new Promise<IFriendData>((res) => {
+		const { pub, alias } = friend;
+		profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
+			(currentUserProfile: IProfileData | undefined) => {
+				if (!currentUserProfile) {
+					getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
+						res({
+							...friend,
+							status: FRIEND_TYPES.PENDING,
+							numberOfFriends,
+						});
+					});
+				} else {
+					getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
+						res({
+							...friend,
+							status: FRIEND_TYPES.MUTUAL,
+							numberOfFriends,
+						});
+					});
+				}
+			},
+			{ wait: 300 },
+		);
+	});
+
+const friendWithMutualStatus = (
+	context: IContext,
+	friend: IProfileData,
+	callback: (friend: IFriendData) => void,
+) => {
+	const { pub, alias } = friend;
+	const mainRunner = () => {
+		profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
+			(currentUserProfile: IProfileData | undefined) => {
+				if (!currentUserProfile) {
+					getFriendProfile(FRIEND_TYPES.PENDING);
+				} else {
+					getFriendProfile(FRIEND_TYPES.MUTUAL);
+				}
+			},
+			{ wait: 400 },
+		);
+	};
+
+	const getFriendProfile = (status: FRIEND_TYPES) => {
+		getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
+			callback({
+				...friend,
+				status,
+				numberOfFriends,
+			});
+		});
+	};
+	mainRunner();
 };
 
 // * this is used internally, do not remove
@@ -47,9 +121,23 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 export const getProfileByUsername = (
 	context: IContext,
 	{ username }: { username: string },
-	callback: IGunCallback<IProfileCallbackData>,
+	callback: IGunCallback<IFriendData>,
 ) => {
 	const mainRunner = () => {
+		profileHandles.currentProfileFriendByUsername(context, username).once(
+			(checkFriendCallback: IProfileData) => {
+				if (!checkFriendCallback) {
+					fetchPublicUser();
+				} else {
+					friendWithMutualStatus(context, checkFriendCallback, (friend) => {
+						callback(null, friend);
+					});
+				}
+			},
+			{ wait: 400 },
+		);
+	};
+	const fetchPublicUser = () => {
 		profileHandles.publicProfileByUsername(context, username).once(
 			(profile: IProfileCallbackData) => {
 				if (!profile || !Object.keys(profile).length) {
@@ -62,7 +150,7 @@ export const getProfileByUsername = (
 
 				const cleanedProfile = cleanGunMetaFromObject(profile);
 
-				return callback(null, cleanedProfile);
+				return callback(null, { ...cleanedProfile, status: FRIEND_TYPES.NOT_FRIEND });
 			},
 			{ wait: 400 },
 		);
@@ -73,31 +161,65 @@ export const getProfileByUsername = (
 export const getProfileByUserObject = (
 	context: IContext,
 	userObject: IUserObject,
-	callback: IGunCallback<IProfileData>,
+	callback: IGunCallback<IFriendData>,
 ) => {
-	profileHandles.privateUserProfileByUserObj(context, userObject).open(
-		(profileData: IProfileData) => {
-			return callback(null, profileData);
-		},
-		{ off: 1 },
-	);
+	const mainRunner = () => {
+		profileHandles.currentProfileFriendByUsername(context, userObject.alias).once(
+			(checkFriendCallback: IProfileData) => {
+				if (!checkFriendCallback) {
+					fetchPublicUser();
+				} else {
+					friendWithMutualStatus(context, checkFriendCallback, (friend) => {
+						callback(null, friend);
+					});
+				}
+			},
+			{ wait: 400 },
+		);
+	};
+	const fetchPublicUser = () => {
+		profileHandles.privateUserProfileByUserObj(context, userObject).open(
+			(profileData: IProfileData) => {
+				getProfileNumberOfFriends(context, profileData, (numberOfFriends) => {
+					return callback(null, {
+						...profileData,
+						status: FRIEND_TYPES.NOT_FRIEND,
+						numberOfFriends,
+					});
+				});
+			},
+			{ off: 1 },
+		);
+	};
+	mainRunner();
 };
 
-export const getCurrentProfileFriends = (
+export const getCurrentProfileFriends = async (
 	context: IContext,
-	callback: IGunCallback<IFriendReturnData[]>,
+	callback: IGunCallback<IProfileData[]>,
 ) => {
-	profileHandles.currentProfileFriendsRecord(context).docLoad(
-		(friendsRecordCallback: IFriendsCallbackData) => {
-			if (!Object.keys(friendsRecordCallback).length) {
-				// no friends, sadlife
-				return callback(null, []);
-			}
-			const sanitizedFriendsArray = convertGunSetToArray(friendsRecordCallback);
-			return callback(null, sanitizedFriendsArray.filter((friend) => friend !== null));
-		},
-		{ wait: 400, timeout: 800 },
-	);
+	profileHandles.currentProfileFriendsRecord(context).once((data: any) => {
+		if (!data) {
+			return callback(null, []);
+		}
+
+		profileHandles.currentProfileFriendsRecord(context).open(
+			(friendsRecordCallback: IFriendsCallbackData) => {
+				if (!Object.keys(friendsRecordCallback).length) {
+					// no friends, sadlife
+					return callback(null, []);
+				}
+
+				// convert to array, and filter out the user removed friends
+				const sanitizedFriendsArray: IProfileData[] = convertGunSetToArray(
+					friendsRecordCallback,
+				).filter((friend) => friend !== null);
+
+				return callback(null, sanitizedFriendsArray);
+			},
+			{ wait: 400, off: 1 },
+		);
+	});
 };
 
 // ? needs review
@@ -159,4 +281,5 @@ export default {
 	findProfilesByFullName,
 	findFriendsSuggestions,
 	getProfileByUserObject,
+	asyncFriendWithMutualStatus,
 };

@@ -33,6 +33,14 @@ export const privateUserProfileByUserObj = (context: IContext, userObject: IUser
 		.get(alias);
 };
 
+export const privateUserFriendsRecordByPub = (context: IContext, pub: string) => {
+	const { gun } = context;
+	return gun
+		.back(-1)
+		.get(`~${pub}`)
+		.get(TABLE_ENUMS.FRIENDS);
+};
+
 export const privateUserProfileByPub = (context: IContext, pub: string) => {
 	const { gun } = context;
 	return gun
@@ -51,6 +59,17 @@ export const currentProfileFriendsRecord = (context: IContext) => {
 export const currentProfileFriendByUsername = (context: IContext, username: string) => {
 	const { account } = context;
 	return account.path(`${TABLE_ENUMS.FRIENDS}.${username}`);
+};
+
+export const currentUserOnPrivateProfilesFriends = (context: IContext, userObject: IUserObject) => {
+	const { gun, account } = context;
+	const { alias, pub } = userObject;
+	return gun
+		.back(-1)
+		.get(`~${pub}`)
+		.get(alias)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(account.is.alias);
 };
 
 // User Requests records

@@ -14,10 +14,6 @@ export interface IProfileCallbackData {
 	friends: IFriendsCallbackData;
 }
 
-export interface IFriendReturnData extends IFriendData {
-	friendId: string;
-}
-
 export interface IProfileData {
 	pub: string;
 	email: string;
@@ -83,16 +79,16 @@ export interface IClearFriendResponseInput {
 export enum FRIEND_TYPES {
 	PENDING = 'pending',
 	MUTUAL = 'mutual',
+	NOT_FRIEND = 'not_friend',
 }
 
-export interface IFriendData {
-	username: string;
-	timestamp: number;
-	relation: FRIEND_TYPES;
+export interface IFriendData extends IProfileData {
+	status: FRIEND_TYPES;
+	numberOfFriends: number;
 }
 
 export interface IFriendsCallbackData {
-	[alias: string]: IProfileData;
+	[alias: string]: IFriendData;
 }
 
 export enum FriendResponses {

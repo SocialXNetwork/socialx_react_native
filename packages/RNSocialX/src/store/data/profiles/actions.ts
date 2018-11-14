@@ -2,6 +2,7 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IClearFriendResponseInput,
+	IFriendData,
 	IPostArrayData,
 	IProfileData,
 	IRejectFriendInput,
@@ -44,7 +45,7 @@ const getProfilesByPostsAction: ActionCreator<IGetProfilesByPostsAction> = (
 });
 
 const syncGetProfilesByPostsAction: ActionCreator<ISyncGetProfilesByPostsAction> = (
-	profiles: IProfileData[],
+	profiles: IFriendData[],
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS,
 	payload: profiles,
@@ -94,7 +95,7 @@ const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
 });
 
 const syncGetProfileByUsernameAction: ActionCreator<ISyncGetProfileByUsernameAction> = (
-	profile: IProfileData,
+	profile: IFriendData,
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME,
 	payload: profile,
@@ -141,7 +142,7 @@ const getProfilesByUsernamesAction: ActionCreator<IGetProfilesByUsernamesAction>
 });
 
 const syncGetProfilesByUsernamesAction: ActionCreator<ISyncGetProfilesByUsernamesAction> = (
-	profiles: IProfileData[],
+	profiles: IFriendData[],
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES,
 	payload: profiles,
@@ -230,7 +231,7 @@ const getCurrentFriendsAction: ActionCreator<IGetCurrentFriendsAction> = () => (
 
 const syncGetCurrentFriendsAction: ActionCreator<ISyncGetCurrentFriendsAction> = (syncFriends: {
 	username: string;
-	friends: IProfileData[];
+	friends: IFriendData[];
 }) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS,
 	payload: syncFriends,

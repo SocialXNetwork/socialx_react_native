@@ -2,6 +2,7 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IClearFriendResponseInput,
+	IFriendData,
 	IPostArrayData,
 	IProfileData,
 	IRejectFriendInput,
@@ -12,9 +13,9 @@ import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
-	profiles: IProfileData[];
+	profiles: IFriendData[];
 	friends: {
-		[username: string]: IProfileData[];
+		[username: string]: IFriendData[];
 	};
 }>;
 
@@ -52,7 +53,7 @@ export interface IGetProfilesByPostsAction extends Action {
 
 export interface ISyncGetProfilesByPostsAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS;
-	payload: IProfileData[];
+	payload: IFriendData[];
 }
 
 export interface IGetProfileByUsernameAction extends Action {
@@ -62,7 +63,7 @@ export interface IGetProfileByUsernameAction extends Action {
 
 export interface ISyncGetProfileByUsernameAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME;
-	payload: IProfileData;
+	payload: IFriendData;
 }
 
 export interface IGetProfilesByUsernamesAction extends Action {
@@ -72,7 +73,7 @@ export interface IGetProfilesByUsernamesAction extends Action {
 
 export interface ISyncGetProfilesByUsernamesAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES;
-	payload: IProfileData[];
+	payload: IFriendData[];
 }
 
 export interface IGetCurrentProfileAction extends Action {
@@ -90,7 +91,7 @@ export interface IGetCurrentFriendsAction extends Action {
 
 export interface ISyncGetCurrentFriendsAction extends Action {
 	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS;
-	payload: { username: string; friends: IProfileData[] };
+	payload: { username: string; friends: IFriendData[] };
 }
 
 export interface IUpdateProfileAction extends Action {

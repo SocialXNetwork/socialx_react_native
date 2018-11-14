@@ -9,6 +9,7 @@ import {
 	IClearFriendResponseInput,
 	ICreateProfileInput,
 	IFindFriendsSuggestionsInput,
+	IFriendData,
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
 	IProfileData,
@@ -101,7 +102,7 @@ export default (context: IContext) => ({
 	},
 	async getProfileByUsername(getProfileByUsernameInput: {
 		username: string;
-	}): Promise<IProfileData> {
+	}): Promise<IFriendData> {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfileByUsername.validate(getProfileByUsernameInput, {
@@ -113,7 +114,7 @@ export default (context: IContext) => ({
 			});
 		}
 
-		return new Promise<IProfileData>((resolve, reject) => {
+		return new Promise<IFriendData>((resolve, reject) => {
 			getters.getProfileByUsername(
 				context,
 				validatedInput as { username: string },
@@ -264,9 +265,18 @@ export default (context: IContext) => ({
 			);
 		});
 	},
-	getCurrentProfileFriends: (): Promise<IFriendsCallbackData> =>
+	getCurrentProfileFriends: (): Promise<IFriendData[]> =>
 		new Promise((resolve, reject) => {
-			getters.getCurrentProfileFriends(context, resolveCallback(resolve, reject));
+			getters.getCurrentProfileFriends(context, async (err, friends) => {
+				if (friends) {
+					const finalFriends = await Promise.all(
+						friends.map((friend) => getters.asyncFriendWithMutualStatus(context, friend)),
+					);
+					resolve(finalFriends);
+				} else {
+					resolve([]);
+				}
+			});
 		}),
 	searchByFullName: ({
 		textSearch,
