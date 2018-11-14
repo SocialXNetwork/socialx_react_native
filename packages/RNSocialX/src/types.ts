@@ -17,11 +17,10 @@ export interface IFriendsSearchResult {
 	avatar: string;
 }
 
-export enum SearchResultKind {
-	Friend = 'FRIEND',
-	NotFriend = 'NOT_FRIEND',
-	FriendRequestSent = 'FRIEND_REQUEST_SENT',
-	Group = 'GROUP',
+export enum FRIEND_TYPES {
+	PENDING = 'pending',
+	MUTUAL = 'mutual',
+	NOT_FRIEND = 'not_friend',
 }
 
 export enum SearchTabs {
@@ -41,7 +40,7 @@ export interface ISearchResultPeople {
 
 export interface ISearchResultGroups {
 	userId: string;
-	relationship: SearchResultKind;
+	relationship: FRIEND_TYPES;
 	fullName: string;
 	userName: string;
 	location: string;
@@ -303,7 +302,19 @@ export interface IVisitedUser {
 	numberOfComments: number;
 	mediaObjects: IMediaProps[];
 	recentPosts: IWallPostData[];
-	relationship: SearchResultKind;
+	relationship: FRIEND_TYPES;
+}
+
+export interface IProfile {
+	pub: string;
+	email: string;
+	avatar: string;
+	fullName: string;
+	miningEnabled: boolean;
+	aboutMeText: string;
+	alias: string;
+	status: FRIEND_TYPES;
+	numberOfFriends: number;
 }
 
 export interface ICryptoStats {

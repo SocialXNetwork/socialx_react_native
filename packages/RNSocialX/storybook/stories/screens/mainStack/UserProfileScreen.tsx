@@ -8,7 +8,7 @@ import { DataProvider } from 'recyclerlistview';
 import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
 import { currentUser, getTextMock, posts } from '../../../../src/mocks';
 import { UserProfileScreenView } from '../../../../src/screens/mainStack/UserProfileScreen.view';
-import { SearchResultKind } from '../../../../src/types';
+import { FRIEND_TYPES } from '../../../../src/types';
 
 storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
@@ -28,12 +28,11 @@ storiesOf('Screens/mainStack', module)
 			relationship: select(
 				'relationship',
 				{
-					friend: SearchResultKind.Friend,
-					notFriend: SearchResultKind.NotFriend,
-					requestSent: SearchResultKind.FriendRequestSent,
-					group: SearchResultKind.Group,
+					friend: FRIEND_TYPES.MUTUAL,
+					notFriend: FRIEND_TYPES.NOT_FRIEND,
+					requestSent: FRIEND_TYPES.PENDING,
 				},
-				SearchResultKind.Friend,
+				FRIEND_TYPES.MUTUAL,
 			),
 		};
 

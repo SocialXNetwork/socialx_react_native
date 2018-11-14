@@ -152,7 +152,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 									data={recentPosts}
 									keyExtractor={(item: IWallPostData) => item.postId}
 									renderItem={(data) => (
-										<View style={styles.wallPostContainer}>
+										<View style={styles.post}>
 											<WallPost
 												post={data.item}
 												onAddComment={() => undefined}

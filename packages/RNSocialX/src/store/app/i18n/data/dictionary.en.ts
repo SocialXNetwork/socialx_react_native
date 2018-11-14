@@ -149,6 +149,7 @@ export default {
 	'notifications.card.generic.swipeout.label': 'Dismiss',
 	'profile.top.container.button.friends': 'FRIENDS',
 	'profile.top.container.button.not.friends': 'ADD FRIEND',
+	'profile.top.container.button.pending': 'CANCEL REQUEST',
 	'profile.top.container.button.edit.profile': 'EDIT PROFILE',
 	'profile.top.container.button.send.message': 'MESSAGE',
 	'profile.statistics.photos': 'photos',

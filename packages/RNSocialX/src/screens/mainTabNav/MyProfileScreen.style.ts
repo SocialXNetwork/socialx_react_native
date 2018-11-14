@@ -18,8 +18,9 @@ const styles: any = {
 		width: '100%',
 		backgroundColor: Colors.white,
 	},
-	wallPostContainer: {
-		paddingBottom: Sizes.smartVerticalScale(25),
+	post: {
+		borderBottomColor: Colors.geyser,
+		borderBottomWidth: Sizes.smartHorizontalScale(8),
 	},
 	contentContainer: {
 		flex: 1,

@@ -51,7 +51,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 			>
 				<AvatarImage image={user.avatar} style={styles.avatar} />
 			</TouchableOpacity>
-			<View style={styles.details}>
+			<View style={[styles.details, !canBack ? { flex: 9 } : { flex: 8 }]}>
 				<Text style={styles.fullName} onPress={() => onUserPress(user.userId)}>
 					{user.fullName}
 					<TaggedFriends friends={taggedFriends || []} getText={getText} />

@@ -23,7 +23,6 @@ const styles: any = {
 		borderRadius: AVATAR_SIZE / 2,
 	},
 	details: {
-		flex: 8,
 		justifyContent: 'center',
 	},
 	fullName: {

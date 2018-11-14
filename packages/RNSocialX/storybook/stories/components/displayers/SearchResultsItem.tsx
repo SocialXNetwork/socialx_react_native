@@ -3,12 +3,12 @@ import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
 import { SearchResultsItem } from '../../../../src/components/';
-import { ISearchResultData, SearchResultKind } from '../../../../src/types';
+import { FRIEND_TYPES, ISearchResultData } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
 const item: ISearchResultData = {
 	userId: '1',
-	relationship: SearchResultKind.NotFriend,
+	relationship: FRIEND_TYPES.NOT_FRIEND,
 	fullName: 'Alex Sirbu',
 	userName: 'alexsirbu',
 	location: 'Timisoara',

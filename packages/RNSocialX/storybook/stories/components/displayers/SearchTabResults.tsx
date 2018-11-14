@@ -5,13 +5,13 @@ import * as React from 'react';
 
 import { SearchTabResults } from '../../../../src/components';
 import { getTextMock } from '../../../../src/mocks';
-import { ISearchResultData, SearchResultKind } from '../../../../src/types';
+import { FRIEND_TYPES, ISearchResultData } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
 const items: ISearchResultData[] = [
 	{
 		userId: '1',
-		relationship: SearchResultKind.NotFriend,
+		relationship: FRIEND_TYPES.NOT_FRIEND,
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
 		location: 'Timisoara',
@@ -19,7 +19,7 @@ const items: ISearchResultData[] = [
 	},
 	{
 		userId: '2',
-		relationship: SearchResultKind.Friend,
+		relationship: FRIEND_TYPES.MUTUAL,
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
 		location: 'Timisoara',
@@ -27,7 +27,7 @@ const items: ISearchResultData[] = [
 	},
 	{
 		userId: '3',
-		relationship: SearchResultKind.Friend,
+		relationship: FRIEND_TYPES.MUTUAL,
 		fullName: 'Alex Sirbu',
 		userName: 'alexsirbu',
 		location: 'Timisoara',

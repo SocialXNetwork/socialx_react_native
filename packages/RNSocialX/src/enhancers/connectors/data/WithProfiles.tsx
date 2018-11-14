@@ -12,7 +12,7 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IClearFriendResponseInput,
-	IProfileData,
+	IFriendData,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
@@ -24,8 +24,8 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	profiles: IProfileData[];
-	friends: IProfileData[];
+	profiles: IFriendData[];
+	friends: { [key: string]: IFriendData[] };
 }
 
 interface IActionProps {
@@ -58,15 +58,14 @@ const selectProfiles = createSelector(
 	(profiles) => profiles,
 );
 
-const selectFriends = (username: string) =>
-	createSelector(
-		(state: IApplicationState) => state.data.profiles.friends[username],
-		(friends) => friends,
-	);
+const selectFriends = createSelector(
+	(state: IApplicationState) => state.data.profiles.friends,
+	(friends) => friends,
+);
 
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
-	friends: selectFriends(state.auth.database.gun ? state.auth.database.gun.alias || '' : '')(state),
+	friends: selectFriends(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({

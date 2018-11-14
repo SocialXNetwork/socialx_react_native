@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { ProfileTopContainer } from '../../../../src/components';
 import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
 import { getTextMock } from '../../../../src/mocks';
-import { SearchResultKind } from '../../../../src/types';
+import { FRIEND_TYPES } from '../../../../src/types';
 
 const image = 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg';
 
@@ -20,7 +20,7 @@ storiesOf('Components/displayers', module).add('ProfileTopContainer', () => (
 			numberOfLikes={2569}
 			numberOfFriends={794}
 			numberOfComments={5912}
-			relationship={SearchResultKind.NotFriend}
+			relationship={FRIEND_TYPES.NOT_FRIEND}
 			isCurrentUser={false}
 			tabs={true}
 			activeTab={PROFILE_TAB_ICON_TYPES.LIST}

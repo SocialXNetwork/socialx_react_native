@@ -5,6 +5,7 @@ export {
 	IAddFriendInput,
 	ICreateProfileInput,
 	IProfileData,
+	IFriendData,
 	IRemoveFriendInput,
 	IFindFriendsSuggestionsInput,
 	IUpdateProfileInput,

@@ -10,8 +10,8 @@ import {
 import {
 	findFriendsSuggestions,
 	IFindFriendsSuggestionsInput,
+	IFriendData,
 	IFriendSuggestionData,
-	IProfileData,
 	ISearchProfilesByFullNameInput,
 	searchProfilesByFullName,
 } from '../../../store/aggregations/profiles';
@@ -19,7 +19,7 @@ import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	friendsSuggestions: IFriendSuggestionData[];
-	searchResults: IProfileData[];
+	searchResults: IFriendData[];
 	userPosts: {
 		[owner: string]: IPostReturnData[];
 	};

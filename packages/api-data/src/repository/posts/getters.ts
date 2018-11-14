@@ -40,8 +40,8 @@ export const getPostPathsByUser = (
 			if (!postsMeta || !Object.keys(postsMeta).length) {
 				return callback([]);
 			}
-			const paths = convertGunSetToArray(postsMeta).map((postMeta: any = {}) =>
-				postMeta ? postMeta.postPath : undefined,
+			const paths = convertGunSetToArray(postsMeta).map(
+				(postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined),
 			);
 			return callback(null, paths);
 		},
