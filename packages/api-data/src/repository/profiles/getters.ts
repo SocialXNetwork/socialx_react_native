@@ -150,7 +150,13 @@ export const getProfileByUsername = (
 
 				const cleanedProfile = cleanGunMetaFromObject(profile);
 
-				return callback(null, { ...cleanedProfile, status: FRIEND_TYPES.NOT_FRIEND });
+				getProfileNumberOfFriends(context, cleanedProfile, (numberOfFriends) => {
+					return callback(null, {
+						...cleanedProfile,
+						status: FRIEND_TYPES.NOT_FRIEND,
+						numberOfFriends,
+					});
+				});
 			},
 			{ wait: 400 },
 		);

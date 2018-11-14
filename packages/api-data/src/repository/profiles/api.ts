@@ -283,13 +283,19 @@ export default (context: IContext) => ({
 		maxResults = 10,
 	}: ISearchProfilesByFullNameInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) => {
-			!textSearch || !textSearch.length || typeof textSearch !== 'string'
-				? resolve([])
-				: getters.findProfilesByFullName(
-						context,
-						{ textSearch, maxResults },
-						resolveCallback(resolve, reject),
-				  ); // tslint:disable-line
+			if (!textSearch || !textSearch.length || typeof textSearch !== 'string') {
+				resolve([]);
+			}
+			getters.findProfilesByFullName(context, { textSearch, maxResults }, async (err, result) => {
+				if (result) {
+					const finalProfiles = await Promise.all(
+						result.map((user) => getters.asyncFriendWithMutualStatus(context, user)),
+					);
+					resolve(finalProfiles);
+				} else {
+					resolve([]);
+				}
+			});
 		}),
 	findFriendsSuggestions: ({
 		maxResults = 10,
