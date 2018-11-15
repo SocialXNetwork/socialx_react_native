@@ -1,3 +1,8 @@
+/*
+ *	TODO:
+ *	1. estimatedReach should be calculated using a formula
+ */
+
 import * as React from 'react';
 
 import { Dimensions, NativeScrollEvent, ScrollView } from 'react-native';
@@ -6,6 +11,7 @@ import {
 	IWithNewAdSliderEnhancedData,
 	WithNewAdSlider,
 } from '../../enhancers/screens';
+import { SCREENS } from '../../environment/consts';
 import {
 	IAdSetupAudienceData,
 	IAdSetupPostData,
@@ -39,12 +45,18 @@ type INewAdSliderScreenProps = INavigationProps &
 interface INewAdSliderScreenState {
 	stepIndex: number;
 	swipeEnabled: boolean;
+	minAgeRange: number;
+	maxAgeRange: number;
+	estimatedReach: string;
 }
 
 class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreenState> {
 	public state = {
 		stepIndex: 0,
 		swipeEnabled: false,
+		minAgeRange: 13,
+		maxAgeRange: 65,
+		estimatedReach: '130 - 650',
 	};
 
 	private postData: IAdSetupPostData | null = null;
@@ -56,8 +68,8 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 	private scrollViewRef: React.RefObject<ScrollView> = React.createRef();
 
 	public render() {
-		const { getText, showOptionsMenu, showConfirmation } = this.props;
-		const { stepIndex, swipeEnabled } = this.state;
+		const { getText, showOptionsMenu, showConfirmation, navigation } = this.props;
+		const { stepIndex, minAgeRange, maxAgeRange, estimatedReach } = this.state;
 		return (
 			<NewAdSliderScreenView
 				getText={getText}
@@ -81,6 +93,11 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 					adSetupAudienceFormik={this.adSetupAudienceFormik}
 					updateAdSetAudience={this.updateAdSetAudienceHandler}
 					onMultiSliderChange={this.onMultiSliderChangeHandler}
+					onAgeRangeHandler={this.onAgeRangeHandler}
+					onManageCountries={() => this.onManageCountriesHandler(navigation)}
+					minAgeRange={minAgeRange}
+					maxAgeRange={maxAgeRange}
+					estimatedReach={estimatedReach}
 				/>
 				<NewAdConfigBudgetScreen
 					getText={getText}
@@ -95,6 +112,23 @@ class Screen extends React.Component<INewAdSliderScreenProps, INewAdSliderScreen
 		this.setState({
 			swipeEnabled: !isStarting,
 		});
+	};
+
+	private onAgeRangeHandler = (values: number[]) => {
+		const valuesEstimatedReach = [];
+		valuesEstimatedReach.push(values[0] * 10, values[1] * 10);
+
+		const newEstimatedReach = valuesEstimatedReach.join(' - ');
+
+		this.setState({
+			minAgeRange: values[0],
+			maxAgeRange: values[1],
+			estimatedReach: newEstimatedReach,
+		});
+	};
+
+	private onManageCountriesHandler = (navigation: any) => {
+		navigation.navigate(SCREENS.ManageCountries);
 	};
 
 	private scrollPageChanged = (event: { nativeEvent: NativeScrollEvent }) => {

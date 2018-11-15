@@ -2,8 +2,10 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { Formik, FormikProps } from 'formik';
 import { Button, Segment } from 'native-base';
 import * as React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
+import { Option } from '../../components';
 import { IAdSetupAudienceData, IGenderSelect, ITranslatedProps } from '../../types';
 import styles, { nativeBaseStyles, SLIDER_LENGTH } from './NewAdSetupAudience.style';
 
@@ -11,6 +13,11 @@ interface INewAdSetupAudienceViewProps extends ITranslatedProps {
 	updateAdSetAudience: (values: IAdSetupAudienceData) => void;
 	adSetupAudienceFormik: React.RefObject<any>;
 	onMultiSliderChange: (isStarting: boolean) => void;
+	onAgeRangeHandler: (values: number[]) => void;
+	onManageCountries: () => void;
+	minAgeRange: number;
+	maxAgeRange: number;
+	estimatedReach: string;
 }
 
 const GENDER_SELECTION_BUTTONS = [
@@ -33,6 +40,11 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 	updateAdSetAudience,
 	adSetupAudienceFormik,
 	onMultiSliderChange,
+	onAgeRangeHandler,
+	minAgeRange,
+	maxAgeRange,
+	onManageCountries,
+	estimatedReach,
 }) => (
 	<View style={styles.rootView}>
 		<Formik
@@ -95,25 +107,45 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 							{getText('new.ad.setup.audience.age.range.select')}
 						</Text>
 						<View style={styles.ageRangeContainer}>
-							<Text style={styles.ageRangeText}>13</Text>
+							<Text style={styles.ageRangeText}>{minAgeRange}</Text>
 							<MultiSlider
 								values={ageRange}
 								min={13}
 								max={65}
 								step={1}
 								sliderLength={SLIDER_LENGTH}
-								onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
+								onValuesChange={(values: number[]) => {
+									onAgeRangeHandler(values);
+									setFieldValue('ageRange', values);
+								}}
 								selectedStyle={styles.ageSelectorTrack}
 								containerStyle={styles.ageSelectorContainer}
 								onValuesChangeStart={() => onMultiSliderChange(true)}
 								onValuesChangeFinish={() => onMultiSliderChange(false)}
 							/>
-							<Text style={styles.ageRangeText}>65+</Text>
+							<Text style={styles.ageRangeText}>{maxAgeRange}</Text>
 						</View>
 						<Text style={styles.sectionLabel}>
 							{getText('new.ad.setup.audience.countries.select')}
 						</Text>
-						<Text>{'TBD: figure out best selector here'}</Text>
+						<View style={styles.separator} />
+						<Option
+							type="icon"
+							icon="ios-flag"
+							text={getText('new.ad.setup.audience.manage.countries')}
+							onPress={() => onManageCountries()}
+						/>
+						<View style={styles.separator} />
+					</View>
+					<View style={styles.peopleReached}>
+						<Text style={styles.peopleReachedText}>
+							{getText('new.ad.setup.audience.estimated.reach')}{' '}
+						</Text>
+						<Text style={styles.peopleReachedText}>{estimatedReach}</Text>
+						<Text style={styles.peopleReachedText}>
+							{' '}
+							{getText('new.ad.setup.audience.estimated.reach.people')}
+						</Text>
 					</View>
 				</ScrollView>
 			)}

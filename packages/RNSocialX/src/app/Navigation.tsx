@@ -38,6 +38,7 @@ import {
 	LikesScreen,
 	LoginScreen,
 	MaintenanceScreen,
+	ManageCountriesScreen,
 	MediaViewerScreen,
 	MyProfileScreen,
 	NewAdSliderScreen,
@@ -254,8 +255,9 @@ const HomelessNavigator = createStackNavigator(
 	{
 		NewAdSliderScreen: { screen: NewAdSliderScreen },
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
-		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
+		ManageCountriesScreen: { screen: ManageCountriesScreen },
 		AdsManagementScreen: { screen: AdsManagementScreen },
+		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
 		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 	},
 	{

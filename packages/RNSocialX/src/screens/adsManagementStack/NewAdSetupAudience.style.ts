@@ -60,6 +60,23 @@ const style: any = {
 		color: Colors.cloudBurst,
 		marginVertical: Sizes.smartVerticalScale(10),
 	},
+	separator: {
+		width: '100%',
+		backgroundColor: Colors.wildSand,
+		height: Sizes.smartVerticalScale(2),
+	},
+	peopleReached: {
+		flexDirection: 'row',
+		marginVertical: Sizes.smartVerticalScale(50),
+		justifyContent: 'center',
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+	},
+	peopleReachedText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.cloudBurst,
+		textAlign: 'center',
+	},
 };
 
 export default StyleSheet.create(style);
