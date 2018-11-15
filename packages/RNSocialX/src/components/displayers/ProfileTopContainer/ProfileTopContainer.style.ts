@@ -74,7 +74,7 @@ const styles: any = {
 		color: Colors.paleSky,
 		textAlign: 'center',
 	},
-	buttonsContainer: {
+	buttons: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -82,12 +82,12 @@ const styles: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
 		marginBottom: Sizes.smartVerticalScale(20),
 	},
-	button: {
+	primary: {
 		height: Sizes.smartVerticalScale(30),
 		backgroundColor: Colors.pink,
 		marginHorizontal: Sizes.smartHorizontalScale(10),
 	},
-	ghostButton: {
+	secondary: {
 		height: Sizes.smartVerticalScale(30),
 		backgroundColor: Colors.white,
 		marginHorizontal: Sizes.smartHorizontalScale(10),

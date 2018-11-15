@@ -59,14 +59,14 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 					<View style={styles.bottomContainer}>
 						<View style={styles.buttonContainer}>
 							<PrimaryButton
-								label={getText('button.SEND')}
+								label={getText('button.send')}
 								borderColor={borderColor}
 								onPress={onSend}
 							/>
 						</View>
 						<View style={styles.buttonContainer}>
 							<PrimaryButton
-								label={getText('button.RECEIVE')}
+								label={getText('button.receive')}
 								borderColor={borderColor}
 								onPress={onReceive}
 							/>

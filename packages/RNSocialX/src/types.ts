@@ -30,24 +30,14 @@ export enum SearchTabs {
 	Places = 'PLACES',
 }
 
-export interface ISearchResultPeople {
+export interface IUserEntry {
 	userId: string;
 	fullName: string;
 	userName: string;
 	location: string;
 	avatar: string;
-}
-
-export interface ISearchResultGroups {
-	userId: string;
 	relationship: FRIEND_TYPES;
-	fullName: string;
-	userName: string;
-	location: string;
-	avatar: string;
 }
-
-export type ISearchResultData = ISearchResultPeople | ISearchResultGroups;
 
 export type getTextSignature = (value: string, ...args: any[]) => string;
 
@@ -202,6 +192,10 @@ export interface IWallPostPhotoOptimized extends PickerImage {
 export interface ILike {
 	userId: string;
 	userName: string;
+	fullName: string;
+	avatar: string;
+	location: string;
+	relationship: FRIEND_TYPES;
 }
 
 export interface IWallPostData {
@@ -219,7 +213,7 @@ export interface IWallPostData {
 	numberOfSuperLikes: number;
 	numberOfComments: number;
 	numberOfWalletCoins: number;
-	suggested: ISearchResultData[] | undefined;
+	suggested: IUserEntry[] | undefined;
 	loading: boolean;
 	currentUserAvatar: string;
 	currentUserName: string;

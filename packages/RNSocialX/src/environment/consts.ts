@@ -126,6 +126,7 @@ export enum SCREENS {
 	WalletAccount = 'WalletAccountScreen',
 	WalletKeys = 'WalletKeysScreen',
 	AdsManagement = 'AdsManagementScreen',
+	Likes = 'LikesScreen',
 }
 
 export enum NAVIGATION {

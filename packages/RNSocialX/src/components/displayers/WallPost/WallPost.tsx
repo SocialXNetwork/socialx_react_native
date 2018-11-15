@@ -29,10 +29,10 @@ import {
 	WithWallPost,
 } from '../../../enhancers/components/WithWallPost';
 import {
-	IWithLikesEnhancedActions,
-	IWithLikesEnhancedData,
-	WithLikes,
-} from '../../../enhancers/logic/WithLikes';
+	IWithLikingEnhancedActions,
+	IWithLikingEnhancedData,
+	WithLiking,
+} from '../../../enhancers/logic/WithLiking';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
@@ -44,8 +44,8 @@ import styles, { SCREEN_WIDTH } from './WallPost.style';
 
 type IWallPostCardProps = IWallPostEnhancedActions &
 	IWallPostEnhancedData &
-	IWithLikesEnhancedActions &
-	IWithLikesEnhancedData;
+	IWithLikingEnhancedActions &
+	IWithLikingEnhancedData;
 
 interface IWallPostCardState {
 	fullTextVisible: boolean;
@@ -119,6 +119,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			heartAnimation,
 			onLikePost,
 			onDoubleTapLikePost,
+			onViewLikes,
 			onCommentsPress,
 			onUserPress,
 			onImagePress,
@@ -228,7 +229,12 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 								onSuperLikePress={() => undefined}
 								onWalletCoinsPress={() => undefined}
 							/>
-							<RecentLikes recentLikes={recentLikes} onUserPress={onUserPress} getText={getText} />
+							<RecentLikes
+								recentLikes={recentLikes}
+								onUserPress={onUserPress}
+								onViewLikes={onViewLikes}
+								getText={getText}
+							/>
 							{comments.length > 0 &&
 								comments.map((comm) => (
 									<CommentCard
@@ -299,7 +305,12 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							onSuperLikePress={() => undefined}
 							onWalletCoinsPress={() => undefined}
 						/>
-						<RecentLikes recentLikes={recentLikes} onUserPress={onUserPress} getText={getText} />
+						<RecentLikes
+							recentLikes={recentLikes}
+							onUserPress={onUserPress}
+							onViewLikes={onViewLikes}
+							getText={getText}
+						/>
 						<ViewAllComments
 							numberOfComments={numberOfComments}
 							onCommentPress={() => onCommentsPress(post, false)}
@@ -540,10 +551,11 @@ export const WallPost: React.SFC<IWallPostProps> = ({
 }) => (
 	<WithWallPost navigation={navigation}>
 		{(wallPost) => (
-			<WithLikes
+			<WithLiking
 				likedByCurrentUser={post.likedByCurrentUser}
 				likes={post.likes}
 				currentUserName={post.currentUserName}
+				navigation={navigation}
 				errors={errors}
 			>
 				{(likes) => (
@@ -559,7 +571,7 @@ export const WallPost: React.SFC<IWallPostProps> = ({
 						{...likes.actions}
 					/>
 				)}
-			</WithLikes>
+			</WithLiking>
 		)}
 	</WithWallPost>
 );

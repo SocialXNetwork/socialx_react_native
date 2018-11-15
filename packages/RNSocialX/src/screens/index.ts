@@ -9,6 +9,7 @@ export { CommentsScreen } from './commentsStack/CommentsScreen';
 export { IntroScreen } from './intro/IntroScreen';
 
 export { CreateWallPostScreen } from './mainStack/CreateWallPostScreen';
+export { LikesScreen } from './mainStack/LikesScreen';
 export { MediaViewerScreen } from './mainStack/MediaViewerScreen';
 export { PhotoScreen } from './mainStack/PhotoScreen';
 export { UserProfileScreen } from './mainStack/UserProfileScreen';

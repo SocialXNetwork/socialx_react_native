@@ -1,19 +1,18 @@
 import {
 	IFindFriendsSuggestionsInput,
-	IPostArrayData,
-	IProfileData,
+	IFriendData,
 	ISearchProfilesByFullNameInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
-export interface IFriendSuggestionData extends IProfileData {
+export interface IFriendSuggestionData extends IFriendData {
 	commonFriends: number;
 }
 
 export type IState = DeepReadonly<{
 	friendsSuggestions: IFriendSuggestionData[];
-	searchResults: IProfileData[];
+	searchResults: IFriendData[];
 }>;
 
 export interface ISearchProfilesByFullNameInput {
@@ -55,7 +54,7 @@ export interface ISearchProfilesByFullNameAction extends Action {
 
 export interface ISyncSearchProfilesByFullNameAction extends Action {
 	type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME;
-	payload: IProfileData[];
+	payload: IFriendData[];
 }
 
 export interface IFindFriendsSuggestionsAction extends Action {

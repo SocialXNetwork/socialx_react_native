@@ -67,10 +67,9 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 									value={subject}
 									blurOnSubmit={false}
 								/>
-								{touched.subject &&
-									errors.subject && (
-										<Text style={ApplicationStyles.inputErrorText}>{getText(errors.subject)}</Text>
-									)}
+								{touched.subject && errors.subject && (
+									<Text style={ApplicationStyles.inputErrorText}>{getText(errors.subject)}</Text>
+								)}
 							</View>
 							<View style={style.descriptionContainer}>
 								<PrimaryTextInput
@@ -86,12 +85,11 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 									value={description}
 									blurOnSubmit={false}
 								/>
-								{touched.description &&
-									errors.description && (
-										<Text style={ApplicationStyles.inputErrorText}>
-											{getText(errors.description)}
-										</Text>
-									)}
+								{touched.description && errors.description && (
+									<Text style={ApplicationStyles.inputErrorText}>
+										{getText(errors.description)}
+									</Text>
+								)}
 							</View>
 						</View>
 						<View style={style.buttonsContainer}>
@@ -106,7 +104,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 								onPress={handleSubmit}
 							>
 								<Text style={[style.buttonText, style.buttonTextConfirm]}>
-									{getText('button.SEND')}
+									{getText('button.send')}
 								</Text>
 							</TouchableOpacity>
 						</View>

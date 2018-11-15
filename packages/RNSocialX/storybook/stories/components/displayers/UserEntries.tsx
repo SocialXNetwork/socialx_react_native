@@ -3,10 +3,10 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { SearchResultsList } from '../../../../src/components/';
-import { FRIEND_TYPES, ISearchResultData } from '../../../../src/types';
+import { UserEntries } from '../../../../src/components/';
+import { FRIEND_TYPES, IUserEntry } from '../../../../src/types';
 
-const items: ISearchResultData[] = [
+const items: IUserEntry[] = [
 	{
 		userId: '1',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
@@ -35,13 +35,13 @@ const items: ISearchResultData[] = [
 
 storiesOf('Components/displayers', module)
 	.addDecorator(withKnobs)
-	.add('SearchResultsList', () => {
+	.add('UserEntries', () => {
 		const hasMore = boolean('hasMore', true);
 		return (
-			<SearchResultsList
+			<UserEntries
 				hasMore={hasMore}
-				searchResults={items}
-				onResultPress={action('onResultPress')}
+				entries={items}
+				onEntryPress={action('onResultPress')}
 				onLoadMore={action('onLoadMore')}
 			/>
 		);

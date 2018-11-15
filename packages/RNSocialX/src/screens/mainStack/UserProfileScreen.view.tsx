@@ -75,6 +75,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	getText,
 }) => {
 	const {
+		userId,
 		recentPosts,
 		numberOfLikes,
 		numberOfPhotos,
@@ -119,6 +120,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 				scrollEnabled={hasPhotos || hasPosts}
 			>
 				<ProfileTopContainer
+					userId={userId}
 					avatar={avatar}
 					fullName={fullName}
 					userName={userName}

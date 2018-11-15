@@ -38,6 +38,11 @@ export {
 	IWithCreateWallPostEnhancedData,
 } from './mainStack/WithCreateWallPost';
 export {
+	IWithLikesEnhancedActions,
+	IWithLikesEnhancedData,
+	WithLikes,
+} from './mainStack/WithLikes';
+export {
 	WithMediaViewer,
 	IWithMediaViewerEnhancedData,
 	IWithMediaViewerEnhancedActions,

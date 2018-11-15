@@ -8,12 +8,7 @@
 
 import * as React from 'react';
 
-import {
-	INavigationParamsActions,
-	ISearchResultData,
-	ITranslatedProps,
-	SearchTabs,
-} from '../../../types';
+import { INavigationParamsActions, ITranslatedProps, IUserEntry, SearchTabs } from '../../../types';
 
 import { IPostReturnData } from '../../../store/aggregations/posts';
 import { ActionTypes } from '../../../store/aggregations/profiles/Types';
@@ -25,8 +20,8 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 import { getActivity } from '../../helpers';
 
 export interface IWithSearchEnhancedData {
-	results: ISearchResultData[];
-	suggestions: ISearchResultData[];
+	results: IUserEntry[];
+	suggestions: IUserEntry[];
 	searching: boolean;
 	hasMoreResults: boolean;
 	userPosts: { [owner: string]: IPostReturnData[] };
@@ -62,10 +57,9 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 									<WithActivities>
 										{({ activities }) => (
 											<WithAggregations>
-												{(aggregations) => {
-													return this.props.children({
+												{(aggregations) =>
+													this.props.children({
 														data: {
-															// @Alexandre @Alex, this should be determined by the offset/length ratio
 															hasMoreResults: false,
 															searching: getActivity(
 																activities,
@@ -81,6 +75,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 																			? appConfig.ipfsConfig.ipfs_URL +
 																		  profile.avatar  // tslint:disable-line
 																		: '',
+																relationship: profile.status,
 															})),
 															suggestions: aggregations.friendsSuggestions.map((profile) => ({
 																userId: profile.alias,
@@ -92,6 +87,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 																			? appConfig.ipfsConfig.ipfs_URL +
 																			  profile.avatar // tslint:disable-line
 																		: '',
+																relationship: profile.status,
 															})),
 															userPosts: aggregations.userPosts,
 														},
@@ -114,8 +110,8 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 															setNavigationParams,
 															getText,
 														},
-													});
-												}}
+													})
+												}
 											</WithAggregations>
 										)}
 									</WithActivities>

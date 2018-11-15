@@ -7,7 +7,7 @@ import { INavigationProps } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 import { WithWallPost } from '../../enhancers/components/WithWallPost';
-import { IWithLikesEnhancedData, WithLikes } from '../../enhancers/logic/WithLikes';
+import { IWithLikingEnhancedData, WithLiking } from '../../enhancers/logic/WithLiking';
 import {
 	IWithMediaViewerEnhancedActions,
 	IWithMediaViewerEnhancedData,
@@ -26,7 +26,7 @@ interface IMediaViewerScreenState {
 type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions &
-	IWithLikesEnhancedData;
+	IWithLikingEnhancedData;
 
 class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
 	public state = {
@@ -134,11 +134,12 @@ export const MediaViewerScreen = (navProps: INavigationProps) => (
 		{(wallPost) => (
 			<WithMediaViewer>
 				{(media) => (
-					<WithLikes
+					<WithLiking
 						likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}
 						likes={media.data.post ? media.data.post.likes : []}
 						currentUserName={media.data.post ? media.data.post.currentUserName : ''}
 						errors={media.data.errors}
+						navigation={navProps.navigation}
 					>
 						{(likes) => (
 							<Screen
@@ -150,7 +151,7 @@ export const MediaViewerScreen = (navProps: INavigationProps) => (
 								onCommentsPress={wallPost.actions.onCommentsPress}
 							/>
 						)}
-					</WithLikes>
+					</WithLiking>
 				)}
 			</WithMediaViewer>
 		)}

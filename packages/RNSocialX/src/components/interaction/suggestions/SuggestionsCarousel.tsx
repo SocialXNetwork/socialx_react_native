@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dimensions, Text, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
-import { ISearchResultData, ITranslatedProps } from '../../../types';
+import { ITranslatedProps, IUserEntry } from '../../../types';
 import { SuggestionCard } from './SuggestionCard';
 import styles from './SuggestionsCarousel.style';
 
@@ -10,11 +10,11 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = (45 / 100) * SCREEN_WIDTH;
 
 interface ISuggestionsCarouselProps extends ITranslatedProps {
-	items: ISearchResultData[];
+	items: IUserEntry[];
 }
 
 interface ISuggestionsCarouselState {
-	items: ISearchResultData[];
+	items: IUserEntry[];
 }
 
 export class SuggestionsCarousel extends React.Component<
@@ -60,7 +60,7 @@ export class SuggestionsCarousel extends React.Component<
 		);
 	}
 
-	private renderItem = (data: { item: ISearchResultData; index: number }) => {
+	private renderItem = (data: { item: IUserEntry; index: number }) => {
 		return (
 			<SuggestionCard
 				item={data.item}
@@ -72,7 +72,7 @@ export class SuggestionsCarousel extends React.Component<
 
 	private deleteCard = (cardIndex: number) => {
 		const newItems = this.state.items.filter(
-			(item: ISearchResultData, index: number) => index !== cardIndex,
+			(item: IUserEntry, index: number) => index !== cardIndex,
 		);
 		this.setState({ items: newItems });
 	};

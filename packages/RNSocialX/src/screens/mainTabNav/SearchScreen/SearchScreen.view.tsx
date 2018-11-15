@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SearchHeader, SearchTabResults } from '../../../components';
-import { INavigationProps, ISearchResultData, ITranslatedProps } from '../../../types';
+import { INavigationProps, ITranslatedProps, IUserEntry } from '../../../types';
 
 import styles from './SearchScreen.style';
 
@@ -18,8 +18,8 @@ export const ComingSoon: React.SFC<{ message: string }> = ({ message }) => (
 interface ISearchScreenViewProps extends INavigationProps, ITranslatedProps {
 	loadedTabs: number[];
 	searchTermValue: string;
-	results: ISearchResultData[];
-	suggestions: ISearchResultData[];
+	results: IUserEntry[];
+	suggestions: IUserEntry[];
 	searching: boolean;
 	hasMoreResults: boolean;
 	onTabIndexChanged: (value: { i: number }) => void;

@@ -1,17 +1,16 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
 import { IPostReturnData } from '../../store/data/posts';
 import { ActionTypes } from '../../store/data/posts/Types';
-import { IProfileData } from '../../store/data/profiles';
 import { IActivity } from '../../store/ui/activities';
 
-import { ICurrentUser, MediaTypeImage, MediaTypeVideo } from '../../types';
+import { ICurrentUser, IProfile, MediaTypeImage, MediaTypeVideo } from '../../types';
 import { getActivity, getTopComments } from './';
 
 export const mapPostsForUI = (
 	posts: IPostReturnData[],
 	returnLength: number,
 	currentUser: ICurrentUser | undefined,
-	profiles: IProfileData[],
+	profiles: IProfile[],
 	activities: IActivity[],
 	appConfig: IApplicationConfig,
 ) => {
@@ -20,7 +19,9 @@ export const mapPostsForUI = (
 		.slice(0, returnLength)
 		.map((post) => {
 			const ownerProfile = profiles.find((profile) => profile.alias === post.owner.alias);
-			const foundLike = !!post.likes.find((like) => like.owner.alias === currentUser!.userId);
+			const likedByCurrentUser = !!post.likes.find(
+				(like) => like.owner.alias === currentUser!.userId,
+			);
 
 			return {
 				postId: post.postId,
@@ -36,7 +37,7 @@ export const mapPostsForUI = (
 							? appConfig.ipfsConfig.ipfs_URL + ownerProfile!.avatar
 							: '',
 				},
-				likedByCurrentUser: foundLike,
+				likedByCurrentUser,
 				removable: post.owner.alias === currentUser!.userId,
 				media: post.media.map((media) => ({
 					url: appConfig.ipfsConfig.ipfs_URL + media.hash,
@@ -46,13 +47,22 @@ export const mapPostsForUI = (
 					size: media.size,
 					numberOfLikes: post.likes.length,
 					numberOfComments: post.comments.length,
-					likedByCurrentUser: foundLike,
+					likedByCurrentUser,
 					postId: post.postId,
 				})),
 				likes: post.likes.map((like) => {
+					const likeProfile = profiles.find((p) => p.alias === like.owner.alias);
+
 					return {
 						userId: like.owner.alias,
 						userName: like.owner.alias,
+						fullName: likeProfile!.fullName,
+						avatar:
+							likeProfile!.avatar.length > 0
+								? appConfig.ipfsConfig.ipfs_URL + likeProfile!.avatar
+								: '',
+						location: '',
+						relationship: likeProfile!.status,
 					};
 				}),
 				topComments: getTopComments(post.comments),

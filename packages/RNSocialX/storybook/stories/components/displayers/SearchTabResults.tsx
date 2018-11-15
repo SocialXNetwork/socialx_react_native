@@ -5,10 +5,10 @@ import * as React from 'react';
 
 import { SearchTabResults } from '../../../../src/components';
 import { getTextMock } from '../../../../src/mocks';
-import { FRIEND_TYPES, ISearchResultData } from '../../../../src/types';
+import { FRIEND_TYPES, IUserEntry } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
-const items: ISearchResultData[] = [
+const items: IUserEntry[] = [
 	{
 		userId: '1',
 		relationship: FRIEND_TYPES.NOT_FRIEND,

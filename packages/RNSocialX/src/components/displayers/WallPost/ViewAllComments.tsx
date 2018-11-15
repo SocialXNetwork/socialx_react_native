@@ -16,10 +16,8 @@ export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({
 }) => {
 	if (numberOfComments > 2) {
 		return (
-			<TouchableOpacity style={styles.numCommentsContainer} onPress={onCommentPress}>
-				<Text style={styles.viewAllCommentsText}>
-					{getText('post.card.view.all.comments', numberOfComments)}
-				</Text>
+			<TouchableOpacity style={styles.container} onPress={onCommentPress}>
+				<Text style={styles.text}>{getText('post.card.view.all.comments')}</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -28,11 +26,11 @@ export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({
 };
 
 const style: any = {
-	numCommentsContainer: {
+	container: {
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
-	viewAllCommentsText: {
+	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 		color: Colors.grayText,

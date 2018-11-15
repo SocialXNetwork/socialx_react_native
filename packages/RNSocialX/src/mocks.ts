@@ -1,13 +1,12 @@
-// TODO: @serkan remove this mock, or at least it should probably be only used in stories
-// also ask @alex @ionut about suggestedItems
 import {
+	FRIEND_TYPES,
 	ICurrentUser,
 	ILike,
-	ISearchResultData,
 	ISimpleComment,
 	ITransactionData,
 	ITrendingCategoriesItem,
 	ITrendingContentItem,
+	IUserEntry,
 	IWallPostData,
 	MediaTypeImage,
 	MediaTypeVideo,
@@ -28,12 +27,20 @@ const avatar =
 
 const likes: ILike[] = [
 	{
-		userId: '1',
-		userName: 'johndoe',
+		userId: 'sethsaunders',
+		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
+		fullName: 'Seth Saunders',
+		userName: 'sethsaunders',
+		location: 'New York',
+		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
-		userId: '2',
+		userId: 'janedoe',
+		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
+		fullName: 'Jane Doe',
 		userName: 'janedoe',
+		location: 'New York',
+		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 ];
 
@@ -58,13 +65,14 @@ const topComments: ISimpleComment[] = [
 	},
 ];
 
-export const suggestedItems: ISearchResultData[] = [
+export const suggestedItems: IUserEntry[] = [
 	{
 		userId: '101',
 		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
 		location: 'New York',
+		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
 		userId: '102',
@@ -73,6 +81,7 @@ export const suggestedItems: ISearchResultData[] = [
 		fullName: 'Teresa Lamb',
 		userName: 'terlamb',
 		location: 'London',
+		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
 		userId: '103',
@@ -81,6 +90,7 @@ export const suggestedItems: ISearchResultData[] = [
 		fullName: 'Sophie Smith',
 		userName: 'sophsmt',
 		location: 'San Francisco',
+		relationship: FRIEND_TYPES.MUTUAL,
 	},
 	{
 		userId: '104',
@@ -89,6 +99,7 @@ export const suggestedItems: ISearchResultData[] = [
 		fullName: 'Cory Maxwell',
 		userName: 'corymaxwell',
 		location: 'London',
+		relationship: FRIEND_TYPES.PENDING,
 	},
 	{
 		userId: '105',
@@ -97,6 +108,7 @@ export const suggestedItems: ISearchResultData[] = [
 		fullName: 'Claudia Kulmitzer',
 		userName: 'claudiam',
 		location: 'Berlin',
+		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 ];
 
@@ -119,6 +131,7 @@ export const posts: IWallPostData[] = [
 		removable: false,
 		media: [
 			{
+				postId: '1',
 				url: 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4',
 				hash: '131289fsdf03yr9hehdiwb32',
 				type: MediaTypeVideo,
@@ -126,6 +139,7 @@ export const posts: IWallPostData[] = [
 				size: 51231,
 				numberOfLikes: 0,
 				numberOfComments: 0,
+				likedByCurrentUser: false,
 			},
 		],
 		likes,
@@ -154,6 +168,7 @@ export const posts: IWallPostData[] = [
 		removable: false,
 		media: [
 			{
+				postId: '2',
 				url:
 					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
 				hash: '131289fsdf03yr9hehdiwb32',
@@ -162,6 +177,7 @@ export const posts: IWallPostData[] = [
 				size: 51231,
 				numberOfLikes: 0,
 				numberOfComments: 0,
+				likedByCurrentUser: false,
 			},
 		],
 		likes,
@@ -190,6 +206,7 @@ export const posts: IWallPostData[] = [
 		removable: false,
 		media: [
 			{
+				postId: '3',
 				url:
 					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
 				hash: '131289fsdf03yr9hehdiwb32',
@@ -198,6 +215,7 @@ export const posts: IWallPostData[] = [
 				size: 51231,
 				numberOfLikes: 0,
 				numberOfComments: 0,
+				likedByCurrentUser: true,
 			},
 		],
 		likes,
@@ -226,6 +244,7 @@ export const currentUser: ICurrentUser = {
 	numberOfComments: 87,
 	mediaObjects: [
 		{
+			postId: '3',
 			url:
 				'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
 			hash: '131289fsdf03yr9hehdiwb32',
@@ -234,6 +253,7 @@ export const currentUser: ICurrentUser = {
 			size: 512,
 			numberOfLikes: 0,
 			numberOfComments: 0,
+			likedByCurrentUser: false,
 		},
 	],
 	recentPosts: posts,

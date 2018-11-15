@@ -27,10 +27,10 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 
 										if (foundProfile) {
 											currentUser = {
-												userId: auth.alias || '',
+												userId: foundProfile.alias,
 												email: foundProfile.email,
 												fullName: foundProfile.fullName,
-												userName: auth.alias || '',
+												userName: foundProfile.alias,
 												avatar:
 													foundProfile.avatar.length > 0
 														? appConfig.ipfsConfig.ipfs_URL +

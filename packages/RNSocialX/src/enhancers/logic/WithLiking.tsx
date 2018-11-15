@@ -2,13 +2,15 @@ import * as React from 'react';
 import { Animated, Easing } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
-import { IError, ILike, ITranslatedProps } from '../../types';
+import { SCREENS } from '../../environment/consts';
+import { IError, ILike, INavigationProps, ITranslatedProps } from '../../types';
 
 import { ActionTypes } from '../../store/data/posts/Types';
 import { WithI18n } from '../connectors/app/WithI18n';
+import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
 import { WithPosts } from '../connectors/data/WithPosts';
 
-export interface IWithLikesEnhancedData {
+export interface IWithLikingEnhancedData {
 	optLikedByCurrentUser: boolean;
 	likeDisabled: boolean;
 	recentLikes: {
@@ -19,25 +21,26 @@ export interface IWithLikesEnhancedData {
 	heartAnimation: boolean;
 }
 
-export interface IWithLikesEnhancedActions extends ITranslatedProps {
+export interface IWithLikingEnhancedActions extends ITranslatedProps {
 	onLikePost: (postId: string) => void;
 	onDoubleTapLikePost: (postId: string) => void;
+	onViewLikes: () => void;
 }
 
-interface IWithLikestEnhancedProps {
-	data: IWithLikesEnhancedData;
-	actions: IWithLikesEnhancedActions;
+interface IWithLikingtEnhancedProps {
+	data: IWithLikingEnhancedData;
+	actions: IWithLikingEnhancedActions;
 }
 
-interface IWithLikesProps {
+interface IWithLikingProps extends INavigationProps {
 	likedByCurrentUser: boolean;
 	likes: ILike[];
 	currentUserName: string;
 	errors: IError[];
-	children(props: IWithLikestEnhancedProps): JSX.Element;
+	children(props: IWithLikingtEnhancedProps): JSX.Element;
 }
 
-interface IWithLikesState {
+interface IWithLikingState {
 	optLikedByCurrentUser: boolean;
 	likeDisabled: boolean;
 	likePostFailed: boolean;
@@ -48,10 +51,10 @@ interface IWithLikesState {
 	heartAnimation: boolean;
 }
 
-export class WithLikes extends React.Component<IWithLikesProps, IWithLikesState> {
+export class WithLiking extends React.Component<IWithLikingProps, IWithLikingState> {
 	public static getDerivedStateFromProps(
-		nextProps: IWithLikesProps,
-		currentState: IWithLikesState,
+		nextProps: IWithLikingProps,
+		currentState: IWithLikingState,
 	) {
 		const likePostFailed = !!nextProps.errors.find(
 			(error) => error.type === ActionTypes.LIKE_POST || error.type === ActionTypes.UNLIKE_POST,
@@ -93,24 +96,30 @@ export class WithLikes extends React.Component<IWithLikesProps, IWithLikesState>
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithPosts>
-						{({ likePost, unlikePost }) =>
-							this.props.children({
-								data: {
-									optLikedByCurrentUser: this.state.optLikedByCurrentUser,
-									likeDisabled: this.state.likeDisabled,
-									recentLikes: this.state.recentLikes,
-									animationProgress: this.animationProgress,
-									heartAnimation: this.state.heartAnimation,
-								},
-								actions: {
-									onLikePost: (postId) => this.onLikePostHandler(likePost, unlikePost, postId),
-									onDoubleTapLikePost: (postId) => this.onDoubleTapLikeHandler(likePost, postId),
-									getText,
-								},
-							})
-						}
-					</WithPosts>
+					<WithNavigationParams>
+						{({ setNavigationParams }) => (
+							<WithPosts>
+								{({ likePost, unlikePost }) =>
+									this.props.children({
+										data: {
+											optLikedByCurrentUser: this.state.optLikedByCurrentUser,
+											likeDisabled: this.state.likeDisabled,
+											recentLikes: this.state.recentLikes,
+											animationProgress: this.animationProgress,
+											heartAnimation: this.state.heartAnimation,
+										},
+										actions: {
+											onLikePost: (postId) => this.onLikePostHandler(likePost, unlikePost, postId),
+											onDoubleTapLikePost: (postId) =>
+												this.onDoubleTapLikeHandler(likePost, postId),
+											onViewLikes: () => this.onViewLikesHandler(setNavigationParams),
+											getText,
+										},
+									})
+								}
+							</WithPosts>
+						)}
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);
@@ -230,5 +239,15 @@ export class WithLikes extends React.Component<IWithLikesProps, IWithLikesState>
 				this.setState({ heartAnimation: false });
 			});
 		}
+	};
+
+	private onViewLikesHandler = (setNavigationParams: (input: any) => void) => {
+		const likes = this.props.likes.filter((like) => like.userName !== this.props.currentUserName);
+
+		setNavigationParams({
+			screenName: SCREENS.Likes,
+			params: { likes },
+		});
+		this.props.navigation.navigate(SCREENS.Likes);
 	};
 }

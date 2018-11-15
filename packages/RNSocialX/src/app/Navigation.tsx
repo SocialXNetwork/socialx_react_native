@@ -19,7 +19,6 @@ import {
 	TabIcon,
 	TransparentOverlayModal,
 } from '../components';
-import { WithNavigation } from '../enhancers/navigation/WithNavigation';
 import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
 import styles, { tabStyles } from './Navigation.style';
@@ -36,6 +35,7 @@ import {
 	GlobalUserFeed,
 	IntroScreen,
 	LaunchScreen,
+	LikesScreen,
 	LoginScreen,
 	MaintenanceScreen,
 	MediaViewerScreen,
@@ -231,6 +231,7 @@ const MainScreens = createStackNavigator(
 		},
 		UserProfileScreen: UserProfileStack,
 		CommentsScreen: { screen: CommentsScreen },
+		LikesScreen: { screen: LikesScreen },
 	},
 	{
 		headerMode: 'none',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { ISearchResultData, ITranslatedProps } from '../../types';
+import { ITranslatedProps, IUserEntry } from '../../types';
 import { SearchResults } from './SearchResults';
 import { SuggestedSearches } from './SuggestedSearches';
 
@@ -9,8 +9,8 @@ import styles from './SearchTabResults.style';
 
 interface ISearchTabResultsProps extends ITranslatedProps {
 	searchTermValue: string;
-	searchResults: ISearchResultData[];
-	suggestions: ISearchResultData[];
+	searchResults: IUserEntry[];
+	suggestions: IUserEntry[];
 	searching: boolean;
 	hasMoreResults: boolean;
 	searchForMoreResults: () => void;

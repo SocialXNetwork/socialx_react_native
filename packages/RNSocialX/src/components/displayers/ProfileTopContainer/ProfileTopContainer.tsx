@@ -12,9 +12,16 @@ import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
 import { FRIEND_TYPES, ITranslatedProps } from '../../../types';
 import { Statistics, Tabs } from './';
 
+import {
+	IWithFriendsEnhancedActions,
+	IWithFriendsEnhancedData,
+	WithFriends,
+} from '../../../enhancers/logic/WithFriends';
+
 import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 
 interface IProfileTopContainerProps extends ITranslatedProps {
+	userId: string;
 	avatar: string;
 	fullName: string;
 	userName: string;
@@ -23,7 +30,7 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	numberOfLikes: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	relationship?: FRIEND_TYPES;
+	relationship: FRIEND_TYPES | null;
 	isCurrentUser: boolean;
 	tabs?: boolean;
 	activeTab?: string;
@@ -35,7 +42,10 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	onIconPress?: (tab: string) => void;
 }
 
-export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
+type IProps = IProfileTopContainerProps & IWithFriendsEnhancedActions & IWithFriendsEnhancedData;
+
+const Component: React.SFC<IProps> = ({
+	userId,
 	avatar,
 	fullName,
 	userName,
@@ -44,90 +54,89 @@ export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = ({
 	numberOfLikes,
 	numberOfFriends,
 	numberOfComments,
-	relationship = FRIEND_TYPES.NOT_FRIEND,
+	relationship,
 	isCurrentUser,
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
-	onAddFriend,
+	status,
 	onProfilePhotoPress,
-	onShowFriendshipOptions = () => undefined,
 	onEditProfile = () => undefined,
 	onSendMessage = () => undefined,
 	onIconPress = () => undefined,
 	getText,
-}) => {
-	let relationshipButtonLabel;
-	let relationshipButtonHandler;
-
-	switch (relationship) {
-		case FRIEND_TYPES.MUTUAL:
-			relationshipButtonLabel = getText('profile.top.container.button.friends');
-			relationshipButtonHandler = onShowFriendshipOptions;
-			break;
-		case FRIEND_TYPES.PENDING:
-			relationshipButtonLabel = getText('profile.top.container.button.pending');
-			relationshipButtonHandler = onShowFriendshipOptions; // TODO: Implement cancel request handler
-			break;
-		case FRIEND_TYPES.NOT_FRIEND:
-			relationshipButtonLabel = getText('profile.top.container.button.not.friends');
-			relationshipButtonHandler = onAddFriend;
-			break;
-		default:
-			relationshipButtonLabel = getText('profile.top.container.button.not.friends');
-			relationshipButtonHandler = onAddFriend;
-			break;
-	}
-
-	return (
-		<View style={styles.container}>
-			<View style={styles.background} />
-			<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
-				<AvatarImage image={avatar} style={styles.avatar} />
-			</TouchableOpacity>
-			<View style={styles.statisticsContainer}>
-				<View style={styles.leftStatistics}>
-					<Statistics icon="image" value={numberOfPhotos} />
-					<Statistics icon="heart" value={numberOfLikes} />
-				</View>
-				<View style={styles.rightStatistics}>
-					<Statistics icon="users" value={numberOfFriends} />
-					<Statistics icon="comments" value={numberOfComments} />
-				</View>
+}) => (
+	<View style={styles.container}>
+		<View style={styles.background} />
+		<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
+			<AvatarImage image={avatar} style={styles.avatar} />
+		</TouchableOpacity>
+		<View style={styles.statisticsContainer}>
+			<View style={styles.leftStatistics}>
+				<Statistics icon="image" value={numberOfPhotos} />
+				<Statistics icon="heart" value={numberOfLikes} />
 			</View>
-			<View style={styles.textContainer}>
-				<Text style={styles.name}>{fullName}</Text>
-				<Text style={styles.userName}>@{userName}</Text>
-				{description.length > 0 && <Text style={styles.about}>{description}</Text>}
+			<View style={styles.rightStatistics}>
+				<Statistics icon="users" value={numberOfFriends} />
+				<Statistics icon="comments" value={numberOfComments} />
 			</View>
-			<View style={styles.buttonsContainer}>
-				{!isCurrentUser && (
+		</View>
+		<View style={styles.textContainer}>
+			<Text style={styles.name}>{fullName}</Text>
+			<Text style={styles.userName}>@{userName}</Text>
+			{description.length > 0 && <Text style={styles.about}>{description}</Text>}
+		</View>
+		<View style={styles.buttons}>
+			{!isCurrentUser &&
+				(relationship === FRIEND_TYPES.NOT_FRIEND ? (
 					<PrimaryButton
 						width={buttonWidth}
-						label={relationshipButtonLabel}
+						label={status.text}
 						size={ButtonSizes.Small}
-						borderColor={colors.white}
+						borderColor={colors.pink}
 						textColor={colors.white}
-						containerStyle={styles.button}
-						onPress={relationshipButtonHandler}
+						containerStyle={styles.primary}
+						onPress={() => status.actionHandler(userId)}
 					/>
-				)}
-				{isCurrentUser && (
+				) : (
 					<PrimaryButton
 						width={buttonWidth}
-						label={
-							isCurrentUser
-								? getText('profile.top.container.button.edit.profile')
-								: getText('profile.top.container.button.send.message')
-						}
+						label={status.text}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.pink}
-						containerStyle={styles.ghostButton}
-						onPress={isCurrentUser ? onEditProfile : onSendMessage}
+						containerStyle={styles.secondary}
+						onPress={() => status.actionHandler(userId)}
 					/>
-				)}
-			</View>
-			{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
+				))}
+			{isCurrentUser && (
+				<PrimaryButton
+					width={buttonWidth}
+					label={getText('button.edit.profile')}
+					size={ButtonSizes.Small}
+					borderColor={colors.pink}
+					textColor={colors.pink}
+					containerStyle={styles.secondary}
+					onPress={onEditProfile}
+				/>
+			)}
+			{false && (
+				<PrimaryButton
+					width={buttonWidth}
+					label={getText('button.message')}
+					size={ButtonSizes.Small}
+					borderColor={colors.pink}
+					textColor={colors.white}
+					containerStyle={styles.primary}
+					onPress={onSendMessage}
+				/>
+			)}
 		</View>
-	);
-};
+		{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
+	</View>
+);
+
+export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = (props) => (
+	<WithFriends relationship={props.relationship!}>
+		{({ data }) => <Component {...props} {...data} />}
+	</WithFriends>
+);

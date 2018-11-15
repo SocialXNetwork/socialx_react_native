@@ -4,9 +4,9 @@ import * as React from 'react';
 
 import { SuggestedSearches } from '../../../../src/components/';
 import { getTextMock } from '../../../../src/mocks';
-import { FRIEND_TYPES, ISearchResultData } from '../../../../src/types';
+import { FRIEND_TYPES, IUserEntry } from '../../../../src/types';
 
-const items: ISearchResultData[] = [
+const items: IUserEntry[] = [
 	{
 		userId: '1',
 		relationship: FRIEND_TYPES.NOT_FRIEND,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { ITranslatedProps } from '../../../types';
 import styles from './RecentLikes.style';
@@ -10,27 +10,34 @@ interface IRecentLikesProps extends ITranslatedProps {
 		total: number;
 	};
 	onUserPress: (userId: string) => void;
+	onViewLikes: () => void;
 }
 
 export const RecentLikes: React.SFC<IRecentLikesProps> = ({
 	recentLikes,
 	onUserPress,
+	onViewLikes,
 	getText,
 }) => {
 	if (recentLikes.name) {
+		const others =
+			recentLikes.total - 1 === 1 ? getText('post.card.other') : getText('post.card.others');
+
 		return (
-			<View style={styles.recentLikesContainer}>
-				<Text style={styles.likedText}>
-					{getText('post.card.liked.by') + ' '}
-					<Text style={styles.likeTextBold} onPress={() => onUserPress(recentLikes.name!)}>
+			<View style={styles.container}>
+				<View style={styles.wrapper}>
+					<Text style={styles.normal}>{getText('post.card.liked.by') + ' '}</Text>
+					<Text style={styles.bold} onPress={() => onUserPress(recentLikes.name!)}>
 						{recentLikes.name}
 					</Text>
-				</Text>
+				</View>
 				{recentLikes.total > 1 && (
-					<Text style={styles.likedText}>
-						{' ' + getText('text.and') + ' '}
-						<Text style={styles.likeTextBold}>{recentLikes.total - 1 + ' others'}</Text>
-					</Text>
+					<View style={styles.wrapper}>
+						<Text style={styles.normal}>{' ' + getText('text.and') + ' '}</Text>
+						<TouchableOpacity activeOpacity={1} onPress={onViewLikes}>
+							<Text style={styles.bold}>{recentLikes.total - 1 + ' ' + others}</Text>
+						</TouchableOpacity>
+					</View>
 				)}
 			</View>
 		);

@@ -43,15 +43,17 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 							disabled={likeDisabled}
 							onLikePost={onLikePress}
 						/>
-						{hasLikesOrComments &&
-							numberOfLikes > 0 && <Text style={styles.infoText}>{numberOfLikes}</Text>}
+						{hasLikesOrComments && numberOfLikes > 0 && (
+							<Text style={styles.infoText}>{numberOfLikes}</Text>
+						)}
 					</View>
 					<TouchableOpacity style={styles.commentsContainer} onPress={onCommentPress}>
 						<View style={styles.commentsIconContainer}>
 							<Icon name="comment-o" style={styles.iconStyle} />
 						</View>
-						{hasLikesOrComments &&
-							numberOfComments > 0 && <Text style={styles.infoText}>{numberOfComments}</Text>}
+						{hasLikesOrComments && numberOfComments > 0 && (
+							<Text style={styles.infoText}>{numberOfComments}</Text>
+						)}
 					</TouchableOpacity>
 				</View>
 			)}
