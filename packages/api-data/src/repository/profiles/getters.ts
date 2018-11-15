@@ -129,7 +129,8 @@ export const getProfileByUsername = (
 				if (!checkFriendCallback) {
 					fetchPublicUser();
 				} else {
-					friendWithMutualStatus(context, checkFriendCallback, (friend) => {
+					const friendData = cleanGunMetaFromObject(checkFriendCallback);
+					friendWithMutualStatus(context, friendData, (friend) => {
 						callback(null, friend);
 					});
 				}
@@ -175,7 +176,8 @@ export const getProfileByUserObject = (
 				if (!checkFriendCallback) {
 					fetchPublicUser();
 				} else {
-					friendWithMutualStatus(context, checkFriendCallback, (friend) => {
+					const friendData = cleanGunMetaFromObject(checkFriendCallback);
+					friendWithMutualStatus(context, friendData, (friend) => {
 						callback(null, friend);
 					});
 				}
@@ -185,7 +187,8 @@ export const getProfileByUserObject = (
 	};
 	const fetchPublicUser = () => {
 		profileHandles.privateUserProfileByUserObj(context, userObject).open(
-			(profileData: IProfileData) => {
+			(profileDataCallback: IProfileData) => {
+				const profileData = cleanGunMetaFromObject(profileDataCallback);
 				getProfileNumberOfFriends(context, profileData, (numberOfFriends) => {
 					return callback(null, {
 						...profileData,
