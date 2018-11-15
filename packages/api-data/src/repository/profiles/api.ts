@@ -289,7 +289,7 @@ export default (context: IContext) => ({
 			getters.findProfilesByFullName(context, { textSearch, maxResults }, async (err, result) => {
 				if (result) {
 					const finalProfiles = await Promise.all(
-						result.map((user) => getters.asyncFriendWithMutualStatus(context, user)),
+						result.map((user) => getters.asyncFriendWithMutualStatus(context, user, true)),
 					);
 					resolve(finalProfiles);
 				} else {

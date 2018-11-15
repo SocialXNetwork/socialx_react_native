@@ -34,31 +34,60 @@ const getProfileNumberOfFriends = (
 		});
 };
 
-const asyncFriendWithMutualStatus = (context: IContext, friend: IProfileData) =>
+const asyncFriendWithMutualStatus = (
+	context: IContext,
+	friend: IProfileData,
+	check: boolean = false,
+) =>
 	new Promise<IFriendData>((res) => {
 		const { pub, alias } = friend;
-		profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
-			(currentUserProfile: IProfileData | undefined) => {
-				if (!currentUserProfile) {
-					getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
-						res({
-							...friend,
-							status: FRIEND_TYPES.PENDING,
-							numberOfFriends,
-						});
+		const dataResolver = (noStatusCheck?: boolean) => {
+			if (noStatusCheck) {
+				getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
+					res({
+						...friend,
+						status: FRIEND_TYPES.NOT_FRIEND,
+						numberOfFriends,
 					});
-				} else {
-					getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
-						res({
-							...friend,
-							status: FRIEND_TYPES.MUTUAL,
-							numberOfFriends,
-						});
-					});
-				}
-			},
-			{ wait: 300 },
-		);
+				});
+			} else {
+				profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
+					(currentUserProfile: IProfileData | undefined) => {
+						if (!currentUserProfile) {
+							getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
+								res({
+									...friend,
+									status: FRIEND_TYPES.PENDING,
+									numberOfFriends,
+								});
+							});
+						} else {
+							getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
+								res({
+									...friend,
+									status: FRIEND_TYPES.MUTUAL,
+									numberOfFriends,
+								});
+							});
+						}
+					},
+					{ wait: 300 },
+				);
+			}
+		};
+		if (check) {
+			profileHandles
+				.currentProfileFriendByUsername(context, alias)
+				.once((friendDataCallback: IProfileData) => {
+					if (!friendDataCallback) {
+						dataResolver(true);
+					} else {
+						dataResolver(false);
+					}
+				});
+		} else {
+			dataResolver(false);
+		}
 	});
 
 const friendWithMutualStatus = (
