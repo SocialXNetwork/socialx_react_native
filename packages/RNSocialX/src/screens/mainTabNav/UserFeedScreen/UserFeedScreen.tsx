@@ -54,8 +54,10 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 			skeletonPost,
 			shareSectionPlaceholder,
 			canLoadMorePosts,
+			canLoadMoreFriendsPosts,
 			refreshingFeed,
 			loadingMorePosts,
+			loadingMoreFriendsPosts,
 			creatingPost,
 			navigation,
 			getText,
@@ -68,13 +70,21 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 				skeletonPost={skeletonPost}
 				refreshing={refreshingFeed}
 				creatingPost={creatingPost}
-				canLoadMorePosts={canLoadMorePosts}
-				loadingMorePosts={loadingMorePosts}
+				canLoadMorePosts={
+					feedType === FEED_TYPES.FRIENDS ? canLoadMoreFriendsPosts : canLoadMorePosts
+				}
+				loadingMorePosts={
+					feedType === FEED_TYPES.FRIENDS ? loadingMoreFriendsPosts : loadingMorePosts
+				}
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
 				onRefresh={this.onRefreshHandler}
-				onLoadMorePosts={this.onLoadMorePostsHandler}
+				onLoadMorePosts={
+					feedType === FEED_TYPES.FRIENDS
+						? this.onLoadMoreFriendsPostsHandler
+						: this.onLoadMorePostsHandler
+				}
 				onCreateWallPost={this.onCreateWallPostHandler}
 				onAddComment={this.onAddCommentPressHandler}
 				errors={errors}
@@ -89,6 +99,14 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
 			await loadMorePosts();
+		}
+	};
+
+	private onLoadMoreFriendsPostsHandler = async () => {
+		const { loadMoreFriendsPosts } = this.props;
+
+		if (!this.props.loadingMoreFriendsPosts && !this.props.refreshingFeed) {
+			await loadMoreFriendsPosts();
 		}
 	};
 

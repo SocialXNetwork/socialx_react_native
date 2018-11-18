@@ -16,6 +16,7 @@ import {
 import { getActivity, mapPostsForUI } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
+import { assertNever } from '../../../store/helpers';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
@@ -33,12 +34,15 @@ export interface IWithUserFeedEnhancedData {
 	skeletonPost: IWallPostData;
 	creatingPost: boolean;
 	canLoadMorePosts: boolean;
+	canLoadMoreFriendsPosts: boolean;
 	refreshingFeed: boolean;
 	loadingMorePosts: boolean;
+	loadingMoreFriendsPosts: boolean;
 }
 
 export interface IWithUserFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
 	loadMorePosts: () => void;
+	loadMoreFriendsPosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
 }
 
@@ -73,10 +77,22 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																	<WithCurrentUser>
 																		{({ currentUser }) => {
 																			let globalPosts: IWallPostData[] = [];
+																			let friendsPosts: IWallPostData[] = [];
 
-																			if (feed.posts.length > 0) {
+																			if (feed.global.length > 0) {
 																				globalPosts = mapPostsForUI(
-																					feed.posts,
+																					feed.global,
+																					10,
+																					currentUser,
+																					profiles,
+																					activities,
+																					appConfig,
+																				);
+																			}
+
+																			if (feed.friends.length > 0) {
+																				friendsPosts = mapPostsForUI(
+																					feed.friends,
 																					10,
 																					currentUser,
 																					profiles,
@@ -89,13 +105,18 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				data: {
 																					currentUser: currentUser!,
 																					globalPosts,
-																					friendsPosts: [],
+																					friendsPosts,
 																					errors,
 																					skeletonPost: globals.skeletonPost,
 																					canLoadMorePosts: globals.canLoadMorePosts,
+																					canLoadMoreFriendsPosts: globals.canLoadMoreFriendsPosts,
 																					loadingMorePosts: getActivity(
 																						activities,
 																						ActionTypes.LOAD_MORE_POSTS,
+																					),
+																					loadingMoreFriendsPosts: getActivity(
+																						activities,
+																						ActionTypes.LOAD_MORE_FRIENDS_POSTS,
 																					),
 																					refreshingFeed: getActivity(
 																						activities,
@@ -108,8 +129,23 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				},
 																				actions: {
 																					loadMorePosts: feed.loadMorePosts,
-																					refreshFeed: async () => {
-																						await feed.resetPostsAndRefetch();
+																					loadMoreFriendsPosts: feed.loadMoreFriendsPosts,
+																					refreshFeed: async (type) => {
+																						switch (type) {
+																							case FEED_TYPES.GLOBAL: {
+																								await feed.resetPostsAndRefetch();
+																								break;
+																							}
+
+																							case FEED_TYPES.FRIENDS: {
+																								// TODO: this
+																								break;
+																							}
+
+																							default:
+																								assertNever(type);
+																								break;
+																						}
 																					},
 																					setNavigationParams,
 																					getText,

@@ -12,7 +12,8 @@ import { DeepReadonly } from 'utility-types-fixme-todo';
 import { ISetAuthAction } from '../../auth/gun/Types';
 
 export type IState = DeepReadonly<{
-	posts: IPostArrayData;
+	global: IPostArrayData;
+	friends: IPostArrayData;
 }>;
 
 export interface IUsernameInput {
@@ -48,6 +49,8 @@ export const enum ActionTypes {
 	SYNC_GET_POST_BY_ID = 'data/posts/SYNC_GET_POST_BY_ID',
 	LOAD_MORE_POSTS = 'data/posts/LOAD_MORE_POSTS',
 	SYNC_LOAD_MORE_POSTS = 'data/posts/SYNC_LOAD_MORE_POSTS',
+	LOAD_MORE_FRIENDS_POSTS = 'data/posts/LOAD_MORE_FRIENDS_POSTS',
+	SYNC_LOAD_MORE_FRIENDS_POSTS = 'data/posts/SYNC_LOAD_MORE_FRIENDS_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
@@ -111,6 +114,15 @@ export interface ILoadMorePostsAction extends Action {
 
 export interface ISyncLoadMorePostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
+	payload: IPostArrayData;
+}
+
+export interface ILoadMoreFriendsPostsAction extends Action {
+	type: ActionTypes.LOAD_MORE_FRIENDS_POSTS;
+}
+
+export interface ISyncLoadMoreFriendsPostsAction extends Action {
+	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS;
 	payload: IPostArrayData;
 }
 
@@ -190,6 +202,8 @@ export type IAction =
 	| ISyncGetPostByIdAction
 	| ISyncLoadMorePostsAction
 	| ILoadMorePostsAction
+	| ISyncLoadMoreFriendsPostsAction
+	| ILoadMoreFriendsPostsAction
 	// setters
 	| ICreatePostAction
 	| ILikePostAction

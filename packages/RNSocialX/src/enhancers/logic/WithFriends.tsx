@@ -45,10 +45,10 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 														this.props.relationship,
 														userId,
 														addFriend,
-														removeFriend,
+														removeFriend as any,
 														showOptionsMenu,
 														getText,
-													),
+													)(),
 											},
 										},
 										actions: {},
@@ -87,11 +87,12 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		relationship: FRIEND_TYPES,
 		userId: string,
 		addFriend: (input: { username: string }) => void,
-		removeFriend: (input: { username: string }) => void,
+		removeFriend: (removeFriendInput: { username: string }) => void,
 		showOptionsMenu: (items: any) => void,
 		getText: (value: string) => string,
 	) => {
 		let actionHandler;
+		console.log('handler', relationship);
 
 		switch (relationship) {
 			case FRIEND_TYPES.MUTUAL:

@@ -5,17 +5,17 @@ import { IUserObject } from './types';
 
 export const currentUserProfileData = (context: IContext) => {
 	const { account } = context;
-	return account.path(`${TABLES.PROFILE}.${account.is.alias}`);
+	return account.get(TABLES.PROFILE).get(account.is.alias);
 };
 
 export const currentUserProfile = (context: IContext) => {
 	const { account } = context;
-	return account.path(`${TABLES.PROFILE}`);
+	return account.get(`${TABLES.PROFILE}`);
 };
 
 export const publicProfilesRecord = (context: IContext) => {
 	const { gun } = context;
-	return gun.path(`${TABLES.PROFILES}`);
+	return gun.get(TABLES.PROFILES);
 };
 
 export const publicProfileByUsername = (context: IContext, username: string) => {
@@ -53,21 +53,20 @@ export const privateUserProfileByPub = (context: IContext, pub: string) => {
 
 export const currentProfileFriendsRecord = (context: IContext) => {
 	const { account } = context;
-	return account.path(`${TABLE_ENUMS.FRIENDS}`);
+	return account.get(TABLE_ENUMS.FRIENDS);
 };
 
 export const currentProfileFriendByUsername = (context: IContext, username: string) => {
 	const { account } = context;
-	return account.path(`${TABLE_ENUMS.FRIENDS}.${username}`);
+	return account.get(TABLE_ENUMS.FRIENDS).get(username);
 };
 
 export const currentUserOnPrivateProfilesFriends = (context: IContext, userObject: IUserObject) => {
 	const { gun, account } = context;
-	const { alias, pub } = userObject;
+	const { pub } = userObject;
 	return gun
 		.back(-1)
 		.get(`~${pub}`)
-		.get(alias)
 		.get(TABLE_ENUMS.FRIENDS)
 		.get(account.is.alias);
 };

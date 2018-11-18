@@ -97,10 +97,11 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 																					getPostsForUser: async (username: string) => {
 																						await getUserPosts({ username });
 																					},
-																					addFriend: (username) =>
-																						addFriend({
+																					addFriend: async (username) => {
+																						await addFriend({
 																							username,
-																						}),
+																						});
+																					},
 																					showOptionsMenu: (items) =>
 																						showOptionsMenu({
 																							items,

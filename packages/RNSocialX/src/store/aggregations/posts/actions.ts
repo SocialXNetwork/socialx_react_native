@@ -1,6 +1,7 @@
 import { IPostReturnData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+import { getProfilesByPosts } from '../../data/profiles';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
@@ -42,6 +43,7 @@ export const getUserPosts = (getUserPostsInput: IGetUserPostsInput): IThunk => a
 		);
 		const { dataApi } = context;
 		const userPosts = await dataApi.posts.getPostsByUser(getUserPostsInput);
+		await dispatch(getProfilesByPosts(userPosts));
 		dispatch(
 			syncGetUserPostsAction({
 				posts: userPosts,

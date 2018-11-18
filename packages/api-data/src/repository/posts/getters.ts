@@ -1,3 +1,4 @@
+import * as profileHandles from '../profiles/handles';
 import * as postHandles from './handles';
 
 import {
@@ -9,13 +10,14 @@ import {
 } from '../../types';
 import { ApiError } from '../../utils/errors';
 import {
+	cleanGunMetaFromObject,
 	convertGunSetToArray,
 	convertGunSetToArrayWithKey,
 	datePathFromDate,
 } from '../../utils/helpers';
 
 import moment from 'moment';
-import { ICommentCallbackData, ICommentData, ICommentsPostData } from '../comments';
+import { ICommentData } from '../comments';
 import {
 	IMedia,
 	IPostArrayData,
@@ -35,18 +37,22 @@ export const getPostPathsByUser = (
 	{ username }: { username: string },
 	callback: IGunCallback<string[]>,
 ) => {
-	postHandles.postMetasByUsername(context, username).docLoad(
-		(postsMeta: IPostUserMetasCallback) => {
-			if (!postsMeta || !Object.keys(postsMeta).length) {
-				return callback([]);
-			}
-			const paths = convertGunSetToArray(postsMeta).map((postMeta: any = {}) =>
-				postMeta ? postMeta.postPath : undefined,
-			);
-			return callback(null, paths);
-		},
-		{ wait: 800, timeout: 1000 },
-	);
+	postHandles.postMetasByUsername(context, username).docLoad((metasCallback: any) => {
+		if (!metasCallback || !Object.keys(metasCallback).length) {
+			return callback(null, []);
+		}
+		postHandles
+			.postMetasByUsername(context, username)
+			.docLoad((postsMeta: IPostUserMetasCallback) => {
+				if (!postsMeta || !Object.keys(postsMeta).length) {
+					return callback([]);
+				}
+				const paths = convertGunSetToArray(postsMeta).map((postMeta: any = {}) =>
+					postMeta ? postMeta.postPath : undefined,
+				);
+				return callback(null, paths);
+			});
+	});
 };
 
 const convertLikesToArray = (likes: ILikesMetasCallback): ILikesArray =>
@@ -229,7 +235,7 @@ export const getPostById = (
 	{ postId }: { postId: string },
 	callback: IGunCallback<IPostReturnData>,
 ) => {
-	postHandles.postMetaById(context, postId).docLoad((postMeta: IPostMetasCallback) => {
+	postHandles.postMetaById(context, postId).once((postMeta: IPostMetasCallback) => {
 		if (!postMeta || !Object.keys(postMeta).length) {
 			return callback(
 				new ApiError('failed, no post was found with this id', {
@@ -251,7 +257,6 @@ const getAllPostRelevantData = (
 ) =>
 	postHandles.postsByDate(context, datePath).docLoad(
 		(postsData: IPostsDataCallback) => {
-			console.log('getAllPostRelevantData', { timeout, wait, tries });
 			if (!postsData || !Object.keys(postsData).length) {
 				return callback(null, []);
 			}
@@ -322,6 +327,100 @@ const getAllPostRelevantData = (
 		{ timeout, wait },
 	);
 
+const getAllFriendsPostRelevantData = (
+	context: IContext,
+	datePath: string,
+	friends: string[],
+	{ timeout, wait, tries }: { timeout: number; wait: number; tries: number },
+	callback: IGunCallback<IPostArrayData>,
+) =>
+	postHandles.postsByDate(context, datePath).docLoad(
+		(postsData: IPostsDataCallback) => {
+			if (!postsData || !Object.keys(postsData).length) {
+				return callback(null, []);
+			}
+
+			const allPosts: any = Object.entries(postsData)
+				.map(([key, value]) => {
+					if (!value.owner) {
+						// deleted posts
+						return null;
+					}
+					if (friends.includes(value.owner.alias)) {
+						return {
+							...value,
+							postId: key,
+						};
+					} else {
+						return null;
+					}
+				})
+				.filter((a) => a !== null);
+
+			if (!allPosts.length) {
+				return callback(null, []);
+			}
+
+			let shouldWaitAndTryAgain = false;
+			const posts = allPosts
+				.map((post: IPostCallbackData & { k: string }) => {
+					// convert likes into an array with keys
+					const postLikes = convertLikesToArray(post.likes);
+					// convert comments and their likes into an array with keys
+					const postComments: ICommentData[] = convertCommentsToArray(post.comments);
+					// Convert media to an array
+					const mediaReturn = convertMediaToArray(post.media) || [];
+
+					// If we don't get data proper data i.e. a hashtag key is present,
+					// stop current operation, append 100 to both timeout and wait
+					// Try again the current operation
+					[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
+						if (propArray && propArray.length) {
+							propArray.forEach((obj: any) => {
+								if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
+									shouldWaitAndTryAgain = true;
+								}
+							});
+						}
+					});
+					// related to the retry checks
+					if (
+						post.owner &&
+						typeof post.owner === 'object' &&
+						Object.keys(post.owner).length === 0
+					) {
+						shouldWaitAndTryAgain = true;
+					}
+
+					const { likes, comments, media, ...postRest } = post;
+					if (postRest.owner) {
+						return {
+							...postRest,
+							likes: postLikes,
+							comments: postComments,
+							media: mediaReturn,
+						};
+					} else {
+						return null;
+					}
+				})
+				.filter((post: any) => post !== null);
+
+			if (!shouldWaitAndTryAgain) {
+				return callback(null, posts);
+			}
+
+			getAllFriendsPostRelevantData(
+				context,
+				datePath,
+				friends,
+				{ timeout: timeout + 100, wait: wait + 100, tries: tries + 1 },
+				callback,
+			);
+		},
+		{ timeout, wait },
+	);
+
 export const getPublicPostsByDate = (
 	context: IContext,
 	{ date }: { date: Date },
@@ -331,6 +430,22 @@ export const getPublicPostsByDate = (
 	getAllPostRelevantData(context, datePath, { timeout: 700, wait: 300, tries: 0 }, callback);
 };
 
+export const getPublicFriendsPostsByDate = (
+	context: IContext,
+	{ date, friends }: { date: Date; friends: string[] },
+	callback: IGunCallback<IPostArrayData>,
+) => {
+	const datePath = datePathFromDate(date);
+	getAllFriendsPostRelevantData(
+		context,
+		datePath,
+		friends,
+		{ timeout: 700, wait: 300, tries: 0 },
+		callback,
+	);
+};
+
+// TODO: switch away from time iteration to post id/name meta
 const recursiveSearchForPosts = (
 	context: IContext,
 	{ startTimestamp, daysBack }: { startTimestamp: number; daysBack: number },
@@ -354,6 +469,56 @@ const recursiveSearchForPosts = (
 	});
 };
 
+// TODO: switch away from time iteration to post id/name meta
+const recursiveSearchForFriendsPosts = (
+	context: IContext,
+	{
+		startTimestamp,
+		daysBack,
+		friends,
+	}: { startTimestamp: number; daysBack: number; friends: string[] },
+	callback: IGunCallback<IPostArrayData>,
+) => {
+	if (daysBack > 10) {
+		return callback(null, []);
+	}
+	const nextDate = moment(startTimestamp)
+		.subtract(daysBack, 'd')
+		.toDate();
+
+	getPublicFriendsPostsByDate(context, { date: nextDate, friends }, (err, posts) => {
+		if (err) {
+			return callback(err);
+		}
+		if (posts && posts.length) {
+			return callback(null, posts);
+		}
+		return recursiveSearchForFriendsPosts(
+			context,
+			{ startTimestamp, daysBack: daysBack + 1, friends },
+			callback,
+		);
+	});
+};
+
+export const getMostRecentFriendsPosts = (
+	context: IContext,
+	{ timestamp }: { timestamp: number },
+	callback: IGunCallback<IPostArrayData>,
+) => {
+	profileHandles.currentProfileFriendsRecord(context).once((friendsCallback: IMetasCallback) => {
+		if (!friendsCallback) {
+			return callback(null, []);
+		}
+		const friendsNames = Object.keys(cleanGunMetaFromObject(friendsCallback));
+		return recursiveSearchForFriendsPosts(
+			context,
+			{ startTimestamp: timestamp, daysBack: 0, friends: friendsNames },
+			callback,
+		);
+	});
+};
+
 export const getMostRecentPosts = (
 	context: IContext,
 	{ timestamp }: { timestamp: number },
@@ -364,6 +529,7 @@ export const getMostRecentPosts = (
 
 export default {
 	getMostRecentPosts,
+	getMostRecentFriendsPosts,
 	getPostByPath,
 	getPostById,
 	getPostPathsByUser,

@@ -1,8 +1,7 @@
 import { IContext, IGunCallback } from '../../types';
 
-import * as profileHandles from '../profiles/handles';
-
 import { ApiError } from '../../utils/errors';
+import { cleanGunMetaFromObject } from '../../utils/helpers';
 import { IAccountData, IGetAccountByPubInput } from './types';
 
 const preLoadProfile = (user: any, cb: any) => {
@@ -34,7 +33,7 @@ export const getCurrentAccount = (context: IContext, callback: IGunCallback<IAcc
 				return callback(new ApiError('failed to get current account profile.'));
 			}
 
-			return callback(null, userProfileCallback);
+			return callback(null, cleanGunMetaFromObject(userProfileCallback));
 		});
 	});
 };

@@ -396,6 +396,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.addFriend(addFriendInput);
+			await dispatch(getProfileByUsername(addFriendInput));
 			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
@@ -437,6 +438,7 @@ export const removeFriend = (removeFriendInput: IRemoveFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.removeFriend(removeFriendInput);
+			await dispatch(getProfileByUsername(removeFriendInput));
 			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
@@ -478,6 +480,7 @@ export const acceptFriend = (acceptFriendInput: IAcceptFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.acceptFriend(acceptFriendInput);
+			await dispatch(getProfileByUsername(acceptFriendInput));
 			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
@@ -519,6 +522,7 @@ export const rejectFriend = (rejectFriendInput: IRejectFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.rejectFriend(rejectFriendInput);
+			await dispatch(getProfileByUsername(rejectFriendInput));
 		} catch (e) {
 			await dispatch(
 				setError({

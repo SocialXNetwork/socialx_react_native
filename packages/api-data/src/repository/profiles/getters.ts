@@ -30,7 +30,8 @@ const getProfileNumberOfFriends = (
 			if (!friendsRecord) {
 				callback(0);
 			}
-			callback(convertGunSetToArray(friendsRecord).length);
+			const num = convertGunSetToArray(friendsRecord).length - 1;
+			callback(num);
 		});
 };
 

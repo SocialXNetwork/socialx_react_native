@@ -124,7 +124,7 @@ export default function(context: IContext) {
 							const posts = await Promise.all(
 								(paths || [])
 									.filter((v) => v)
-									.map((path: string) => this.fastGetPostByPath({ postPath: path })),
+									.map((path: string) => this.getPostByPath({ postPath: path })),
 							);
 							resolve(posts);
 						} catch (e) {
@@ -199,6 +199,17 @@ export default function(context: IContext) {
 		loadMorePosts: async (loadMorePostsInput: ILoadMorePostsInput): Promise<IPostArrayData> => {
 			return new Promise<IPostArrayData>((resolve, reject) => {
 				getters.getMostRecentPosts(context, loadMorePostsInput, resolveCallback(resolve, reject));
+			});
+		},
+		loadMoreFriendsPosts: async (
+			loadMorePostsInput: ILoadMorePostsInput,
+		): Promise<IPostArrayData> => {
+			return new Promise<IPostArrayData>((resolve, reject) => {
+				getters.getMostRecentFriendsPosts(
+					context,
+					loadMorePostsInput,
+					resolveCallback(resolve, reject),
+				);
 			});
 		},
 		unlikePost: async (unlikePostInput: IUnlikePostInput): Promise<null> => {

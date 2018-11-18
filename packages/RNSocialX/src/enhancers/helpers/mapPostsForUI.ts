@@ -3,7 +3,7 @@ import { IPostReturnData } from '../../store/data/posts';
 import { ActionTypes } from '../../store/data/posts/Types';
 import { IActivity } from '../../store/ui/activities';
 
-import { ICurrentUser, IProfile, MediaTypeImage, MediaTypeVideo } from '../../types';
+import { ICurrentUser, IProfile, IWallPostData, MediaTypeImage, MediaTypeVideo } from '../../types';
 import { getActivity, getTopComments } from './';
 
 export const mapPostsForUI = (
@@ -13,7 +13,7 @@ export const mapPostsForUI = (
 	profiles: IProfile[],
 	activities: IActivity[],
 	appConfig: IApplicationConfig,
-) => {
+): IWallPostData[] => {
 	return posts
 		.sort((x: any, y: any) => y.timestamp - x.timestamp)
 		.slice(0, returnLength)
@@ -77,5 +77,5 @@ export const mapPostsForUI = (
 				currentUserName: currentUser!.userName,
 				offensiveContent: false,
 			};
-		});
+		}) as IWallPostData[];
 };
