@@ -407,7 +407,9 @@ export const createPost = (
 					// TODO: fix the media type
 					media.map((obj: IWallPostPhotoOptimized | any) =>
 						storageApi.uploadFile(
-							obj.type.includes('gif') ? obj.sourceURL : obj.contentOptimizedPath,
+							obj.type.includes('gif') || obj.type.includes('video')
+								? obj.sourceURL
+								: obj.contentOptimizedPath,
 							obj.type,
 							bootstrapStatus,
 							updateStatus,
