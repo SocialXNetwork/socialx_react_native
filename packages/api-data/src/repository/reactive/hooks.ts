@@ -23,7 +23,11 @@ export const hookNotifications = (
 					if (Object.keys(friendRequests).length === 0) {
 						callback(null);
 					} else {
-						callback(null, convertGunSetToArray(friendRequests));
+						// removed requests
+						const sanitizedRequests = convertGunSetToArray(friendRequests).filter(
+							(req) => req !== null,
+						);
+						callback(null, sanitizedRequests);
 					}
 				},
 				{ wait: 200 },
@@ -37,7 +41,11 @@ export const hookNotifications = (
 					if (Object.keys(friendResponses).length === 0) {
 						callback(null);
 					} else {
-						callback(null, convertGunSetToArray(friendResponses));
+						// removed responses
+						const sanitizedResponses = convertGunSetToArray(friendResponses).filter(
+							(res) => res !== null,
+						);
+						callback(null, sanitizedResponses);
 					}
 				},
 				{ wait: 200 },
