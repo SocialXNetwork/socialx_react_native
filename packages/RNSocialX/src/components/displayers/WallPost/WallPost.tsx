@@ -37,7 +37,7 @@ import {
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { IError, INavigationProps, IWallPostComment, IWallPostData } from '../../../types';
+import { IComment, IError, INavigationProps, IWallPostData } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import styles, { SCREEN_WIDTH } from './WallPost.style';
@@ -56,7 +56,7 @@ interface IWallPostCardState {
 	viewOffensiveContent: boolean;
 	sendCommentFailed: boolean;
 	commentInputDisabled: boolean;
-	comments: IWallPostComment[];
+	comments: IComment[];
 	reportAProblem: boolean;
 }
 
@@ -90,7 +90,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		likeCommentFailed: false,
 		sendCommentFailed: false,
 		commentInputDisabled: false,
-		comments: this.props.comments!,
+		comments: this.props.post.comments,
 		reportAProblem: false,
 	};
 
@@ -111,6 +111,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			post,
 			skeletonPost,
 			commentInput,
+			isCommentsScreen,
 			keyboardRaised,
 			optLikedByCurrentUser,
 			likeDisabled,
@@ -169,7 +170,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 				renderToHardwareTextureAndroid={true}
 			>
 				<UserDetails
-					canBack={!!comments}
+					canBack={isCommentsScreen}
 					user={owner}
 					timestamp={timestamp}
 					taggedFriends={taggedFriends}
@@ -188,7 +189,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 					marginBottom={marginBottom}
 					getText={getText}
 				/>
-				{!!comments && (
+				{isCommentsScreen && (
 					<React.Fragment>
 						<ScrollView
 							style={{ flex: 1 }}
@@ -265,7 +266,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 						</KeyboardAvoidingView>
 					</React.Fragment>
 				)}
-				{!comments && (
+				{!isCommentsScreen && (
 					<React.Fragment>
 						<PostText
 							text={postText}
@@ -426,11 +427,11 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 	};
 
 	private onSubmitCommentHandler = async () => {
-		const { post, currentUser, comments, onSubmitComment } = this.props;
+		const { post, currentUser, isCommentsScreen, onSubmitComment } = this.props;
 
 		const escapedCommentText = this.state.comment.replace(/\n/g, '\\n');
 
-		if (comments) {
+		if (isCommentsScreen) {
 			const newComment = {
 				commentId: uuid(),
 				text: escapedCommentText,
@@ -457,7 +458,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 			if (this.state.sendCommentFailed) {
 				this.setState({
-					comments: this.props.comments!,
+					comments: this.props.post.comments,
 				});
 			}
 		} else {
@@ -474,7 +475,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 			if (this.state.sendCommentFailed) {
 				this.setState({
-					comments: this.props.comments!,
+					comments: this.props.post.comments,
 				});
 			}
 		}
@@ -492,12 +493,12 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 
 		if (this.state.sendCommentFailed) {
 			this.setState({
-				comments: this.props.comments!,
+				comments: this.props.post.comments,
 			});
 		}
 	};
 
-	private onShowCommentOptionsHandler = (comment: IWallPostComment) => {
+	private onShowCommentOptionsHandler = (comment: IComment) => {
 		const { showOptionsMenu, getText } = this.props;
 
 		const menuItems = [
@@ -534,7 +535,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 interface IWallPostProps extends INavigationProps {
 	post: IWallPostData;
 	commentInput?: boolean;
-	comments?: IWallPostComment[];
+	isCommentsScreen: boolean;
 	keyboardRaised?: boolean;
 	errors: IError[];
 	onAddComment?: (cardHeight: number) => void;
@@ -543,7 +544,7 @@ interface IWallPostProps extends INavigationProps {
 export const WallPost: React.SFC<IWallPostProps> = ({
 	post,
 	commentInput,
-	comments,
+	isCommentsScreen = false,
 	keyboardRaised,
 	errors,
 	onAddComment,
@@ -562,7 +563,7 @@ export const WallPost: React.SFC<IWallPostProps> = ({
 					<WallPostCard
 						post={post}
 						commentInput={commentInput}
-						comments={comments}
+						isCommentsScreen={isCommentsScreen}
 						keyboardRaised={keyboardRaised}
 						onAddComment={onAddComment}
 						{...wallPost.data}

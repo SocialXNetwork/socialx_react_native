@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { AvatarImage, RichText } from '../../';
-import { ITranslatedProps, IWallPostComment } from '../../../types';
+import { IComment, ITranslatedProps } from '../../../types';
 import { CommentLikes } from './';
 
 import styles from './CommentCard.style';
@@ -11,7 +11,7 @@ import styles from './CommentCard.style';
 const TEXT_LENGTH_TRESHOLD = 15;
 
 interface ICommentCardProps extends ITranslatedProps {
-	comment: IWallPostComment;
+	comment: IComment;
 	onLikeComment: () => void;
 	onViewUserProfile: (userId: string) => void;
 	onShowOptionsMenu: () => void;

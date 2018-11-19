@@ -4,7 +4,7 @@ import { ActionTypes } from '../../store/data/posts/Types';
 import { IActivity } from '../../store/ui/activities';
 
 import { ICurrentUser, IProfile, IWallPostData, MediaTypeImage, MediaTypeVideo } from '../../types';
-import { getActivity, getTopComments } from './';
+import { getActivity, getComments, getTopComments } from './';
 
 export const mapPostsForUI = (
 	posts: IPostReturnData[],
@@ -65,6 +65,7 @@ export const mapPostsForUI = (
 						relationship: likeProfile!.status,
 					};
 				}),
+				comments: getComments(post.comments, profiles, currentUser!.userId, appConfig),
 				topComments: getTopComments(post.comments),
 				// TODO: add this later when data is available
 				numberOfSuperLikes: 0,

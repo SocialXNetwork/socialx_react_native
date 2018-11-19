@@ -1,9 +1,9 @@
-import { ICommentsReturnData, IProfileData } from '@socialx/api-data';
+import { ICommentsReturnData, IFriendData } from '@socialx/api-data';
 import { IApplicationConfig } from '../../store/app/config';
 
 export const getComments = (
 	comments: ICommentsReturnData[],
-	profiles: IProfileData[],
+	profiles: IFriendData[],
 	currentUserId: string,
 	appConfig: IApplicationConfig,
 ) => {
@@ -26,9 +26,18 @@ export const getComments = (
 				},
 				timestamp: new Date(comment.timestamp),
 				likes: comment.likes.map((like) => {
+					const likeProfile = profiles.find((p) => p.alias === like.owner.alias);
+
 					return {
 						userId: like.owner.alias,
 						userName: like.owner.alias,
+						fullName: likeProfile!.fullName,
+						avatar:
+							likeProfile!.avatar.length > 0
+								? appConfig.ipfsConfig.ipfs_URL + likeProfile!.avatar
+								: '',
+						location: '',
+						relationship: likeProfile!.status,
 					};
 				}),
 				likedByCurrentUser: !!comment.likes.find((like) => like.owner.alias === currentUserId),

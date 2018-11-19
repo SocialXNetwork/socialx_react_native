@@ -86,16 +86,15 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 
 	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
 		const { skeletonPost, errors, navigation } = this.props;
-
 		const post = data.item;
 
 		return (
 			<View style={styles.post}>
 				<WallPost
 					post={post}
-					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
 					commentInput={true}
 					errors={errors}
+					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
 					navigation={navigation}
 				/>
 				{skeletonPost && <View style={styles.overlay} />}

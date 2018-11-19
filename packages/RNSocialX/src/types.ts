@@ -170,7 +170,7 @@ export interface IPostOwner {
 	avatar: string;
 }
 
-export interface IWallPostComment {
+export interface IComment {
 	commentId: string;
 	text: string;
 	user: {
@@ -209,6 +209,7 @@ export interface IWallPostData {
 	removable: boolean;
 	media: IMediaProps[];
 	likes: ILike[];
+	comments: IComment[];
 	topComments: ISimpleComment[];
 	numberOfSuperLikes: number;
 	numberOfComments: number;

@@ -40,15 +40,17 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 										data: {
 											status: {
 												text: this.getStatus(this.props.relationship, getText),
-												actionHandler: (userId) =>
-													this.getHandler(
+												actionHandler: (userId) => {
+													const handler = this.getHandler(
 														this.props.relationship,
 														userId,
 														addFriend,
 														removeFriend as any,
 														showOptionsMenu,
 														getText,
-													)(),
+													);
+													handler();
+												},
 											},
 										},
 										actions: {},
@@ -88,16 +90,15 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		userId: string,
 		addFriend: (input: { username: string }) => void,
 		removeFriend: (removeFriendInput: { username: string }) => void,
-		showOptionsMenu: (items: any) => void,
+		showOptionsMenu: (optionsInput: { items: any }) => void,
 		getText: (value: string) => string,
 	) => {
 		let actionHandler;
-		console.log('handler', relationship);
 
 		switch (relationship) {
 			case FRIEND_TYPES.MUTUAL:
-				actionHandler = () =>
-					this.onShowFriendshipOptionsHandler(userId, removeFriend, showOptionsMenu, getText);
+				const items = this.getMenuItems(userId, removeFriend, getText);
+				actionHandler = () => showOptionsMenu({ items });
 				break;
 			case FRIEND_TYPES.PENDING:
 				actionHandler = () => undefined; // TODO: Implement cancel request actionHandler
@@ -113,19 +114,19 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		return actionHandler;
 	};
 
-	private onShowFriendshipOptionsHandler = (
+	private getMenuItems = (
 		userId: string,
 		removeFriend: (input: { username: string }) => void,
-		showOptionsMenu: (items: any) => void,
 		getText: (value: string) => string,
 	) => {
-		const menuItems = [
+		const items = [
 			{
 				label: getText('friendship.menu.option.remove'),
 				icon: 'md-remove-circle',
 				actionHandler: () => removeFriend({ username: userId }),
 			},
 		];
-		showOptionsMenu(menuItems);
+
+		return items;
 	};
 }

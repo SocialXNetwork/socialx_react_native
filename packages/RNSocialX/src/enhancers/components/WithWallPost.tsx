@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { KeyboardContext, SCREENS, TABS } from '../../environment/consts';
 import {
+	IComment,
 	ICurrentUser,
 	IError,
 	IGlobal,
@@ -14,7 +15,6 @@ import {
 	INavigationProps,
 	IOptionsMenuProps,
 	ITranslatedProps,
-	IWallPostComment,
 	IWallPostData,
 } from '../../types';
 
@@ -34,7 +34,7 @@ export interface IWallPostEnhancedData {
 	errors: IError[];
 	skeletonPost: IWallPostData;
 	commentInput?: boolean;
-	comments?: IWallPostComment[];
+	isCommentsScreen: boolean;
 	keyboardRaised?: boolean;
 	marginBottom: number;
 }
@@ -45,7 +45,7 @@ export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenu
 	onUserPress: (userId: string) => void;
 	onCommentsPress: (post: IWallPostData, keyboardRaised: boolean) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
-	onLikeComment: (comment: IWallPostComment) => void;
+	onLikeComment: (comment: IComment) => void;
 	onRemoveComment: (commentId: string) => void;
 	onBlockUser: (userId: string) => void;
 	onReportProblem: (subject: string, description: string) => void;
@@ -168,8 +168,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 	}
 
 	private onGoBackHandler = () => {
-		const { navigation } = this.props;
-		navigation.goBack(null);
+		this.props.navigation.goBack(null);
 	};
 
 	private onImagePressHandler = (
@@ -261,7 +260,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 	private onLikeCommentHandler = async (
 		likeComment: ({ commentId }: { commentId: string }) => void,
 		unlikeComment: ({ commentId }: { commentId: string }) => void,
-		comment: IWallPostComment,
+		comment: IComment,
 	) => {
 		const { likedByCurrentUser, commentId } = comment;
 
