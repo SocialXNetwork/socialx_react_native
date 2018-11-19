@@ -25,7 +25,9 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_REQUESTS: {
-			const sanitizedRequests = action.payload.filter((request) => !!Object.keys(request).length);
+			const sanitizedRequests = action.payload.filter(
+				(request) => request !== undefined || request !== null || !!Object.keys(request).length,
+			);
 			const updatedRequests = sanitizedRequests.reduce(
 				(requests, newRequest) => [
 					...requests.filter((oldRequest) => oldRequest.owner !== newRequest.owner),
