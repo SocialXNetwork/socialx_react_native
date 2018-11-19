@@ -21,7 +21,9 @@ export const UserEntries: React.SFC<IUserEntriesProps> = ({
 }) => (
 	<FlatList
 		data={entries}
-		renderItem={({ item }) => <UserEntry entry={item} onPress={() => onEntryPress(item)} />}
+		renderItem={({ item }) => (
+			<UserEntry hideButton={true} entry={item} onPress={() => onEntryPress(item)} />
+		)}
 		style={styles.resultsContainer}
 		keyboardShouldPersistTaps="handled"
 		keyExtractor={(item: IUserEntry) => item.userId}

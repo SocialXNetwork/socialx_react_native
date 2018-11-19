@@ -78,8 +78,8 @@ export class WithNotifications extends React.Component<
 																},
 																actions: {
 																	loadNotifications: getNotifications,
-																	acceptFriendRequest: (input) => acceptFriend(input),
-																	declineFriendRequest: (input) => rejectFriend(input),
+																	acceptFriendRequest: acceptFriend,
+																	declineFriendRequest: rejectFriend,
 																	removeNotification: (notificationId) => undefined,
 																	setNavigationParams,
 																	getText,

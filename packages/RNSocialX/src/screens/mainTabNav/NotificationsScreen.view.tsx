@@ -29,7 +29,6 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 	notifications,
 	refreshing,
 	onRefresh,
-	onSuperLikedPhotoPressed,
 	onFriendRequestApprove,
 	onFriendRequestDecline,
 	onGroupRequestApprove,

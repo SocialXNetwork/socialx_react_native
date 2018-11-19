@@ -6,7 +6,7 @@ import {
 	IWithNotificationsEnhancedData,
 	WithNotifications,
 } from '../../enhancers/screens';
-import { SCREENS } from '../../environment/consts';
+import { SCREENS, TABS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { NotificationsScreenView } from './NotificationsScreen.view';
 
@@ -34,7 +34,6 @@ class Screen extends React.Component<INotificationsScreenProps> {
 			loadNotifications,
 			acceptFriendRequest,
 			declineFriendRequest,
-			removeNotification,
 			getText,
 		} = this.props;
 
@@ -44,13 +43,15 @@ class Screen extends React.Component<INotificationsScreenProps> {
 				refreshing={refreshing}
 				onRefresh={loadNotifications}
 				onSuperLikedPhotoPressed={this.superLikedPhotoPressedHandler}
-				onFriendRequestApprove={(username) => acceptFriendRequest({ username })}
-				onFriendRequestDecline={(username: string) => {
-					declineFriendRequest({ username });
+				onFriendRequestApprove={async (username) => {
+					await acceptFriendRequest({ username });
+				}}
+				onFriendRequestDecline={async (username) => {
+					await declineFriendRequest({ username });
 				}}
 				onGroupRequestApprove={this.onGroupRequestApprovedHandler}
 				onGroupRequestDecline={this.onGroupRequestDeclinedHandler}
-				onViewUserProfile={this.onViewUserProfile}
+				onViewUserProfile={this.onViewUserProfileHandler}
 				getText={getText}
 			/>
 		);
@@ -68,11 +69,11 @@ class Screen extends React.Component<INotificationsScreenProps> {
 		Alert.alert('onGroupRequestDeclinedHandler: ' + notificationId);
 	};
 
-	private onViewUserProfile = (userId: string) => {
+	private onViewUserProfileHandler = (userId: string) => {
 		const { navigation, setNavigationParams } = this.props;
 		setNavigationParams({
 			screenName: SCREENS.UserProfile,
-			params: { userId },
+			params: { userId, origin: TABS.Feed },
 		});
 		navigation.navigate(SCREENS.UserProfile);
 	};

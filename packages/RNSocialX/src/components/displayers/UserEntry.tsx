@@ -15,12 +15,13 @@ import styles from './UserEntry.style';
 
 interface IUserEntryProps {
 	entry: IUserEntry;
+	hideButton?: boolean;
 	onPress: (entry: IUserEntry) => void;
 }
 
 type IProps = IUserEntryProps & IWithFriendsEnhancedActions & IWithFriendsEnhancedData;
 
-const Component: React.SFC<IProps> = ({ entry, status, onPress }) => (
+const Component: React.SFC<IProps> = ({ entry, hideButton = false, status, onPress }) => (
 	<TouchableOpacity activeOpacity={1} onPress={() => onPress(entry)} style={styles.card}>
 		<View style={styles.details}>
 			<AvatarImage image={entry.avatar} style={styles.avatar} />
@@ -30,27 +31,29 @@ const Component: React.SFC<IProps> = ({ entry, status, onPress }) => (
 				{entry.location.length === 0 && <Text style={styles.userName}>@{entry.userName}</Text>}
 			</View>
 		</View>
-		<View style={styles.button}>
-			{entry.relationship === FRIEND_TYPES.NOT_FRIEND ? (
-				<PrimaryButton
-					label={status.text}
-					size={ButtonSizes.Small}
-					borderColor={Colors.pink}
-					textColor={Colors.white}
-					containerStyle={styles.primary}
-					onPress={() => status.actionHandler(entry.userId)}
-				/>
-			) : (
-				<PrimaryButton
-					label={status.text}
-					size={ButtonSizes.Small}
-					borderColor={Colors.pink}
-					textColor={Colors.pink}
-					containerStyle={styles.secondary}
-					onPress={() => status.actionHandler(entry.userId)}
-				/>
-			)}
-		</View>
+		{!hideButton && (
+			<View style={styles.button}>
+				{entry.relationship === FRIEND_TYPES.NOT_FRIEND ? (
+					<PrimaryButton
+						label={status.text}
+						size={ButtonSizes.Small}
+						borderColor={Colors.pink}
+						textColor={Colors.white}
+						containerStyle={styles.primary}
+						onPress={() => status.actionHandler(entry.userId)}
+					/>
+				) : (
+					<PrimaryButton
+						label={status.text}
+						size={ButtonSizes.Small}
+						borderColor={Colors.pink}
+						textColor={Colors.pink}
+						containerStyle={styles.secondary}
+						onPress={() => status.actionHandler(entry.userId)}
+					/>
+				)}
+			</View>
+		)}
 	</TouchableOpacity>
 );
 

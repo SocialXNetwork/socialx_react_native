@@ -7,17 +7,23 @@ import { ILike, ITranslatedProps } from '../../types';
 
 interface ILikesScreenViewProps extends ITranslatedProps {
 	likes: ILike[];
+	onViewUserProfile: (userId: string) => void;
 	onGoBack: () => void;
 }
 
-export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({ likes, onGoBack, getText }) => (
+export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
+	likes,
+	onViewUserProfile,
+	onGoBack,
+	getText,
+}) => (
 	<View style={{ flex: 1, backgroundColor: 'white' }}>
 		<Header
 			title={getText('likes.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.container}>
-			<UserEntries entries={likes} onEntryPress={() => undefined} />
+			<UserEntries entries={likes} onEntryPress={(entry) => onViewUserProfile(entry.userId)} />
 		</View>
 	</View>
 );
