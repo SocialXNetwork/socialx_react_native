@@ -142,7 +142,9 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 				return callback(new ApiError('failed to fetch the current profile'));
 			}
 			const sanitizedProfile = cleanGunMetaFromObject(currentProfileData);
-			return callback(null, sanitizedProfile);
+			getProfileNumberOfFriends(context, sanitizedProfile, (numberOfFriends) => {
+				return callback(null, { ...sanitizedProfile, numberOfFriends });
+			});
 		},
 		{ wait: 400 },
 	);
