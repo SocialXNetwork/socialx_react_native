@@ -35,7 +35,7 @@ export const addFriendRequest = async (context: IContext, username: string) => {
 
 export const removeFriendRequest = async (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
-		handles.friendRequests(context).erase(username, (ack) => {
+		handles.friendRequests(context).put({ [username]: null }, (ack) => {
 			if (ack.err) {
 				rej(ack.err);
 			}

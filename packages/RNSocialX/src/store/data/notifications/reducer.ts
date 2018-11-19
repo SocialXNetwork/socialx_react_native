@@ -40,7 +40,12 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_RESPONSES: {
-			const sanitizedRequests = action.payload.filter((request) => !!Object.keys(request).length);
+			if (!action.payload || !Object(action.payload).length) {
+				return state;
+			}
+			const sanitizedRequests = action.payload.filter(
+				(request) => request !== undefined || request !== null || !!Object.keys(request).length,
+			);
 			const updatedResponses = sanitizedRequests.reduce(
 				(responses, newResponse) => [
 					...responses.filter((oldResponse) => oldResponse.owner !== newResponse.owner),

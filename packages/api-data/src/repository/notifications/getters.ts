@@ -17,7 +17,7 @@ export const getFriendRequests = (context: IContext) => {
 					notificationId: k,
 					...notification,
 				}))
-				.filter((o: any) => o.notificationId);
+				.filter((o: any) => o !== null && o.notificationId);
 			res(notifcationsReturnData);
 		}),
 	);
@@ -35,7 +35,7 @@ export const getFriendRequestsResponses = (context: IContext) => {
 					notificationId: k,
 					...notification,
 				}))
-				.filter((o: any) => o.notificationId);
+				.filter((o: any) => o !== null && o.notificationId);
 			res(notifcationsReturnData);
 		}),
 	);
