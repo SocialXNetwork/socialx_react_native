@@ -14,13 +14,17 @@ const STEPS_CONFIG = [
 
 interface ICreateAdStepsProps {
 	currentStep: ICreateAdSteps;
+	isOnFirstStep: boolean;
 	isOnLastStep: boolean;
 	onGoToNextStep: () => void;
+	onGoToPreviousStep: () => void;
 }
 
 export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
 	currentStep,
 	onGoToNextStep,
+	onGoToPreviousStep,
+	isOnFirstStep,
 	isOnLastStep,
 }) => (
 	<SafeAreaView style={styles.container} forceInset={{ top: 'never', bottom: 'always' }}>
@@ -41,6 +45,13 @@ export const CreateAdSteps: React.SFC<ICreateAdStepsProps> = ({
 					{!(index === STEPS_CONFIG.length - 1) && <View style={styles.connectorView} />}
 				</React.Fragment>
 			))}
+			{!isOnFirstStep && (
+				<View style={styles.backIconContainer}>
+					<TouchableOpacity onPress={onGoToPreviousStep}>
+						<Icon name="ios-arrow-back" style={styles.backIcon} />
+					</TouchableOpacity>
+				</View>
+			)}
 			<View style={styles.nextIconContainer}>
 				<TouchableOpacity onPress={onGoToNextStep}>
 					<Icon

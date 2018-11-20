@@ -3,6 +3,7 @@ export { AdsManagementOverviewScreen } from './adsManagementStack/AdsManagementO
 export { AdsManagementScreen } from './adsManagementStack/AdsManagementScreen';
 export { AdsStatisticsScreen } from './adsManagementStack/AdsStatisticsScreen';
 export { NewAdSliderScreen } from './adsManagementStack/NewAdSliderScreen';
+export { ManageCountriesScreen } from './adsManagementStack/ManageCountriesScreen';
 
 export { CommentsScreen } from './commentsStack/CommentsScreen';
 

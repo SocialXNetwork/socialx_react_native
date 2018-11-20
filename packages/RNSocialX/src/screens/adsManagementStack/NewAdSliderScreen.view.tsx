@@ -9,7 +9,8 @@ interface INewAdSliderScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 	sliderStep: ICreateAdSteps;
 	onGoToNextStep: () => void;
-	canGoBack: boolean;
+	onGoToPreviousStep: () => void;
+	isOnFirstSlide: boolean;
 	isOnLastSlide: boolean;
 	onMomentumScrollEnd: (event: { nativeEvent: NativeScrollEvent }) => void;
 }
@@ -21,9 +22,10 @@ export const NewAdSliderScreenView = React.forwardRef<ScrollView, INewAdSliderSc
 			onGoBack,
 			sliderStep,
 			onGoToNextStep,
+			onGoToPreviousStep,
 			children,
-			canGoBack,
 			onMomentumScrollEnd,
+			isOnFirstSlide,
 			isOnLastSlide,
 		},
 		ref,
@@ -37,9 +39,9 @@ export const NewAdSliderScreenView = React.forwardRef<ScrollView, INewAdSliderSc
 				ref={ref}
 				horizontal={true}
 				pagingEnabled={true}
+				scrollEnabled={false}
 				contentContainerStyle={styles.scrollContent}
 				showsHorizontalScrollIndicator={false}
-				scrollEnabled={canGoBack}
 				onMomentumScrollEnd={onMomentumScrollEnd}
 			>
 				{children}
@@ -47,6 +49,8 @@ export const NewAdSliderScreenView = React.forwardRef<ScrollView, INewAdSliderSc
 			<CreateAdSteps
 				currentStep={sliderStep}
 				onGoToNextStep={onGoToNextStep}
+				onGoToPreviousStep={onGoToPreviousStep}
+				isOnFirstStep={isOnFirstSlide}
 				isOnLastStep={isOnLastSlide}
 			/>
 		</View>

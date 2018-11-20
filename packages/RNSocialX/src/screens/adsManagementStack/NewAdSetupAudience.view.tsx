@@ -2,15 +2,22 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { Formik, FormikProps } from 'formik';
 import { Button, Segment } from 'native-base';
 import * as React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
+import { Option } from '../../components';
 import { IAdSetupAudienceData, IGenderSelect, ITranslatedProps } from '../../types';
-import styles, { nativeBaseStyles } from './NewAdSetupAudience.style';
+import styles, { nativeBaseStyles, SLIDER_LENGTH } from './NewAdSetupAudience.style';
 
 interface INewAdSetupAudienceViewProps extends ITranslatedProps {
 	updateAdSetAudience: (values: IAdSetupAudienceData) => void;
 	adSetupAudienceFormik: React.RefObject<any>;
 	onMultiSliderChange: (isStarting: boolean) => void;
+	onAgeRangeHandler: (values: number[]) => void;
+	onManageCountries: () => void;
+	minAgeRange: number;
+	maxAgeRange: number;
+	estimatedReach: string;
 }
 
 const GENDER_SELECTION_BUTTONS = [
@@ -28,17 +35,16 @@ const GENDER_SELECTION_BUTTONS = [
 	},
 ];
 
-const SliderMarkerWithValue: React.SFC<{ currentValue: number }> = ({ currentValue }) => (
-	<View style={styles.thumbContainer}>
-		<Text>{currentValue}</Text>
-	</View>
-);
-
 export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = ({
 	getText,
 	updateAdSetAudience,
 	adSetupAudienceFormik,
 	onMultiSliderChange,
+	onAgeRangeHandler,
+	minAgeRange,
+	maxAgeRange,
+	onManageCountries,
+	estimatedReach,
 }) => (
 	<View style={styles.rootView}>
 		<Formik
@@ -46,7 +52,7 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 			isInitialValid={true}
 			initialValues={{
 				selectedGender: IGenderSelect.all,
-				ageRange: [20, 80],
+				ageRange: [13, 65],
 			}}
 			onSubmit={updateAdSetAudience}
 			render={({
@@ -100,22 +106,46 @@ export const NewAdSetupAudienceView: React.SFC<INewAdSetupAudienceViewProps> = (
 						<Text style={styles.sectionLabel}>
 							{getText('new.ad.setup.audience.age.range.select')}
 						</Text>
-						<MultiSlider
-							values={ageRange}
-							min={10}
-							max={100}
-							step={1}
-							onValuesChange={(values: number[]) => setFieldValue('ageRange', values)}
-							selectedStyle={styles.ageSelectorTrack}
-							containerStyle={styles.ageSelectorContainer}
-							customMarker={SliderMarkerWithValue}
-							onValuesChangeStart={() => onMultiSliderChange(true)}
-							onValuesChangeFinish={() => onMultiSliderChange(false)}
-						/>
+						<View style={styles.ageRangeContainer}>
+							<Text style={styles.ageRangeText}>{minAgeRange}</Text>
+							<MultiSlider
+								values={ageRange}
+								min={13}
+								max={65}
+								step={1}
+								sliderLength={SLIDER_LENGTH}
+								onValuesChange={(values: number[]) => {
+									onAgeRangeHandler(values);
+									setFieldValue('ageRange', values);
+								}}
+								selectedStyle={styles.ageSelectorTrack}
+								containerStyle={styles.ageSelectorContainer}
+								onValuesChangeStart={() => onMultiSliderChange(true)}
+								onValuesChangeFinish={() => onMultiSliderChange(false)}
+							/>
+							<Text style={styles.ageRangeText}>{maxAgeRange}</Text>
+						</View>
 						<Text style={styles.sectionLabel}>
 							{getText('new.ad.setup.audience.countries.select')}
 						</Text>
-						<Text>{'TBD: figure out best selector here'}</Text>
+						<View style={styles.separator} />
+						<Option
+							type="icon"
+							icon="ios-flag"
+							text={getText('new.ad.setup.audience.manage.countries')}
+							onPress={() => onManageCountries()}
+						/>
+						<View style={styles.separator} />
+					</View>
+					<View style={styles.peopleReached}>
+						<Text style={styles.peopleReachedText}>
+							{getText('new.ad.setup.audience.estimated.reach')}{' '}
+						</Text>
+						<Text style={styles.peopleReachedText}>{estimatedReach}</Text>
+						<Text style={styles.peopleReachedText}>
+							{' '}
+							{getText('new.ad.setup.audience.estimated.reach.people')}
+						</Text>
 					</View>
 				</ScrollView>
 			)}

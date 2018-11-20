@@ -38,6 +38,12 @@ const styles: any = {
 		width: Sizes.smartHorizontalScale(42),
 		height: Sizes.smartVerticalScale(4),
 	},
+	backIconContainer: {
+		height: '100%',
+		justifyContent: 'center',
+		position: 'absolute',
+		left: Sizes.smartHorizontalScale(20),
+	},
 	nextIconContainer: {
 		height: '100%',
 		justifyContent: 'center',
@@ -45,6 +51,11 @@ const styles: any = {
 		right: Sizes.smartHorizontalScale(20),
 	},
 	nextIcon: {
+		fontSize: ICON_SIZE,
+		color: Colors.white,
+		paddingHorizontal: Sizes.smartHorizontalScale(10),
+	},
+	backIcon: {
 		fontSize: ICON_SIZE,
 		color: Colors.white,
 		paddingHorizontal: Sizes.smartHorizontalScale(10),

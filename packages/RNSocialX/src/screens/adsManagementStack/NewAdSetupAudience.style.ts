@@ -1,7 +1,9 @@
+import { Item } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const SCREEN_HORIZONTAL_PADDING = Sizes.smartHorizontalScale(24);
+export const SLIDER_LENGTH = Sizes.smartHorizontalScale(240);
 
 const style: any = {
 	rootView: {
@@ -34,23 +36,46 @@ const style: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
 		color: Colors.pink,
 	},
+	ageRangeContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	ageRangeText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.cloudBurst,
+	},
 	ageSelectorTrack: {
 		backgroundColor: Colors.pink,
 	},
 	ageSelectorContainer: {
+		flex: 1,
+		width: '50%',
 		alignItems: 'center',
-	},
-	thumbContainer: {
-		backgroundColor: Colors.white,
-		borderColor: Colors.paleSky,
-		borderWidth: Sizes.smartHorizontalScale(2),
-		padding: Sizes.smartHorizontalScale(3),
 	},
 	sectionLabel: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		color: Colors.cloudBurst,
 		marginVertical: Sizes.smartVerticalScale(10),
+	},
+	separator: {
+		width: '100%',
+		backgroundColor: Colors.wildSand,
+		height: Sizes.smartVerticalScale(2),
+	},
+	peopleReached: {
+		flexDirection: 'row',
+		marginVertical: Sizes.smartVerticalScale(50),
+		justifyContent: 'center',
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+	},
+	peopleReachedText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.cloudBurst,
+		textAlign: 'center',
 	},
 };
 

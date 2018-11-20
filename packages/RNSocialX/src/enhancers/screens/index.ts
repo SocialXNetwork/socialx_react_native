@@ -23,6 +23,11 @@ export {
 	IWithNewAdSliderEnhancedActions,
 	IWithNewAdSliderEnhancedData,
 } from './adsManagementStack/WithNewAdSlider';
+export {
+	WithManageCountries,
+	IWithManageCountriesEnhancedActions,
+	IWithManageCountriesEnhancedData,
+} from './adsManagementStack/WithManageCountries';
 
 export {
 	WithComments,
