@@ -48,7 +48,7 @@ class Screen extends React.Component<IManageCountriesScreenProps, IManageCountri
 
 		return (
 			<ManageCountriesScreenView
-				onGoBack={() => this.onGoBackHandler(navigation)}
+				onGoBack={() => this.onGoBackHandler}
 				getText={getText}
 				countriesList={countriesList}
 				autoFocus={true}
@@ -61,8 +61,8 @@ class Screen extends React.Component<IManageCountriesScreenProps, IManageCountri
 		);
 	}
 
-	private onGoBackHandler = (navigation: any) => {
-		navigation.goBack(null);
+	private onGoBackHandler = () => {
+		this.props.navigation.goBack(null);
 	};
 
 	private onFetchCountries = async () => {
