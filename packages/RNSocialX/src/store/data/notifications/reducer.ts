@@ -25,10 +25,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_REQUESTS: {
-			const sanitizedRequests = action.payload.filter(
-				(request) => request !== undefined || request !== null || !!Object.keys(request).length,
-			);
-			const updatedRequests = sanitizedRequests.reduce(
+			const updatedRequests = action.payload.reduce(
 				(requests, newRequest) => [
 					...requests.filter((oldRequest) => oldRequest.owner !== newRequest.owner),
 					newRequest,
@@ -42,13 +39,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_RESPONSES: {
-			if (!action.payload || !Object(action.payload).length) {
-				return state;
-			}
-			const sanitizedRequests = action.payload.filter(
-				(request) => request !== undefined || request !== null || !!Object.keys(request).length,
-			);
-			const updatedResponses = sanitizedRequests.reduce(
+			const updatedResponses = action.payload.reduce(
 				(responses, newResponse) => [
 					...responses.filter((oldResponse) => oldResponse.owner !== newResponse.owner),
 					newResponse,

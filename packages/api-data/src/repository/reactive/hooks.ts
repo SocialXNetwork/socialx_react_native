@@ -25,7 +25,7 @@ export const hookNotifications = (
 					} else {
 						// removed requests
 						const sanitizedRequests = convertGunSetToArray(friendRequests).filter(
-							(req) => req !== null,
+							(req) => req !== null && !!Object.keys(req).length,
 						);
 						callback(null, sanitizedRequests);
 					}
@@ -43,7 +43,7 @@ export const hookNotifications = (
 					} else {
 						// removed responses
 						const sanitizedResponses = convertGunSetToArray(friendResponses).filter(
-							(res) => res !== null,
+							(res) => res !== null && !!Object.keys(res).length,
 						);
 						callback(null, sanitizedResponses);
 					}

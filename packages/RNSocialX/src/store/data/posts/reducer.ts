@@ -61,15 +61,17 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
+			const newGlobal = [
+				...state.global.filter((post) => post.postId !== action.payload.postId),
+				action.payload,
+			];
+			// check if the post exists on the friends feed first
+			const newFriends = state.friends.find((post) => post.postId === action.payload.postId)
+				? [...state.friends.filter((post) => post.postId !== action.payload.postId), action.payload]
+				: state.friends;
 			return {
-				global: [
-					...state.global.filter((post) => post.postId !== action.payload.postId),
-					action.payload,
-				],
-				friends: [
-					...state.friends.filter((post) => post.postId !== action.payload.postId),
-					action.payload,
-				],
+				global: newGlobal,
+				friends: newFriends,
 			};
 		}
 
