@@ -198,7 +198,6 @@ describe('profiles api', () => {
 		try {
 			await mockApi.profiles.createProfile(mockProfile);
 			await mockApi.profiles.removeFriend({
-				friendshipId: '',
 				username: 'first_friend',
 			});
 		} catch (e) {

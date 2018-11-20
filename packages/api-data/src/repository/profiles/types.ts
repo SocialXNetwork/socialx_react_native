@@ -64,7 +64,6 @@ export interface IRejectFriendInput {
 }
 
 export interface IRemoveFriendInput {
-	friendshipId: string;
 	username: string;
 }
 

@@ -67,20 +67,6 @@ Gun.chain.profileFriendsByUsername = function(username: string) {
 		.get(TABLE_ENUMS.FRIENDS);
 };
 
-Gun.chain.currentProfileFriendship = function(friendshipId: string) {
-	return this.get(TABLES.PROFILES)
-		.get(this.user().is.alias)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(friendshipId);
-};
-
-Gun.chain.userProfileFriendship = function(username: string, friendshipId: string) {
-	return this.get(TABLES.PROFILES)
-		.get(username)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(friendshipId);
-};
-
 // Posts
 Gun.chain.postMetaById = function(postId: string) {
 	return this.get(TABLES.POST_META_BY_ID).get(postId);
