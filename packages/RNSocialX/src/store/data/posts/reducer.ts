@@ -62,9 +62,12 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
 			return {
-				...state,
 				global: [
 					...state.global.filter((post) => post.postId !== action.payload.postId),
+					action.payload,
+				],
+				friends: [
+					...state.friends.filter((post) => post.postId !== action.payload.postId),
 					action.payload,
 				],
 			};
