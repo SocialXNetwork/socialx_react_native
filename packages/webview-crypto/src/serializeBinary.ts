@@ -1,8 +1,6 @@
 import { fromObjects, ISerializer, toObjects } from './asyncSerialize';
 import { subtle } from './compat';
 
-import { Base64 } from 'js-base64';
-
 declare const WebViewBridge: any;
 
 export async function parse(text: string): Promise<any> {

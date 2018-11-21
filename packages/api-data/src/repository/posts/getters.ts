@@ -47,9 +47,9 @@ export const getPostPathsByUser = (
 				if (!postsMeta || !Object.keys(postsMeta).length) {
 					return callback([]);
 				}
-				const paths = convertGunSetToArray(postsMeta).map((postMeta: any = {}) =>
-					postMeta ? postMeta.postPath : undefined,
-				);
+				const paths = convertGunSetToArray(postsMeta)
+					.map((postMeta: any = {}) => (postMeta ? postMeta.postPath : undefined))
+					.filter((path) => !!path);
 				return callback(null, paths);
 			});
 	});
@@ -170,45 +170,22 @@ export const getPostByPath = (
 		wait: wait || 300,
 		timeout: timeout || 600,
 	};
-	postHandles.postByPath(context, postPath).docLoad((postData: IPostCallbackData) => {
-		if (!postData || !Object.keys(postData).length) {
-			return callback(
-				new ApiError('failed, no post found', {
-					initialRequestBody: { postPath },
-				}),
-			);
-		}
 
-		let shouldWaitAndTryAgain = false;
-
-		// const keys = Object.keys()
-		const { likes, comments, media, ...restPost } = postData;
-		// convert likes into an array with keys
-		const postLikes = convertLikesToArray(likes);
-		// convert comments and their likes into an array with keys
-		const postComments: any = convertCommentsToArray(comments);
-		// convert media to an array
-		const mediaReturn = convertMediaToArray(media) || [];
-
-		[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
-			if (propArray && propArray.length) {
-				propArray.forEach((obj: any) => {
-					if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
-						shouldWaitAndTryAgain = true;
-					}
-				});
+	const mainGetter = () => {
+		postHandles.postByPath(context, postPath).docLoad((postData: IPostCallbackData) => {
+			if (!postData || !Object.keys(postData).length) {
+				return callback(null, undefined);
 			}
-		});
-		// related to the retry checks
-		if (
-			postData.owner &&
-			typeof postData.owner === 'object' &&
-			Object.keys(postData.owner).length === 0
-		) {
-			shouldWaitAndTryAgain = true;
-		}
 
-		if (!shouldWaitAndTryAgain) {
+			// const keys = Object.keys()
+			const { likes, comments, media, ...restPost } = postData;
+			// convert likes into an array with keys
+			const postLikes = convertLikesToArray(likes);
+			// convert comments and their likes into an array with keys
+			const postComments: any = convertCommentsToArray(comments);
+			// convert media to an array
+			const mediaReturn = convertMediaToArray(media) || [];
+
 			const post: IPostReturnData = {
 				postId: postPath.split('.').reverse()[0],
 				likes: postLikes,
@@ -217,17 +194,14 @@ export const getPostByPath = (
 				...restPost,
 			};
 			return callback(null, post);
-		}
-		getPostByPath(
-			context,
-			{
-				postPath,
-				wait: wait ? wait + 100 : undefined,
-				timeout: timeout ? timeout + 100 : undefined,
-			},
-			callback,
-		);
-	}, docOpts);
+		});
+	};
+	postHandles.postByPath(context, postPath).once(
+		() => {
+			mainGetter();
+		},
+		{ wait: 300 },
+	);
 };
 
 export const getPostById = (

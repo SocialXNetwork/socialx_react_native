@@ -53,7 +53,7 @@ export default class PolyfillCrypto extends React.Component<{ debug: boolean }, 
 							worker = new MainWorker(c.sendToBridge, this.props.debug);
 
 							// @ts-ignore
-							if (window.crypto) {
+							if (window.crypto.subtle) {
 								// we are in chrome debugger
 								// this means overridng the crypto object itself won't
 								// work, so we have to override all of it's methods

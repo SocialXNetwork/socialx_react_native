@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@socialx/commons": "^0.0.1",
-    "gun": "^0.9.99997",
+    "gun": "0.9.99999",
     "gun-flint": "^0.0.28",
     "utility-types-fixme-todo": "latest",
     "uuid": "^3.3.2",

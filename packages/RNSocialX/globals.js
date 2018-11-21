@@ -19,10 +19,10 @@ global.location = {
 // const rande = require('react-native-randombytes');
 const { TextEncoder, TextDecoder } = require('text-encoding');
 
-global.crypto = {
-  loaded: false,
-  subtle: {},
-};
+// global.crypto = {
+//   loaded: false,
+//   subtle: {},
+// };
 
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;

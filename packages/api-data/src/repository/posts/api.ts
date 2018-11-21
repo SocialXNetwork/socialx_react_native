@@ -122,11 +122,9 @@ export default function(context: IContext) {
 						}
 						try {
 							const posts = await Promise.all(
-								(paths || [])
-									.filter((v) => v)
-									.map((path: string) => this.getPostByPath({ postPath: path })),
+								(paths || []).map((path: string) => this.getPostByPath({ postPath: path })),
 							);
-							resolve(posts);
+							resolve(posts.filter((post) => !!post));
 						} catch (e) {
 							// ! BUG: sometimes docLoad doesnt load the document correctly and this is returned..
 							resolve([]);

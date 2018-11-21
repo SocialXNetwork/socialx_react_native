@@ -241,13 +241,14 @@ export const login = (
 		return callback(null);
 	}
 	account.auth(username, password, (authCallback: any) => {
-		if (!authCallback.alias) {
+		if (authCallback.err) {
 			return callback(
 				new ApiError('failed to authenticate', {
-					initialRequestBody: { username },
+					initialRequestBody: { username, authCallback },
 				}),
 			);
 		}
+		console.log('authenticated', authCallback);
 
 		return callback(null);
 	});

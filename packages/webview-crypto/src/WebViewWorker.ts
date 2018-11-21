@@ -1,7 +1,7 @@
 import serializeError from 'serialize-error';
 
-import { subtle } from '../src/compat';
-import { parse, stringify } from '../src/serializeBinary';
+import { subtle } from './compat';
+import { parse, stringify } from './serializeBinary';
 
 export class WebViewWorker {
 	constructor(private sendToMain: (message: string) => void) {
