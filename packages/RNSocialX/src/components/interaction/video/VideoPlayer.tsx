@@ -28,6 +28,8 @@ interface IVideoPlayerProps extends IVideoOptions {
 	muted: boolean;
 	videoURL: string;
 	onPressVideo?: () => void;
+	replayVideo: boolean;
+	replayVideoText: string;
 }
 
 interface IVideoPlayerState {
@@ -36,14 +38,16 @@ interface IVideoPlayerState {
 	fullScreen: boolean;
 	paused: boolean;
 	muted: boolean;
+	replayVideo: boolean;
 	resizeMode: 'cover' | 'contain';
 }
 
 export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayerState> {
 	public static defaultProps = {
 		containerStyle: styles.container,
-		muted: false,
-		paused: true,
+		muted: true,
+		paused: false,
+		replayVideo: false,
 		thumbOnly: false,
 		resizeMode: 'cover',
 		resizeToChangeAspectRatio: false,
@@ -53,42 +57,41 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 		ended: false,
 		playReady: false,
 		fullScreen: false,
-		paused: 'paused' in this.props ? this.props.paused! : true,
-		muted: this.props.muted || false,
+		paused: false,
+		muted: true,
+		replayVideo: false,
+		// paused: 'paused' in this.props ? this.props.paused! : true,
+		// muted: this.props.muted || false,
 		resizeMode: this.props.resizeMode || 'cover',
 	};
 
 	private playerRef: React.RefObject<Video> = React.createRef();
 
-	public UNSAFE_componentWillReceiveProps(nextProps: IVideoPlayerProps) {
-		if ('paused' in nextProps && nextProps.paused !== this.props.paused) {
-			this.setState({
-				paused: nextProps.paused!,
-			});
-		}
-		if ('muted' in nextProps && nextProps.muted !== this.props.muted) {
-			this.setState({
-				muted: nextProps.muted!,
-			});
-		}
-	}
+	// public UNSAFE_componentWillReceiveProps(nextProps: IVideoPlayerProps) {
+	// 	console.log(this.props);
+	// 	console.log(nextProps);
+	// 	if ('paused' in nextProps && nextProps.paused !== this.props.paused) {
+	// 		this.setState({
+	// 			paused: nextProps.paused!,
+	// 		});
+	// 	}
+	// 	if ('muted' in nextProps && nextProps.muted !== this.props.muted) {
+	// 		this.setState({
+	// 			muted: nextProps.muted!,
+	// 		});
+	// 	}
+	// }
 
 	public render() {
-		const {
-			containerStyle,
-			thumbOnly,
-			resizeToChangeAspectRatio,
-			videoURL,
-			onPressVideo,
-		} = this.props;
-		const { ended, playReady, fullScreen, muted, paused, resizeMode } = this.state;
+		const { containerStyle, thumbOnly, videoURL, onPressVideo, replayVideoText } = this.props;
+		const { ended, playReady, fullScreen, muted, paused, resizeMode, replayVideo } = this.state;
 
-		const showPlayButton = paused || ended;
+		const showPlayButton = paused;
 
 		return (
 			<TouchableWithoutFeedback
-				onPress={thumbOnly ? onPressVideo : this.pauseVideoHandler}
-				disabled={thumbOnly && !onPressVideo}
+				onPress={this.pauseVideoHandler}
+				disabled={thumbOnly && !onPressVideo && ended}
 			>
 				<View style={containerStyle}>
 					<Video
@@ -110,12 +113,15 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 					<VideoControls
 						showPlayButton={showPlayButton}
 						muted={muted}
-						resizeToChangeAspectRatio={resizeToChangeAspectRatio}
+						replayVideo={replayVideo}
+						replayVideoText={replayVideoText}
+						resizeToChangeAspectRatio={true}
 						playReady={playReady}
 						thumbOnly={thumbOnly}
 						onVideoPlayStart={this.onVideoPlayStart}
 						onVideoMuteToggle={this.onVideoMuteToggle}
 						onVideoEnterFullScreen={this.onVideoEnterFullScreen}
+						onVideoReplay={this.onVideoReplay}
 					/>
 				</View>
 			</TouchableWithoutFeedback>
@@ -123,9 +129,11 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	}
 
 	private pauseVideoHandler = () => {
-		this.setState({
-			paused: true,
-		});
+		if (!this.state.ended) {
+			this.setState({
+				paused: true,
+			});
+		}
 	};
 
 	private onVideoMuteToggle = () => {
@@ -143,18 +151,18 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	};
 
 	private onVideoPlayStart = () => {
-		if (this.state.ended && this.playerRef.current) {
-			this.playerRef.current.seek(0);
-		}
 		this.setState({
 			ended: false,
 			paused: false,
+			muted: false,
+			replayVideo: false,
 		});
 	};
 
 	private onVideoEndHandler = () => {
 		this.setState({
 			ended: true,
+			replayVideo: true,
 		});
 	};
 
@@ -164,15 +172,22 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 				resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
 			});
 		} else {
-			this.setState({
-				fullScreen: true,
-			});
+			if (!this.state.replayVideo) {
+				this.setState({ fullScreen: true, muted: false });
+			}
 		}
 	};
 
 	private exitFullScreen = () => {
 		this.setState({
 			fullScreen: false,
+			muted: true,
 		});
+	};
+
+	private onVideoReplay = () => {
+		this.setState({ replayVideo: false, fullScreen: false, muted: false });
+
+		this.playerRef.current!.seek(0);
 	};
 }

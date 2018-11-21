@@ -146,6 +146,7 @@ export default {
 	'media.info.type': 'Type',
 	'media.types.photo': 'Photo',
 	'media.types.video': 'Video',
+	'media.types.video.replay': 'Watch again',
 	'notifications.card.recent.comment.title': 'Commented on your post',
 	'notifications.card.super.liked': 'Superliked your post',
 	'notifications.card.group.request.title': 'Invited you to',
