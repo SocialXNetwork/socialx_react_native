@@ -87,10 +87,12 @@ const Component: React.SFC<IProps> = ({
 		</View>
 		<View style={styles.buttons}>
 			{!isCurrentUser &&
-				(relationship === FRIEND_TYPES.NOT_FRIEND ? (
+				(status.relationship === FRIEND_TYPES.NOT_FRIEND ? (
 					<PrimaryButton
 						width={buttonWidth}
 						label={status.text}
+						disabled={status.disabled}
+						loading={status.disabled}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.white}
@@ -101,6 +103,8 @@ const Component: React.SFC<IProps> = ({
 					<PrimaryButton
 						width={buttonWidth}
 						label={status.text}
+						disabled={status.disabled}
+						loading={status.disabled}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.pink}

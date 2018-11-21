@@ -65,6 +65,24 @@ interface IWithWallPostProps extends INavigationProps {
 interface IWithWallPostState {}
 
 export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallPostState> {
+	private actions: {
+		getUserPosts: (input: { username: string }) => void;
+		likeComment: (input: { commentId: string }) => void;
+		unlikeComment: (input: { commentId: string }) => void;
+		createComment: (input: { text: string; postId: string }) => void;
+		removePost: (input: { postId: string }) => void;
+		setNavigationParams: (input: any) => void;
+		setGlobal: (global: IGlobal) => void;
+	} = {
+		getUserPosts: () => undefined,
+		likeComment: () => undefined,
+		unlikeComment: () => undefined,
+		createComment: () => undefined,
+		removePost: () => undefined,
+		setNavigationParams: () => undefined,
+		setGlobal: () => undefined,
+	};
+
 	public render() {
 		return (
 			<WithI18n>
@@ -82,10 +100,26 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 															<WithAggregations>
 																{({ userPosts, getUserPosts }) => (
 																	<WithPosts>
-																		{(feed) => (
+																		{({
+																			likeComment,
+																			unlikeComment,
+																			createComment,
+																			removeComment,
+																			removePost,
+																		}) => (
 																			<WithCurrentUser>
-																				{({ currentUser }) =>
-																					this.props.children({
+																				{({ currentUser }) => {
+																					this.actions = {
+																						getUserPosts,
+																						likeComment,
+																						unlikeComment,
+																						createComment,
+																						removePost,
+																						setNavigationParams,
+																						setGlobal,
+																					};
+
+																					return this.props.children({
 																						data: {
 																							currentUser,
 																							skeletonPost: globals.skeletonPost,
@@ -93,51 +127,19 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																							marginBottom,
 																						} as any,
 																						actions: {
-																							onImagePress: (
-																								index: number,
-																								mediaObjects: IMediaProps[],
-																								post: IWallPostData,
-																							) =>
-																								this.onImagePressHandler(
-																									setNavigationParams,
-																									index,
-																									mediaObjects,
-																									post,
-																								),
-																							onRemovePost: (postId) =>
-																								this.onRemovePostHandler(
-																									setGlobal,
-																									feed.removePost,
-																									postId,
-																								),
+																							onImagePress: this.onImagePressHandler,
+																							onRemovePost: this.onRemovePostHandler,
 																							onUserPress: (userId) =>
 																								this.onUserPressHandler(
-																									setNavigationParams,
 																									currentUser.userId,
 																									userPosts,
-																									getUserPosts,
 																									userId,
 																								),
-																							onCommentsPress: (post, keyboardRaised) =>
-																								this.onCommentsPressHandler(
-																									setNavigationParams,
-																									post,
-																									keyboardRaised,
-																								),
-																							onSubmitComment: (text, postId) =>
-																								this.onSubmitCommentHandler(
-																									feed.createComment,
-																									text,
-																									postId,
-																								),
-																							onLikeComment: (comment) =>
-																								this.onLikeCommentHandler(
-																									feed.likeComment,
-																									feed.unlikeComment,
-																									comment,
-																								),
+																							onCommentsPress: this.onCommentsPressHandler,
+																							onSubmitComment: this.onSubmitCommentHandler,
+																							onLikeComment: this.onLikeCommentHandler,
 																							onRemoveComment: (commentId) =>
-																								feed.removeComment({ commentId }),
+																								removeComment({ commentId }),
 																							onBlockUser: () => undefined,
 																							onReportProblem: () => undefined,
 																							onGoBack: () => this.onGoBackHandler(),
@@ -145,8 +147,8 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																								showOptionsMenu({ items }),
 																							getText,
 																						},
-																					})
-																				}
+																					});
+																				}}
 																			</WithCurrentUser>
 																		)}
 																	</WithPosts>
@@ -172,13 +174,12 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 	};
 
 	private onImagePressHandler = (
-		setNavigationParams: (input: any) => void,
 		index: number,
 		mediaObjects: IMediaProps[],
 		post: IWallPostData,
 	) => {
 		const { navigation } = this.props;
-		setNavigationParams({
+		this.actions.setNavigationParams({
 			screenName: SCREENS.MediaViewer,
 			params: {
 				mediaObjects,
@@ -189,11 +190,9 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		navigation.navigate(SCREENS.MediaViewer);
 	};
 
-	private onRemovePostHandler = async (
-		setGlobal: (global: IGlobal) => void,
-		removePost: ({ postId }: { postId: string }) => void,
-		postId: string,
-	) => {
+	private onRemovePostHandler = async (postId: string) => {
+		const { removePost, setGlobal } = this.actions;
+
 		setGlobal({
 			transparentOverlay: {
 				visible: true,
@@ -212,10 +211,8 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 	};
 
 	private onUserPressHandler = (
-		setNavigationParams: (input: any) => void,
 		currentUserId: string,
 		userPosts: { [owner: string]: IPostReturnData[] },
-		getUserPosts: ({ username }: { username: string }) => void,
 		userId: string,
 	) => {
 		const { navigation } = this.props;
@@ -224,10 +221,10 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 			navigation.navigate(SCREENS.MyProfile);
 		} else {
 			if (!userPosts[userId]) {
-				getUserPosts({ username: userId });
+				this.actions.getUserPosts({ username: userId });
 			}
 
-			setNavigationParams({
+			this.actions.setNavigationParams({
 				screenName: SCREENS.UserProfile,
 				params: { userId, origin: TABS.Feed },
 			});
@@ -235,39 +232,27 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		}
 	};
 
-	private onCommentsPressHandler = (
-		setNavigationParams: (input: any) => void,
-		post: IWallPostData,
-		keyboardRaised: boolean,
-	) => {
+	private onCommentsPressHandler = (post: IWallPostData, keyboardRaised: boolean) => {
 		const { navigation } = this.props;
 
-		setNavigationParams({
+		this.actions.setNavigationParams({
 			screenName: SCREENS.Comments,
 			params: { post, keyboardRaised },
 		});
 		navigation.navigate(SCREENS.Comments);
 	};
 
-	private onSubmitCommentHandler = async (
-		createComment: ({ text, postId }: { text: string; postId: string }) => void,
-		text: string,
-		postId: string,
-	) => {
-		await createComment({ text, postId });
+	private onSubmitCommentHandler = async (text: string, postId: string) => {
+		await this.actions.createComment({ text, postId });
 	};
 
-	private onLikeCommentHandler = async (
-		likeComment: ({ commentId }: { commentId: string }) => void,
-		unlikeComment: ({ commentId }: { commentId: string }) => void,
-		comment: IComment,
-	) => {
+	private onLikeCommentHandler = async (comment: IComment) => {
 		const { likedByCurrentUser, commentId } = comment;
 
 		if (likedByCurrentUser) {
-			unlikeComment({ commentId });
+			this.actions.unlikeComment({ commentId });
 		} else {
-			likeComment({ commentId });
+			this.actions.likeComment({ commentId });
 		}
 	};
 }

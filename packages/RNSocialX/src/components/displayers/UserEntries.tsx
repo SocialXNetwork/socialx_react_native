@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { Loader, UserEntry } from '../../components';
 import { IUserEntry } from '../../types';
@@ -19,16 +19,16 @@ export const UserEntries: React.SFC<IUserEntriesProps> = ({
 	onLoadMore,
 	hasMore,
 }) => (
-	<FlatList
-		data={entries}
-		renderItem={({ item }) => (
-			<UserEntry hideButton={true} entry={item} onPress={() => onEntryPress(item)} />
-		)}
-		style={styles.resultsContainer}
-		keyboardShouldPersistTaps="handled"
-		keyExtractor={(item: IUserEntry) => item.userId}
-		// onEndReached={onLoadMore}
-		// onEndReachedThreshold={0.5}
-		ListFooterComponent={<Loader visible={hasMore || false} />}
-	/>
+	<View style={styles.container}>
+		<FlatList
+			data={entries}
+			renderItem={({ item }) => <UserEntry entry={item} onPress={() => onEntryPress(item)} />}
+			keyboardShouldPersistTaps="handled"
+			keyExtractor={(item: IUserEntry) => item.userId}
+			showsVerticalScrollIndicator={false}
+			// onEndReached={onLoadMore}
+			// onEndReachedThreshold={0.5}
+			ListFooterComponent={<Loader visible={hasMore || false} />}
+		/>
+	</View>
 );

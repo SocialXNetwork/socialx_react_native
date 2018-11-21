@@ -31,7 +31,6 @@ import {
 	IGetPublicPostsByDateAction,
 	ILikeCommentAction,
 	ILikePostAction,
-	ILoadMoreFriendsPostsAction,
 	ILoadMorePostsAction,
 	IPostIdInput,
 	IPostPathInput,
@@ -42,7 +41,6 @@ import {
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
 	ISyncGetPublicPostsByDateAction,
-	ISyncLoadMoreFriendsPostsAction,
 	ISyncLoadMorePostsAction,
 	ISyncRemovePostAction,
 	IUnlikeCommentAction,
@@ -215,7 +213,7 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 	const { dataApi } = context;
 
 	const storeState = getState();
-	const storePosts = storeState.data.posts.global;
+	const storePosts = storeState.data.posts.posts;
 	const lastPostSaneDate = () => {
 		const time = moment(
 			[...storePosts].sort((x, t) => x.timestamp - t.timestamp)[0].timestamp,
@@ -241,57 +239,6 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 			}),
 		);
 		dispatch(syncLoadMorePostsAction(posts));
-	} finally {
-		await dispatch(endActivity({ uuid: activityId }));
-	}
-};
-
-const loadMoreFriendsPostsAction: ActionCreator<ILoadMoreFriendsPostsAction> = () => ({
-	type: ActionTypes.LOAD_MORE_FRIENDS_POSTS,
-});
-
-const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAction> = (
-	posts: IPostArrayData,
-) => ({
-	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS,
-	payload: posts,
-});
-
-export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
-
-	dispatch(loadMoreFriendsPostsAction());
-	await dispatch(beginActivity({ uuid: activityId, type: ActionTypes.LOAD_MORE_FRIENDS_POSTS }));
-
-	const { dataApi } = context;
-
-	const storeState = getState();
-	const storePosts = storeState.data.posts.friends;
-	const lastPostSaneDate = () => {
-		const time = moment(
-			[...storePosts].sort((x, t) => x.timestamp - t.timestamp)[0].timestamp,
-		).subtract(1, 'd');
-		return {
-			timestamp: time,
-		};
-	};
-	const latestPost =
-		storePosts.length !== 0 ? lastPostSaneDate() : { timestamp: new Date(Date.now()) };
-
-	const lastPostTimestamp = moment(latestPost.timestamp).valueOf();
-	try {
-		const posts = await dataApi.posts.loadMoreFriendsPosts({
-			timestamp: lastPostTimestamp,
-		});
-		if (posts.length > 0) {
-			await dispatch(getProfilesByPosts(posts));
-		}
-		await dispatch(
-			setGlobal({
-				canLoadMoreFriendsPosts: !!posts.length,
-			}),
-		);
-		dispatch(syncLoadMoreFriendsPostsAction(posts));
 	} finally {
 		await dispatch(endActivity({ uuid: activityId }));
 	}
@@ -643,13 +590,9 @@ export const likeComment = (likeCommentInput: ICommentIdInput): IThunk => async 
 	const { commentId } = likeCommentInput;
 
 	const storeState = getState();
-	const parentPost =
-		storeState.data.posts.global.find((post) =>
-			post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-		) ||
-		storeState.data.posts.friends.find((post) =>
-			post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-		);
+	const parentPost = storeState.data.posts.posts.find((post) =>
+		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
+	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
@@ -693,13 +636,9 @@ export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk =
 	const { commentId } = removeCommentInput;
 
 	const storeState = getState();
-	const parentPost =
-		[...storeState.data.posts.global].find((post) =>
-			post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-		) ||
-		[...storeState.data.posts.friends].find((post) =>
-			post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-		);
+	const parentPost = [...storeState.data.posts.posts].find((post) =>
+		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
+	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
@@ -743,13 +682,9 @@ export const unlikeComment = (unlikeCommentInput: IUnlikeCommentInput): IThunk =
 	const { commentId } = unlikeCommentInput;
 
 	const storeState = getState();
-	const parentPost =
-		[...storeState.data.posts.global].find((post) =>
-			post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-		) ||
-		[...storeState.data.posts.friends].find((post) =>
-			post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-		);
+	const parentPost = [...storeState.data.posts.posts].find((post) =>
+		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
+	);
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
 		const activityId = uuidv4();

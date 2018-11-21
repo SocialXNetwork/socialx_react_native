@@ -25,7 +25,7 @@ export default {
 	'button.save.changes': 'Save changes',
 	'button.friends': 'Friends',
 	'button.add.friend': 'Add friend',
-	'button.undo': 'undo',
+	'button.undo': 'Undo',
 	'button.edit.profile': 'Edit profile',
 	'button.message': 'Message',
 	'text.and': 'and',

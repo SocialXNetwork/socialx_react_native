@@ -22,9 +22,9 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
-				[...state.global],
+				[...state.posts],
 			);
-			return { ...state, global: updatedPosts };
+			return { ...state, posts: updatedPosts };
 		}
 
 		case ActionTypes.GET_POST_BY_PATH: {
@@ -34,8 +34,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_GET_POST_BY_PATH: {
 			return {
 				...state,
-				global: [
-					...state.global.filter((post) => post.postId !== action.payload.postId),
+				posts: [
+					...state.posts.filter((post) => post.postId !== action.payload.postId),
 					action.payload,
 				],
 			};
@@ -51,9 +51,9 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
-				[...state.global],
+				[...state.posts],
 			);
-			return { ...state, global: updatedPosts };
+			return { ...state, posts: updatedPosts };
 		}
 
 		case ActionTypes.GET_POST_BY_ID: {
@@ -61,17 +61,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
-			const newGlobal = [
-				...state.global.filter((post) => post.postId !== action.payload.postId),
+			const newPosts = [
+				...state.posts.filter((post) => post.postId !== action.payload.postId),
 				action.payload,
 			];
-			// check if the post exists on the friends feed first
-			const newFriends = state.friends.find((post) => post.postId === action.payload.postId)
-				? [...state.friends.filter((post) => post.postId !== action.payload.postId), action.payload]
-				: state.friends;
+
 			return {
-				global: newGlobal,
-				friends: newFriends,
+				posts: newPosts,
 			};
 		}
 
@@ -85,24 +81,9 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
-				[...state.global],
+				[...state.posts],
 			);
-			return { ...state, global: updatedPosts };
-		}
-
-		case ActionTypes.LOAD_MORE_FRIENDS_POSTS: {
-			return state;
-		}
-
-		case ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS: {
-			const updatedPosts = action.payload.reduce(
-				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-					newPost,
-				],
-				[...state.friends],
-			);
-			return { ...state, friends: updatedPosts };
+			return { ...state, posts: updatedPosts };
 		}
 
 		case ActionTypes.REMOVE_POST: {
@@ -112,7 +93,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		case ActionTypes.SYNC_REMOVE_POST: {
 			return {
 				...state,
-				global: [...state.global.filter((post) => post.postId !== action.payload)],
+				posts: [...state.posts.filter((post) => post.postId !== action.payload)],
 			};
 		}
 

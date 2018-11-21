@@ -42,9 +42,7 @@ const styles: any = {
 	},
 	disabledButton: {
 		backgroundColor: Colors.gray,
-	},
-	loadingIndicator: {
-		paddingLeft: Sizes.smartHorizontalScale(10),
+		borderColor: Colors.gray,
 	},
 };
 

@@ -84,6 +84,16 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 	private componentIsMounted: boolean = false;
 	private animationProgress = new Animated.Value(0);
 
+	private actions: {
+		likePost: (input: { postId: string }) => void;
+		unlikePost: (input: { postId: string }) => void;
+		setNavigationParams: (input: any) => void;
+	} = {
+		likePost: () => undefined,
+		unlikePost: () => undefined,
+		setNavigationParams: () => undefined,
+	};
+
 	public componentDidMount() {
 		this.componentIsMounted = true;
 	}
@@ -99,8 +109,14 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 					<WithNavigationParams>
 						{({ setNavigationParams }) => (
 							<WithPosts>
-								{({ likePost, unlikePost }) =>
-									this.props.children({
+								{({ likePost, unlikePost }) => {
+									this.actions = {
+										likePost,
+										unlikePost,
+										setNavigationParams,
+									};
+
+									return this.props.children({
 										data: {
 											optLikedByCurrentUser: this.state.optLikedByCurrentUser,
 											likeDisabled: this.state.likeDisabled,
@@ -109,14 +125,13 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 											heartAnimation: this.state.heartAnimation,
 										},
 										actions: {
-											onLikePost: (postId) => this.onLikePostHandler(likePost, unlikePost, postId),
-											onDoubleTapLikePost: (postId) =>
-												this.onDoubleTapLikeHandler(likePost, postId),
-											onViewLikes: () => this.onViewLikesHandler(setNavigationParams),
+											onLikePost: this.onLikePostHandler,
+											onDoubleTapLikePost: this.onDoubleTapLikeHandler,
+											onViewLikes: this.onViewLikesHandler,
 											getText,
 										},
-									})
-								}
+									});
+								}}
 							</WithPosts>
 						)}
 					</WithNavigationParams>
@@ -125,11 +140,7 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 		);
 	}
 
-	private onLikePostHandler = async (
-		likePost: ({ postId }: { postId: string }) => void,
-		unlikePost: ({ postId }: { postId: string }) => void,
-		postId: string,
-	) => {
+	private onLikePostHandler = async (postId: string) => {
 		const { currentUserName, likes } = this.props;
 		const {
 			optLikedByCurrentUser,
@@ -172,31 +183,28 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 		}
 
 		if (shouldLike) {
-			await likePost({ postId });
+			await this.actions.likePost({ postId });
 		} else {
-			await unlikePost({ postId });
+			await this.actions.unlikePost({ postId });
 		}
 
 		if (this.componentIsMounted) {
 			if (likePostFailed) {
-				this.setState({
+				this.setState((currentState) => ({
 					likeDisabled: false,
-					optLikedByCurrentUser: this.props.likedByCurrentUser,
+					optLikedByCurrentUser: !currentState.optLikedByCurrentUser,
 					recentLikes: {
 						name: likes.length > 0 ? likes[likes.length - 1].userName : null,
 						total: likes.length,
 					},
-				});
+				}));
 			} else {
 				this.setState({ likeDisabled: false });
 			}
 		}
 	};
 
-	private onDoubleTapLikeHandler = async (
-		likePost: ({ postId }: { postId: string }) => void,
-		postId: string,
-	) => {
+	private onDoubleTapLikeHandler = async (postId: string) => {
 		const { currentUserName } = this.props;
 		const {
 			optLikedByCurrentUser,
@@ -225,7 +233,7 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 				this.setState({ heartAnimation: false });
 			});
 
-			await likePost({ postId });
+			await this.actions.likePost({ postId });
 
 			this.setState({ likeDisabled: false });
 		} else {
@@ -241,10 +249,10 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 		}
 	};
 
-	private onViewLikesHandler = (setNavigationParams: (input: any) => void) => {
+	private onViewLikesHandler = () => {
 		const likes = this.props.likes.filter((like) => like.userName !== this.props.currentUserName);
 
-		setNavigationParams({
+		this.actions.setNavigationParams({
 			screenName: SCREENS.Likes,
 			params: { likes },
 		});

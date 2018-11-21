@@ -28,7 +28,6 @@ export {
 	getPublicPostsByDate,
 	resetPostsAndRefetch,
 	loadMorePosts,
-	loadMoreFriendsPosts,
 	createPost,
 	likePost,
 	removePost,

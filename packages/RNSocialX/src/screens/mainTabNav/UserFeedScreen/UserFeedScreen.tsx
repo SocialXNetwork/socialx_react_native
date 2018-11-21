@@ -21,7 +21,9 @@ export interface IFeedProps {
 	feedType: FEED_TYPES;
 }
 
-interface IUserFeedScreenState {}
+interface IUserFeedScreenState {
+	namesOfFriends: string[];
+}
 
 type IUserFeedScreenProps = INavigationProps &
 	IFeedProps &
@@ -29,12 +31,22 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
+	public state = {
+		namesOfFriends: [],
+	};
 	private readonly scrollRef: React.RefObject<FlatList<IWallPostData>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public componentDidMount() {
+		const { friends, currentUser } = this.props;
+
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustNothing();
+		}
+
+		if (friends[currentUser.userId]) {
+			const namesOfFriends = friends[currentUser.userId].map((profile) => profile.alias);
+			this.setState({ namesOfFriends });
 		}
 	}
 
@@ -48,16 +60,13 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 		const {
 			feedType,
 			currentUser,
-			globalPosts,
-			friendsPosts,
+			posts,
 			errors,
 			skeletonPost,
 			shareSectionPlaceholder,
 			canLoadMorePosts,
-			canLoadMoreFriendsPosts,
 			refreshingFeed,
 			loadingMorePosts,
-			loadingMoreFriendsPosts,
 			creatingPost,
 			navigation,
 			getText,
@@ -65,26 +74,20 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 		return (
 			<UserFeedScreenView
-				posts={feedType === FEED_TYPES.FRIENDS ? friendsPosts : globalPosts}
+				posts={posts}
+				namesOfFriends={this.state.namesOfFriends}
 				avatarImage={currentUser.avatar}
 				skeletonPost={skeletonPost}
 				refreshing={refreshingFeed}
 				creatingPost={creatingPost}
-				canLoadMorePosts={
-					feedType === FEED_TYPES.FRIENDS ? canLoadMoreFriendsPosts : canLoadMorePosts
-				}
-				loadingMorePosts={
-					feedType === FEED_TYPES.FRIENDS ? loadingMoreFriendsPosts : loadingMorePosts
-				}
+				canLoadMorePosts={canLoadMorePosts}
+				loadingMorePosts={loadingMorePosts}
 				shareSectionPlaceholder={shareSectionPlaceholder}
+				isFriendsTab={feedType === FEED_TYPES.FRIENDS}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
 				onRefresh={this.onRefreshHandler}
-				onLoadMorePosts={
-					feedType === FEED_TYPES.FRIENDS
-						? this.onLoadMoreFriendsPostsHandler
-						: this.onLoadMorePostsHandler
-				}
+				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
 				onAddComment={this.onAddCommentPressHandler}
 				errors={errors}
@@ -99,14 +102,6 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 		if (!this.props.loadingMorePosts && !this.props.refreshingFeed) {
 			await loadMorePosts();
-		}
-	};
-
-	private onLoadMoreFriendsPostsHandler = async () => {
-		const { loadMoreFriendsPosts } = this.props;
-
-		if (!this.props.loadingMoreFriendsPosts && !this.props.refreshingFeed) {
-			await loadMoreFriendsPosts();
 		}
 	};
 

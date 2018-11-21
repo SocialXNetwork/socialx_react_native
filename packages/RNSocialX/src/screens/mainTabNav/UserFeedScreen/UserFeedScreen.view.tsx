@@ -16,10 +16,12 @@ import styles from './UserFeedScreen.style';
 interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	avatarImage: string;
 	posts: IWallPostData[];
+	namesOfFriends: string[];
 	skeletonPost: IWallPostData;
 	refreshing: boolean;
 	creatingPost: boolean;
 	shareSectionPlaceholder: string;
+	isFriendsTab: boolean;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
 	scrollRef: React.RefObject<FlatList<IWallPostData>>;
@@ -85,23 +87,45 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 	}
 
 	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
-		const { skeletonPost, errors, navigation } = this.props;
+		const { namesOfFriends, isFriendsTab, skeletonPost, errors, navigation } = this.props;
 		const post = data.item;
 
-		return (
-			<View style={styles.post}>
-				<WallPost
-					post={post}
-					commentInput={true}
-					errors={errors}
-					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
-					navigation={navigation}
-				/>
-				{skeletonPost && <View style={styles.overlay} />}
-				{post.suggested && (
-					<SuggestionsCarousel items={post.suggested} getText={this.props.getText} />
-				)}
-			</View>
-		);
+		if (isFriendsTab) {
+			if (namesOfFriends.includes(post.owner.userId)) {
+				return (
+					<View style={styles.post}>
+						<WallPost
+							post={post}
+							commentInput={true}
+							errors={errors}
+							onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
+							navigation={navigation}
+						/>
+						{skeletonPost && <View style={styles.overlay} />}
+						{post.suggested && (
+							<SuggestionsCarousel items={post.suggested} getText={this.props.getText} />
+						)}
+					</View>
+				);
+			}
+
+			return null;
+		} else {
+			return (
+				<View style={styles.post}>
+					<WallPost
+						post={post}
+						commentInput={true}
+						errors={errors}
+						onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
+						navigation={navigation}
+					/>
+					{skeletonPost && <View style={styles.overlay} />}
+					{post.suggested && (
+						<SuggestionsCarousel items={post.suggested} getText={this.props.getText} />
+					)}
+				</View>
+			);
+		}
 	};
 }

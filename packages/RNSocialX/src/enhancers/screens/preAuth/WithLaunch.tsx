@@ -56,7 +56,7 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 											<WithAggregations>
 												{({ getUserPosts }) => (
 													<WithPosts>
-														{({ loadMorePosts, loadMoreFriendsPosts }) =>
+														{({ loadMorePosts }) =>
 															this.props.children({
 																data: {
 																	applicationInMaintenanceMode: false,
@@ -67,7 +67,6 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 																	resetNavigationToRoute,
 																	loadFeed: async () => {
 																		await loadMorePosts();
-																		await loadMoreFriendsPosts();
 																	},
 																	recall: login,
 																	setGlobal,

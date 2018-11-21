@@ -535,7 +535,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 interface IWallPostProps extends INavigationProps {
 	post: IWallPostData;
 	commentInput?: boolean;
-	isCommentsScreen: boolean;
+	isCommentsScreen?: boolean;
 	keyboardRaised?: boolean;
 	errors: IError[];
 	onAddComment?: (cardHeight: number) => void;
