@@ -5,7 +5,6 @@ import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
-import { OS_TYPES } from '../../environment/consts';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
@@ -95,6 +94,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 					resizeMode={resizeMode}
 					resizeToChangeAspectRatio={resizeToChangeAspectRatio}
 					paused={paused}
+					replayVideoText={getText('media.types.video.replay')}
 				/>
 			)}
 		</View>
