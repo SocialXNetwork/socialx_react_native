@@ -8,7 +8,14 @@
  */
 
 import * as React from 'react';
-import { Platform, StyleProp, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import {
+	NativeModules,
+	Platform,
+	StyleProp,
+	TouchableWithoutFeedback,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Video from 'react-native-video';
 
 import { OS_TYPES } from '../../../environment/consts';
@@ -153,14 +160,17 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	};
 
 	private onVideoEnterFullScreenHandler = () => {
+		if (Platform.OS === OS_TYPES.Android) {
+			this.setState({
+				resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
+			});
+			NativeModules.BridgeModule.showFullscreen(this.props.videoURL, 0);
+			return;
+		}
 		if (this.props.resizeToChangeAspectRatio) {
-			if (Platform.OS === OS_TYPES.Android) {
-				this.setState({ fullScreen: true });
-			} else {
-				this.setState({
-					resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
-				});
-			}
+			this.setState({
+				resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
+			});
 		} else {
 			if (!this.state.replayVideo) {
 				this.setState({ fullScreen: true, muted: false });
