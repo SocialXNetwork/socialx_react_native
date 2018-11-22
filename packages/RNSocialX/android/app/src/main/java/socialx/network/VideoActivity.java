@@ -22,21 +22,19 @@ public class VideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         setContentView(R.layout.player_fullscreen);
         Intent i = getIntent();
         if(i != null){
             myVideoView = (VideoView) findViewById(R.id.videoView);
             videoPath = i.getStringExtra("VIDEO_URL");
-            progressDialog = ProgressDialog.show(VideoActivity.this, "", "Buffering video...", true);
+            progressDialog = ProgressDialog.show(VideoActivity.this, "", "Loading video", true);
             progressDialog.setCancelable(true);
             PlayVideo();
         }
         else{
-            Toast.makeText(VideoActivity.this, "VideoURL not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VideoActivity.this, "Video not found", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void PlayVideo() {

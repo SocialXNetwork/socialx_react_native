@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Image, NativeModules, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { NativeModules, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video';
 
-import styles from './Player.styles';
+import styles from './AndroidPlayer.styles';
 
-export interface IPlayerProps {
+export interface IAndroidPlayerProps {
 	video: { uri: string };
 	thumbnail?: { uri: string };
 	videoWidth?: number;
@@ -18,7 +18,7 @@ export interface IPlayerProps {
 	controlsTimeout?: number;
 	disableControlsAutoHide?: boolean;
 	loop?: boolean;
-	resizeMode: 'cover' | 'contain' | 'stretch';
+	resizeMode?: 'cover' | 'contain' | 'stretch';
 	hideControlsOnStart?: boolean;
 	endWithThumbnail?: boolean;
 	customStyles?: {
@@ -45,7 +45,7 @@ export interface IPlayerProps {
 	onLoad?: (event: any) => void;
 }
 
-export interface IPlayerState {
+export interface IAndroidPlayerState {
 	isStarted: boolean;
 	isPlaying: boolean;
 	width: number;
@@ -56,7 +56,7 @@ export interface IPlayerState {
 	isSeeking: boolean;
 }
 
-export default class Player extends Component<IPlayerProps, IPlayerState> {
+export default class Player extends Component<IAndroidPlayerProps, IAndroidPlayerState> {
 	static defaultProps = {
 		videoWidth: 1280,
 		videoHeight: 720,
@@ -76,7 +76,7 @@ export default class Player extends Component<IPlayerProps, IPlayerState> {
 
 	private controlsTimeout: any;
 
-	constructor(props: IPlayerProps) {
+	constructor(props: IAndroidPlayerProps) {
 		super(props);
 
 		this.state = {
@@ -179,12 +179,9 @@ export default class Player extends Component<IPlayerProps, IPlayerState> {
 	};
 
 	public onToggleFullScreen = () => {
-		if (Platform.OS === 'android') {
-			const uri = this.props.video.uri;
-			NativeModules.BridgeModule.showFullscreen(uri, 0);
-		} else {
-			this.player.presentFullscreenPlayer();
-		}
+		const durationToSeek = 0;
+		const uri = this.props.video.uri;
+		NativeModules.BridgeModule.showFullscreen(uri, durationToSeek);
 	};
 
 	public onSeekBarLayout({ nativeEvent }: any) {
@@ -355,7 +352,7 @@ export default class Player extends Component<IPlayerProps, IPlayerState> {
 					onEnd={this.onEnd}
 					onLoad={this.onLoad}
 					source={video}
-					resizeMode={resizeMode}
+					resizeMode={'contain'}
 				/>
 				<View style={[this.getSizeStyles(), { marginTop: -this.getSizeStyles()!.height }]}>
 					<TouchableOpacity style={styles.overlayButton} onPress={this.showControls} />
