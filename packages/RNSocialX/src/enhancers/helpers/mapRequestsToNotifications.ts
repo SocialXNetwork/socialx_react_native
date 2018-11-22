@@ -7,29 +7,27 @@ export const mapRequestsToNotifications = (
 	responses: IFriendResponse[],
 	url: string,
 ) => {
-	const reqs = requests.map((req) => {
-		return {
-			notificationId: req.id,
-			userId: req.owner.alias,
-			type: NOTIFICATION_TYPES.FRIEND_REQUEST,
-			fullName: req!.fullName,
-			userName: req.owner.alias,
-			avatar: url + req!.avatar,
-			timestamp: new Date(req.timestamp),
-		};
-	});
+	const reqs = requests.map((req) => ({
+		notificationId: req.id,
+		userId: req.owner.alias,
+		type: NOTIFICATION_TYPES.FRIEND_REQUEST,
+		fullName: req!.fullName,
+		userName: req.owner.alias,
+		avatar: url + req!.avatar,
+		timestamp: new Date(req.timestamp),
+		seen: false,
+	}));
 
-	const resps = responses.map((res) => {
-		return {
-			notificationId: res.id,
-			userId: res.owner.alias,
-			type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
-			fullName: res!.fullName,
-			userName: res.owner.alias,
-			avatar: url + res!.avatar,
-			timestamp: new Date(res.timestamp),
-		};
-	});
+	const resps = responses.map((res) => ({
+		notificationId: res.id,
+		userId: res.owner.alias,
+		type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
+		fullName: res!.fullName,
+		userName: res.owner.alias,
+		avatar: url + res!.avatar,
+		timestamp: new Date(res.timestamp),
+		seen: false,
+	}));
 
-	return [...reqs, ...resps].sort((x, y) => x.timestamp.getTime() - y.timestamp.getTime());
+	return [...reqs, ...resps].sort((x, y) => y.timestamp.getTime() - x.timestamp.getTime());
 };

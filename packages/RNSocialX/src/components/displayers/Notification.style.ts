@@ -1,70 +1,60 @@
 import { StyleSheet } from 'react-native';
-
 import { Colors, Fonts, Sizes } from '../../environment/theme';
+
+const ICON_SIZE = Sizes.smartHorizontalScale(64);
 
 const styles: any = {
 	container: {
-		borderBottomColor: Colors.activityCardBottomBorder,
-		borderBottomWidth: Sizes.smartHorizontalScale(1),
-	},
-	contentContainer: {
-		width: '100%',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingLeft: Sizes.smartHorizontalScale(25),
-		paddingRight: Sizes.smartHorizontalScale(12),
-		paddingVertical: Sizes.smartVerticalScale(24),
-	},
-	row: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingRight: Sizes.smartHorizontalScale(10),
 		flex: 1,
+		flexDirection: 'row',
+		paddingVertical: Sizes.smartVerticalScale(5),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	avatarImage: {
-		width: Sizes.smartHorizontalScale(64),
-		height: Sizes.smartHorizontalScale(64),
-		borderRadius: Sizes.smartHorizontalScale(64) / 2,
-		marginRight: Sizes.smartHorizontalScale(25),
+		width: ICON_SIZE,
+		height: ICON_SIZE,
+		borderRadius: ICON_SIZE / 2,
+		marginRight: Sizes.smartHorizontalScale(15),
+	},
+	details: {
+		flex: 1,
+		marginRight: Sizes.smartHorizontalScale(15),
 	},
 	fullName: {
-		...Fonts.centuryGothic,
+		...Fonts.centuryGothicBold,
 		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
-	},
-	userName: {
-		...Fonts.centuryGothic,
-		color: Colors.pink,
-		fontSize: Sizes.smartHorizontalScale(12),
-		paddingBottom: Sizes.smartVerticalScale(5),
+		lineHeight: Sizes.smartVerticalScale(18),
 	},
 	text: {
 		...Fonts.centuryGothic,
-		color: Colors.paleSky,
+		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(14),
-		lineHeight: Sizes.smartHorizontalScale(23),
+		lineHeight: Sizes.smartVerticalScale(18),
 	},
 	timestamp: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(12),
-		color: Colors.pigeonPost,
-		paddingTop: Sizes.smartVerticalScale(5),
+		lineHeight: Sizes.smartVerticalScale(18),
+		color: Colors.paleSky,
+	},
+	buttons: {
+		flexDirection: 'row',
+		marginTop: Sizes.smartVerticalScale(7.5),
 	},
 	button: {
+		minWidth: Sizes.smartHorizontalScale(100),
 		height: Sizes.smartVerticalScale(30),
 		backgroundColor: Colors.pink,
-		marginHorizontal: Sizes.smartHorizontalScale(10),
-		marginBottom: Sizes.smartVerticalScale(10),
+		marginRight: Sizes.smartHorizontalScale(15),
 	},
 	ghostButton: {
+		minWidth: Sizes.smartHorizontalScale(100),
 		height: Sizes.smartVerticalScale(30),
 		backgroundColor: Colors.white,
-		marginHorizontal: Sizes.smartHorizontalScale(10),
 	},
 };
 
-export const buttonWidth = Sizes.smartHorizontalScale(110);
 export const colors = {
 	white: Colors.white,
 	pink: Colors.pink,

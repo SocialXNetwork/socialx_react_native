@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Alert } from 'react-native';
+
+import { SCREENS, TABS } from '../../environment/consts';
+import { INavigationProps } from '../../types';
+import { NotificationsScreenView } from './NotificationsScreen.view';
 
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 	WithNotifications,
 } from '../../enhancers/screens';
-import { SCREENS, TABS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
-import { NotificationsScreenView } from './NotificationsScreen.view';
 
 type INotificationsScreenProps = INavigationProps &
 	IWithNotificationsEnhancedData &
@@ -28,46 +28,19 @@ class Screen extends React.Component<INotificationsScreenProps> {
 	}
 
 	public render() {
-		const {
-			notifications,
-			refreshing,
-			loadNotifications,
-			acceptFriendRequest,
-			declineFriendRequest,
-			getText,
-		} = this.props;
+		const { notifications, refreshing, getNotifications, getText } = this.props;
 
 		return (
 			<NotificationsScreenView
 				notifications={notifications}
 				refreshing={refreshing}
-				onRefresh={loadNotifications}
-				onSuperLikedPhotoPressed={this.superLikedPhotoPressedHandler}
-				onFriendRequestApprove={async (username) => {
-					await acceptFriendRequest({ username });
-				}}
-				onFriendRequestDecline={async (username) => {
-					await declineFriendRequest({ username });
-				}}
-				onGroupRequestApprove={this.onGroupRequestApprovedHandler}
-				onGroupRequestDecline={this.onGroupRequestDeclinedHandler}
+				onRefresh={getNotifications}
 				onViewUserProfile={this.onViewUserProfileHandler}
+				onShowOptions={this.onShowOptionsHandler}
 				getText={getText}
 			/>
 		);
 	}
-
-	private superLikedPhotoPressedHandler = (postId: string) => {
-		Alert.alert('superLikedPhotoPressedHandler: ' + postId);
-	};
-
-	private onGroupRequestApprovedHandler = (notificationId: string) => {
-		Alert.alert('groupRequestApprovedHandler: ' + notificationId);
-	};
-
-	private onGroupRequestDeclinedHandler = (notificationId: string) => {
-		Alert.alert('onGroupRequestDeclinedHandler: ' + notificationId);
-	};
 
 	private onViewUserProfileHandler = (userId: string) => {
 		const { navigation, setNavigationParams } = this.props;
@@ -76,6 +49,22 @@ class Screen extends React.Component<INotificationsScreenProps> {
 			params: { userId, origin: TABS.Feed },
 		});
 		navigation.navigate(SCREENS.UserProfile);
+	};
+
+	private onShowOptionsHandler = (notificationId: string) => {
+		const { removeNotification, showOptionsMenu, getText } = this.props;
+
+		const items = [
+			{
+				label: getText('comments.screen.advanced.menu.delete'),
+				icon: 'ios-trash',
+				actionHandler: async () => {
+					await removeNotification({ notificationId });
+				},
+			},
+		];
+
+		showOptionsMenu(items);
 	};
 }
 

@@ -12,11 +12,7 @@ import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
 import { FRIEND_TYPES, ITranslatedProps } from '../../../types';
 import { Statistics, Tabs } from './';
 
-import {
-	IWithFriendsEnhancedActions,
-	IWithFriendsEnhancedData,
-	WithFriends,
-} from '../../../enhancers/logic/WithFriends';
+import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/logic/WithFriends';
 
 import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 
@@ -42,7 +38,7 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	onIconPress?: (tab: string) => void;
 }
 
-type IProps = IProfileTopContainerProps & IWithFriendsEnhancedActions & IWithFriendsEnhancedData;
+type IProps = IProfileTopContainerProps & IWithFriendsEnhancedData;
 
 const Component: React.SFC<IProps> = ({
 	userId,
@@ -54,7 +50,6 @@ const Component: React.SFC<IProps> = ({
 	numberOfLikes,
 	numberOfFriends,
 	numberOfComments,
-	relationship,
 	isCurrentUser,
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,

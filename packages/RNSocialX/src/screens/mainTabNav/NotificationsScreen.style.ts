@@ -7,23 +7,23 @@ const styles: any = {
 		width: '100%',
 		backgroundColor: Colors.white,
 	},
-	emptyContainer: {
-		flex: 1, // TODO: this should take full width in RN 0.56
+	list: {
+		paddingVertical: Sizes.smartVerticalScale(12),
+	},
+	empty: {
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingTop: Sizes.smartVerticalScale(30),
 	},
-	noNotificationsScrollContainer: {
-		flex: 1,
-	},
-	noNotificationsText: {
+	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(24),
 		textAlign: 'center',
 		color: Colors.silverSand,
 	},
-	noNotificationsIcon: {
+	icon: {
 		width: Sizes.smartHorizontalScale(37),
 		height: Sizes.smartHorizontalScale(33),
 		marginBottom: Sizes.smartVerticalScale(15),
@@ -31,4 +31,4 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
-export const emptyListIcon = Icons.iconNotificationsScreenEmpty;
+export const Icon = Icons.iconNotificationsScreenEmpty;

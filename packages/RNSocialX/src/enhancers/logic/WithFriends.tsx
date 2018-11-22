@@ -1,23 +1,27 @@
 import * as React from 'react';
 
 import { ActionTypes } from '../../store/data/profiles/Types';
-import { FRIEND_TYPES, IError } from '../../types';
+import { FRIEND_TYPES, IError, IGlobal } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithProfiles } from '../connectors/data/WithProfiles';
 import { WithActivities } from '../connectors/ui/WithActivities';
+import { WithGlobals } from '../connectors/ui/WithGlobals';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
 
 export interface IWithFriendsEnhancedData {
 	status: {
 		text: string;
 		disabled: boolean;
-		relationship: FRIEND_TYPES;
+		relationship: FRIEND_TYPES | undefined;
 		actionHandler: (userId: string) => void;
 	};
 }
 
-export interface IWithFriendsEnhancedActions {}
+export interface IWithFriendsEnhancedActions {
+	onAcceptFriendRequest: (userName: string) => void;
+	onDeclineFriendRequest: (userName: string) => void;
+}
 
 interface IWithFriendstEnhancedProps {
 	data: IWithFriendsEnhancedData;
@@ -25,13 +29,13 @@ interface IWithFriendstEnhancedProps {
 }
 
 interface IWithFriendsProps {
-	relationship: FRIEND_TYPES;
+	relationship?: FRIEND_TYPES;
 	children(props: IWithFriendstEnhancedProps): JSX.Element;
 }
 
 interface IWithFriendsState {
 	text: string;
-	relationship: FRIEND_TYPES;
+	relationship: FRIEND_TYPES | undefined;
 	disabled: boolean;
 	error: boolean;
 }
@@ -39,7 +43,7 @@ interface IWithFriendsState {
 export class WithFriends extends React.Component<IWithFriendsProps, IWithFriendsState> {
 	public state = {
 		text: '',
-		relationship: this.props.relationship,
+		relationship: this.props.relationship || undefined,
 		disabled: false,
 		error: false,
 	};
@@ -48,20 +52,28 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 
 	private actions: {
 		addFriend: (input: { username: string }) => void;
-		removeFriend: (removeFriendInput: { username: string }) => void;
+		removeFriend: (input: { username: string }) => void;
+		acceptFriend: (input: { username: string }) => void;
+		rejectFriend: (input: { username: string }) => void;
 		showOptionsMenu: (optionsInput: { items: any }) => void;
+		setGlobal: (input: IGlobal) => void;
 		getText: (value: string, ...args: any[]) => string;
 	} = {
 		addFriend: () => undefined,
 		removeFriend: () => undefined,
+		acceptFriend: () => undefined,
+		rejectFriend: () => undefined,
 		showOptionsMenu: () => undefined,
+		setGlobal: () => undefined,
 		getText: () => '',
 	};
 
 	public componentDidMount() {
-		const text = this.getStatusText(this.props.relationship);
-		if (this.state.text !== text) {
-			this.setState({ text });
+		if (this.props.relationship) {
+			const text = this.getStatusText(this.props.relationship);
+			if (this.state.text !== text) {
+				this.setState({ text });
+			}
 		}
 	}
 
@@ -80,39 +92,49 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithOverlays>
-						{({ showOptionsMenu }) => (
-							<WithActivities>
-								{({ errors }) => (
-									<WithProfiles>
-										{({ addFriend, removeFriend }) => {
-											this.errors = errors;
-											this.actions = {
-												addFriend,
-												removeFriend: removeFriend as any,
-												showOptionsMenu,
-												getText,
-											};
+					<WithGlobals>
+						{({ setGlobal }) => (
+							<WithOverlays>
+								{({ showOptionsMenu }) => (
+									<WithActivities>
+										{({ errors }) => (
+											<WithProfiles>
+												{({ addFriend, removeFriend, acceptFriend, rejectFriend }) => {
+													this.errors = errors;
+													this.actions = {
+														addFriend,
+														removeFriend,
+														acceptFriend,
+														rejectFriend,
+														showOptionsMenu,
+														setGlobal,
+														getText,
+													};
 
-											return this.props.children({
-												data: {
-													status: {
-														text: this.state.text,
-														disabled: this.state.disabled,
-														relationship: this.state.relationship,
-														actionHandler: (userId) => {
-															this.getHandler(this.props.relationship, userId)();
+													return this.props.children({
+														data: {
+															status: {
+																text: this.state.text,
+																disabled: this.state.disabled,
+																relationship: this.state.relationship
+																	? this.state.relationship
+																	: undefined,
+																actionHandler: (userId) => this.getStatusHandler(userId)(),
+															},
 														},
-													},
-												},
-												actions: {},
-											});
-										}}
-									</WithProfiles>
+														actions: {
+															onAcceptFriendRequest: this.onAcceptFriendRequestHandler,
+															onDeclineFriendRequest: this.onDeclineFriendRequestHandler,
+														},
+													});
+												}}
+											</WithProfiles>
+										)}
+									</WithActivities>
 								)}
-							</WithActivities>
+							</WithOverlays>
 						)}
-					</WithOverlays>
+					</WithGlobals>
 				)}
 			</WithI18n>
 		);
@@ -140,22 +162,24 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		return text;
 	};
 
-	private getHandler = (relationship: FRIEND_TYPES, userId: string) => {
-		let actionHandler: () => any;
+	private getStatusHandler = (userId: string) => {
+		let actionHandler: () => any = () => undefined;
 
-		switch (relationship) {
-			case FRIEND_TYPES.MUTUAL:
-				actionHandler = () => this.onShowOptionsHandler(userId);
-				break;
-			case FRIEND_TYPES.PENDING:
-				actionHandler = () => undefined; // TODO: Implement cancel request actionHandler
-				break;
-			case FRIEND_TYPES.NOT_FRIEND:
-				actionHandler = () => this.onAddFriendHandler(userId);
-				break;
-			default:
-				actionHandler = () => this.onAddFriendHandler(userId);
-				break;
+		if (this.props.relationship) {
+			switch (this.props.relationship) {
+				case FRIEND_TYPES.MUTUAL:
+					actionHandler = () => this.onShowOptionsHandler(userId);
+					break;
+				case FRIEND_TYPES.PENDING:
+					actionHandler = () => undefined; // TODO: Implement cancel request actionHandler
+					break;
+				case FRIEND_TYPES.NOT_FRIEND:
+					actionHandler = () => this.onAddFriendHandler(userId);
+					break;
+				default:
+					actionHandler = () => this.onAddFriendHandler(userId);
+					break;
+			}
 		}
 
 		return actionHandler;
@@ -194,52 +218,78 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 	};
 
 	private onAddFriendHandler = async (userId: string) => {
-		const newRelationship = this.getNextRelationship(this.props.relationship);
-		this.setState({
-			text: this.getStatusText(newRelationship),
-			relationship: newRelationship,
-			disabled: true,
-			error: false,
-		});
-
-		await this.actions.addFriend({ username: userId });
-
-		if (this.state.error) {
+		if (this.props.relationship) {
+			const newRelationship = this.getNextRelationship(this.props.relationship);
 			this.setState({
-				text: this.getStatusText(this.props.relationship),
-				relationship: this.props.relationship,
-				disabled: false,
+				text: this.getStatusText(newRelationship),
+				relationship: newRelationship,
+				disabled: true,
 				error: false,
 			});
-		} else {
-			this.setState({
-				disabled: false,
-			});
+
+			await this.actions.addFriend({ username: userId });
+
+			if (this.state.error) {
+				this.setState({
+					text: this.getStatusText(this.props.relationship),
+					relationship: this.props.relationship,
+					disabled: false,
+					error: false,
+				});
+			} else {
+				this.setState({
+					disabled: false,
+				});
+			}
 		}
 	};
 
 	private onRemoveFriendHandler = async (userId: string) => {
-		const newRelationship = FRIEND_TYPES.NOT_FRIEND;
-		this.setState({
-			text: this.getStatusText(newRelationship),
-			relationship: newRelationship,
-			disabled: true,
-			error: false,
-		});
-
-		await this.actions.removeFriend({ username: userId });
-
-		if (this.state.error) {
+		if (this.props.relationship) {
+			const newRelationship = FRIEND_TYPES.NOT_FRIEND;
 			this.setState({
-				text: this.getStatusText(this.props.relationship),
-				relationship: this.props.relationship,
-				disabled: false,
+				text: this.getStatusText(newRelationship),
+				relationship: newRelationship,
+				disabled: true,
 				error: false,
 			});
-		} else {
-			this.setState({
-				disabled: false,
-			});
+
+			await this.actions.removeFriend({ username: userId });
+
+			if (this.state.error) {
+				this.setState({
+					text: this.getStatusText(this.props.relationship),
+					relationship: this.props.relationship,
+					disabled: false,
+					error: false,
+				});
+			} else {
+				this.setState({
+					disabled: false,
+				});
+			}
 		}
+	};
+
+	private onAcceptFriendRequestHandler = async (username: string) => {
+		this.toggleIndicator(true);
+		await this.actions.acceptFriend({ username });
+		this.toggleIndicator(false);
+	};
+
+	private onDeclineFriendRequestHandler = async (username: string) => {
+		this.toggleIndicator(true);
+		await this.actions.rejectFriend({ username });
+		this.toggleIndicator(false);
+	};
+
+	private toggleIndicator = (state: boolean) => {
+		this.actions.setGlobal({
+			transparentOverlay: {
+				visible: state,
+				alpha: 0.6,
+				loader: state,
+			},
+		});
 	};
 }

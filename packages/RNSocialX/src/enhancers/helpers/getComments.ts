@@ -1,11 +1,10 @@
 import { ICommentsReturnData, IFriendData } from '@socialx/api-data';
-import { IApplicationConfig } from '../../store/app/config';
 
 export const getComments = (
 	comments: ICommentsReturnData[],
 	profiles: IFriendData[],
 	currentUserId: string,
-	appConfig: IApplicationConfig,
+	url: string,
 ) => {
 	return comments
 		.sort((x, y) => x.timestamp - y.timestamp)
@@ -18,11 +17,7 @@ export const getComments = (
 				user: {
 					userId: comment.owner.alias,
 					fullName: commentOwner!.fullName,
-					avatar:
-						commentOwner!.avatar.length > 0
-				? appConfig.ipfsConfig.ipfs_URL +
-				  commentOwner!.avatar  // tslint:disable-line
-							: '',
+					avatar: commentOwner!.avatar.length > 0 ? url + commentOwner!.avatar : '',
 				},
 				timestamp: new Date(comment.timestamp),
 				likes: comment.likes.map((like) => {
@@ -32,10 +27,7 @@ export const getComments = (
 						userId: like.owner.alias,
 						userName: like.owner.alias,
 						fullName: likeProfile!.fullName,
-						avatar:
-							likeProfile!.avatar.length > 0
-								? appConfig.ipfsConfig.ipfs_URL + likeProfile!.avatar
-								: '',
+						avatar: likeProfile!.avatar.length > 0 ? url + likeProfile!.avatar : '',
 						location: '',
 						relationship: likeProfile!.status,
 					};

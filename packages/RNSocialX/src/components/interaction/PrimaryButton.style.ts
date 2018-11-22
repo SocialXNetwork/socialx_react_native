@@ -43,6 +43,7 @@ const styles: any = {
 	disabledButton: {
 		backgroundColor: Colors.gray,
 		borderColor: Colors.gray,
+		color: Colors.white,
 	},
 };
 

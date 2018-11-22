@@ -5,11 +5,7 @@ import { AvatarImage, ButtonSizes, PrimaryButton } from '../';
 import { Colors } from '../../environment/theme';
 import { FRIEND_TYPES, IUserEntry } from '../../types';
 
-import {
-	IWithFriendsEnhancedActions,
-	IWithFriendsEnhancedData,
-	WithFriends,
-} from '../../enhancers/logic/WithFriends';
+import { IWithFriendsEnhancedData, WithFriends } from '../../enhancers/logic/WithFriends';
 
 import styles from './UserEntry.style';
 
@@ -18,7 +14,7 @@ interface IUserEntryProps {
 	onPress: (entry: IUserEntry) => void;
 }
 
-type IProps = IUserEntryProps & IWithFriendsEnhancedActions & IWithFriendsEnhancedData;
+type IProps = IUserEntryProps & IWithFriendsEnhancedData;
 
 const Component: React.SFC<IProps> = ({ entry, status, onPress }) => (
 	<TouchableOpacity activeOpacity={1} onPress={() => onPress(entry)} style={styles.card}>

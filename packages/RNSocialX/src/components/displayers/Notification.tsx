@@ -6,106 +6,96 @@ import { AvatarImage, ButtonSizes, PrimaryButton } from '../../components';
 import { NOTIFICATION_TYPES } from '../../environment/consts';
 import { INotificationData, ITranslatedProps } from '../../types';
 
-import styles, { buttonWidth, colors } from './Notification.style';
+import { IWithFriendsEnhancedActions, WithFriends } from '../../enhancers/logic/WithFriends';
+
+import styles, { colors } from './Notification.style';
 
 interface INotificationProps extends ITranslatedProps {
 	notification: INotificationData;
 	onViewUserProfile: (userId: string) => void;
-	onFriendRequestApprove: (userName: string) => void;
-	onFriendRequestDecline: (userName: string) => void;
-	onGroupRequestApprove: (notificationId: string) => void;
-	onGroupRequestDecline: (notificationId: string) => void;
+	onShowOptions: (notificationId: string) => void;
 }
 
-export const Notification: React.SFC<INotificationProps> = ({
+type IProps = INotificationProps & IWithFriendsEnhancedActions;
+
+const Component: React.SFC<IProps> = ({
 	notification,
-	onFriendRequestApprove,
-	onFriendRequestDecline,
-	onGroupRequestApprove,
-	onGroupRequestDecline,
 	onViewUserProfile,
+	onShowOptions,
+	onAcceptFriendRequest,
+	onDeclineFriendRequest,
 	getText,
 }) => {
-	const {
-		notificationId,
-		userId,
-		avatar,
-		fullName,
-		userName,
-		type,
-		timestamp,
-		groupName,
-	} = notification;
+	const { notificationId, userId, avatar, fullName, userName, type, timestamp } = notification;
 
 	let text = '';
 	let buttons = false;
 
 	switch (type) {
 		case NOTIFICATION_TYPES.FRIEND_REQUEST:
-			text = getText('notifications.card.friend.request.title');
+			text = getText('notifications.friend.request.sent');
 			buttons = true;
 			break;
 		case NOTIFICATION_TYPES.GROUP_REQUEST:
-			text = getText('notifications.card.group.request.title');
+			text = getText('notifications.group.request.sent');
 			buttons = true;
 			break;
 		case NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE:
 			text = getText('notifications.friend.request.accepted');
 			break;
 		case NOTIFICATION_TYPES.SUPER_LIKED:
-			text = getText('notifications.card.super.liked');
+			text = getText('notifications.super.liked');
 			break;
 		case NOTIFICATION_TYPES.RECENT_COMMENT:
-			text = getText('notifications.card.recent.comment.title');
+			text = getText('notifications.recent.comment');
 			break;
 		default:
 			break;
 	}
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.contentContainer}>
-				<TouchableOpacity style={styles.row} onPress={() => onViewUserProfile(userId)}>
-					<AvatarImage image={avatar} style={styles.avatarImage} />
-					<View style={{ flex: 1 }}>
-						<Text style={[styles.fullName, { paddingBottom: groupName ? 5 : 0 }]}>{fullName}</Text>
-						{userName && <Text style={styles.userName}>{'@' + userName}</Text>}
-						<Text style={styles.text}>{text}</Text>
-						{groupName && <Text style={styles.userName}>{'@' + groupName}</Text>}
-						<Text style={styles.timestamp}>{moment(timestamp).fromNow()}</Text>
+		<TouchableOpacity
+			onPress={() => onViewUserProfile(userId)}
+			onLongPress={() => onShowOptions(notificationId)}
+			activeOpacity={1}
+			style={styles.container}
+		>
+			<AvatarImage image={avatar} style={styles.avatarImage} />
+			<View style={[styles.details, { justifyContent: !buttons ? 'center' : 'flex-start' }]}>
+				<Text>
+					<Text style={styles.fullName}>{fullName}</Text>
+					<Text style={styles.text}>{' ' + text}</Text>
+				</Text>
+				{buttons && (
+					<View style={styles.buttons}>
+						<PrimaryButton
+							autoWidth={true}
+							label={getText('button.accept')}
+							size={ButtonSizes.Small}
+							borderColor={colors.pink}
+							textColor={colors.white}
+							containerStyle={styles.button}
+							onPress={() => onAcceptFriendRequest(userName!)}
+						/>
+						<PrimaryButton
+							autoWidth={true}
+							label={getText('button.decline')}
+							size={ButtonSizes.Small}
+							borderColor={colors.pink}
+							textColor={colors.pink}
+							containerStyle={styles.ghostButton}
+							onPress={() => onDeclineFriendRequest(userName!)}
+						/>
 					</View>
-					{buttons && (
-						<View style={styles.buttons}>
-							<PrimaryButton
-								width={buttonWidth}
-								label={getText('button.accept')}
-								size={ButtonSizes.Small}
-								borderColor={colors.pink}
-								textColor={colors.white}
-								containerStyle={styles.button}
-								onPress={
-									groupName
-										? () => onGroupRequestApprove(notificationId)
-										: () => onFriendRequestApprove(userName!)
-								}
-							/>
-							<PrimaryButton
-								width={buttonWidth}
-								label={getText('button.decline')}
-								size={ButtonSizes.Small}
-								borderColor={colors.pink}
-								textColor={colors.pink}
-								containerStyle={styles.ghostButton}
-								onPress={
-									groupName
-										? () => onGroupRequestDecline(notificationId)
-										: () => onFriendRequestDecline(userName!)
-								}
-							/>
-						</View>
-					)}
-				</TouchableOpacity>
+				)}
 			</View>
-		</View>
+			<View style={{ justifyContent: !buttons ? 'center' : 'flex-start' }}>
+				<Text style={styles.timestamp}>{moment(timestamp).fromNow()}</Text>
+			</View>
+		</TouchableOpacity>
 	);
 };
+
+export const Notification: React.SFC<INotificationProps> = (props) => (
+	<WithFriends>{({ actions }) => <Component {...props} {...actions} />}</WithFriends>
+);

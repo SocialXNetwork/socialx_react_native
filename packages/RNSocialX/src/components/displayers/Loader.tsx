@@ -5,13 +5,14 @@ import { Sizes } from '../../environment/theme';
 
 interface ILoaderProps {
 	visible: boolean;
+	small?: boolean;
 }
 
-export const Loader: React.SFC<ILoaderProps> = ({ visible }) => {
+export const Loader: React.SFC<ILoaderProps> = ({ visible, small }) => {
 	if (visible) {
 		return (
 			<View style={styles.container}>
-				<ActivityIndicator size="large" />
+				<ActivityIndicator size={small ? 'small' : 'large'} />
 			</View>
 		);
 	}

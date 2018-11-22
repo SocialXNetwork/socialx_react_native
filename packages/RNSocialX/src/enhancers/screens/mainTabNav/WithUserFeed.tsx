@@ -74,6 +74,7 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																{(feed) => (
 																	<WithCurrentUser>
 																		{({ currentUser }) => {
+																			const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
 																			let posts: IWallPostData[] = [];
 
 																			if (feed.posts.length > 0) {
@@ -83,7 +84,7 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																					currentUser,
 																					profiles,
 																					activities,
-																					appConfig,
+																					IPFS_URL,
 																				);
 																			}
 

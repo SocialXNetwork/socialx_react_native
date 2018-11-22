@@ -76,6 +76,7 @@ export interface INotificationData {
 	userName?: string;
 	timestamp?: Date;
 	groupName?: string;
+	seen: boolean;
 }
 
 export interface IOptionsMenuItem {

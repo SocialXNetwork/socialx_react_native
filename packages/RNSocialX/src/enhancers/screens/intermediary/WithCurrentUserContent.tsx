@@ -32,6 +32,8 @@ export class WithCurrentUserContent extends React.Component<
 										{({ currentUser }) => (
 											<WithActivities>
 												{({ activities }) => {
+													const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
+
 													if (currentUser) {
 														const posts = userPosts[currentUser.userId];
 
@@ -41,7 +43,7 @@ export class WithCurrentUserContent extends React.Component<
 															currentUser,
 															profiles,
 															activities,
-															appConfig,
+															IPFS_URL,
 														);
 
 														currentUser.numberOfLikes = posts.reduce(

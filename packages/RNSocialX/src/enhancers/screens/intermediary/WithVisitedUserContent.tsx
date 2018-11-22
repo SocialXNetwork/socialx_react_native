@@ -37,7 +37,9 @@ export class WithVisitedUserContent extends React.Component<
 													<WithActivities>
 														{({ activities }) => {
 															if (visitedUser) {
+																const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
 																let posts: IPostReturnData[] = [];
+
 																if (userPosts[visitedUser.userId]) {
 																	posts = userPosts[visitedUser.userId];
 																}
@@ -48,7 +50,7 @@ export class WithVisitedUserContent extends React.Component<
 																	currentUser,
 																	profiles,
 																	activities,
-																	appConfig,
+																	IPFS_URL,
 																);
 
 																visitedUser.numberOfLikes = posts.reduce(

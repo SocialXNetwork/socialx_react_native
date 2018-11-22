@@ -1,4 +1,3 @@
-import { IApplicationConfig } from '../../store/app/config/Types';
 import { IPostReturnData } from '../../store/data/posts';
 import { ActionTypes } from '../../store/data/posts/Types';
 import { IActivity } from '../../store/ui/activities';
@@ -12,7 +11,7 @@ export const mapPostsForUI = (
 	currentUser: ICurrentUser | undefined,
 	profiles: IProfile[],
 	activities: IActivity[],
-	appConfig: IApplicationConfig,
+	url: string,
 ): IWallPostData[] => {
 	return posts
 		.sort((x: any, y: any) => y.timestamp - x.timestamp)
@@ -32,15 +31,12 @@ export const mapPostsForUI = (
 				owner: {
 					userId: post.owner.alias,
 					fullName: ownerProfile!.fullName,
-					avatar:
-						ownerProfile!.avatar.length > 0
-							? appConfig.ipfsConfig.ipfs_URL + ownerProfile!.avatar
-							: '',
+					avatar: ownerProfile!.avatar.length > 0 ? url + ownerProfile!.avatar : '',
 				},
 				likedByCurrentUser,
 				removable: post.owner.alias === currentUser!.userId,
 				media: post.media.map((media) => ({
-					url: appConfig.ipfsConfig.ipfs_URL + media.hash,
+					url: url + media.hash,
 					hash: media.hash,
 					type: media.type.name === 'Photo' ? MediaTypeImage : MediaTypeVideo,
 					extension: media.extension,
@@ -57,15 +53,12 @@ export const mapPostsForUI = (
 						userId: like.owner.alias,
 						userName: like.owner.alias,
 						fullName: likeProfile!.fullName,
-						avatar:
-							likeProfile!.avatar.length > 0
-								? appConfig.ipfsConfig.ipfs_URL + likeProfile!.avatar
-								: '',
+						avatar: likeProfile!.avatar.length > 0 ? url + likeProfile!.avatar : '',
 						location: '',
 						relationship: likeProfile!.status,
 					};
 				}),
-				comments: getComments(post.comments, profiles, currentUser!.userId, appConfig),
+				comments: getComments(post.comments, profiles, currentUser!.userId, url),
 				topComments: getTopComments(post.comments),
 				// TODO: add this later when data is available
 				numberOfSuperLikes: 0,

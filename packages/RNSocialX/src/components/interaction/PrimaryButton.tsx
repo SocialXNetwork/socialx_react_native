@@ -60,7 +60,7 @@ export const PrimaryButton: React.SFC<IPrimaryButtonProps> = ({
 
 	const textStyles = [
 		styles.text,
-		{ color: textColor ? textColor : defaultColor },
+		{ color: disabled ? defaultColor : textColor ? textColor : defaultColor },
 		size ? styles['text' + size] : {},
 	];
 

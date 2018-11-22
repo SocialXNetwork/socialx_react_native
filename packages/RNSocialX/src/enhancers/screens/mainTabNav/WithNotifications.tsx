@@ -6,9 +6,9 @@
 import * as React from 'react';
 
 import {
-	IFriendshipInput,
 	INavigationParamsActions,
 	INotificationData,
+	IOptionsMenuProps,
 	ITranslatedProps,
 } from '../../../types';
 
@@ -17,8 +17,8 @@ import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { getActivity, mapRequestsToNotifications } from '../../helpers';
 
 export interface IWithNotificationsEnhancedData {
@@ -28,11 +28,10 @@ export interface IWithNotificationsEnhancedData {
 
 export interface IWithNotificationsEnhancedActions
 	extends ITranslatedProps,
+		IOptionsMenuProps,
 		INavigationParamsActions {
-	loadNotifications: () => void;
-	acceptFriendRequest: (input: IFriendshipInput) => void;
-	declineFriendRequest: (input: IFriendshipInput) => void;
-	removeNotification: (notificationId: string) => void;
+	getNotifications: () => void;
+	removeNotification: (input: { notificationId: string }) => void;
 }
 
 interface IWithNotificationsEnhancedProps {
@@ -58,12 +57,17 @@ export class WithNotifications extends React.Component<
 						{({ getText }) => (
 							<WithNavigationParams>
 								{({ setNavigationParams }) => (
-									<WithActivities>
-										{({ activities }) => (
-											<WithProfiles>
-												{({ acceptFriend, rejectFriend }) => (
+									<WithOverlays>
+										{({ showOptionsMenu }) => (
+											<WithActivities>
+												{({ activities }) => (
 													<WithNotificationsData>
-														{({ friendRequests, friendResponses, getNotifications }) =>
+														{({
+															friendRequests,
+															friendResponses,
+															getNotifications,
+															removeNotification,
+														}) =>
 															this.props.children({
 																data: {
 																	refreshing: getActivity(
@@ -77,10 +81,9 @@ export class WithNotifications extends React.Component<
 																	),
 																},
 																actions: {
-																	loadNotifications: getNotifications,
-																	acceptFriendRequest: acceptFriend,
-																	declineFriendRequest: rejectFriend,
-																	removeNotification: (notificationId) => undefined,
+																	getNotifications,
+																	removeNotification,
+																	showOptionsMenu: (items) => showOptionsMenu({ items }),
 																	setNavigationParams,
 																	getText,
 																},
@@ -88,9 +91,9 @@ export class WithNotifications extends React.Component<
 														}
 													</WithNotificationsData>
 												)}
-											</WithProfiles>
+											</WithActivities>
 										)}
-									</WithActivities>
+									</WithOverlays>
 								)}
 							</WithNavigationParams>
 						)}
