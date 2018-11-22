@@ -20,8 +20,8 @@ public class BridgeModule extends ReactContextBaseJavaModule{
         return "BridgeModule";
     }
     @ReactMethod
-    public void showFullscreen(String videoUri, int duraitonToSeek) {
-        duration = duraitonToSeek;
+    public void showFullscreen(String videoUri, int durationToSeek) {
+        duration = durationToSeek;
         Context context = getReactApplicationContext();
         Intent intent = new Intent(context, VideoActivity.class); // mContext got from your overriden constructor
         intent.putExtra("VIDEO_URL",videoUri);

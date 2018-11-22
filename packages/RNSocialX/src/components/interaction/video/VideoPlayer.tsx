@@ -17,6 +17,7 @@ import {
 	ViewStyle,
 } from 'react-native';
 import Video from 'react-native-video';
+import AndroidPlayer from './AndroidPlayer';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { VideoControls } from './VideoControls';
@@ -26,7 +27,7 @@ export interface IVideoOptions {
 	containerStyle?: StyleProp<ViewStyle>;
 	muted?: boolean;
 	thumbOnly?: boolean;
-	resizeMode?: 'cover' | 'contain';
+	resizeMode?: 'cover' | 'contain' | 'stretch';
 	resizeToChangeAspectRatio?: boolean;
 	paused?: boolean;
 }
@@ -57,7 +58,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 		paused: false,
 		replayVideo: false,
 		thumbOnly: false,
-		resizeMode: 'cover',
+		resizeMode: 'contain',
 		resizeToChangeAspectRatio: false,
 	};
 
@@ -74,8 +75,8 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	private playerRef: React.RefObject<Video> = React.createRef();
 
 	public render() {
-		const { containerStyle, thumbOnly, videoURL, onPressVideo, replayVideoText } = this.props;
-		const { ended, playReady, fullScreen, muted, paused, resizeMode, replayVideo } = this.state;
+		const { containerStyle, thumbOnly, onPressVideo, replayVideoText } = this.props;
+		const { ended, playReady, muted, paused, replayVideo } = this.state;
 
 		const showPlayButton = paused;
 
@@ -85,23 +86,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 				disabled={thumbOnly && !onPressVideo && ended}
 			>
 				<View style={containerStyle}>
-					<Video
-						onReadyForDisplay={this.onVideoReadyHandler}
-						// poster='https://baconmockup.com/300/200/'
-						source={{ uri: videoURL }}
-						resizeMode={resizeMode}
-						paused={paused}
-						muted={muted}
-						onEnd={this.onVideoEndHandler}
-						playInBackground={false}
-						playWhenInactive={false}
-						style={styles.videoObject}
-						fullscreen={fullScreen}
-						ref={this.playerRef}
-						onFullscreenPlayerDidDismiss={this.onExitFullScreenHandler}
-						onFullscreenPlayerWillPresent={this.onFullScreenPresentHandler}
-						useTextureView={true}
-					/>
+					{Platform.OS === OS_TYPES.Android ? this.renderAndroidPlayer : this.renderiOSPlayer}
 					<VideoControls
 						showPlayButton={showPlayButton}
 						muted={muted}
@@ -119,6 +104,33 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 			</TouchableWithoutFeedback>
 		);
 	}
+
+	private renderAndroidPlayer = () => {
+		return <AndroidPlayer video={{ uri: this.props.videoURL }} />;
+	};
+
+	private renderiOSPlayer = () => {
+		const { fullScreen, muted, paused, resizeMode } = this.state;
+
+		return (
+			<Video
+				onReadyForDisplay={this.onVideoReadyHandler}
+				source={{ uri: this.props.videoURL }}
+				resizeMode={resizeMode}
+				paused={paused}
+				muted={muted}
+				onEnd={this.onVideoEndHandler}
+				playInBackground={false}
+				playWhenInactive={false}
+				style={styles.videoObject}
+				fullscreen={fullScreen}
+				ref={this.playerRef}
+				onFullscreenPlayerDidDismiss={this.onExitFullScreenHandler}
+				onFullscreenPlayerWillPresent={this.onFullScreenPresentHandler}
+				useTextureView={true}
+			/>
+		);
+	};
 
 	private onPauseVideoHandler = () => {
 		if (!this.state.ended) {
@@ -161,9 +173,6 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 
 	private onVideoEnterFullScreenHandler = () => {
 		if (Platform.OS === OS_TYPES.Android) {
-			this.setState({
-				resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
-			});
 			NativeModules.BridgeModule.showFullscreen(this.props.videoURL, 0);
 			return;
 		}
