@@ -39,15 +39,14 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 		{playReady && !thumbOnly && (
 			<View style={styles.container}>
 				{showPlayButton && (
-					<TouchableOpacity onPress={onVideoPlayStart}>
-						<Icon name="md-play-circle" style={styles.playIcon} />
-					</TouchableOpacity>
+					<View style={styles.darkBackground}>
+						<TouchableOpacity onPress={onVideoPlayStart}>
+							<Icon name="md-play-circle" style={styles.playIcon} />
+						</TouchableOpacity>
+					</View>
 				)}
 				<TouchableOpacity style={styles.muteButton} onPress={onVideoMuteToggle}>
-					<Icon
-						name={muted ? 'ios-volume-off' : 'ios-volume-high'}
-						style={styles.smallControlIcon}
-					/>
+					<Icon name={muted ? 'ios-volume-off' : 'ios-volume-high'} style={styles.volumeIcon} />
 				</TouchableOpacity>
 				{resizeToChangeAspectRatio && (
 					<TouchableOpacity style={styles.resizeButton} onPress={onVideoEnterFullScreen}>
@@ -55,7 +54,7 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 					</TouchableOpacity>
 				)}
 				{replayVideo && (
-					<View style={styles.videoEndedContainer}>
+					<View style={styles.darkBackground}>
 						<TouchableOpacity onPress={onVideoReplay}>
 							<Icon name="md-refresh-circle" style={styles.replayIcon} />
 							<Text style={styles.replayVideoText}>{replayVideoText}</Text>

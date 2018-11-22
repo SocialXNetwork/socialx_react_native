@@ -12,16 +12,16 @@ const styles: any = {
 	playIcon: {
 		fontSize: Sizes.smartHorizontalScale(50),
 		lineHeight: Sizes.smartHorizontalScale(50),
-		paddingHorizontal: Sizes.smartHorizontalScale(10),
-		color: colorWithAlpha(Colors.black, 0.8),
+		color: Colors.white,
 	},
 	resizeIcon: {
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(20),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
+		paddingVertical: Sizes.smartVerticalScale(5),
 		color: Colors.white,
 	},
-	videoEndedContainer: {
+	darkBackground: {
 		height: '100%',
 		width: '100%',
 		justifyContent: 'center',
@@ -40,7 +40,7 @@ const styles: any = {
 		textAlign: 'center',
 		fontSize: Sizes.smartHorizontalScale(40),
 		lineHeight: Sizes.smartHorizontalScale(40),
-		color: Colors.black,
+		color: Colors.white,
 	},
 	muteButton: {
 		position: 'absolute',
@@ -48,7 +48,7 @@ const styles: any = {
 		right: 0,
 		paddingBottom: Sizes.smartVerticalScale(10),
 	},
-	smallControlIcon: {
+	volumeIcon: {
 		fontSize: Sizes.smartHorizontalScale(30),
 		lineHeight: Sizes.smartHorizontalScale(29),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
