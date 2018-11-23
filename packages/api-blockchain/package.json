@@ -12,6 +12,9 @@
   "dependencies": {
     "@socialx/api-storage": "^0.0.1",
     "@socialx/commons": "^0.0.1",
+    "camel-case": "^3.0.0",
+    "eosjs": "^16.0.9",
+    "text-encoding": "^0.7.0",
     "utility-types-fixme-todo": "latest"
   },
   "devDependencies": {
