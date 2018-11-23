@@ -9,7 +9,7 @@ import { getTextMock } from '../../../../src/mocks';
 import { MediaViewerScreenView } from '../../../../src/screens/mainStack/MediaViewerScreen.view';
 import { MediaTypeImage } from '../../../../src/types';
 
-const generateMediaObjects = (limit: number) =>
+const generateMedia = (limit: number) =>
 	new Array(limit).fill(0).map(() => ({
 		url: `https://placeimg.com/${Math.round(Math.random() * 200 + 200)}/${Math.round(
 			Math.random() * 150 + 200,
@@ -26,26 +26,29 @@ storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
 	.add('MediaViewerScreen', () => {
 		const activeSlide = number('activeSlide', 5);
-		const isInfoOverlayVisible = boolean('isInfoOverlayVisible', false);
+		const infoVisible = boolean('infoVisible', false);
+
 		return (
 			<MediaViewerScreenView
-				mediaObjects={generateMediaObjects(10)}
+				media={generateMedia(10)}
 				startIndex={7}
 				orientation={DeviceOrientations.Portrait}
 				activeSlide={activeSlide}
+				likeDisabled={true}
+				likedByCurrentUser={false}
+				infoVisible={infoVisible}
+				canReact={true}
 				viewport={{
 					width: Dimensions.get('window').width,
 				}}
-				slideChanged={action('slideChanged')}
-				isInfoOverlayVisible={isInfoOverlayVisible}
-				showMediaInfoOverlay={action('showMediaInfoOverlay')}
-				closeMediaInfoOverlay={action('closeMediaInfoOverlay')}
-				carouselContainerOnLayout={action('carouselContainerOnLayout')}
 				onExitFullScreen={action('onExitFullScreen')}
 				onClose={action('onClose')}
 				onCommentPress={action('onCommentPress')}
 				onLikePress={action('onLikePress')}
-				canReact={true}
+				onChangeSlide={action('onChangeSlide')}
+				onLayout={action('onLayout')}
+				onShowInfo={action('onShowInfo')}
+				onCloseInfo={action('onCloseInfo')}
 				getText={getTextMock}
 			/>
 		);

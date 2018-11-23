@@ -12,6 +12,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.UNLIKE_POST: {
+			return state;
+		}
+
 		case ActionTypes.GET_PUBLIC_POSTS_BY_DATE: {
 			return state;
 		}
@@ -95,10 +99,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				posts: [...state.posts.filter((post) => post.postId !== action.payload)],
 			};
-		}
-
-		case ActionTypes.UNLIKE_POST: {
-			return state;
 		}
 
 		// <============= comments =============>

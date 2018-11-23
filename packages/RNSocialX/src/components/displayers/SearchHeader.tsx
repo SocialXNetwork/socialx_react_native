@@ -1,14 +1,20 @@
-import React, { Component, RefObject } from 'react';
+import * as React from 'react';
 import { Keyboard, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { NavigationScreenProp, SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
+
+import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
 import { OS_TYPES, SCREENS } from '../../environment/consts';
+
+import { INavigationProps } from '../../types';
 import styles, { colors } from './SearchHeader.style';
 
-interface ISearchHeaderProps {
-	navigation: NavigationScreenProp<any>;
+interface ISearchHeaderProps extends INavigationProps, IWithNavigationHandlersEnhancedActions {
 	cancel: boolean;
 	onSearchTermChange?: (term: string) => void;
 	searchTermValue?: string;
@@ -20,7 +26,7 @@ interface ISearchHeaderState {
 	navigatedFromTrending: boolean;
 }
 
-export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderState> {
+class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> {
 	public static defaultProps = {
 		cancel: false,
 		autoFocus: false,
@@ -31,7 +37,7 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 		navigatedFromTrending: false,
 	};
 
-	private inputRef: RefObject<PrimaryTextInput> = React.createRef();
+	private inputRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 	public componentDidUpdate() {
 		if (this.inputRef.current && this.props.cancel && !this.state.navigatedFromTrending) {
@@ -98,18 +104,22 @@ export class SearchHeader extends Component<ISearchHeaderProps, ISearchHeaderSta
 	};
 
 	private onPressInput = () => {
-		// TODO: check how this works!
 		const { navigation } = this.props;
+
 		if (navigation.state.routeName === SCREENS.Trending) {
 			navigation.navigate(SCREENS.TabbedSearch);
 		}
 	};
 
 	private onBackHandler = () => {
-		const { navigation } = this.props;
 		this.setState({ searchTerm: '' }, () => {
-			Keyboard.dismiss();
-			navigation.goBack();
+			this.props.onGoBack();
 		});
 	};
 }
+
+export const SearchHeader: React.SFC<ISearchHeaderProps> = (props) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{({ actions }) => <Component {...props} {...actions} />}
+	</WithNavigationHandlers>
+);

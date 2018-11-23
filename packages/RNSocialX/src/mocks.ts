@@ -143,6 +143,7 @@ export const posts: IWallPostData[] = [
 			},
 		],
 		likes,
+		comments: [],
 		topComments,
 		loading: false,
 		suggested: undefined,
@@ -181,6 +182,7 @@ export const posts: IWallPostData[] = [
 			},
 		],
 		likes,
+		comments: [],
 		topComments,
 		loading: false,
 		suggested: suggestedItems,
@@ -219,6 +221,7 @@ export const posts: IWallPostData[] = [
 			},
 		],
 		likes,
+		comments: [],
 		topComments,
 		loading: false,
 		suggested: undefined,
@@ -242,7 +245,7 @@ export const currentUser: ICurrentUser = {
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
 	numberOfComments: 87,
-	mediaObjects: [
+	media: [
 		{
 			postId: '3',
 			url:

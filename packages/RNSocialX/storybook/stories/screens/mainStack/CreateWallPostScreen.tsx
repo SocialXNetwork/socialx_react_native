@@ -10,10 +10,10 @@ storiesOf('Screens/mainStack', module).add('CreateWallPostScreen', () => {
 		<CreateWallPostScreenView
 			getText={getTextMock}
 			marginBottom={0}
-			avatarImage={'https://placeimg.com/200/200/people'}
-			shareText={'Here new post content.\nWith two lines.'}
-			mediaObjects={['https://placeimg.com/300/300/any', 'https://placeimg.com/301/301/any']}
-			onShareTextUpdate={action('onShareTextUpdate')}
+			avatar={'https://placeimg.com/200/200/people'}
+			caption={'Here new post content.\nWith two lines.'}
+			media={['https://placeimg.com/300/300/any', 'https://placeimg.com/301/301/any']}
+			onChangeText={action('onChangeText')}
 			onAddMedia={action('onAddMedia')}
 			onCreatePost={action('onPostMedia')}
 			onClose={action('onClose')}

@@ -145,14 +145,14 @@ export interface IGridMediaObject {
 
 export interface IMediaProps {
 	url: string;
-	hash: string;
 	type: IMediaTypes;
-	extension: string;
-	size: number;
-	numberOfLikes: number;
-	numberOfComments: number;
-	likedByCurrentUser: boolean;
-	postId: string;
+	hash?: string;
+	extension?: string;
+	size?: number;
+	numberOfLikes?: number;
+	numberOfComments?: number;
+	likedByCurrentUser?: boolean;
+	postId?: string;
 }
 
 export interface ISimpleComment {
@@ -279,7 +279,7 @@ export interface ICurrentUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	recentPosts: IWallPostData[];
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
@@ -296,7 +296,7 @@ export interface IVisitedUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	recentPosts: IWallPostData[];
 	relationship: FRIEND_TYPES;
 }
@@ -384,7 +384,7 @@ export enum ICreateAdSteps {
 export interface IAdSetupPostData {
 	headline: string;
 	description: string;
-	mediaObjects: IWallPostPhotoOptimized[];
+	media: IWallPostPhotoOptimized[];
 }
 
 export enum IGenderSelect {

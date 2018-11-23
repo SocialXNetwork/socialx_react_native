@@ -1,13 +1,20 @@
 import * as React from 'react';
 import { Dimensions, Platform } from 'react-native';
-import Orientation, { orientation } from 'react-native-orientation';
+import Orientation, { orientation as ORIENTATION_TYPES } from 'react-native-orientation';
 
 import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
-import { WithWallPost } from '../../enhancers/components/WithWallPost';
-import { IWithLikingEnhancedData, WithLiking } from '../../enhancers/logic/WithLiking';
+import {
+	IWithLikingEnhancedActions,
+	IWithLikingEnhancedData,
+	WithLiking,
+} from '../../enhancers/logic/WithLiking';
+import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
 import {
 	IWithMediaViewerEnhancedActions,
 	IWithMediaViewerEnhancedData,
@@ -26,7 +33,9 @@ interface IMediaViewerScreenState {
 type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions &
-	IWithLikingEnhancedData;
+	IWithLikingEnhancedData &
+	IWithLikingEnhancedActions &
+	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
 	public state = {
@@ -54,32 +63,45 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	}
 
 	public render() {
+		const {
+			media,
+			startIndex,
+			post,
+			likeDisabled,
+			optLikedByCurrentUser,
+			onLikePost,
+			onViewComments,
+			onGoBack,
+			getText,
+		} = this.props;
+		const { orientation, activeSlide, viewport, infoVisible } = this.state;
+
 		return (
 			<MediaViewerScreenView
-				mediaObjects={this.props.mediaObjects}
-				startIndex={this.props.startIndex}
-				orientation={this.state.orientation}
-				activeSlide={this.state.activeSlide}
-				viewport={this.state.viewport}
-				infoVisible={this.state.infoVisible}
-				canReact={!!this.props.post}
-				likeDisabled={this.props.likeDisabled}
-				likedByCurrentUser={this.props.optLikedByCurrentUser}
+				media={media}
+				startIndex={startIndex}
+				orientation={orientation}
+				activeSlide={activeSlide}
+				viewport={viewport}
+				infoVisible={infoVisible}
+				canReact={!!post}
+				likeDisabled={likeDisabled}
+				likedByCurrentUser={optLikedByCurrentUser}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
 				onLayout={this.onLayoutHandler}
 				onExitFullScreen={this.onExitFullScreenHandler}
-				onLikePress={() => this.props.onLikePost(this.props.post!.postId)}
-				onCommentPress={this.onCommentPressHandler}
-				onClose={this.onCloseHandler}
-				getText={this.props.getText}
+				onLikePress={() => onLikePost(post!.postId)}
+				onCommentPress={() => onViewComments(post!, false)}
+				onClose={onGoBack}
+				getText={getText}
 			/>
 		);
 	}
 
-	private onOrientationChangeHandler = (orient: orientation) => {
-		this.setState({ orientation: orient });
+	private onOrientationChangeHandler = (orientation: ORIENTATION_TYPES) => {
+		this.setState({ orientation });
 	};
 
 	private onChangeSlideHandler = (index: number) => {
@@ -94,14 +116,6 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				width: event.nativeEvent.layout.width,
 			},
 		});
-	};
-
-	private onCommentPressHandler = () => {
-		const { post, onCommentsPress } = this.props;
-
-		if (post) {
-			onCommentsPress(post, true);
-		}
 	};
 
 	private onExitFullScreenHandler = () => {
@@ -123,37 +137,33 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 			infoVisible: false,
 		});
 	};
-
-	private onCloseHandler = () => {
-		this.props.navigation.goBack(null);
-	};
 }
 
-export const MediaViewerScreen = (navProps: INavigationProps) => (
-	<WithWallPost navigation={navProps.navigation}>
-		{(wallPost) => (
-			<WithMediaViewer>
-				{(media) => (
-					<WithLiking
-						likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}
-						likes={media.data.post ? media.data.post.likes : []}
-						currentUserName={media.data.post ? media.data.post.currentUserName : ''}
-						errors={media.data.errors}
-						navigation={navProps.navigation}
-					>
-						{(likes) => (
+export const MediaViewerScreen = (props: INavigationProps) => (
+	<WithMediaViewer>
+		{(media) => (
+			<WithLiking
+				likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}
+				likes={media.data.post ? media.data.post.likes : []}
+				currentUserName={media.data.post ? media.data.post.currentUserName : ''}
+				errors={media.data.errors}
+				navigation={props.navigation}
+			>
+				{(likes) => (
+					<WithNavigationHandlers navigation={props.navigation}>
+						{(nav) => (
 							<Screen
-								{...navProps}
+								{...props}
 								{...media.data}
 								{...media.actions}
 								{...likes.data}
-								onLikePost={likes.actions.onLikePost}
-								onCommentsPress={wallPost.actions.onCommentsPress}
+								{...likes.actions}
+								{...nav.actions}
 							/>
 						)}
-					</WithLiking>
+					</WithNavigationHandlers>
 				)}
-			</WithMediaViewer>
+			</WithLiking>
 		)}
-	</WithWallPost>
+	</WithMediaViewer>
 );

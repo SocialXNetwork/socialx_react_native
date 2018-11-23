@@ -23,7 +23,7 @@ storiesOf('Screens/mainStack', module)
 			numberOfPhotos: 2,
 			numberOfFriends: 78,
 			numberOfComments: 100,
-			mediaObjects: [],
+			media: [],
 			recentPosts: [],
 			relationship: select(
 				'relationship',

@@ -22,7 +22,7 @@ import { WithCurrentUser } from '../intermediary';
 
 export interface IWithPhotoEnhancedData extends IResizeProps {
 	currentUser: ICurrentUser;
-	mediaObjects: IWallPostPhotoOptimized[];
+	media: IWallPostPhotoOptimized[];
 }
 
 export interface IWithPhotoEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
@@ -64,8 +64,7 @@ export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState>
 																			this.props.children({
 																				data: {
 																					currentUser: currentUser!,
-																					mediaObjects:
-																						navigationParams[SCREENS.Photo].mediaObjects,
+																					media: navigationParams[SCREENS.Photo].media,
 																					marginBottom,
 																				},
 																				actions: {

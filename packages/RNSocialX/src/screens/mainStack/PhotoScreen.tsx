@@ -1,6 +1,15 @@
 import * as React from 'react';
-import { Keyboard } from 'react-native';
 import uuid from 'uuid/v4';
+
+import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
+import {
+	IWithPhotoEnhancedActions,
+	IWithPhotoEnhancedData,
+	WithPhoto,
+} from '../../enhancers/screens';
 
 import { WithModalForAddFriends } from '../../components';
 import { IMAGE_PICKER_TYPES } from '../../environment/consts';
@@ -13,20 +22,17 @@ import {
 } from '../../utilities';
 import { PhotoScreenView } from './PhotoScreen.view';
 
-import {
-	IWithPhotoEnhancedActions,
-	IWithPhotoEnhancedData,
-	WithPhoto,
-} from '../../enhancers/screens';
-
-type IPhotoScreenProps = INavigationProps & IWithPhotoEnhancedActions & IWithPhotoEnhancedData;
+type IPhotoScreenProps = INavigationProps &
+	IWithPhotoEnhancedActions &
+	IWithPhotoEnhancedData &
+	IWithNavigationHandlersEnhancedActions;
 
 interface IPhotoScreenState {
 	locationEnabled: boolean;
 	tagFriends: boolean;
 	location: string;
 	caption: string;
-	mediaObjects: IWallPostPhotoOptimized[];
+	media: IWallPostPhotoOptimized[];
 }
 
 class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
@@ -35,37 +41,35 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 		tagFriends: false,
 		location: '',
 		caption: '',
-		mediaObjects: [...this.props.mediaObjects],
+		media: [...this.props.media],
 	};
 
 	public render() {
-		const { currentUser, marginBottom, getText } = this.props;
-		const { locationEnabled, location, tagFriends, caption, mediaObjects } = this.state;
+		const { currentUser, marginBottom, onGoBack, getText } = this.props;
+		const { locationEnabled, location, tagFriends, caption, media } = this.state;
 
 		return (
 			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
-				{({ showAddFriendsModal, addedFriends }) => {
-					return (
-						<PhotoScreenView
-							avatar={currentUser.avatar}
-							mediaObjects={mediaObjects.map((mediaObject) => mediaObject.path)}
-							taggedFriends={addedFriends}
-							locationEnabled={locationEnabled}
-							location={location}
-							tagFriends={tagFriends}
-							caption={caption}
-							onShowTagFriends={showAddFriendsModal}
-							onTagFriendsToggle={this.onTagFriendsToggleHandler}
-							onLocationTextUpdate={this.onLocationTextUpdate}
-							onLocationToggle={this.onLocationToggle}
-							onChangeText={this.onChangeTextHandler}
-							onAddMedia={this.onAddMediaHandler}
-							onCreatePost={this.onCreatePostHandler}
-							onClose={this.onCloseHandler}
-							getText={getText}
-						/>
-					);
-				}}
+				{({ showAddFriendsModal, addedFriends }) => (
+					<PhotoScreenView
+						avatar={currentUser.avatar}
+						media={media.map((m) => m.path)}
+						taggedFriends={addedFriends}
+						locationEnabled={locationEnabled}
+						location={location}
+						tagFriends={tagFriends}
+						caption={caption}
+						onShowTagFriends={showAddFriendsModal}
+						onTagFriendsToggle={this.onTagFriendsToggleHandler}
+						onLocationTextUpdate={this.onLocationTextUpdate}
+						onLocationToggle={this.onLocationToggle}
+						onChangeText={this.onChangeTextHandler}
+						onAddMedia={this.onAddMediaHandler}
+						onCreatePost={this.onCreatePostHandler}
+						onClose={onGoBack}
+						getText={getText}
+					/>
+				)}
 			</WithModalForAddFriends>
 		);
 	}
@@ -96,7 +100,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 
 	private onAddMediaHandler = () => {
 		const { showOptionsMenu, getText } = this.props;
-		const menuItems = [
+		const items = [
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
@@ -108,29 +112,30 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-		showOptionsMenu(menuItems);
+
+		showOptionsMenu(items);
 	};
 
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
-		let selectedMediaObjects: IPickerImageMultiple = [];
+		let selectedmedia: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
-			selectedMediaObjects = await getGalleryMediaObjectMultiple();
+			selectedmedia = await getGalleryMediaObjectMultiple();
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
-			selectedMediaObjects = await getCameraMediaObjectMultiple();
+			selectedmedia = await getCameraMediaObjectMultiple();
 		}
-		if (selectedMediaObjects.length > 0) {
-			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
+		if (selectedmedia.length > 0) {
+			const optimizedmedia = await Promise.all(
+				selectedmedia.map(async (mObject) => getOptimizedMediaObject(mObject)),
 			);
 
 			this.setState({
-				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
+				media: [...this.state.media, ...optimizedmedia],
 			});
 		}
 	};
 
 	private onCreatePostHandler = async () => {
-		const { mediaObjects, caption } = this.state;
+		const { media, caption } = this.state;
 		const { currentUser, createPost, setGlobal } = this.props;
 
 		await setGlobal({
@@ -150,7 +155,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				numberOfWalletCoins: 0,
 				likedByCurrentUser: false,
 				removable: false,
-				media: mediaObjects,
+				media,
 				likes: [],
 				topComments: [],
 				loading: false,
@@ -163,17 +168,18 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 
 		createPost({
 			text: caption,
-			media: mediaObjects,
+			media,
 		});
-		this.onCloseHandler();
-	};
-
-	private onCloseHandler = () => {
-		Keyboard.dismiss();
-		this.props.navigation.goBack(null);
+		this.props.onGoBack();
 	};
 }
 
-export const PhotoScreen = (navProps: INavigationProps) => (
-	<WithPhoto>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
+export const PhotoScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithPhoto>
+				{(photo) => <Screen {...props} {...photo.data} {...photo.actions} {...nav.actions} />}
+			</WithPhoto>
+		)}
+	</WithNavigationHandlers>
 );

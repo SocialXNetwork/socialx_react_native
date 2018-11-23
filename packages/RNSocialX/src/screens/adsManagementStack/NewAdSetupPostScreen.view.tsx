@@ -8,7 +8,7 @@ import { ITranslatedProps } from '../../types';
 import styles, { customStyleProps } from './NewAdSetupPostScreen.style';
 
 interface INewAdSetupPostScreenViewProps extends ITranslatedProps {
-	mediaObjects: string[];
+	media: string[];
 	onAddMedia: () => void;
 	updateAdSetPost: (headline: string, description: string) => void;
 	adSetupPostFormik: React.RefObject<any>;
@@ -20,7 +20,7 @@ interface INewNewAdSetupPostScreenViewData {
 }
 
 export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps> = ({
-	mediaObjects,
+	media,
 	getText,
 	onAddMedia,
 	updateAdSetPost,
@@ -90,9 +90,9 @@ export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps>
 								</Text>
 							</TouchableOpacity>
 						</View>
-						{mediaObjects.length > 0 && (
+						{media.length > 0 && (
 							<View style={styles.mediaContainer}>
-								<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
+								<MediaHorizontalScroller mediaURIs={media} getText={getText} />
 							</View>
 						)}
 					</View>

@@ -34,6 +34,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 	public state = {
 		namesOfFriends: [],
 	};
+
 	private readonly scrollRef: React.RefObject<FlatList<IWallPostData>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
@@ -107,6 +108,7 @@ export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScree
 
 	private onCreateWallPostHandler = () => {
 		const { currentUser, navigation, setNavigationParams } = this.props;
+
 		setNavigationParams({
 			screenName: SCREENS.CreateWallPost,
 			params: {

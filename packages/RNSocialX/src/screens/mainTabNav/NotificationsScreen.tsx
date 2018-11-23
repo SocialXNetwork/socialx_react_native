@@ -1,9 +1,12 @@
 import * as React from 'react';
 
-import { SCREENS, TABS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { NotificationsScreenView } from './NotificationsScreen.view';
 
+import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
@@ -12,7 +15,8 @@ import {
 
 type INotificationsScreenProps = INavigationProps &
 	IWithNotificationsEnhancedData &
-	IWithNotificationsEnhancedActions;
+	IWithNotificationsEnhancedActions &
+	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<INotificationsScreenProps> {
 	private willFocusScreen: any;
@@ -35,21 +39,12 @@ class Screen extends React.Component<INotificationsScreenProps> {
 				notifications={notifications}
 				refreshing={refreshing}
 				onRefresh={getNotifications}
-				onViewUserProfile={this.onViewUserProfileHandler}
+				onViewUserProfile={(userId) => this.props.onViewUserProfile(userId)}
 				onShowOptions={this.onShowOptionsHandler}
 				getText={getText}
 			/>
 		);
 	}
-
-	private onViewUserProfileHandler = (userId: string) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: { userId, origin: TABS.Feed },
-		});
-		navigation.navigate(SCREENS.UserProfile);
-	};
 
 	private onShowOptionsHandler = (notificationId: string) => {
 		const { removeNotification, showOptionsMenu, getText } = this.props;
@@ -68,8 +63,14 @@ class Screen extends React.Component<INotificationsScreenProps> {
 	};
 }
 
-export const NotificationsScreen = (navProps: INavigationProps) => (
-	<WithNotifications>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithNotifications>
+export const NotificationsScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithNotifications>
+				{(notifications) => (
+					<Screen {...props} {...notifications.data} {...notifications.actions} {...nav.actions} />
+				)}
+			</WithNotifications>
+		)}
+	</WithNavigationHandlers>
 );

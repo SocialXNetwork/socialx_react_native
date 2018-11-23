@@ -22,13 +22,13 @@ type ICreateWallPostScreenProps = INavigationProps &
 	IWithCreateWallPostEnhancedActions;
 
 interface ICreateWallPostScreenState {
-	mediaObjects: IWallPostPhotoOptimized[];
+	media: IWallPostPhotoOptimized[];
 	caption: string;
 }
 
 class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPostScreenState> {
 	public state = {
-		mediaObjects: [],
+		media: [],
 		caption: '',
 	};
 
@@ -44,13 +44,13 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 
 	public render() {
 		const { getText, marginBottom, currentUser } = this.props;
-		const { caption, mediaObjects } = this.state;
+		const { caption, media } = this.state;
 
 		return (
 			<CreateWallPostScreenView
 				avatar={currentUser.avatar}
 				caption={caption}
-				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
+				media={media.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				onChangeText={this.onChangeTextHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
@@ -85,26 +85,26 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
-		let selectedMediaObjects: IPickerImageMultiple = [];
+		let selectedmedia: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
-			selectedMediaObjects = await getGalleryMediaObjectMultiple();
+			selectedmedia = await getGalleryMediaObjectMultiple();
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
-			selectedMediaObjects = await getCameraMediaObjectMultiple();
+			selectedmedia = await getCameraMediaObjectMultiple();
 		}
 
-		if (selectedMediaObjects.length > 0) {
-			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (obj) => getOptimizedMediaObject(obj)),
+		if (selectedmedia.length > 0) {
+			const optimizedmedia = await Promise.all(
+				selectedmedia.map(async (obj) => getOptimizedMediaObject(obj)),
 			);
 
 			this.setState({
-				mediaObjects: optimizedMediaObjects,
+				media: optimizedmedia,
 			});
 		}
 	};
 
 	private onCreatePostHandler = async () => {
-		const { mediaObjects, caption } = this.state;
+		const { media, caption } = this.state;
 		const { currentUser, createPost, setGlobal } = this.props;
 
 		await setGlobal({
@@ -124,7 +124,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				numberOfWalletCoins: 0,
 				likedByCurrentUser: false,
 				removable: false,
-				media: mediaObjects,
+				media,
 				likes: [],
 				topComments: [],
 				loading: false,
@@ -137,7 +137,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 
 		createPost({
 			text: caption,
-			media: mediaObjects,
+			media,
 		});
 		this.onCloseHandler();
 	};

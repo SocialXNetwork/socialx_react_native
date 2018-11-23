@@ -17,7 +17,7 @@ import styles, { defaultStyles } from './PhotoScreen.style';
 
 interface IPhotoScreenViewProps extends ITranslatedProps {
 	avatar: string;
-	mediaObjects: string[];
+	media: string[];
 	taggedFriends: IFriendsSearchResult[];
 	locationEnabled: boolean;
 	tagFriends: boolean;
@@ -106,7 +106,7 @@ const TagFriendsSection: React.SFC<ITagFriendsSectionProps> = ({
 
 export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 	avatar,
-	mediaObjects,
+	media,
 	locationEnabled,
 	onLocationToggle,
 	onLocationTextUpdate,
@@ -131,7 +131,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 				onChangeText={onChangeText}
 			/>
 			<View style={styles.photoContainer}>
-				<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
+				<MediaHorizontalScroller mediaURIs={media} getText={getText} />
 			</View>
 			<View style={styles.addMediaContainer}>
 				<TouchableOpacity style={styles.addMediaButton} onPress={onAddMedia}>

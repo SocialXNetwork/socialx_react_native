@@ -6,10 +6,15 @@ import uuid from 'uuid/v4';
 
 import { resetNavigationToRoute } from '../../enhancers/helpers';
 import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
+import {
 	IWithMyProfileEnhancedActions,
 	IWithMyProfileEnhancedData,
 	WithMyProfile,
 } from '../../enhancers/screens';
+
 import { NAVIGATION, PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
 import { INavigationProps, MediaTypeImage } from '../../types';
 import { MyProfileScreenView } from './MyProfileScreen.view';
@@ -19,7 +24,8 @@ const GRID_PAGE_SIZE = 20;
 
 type IMyProfileScreenProps = INavigationProps &
 	IWithMyProfileEnhancedData &
-	IWithMyProfileEnhancedActions;
+	IWithMyProfileEnhancedActions &
+	IWithNavigationHandlersEnhancedActions;
 
 interface IMyProfileScreenState {
 	dataProvider: DataProvider;
@@ -50,7 +56,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public componentDidUpdate(prevProps: IMyProfileScreenProps) {
-		if (prevProps.currentUser.mediaObjects !== this.props.currentUser.mediaObjects) {
+		if (prevProps.currentUser.media !== this.props.currentUser.media) {
 			this.onLoadMorePhotosHandler();
 		}
 	}
@@ -73,7 +79,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				onLoadMorePhotos={this.onLoadMorePhotosHandler}
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
-				onViewMediaFullScreen={this.onViewMediaFullScreenHandler}
+				onViewMedia={this.onViewMediaHandler}
 				onEditProfile={this.onEditProfilePressHandler}
 				onSharePress={this.onSharePressHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
@@ -128,18 +134,18 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	// Improve this when we have lazy loading
 	private onLoadMorePhotosHandler = () => {
 		const { dataProvider } = this.state;
-		const { mediaObjects } = this.props.currentUser;
+		const { media } = this.props.currentUser;
 		const headerElement = [{ index: uuid() }];
 
-		if (mediaObjects.length === 0) {
+		if (media.length === 0) {
 			this.setState({
 				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
+		} else if (this.lastLoadedPhotoIndex < media.length) {
 			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
-			const newMedia = mediaObjects
+			const newMedia = media
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject, index: number) => ({
 					url: mediaObject.url,
@@ -156,50 +162,30 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		}
 	};
 
-	private onViewMediaFullScreenHandler = (index: number) => {
+	private onViewMediaHandler = (index: number) => {
 		const {
-			navigation,
-			setNavigationParams,
-			currentUser: { mediaObjects, recentPosts },
+			currentUser: { media, recentPosts },
+			onViewImage,
 		} = this.props;
 
-		const selectedMedia = mediaObjects[index];
+		const selectedMedia = media[index];
 		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
 
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects,
-				startIndex: index,
-				post,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
+		onViewImage(media, index, post);
 	};
 
 	private onProfilePhotoPressHandler = () => {
-		const {
-			navigation,
-			setNavigationParams,
-			currentUser: { avatar },
-		} = this.props;
+		const { currentUser, onViewImage } = this.props;
 
-		if (avatar.length > 0) {
-			const mediaObjects = [
+		if (currentUser.avatar.length > 0) {
+			const media = [
 				{
-					url: avatar,
+					url: currentUser.avatar,
 					type: MediaTypeImage,
 				},
 			];
 
-			setNavigationParams({
-				screenName: SCREENS.MediaViewer,
-				params: {
-					mediaObjects,
-					startIndex: 0,
-				},
-			});
-			navigation.navigate(SCREENS.MediaViewer);
+			onViewImage(media, 0);
 		}
 	};
 
@@ -244,18 +230,20 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	};
 
 	private onEditProfilePressHandler = () => {
-		const { navigation } = this.props;
-		navigation.navigate(SCREENS.Settings);
+		this.props.navigation.navigate(SCREENS.Settings);
 	};
 
 	private onSharePressHandler = () => {
-		const { navigation } = this.props;
-		navigation.navigate(SCREENS.Referral);
+		this.props.navigation.navigate(SCREENS.Referral);
 	};
 }
 
-export const MyProfileScreen = (navProps: INavigationProps) => (
-	<WithMyProfile>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithMyProfile>
+export const MyProfileScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithMyProfile>
+				{(profile) => <Screen {...props} {...profile.data} {...profile.actions} {...nav.actions} />}
+			</WithMyProfile>
+		)}
+	</WithNavigationHandlers>
 );

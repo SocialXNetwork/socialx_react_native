@@ -6,6 +6,7 @@ import {
 	IWithTermsAndConditionsEnhancedData,
 	WithTermsAndConditions,
 } from '../../enhancers/screens';
+
 import { OS_TYPES } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 // @ts-ignore
@@ -35,15 +36,8 @@ const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({ navigation, getText
 	);
 };
 
-export const TermsAndConditionsScreen = ({ navigation, navigationOptions }: INavigationProps) => (
+export const TermsAndConditionsScreen = (props: INavigationProps) => (
 	<WithTermsAndConditions>
-		{({ data, actions }) => (
-			<Screen
-				navigation={navigation}
-				navigationOptions={navigationOptions}
-				{...data}
-				{...actions}
-			/>
-		)}
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
 	</WithTermsAndConditions>
 );

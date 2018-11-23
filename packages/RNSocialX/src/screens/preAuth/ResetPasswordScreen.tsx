@@ -1,9 +1,3 @@
-/**
- * old screen -> screens/ForgotPasswordScreen/index.tsx
- * TODO list:
- * 1. Refactor navigationOptions into header component
- */
-
 import * as React from 'react';
 import { Alert } from 'react-native';
 
@@ -46,15 +40,8 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	};
 }
 
-export const ResetPasswordScreen = ({ navigation, navigationOptions }: INavigationProps) => (
+export const ResetPasswordScreen = (props: INavigationProps) => (
 	<WithResetPassword>
-		{({ data, actions }) => (
-			<Screen
-				navigation={navigation}
-				navigationOptions={navigationOptions}
-				{...data}
-				{...actions}
-			/>
-		)}
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
 	</WithResetPassword>
 );

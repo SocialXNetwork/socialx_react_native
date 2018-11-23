@@ -8,12 +8,8 @@ const mock: IWithWalletAccountEnhancedProps = {
 		isValid: true,
 	},
 	actions: {
-		checkForValidInput: (accountName: string) => {
-			/**/
-		},
-		generateAccountName: () => {
-			/**/
-		},
+		checkForValidInput: (accountName: string) => undefined,
+		generateAccountName: () => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -43,13 +39,12 @@ export class WithWalletAccount extends React.Component<
 	IWithWalletAccountState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
+				{({ getText }) =>
+					this.props.children({
 						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+						actions: { ...mock.actions, getText },
 					})
 				}
 			</WithI18n>

@@ -8,15 +8,12 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 
 export interface IWithMediaViewerEnhancedData {
 	errors: IError[];
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	startIndex: number;
 	post?: IWallPostData;
 }
 
-export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {
-	onLikePost: (postId: string) => void;
-	onCommentsPress: (postId: IWallPostData, keyboardRaised: boolean) => void;
-}
+export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {}
 
 interface IWithMediaViewerEnhancedProps {
 	data: IWithMediaViewerEnhancedData;
@@ -41,13 +38,13 @@ export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWit
 									this.props.children({
 										data: {
 											errors,
-											mediaObjects: navigationParams[SCREENS.MediaViewer].mediaObjects,
+											media: navigationParams[SCREENS.MediaViewer].media,
 											startIndex: navigationParams[SCREENS.MediaViewer].startIndex,
 											post: navigationParams[SCREENS.MediaViewer].post,
 										},
 										actions: {
 											getText,
-										} as any,
+										},
 									})
 								}
 							</WithActivities>

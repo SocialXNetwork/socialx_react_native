@@ -34,29 +34,31 @@ const CloseButton: React.SFC<{
 			</TouchableOpacity>
 		);
 	}
+
 	return null;
 };
 
 const Pagination: React.SFC<{
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	activeSlide: number;
-}> = ({ mediaObjects, activeSlide }) => {
-	if (mediaObjects.length > 1) {
+}> = ({ media, activeSlide }) => {
+	if (media.length > 1) {
 		return (
 			<View style={styles.paginationContainer}>
 				<Text style={styles.paginationText}>
 					{activeSlide + 1}
 					{' / '}
-					{mediaObjects.length}
+					{media.length}
 				</Text>
 			</View>
 		);
 	}
+
 	return null;
 };
 
 interface IMediaViewerScreenViewProps extends ITranslatedProps {
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	startIndex: number;
 	orientation: string;
 	activeSlide: number;
@@ -78,7 +80,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
-	mediaObjects,
+	media,
 	orientation,
 	startIndex,
 	viewport,
@@ -97,7 +99,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	onLikePress,
 	getText,
 }) => {
-	const currentMediaObject = mediaObjects[activeSlide];
+	const currentMedia = media[activeSlide];
 	const isPortrait = orientation === DeviceOrientations.Portrait;
 
 	return (
@@ -106,16 +108,16 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 			<MediaInfoModal
 				visible={infoVisible}
 				closeHandler={onCloseInfo}
-				mediaHash={currentMediaObject.hash}
-				mediaSize={currentMediaObject.size}
-				mediaType={currentMediaObject.type}
-				mediaURL={currentMediaObject.url}
+				mediaHash={currentMedia.hash}
+				mediaSize={currentMedia.size}
+				mediaType={currentMedia.type}
+				mediaURL={currentMedia.url}
 				getText={getText}
 			/>
 			<SafeAreaView style={{ flex: 1 }}>
 				<View style={styles.carouselContainer} onLayout={onLayout}>
 					<Carousel
-						data={mediaObjects}
+						data={media}
 						renderItem={({ item, index }: { item: IMediaProps; index: number }) => (
 							<MediaObjectViewer
 								type={item.type}
@@ -149,16 +151,15 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
 					<View style={styles.screenFooter}>
 						<MediaInteractionButtons
-							mediaObjects={mediaObjects}
+							media={media}
 							activeSlide={activeSlide}
 							canReact={canReact}
 							likeDisabled={likeDisabled}
 							likedByCurrentUser={likedByCurrentUser}
 							onCommentPress={onCommentPress}
 							onLikePress={onLikePress}
-							getText={getText}
 						/>
-						<Pagination mediaObjects={mediaObjects} activeSlide={activeSlide} />
+						<Pagination media={media} activeSlide={activeSlide} />
 					</View>
 					<TouchableOpacity style={styles.infoButton} onPress={onShowInfo}>
 						<Icon name="ios-information-circle-outline" style={styles.infoIcon} />

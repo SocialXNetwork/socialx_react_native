@@ -15,6 +15,7 @@ const NOTIFICATION_CARDS = [
 		avatar: 'https://placeimg.com/150/150/tech',
 		fullName: 'Seth Saunders',
 		timestamp: new Date(2018, 2, 12, 5, 51, 23),
+		seen: false,
 	},
 	{
 		notificationId: 'id1',
@@ -22,6 +23,7 @@ const NOTIFICATION_CARDS = [
 		type: NOTIFICATION_TYPES.FRIEND_REQUEST,
 		avatar: 'https://placeimg.com/151/151/people',
 		fullName: 'Teresa Lamb',
+		seen: false,
 	},
 	{
 		notificationId: 'id1',
@@ -29,6 +31,7 @@ const NOTIFICATION_CARDS = [
 		type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
 		avatar: 'https://placeimg.com/160/160/people',
 		fullName: 'Teresa Lamb',
+		seen: false,
 	},
 	{
 		notificationId: 'id1',
@@ -37,6 +40,7 @@ const NOTIFICATION_CARDS = [
 		avatar: 'https://placeimg.com/152/152/tech',
 		fullName: 'Cory Maxwell',
 		timestamp: new Date(2018, 1, 24, 8, 23, 12),
+		seen: false,
 	},
 	{
 		notificationId: 'id1',
@@ -45,6 +49,7 @@ const NOTIFICATION_CARDS = [
 		avatar: 'https://placeimg.com/150/150/tech',
 		fullName: 'Claudia Kulmitzer',
 		groupName: 'MfMJAkkAs2jLISYyv',
+		seen: false,
 	},
 ];
 
@@ -54,16 +59,12 @@ storiesOf('Screens/mainTabNav', module)
 		const refreshing = boolean('refreshing', false);
 		return (
 			<NotificationsScreenView
-				getText={getTextMock}
 				notifications={NOTIFICATION_CARDS}
 				refreshing={refreshing}
 				onRefresh={action('onRefresh')}
-				onSuperLikedPhotoPressed={action('onSuperLikedPhotoPressed')}
-				onFriendRequestApprove={action('onFriendRequestApprove')}
-				onGroupRequestApprove={action('onGroupRequestApprove')}
-				onFriendRequestDecline={action('onFriendRequestDecline')}
-				onGroupRequestDecline={action('onGroupRequestDecline')}
 				onViewUserProfile={action('onViewUserProfile')}
+				onShowOptions={action('onShowOptions')}
+				getText={getTextMock}
 			/>
 		);
 	});

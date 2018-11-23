@@ -12,8 +12,8 @@ storiesOf('Components/displayers', module)
 	.add('WallPostMedia single photo', () => (
 		<WallPostMedia
 			onMediaObjectView={action('onMediaObjectView')}
-			onLikeButtonPressed={action('onLikeButtonPressed')}
-			mediaObjects={[
+			onDoublePress={action('onDoublePress')}
+			media={[
 				{
 					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
@@ -30,8 +30,8 @@ storiesOf('Components/displayers', module)
 	.add('WallPostMedia dual photo', () => (
 		<WallPostMedia
 			onMediaObjectView={action('onMediaObjectView')}
-			onLikeButtonPressed={action('onLikeButtonPressed')}
-			mediaObjects={[
+			onDoublePress={action('onDoublePress')}
+			media={[
 				{
 					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
@@ -57,8 +57,8 @@ storiesOf('Components/displayers', module)
 	.add('WallPostMedia 3+ photos', () => (
 		<WallPostMedia
 			onMediaObjectView={action('onMediaObjectView')}
-			onLikeButtonPressed={action('onLikeButtonPressed')}
-			mediaObjects={[
+			onDoublePress={action('onDoublePress')}
+			media={[
 				{
 					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',

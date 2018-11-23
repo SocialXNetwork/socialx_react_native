@@ -20,7 +20,7 @@ interface INewAdSetupPostScreenProps extends ITranslatedProps, IOptionsMenuProps
 }
 
 interface INewAdSetupPostScreenState {
-	mediaObjects: IWallPostPhotoOptimized[];
+	media: IWallPostPhotoOptimized[];
 }
 
 export class NewAdSetupPostScreen extends React.Component<
@@ -28,16 +28,16 @@ export class NewAdSetupPostScreen extends React.Component<
 	INewAdSetupPostScreenState
 > {
 	public state = {
-		mediaObjects: [],
+		media: [],
 	};
 
 	public render() {
 		const { getText, adSetupPostFormik } = this.props;
-		const { mediaObjects } = this.state;
+		const { media } = this.state;
 		return (
 			<NewAdSetupPostScreenView
 				adSetupPostFormik={adSetupPostFormik}
-				mediaObjects={mediaObjects.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
+				media={media.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
 				getText={getText}
 				onAddMedia={this.onAddMediaHandler}
 				updateAdSetPost={this.updateAdSetPostHandler}
@@ -47,8 +47,8 @@ export class NewAdSetupPostScreen extends React.Component<
 
 	private updateAdSetPostHandler = (headline: string, description: string) => {
 		const { updateAdSetPost } = this.props;
-		const { mediaObjects } = this.state;
-		updateAdSetPost({ headline, description, mediaObjects });
+		const { media } = this.state;
+		updateAdSetPost({ headline, description, media });
 	};
 
 	private onAddMediaHandler = () => {
@@ -69,18 +69,18 @@ export class NewAdSetupPostScreen extends React.Component<
 	};
 
 	private addToScrollerSelectedMediaObject = async (source: 'gallery' | 'photo') => {
-		let selectedMediaObjects: IPickerImageMultiple = [];
+		let selectedmedia: IPickerImageMultiple = [];
 		if (source === 'gallery') {
-			selectedMediaObjects = await getGalleryMediaObjectMultiple();
+			selectedmedia = await getGalleryMediaObjectMultiple();
 		} else if (source === 'photo') {
-			selectedMediaObjects = await getCameraMediaObjectMultiple();
+			selectedmedia = await getCameraMediaObjectMultiple();
 		}
-		if (selectedMediaObjects.length > 0) {
-			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (mObject) => getOptimizedMediaObject(mObject)),
+		if (selectedmedia.length > 0) {
+			const optimizedmedia = await Promise.all(
+				selectedmedia.map(async (mObject) => getOptimizedMediaObject(mObject)),
 			);
 			this.setState({
-				mediaObjects: [...this.state.mediaObjects, ...optimizedMediaObjects],
+				media: [...this.state.media, ...optimizedmedia],
 			});
 		}
 	};

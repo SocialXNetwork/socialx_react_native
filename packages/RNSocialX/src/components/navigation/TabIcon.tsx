@@ -113,20 +113,20 @@ export class TabIcon extends React.Component<ITabIconProps> {
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
 		const { navigation, setNavigationParams } = this.props;
 
-		let selectedMediaObjects: IPickerImageMultiple = [];
+		let selectedmedia: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
-			selectedMediaObjects = await getGalleryMediaObjectMultiple();
+			selectedmedia = await getGalleryMediaObjectMultiple();
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
-			selectedMediaObjects = await getCameraMediaObjectMultiple();
+			selectedmedia = await getCameraMediaObjectMultiple();
 		}
 
-		if (selectedMediaObjects.length > 0) {
-			const optimizedMediaObjects = await Promise.all(
-				selectedMediaObjects.map(async (obj) => getOptimizedMediaObject(obj)),
+		if (selectedmedia.length > 0) {
+			const optimizedmedia = await Promise.all(
+				selectedmedia.map(async (obj) => getOptimizedMediaObject(obj)),
 			);
 			setNavigationParams({
 				screenName: SCREENS.Photo,
-				params: { mediaObjects: optimizedMediaObjects },
+				params: { media: optimizedmedia },
 			});
 			navigation.navigate(SCREENS.Photo);
 		}

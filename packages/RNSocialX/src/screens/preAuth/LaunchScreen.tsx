@@ -16,6 +16,7 @@ type ILaunchScreenProps = INavigationProps & IWithLaunchEnhancedData & IWithLaun
 
 class Screen extends React.Component<ILaunchScreenProps> {
 	private cryptoLoadedInterval: any;
+
 	public async componentDidMount() {
 		const {
 			recall,
@@ -65,19 +66,19 @@ class Screen extends React.Component<ILaunchScreenProps> {
 		} else {
 			return (
 				<LaunchScreenView
-					navigateToLoginScreen={this.navigateToLoginScreen}
-					navigateToRegisterScreen={this.navigateToRegisterScreen}
+					onNavigateToLogin={this.onNavigateToLoginHandler}
+					onNavigateToRegister={this.onNavigateToRegisterHandler}
 					getText={this.props.getText}
 				/>
 			);
 		}
 	}
 
-	private navigateToLoginScreen = () => {
+	private onNavigateToLoginHandler = () => {
 		this.props.navigation.navigate(SCREENS.Login);
 	};
 
-	private navigateToRegisterScreen = () => {
+	private onNavigateToRegisterHandler = () => {
 		this.props.navigation.navigate(SCREENS.Register);
 	};
 }

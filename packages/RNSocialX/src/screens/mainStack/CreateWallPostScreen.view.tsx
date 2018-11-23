@@ -17,7 +17,7 @@ import styles, { buttonWidth } from './CreateWallPostScreen.style';
 interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps {
 	avatar: string;
 	caption: string;
-	mediaObjects: string[];
+	media: string[];
 	onChangeText: (value: string) => void;
 	onAddMedia: () => void;
 	onCreatePost: () => void;
@@ -26,7 +26,7 @@ interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps 
 
 export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps> = ({
 	avatar,
-	mediaObjects,
+	media,
 	caption,
 	onChangeText,
 	onAddMedia,
@@ -52,9 +52,9 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 					{getText('new.wall.post.screen.attach.media.button')}
 				</Text>
 			</TouchableOpacity>
-			{mediaObjects.length > 0 && (
+			{media.length > 0 && (
 				<View style={styles.mediaContainer}>
-					<MediaHorizontalScroller mediaURIs={mediaObjects} getText={getText} />
+					<MediaHorizontalScroller mediaURIs={media} getText={getText} />
 				</View>
 			)}
 			<View style={styles.buttonContainer}>

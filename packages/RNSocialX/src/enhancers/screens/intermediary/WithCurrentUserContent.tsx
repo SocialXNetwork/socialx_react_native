@@ -3,7 +3,6 @@ import * as React from 'react';
 import { ICurrentUser } from '../../../types';
 import { extractMediaFromPosts, mapPostsForUI } from '../../helpers';
 
-import { ActionTypes } from '../../../store/data/posts/Types';
 import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
@@ -61,7 +60,7 @@ export class WithCurrentUserContent extends React.Component<
 															0,
 														);
 
-														currentUser.mediaObjects = extractMediaFromPosts(
+														currentUser.media = extractMediaFromPosts(
 															posts,
 															currentUser.userId,
 															appConfig,

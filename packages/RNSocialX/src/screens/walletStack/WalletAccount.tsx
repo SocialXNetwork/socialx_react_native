@@ -61,8 +61,8 @@ class Screen extends React.Component<IWalletAccountScreenProps, IWalletAccountSc
 	};
 }
 
-export const WalletAccountScreen = (navProps: INavigationProps) => (
+export const WalletAccountScreen = (props: INavigationProps) => (
 	<WithWalletAccount>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
 	</WithWalletAccount>
 );

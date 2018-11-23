@@ -1,16 +1,20 @@
 import * as React from 'react';
-import { Alert, Animated, Dimensions } from 'react-native';
+import { Animated, Dimensions } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 import uuidv4 from 'uuid/v4';
 
+import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
 import {
 	IWithUserProfileEnhancedActions,
 	IWithUserProfileEnhancedData,
 	WithUserProfile,
 } from '../../enhancers/screens';
 
-import { PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
+import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { IMediaProps, INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
@@ -27,7 +31,8 @@ interface IUserProfileScreenState {
 
 type IUserProfileScreenProps = INavigationProps &
 	IWithUserProfileEnhancedData &
-	IWithUserProfileEnhancedActions;
+	IWithUserProfileEnhancedActions &
+	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreenState> {
 	private lastLoadedPhotoIndex = 0;
@@ -49,7 +54,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const { visitedUser, loadingProfile, loadingPosts, errors } = this.props;
+		const { visitedUser, loadingProfile, loadingPosts, errors, onGoBack } = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -67,10 +72,10 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onAddFriend={this.onAddFriendHandler}
 				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
-				onViewMediaFullScreen={this.onViewMediaFullScreenHandler}
+				onViewMedia={this.onViewMediaHandler}
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
-				onGoBack={this.onGoBackHandler}
+				onGoBack={onGoBack}
 				errors={errors}
 				navigation={this.props.navigation}
 				getText={this.props.getText}
@@ -82,19 +87,19 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	private onLoadMorePhotosHandler = () => {
 		const { dataProvider } = this.state;
 		const { visitedUser } = this.props;
-		const { mediaObjects } = visitedUser;
+		const { media } = visitedUser;
 
 		const headerElement = [{ index: uuidv4() }];
 
-		if (mediaObjects.length === 0) {
+		if (media.length === 0) {
 			this.setState({
 				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < mediaObjects.length) {
+		} else if (this.lastLoadedPhotoIndex < media.length) {
 			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
-			const newMedia = mediaObjects
+			const newMedia = media
 				.slice(this.lastLoadedPhotoIndex, endIndex)
 				.map((mediaObject: IMediaProps, index: number) => ({
 					url: mediaObject.url,
@@ -128,55 +133,34 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onAddFriendHandler = () => {
-		const { visitedUser, addFriend } = this.props;
-		addFriend(visitedUser.userId);
+		this.props.addFriend(this.props.visitedUser.userId);
 	};
 
 	private onProfilePhotoPressHandler = () => {
-		const {
-			navigation,
-			setNavigationParams,
-			visitedUser: { avatar },
-		} = this.props;
+		const { visitedUser, onViewImage } = this.props;
 
-		if (avatar.length > 0) {
-			const mediaObjects = [
+		if (visitedUser.avatar.length > 0) {
+			const media = [
 				{
-					url: avatar,
+					url: visitedUser.avatar,
 					type: MediaTypeImage,
 				},
 			];
 
-			setNavigationParams({
-				screenName: SCREENS.MediaViewer,
-				params: {
-					mediaObjects,
-					startIndex: 0,
-				},
-			});
-			navigation.navigate(SCREENS.MediaViewer);
+			onViewImage(media, 0);
 		}
 	};
 
-	private onViewMediaFullScreenHandler = (index: number) => {
+	private onViewMediaHandler = (index: number) => {
 		const {
-			navigation,
-			setNavigationParams,
-			visitedUser: { mediaObjects, recentPosts },
+			visitedUser: { media, recentPosts },
+			onViewImage,
 		} = this.props;
 
-		const selectedMedia = mediaObjects[index];
+		const selectedMedia = media[index];
 		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
 
-		setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects,
-				startIndex: index,
-				post,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
+		onViewImage(media, index, post);
 	};
 
 	private onIconPressHandler = (tab: string) => {
@@ -221,28 +205,28 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onShowFriendshipOptionsHandler = () => {
 		const { showOptionsMenu, getText } = this.props;
-		const menuItems = [
+		const items = [
 			{
 				label: getText('friendship.menu.option.remove'),
 				icon: 'md-remove-circle',
 				actionHandler: () => this.onRemoveFriendshipHandler,
 			},
 		];
-		showOptionsMenu(menuItems);
+
+		showOptionsMenu(items);
 	};
 
 	private onRemoveFriendshipHandler = () => {
-		Alert.alert('onRemoveFriendshipHandler: TBD');
 		// TODO: API call to remove + refresh user query so relationship is updated!
-	};
-
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
 	};
 }
 
-export const UserProfileScreen = ({ navigation }: INavigationProps) => (
-	<WithUserProfile>
-		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
-	</WithUserProfile>
+export const UserProfileScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithUserProfile>
+				{(profile) => <Screen {...props} {...profile.data} {...profile.actions} {...nav.actions} />}
+			</WithUserProfile>
+		)}
+	</WithNavigationHandlers>
 );

@@ -6,14 +6,14 @@ import { ITranslatedProps } from '../../types';
 import style, { customStylesProps } from './LaunchScreen.style';
 
 interface ILaunchScreenViewProps extends ITranslatedProps {
-	navigateToRegisterScreen: () => void;
-	navigateToLoginScreen: () => void;
+	onNavigateToLogin: () => void;
+	onNavigateToRegister: () => void;
 }
 
 export const LaunchScreenView: React.SFC<ILaunchScreenViewProps> = ({
 	getText,
-	navigateToRegisterScreen,
-	navigateToLoginScreen,
+	onNavigateToLogin,
+	onNavigateToRegister,
 }) => (
 	<View style={style.container}>
 		<Image
@@ -40,13 +40,13 @@ export const LaunchScreenView: React.SFC<ILaunchScreenViewProps> = ({
 				colorEnd={customStylesProps.gradientTextEndColor}
 				label={getText('launch.login')}
 				borderColor={customStylesProps.transparentBorderColor}
-				onPress={navigateToLoginScreen}
+				onPress={onNavigateToLogin}
 			/>
 			<View style={style.signUpTopPadding}>
 				<PrimaryButton
 					label={getText('launch.signUp')}
 					borderColor={customStylesProps.transparentBorderColor}
-					onPress={navigateToRegisterScreen}
+					onPress={onNavigateToRegister}
 				/>
 			</View>
 		</View>

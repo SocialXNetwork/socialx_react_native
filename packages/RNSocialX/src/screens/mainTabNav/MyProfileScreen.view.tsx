@@ -43,7 +43,7 @@ interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 	onRefresh: () => void;
 	onProfilePhotoPress: () => void;
 	onLoadMorePhotos: () => void;
-	onViewMediaFullScreen: (index: number) => void;
+	onViewMedia: (index: number) => void;
 	onEditProfile: () => void;
 	onSharePress: () => void;
 	onShowOptionsMenu: () => void;
@@ -64,7 +64,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	onIconPress,
 	onLayoutChange,
 	onLoadMorePhotos,
-	onViewMediaFullScreen,
+	onViewMedia,
 	onProfilePhotoPress,
 	onEditProfile,
 	onSharePress,
@@ -188,7 +188,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 								<ProfilePhotoGrid
 									onLoadMorePhotos={onLoadMorePhotos}
 									dataProvider={dataProvider}
-									onViewMediaFullScreen={onViewMediaFullScreen}
+									onViewMedia={onViewMedia}
 									header={{
 										element: <View style={{ width: 1, height: 1 }} />,
 										height: hasPhotos ? 1 : SCREEN_HEIGHT,

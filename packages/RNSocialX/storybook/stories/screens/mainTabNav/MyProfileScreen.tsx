@@ -2,9 +2,11 @@ import { action } from '@storybook/addon-actions';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
+import { Animated } from 'react-native';
 import { DataProvider } from 'recyclerlistview';
 
-import { getTextMock } from '../../../../src/mocks';
+import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
+import { currentUser, getTextMock } from '../../../../src/mocks';
 import { MyProfileScreenView } from '../../../../src/screens/mainTabNav/MyProfileScreen.view';
 
 class MyProfileScreenViewStory extends React.Component {
@@ -17,41 +19,33 @@ class MyProfileScreenViewStory extends React.Component {
 	private lastLoadedPhotoIndex = 0;
 
 	public render() {
-		const userAvatar =
-			'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
-
-		const hasPhotos = boolean('hasPhotos', true);
-		const fullName = text('fullName', 'Alex Sirbu');
-		const userName = text('userName', 'alexsirbu');
-		const numberOfPhotos = number('numberOfPhotos', 7850);
-		const numberOfLikes = number('numberOfLikes', 500000);
-		const numberOfFriends = number('numberOfFriends', 25990);
-		const numberOfComments = number('numberOfComments', 152087);
-
-		const description = text(
-			'description',
-			'This is me fjkasfbasdifbasbdiasbdkabdksabdkabdfkl abflidblifbjlEbdabjILDBNAEDNASDALSNDLANLSDLADNKASDKBAKSDBAKBFK`FLSABdbla.bsdasbj.',
-		);
+		const refreshing = boolean('refreshing', true);
+		const loadingPosts = boolean('loadingPosts', true);
+		const containerHeight = number('containerHeight', 0);
 
 		return (
 			<MyProfileScreenView
-				avatar={userAvatar}
-				fullName={fullName}
-				userName={userName}
-				numberOfPhotos={numberOfPhotos}
-				numberOfLikes={numberOfLikes}
-				numberOfFriends={numberOfFriends}
-				numberOfComments={numberOfComments}
-				getText={getTextMock}
-				description={description}
+				currentUser={currentUser}
+				refreshing={refreshing}
+				loadingPosts={loadingPosts}
+				listTranslate={new Animated.Value(0)}
+				gridTranslate={new Animated.Value(0)}
+				activeTab={PROFILE_TAB_ICON_TYPES.LIST}
+				containerHeight={containerHeight}
+				errors={[]}
 				dataProvider={this.state.dataProvider}
-				hasPhotos={hasPhotos}
 				onLoadMorePhotos={this.onLoadMorePhotosHandler}
+				onRefresh={action('onRefresh')}
+				onLayoutChange={action('onLayoutChange')}
 				onProfilePhotoPress={action('onProfilePhotoPress')}
 				onViewMediaFullScreen={action('onViewMediaFullScreen')}
+				onIconPress={action('onIconPress')}
 				onEditProfile={action('onEditProfile')}
 				onSharePress={action('onSharePress')}
-				onShowDotsModal={action('onShowDotsModal')}
+				onShowOptionsMenu={action('onShowOptionsMenu')}
+				// @ts-ignore
+				navigation={null}
+				getText={getTextMock}
 			/>
 		);
 	}

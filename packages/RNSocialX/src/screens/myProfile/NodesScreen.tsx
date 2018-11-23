@@ -25,27 +25,26 @@ class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 	};
 
 	public render() {
-		const { navigation, getText } = this.props;
 		const { nodeValue, superPeers, selectedCheckList } = this.state;
 
 		return (
 			<NodesScreenView
-				onGoBack={() => this.onGoBackHandler(navigation)}
-				getText={getText}
 				nodesList={superPeers}
-				onSaveNewNode={this.onSaveNewNodeHandler}
 				nodeValue={nodeValue}
+				selectedCheckList={selectedCheckList}
 				autoFocus={true}
+				onSaveNewNode={this.onSaveNewNodeHandler}
 				onNodeInputChange={this.onNodeInputChange}
 				onDeleteNodes={this.onDeleteNodes}
 				onCheckedNode={this.onCheckedNode}
-				selectedCheckList={selectedCheckList}
+				onGoBack={this.onGoBackHandler}
+				getText={this.props.getText}
 			/>
 		);
 	}
 
-	private onGoBackHandler = (navigation: any) => {
-		navigation.goBack(null);
+	private onGoBackHandler = () => {
+		this.props.navigation.goBack(null);
 	};
 
 	private onNodeInputChange = (value: string) => {
@@ -92,6 +91,6 @@ class Screen extends React.Component<INodesScreenProps, INodesScreenState> {
 	};
 }
 
-export const NodesScreen = (navProps: INavigationProps) => (
-	<WithNodes>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithNodes>
+export const NodesScreen = (props: INavigationProps) => (
+	<WithNodes>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithNodes>
 );

@@ -5,17 +5,11 @@
 
 import * as React from 'react';
 
-import {
-	INavigationParamsActions,
-	INotificationData,
-	IOptionsMenuProps,
-	ITranslatedProps,
-} from '../../../types';
+import { INotificationData, IOptionsMenuProps, ITranslatedProps } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/notifications/Types';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
@@ -26,10 +20,7 @@ export interface IWithNotificationsEnhancedData {
 	refreshing: boolean;
 }
 
-export interface IWithNotificationsEnhancedActions
-	extends ITranslatedProps,
-		IOptionsMenuProps,
-		INavigationParamsActions {
+export interface IWithNotificationsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getNotifications: () => void;
 	removeNotification: (input: { notificationId: string }) => void;
 }
@@ -55,47 +46,42 @@ export class WithNotifications extends React.Component<
 				{({ appConfig }) => (
 					<WithI18n>
 						{({ getText }) => (
-							<WithNavigationParams>
-								{({ setNavigationParams }) => (
-									<WithOverlays>
-										{({ showOptionsMenu }) => (
-											<WithActivities>
-												{({ activities }) => (
-													<WithNotificationsData>
-														{({
-															friendRequests,
-															friendResponses,
+							<WithOverlays>
+								{({ showOptionsMenu }) => (
+									<WithActivities>
+										{({ activities }) => (
+											<WithNotificationsData>
+												{({
+													friendRequests,
+													friendResponses,
+													getNotifications,
+													removeNotification,
+												}) =>
+													this.props.children({
+														data: {
+															refreshing: getActivity(
+																activities,
+																ActionTypes.GET_CURRENT_NOTIFICATIONS,
+															),
+															notifications: mapRequestsToNotifications(
+																friendRequests,
+																friendResponses,
+																appConfig.ipfsConfig.ipfs_URL,
+															),
+														},
+														actions: {
 															getNotifications,
 															removeNotification,
-														}) =>
-															this.props.children({
-																data: {
-																	refreshing: getActivity(
-																		activities,
-																		ActionTypes.GET_CURRENT_NOTIFICATIONS,
-																	),
-																	notifications: mapRequestsToNotifications(
-																		friendRequests,
-																		friendResponses,
-																		appConfig.ipfsConfig.ipfs_URL,
-																	),
-																},
-																actions: {
-																	getNotifications,
-																	removeNotification,
-																	showOptionsMenu: (items) => showOptionsMenu({ items }),
-																	setNavigationParams,
-																	getText,
-																},
-															})
-														}
-													</WithNotificationsData>
-												)}
-											</WithActivities>
+															showOptionsMenu: (items) => showOptionsMenu({ items }),
+															getText,
+														},
+													})
+												}
+											</WithNotificationsData>
 										)}
-									</WithOverlays>
+									</WithActivities>
 								)}
-							</WithNavigationParams>
+							</WithOverlays>
 						)}
 					</WithI18n>
 				)}

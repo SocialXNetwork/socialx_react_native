@@ -13,7 +13,7 @@ const TEXT_LENGTH_TRESHOLD = 15;
 interface ICommentCardProps extends ITranslatedProps {
 	comment: IComment;
 	onLikeComment: () => void;
-	onViewUserProfile: (userId: string) => void;
+	onUserPress: (userId: string) => void;
 	onShowOptionsMenu: () => void;
 	likeCommentError: boolean;
 }
@@ -63,14 +63,14 @@ export class CommentCard extends React.Component<ICommentCardProps, ICommentCard
 	}
 
 	public render() {
-		const { comment, onViewUserProfile, onShowOptionsMenu, getText } = this.props;
+		const { comment, onUserPress, onShowOptionsMenu, getText } = this.props;
 
 		const { text, user, timestamp } = comment;
 		const commentTimestamp = moment(timestamp).fromNow();
 
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={() => onViewUserProfile(user.userId)}>
+				<TouchableOpacity onPress={() => onUserPress(user.userId)}>
 					<AvatarImage image={user.avatar} style={styles.avatarImage} />
 				</TouchableOpacity>
 				<View style={styles.rightContainer}>

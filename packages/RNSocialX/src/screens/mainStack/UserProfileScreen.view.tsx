@@ -29,6 +29,7 @@ import {
 } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps {
@@ -47,7 +48,7 @@ interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps
 	onShowFriendshipOptions: () => void;
 	onProfilePhotoPress: () => void;
 	onLoadMorePhotos: () => void;
-	onViewMediaFullScreen: (index: number) => void;
+	onViewMedia: (index: number) => void;
 	onIconPress: (tab: string) => void;
 	onLayoutChange: (height: number) => void;
 }
@@ -65,7 +66,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onRefresh,
 	onShowFriendshipOptions,
 	onProfilePhotoPress,
-	onViewMediaFullScreen,
+	onViewMedia,
 	onLoadMorePhotos,
 	onIconPress,
 	onLayoutChange,
@@ -182,7 +183,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 								<ProfilePhotoGrid
 									onLoadMorePhotos={onLoadMorePhotos}
 									dataProvider={dataProvider}
-									onViewMediaFullScreen={onViewMediaFullScreen}
+									onViewMedia={onViewMedia}
 									header={{
 										element: <View style={{ width: 1, height: 1 }} />,
 										height: hasPhotos ? 1 : SCREEN_HEIGHT,

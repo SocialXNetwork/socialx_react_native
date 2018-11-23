@@ -2,19 +2,25 @@ import * as React from 'react';
 import { debounce } from 'throttle-debounce';
 
 import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../../enhancers/logic/WithNavigationHandlers';
+import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,
 	WithSearch,
 } from '../../../enhancers/screens';
-import { SCREENS, TABS } from '../../../environment/consts';
+
 import { INavigationProps, SearchTabs } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
 const SEARCH_DEBOUNCE_TIME_MS = 300;
-
 const TabsByIndex = [SearchTabs.Top, SearchTabs.People, SearchTabs.Tags, SearchTabs.Places];
 
-type ISearchScreenProps = INavigationProps & IWithSearchEnhancedData & IWithSearchEnhancedActions;
+type ISearchScreenProps = INavigationProps &
+	IWithSearchEnhancedData &
+	IWithSearchEnhancedActions &
+	IWithNavigationHandlersEnhancedActions;
 
 interface IISearchScreenState {
 	loadedTabs: number[];
@@ -60,7 +66,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 				searchForMoreResults={searchForMoreResults}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
-				onResultPress={this.onResultPressHandler}
+				onResultPress={(userId) => this.props.onViewUserProfile(userId)}
 				searchTermValue={term}
 				getText={getText}
 			/>
@@ -77,25 +83,17 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	};
 
 	private onSearchTermChangeHandler = (term: string) => {
-		this.debounceSearch(term);
 		this.setState({ term });
-	};
-
-	private onResultPressHandler = (userId: string) => {
-		const { getPostsForUser, userPosts, setNavigationParams, navigation } = this.props;
-
-		if (!userPosts[userId]) {
-			getPostsForUser(userId);
-		}
-
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: { userId, origin: TABS.Search },
-		});
-		navigation.navigate(SCREENS.UserProfile);
+		this.debounceSearch(term);
 	};
 }
 
-export const SearchScreen = (navProps: INavigationProps) => (
-	<WithSearch>{({ data, actions }) => <Screen {...data} {...actions} {...navProps} />}</WithSearch>
+export const SearchScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithSearch>
+				{(search) => <Screen {...props} {...search.data} {...search.actions} {...nav.actions} />}
+			</WithSearch>
+		)}
+	</WithNavigationHandlers>
 );

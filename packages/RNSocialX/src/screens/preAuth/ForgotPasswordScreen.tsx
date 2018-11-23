@@ -1,7 +1,3 @@
-/**
- * old screen -> screens/ForgotPasswordScreen/index.tsx
- */
-
 import * as React from 'react';
 
 import {
@@ -9,6 +5,7 @@ import {
 	IWithForgotPasswordEnhancedData,
 	WithForgotPassword,
 } from '../../enhancers/screens';
+
 import { INavigationProps } from '../../types';
 import { ForgotPasswordScreenView } from './ForgotPasswordScreen.view';
 
@@ -28,8 +25,8 @@ const Screen: React.SFC<IForgotPasswordScreenProps> = ({ getText, navigation, se
 	/>
 );
 
-export const ForgotPasswordScreen = (navProps: INavigationProps) => (
+export const ForgotPasswordScreen = (props: INavigationProps) => (
 	<WithForgotPassword>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
 	</WithForgotPassword>
 );

@@ -42,13 +42,13 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	);
 };
 interface IDualMediaPostProps extends ITranslatedProps {
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	onMediaObjectView: (index: number) => void;
 	placeholder: boolean;
 }
 
 const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
-	mediaObjects,
+	media,
 	onMediaObjectView,
 	placeholder,
 	getText,
@@ -60,9 +60,9 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 					<MediaObjectViewer
 						onPress={() => onMediaObjectView(0)}
 						thumbOnly={true}
-						uri={mediaObjects[0].url}
+						uri={media[0].url}
 						style={style.fullWidthHeight}
-						extension={mediaObjects[0].extension}
+						extension={media[0].extension}
 						getText={getText}
 					/>
 				</View>
@@ -70,9 +70,9 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 					<MediaObjectViewer
 						onPress={() => onMediaObjectView(1)}
 						thumbOnly={true}
-						uri={mediaObjects[1].url}
+						uri={media[1].url}
 						style={style.fullWidthHeight}
-						extension={mediaObjects[1].extension}
+						extension={media[1].extension}
 						getText={getText}
 					/>
 				</View>
@@ -84,18 +84,18 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 );
 
 interface IMultiMediaPostProps extends ITranslatedProps {
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	placeholder: boolean;
 	onMediaObjectView: (index: number) => void;
 }
 
 const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
-	mediaObjects,
+	media,
 	onMediaObjectView,
 	placeholder,
 	getText,
 }) => {
-	const numberOfMoreMediaObjects = mediaObjects.length - 3;
+	const numberOfMoremedia = media.length - 3;
 	return (
 		<View style={style.postMediaContainerFullWidth}>
 			{!placeholder ? (
@@ -104,9 +104,9 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						<MediaObjectViewer
 							onPress={() => onMediaObjectView(0)}
 							thumbOnly={true}
-							uri={mediaObjects[0].url}
+							uri={media[0].url}
 							style={style.fullWidthHeight}
-							extension={mediaObjects[0].extension}
+							extension={media[0].extension}
 							getText={getText}
 						/>
 					</View>
@@ -115,8 +115,8 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 							<MediaObjectViewer
 								onPress={() => onMediaObjectView(1)}
 								thumbOnly={true}
-								uri={mediaObjects[1].url}
-								extension={mediaObjects[1].extension}
+								uri={media[1].url}
+								extension={media[1].extension}
 								getText={getText}
 							/>
 						</View>
@@ -127,15 +127,15 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						>
 							<MediaObjectViewer
 								thumbOnly={true}
-								uri={mediaObjects[2].url}
+								uri={media[2].url}
 								style={style.fullWidthHeight}
-								extension={mediaObjects[2].extension}
+								extension={media[2].extension}
 								getText={getText}
 							/>
 
-							{numberOfMoreMediaObjects > 0 && (
+							{numberOfMoremedia > 0 && (
 								<View style={style.moreOverlay}>
-									<Text style={style.moreText}>{`+${numberOfMoreMediaObjects} more`}</Text>
+									<Text style={style.moreText}>{`+${numberOfMoremedia} more`}</Text>
 								</View>
 							)}
 						</TouchableOpacity>
@@ -149,7 +149,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 };
 
 interface IWallPostMediaProps extends ITranslatedProps {
-	mediaObjects: IMediaProps[];
+	media: IMediaProps[];
 	onMediaObjectView: (index: number) => void;
 	onDoublePress: () => void;
 	noInteraction?: boolean;
@@ -157,7 +157,7 @@ interface IWallPostMediaProps extends ITranslatedProps {
 }
 
 export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
-	mediaObjects,
+	media,
 	noInteraction = false,
 	placeholder = false,
 	onMediaObjectView = () => undefined,
@@ -166,25 +166,25 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 }) => {
 	return (
 		<React.Fragment>
-			{mediaObjects.length > 2 && (
+			{media.length > 2 && (
 				<MultiMediaPost
-					mediaObjects={mediaObjects}
+					media={media}
 					onMediaObjectView={onMediaObjectView}
 					placeholder={placeholder}
 					getText={getText}
 				/>
 			)}
-			{mediaObjects.length === 2 && (
+			{media.length === 2 && (
 				<DualMediaPost
-					mediaObjects={mediaObjects}
+					media={media}
 					onMediaObjectView={onMediaObjectView}
 					placeholder={placeholder}
 					getText={getText}
 				/>
 			)}
-			{mediaObjects.length === 1 && (
+			{media.length === 1 && (
 				<SingleMediaPost
-					mediaObject={mediaObjects[0]}
+					mediaObject={media[0]}
 					noInteraction={noInteraction}
 					onMediaObjectView={onMediaObjectView}
 					onDoublePress={onDoublePress}

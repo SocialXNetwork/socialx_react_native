@@ -1,43 +1,42 @@
 import * as React from 'react';
 
-import { SCREENS, TABS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { LikesScreenView } from './LikesScreen.view';
 
+import {
+	IWithNavigationHandlersEnhancedActions,
+	WithNavigationHandlers,
+} from '../../enhancers/logic/WithNavigationHandlers';
 import {
 	IWithLikesEnhancedActions,
 	IWithLikesEnhancedData,
 	WithLikes,
 } from '../../enhancers/screens';
 
-type ILikesScreenProps = INavigationProps & IWithLikesEnhancedActions & IWithLikesEnhancedData;
+type ILikesScreenProps = INavigationProps &
+	IWithLikesEnhancedActions &
+	IWithLikesEnhancedData &
+	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<ILikesScreenProps> {
 	render() {
 		return (
 			<LikesScreenView
 				likes={this.props.likes}
-				onViewUserProfile={this.onViewUserProfileHandler}
-				onGoBack={this.onGoBackHandler}
+				onViewUserProfile={this.props.onViewUserProfile}
+				onGoBack={this.props.onGoBack}
 				getText={this.props.getText}
 			/>
 		);
 	}
-
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
-	};
-
-	private onViewUserProfileHandler = (userId: string) => {
-		const { navigation, setNavigationParams } = this.props;
-		setNavigationParams({
-			screenName: SCREENS.UserProfile,
-			params: { userId, origin: TABS.Feed },
-		});
-		navigation.navigate(SCREENS.UserProfile);
-	};
 }
 
-export const LikesScreen = (nav: INavigationProps) => (
-	<WithLikes>{({ data, actions }) => <Screen {...nav} {...data} {...actions} />}</WithLikes>
+export const LikesScreen = (props: INavigationProps) => (
+	<WithLikes>
+		{(likes) => (
+			<WithNavigationHandlers navigation={props.navigation}>
+				{(nav) => <Screen {...props} {...likes.data} {...likes.actions} {...nav.actions} />}
+			</WithNavigationHandlers>
+		)}
+	</WithLikes>
 );

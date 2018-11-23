@@ -68,7 +68,7 @@ export class WithVisitedUserContent extends React.Component<
 																	0,
 																);
 
-																visitedUser.mediaObjects = extractMediaFromPosts(
+																visitedUser.media = extractMediaFromPosts(
 																	posts,
 																	currentUser.userId,
 																	appConfig,

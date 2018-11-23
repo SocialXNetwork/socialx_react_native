@@ -5,20 +5,18 @@
 
 import * as React from 'react';
 
-import { KeyboardContext, SCREENS, TABS } from '../../environment/consts';
+import { KeyboardContext } from '../../environment/consts';
 import {
 	IComment,
 	ICurrentUser,
 	IError,
 	IGlobal,
-	IMediaProps,
 	INavigationProps,
 	IOptionsMenuProps,
 	ITranslatedProps,
 	IWallPostData,
 } from '../../types';
 
-import { IPostReturnData } from '@socialx/api-data';
 import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
@@ -40,17 +38,13 @@ export interface IWallPostEnhancedData {
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	onImagePress: (index: number, mediaObjects: IMediaProps[], post: IWallPostData) => void;
 	onRemovePost: (postId: string) => void;
-	onUserPress: (userId: string) => void;
-	onCommentsPress: (post: IWallPostData, keyboardRaised: boolean) => void;
 	onSubmitComment: (commentText: string, postId: string) => void;
 	onLikeComment: (comment: IComment) => void;
 	onRemoveComment: (commentId: string) => void;
 	onBlockUser: (userId: string) => void;
 	onReportProblem: (subject: string, description: string) => void;
 	onAddComment?: (cardHeight: number) => void;
-	onGoBack: () => void;
 }
 
 interface IWithWallPostEnhancedProps {
@@ -98,7 +92,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 													<KeyboardContext.Consumer>
 														{({ marginBottom }) => (
 															<WithAggregations>
-																{({ userPosts, getUserPosts }) => (
+																{({ getUserPosts }) => (
 																	<WithPosts>
 																		{({
 																			likeComment,
@@ -127,22 +121,13 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																							marginBottom,
 																						} as any,
 																						actions: {
-																							onImagePress: this.onImagePressHandler,
 																							onRemovePost: this.onRemovePostHandler,
-																							onUserPress: (userId) =>
-																								this.onUserPressHandler(
-																									currentUser.userId,
-																									userPosts,
-																									userId,
-																								),
-																							onCommentsPress: this.onCommentsPressHandler,
 																							onSubmitComment: this.onSubmitCommentHandler,
 																							onLikeComment: this.onLikeCommentHandler,
 																							onRemoveComment: (commentId) =>
 																								removeComment({ commentId }),
 																							onBlockUser: () => undefined,
 																							onReportProblem: () => undefined,
-																							onGoBack: () => this.onGoBackHandler(),
 																							showOptionsMenu: (items) =>
 																								showOptionsMenu({ items }),
 																							getText,
@@ -169,27 +154,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		);
 	}
 
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
-	};
-
-	private onImagePressHandler = (
-		index: number,
-		mediaObjects: IMediaProps[],
-		post: IWallPostData,
-	) => {
-		const { navigation } = this.props;
-		this.actions.setNavigationParams({
-			screenName: SCREENS.MediaViewer,
-			params: {
-				mediaObjects,
-				startIndex: index,
-				post,
-			},
-		});
-		navigation.navigate(SCREENS.MediaViewer);
-	};
-
 	private onRemovePostHandler = async (postId: string) => {
 		const { removePost, setGlobal } = this.actions;
 
@@ -206,40 +170,9 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		setGlobal({
 			transparentOverlay: {
 				visible: false,
+				loader: false,
 			},
 		});
-	};
-
-	private onUserPressHandler = (
-		currentUserId: string,
-		userPosts: { [owner: string]: IPostReturnData[] },
-		userId: string,
-	) => {
-		const { navigation } = this.props;
-
-		if (userId === currentUserId) {
-			navigation.navigate(SCREENS.MyProfile);
-		} else {
-			if (!userPosts[userId]) {
-				this.actions.getUserPosts({ username: userId });
-			}
-
-			this.actions.setNavigationParams({
-				screenName: SCREENS.UserProfile,
-				params: { userId, origin: TABS.Feed },
-			});
-			navigation.navigate(SCREENS.UserProfile);
-		}
-	};
-
-	private onCommentsPressHandler = (post: IWallPostData, keyboardRaised: boolean) => {
-		const { navigation } = this.props;
-
-		this.actions.setNavigationParams({
-			screenName: SCREENS.Comments,
-			params: { post, keyboardRaised },
-		});
-		navigation.navigate(SCREENS.Comments);
 	};
 
 	private onSubmitCommentHandler = async (text: string, postId: string) => {

@@ -4,11 +4,12 @@ export const resetNavigationToRoute = (
 	routeName: string,
 	navigation: NavigationScreenProp<any>,
 ) => {
-	const navAction = NavigationActions.navigate({ routeName });
-	const resetAction = StackActions.reset({
+	const navigate = NavigationActions.navigate({ routeName });
+	const reset = StackActions.reset({
 		index: 0,
-		actions: [navAction],
+		actions: [navigate],
 		key: null,
 	});
-	navigation.dispatch(resetAction);
+
+	navigation.dispatch(reset);
 };

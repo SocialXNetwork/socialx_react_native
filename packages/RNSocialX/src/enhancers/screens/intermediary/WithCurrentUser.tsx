@@ -41,7 +41,7 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 												numberOfLikes: 0,
 												numberOfPhotos: 0,
 												numberOfComments: 0,
-												mediaObjects: [],
+												media: [],
 												recentPosts: [],
 												miningEnabled: foundProfile.miningEnabled,
 												pub: foundProfile.pub,
