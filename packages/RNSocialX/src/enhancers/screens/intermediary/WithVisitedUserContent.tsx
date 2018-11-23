@@ -46,7 +46,6 @@ export class WithVisitedUserContent extends React.Component<
 
 																const recentPosts = mapPostsForUI(
 																	posts,
-																	5,
 																	currentUser,
 																	profiles,
 																	activities,

@@ -10,7 +10,6 @@ import { ICredentials } from '@socialx/api-data';
 import { IGlobal, ITranslatedProps } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -53,30 +52,27 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 								{({ auth }) => (
 									<WithAccounts>
 										{({ login }) => (
-											<WithAggregations>
-												{({ getUserPosts }) => (
-													<WithPosts>
-														{({ loadMorePosts }) =>
-															this.props.children({
-																data: {
-																	applicationInMaintenanceMode: false,
-																	globals,
-																	auth,
-																},
-																actions: {
-																	resetNavigationToRoute,
-																	loadFeed: async () => {
-																		await loadMorePosts();
-																	},
-																	recall: login,
-																	setGlobal,
-																	getText,
-																},
-															})
-														}
-													</WithPosts>
-												)}
-											</WithAggregations>
+											<WithPosts>
+												{({ loadMorePosts, loadMoreFriendsPosts }) =>
+													this.props.children({
+														data: {
+															applicationInMaintenanceMode: false,
+															globals,
+															auth,
+														},
+														actions: {
+															resetNavigationToRoute,
+															loadFeed: async () => {
+																await loadMorePosts();
+																await loadMoreFriendsPosts();
+															},
+															recall: login,
+															setGlobal,
+															getText,
+														},
+													})
+												}
+											</WithPosts>
 										)}
 									</WithAccounts>
 								)}

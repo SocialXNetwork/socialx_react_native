@@ -16,7 +16,6 @@ import {
 import { getActivity, mapPostsForUI } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { IFriendData } from '../../../store/data/profiles';
 import { assertNever } from '../../../store/helpers';
 import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -29,18 +28,21 @@ import { WithCurrentUser } from '../intermediary';
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	posts: IWallPostData[];
-	friends: { [key: string]: IFriendData[] };
+	friendsPosts: IWallPostData[];
+	globalPosts: IWallPostData[];
 	errors: IError[];
 	skeletonPost: IWallPostData;
 	creatingPost: boolean;
-	canLoadMorePosts: boolean;
 	refreshingFeed: boolean;
-	loadingMorePosts: boolean;
+	canLoadMoreGlobalPosts: boolean;
+	canLoadMoreFriendsPosts: boolean;
+	loadingMoreGlobalPosts: boolean;
+	loadingMoreFriendsPosts: boolean;
 }
 
 export interface IWithUserFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
-	loadMorePosts: () => void;
+	loadMoreGlobalPosts: () => void;
+	loadMoreFriendsPosts: () => void;
 	refreshFeed: (feed: FEED_TYPES) => void;
 }
 
@@ -69,18 +71,28 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 											<WithActivities>
 												{({ activities, errors }) => (
 													<WithProfiles>
-														{({ profiles, friends }) => (
+														{({ profiles }) => (
 															<WithPosts>
 																{(feed) => (
 																	<WithCurrentUser>
 																		{({ currentUser }) => {
 																			const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-																			let posts: IWallPostData[] = [];
+																			let globalPosts: IWallPostData[] = [];
+																			let friendsPosts: IWallPostData[] = [];
 
-																			if (feed.posts.length > 0) {
-																				posts = mapPostsForUI(
-																					feed.posts,
-																					10,
+																			if (feed.global.length > 0) {
+																				globalPosts = mapPostsForUI(
+																					feed.global,
+																					currentUser,
+																					profiles,
+																					activities,
+																					IPFS_URL,
+																				);
+																			}
+
+																			if (feed.friends.length > 0) {
+																				friendsPosts = mapPostsForUI(
+																					feed.friends,
 																					currentUser,
 																					profiles,
 																					activities,
@@ -91,14 +103,19 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																			return this.props.children({
 																				data: {
 																					currentUser,
-																					posts,
-																					friends,
+																					globalPosts,
+																					friendsPosts,
 																					errors,
 																					skeletonPost: globals.skeletonPost,
-																					canLoadMorePosts: globals.canLoadMorePosts,
-																					loadingMorePosts: getActivity(
+																					canLoadMoreGlobalPosts: globals.canLoadMorePosts,
+																					canLoadMoreFriendsPosts: globals.canLoadMoreFriendsPosts,
+																					loadingMoreGlobalPosts: getActivity(
 																						activities,
 																						ActionTypes.LOAD_MORE_POSTS,
+																					),
+																					loadingMoreFriendsPosts: getActivity(
+																						activities,
+																						ActionTypes.LOAD_MORE_FRIENDS_POSTS,
 																					),
 																					refreshingFeed: getActivity(
 																						activities,
@@ -110,7 +127,8 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																					),
 																				},
 																				actions: {
-																					loadMorePosts: feed.loadMorePosts,
+																					loadMoreGlobalPosts: feed.loadMorePosts,
+																					loadMoreFriendsPosts: feed.loadMoreFriendsPosts,
 																					refreshFeed: async (type) => {
 																						switch (type) {
 																							case FEED_TYPES.GLOBAL: {

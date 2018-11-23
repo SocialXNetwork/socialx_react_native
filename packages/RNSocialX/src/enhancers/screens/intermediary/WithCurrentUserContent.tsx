@@ -38,7 +38,6 @@ export class WithCurrentUserContent extends React.Component<
 
 														const recentPosts = mapPostsForUI(
 															posts,
-															5,
 															currentUser,
 															profiles,
 															activities,

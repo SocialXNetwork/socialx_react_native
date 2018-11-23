@@ -7,7 +7,6 @@ import { getActivity, getComments, getTopComments } from './';
 
 export const mapPostsForUI = (
 	posts: IPostReturnData[],
-	returnLength: number,
 	currentUser: ICurrentUser | undefined,
 	profiles: IProfile[],
 	activities: IActivity[],
@@ -15,7 +14,6 @@ export const mapPostsForUI = (
 ): IWallPostData[] => {
 	return posts
 		.sort((x: any, y: any) => y.timestamp - x.timestamp)
-		.slice(0, returnLength)
 		.map((post) => {
 			const ownerProfile = profiles.find((profile) => profile.alias === post.owner.alias);
 			const likedByCurrentUser = !!post.likes.find(

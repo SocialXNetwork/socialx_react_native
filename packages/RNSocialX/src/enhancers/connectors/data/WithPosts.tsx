@@ -22,6 +22,7 @@ import {
 	IUsernameInput,
 	likeComment,
 	likePost,
+	loadMoreFriendsPosts,
 	loadMorePosts,
 	removeComment,
 	removePost,
@@ -33,7 +34,8 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	posts: IPostArrayData;
+	global: IPostArrayData;
+	friends: IPostArrayData;
 }
 
 interface IActionProps {
@@ -43,6 +45,7 @@ interface IActionProps {
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
 	resetPostsAndRefetch: () => void;
 	loadMorePosts: () => void;
+	loadMoreFriendsPosts: () => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
 	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
 	likePost: (likePostInput: IPostIdInput) => void;
@@ -66,13 +69,19 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectPosts = createSelector(
-	(state: IApplicationState) => state.data.posts.posts,
+const selectGlobalPosts = createSelector(
+	(state: IApplicationState) => state.data.posts.global,
+	(posts) => posts,
+);
+
+const selectFriendsPosts = createSelector(
+	(state: IApplicationState) => state.data.posts.friends,
 	(posts) => posts,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	posts: selectPosts(state),
+	global: selectGlobalPosts(state),
+	friends: selectFriendsPosts(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -81,6 +90,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
 	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	loadMorePosts: () => dispatch(loadMorePosts()),
+	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
 	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
