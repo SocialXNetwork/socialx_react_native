@@ -526,7 +526,7 @@ export const rejectFriend = (rejectFriendInput: IRejectFriendInput): IThunk => a
 		} catch (e) {
 			await dispatch(
 				setError({
-					type: ActionTypes.ACCEPT_FRIEND,
+					type: ActionTypes.REJECT_FRIEND,
 					error: e.message,
 					uuid: uuidv4(),
 				}),

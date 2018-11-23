@@ -490,7 +490,6 @@ export const rejectFriend = async (
 		if (!friendRequestExists) {
 			return callback(new ApiError('friend request does not exist'));
 		}
-		await checkIfProfileExists(context, username);
 		await removePendingAndProceed(context, username);
 		const profile: any = await getCurrentUserProfile(context);
 		await createFriendRequestResponse(
