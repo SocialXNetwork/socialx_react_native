@@ -24,15 +24,18 @@ const getProfileNumberOfFriends = (
 	profile: IProfileData,
 	callback: (numberOfFriends: number) => void,
 ) => {
-	profileHandles
-		.privateUserFriendsRecordByPub(context, profile.pub)
-		.once((friendsRecord: IMetasTypeCallback<IProfileData>) => {
+	profileHandles.privateUserFriendsRecordByPub(context, profile.pub).once(
+		(friendsRecord: IMetasTypeCallback<IProfileData>) => {
 			if (!friendsRecord) {
-				callback(0);
+				return callback(0);
 			}
-			const num = convertGunSetToArray(friendsRecord).length - 1;
+
+			const { _, ...rest } = friendsRecord;
+			const num = convertGunSetToArray(rest).filter((friend) => friend !== null).length - 1;
 			callback(num);
-		});
+		},
+		{ wait: 500 },
+	);
 };
 
 const asyncFriendWithMutualStatus = (
@@ -146,7 +149,7 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 				return callback(null, { ...sanitizedProfile, numberOfFriends });
 			});
 		},
-		{ wait: 400 },
+		{ wait: 1000 },
 	);
 };
 

@@ -174,35 +174,41 @@ export const getPostByPath = (
 	};
 
 	const mainGetter = () => {
-		postHandles.postByPath(context, postPath).docLoad((postData: IPostCallbackData) => {
-			if (!postData || !Object.keys(postData).length) {
-				return callback(null, undefined);
-			}
+		postHandles.postByPath(context, postPath).open(
+			(postData: IPostCallbackData) => {
+				if (!postData || !Object.keys(postData).length) {
+					return callback(null, undefined);
+				}
 
-			// const keys = Object.keys()
-			const { likes, comments, media, ...restPost } = postData;
-			// convert likes into an array with keys
-			const postLikes = convertLikesToArray(likes);
-			// convert comments and their likes into an array with keys
-			const postComments: any = convertCommentsToArray(comments);
-			// convert media to an array
-			const mediaReturn = convertMediaToArray(media) || [];
+				// const keys = Object.keys()
+				const { likes, comments, media, ...restPost } = postData;
+				// convert likes into an array with keys
+				const postLikes = convertLikesToArray(likes);
+				// convert comments and their likes into an array with keys
+				const postComments: any = convertCommentsToArray(comments);
+				// convert media to an array
+				const mediaReturn = convertMediaToArray(media) || [];
 
-			const post: IPostReturnData = {
-				postId: postPath.split('.').reverse()[0],
-				likes: postLikes,
-				comments: postComments,
-				media: mediaReturn,
-				...restPost,
-			};
-			return callback(null, post);
-		});
+				const post: IPostReturnData = {
+					postId: postPath.split('.').reverse()[0],
+					likes: postLikes,
+					comments: postComments,
+					media: mediaReturn,
+					...restPost,
+				};
+				return callback(null, post);
+			},
+			{ off: 1, wait: 500 },
+		);
 	};
 	postHandles.postByPath(context, postPath).once(
-		() => {
+		(data: any) => {
+			if (!data) {
+				return callback(null, undefined);
+			}
 			mainGetter();
 		},
-		{ wait: 300 },
+		{ wait: 500 },
 	);
 };
 
@@ -211,18 +217,21 @@ export const getPostById = (
 	{ postId }: { postId: string },
 	callback: IGunCallback<IPostReturnData>,
 ) => {
-	postHandles.postMetaById(context, postId).once((postMeta: IPostMetasCallback) => {
-		if (!postMeta || !Object.keys(postMeta).length) {
-			return callback(
-				new ApiError('failed, no post was found with this id', {
-					initialRequestBody: { postId },
-				}),
-			);
-		}
-		const { postPath } = postMeta;
+	postHandles.postMetaById(context, postId).once(
+		(postMeta: IPostMetasCallback) => {
+			if (!postMeta || !Object.keys(postMeta).length) {
+				return callback(
+					new ApiError('failed, no post was found with this id', {
+						initialRequestBody: { postId },
+					}),
+				);
+			}
+			const { postPath } = postMeta;
 
-		getPostByPath(context, { postPath }, callback);
-	});
+			getPostByPath(context, { postPath }, callback);
+		},
+		{ wait: 500 },
+	);
 };
 
 /**
@@ -248,7 +257,7 @@ const getPostsTimestampIds = (
 					return callback(null, undefined);
 				}
 				const { _, ...rest } = friendsCallback;
-				const friendsAliases = Object.keys(rest);
+				const friendsAliases = Object.keys(rest).filter((key) => rest[key] !== null);
 
 				loadLimitedPosts(friendsAliases);
 			},
@@ -335,7 +344,7 @@ const getFriendsPostsTimestampIds = (
 					return callback(null, undefined);
 				}
 				const { _, ...rest } = friendsCallback;
-				const friendsAliases = Object.keys(rest);
+				const friendsAliases = Object.keys(rest).filter((key) => rest[key] !== null);
 
 				loadLimitedPosts(friendsAliases);
 			},

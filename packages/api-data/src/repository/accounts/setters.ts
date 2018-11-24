@@ -240,18 +240,28 @@ export const login = (
 	if (account.is) {
 		return callback(null);
 	}
-	account.auth(username, password, (authCallback: any) => {
-		if (authCallback.err) {
-			return callback(
-				new ApiError('failed to authenticate', {
-					initialRequestBody: { username, authCallback },
-				}),
-			);
-		}
-		console.log('authenticated', authCallback);
 
-		return callback(null);
-	});
+	let tries = 0;
+
+	const doAuth = () => {
+		account.auth(username, password, (authCallback: any) => {
+			if (authCallback.err) {
+				if (tries > 5) {
+					return callback(
+						new ApiError('failed to authenticate', {
+							initialRequestBody: { username, authCallback },
+						}),
+					);
+				}
+				tries++;
+				doAuth();
+			}
+			console.log('authenticated', authCallback);
+
+			return callback(null);
+		});
+	};
+	doAuth();
 };
 
 export const logout = (context: IContext, callback: IGunCallback<null>) => {

@@ -224,6 +224,7 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 
 		const { dataApi } = context;
 		const data = await dataApi.posts.loadMorePosts({ nextToken, limit: 5 });
+		await dispatch(getProfilesByPosts(data.posts));
 		dispatch(syncLoadMorePostsAction(data));
 	} catch (e) {
 		await dispatch(
@@ -268,6 +269,7 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 
 		const { dataApi } = context;
 		const data = await dataApi.posts.loadMoreFriendsPosts({ nextToken, limit: 5 });
+		await dispatch(getProfilesByPosts(data.posts));
 		dispatch(syncLoadMoreFriendsPostsAction(data));
 	} catch (e) {
 		await dispatch(

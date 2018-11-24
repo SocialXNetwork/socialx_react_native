@@ -99,7 +99,15 @@ export default (state: IState = initialState, action: IAction): IState => {
 				],
 				[...state.friends.posts],
 			);
-			return { ...state, friends: { ...state.friends, posts: updatedPosts } };
+			return {
+				...state,
+				friends: {
+					...state.friends,
+					posts: updatedPosts,
+					canLoadMore: action.payload.canLoadMore,
+					nextToken: action.payload.nextToken,
+				},
+			};
 		}
 
 		case ActionTypes.REMOVE_POST: {
