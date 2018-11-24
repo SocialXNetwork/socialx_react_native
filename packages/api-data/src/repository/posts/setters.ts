@@ -16,8 +16,8 @@ import { ICreatePostInput, IPostMetasCallback, IRemovePostInput, IUnlikePostInpu
 
 const loadMetaIdAndPass = (gun: IGunInstance, cb: any) => {
 	gun.get(TABLES.POST_META_BY_ID).once(
-		() => {
-			cb();
+		(data: any) => {
+			cb(data);
 		},
 		{ wait: 500 },
 	);
@@ -25,8 +25,8 @@ const loadMetaIdAndPass = (gun: IGunInstance, cb: any) => {
 
 const loadMetaUserAndPass = (gun: IGunInstance, cb: any) => {
 	gun.get(TABLES.POST_METAS_BY_USER).once(
-		() => {
-			cb();
+		(data: any) => {
+			cb(data);
 		},
 		{ wait: 500 },
 	);
@@ -34,18 +34,18 @@ const loadMetaUserAndPass = (gun: IGunInstance, cb: any) => {
 
 const loadMetaIdTimestampAndPass = (gun: IGunInstance, cb: any) => {
 	gun.get(TABLES.POST_META_BY_ID_TIMESTAMP).once(
-		() => {
-			cb();
+		(data: any) => {
+			cb(data);
 		},
 		{ wait: 500 },
 	);
 };
 
 const loadAllMetasAndPass = (gun: IGunInstance, cb: any) => {
-	loadMetaIdAndPass(gun, () => {
-		loadMetaUserAndPass(gun, () => {
-			loadMetaIdTimestampAndPass(gun, () => {
-				cb();
+	loadMetaIdAndPass(gun, (metaId: any) => {
+		loadMetaUserAndPass(gun, (metaUser: any) => {
+			loadMetaIdTimestampAndPass(gun, (metaIdTimestamp: any) => {
+				cb({ metaId, metaUser, metaIdTimestamp });
 			});
 		});
 	});
@@ -251,9 +251,9 @@ export const removePost = (
 ) => {
 	const { gun } = context;
 	const errPrefix = 'failed to remove post';
-	/**
-	 * get absolute postPath from postId and check if the post exist and the current user owns it
-	 */
+	let postTimestamp = 0;
+	let ownerAlias = '';
+
 	const mainRunner = () => {
 		postHandles.postMetaById(context, postId).docLoad((postMetaIdCallback: IPostMetasCallback) => {
 			if (!postMetaIdCallback || !Object.keys(postMetaIdCallback).length) {
@@ -269,7 +269,11 @@ export const removePost = (
 			const {
 				postPath,
 				owner: { alias },
+				timestamp,
 			} = postMetaIdCallback;
+
+			postTimestamp = timestamp;
+			ownerAlias = owner;
 
 			if (owner !== alias) {
 				return callback(
@@ -281,10 +285,6 @@ export const removePost = (
 			erasePostNode(postPath);
 		});
 	};
-	/**
-	 * erase post from the posts public record
-	 * @param postPath string absolute post path
-	 */
 	const erasePostNode = (postPath: string) => {
 		postHandles.postsRecordByPostPath(context, postPath).erase(postId, (postRemoveCallback) => {
 			if (postRemoveCallback.err) {
@@ -294,7 +294,7 @@ export const removePost = (
 					}),
 				);
 			}
-			loadMetaIdAndPass(gun, erasePostMetaNodeById);
+			erasePostMetaNodeById();
 		});
 	};
 	const erasePostMetaNodeById = () => {
@@ -306,35 +306,35 @@ export const removePost = (
 					}),
 				);
 			}
-			loadMetaUserAndPass(gun, erasePostMetaNodeByUser);
+			erasePostMetaNodeByUser();
 		});
 	};
 	const erasePostMetaNodeByUser = () => {
-		postHandles
-			.postMetasByCurrentUser(context)
-			.put({
-				[postId]: null,
-			})
-			.put(
-				{
-					[postId]: {},
-				},
-				(postMetasRemoveCallback) => {
-					if (postMetasRemoveCallback.err) {
-						return callback(
-							new ApiError(
-								`${errPrefix}, error removing post meta ${postMetasRemoveCallback.err}`,
-								{
-									initialRequestBody: { postId },
-								},
-							),
-						);
-					}
-					return callback(null);
-				},
-			);
+		postHandles.postMetasByCurrentUser(context).erase(postId, (postMetasRemoveCallback) => {
+			if (postMetasRemoveCallback.err) {
+				return callback(
+					new ApiError(`${errPrefix}, error removing post meta ${postMetasRemoveCallback.err}`, {
+						initialRequestBody: { postId },
+					}),
+				);
+			}
+			erasePostMetaNodeByIdTimestamp();
+		});
 	};
-	mainRunner();
+	const erasePostMetaNodeByIdTimestamp = () => {
+		postHandles.postMetaByIdTimestampRecord(context).put(
+			{
+				[`${postTimestamp}|${postId}|${ownerAlias}`]: null,
+			},
+			(postIdTimestampCallback) => {
+				if (postIdTimestampCallback.err) {
+					return callback(new ApiError('failed to delete id timestamp'));
+				}
+				return callback(null);
+			},
+		);
+	};
+	loadAllMetasAndPass(gun, mainRunner);
 };
 
 export const unlikePost = (

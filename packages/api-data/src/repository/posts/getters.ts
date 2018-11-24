@@ -274,6 +274,7 @@ const getPostsTimestampIds = (
 				const { _, ...rest } = itemsCallback;
 				// [{timestamp: 123123, postId: 'asduo3-fshefi}]
 				const postsIdsAndTimestamps = Object.keys(rest)
+					.filter((key) => rest[key] !== null)
 					.map((item: string) => {
 						const idTimestamp = item.split('|');
 						return {
@@ -362,6 +363,7 @@ const getFriendsPostsTimestampIds = (
 				const { _, ...rest } = itemsCallback;
 				// [{timestamp: 123123, postId: 'asduo3-fshefi}]
 				const postsIdsAndTimestamps = Object.keys(rest)
+					.filter((key) => rest[key] !== null)
 					.map((item: string) => {
 						const idTimestamp = item.split('|');
 						return {
