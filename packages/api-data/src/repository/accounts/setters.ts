@@ -254,7 +254,7 @@ export const login = (
 					);
 				}
 				tries++;
-				doAuth();
+				return doAuth();
 			}
 			console.log('authenticated', authCallback);
 

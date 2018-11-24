@@ -86,6 +86,17 @@ export const createPost = (
 		    }, {})
 		: {};
 	const mainRunner = () => {
+		gun
+			.get(TABLES.POSTS)
+			.path(publicPath)
+			.once(
+				() => {
+					addPostAndPass();
+				},
+				{ wait: 400 },
+			);
+	};
+	const addPostAndPass = () => {
 		postHandles.postByPath(context, postPath).put(
 			{
 				...createPostInput,
