@@ -11,8 +11,16 @@ import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
-	global: IPostArrayData;
-	friends: IPostArrayData;
+	global: {
+		posts: IPostArrayData;
+		canLoadMore: boolean;
+		nextToken?: string;
+	};
+	friends: {
+		posts: IPostArrayData;
+		canLoadMore: boolean;
+		nextToken?: string;
+	};
 }>;
 
 export interface IUsernameInput {
@@ -113,7 +121,11 @@ export interface ILoadMorePostsAction extends Action {
 
 export interface ISyncLoadMorePostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
-	payload: IPostArrayData;
+	payload: {
+		posts: IPostArrayData;
+		canLoadMore: boolean;
+		nextToken: string;
+	};
 }
 
 export interface ILoadMoreFriendsPostsAction extends Action {
@@ -122,7 +134,11 @@ export interface ILoadMoreFriendsPostsAction extends Action {
 
 export interface ISyncLoadMoreFriendsPostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS;
-	payload: IPostArrayData;
+	payload: {
+		posts: IPostArrayData;
+		canLoadMore: boolean;
+		nextToken: string;
+	};
 }
 
 export interface ICreatePostAction extends Action {

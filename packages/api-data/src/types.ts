@@ -5,6 +5,7 @@ export enum TABLES {
 	POSTS = 'posts',
 	POST_META_BY_ID = 'postMetaById',
 	POST_METAS_BY_USER = 'postMetasByUser',
+	POST_META_BY_ID_TIMESTAMP = 'postMetaByIdTimestamp',
 	COMMENT_META_BY_ID = 'commentMetaById',
 	PROFILES = 'profiles',
 	PROFILE = 'profile',

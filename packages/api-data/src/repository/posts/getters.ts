@@ -1,6 +1,8 @@
 import * as profileHandles from '../profiles/handles';
 import * as postHandles from './handles';
 
+import { Base64 } from 'js-base64';
+
 import {
 	IContext,
 	IGunCallback,
@@ -223,290 +225,194 @@ export const getPostById = (
 	});
 };
 
-const getAllPostRelevantData = (
+/**
+ * meta shape
+ * 123123|hf8ef-fesj8f3-fesf
+ * .keys().map(split(|))
+ * {timestamp: 123123, id: 1jfisjfish}
+ * .sort(timestamp)
+ * indexOf(offset) + limit
+ */
+const getPostsTimestampIds = (
 	context: IContext,
-	datePath: string,
-	{ timeout, wait, tries }: { timeout: number; wait: number; tries: number },
-	callback: IGunCallback<IPostArrayData>,
-) =>
-	postHandles.postsByDate(context, datePath).docLoad(
-		(postsData: IPostsDataCallback) => {
-			if (!postsData || !Object.keys(postsData).length) {
-				return callback(null, []);
-			}
-
-			const allPosts: any = Object.entries(postsData).map(([key, value]) => {
-				return {
-					...value,
-					postId: key,
-				};
-			});
-
-			let shouldWaitAndTryAgain = false;
-			const posts = allPosts
-				.map((post: IPostCallbackData & { k: string }) => {
-					// convert likes into an array with keys
-					const postLikes = convertLikesToArray(post.likes);
-					// convert comments and their likes into an array with keys
-					const postComments: ICommentData[] = convertCommentsToArray(post.comments);
-					// Convert media to an array
-					const mediaReturn = convertMediaToArray(post.media) || [];
-
-					// If we don't get data proper data i.e. a hashtag key is present,
-					// stop current operation, append 100 to both timeout and wait
-					// Try again the current operation
-					[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
-						if (propArray && propArray.length) {
-							propArray.forEach((obj: any) => {
-								if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
-									shouldWaitAndTryAgain = true;
-								}
-							});
-						}
-					});
-					// related to the retry checks
-					if (
-						post.owner &&
-						typeof post.owner === 'object' &&
-						Object.keys(post.owner).length === 0
-					) {
-						shouldWaitAndTryAgain = true;
-					}
-
-					const { likes, comments, media, ...postRest } = post;
-					if (postRest.owner) {
-						return {
-							...postRest,
-							likes: postLikes,
-							comments: postComments,
-							media: mediaReturn,
-						};
-					} else {
-						return null;
-					}
-				})
-				.filter((post: any) => post !== null);
-
-			if (!shouldWaitAndTryAgain) {
-				return callback(null, posts);
-			}
-
-			getAllPostRelevantData(
-				context,
-				datePath,
-				{ timeout: timeout + 100, wait: wait + 100, tries: tries + 1 },
-				callback,
-			);
-		},
-		{ timeout, wait },
-	);
-
-const getAllFriendsPostRelevantData = (
-	context: IContext,
-	datePath: string,
-	friends: string[],
-	{ timeout, wait, tries }: { timeout: number; wait: number; tries: number },
-	callback: IGunCallback<IPostArrayData>,
-) =>
-	postHandles.postsByDate(context, datePath).docLoad(
-		(postsData: IPostsDataCallback) => {
-			if (!postsData || !Object.keys(postsData).length) {
-				return callback(null, []);
-			}
-
-			const allPosts: any = Object.entries(postsData)
-				.map(([key, value]) => {
-					if (!value.owner) {
-						// deleted posts
-						return null;
-					}
-					if (friends.includes(value.owner.alias)) {
-						return {
-							...value,
-							postId: key,
-						};
-					} else {
-						return null;
-					}
-				})
-				.filter((a) => a !== null);
-
-			if (!allPosts.length) {
-				return callback(null, []);
-			}
-
-			let shouldWaitAndTryAgain = false;
-			const posts = allPosts
-				.map((post: IPostCallbackData & { k: string }) => {
-					// convert likes into an array with keys
-					const postLikes = convertLikesToArray(post.likes);
-					// convert comments and their likes into an array with keys
-					const postComments: ICommentData[] = convertCommentsToArray(post.comments);
-					// Convert media to an array
-					const mediaReturn = convertMediaToArray(post.media) || [];
-
-					// If we don't get data proper data i.e. a hashtag key is present,
-					// stop current operation, append 100 to both timeout and wait
-					// Try again the current operation
-					[postLikes, postComments, mediaReturn].forEach((propArray: any = []) => {
-						if (propArray && propArray.length) {
-							propArray.forEach((obj: any) => {
-								if (obj && typeof obj === 'object' && Object.keys(obj).includes('#')) {
-									shouldWaitAndTryAgain = true;
-								}
-							});
-						}
-					});
-					// related to the retry checks
-					if (
-						post.owner &&
-						typeof post.owner === 'object' &&
-						Object.keys(post.owner).length === 0
-					) {
-						shouldWaitAndTryAgain = true;
-					}
-
-					const { likes, comments, media, ...postRest } = post;
-					if (postRest.owner) {
-						return {
-							...postRest,
-							likes: postLikes,
-							comments: postComments,
-							media: mediaReturn,
-						};
-					} else {
-						return null;
-					}
-				})
-				.filter((post: any) => post !== null);
-
-			if (!shouldWaitAndTryAgain) {
-				return callback(null, posts);
-			}
-
-			getAllFriendsPostRelevantData(
-				context,
-				datePath,
-				friends,
-				{ timeout: timeout + 100, wait: wait + 100, tries: tries + 1 },
-				callback,
-			);
-		},
-		{ timeout, wait },
-	);
-
-export const getPublicPostsByDate = (
-	context: IContext,
-	{ date }: { date: Date },
-	callback: IGunCallback<IPostArrayData>,
+	{ token, limit }: { token?: string; limit: number },
+	callback: IGunCallback<
+		{ nextToken: string; postIds: string[]; canLoadMore: boolean } | undefined
+	>,
 ) => {
-	const datePath = datePathFromDate(date);
-	getAllPostRelevantData(context, datePath, { timeout: 700, wait: 300, tries: 0 }, callback);
-};
+	const lastItem = token ? JSON.parse(Base64.decode(token)) : null;
+	const mainRunner = () => {
+		profileHandles.currentProfileFriendsRecord(context).once(
+			(friendsCallback: { [prop: string]: any }) => {
+				if (!friendsCallback) {
+					return callback(null, undefined);
+				}
+				const { _, ...rest } = friendsCallback;
+				const friendsAliases = Object.keys(rest);
 
-export const getPublicFriendsPostsByDate = (
-	context: IContext,
-	{ date, friends }: { date: Date; friends: string[] },
-	callback: IGunCallback<IPostArrayData>,
-) => {
-	const datePath = datePathFromDate(date);
-	getAllFriendsPostRelevantData(
-		context,
-		datePath,
-		friends,
-		{ timeout: 700, wait: 300, tries: 0 },
-		callback,
-	);
-};
-
-// TODO: switch away from time iteration to post id/name meta
-const recursiveSearchForPosts = (
-	context: IContext,
-	{ startTimestamp, daysBack }: { startTimestamp: number; daysBack: number },
-	callback: IGunCallback<IPostArrayData>,
-) => {
-	if (daysBack > 5) {
-		return callback(null, []);
-	}
-	const nextDate = moment(startTimestamp)
-		.subtract(daysBack, 'd')
-		.toDate();
-
-	getPublicPostsByDate(context, { date: nextDate }, (err, posts) => {
-		if (err) {
-			return callback(err);
-		}
-		if (posts && posts.length) {
-			return callback(null, posts);
-		}
-		return recursiveSearchForPosts(context, { startTimestamp, daysBack: daysBack + 1 }, callback);
-	});
-};
-
-// TODO: switch away from time iteration to post id/name meta
-const recursiveSearchForFriendsPosts = (
-	context: IContext,
-	{
-		startTimestamp,
-		daysBack,
-		friends,
-	}: { startTimestamp: number; daysBack: number; friends: string[] },
-	callback: IGunCallback<IPostArrayData>,
-) => {
-	if (daysBack > 10) {
-		return callback(null, []);
-	}
-	const nextDate = moment(startTimestamp)
-		.subtract(daysBack, 'd')
-		.toDate();
-
-	getPublicFriendsPostsByDate(context, { date: nextDate, friends }, (err, posts) => {
-		if (err) {
-			return callback(err);
-		}
-		if (posts && posts.length) {
-			return callback(null, posts);
-		}
-		return recursiveSearchForFriendsPosts(
-			context,
-			{ startTimestamp, daysBack: daysBack + 1, friends },
-			callback,
+				loadLimitedPosts(friendsAliases);
+			},
+			{ wait: 200 },
 		);
-	});
-};
-
-export const getMostRecentFriendsPosts = (
-	context: IContext,
-	{ timestamp }: { timestamp: number },
-	callback: IGunCallback<IPostArrayData>,
-) => {
-	profileHandles.currentProfileFriendsRecord(context).once((friendsCallback: IMetasCallback) => {
-		if (!friendsCallback) {
-			return callback(null, []);
-		}
-		const friendsNames = Object.keys(cleanGunMetaFromObject(friendsCallback));
-		return recursiveSearchForFriendsPosts(
-			context,
-			{ startTimestamp: timestamp, daysBack: 0, friends: friendsNames },
-			callback,
+	};
+	const loadLimitedPosts = (friends: string[]) => {
+		postHandles.postMetaByIdTimestampRecord(context).once(
+			(itemsCallback: { [prop: string]: any }) => {
+				console.log('itemsCallback', { itemsCallback });
+				if (!itemsCallback) {
+					return callback(null, undefined);
+				}
+				const { _, ...rest } = itemsCallback;
+				// [{timestamp: 123123, postId: 'asduo3-fshefi}]
+				const postsIdsAndTimestamps = Object.keys(rest)
+					.map((item: string) => {
+						const idTimestamp = item.split('|');
+						return {
+							timestamp: parseInt(idTimestamp[0], undefined),
+							postId: idTimestamp[1],
+							owner: idTimestamp[2],
+						};
+					})
+					.filter((item: any) => !friends.includes(item.owner))
+					.sort((a, b) => {
+						return a.timestamp - b.timestamp;
+					});
+				console.log('postsIdsAndTimestamp', { postsIdsAndTimestamps });
+				findOffsetAndLoad(postsIdsAndTimestamps);
+			},
+			{ wait: 500 },
 		);
-	});
+	};
+
+	const findOffsetAndLoad = (postIdTimestamps: Array<{ timestamp: number; postId: string }>) => {
+		const postIds = [];
+		let canLoadMore = true;
+		let loadLimit = limit;
+
+		if (postIdTimestamps.length < limit) {
+			canLoadMore = false;
+			loadLimit = postIdTimestamps.length;
+		}
+		if (!lastItem) {
+			for (let i = 0; i < loadLimit; i++) {
+				postIds.push(postIdTimestamps[i].postId);
+			}
+			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
+
+			return callback(null, { nextToken, postIds, canLoadMore });
+			console.log('loadRetOffi', { nextToken, postIds, canLoadMore });
+		} else {
+			const startIndex = postIdTimestamps.indexOf(lastItem);
+
+			if (postIdTimestamps.length - startIndex < limit) {
+				canLoadMore = false;
+				loadLimit = postIdTimestamps.length;
+			}
+			for (let i = startIndex; i < loadLimit; i++) {
+				postIds.push(postIdTimestamps[i].postId);
+			}
+			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]));
+			console.log('loadRetOffn', { nextToken, postIds, canLoadMore });
+
+			return callback(null, { nextToken, postIds, canLoadMore });
+		}
+	};
+	mainRunner();
 };
 
-export const getMostRecentPosts = (
+const getFriendsPostsTimestampIds = (
 	context: IContext,
-	{ timestamp }: { timestamp: number },
-	callback: IGunCallback<IPostArrayData>,
+	{ token, limit }: { token?: string; limit: number },
+	callback: IGunCallback<
+		{ nextToken: string; postIds: string[]; canLoadMore: boolean } | undefined
+	>,
 ) => {
-	return recursiveSearchForPosts(context, { startTimestamp: timestamp, daysBack: 0 }, callback);
+	const lastItem = token ? JSON.parse(Base64.decode(token)) : null;
+	const mainRunner = () => {
+		profileHandles.currentProfileFriendsRecord(context).once(
+			(friendsCallback: { [prop: string]: any }) => {
+				if (!friendsCallback) {
+					return callback(null, undefined);
+				}
+				const { _, ...rest } = friendsCallback;
+				const friendsAliases = Object.keys(rest);
+
+				loadLimitedPosts(friendsAliases);
+			},
+			{ wait: 200 },
+		);
+	};
+
+	const loadLimitedPosts = (friends: string[]) => {
+		postHandles.postMetaByIdTimestampRecord(context).once(
+			(itemsCallback: { [prop: string]: any }) => {
+				console.log('itemsCallback', { itemsCallback });
+				if (!itemsCallback) {
+					return callback(null, undefined);
+				}
+				const { _, ...rest } = itemsCallback;
+				// [{timestamp: 123123, postId: 'asduo3-fshefi}]
+				const postsIdsAndTimestamps = Object.keys(rest)
+					.map((item: string) => {
+						const idTimestamp = item.split('|');
+						return {
+							timestamp: parseInt(idTimestamp[0], undefined),
+							postId: idTimestamp[1],
+							owner: idTimestamp[2],
+						};
+					})
+					.filter((item: any) => friends.includes(item.owner))
+					.sort((a, b) => {
+						return a.timestamp - b.timestamp;
+					});
+				console.log('postsIdsAndTimestamp', { postsIdsAndTimestamps });
+				findOffsetAndLoad(postsIdsAndTimestamps);
+			},
+			{ wait: 500 },
+		);
+	};
+
+	const findOffsetAndLoad = (postIdTimestamps: Array<{ timestamp: number; postId: string }>) => {
+		const postIds = [];
+		let canLoadMore = true;
+		let loadLimit = limit;
+
+		if (postIdTimestamps.length < limit) {
+			canLoadMore = false;
+			loadLimit = postIdTimestamps.length;
+		}
+		if (!lastItem) {
+			for (let i = 0; i < loadLimit; i++) {
+				postIds.push(postIdTimestamps[i].postId);
+			}
+			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
+
+			return callback(null, { nextToken, postIds, canLoadMore });
+			console.log('loadRetOffi', { nextToken, postIds, canLoadMore });
+		} else {
+			const startIndex = postIdTimestamps.indexOf(lastItem);
+
+			if (postIdTimestamps.length - startIndex < limit) {
+				canLoadMore = false;
+				loadLimit = postIdTimestamps.length;
+			}
+			for (let i = startIndex; i < loadLimit; i++) {
+				postIds.push(postIdTimestamps[i].postId);
+			}
+			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]));
+			console.log('loadRetOffn', { nextToken, postIds, canLoadMore });
+
+			return callback(null, { nextToken, postIds, canLoadMore });
+		}
+	};
+	mainRunner();
 };
 
 export default {
-	getMostRecentPosts,
-	getMostRecentFriendsPosts,
+	getPostsTimestampIds,
+	getFriendsPostsTimestampIds,
 	getPostByPath,
 	getPostById,
 	getPostPathsByUser,
-	getPublicPostsByDate,
 	fastGetPostByPath,
 };

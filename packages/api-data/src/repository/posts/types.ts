@@ -15,7 +15,8 @@ export interface IMedia {
 }
 
 export interface ILoadMorePostsInput {
-	timestamp: number;
+	nextToken?: string;
+	limit: number;
 }
 
 export interface IPostMetasCallback {

@@ -19,7 +19,7 @@ const loadMetaIdAndPass = (gun: IGunInstance, cb: any) => {
 		() => {
 			cb();
 		},
-		{ wait: 1000 },
+		{ wait: 500 },
 	);
 };
 
@@ -28,8 +28,27 @@ const loadMetaUserAndPass = (gun: IGunInstance, cb: any) => {
 		() => {
 			cb();
 		},
-		{ wait: 1000 },
+		{ wait: 500 },
 	);
+};
+
+const loadMetaIdTimestampAndPass = (gun: IGunInstance, cb: any) => {
+	gun.get(TABLES.POST_META_BY_ID_TIMESTAMP).once(
+		() => {
+			cb();
+		},
+		{ wait: 500 },
+	);
+};
+
+const loadAllMetasAndPass = (gun: IGunInstance, cb: any) => {
+	loadMetaIdAndPass(gun, () => {
+		loadMetaUserAndPass(gun, () => {
+			loadMetaIdTimestampAndPass(gun, () => {
+				cb();
+			});
+		});
+	});
 };
 
 export const createPost = (
@@ -85,7 +104,7 @@ export const createPost = (
 						new ApiError(`${errPrefix}, error creating post ${createPostCallback.err}`),
 					);
 				}
-				loadMetaUserAndPass(gun, createPostMetaByUser);
+				loadAllMetasAndPass(gun, createPostMetaByUser);
 			},
 		);
 	};
@@ -110,7 +129,7 @@ export const createPost = (
 						),
 					);
 				}
-				loadMetaIdAndPass(gun, createPostMetaById);
+				createPostMetaById();
 			},
 		);
 
@@ -119,6 +138,7 @@ export const createPost = (
 			{
 				postPath,
 				privatePost,
+				timestamp,
 				owner: {
 					alias: owner,
 					pub: ownerPub,
@@ -132,9 +152,32 @@ export const createPost = (
 						),
 					);
 				}
+
+				createPostMetaByIdTimestamp();
+			},
+		);
+
+	const createPostMetaByIdTimestamp = () =>
+		postHandles.postMetaByIdTimestamp(context, `${timestamp}|${postId}|${owner}`).put(
+			{
+				postPath,
+				timestamp,
+				owner: {
+					alias: owner,
+					pub: ownerPub,
+				},
+			},
+			(cpmbitCallback) => {
+				if (cpmbitCallback.err) {
+					return callback(
+						new ApiError(`${errPrefix}, error creating post meta ${cpmbitCallback.err}`),
+					);
+				}
+
 				return callback(null);
 			},
 		);
+
 	mainRunner();
 };
 

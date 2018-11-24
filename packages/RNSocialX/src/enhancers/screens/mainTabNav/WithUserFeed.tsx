@@ -80,9 +80,9 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																			let globalPosts: IWallPostData[] = [];
 																			let friendsPosts: IWallPostData[] = [];
 
-																			if (feed.global.length > 0) {
+																			if (feed.global.posts.length > 0) {
 																				globalPosts = mapPostsForUI(
-																					feed.global,
+																					feed.global.posts,
 																					currentUser,
 																					profiles,
 																					activities,
@@ -90,9 +90,9 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				);
 																			}
 
-																			if (feed.friends.length > 0) {
+																			if (feed.friends.posts.length > 0) {
 																				friendsPosts = mapPostsForUI(
-																					feed.friends,
+																					feed.friends.posts,
 																					currentUser,
 																					profiles,
 																					activities,
@@ -107,8 +107,8 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																					friendsPosts,
 																					errors,
 																					skeletonPost: globals.skeletonPost,
-																					canLoadMoreGlobalPosts: globals.canLoadMorePosts,
-																					canLoadMoreFriendsPosts: globals.canLoadMoreFriendsPosts,
+																					canLoadMoreGlobalPosts: feed.global.canLoadMore,
+																					canLoadMoreFriendsPosts: feed.friends.canLoadMore,
 																					loadingMoreGlobalPosts: getActivity(
 																						activities,
 																						ActionTypes.LOAD_MORE_POSTS,

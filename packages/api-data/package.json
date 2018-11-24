@@ -18,6 +18,7 @@
     "@socialx/commons": "^0.0.1",
     "gun": "0.9.99999",
     "gun-flint": "^0.0.28",
+    "js-base64": "^2.4.9",
     "utility-types-fixme-todo": "latest",
     "uuid": "^3.3.2",
     "yup": "^0.26.6"

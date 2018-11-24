@@ -15,6 +15,16 @@ export const postMetasByUsername = (context: IContext, username: string) => {
 	return gun.path(`${TABLES.POST_METAS_BY_USER}.${username}`);
 };
 
+export const postMetaByIdTimestamp = (context: IContext, idTimestamp: string) => {
+	const { gun } = context;
+	return gun.get(TABLES.POST_META_BY_ID_TIMESTAMP).get(idTimestamp);
+};
+
+export const postMetaByIdTimestampRecord = (context: IContext) => {
+	const { gun } = context;
+	return gun.get(TABLES.POST_META_BY_ID_TIMESTAMP);
+};
+
 export const postMetasByUsernamesRecord = (context: IContext) => {
 	const { gun } = context;
 	return gun.path(`${TABLES.POST_METAS_BY_USER}`);

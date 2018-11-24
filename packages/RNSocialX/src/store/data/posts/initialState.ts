@@ -1,8 +1,16 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	global: [],
-	friends: [],
+	global: {
+		posts: [],
+		canLoadMore: true,
+		nextToken: undefined,
+	},
+	friends: {
+		posts: [],
+		canLoadMore: true,
+		nextToken: undefined,
+	},
 };
 
 export default initialState;

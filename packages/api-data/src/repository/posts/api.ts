@@ -37,7 +37,7 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		getPostById: async (getPostById: IGetPostByIdInput): Promise<IPostReturnData> => {
+		async getPostById(getPostById: IGetPostByIdInput): Promise<IPostReturnData> {
 			let validatedInput: any;
 			try {
 				validatedInput = await schemas.postById.validate(getPostById, {
@@ -133,28 +133,6 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		getPublicPostsByDate: async (getPublicPostsByDateInput: {
-			date: Date;
-		}): Promise<IPostArrayData> => {
-			let validatedInput: any;
-			try {
-				validatedInput = await schemas.getPublicPostsByDate.validate(getPublicPostsByDateInput, {
-					stripUnknown: true,
-				});
-			} catch (e) {
-				throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
-					validationInput: getPublicPostsByDateInput,
-				});
-			}
-
-			return new Promise<IPostArrayData>((resolve, reject) => {
-				getters.getPublicPostsByDate(
-					context,
-					validatedInput as { date: Date },
-					resolveCallback(resolve, reject),
-				);
-			});
-		},
 		likePost: async (likePostInput: { postId: string }): Promise<null> => {
 			let validatedInput: any;
 			try {
@@ -194,20 +172,52 @@ export default function(context: IContext) {
 				);
 			});
 		},
-		loadMorePosts: async (loadMorePostsInput: ILoadMorePostsInput): Promise<IPostArrayData> => {
-			return new Promise<IPostArrayData>((resolve, reject) => {
-				getters.getMostRecentPosts(context, loadMorePostsInput, resolveCallback(resolve, reject));
+		async loadMorePosts(
+			loadMorePostsInput: ILoadMorePostsInput,
+		): Promise<{
+			posts: IPostArrayData;
+			nextToken: string;
+			canLoadMore: boolean;
+		}> {
+			return new Promise<{
+				posts: IPostArrayData;
+				nextToken: string;
+				canLoadMore: boolean;
+			}>((resolve, reject) => {
+				getters.getPostsTimestampIds(context, loadMorePostsInput, async (err, res) => {
+					if (res) {
+						const { nextToken, postIds, canLoadMore } = res;
+
+						const posts = await Promise.all(postIds.map((postId) => this.getPostById({ postId })));
+						resolve({ posts, nextToken, canLoadMore });
+					} else {
+						resolve({ posts: [], nextToken: '', canLoadMore: false });
+					}
+				});
 			});
 		},
-		loadMoreFriendsPosts: async (
+		async loadMoreFriendsPosts(
 			loadMorePostsInput: ILoadMorePostsInput,
-		): Promise<IPostArrayData> => {
-			return new Promise<IPostArrayData>((resolve, reject) => {
-				getters.getMostRecentFriendsPosts(
-					context,
-					loadMorePostsInput,
-					resolveCallback(resolve, reject),
-				);
+		): Promise<{
+			posts: IPostArrayData;
+			nextToken: string;
+			canLoadMore: boolean;
+		}> {
+			return new Promise<{
+				posts: IPostArrayData;
+				nextToken: string;
+				canLoadMore: boolean;
+			}>((resolve, reject) => {
+				getters.getFriendsPostsTimestampIds(context, loadMorePostsInput, async (err, res) => {
+					if (res) {
+						const { nextToken, postIds, canLoadMore } = res;
+
+						const posts = await Promise.all(postIds.map((postId) => this.getPostById({ postId })));
+						resolve({ posts, nextToken, canLoadMore });
+					} else {
+						resolve({ posts: [], nextToken: '', canLoadMore: false });
+					}
+				});
 			});
 		},
 		unlikePost: async (unlikePostInput: IUnlikePostInput): Promise<null> => {

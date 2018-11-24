@@ -17,14 +17,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE: {
-			const updatedPosts = action.payload.reduce(
-				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-					newPost,
-				],
-				[...state.global],
-			);
-			return { ...state, global: updatedPosts };
+			return state;
 		}
 
 		case ActionTypes.GET_POST_BY_PATH: {
@@ -32,13 +25,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POST_BY_PATH: {
-			return {
-				...state,
-				global: [
-					...state.global.filter((post) => post.postId !== action.payload.postId),
-					action.payload,
-				],
-			};
+			return state;
 		}
 
 		case ActionTypes.GET_POSTS_BY_USER: {
@@ -51,9 +38,15 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
-				[...state.global],
+				[...state.global.posts],
 			);
-			return { ...state, global: updatedPosts };
+			return {
+				...state,
+				global: {
+					...state.global,
+					posts: updatedPosts,
+				},
+			};
 		}
 
 		case ActionTypes.GET_POST_BY_ID: {
@@ -61,18 +54,15 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
-			const newGlobal = [
-				...state.global.filter((post) => post.postId !== action.payload.postId),
-				action.payload,
-			];
-			// check if the post exists on the friends feed first
-			const newFriends = state.friends.find((post) => post.postId === action.payload.postId)
-				? [...state.friends.filter((post) => post.postId !== action.payload.postId), action.payload]
-				: state.friends;
-			return {
-				global: newGlobal,
-				friends: newFriends,
-			};
+			// const newPosts = [
+			// 	...state.posts.filter((post) => post.postId !== action.payload.postId),
+			// 	action.payload,
+			// ];
+
+			// return {
+			// 	posts: newPosts,
+			// };
+			return state;
 		}
 
 		case ActionTypes.LOAD_MORE_POSTS: {
@@ -80,14 +70,21 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_LOAD_MORE_POSTS: {
-			const updatedPosts = action.payload.reduce(
+			const updatedPosts = action.payload.posts.reduce(
 				(updatedPostsAcc, newPost) => [
 					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
-				[...state.global],
+				[...state.global.posts],
 			);
-			return { ...state, global: updatedPosts };
+			return {
+				...state,
+				global: {
+					canLoadMore: action.payload.canLoadMore,
+					nextToken: action.payload.nextToken,
+					posts: updatedPosts,
+				},
+			};
 		}
 
 		case ActionTypes.LOAD_MORE_FRIENDS_POSTS: {
@@ -95,14 +92,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS: {
-			const updatedPosts = action.payload.reduce(
+			const updatedPosts = action.payload.posts.reduce(
 				(updatedPostsAcc, newPost) => [
 					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
 					newPost,
 				],
-				[...state.friends],
+				[...state.friends.posts],
 			);
-			return { ...state, friends: updatedPosts };
+			return { ...state, friends: { ...state.friends, posts: updatedPosts } };
 		}
 
 		case ActionTypes.REMOVE_POST: {
@@ -111,8 +108,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_REMOVE_POST: {
 			return {
-				...state,
-				global: [...state.global.filter((post) => post.postId !== action.payload)],
+				friends: {
+					...state.friends,
+					posts: [...state.friends.posts.filter((post) => post.postId !== action.payload)],
+				},
+				global: {
+					...state.global,
+					posts: [...state.global.posts.filter((post) => post.postId !== action.payload)],
+				},
 			};
 		}
 

@@ -34,8 +34,14 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	global: IPostArrayData;
-	friends: IPostArrayData;
+	global: {
+		canLoadMore: boolean;
+		posts: IPostArrayData;
+	};
+	friends: {
+		canLoadMore: boolean;
+		posts: IPostArrayData;
+	};
 }
 
 interface IActionProps {
@@ -70,18 +76,34 @@ class Enhancer extends React.Component<IProps & IChildren> {
 }
 
 const selectGlobalPosts = createSelector(
-	(state: IApplicationState) => state.data.posts.global,
+	(state: IApplicationState) => state.data.posts.global.posts,
 	(posts) => posts,
+);
+
+const selectGlobalCanLoad = createSelector(
+	(state: IApplicationState) => state.data.posts.global.canLoadMore,
+	(canLoad) => canLoad,
 );
 
 const selectFriendsPosts = createSelector(
-	(state: IApplicationState) => state.data.posts.friends,
+	(state: IApplicationState) => state.data.posts.friends.posts,
 	(posts) => posts,
 );
 
+const selectFriendsCanLoad = createSelector(
+	(state: IApplicationState) => state.data.posts.friends.canLoadMore,
+	(canLoad) => canLoad,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
-	global: selectGlobalPosts(state),
-	friends: selectFriendsPosts(state),
+	global: {
+		posts: selectGlobalPosts(state),
+		canLoadMore: selectGlobalCanLoad(state),
+	},
+	friends: {
+		posts: selectFriendsPosts(state),
+		canLoadMore: selectFriendsCanLoad(state),
+	},
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
