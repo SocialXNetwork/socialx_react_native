@@ -1,4 +1,4 @@
-import { Api, JsonRpc, JsSignatureProvider, RpcError } from 'eosjs';
+import Eos, { Api, JsonRpc, JsSignatureProvider, RpcError } from 'eosjs';
 
 import { TextDecoder, TextEncoder } from 'text-encoding';
 
@@ -20,11 +20,16 @@ const api = (rpcRef: typeof JsonRpc, signatureProvider: typeof JsSignatureProvid
 		textEncoder: new TextEncoder(),
 	});
 
-export default {
+const eos = (config: { [prop: string]: any }) => Eos(config);
+const { ecc } = Eos.modules;
+
+export {
 	// def ap
 	api,
 	rpc,
 	RpcError,
+	eos,
+	ecc,
 	// ot
 	altApi,
 	processArgs,
