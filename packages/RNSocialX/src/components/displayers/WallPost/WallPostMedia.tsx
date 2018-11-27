@@ -95,7 +95,8 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 	placeholder,
 	getText,
 }) => {
-	const numberOfMoremedia = media.length - 3;
+	const remainingMedia = media.length - 3;
+
 	return (
 		<View style={style.postMediaContainerFullWidth}>
 			{!placeholder ? (
@@ -133,9 +134,9 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 								getText={getText}
 							/>
 
-							{numberOfMoremedia > 0 && (
+							{remainingMedia > 0 && (
 								<View style={style.moreOverlay}>
-									<Text style={style.moreText}>{`+${numberOfMoremedia} more`}</Text>
+									<Text style={style.moreText}>{`+${remainingMedia} more`}</Text>
 								</View>
 							)}
 						</TouchableOpacity>

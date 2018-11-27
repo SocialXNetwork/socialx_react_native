@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { ICurrentUser } from '../../../types';
-import { extractMediaFromPosts, mapPostsForUI } from '../../helpers';
+import { ICurrentUser } from '../../types';
+import { extractMediaFromPosts, mapPostsForUI } from '../helpers';
 
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
-import { WithConfig } from '../../connectors/app/WithConfig';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
-import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithAggregations } from '../connectors/aggregations/WithAggregations';
+import { WithConfig } from '../connectors/app/WithConfig';
+import { WithProfiles } from '../connectors/data/WithProfiles';
+import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithCurrentUser } from './WithCurrentUser';
 
 interface IWithCurrentUserContentProps {

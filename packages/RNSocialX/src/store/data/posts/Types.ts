@@ -1,16 +1,18 @@
 import {
+	ICommentsReturnData,
 	ICreatePostInput,
 	IPostArrayData,
 	IPostReturnData,
-	IRemoveCommentInput,
 	IRemovePostInput,
-	IUnlikeCommentInput,
 	IUnlikePostInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
 export type IState = DeepReadonly<{
+	all: {
+		[postId: string]: IPostReturnData;
+	};
 	global: {
 		posts: IPostArrayData;
 		canLoadMore: boolean;
@@ -45,6 +47,13 @@ export interface IProfile {
 	avatar: string;
 }
 
+export interface ISyncCommentInput {
+	comment: ICommentsReturnData;
+	postId: string;
+	commentId?: string;
+	error: boolean;
+}
+
 export const enum ActionTypes {
 	GET_POSTS_BY_USER = 'data/posts/GET_POST_PATHS_BY_USER',
 	SYNC_GET_POSTS_BY_USER = 'data/posts/SYNC_GET_POST_PATHS_BY_USER',
@@ -64,11 +73,8 @@ export const enum ActionTypes {
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
 	RESET_POSTS = 'data/posts/RESET_POSTS',
-	// <================= comments =================>
-	CREATE_COMMENT = 'data/posts/CREATE_COMMENT',
-	LIKE_COMMENT = 'data/posts/LIKE_COMMENT',
-	REMOVE_COMMENT = 'data/posts/REMOVE_COMMENT',
-	UNLIKE_COMMENT = 'data/posts/UNLIKE_COMMENT',
+	SYNC_ADD_COMMENT = 'data/posts/SYNC_ADD_COMMENT',
+	SYNC_REMOVE_COMMENT = 'data/posts/SYNC_REMOVE_COMMENT',
 }
 
 export interface IResetPostsAction extends Action {
@@ -166,38 +172,14 @@ export interface IUnlikePostAction extends Action {
 	payload: IUnlikePostInput;
 }
 
-// <================ comments ================>
-export interface IPostIdInput {
-	postId: string;
+export interface ISyncAddCommentAction extends Action {
+	type: ActionTypes.SYNC_ADD_COMMENT;
+	payload: ISyncCommentInput;
 }
 
-export interface ICommentIdInput {
-	commentId: string;
-}
-
-export interface ICreateCommentInput {
-	text: string;
-	postId: string;
-}
-
-export interface ICreateCommentAction extends Action {
-	type: ActionTypes.CREATE_COMMENT;
-	payload: ICreateCommentInput;
-}
-
-export interface ILikeCommentAction extends Action {
-	type: ActionTypes.LIKE_COMMENT;
-	payload: ICommentIdInput;
-}
-
-export interface IRemoveCommentAction extends Action {
-	type: ActionTypes.REMOVE_COMMENT;
-	payload: IRemoveCommentInput;
-}
-
-export interface IUnlikeCommentAction extends Action {
-	type: ActionTypes.UNLIKE_COMMENT;
-	payload: IUnlikeCommentInput;
+export interface ISyncRemoveCommentAction extends Action {
+	type: ActionTypes.SYNC_REMOVE_COMMENT;
+	payload: ISyncCommentInput;
 }
 
 interface IResetStoreAction {
@@ -224,8 +206,6 @@ export type IAction =
 	| ILikePostAction
 	| IRemovePostAction
 	| IUnlikePostAction
-	| ICreateCommentAction
-	| ILikeCommentAction
-	| IRemoveCommentAction
 	| ISyncRemovePostAction
-	| IUnlikeCommentAction;
+	| ISyncAddCommentAction
+	| ISyncRemoveCommentAction;

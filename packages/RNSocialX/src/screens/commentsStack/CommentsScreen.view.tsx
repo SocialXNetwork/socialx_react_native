@@ -21,8 +21,8 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	<SafeAreaView style={styles.container}>
 		<WallPost
 			post={post}
-			isCommentsScreen={true}
 			errors={errors}
+			isCommentsScreen={true}
 			keyboardRaised={keyboardRaised}
 			navigation={navigation}
 		/>

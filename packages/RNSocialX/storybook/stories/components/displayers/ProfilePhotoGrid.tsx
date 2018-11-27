@@ -23,7 +23,7 @@ class GithubUsersPhotoGrid extends React.Component<any, { dataProvider: DataProv
 				<ProfilePhotoGrid
 					onLoadMorePhotos={this.onLoadMorePhotosHandler}
 					dataProvider={this.state.dataProvider}
-					onViewMediaFullScreen={action('onViewMediaFullScreen')}
+					onViewMedia={action('onViewMediaFullScreen')}
 					header={{
 						element: <View style={{ width: 1, height: 1 }} />,
 						height: 1,

@@ -8,7 +8,6 @@ import {
 	ScrollView,
 	View,
 } from 'react-native';
-import uuid from 'uuid/v4';
 
 import { CommentCard, HeartAnimation } from '../../';
 import {
@@ -31,16 +30,13 @@ import {
 import {
 	IWithLikingEnhancedActions,
 	IWithLikingEnhancedData,
-	WithLiking,
-} from '../../../enhancers/logic/WithLiking';
-import {
 	IWithNavigationHandlersEnhancedActions,
+	WithLiking,
 	WithNavigationHandlers,
-} from '../../../enhancers/logic/WithNavigationHandlers';
+} from '../../../enhancers/intermediary';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
-import { ActionTypes } from '../../../store/data/posts/Types';
 import { IComment, IError, INavigationProps, IWallPostData } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
@@ -59,31 +55,10 @@ interface IWallPostCardState {
 	inputWidth: Animated.Value;
 	inputIconPosition: Animated.Value;
 	viewOffensiveContent: boolean;
-	sendCommentFailed: boolean;
-	commentInputDisabled: boolean;
-	comments: IComment[];
 	reportAProblem: boolean;
 }
 
 class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardState> {
-	public static getDerivedStateFromProps(
-		nextProps: IWallPostCardProps,
-		currentState: IWallPostCardState,
-	) {
-		const sendCommentFailed = !!nextProps.errors.find(
-			(error) =>
-				error.type === ActionTypes.CREATE_COMMENT || error.type === ActionTypes.REMOVE_COMMENT,
-		);
-
-		if (sendCommentFailed !== currentState.sendCommentFailed) {
-			return {
-				sendCommentFailed: true,
-			};
-		}
-
-		return null;
-	}
-
 	public state = {
 		fullTextVisible: false,
 		comment: '',
@@ -91,11 +66,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		inputWidth: new Animated.Value(SCREEN_WIDTH),
 		inputIconPosition: new Animated.Value(100),
 		viewOffensiveContent: false,
-		likePostFailed: false,
-		likeCommentFailed: false,
-		sendCommentFailed: false,
-		commentInputDisabled: false,
-		comments: this.props.post.comments,
 		reportAProblem: false,
 	};
 
@@ -111,9 +81,16 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		this.keyboardDidHideListener.remove();
 	}
 
+	public componentDidUpdate() {
+		if (this.props.post.postId === '7fb367dc-8e0e-423c-b38e-9921fb40d55a') {
+			console.log(this.props.post.postText, this.props.post.commentIds);
+		}
+	}
+
 	public render() {
 		const {
 			post,
+			currentUser,
 			skeletonPost,
 			commentInput,
 			isCommentsScreen,
@@ -142,6 +119,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			timestamp,
 			owner,
 			media,
+			commentIds,
 			topComments,
 			numberOfSuperLikes,
 			numberOfComments,
@@ -157,8 +135,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			inputIconPosition,
 			fullTextVisible,
 			comment,
-			comments,
-			commentInputDisabled,
 			reportAProblem,
 		} = this.state;
 
@@ -231,7 +207,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 								numberOfSuperLikes={numberOfSuperLikes}
 								numberOfWalletCoins={numberOfWalletCoins}
 								onLikePost={() => onLikePost(post.postId)}
-								onCommentPress={() => onViewComments(post, true)}
+								onCommentPress={() => onViewComments(post.postId, true)}
 								onSuperLikePress={() => undefined}
 								onWalletCoinsPress={() => undefined}
 							/>
@@ -241,15 +217,16 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 								onViewLikes={onViewLikes}
 								getText={getText}
 							/>
-							{comments.length > 0 &&
-								comments.map((comm) => (
+							{commentIds.length > 0 &&
+								commentIds.map((id) => (
 									<CommentCard
-										key={comm.commentId}
-										comment={comm}
-										onLikeComment={() => onLikeComment(comm)}
+										key={id}
+										commentId={id}
+										alias={currentUser.userName}
+										pub={currentUser.pub}
+										onLikeComment={onLikeComment}
 										onUserPress={onViewUserProfile}
-										onShowOptionsMenu={() => this.onShowCommentOptionsHandler(comm)}
-										likeCommentError={false}
+										onShowOptionsMenu={this.onShowCommentOptionsHandler}
 										getText={getText}
 									/>
 								))}
@@ -262,7 +239,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							<CommentInput
 								comment={comment}
 								autoFocus={keyboardRaised}
-								disabled={commentInputDisabled}
 								onCommentInputChange={this.onCommentInputChangeHandler}
 								onCommentInputPress={() => undefined}
 								onSubmitComment={this.onSubmitCommentHandler}
@@ -307,7 +283,7 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 							numberOfSuperLikes={numberOfSuperLikes}
 							numberOfWalletCoins={numberOfWalletCoins}
 							onLikePost={() => onLikePost(post.postId)}
-							onCommentPress={() => onViewComments(post, true)}
+							onCommentPress={() => onViewComments(post.postId, true)}
 							onSuperLikePress={() => undefined}
 							onWalletCoinsPress={() => undefined}
 						/>
@@ -319,13 +295,13 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 						/>
 						<ViewAllComments
 							numberOfComments={numberOfComments}
-							onCommentPress={() => onViewComments(post, false)}
+							onCommentPress={() => onViewComments(post.postId, false)}
 							getText={getText}
 						/>
 						<TopComments
 							topComments={topComments}
 							onUserPress={onViewUserProfile}
-							onCommentPress={() => onViewComments(post, false)}
+							onCommentPress={() => onViewComments(post.postId, false)}
 						/>
 						{!!commentInput && (
 							<CommentInput
@@ -431,80 +407,16 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 		});
 	};
 
-	private onSubmitCommentHandler = async () => {
-		const { post, currentUser, isCommentsScreen, onSubmitComment } = this.props;
-
+	private onSubmitCommentHandler = () => {
+		const { post, currentUser, onSubmitComment } = this.props;
 		const escapedCommentText = this.state.comment.replace(/\n/g, '\\n');
 
-		if (isCommentsScreen) {
-			const newComment = {
-				commentId: uuid(),
-				text: escapedCommentText,
-				user: {
-					userId: currentUser.userId,
-					fullName: currentUser.fullName,
-					avatar: currentUser.avatar,
-				},
-				timestamp: new Date(Date.now()),
-				likes: [],
-				likedByCurrentUser: false,
-			};
-
-			this.setState((currentState) => {
-				return {
-					sendCommentFailed: false,
-					commentInputDisabled: true,
-					comments: [...currentState.comments, newComment],
-					comment: '',
-				};
-			}, Keyboard.dismiss);
-
-			await onSubmitComment(escapedCommentText, post.postId);
-
-			if (this.state.sendCommentFailed) {
-				this.setState({
-					comments: this.props.post.comments,
-				});
-			}
-		} else {
-			this.setState(
-				{
-					sendCommentFailed: false,
-					commentInputDisabled: true,
-					comment: '',
-				},
-				Keyboard.dismiss,
-			);
-
-			await onSubmitComment(escapedCommentText, post.postId);
-
-			if (this.state.sendCommentFailed) {
-				this.setState({
-					comments: this.props.post.comments,
-				});
-			}
-		}
-	};
-
-	private onRemoveCommentHandler = async (commId: string) => {
-		const updatedComments = this.state.comments.filter((comm) => comm.commentId !== commId);
-
-		this.setState({
-			comments: updatedComments,
-			sendCommentFailed: false,
-		});
-
-		await this.props.onRemoveComment(commId);
-
-		if (this.state.sendCommentFailed) {
-			this.setState({
-				comments: this.props.post.comments,
-			});
-		}
+		this.setState({ comment: '' }, Keyboard.dismiss);
+		onSubmitComment(escapedCommentText, currentUser.userId, currentUser.pub, post.postId);
 	};
 
 	private onShowCommentOptionsHandler = (comment: IComment) => {
-		const { showOptionsMenu, getText } = this.props;
+		const { post, currentUser, showOptionsMenu, onRemoveComment, getText } = this.props;
 
 		const menuItems = [
 			{
@@ -515,9 +427,14 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			{
 				label: getText('comments.screen.advanced.menu.delete'),
 				icon: 'ios-trash',
-				actionHandler: async () => {
-					await this.onRemoveCommentHandler(comment.commentId);
-				},
+				actionHandler: () =>
+					onRemoveComment(
+						comment.text,
+						currentUser.userId,
+						currentUser.pub,
+						post.postId,
+						comment.commentId,
+					),
 			},
 		];
 

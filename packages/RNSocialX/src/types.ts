@@ -34,7 +34,6 @@ export interface IUserEntry {
 	userId: string;
 	fullName: string;
 	userName: string;
-	location: string;
 	avatar: string;
 	relationship: FRIEND_TYPES;
 }
@@ -158,7 +157,6 @@ export interface IMediaProps {
 export interface ISimpleComment {
 	commentId: string;
 	text: string;
-	likes: ILike[];
 	owner: {
 		userId: string;
 		userName: string;
@@ -174,11 +172,7 @@ export interface IPostOwner {
 export interface IComment {
 	commentId: string;
 	text: string;
-	user: {
-		fullName: string;
-		avatar: string;
-		userId: string;
-	};
+	user: IPostOwner;
 	timestamp: Date;
 	likes: ILike[];
 	likedByCurrentUser: boolean;
@@ -195,7 +189,6 @@ export interface ILike {
 	userName: string;
 	fullName: string;
 	avatar: string;
-	location: string;
 	relationship: FRIEND_TYPES;
 }
 
@@ -210,7 +203,8 @@ export interface IWallPostData {
 	removable: boolean;
 	media: IMediaProps[];
 	likes: ILike[];
-	comments: IComment[];
+	// comments: IComment[];
+	commentIds: string[];
 	topComments: ISimpleComment[];
 	numberOfSuperLikes: number;
 	numberOfComments: number;

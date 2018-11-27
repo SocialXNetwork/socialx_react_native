@@ -6,7 +6,7 @@ import { AvatarImage, ButtonSizes, PrimaryButton } from '../../components';
 import { NOTIFICATION_TYPES } from '../../environment/consts';
 import { INotificationData, ITranslatedProps } from '../../types';
 
-import { IWithFriendsEnhancedActions, WithFriends } from '../../enhancers/logic/WithFriends';
+import { IWithFriendsEnhancedActions, WithFriends } from '../../enhancers/intermediary';
 
 import styles, { colors } from './Notification.style';
 

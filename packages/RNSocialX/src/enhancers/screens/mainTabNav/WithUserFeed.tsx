@@ -6,6 +6,7 @@
 import * as React from 'react';
 
 import { FEED_TYPES } from '../../../environment/consts';
+import { IPostReturnData } from '../../../store/data/posts';
 import {
 	ICurrentUser,
 	IError,
@@ -24,26 +25,22 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	friendsPosts: IWallPostData[];
-	globalPosts: IWallPostData[];
+	posts: IWallPostData[];
 	errors: IError[];
 	skeletonPost: IWallPostData;
 	creatingPost: boolean;
 	refreshingFeed: boolean;
-	canLoadMoreGlobalPosts: boolean;
-	canLoadMoreFriendsPosts: boolean;
-	loadingMoreGlobalPosts: boolean;
-	loadingMoreFriendsPosts: boolean;
+	canLoadMore: boolean;
+	loadingMorePosts: boolean;
 }
 
 export interface IWithUserFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
-	loadMoreGlobalPosts: () => void;
-	loadMoreFriendsPosts: () => void;
-	refreshFeed: (feed: FEED_TYPES) => void;
+	loadMorePosts: () => void;
+	refreshFeed: () => void;
 }
 
 interface IWithUserFeedEnhancedProps {
@@ -52,6 +49,7 @@ interface IWithUserFeedEnhancedProps {
 }
 
 interface IWithUserFeedProps {
+	type: FEED_TYPES;
 	children(props: IWithUserFeedEnhancedProps): JSX.Element;
 }
 
@@ -59,6 +57,8 @@ interface IWithUserFeedState {}
 
 export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserFeedState> {
 	render() {
+		const { type } = this.props;
+
 		return (
 			<WithI18n>
 				{({ getText }) => (
@@ -71,52 +71,71 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 											<WithActivities>
 												{({ activities, errors }) => (
 													<WithProfiles>
-														{({ profiles }) => (
+														{({ profiles, friends }) => (
 															<WithPosts>
 																{(feed) => (
 																	<WithCurrentUser>
 																		{({ currentUser }) => {
 																			const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-																			let globalPosts: IWallPostData[] = [];
-																			let friendsPosts: IWallPostData[] = [];
+																			// let globalPosts: IWallPostData[] = [];
+																			// let friendsPosts: IWallPostData[] = [];
+																			const friendsAliases = friends[currentUser.userId].map(
+																				(fr) => fr.alias,
+																			);
 
-																			if (feed.global.posts.length > 0) {
-																				globalPosts = mapPostsForUI(
-																					feed.global.posts,
-																					currentUser,
-																					profiles,
-																					activities,
-																					IPFS_URL,
-																				);
-																			}
+																			let globalPosts: IPostReturnData[] = [];
+																			let friendsPosts: IPostReturnData[] = [];
 
-																			if (feed.friends.posts.length > 0) {
-																				friendsPosts = mapPostsForUI(
-																					feed.friends.posts,
-																					currentUser,
-																					profiles,
-																					activities,
-																					IPFS_URL,
-																				);
-																			}
+																			Object.keys(feed.all).map((key) => {
+																				const owner = feed.all[key].owner.alias;
+
+																				if (friendsAliases.includes(owner)) {
+																					friendsPosts = [...friendsPosts, feed.all[key]];
+																				}
+																				globalPosts = [...globalPosts, feed.all[key]];
+																			});
+
+																			// if (feed.global.posts.length > 0) {
+																			const shapedGlobalPosts = mapPostsForUI(
+																				globalPosts,
+																				currentUser,
+																				profiles,
+																				activities,
+																				IPFS_URL,
+																			);
+																			// 	}
+
+																			// if (feed.friends.posts.length > 0) {
+																			const shapedFriendsPosts = mapPostsForUI(
+																				friendsPosts,
+																				currentUser,
+																				profiles,
+																				activities,
+																				IPFS_URL,
+																			);
+																			// }
 
 																			return this.props.children({
 																				data: {
 																					currentUser,
-																					globalPosts,
-																					friendsPosts,
+																					posts:
+																						type === FEED_TYPES.GLOBAL
+																							? shapedGlobalPosts
+																							: shapedFriendsPosts,
 																					errors,
 																					skeletonPost: globals.skeletonPost,
-																					canLoadMoreGlobalPosts: feed.global.canLoadMore,
-																					canLoadMoreFriendsPosts: feed.friends.canLoadMore,
-																					loadingMoreGlobalPosts: getActivity(
-																						activities,
-																						ActionTypes.LOAD_MORE_POSTS,
-																					),
-																					loadingMoreFriendsPosts: getActivity(
-																						activities,
-																						ActionTypes.LOAD_MORE_FRIENDS_POSTS,
-																					),
+																					canLoadMore:
+																						type === FEED_TYPES.GLOBAL
+																							? feed.global.canLoadMore
+																							: feed.friends.canLoadMore,
+																					loadingMorePosts:
+																						type === FEED_TYPES.GLOBAL
+																							? getActivity(activities, ActionTypes.LOAD_MORE_POSTS)
+																							: getActivity(
+																									activities,
+																									ActionTypes.LOAD_MORE_FRIENDS_POSTS,
+																									// tslint:disable-next-line
+																							  ),
 																					refreshingFeed: getActivity(
 																						activities,
 																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
@@ -127,9 +146,11 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																					),
 																				},
 																				actions: {
-																					loadMoreGlobalPosts: feed.loadMorePosts,
-																					loadMoreFriendsPosts: feed.loadMoreFriendsPosts,
-																					refreshFeed: async (type) => {
+																					loadMorePosts:
+																						type === FEED_TYPES.GLOBAL
+																							? feed.loadMorePosts
+																							: feed.loadMoreFriendsPosts,
+																					refreshFeed: async () => {
 																						switch (type) {
 																							case FEED_TYPES.GLOBAL: {
 																								await feed.resetPostsAndRefetch();

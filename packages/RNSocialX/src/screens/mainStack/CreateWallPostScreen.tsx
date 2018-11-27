@@ -148,8 +148,8 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 }
 
-export const CreateWallPostScreen = (navProps: INavigationProps) => (
+export const CreateWallPostScreen = (props: INavigationProps) => (
 	<WithCreateWallPost>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
 	</WithCreateWallPost>
 );

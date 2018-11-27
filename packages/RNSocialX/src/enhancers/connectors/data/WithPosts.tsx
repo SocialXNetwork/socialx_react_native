@@ -3,37 +3,33 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
-	createComment,
 	createPost,
 	getPostByPath,
 	getPostsByUsername,
 	getPublicPostsByDate,
-	ICommentIdInput,
-	ICreateCommentInput,
 	ICreatePostInput,
 	IDateInput,
 	IPostArrayData,
 	IPostIdInput,
 	IPostPathInput,
-	IRemoveCommentInput,
+	IPostReturnData,
 	IRemovePostInput,
-	IUnlikeCommentInput,
 	IUnlikePostInput,
 	IUsernameInput,
-	likeComment,
 	likePost,
 	loadMoreFriendsPosts,
 	loadMorePosts,
-	removeComment,
 	removePost,
 	resetPostsAndRefetch,
-	unlikeComment,
 	unlikePost,
 } from '../../../store/data/posts';
 
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
+	all: {
+		[postId: string]: IPostReturnData;
+	};
 	global: {
 		canLoadMore: boolean;
 		posts: IPostArrayData;
@@ -56,10 +52,10 @@ interface IActionProps {
 	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
 	likePost: (likePostInput: IPostIdInput) => void;
 	// comments
-	createComment: (createCommentInput: ICreateCommentInput) => void;
-	removeComment: (removeCommentInput: IRemoveCommentInput) => void;
-	likeComment: (likeCommentInput: ICommentIdInput) => void;
-	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) => void;
+	// createComment: (createCommentInput: ICreateCommentInput) => void;
+	// removeComment: (removeCommentInput: IRemoveCommentInput) => void;
+	// likeComment: (likeCommentInput: ICommentIdInput) => void;
+	// unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -74,6 +70,11 @@ class Enhancer extends React.Component<IProps & IChildren> {
 		return children(props);
 	}
 }
+
+const selectAllPosts = createSelector(
+	(state: IApplicationState) => state.data.posts.all,
+	(posts) => posts,
+);
 
 const selectGlobalPosts = createSelector(
 	(state: IApplicationState) => state.data.posts.global.posts,
@@ -96,6 +97,7 @@ const selectFriendsCanLoad = createSelector(
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
+	all: selectAllPosts(state),
 	global: {
 		posts: selectGlobalPosts(state),
 		canLoadMore: selectGlobalCanLoad(state),
@@ -121,13 +123,13 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
 	unlikePost: (unlikePostInput: IUnlikePostInput) => dispatch(unlikePost(unlikePostInput)),
 	// comments
-	createComment: (createCommentInput: ICreateCommentInput) =>
-		dispatch(createComment(createCommentInput)),
-	removeComment: (removeCommentInput: IRemoveCommentInput) =>
-		dispatch(removeComment(removeCommentInput)),
-	likeComment: (likeCommentInput: ICommentIdInput) => dispatch(likeComment(likeCommentInput)),
-	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
-		dispatch(unlikeComment(unlikeCommentInput)),
+	// createComment: (createCommentInput: ICreateCommentInput) =>
+	// 	dispatch(createComment(createCommentInput)),
+	// removeComment: (removeCommentInput: IRemoveCommentInput) =>
+	// 	dispatch(removeComment(removeCommentInput)),
+	// likeComment: (likeCommentInput: ICommentIdInput) => dispatch(likeComment(likeCommentInput)),
+	// unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
+	// 	dispatch(unlikeComment(unlikeCommentInput)),
 });
 
 export const WithPosts: ConnectedComponentClass<JSX.Element, IChildren> = connect(

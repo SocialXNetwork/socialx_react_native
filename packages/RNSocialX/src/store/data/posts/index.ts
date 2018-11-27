@@ -8,8 +8,6 @@ export {
 	IPostPathInput,
 	IUsernameInput,
 	IDateInput,
-	ICommentIdInput,
-	ICreateCommentInput,
 } from './Types';
 
 export {
@@ -33,9 +31,7 @@ export {
 	likePost,
 	removePost,
 	unlikePost,
-	// comments
-	createComment,
-	removeComment,
-	likeComment,
-	unlikeComment,
+	getPostById,
+	syncAddCommentAction,
+	syncRemoveCommentAction,
 } from './actions';

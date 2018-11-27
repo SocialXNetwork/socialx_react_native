@@ -28,7 +28,6 @@ export const getComments = (
 						userName: like.owner.alias,
 						fullName: likeProfile!.fullName,
 						avatar: likeProfile!.avatar.length > 0 ? url + likeProfile!.avatar : '',
-						location: '',
 						relationship: likeProfile!.status,
 					};
 				}),

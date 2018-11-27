@@ -7,7 +7,7 @@ import uuidv4 from 'uuid/v4';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithUserProfileEnhancedActions,
 	IWithUserProfileEnhancedData,

@@ -5,7 +5,7 @@ import { AvatarImage, ButtonSizes, PrimaryButton } from '../';
 import { Colors } from '../../environment/theme';
 import { FRIEND_TYPES, IUserEntry } from '../../types';
 
-import { IWithFriendsEnhancedData, WithFriends } from '../../enhancers/logic/WithFriends';
+import { IWithFriendsEnhancedData, WithFriends } from '../../enhancers/intermediary';
 
 import styles from './UserEntry.style';
 
@@ -22,8 +22,7 @@ const Component: React.SFC<IProps> = ({ entry, status, onPress }) => (
 			<AvatarImage image={entry.avatar} style={styles.avatar} />
 			<View style={styles.textContainer}>
 				<Text style={styles.name}>{entry.fullName}</Text>
-				{entry.location.length > 0 && <Text style={styles.text}>{entry.location}</Text>}
-				{entry.location.length === 0 && <Text style={styles.userName}>@{entry.userName}</Text>}
+				<Text style={styles.userName}>@{entry.userName}</Text>
 			</View>
 		</View>
 		<View style={styles.button}>

@@ -54,15 +54,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
-			// const newPosts = [
-			// 	...state.posts.filter((post) => post.postId !== action.payload.postId),
-			// 	action.payload,
-			// ];
-
-			// return {
-			// 	posts: newPosts,
-			// };
-			return state;
+			return {
+				...state,
+				all: {
+					...state.all,
+					[action.payload.postId]: action.payload,
+				},
+			};
 		}
 
 		case ActionTypes.LOAD_MORE_POSTS: {
@@ -77,8 +75,15 @@ export default (state: IState = initialState, action: IAction): IState => {
 				],
 				[...state.global.posts],
 			);
+
+			const all = { ...state.all };
+			for (const post of action.payload.posts) {
+				all[post.postId] = post;
+			}
+
 			return {
 				...state,
+				all,
 				global: {
 					canLoadMore: action.payload.canLoadMore,
 					nextToken: action.payload.nextToken,
@@ -99,8 +104,15 @@ export default (state: IState = initialState, action: IAction): IState => {
 				],
 				[...state.friends.posts],
 			);
+
+			const all = { ...state.all };
+			for (const post of action.payload.posts) {
+				all[post.postId] = post;
+			}
+
 			return {
 				...state,
+				all,
 				friends: {
 					...state.friends,
 					posts: updatedPosts,
@@ -115,15 +127,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_REMOVE_POST: {
+			const {
+				[action.payload]: {},
+				...updatedPosts
+			} = state.all;
+
 			return {
-				friends: {
-					...state.friends,
-					posts: [...state.friends.posts.filter((post) => post.postId !== action.payload)],
-				},
-				global: {
-					...state.global,
-					posts: [...state.global.posts.filter((post) => post.postId !== action.payload)],
-				},
+				...state,
+				all: updatedPosts,
 			};
 		}
 
@@ -131,21 +142,62 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
-		// <============= comments =============>
-		case ActionTypes.CREATE_COMMENT: {
-			return state;
+		case ActionTypes.SYNC_ADD_COMMENT: {
+			const { postId, comment, error } = action.payload;
+
+			if (error) {
+				return {
+					...state,
+					all: {
+						...state.all,
+						[postId]: {
+							...state.all[postId],
+							comments: state.all[postId].comments.filter(
+								(comm) => comm.commentId !== comment.commentId,
+							),
+						},
+					},
+				};
+			} else {
+				return {
+					...state,
+					all: {
+						...state.all,
+						[postId]: {
+							...state.all[postId],
+							comments: [...state.all[postId].comments, comment],
+						},
+					},
+				};
+			}
 		}
 
-		case ActionTypes.REMOVE_COMMENT: {
-			return state;
-		}
+		case ActionTypes.SYNC_REMOVE_COMMENT: {
+			const { postId, comment, commentId, error } = action.payload;
 
-		case ActionTypes.LIKE_COMMENT: {
-			return state;
-		}
-
-		case ActionTypes.UNLIKE_COMMENT: {
-			return state;
+			if (error) {
+				return {
+					...state,
+					all: {
+						...state.all,
+						[postId]: {
+							...state.all[postId],
+							comments: [...state.all[postId].comments, comment],
+						},
+					},
+				};
+			} else {
+				return {
+					...state,
+					all: {
+						...state.all,
+						[postId]: {
+							...state.all[postId],
+							comments: state.all[postId].comments.filter((comm) => comm.commentId !== commentId),
+						},
+					},
+				};
+			}
 		}
 
 		case ActionTypes.RESET_POSTS: {

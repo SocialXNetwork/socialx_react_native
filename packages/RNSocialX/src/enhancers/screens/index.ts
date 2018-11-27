@@ -163,5 +163,3 @@ export {
 	IWithWalletKeysEnhancedActions,
 	IWithWalletKeysEnhancedData,
 } from './walletStack/WithWalletKeys';
-
-export { WithCurrentUser, WithCurrentUserContent } from './intermediary';

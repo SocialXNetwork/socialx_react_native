@@ -8,7 +8,7 @@ import { resetNavigationToRoute } from '../../enhancers/helpers';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithMyProfileEnhancedActions,
 	IWithMyProfileEnhancedData,

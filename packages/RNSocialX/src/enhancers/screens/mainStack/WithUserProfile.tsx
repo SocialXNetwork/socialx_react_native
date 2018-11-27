@@ -16,7 +16,7 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUser, WithVisitedUserContent } from '../intermediary';
+import { WithCurrentUser, WithVisitedUserContent } from '../../intermediary';
 
 export interface IWithUserProfileEnhancedData {
 	currentUserId: string;

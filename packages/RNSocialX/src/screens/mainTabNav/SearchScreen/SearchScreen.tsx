@@ -4,7 +4,7 @@ import { debounce } from 'throttle-debounce';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../../enhancers/logic/WithNavigationHandlers';
+} from '../../../enhancers/intermediary';
 import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,

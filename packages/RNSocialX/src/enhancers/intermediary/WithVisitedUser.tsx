@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { SCREENS, TABS } from '../../../environment/consts';
-import { IProfile, IVisitedUser } from '../../../types';
+import { SCREENS, TABS } from '../../environment/consts';
+import { IProfile, IVisitedUser } from '../../types';
 
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
-import { WithConfig } from '../../connectors/app/WithConfig';
-import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithAggregations } from '../connectors/aggregations/WithAggregations';
+import { WithConfig } from '../connectors/app/WithConfig';
+import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
+import { WithProfiles } from '../connectors/data/WithProfiles';
 
 interface IWithVisitedUserProps {
 	children({ visitedUser }: { visitedUser: IVisitedUser | any }): JSX.Element;

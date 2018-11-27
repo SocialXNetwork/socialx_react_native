@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { ICurrentUser } from '../../../types';
+import { ICurrentUser } from '../../types';
 
-import { WithConfig } from '../../connectors/app/WithConfig';
-import { WithAuth } from '../../connectors/auth/WithAuth';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithConfig } from '../connectors/app/WithConfig';
+import { WithAuth } from '../connectors/auth/WithAuth';
+import { WithProfiles } from '../connectors/data/WithProfiles';
 
 interface IWithCurrentUserProps {
 	children({ currentUser }: { currentUser: ICurrentUser | any }): JSX.Element;

@@ -6,6 +6,7 @@ import { IState as INavigationParams, reducer as navigationParams } from './app/
 import { IState as IAuth, reducer as database } from './auth/gun';
 
 import { IState as IAccounts, reducer as accounts } from './data/accounts';
+import { IState as IComments, reducer as comments } from './data/comments';
 import { IState as INotifications, reducer as notifications } from './data/notifications';
 import { IState as IPosts, reducer as posts } from './data/posts';
 import { IState as IProfiles, reducer as profiles } from './data/profiles';
@@ -28,6 +29,7 @@ export interface IApplicationState {
 	};
 	data: {
 		accounts: IAccounts;
+		comments: IComments;
 		notifications: INotifications;
 		posts: IPosts;
 		profiles: IProfiles;
@@ -54,6 +56,7 @@ export interface IApplicationState {
 export default combineReducers<IApplicationState>({
 	data: combineReducers({
 		accounts,
+		comments,
 		notifications,
 		posts,
 		profiles,

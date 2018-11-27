@@ -31,7 +31,6 @@ const likes: ILike[] = [
 		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
-		location: 'New York',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
@@ -39,7 +38,6 @@ const likes: ILike[] = [
 		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Jane Doe',
 		userName: 'janedoe',
-		location: 'New York',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 ];
@@ -48,7 +46,6 @@ const topComments: ISimpleComment[] = [
 	{
 		commentId: '1',
 		text: 'Lorem ipsum dolor sit amet',
-		likes,
 		owner: {
 			userId: '2',
 			userName: 'janedoe',
@@ -57,7 +54,6 @@ const topComments: ISimpleComment[] = [
 	{
 		commentId: '2',
 		text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		likes,
 		owner: {
 			userId: '1',
 			userName: 'johndoe',
@@ -71,7 +67,6 @@ export const suggestedItems: IUserEntry[] = [
 		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
-		location: 'New York',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
@@ -80,7 +75,6 @@ export const suggestedItems: IUserEntry[] = [
 			'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
 		fullName: 'Teresa Lamb',
 		userName: 'terlamb',
-		location: 'London',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
@@ -89,7 +83,6 @@ export const suggestedItems: IUserEntry[] = [
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhxxOvVEmfKWgIxdz1Xvd0zTKY4oHlC8E709FF91o5FMTirI2T',
 		fullName: 'Sophie Smith',
 		userName: 'sophsmt',
-		location: 'San Francisco',
 		relationship: FRIEND_TYPES.MUTUAL,
 	},
 	{
@@ -98,7 +91,6 @@ export const suggestedItems: IUserEntry[] = [
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlhQDjvfpOkYBNz_sFX6egUWv-tKgr9iwb9S0ECK5Ll8C-I9Oj',
 		fullName: 'Cory Maxwell',
 		userName: 'corymaxwell',
-		location: 'London',
 		relationship: FRIEND_TYPES.PENDING,
 	},
 	{
@@ -107,7 +99,6 @@ export const suggestedItems: IUserEntry[] = [
 			'https://yt3.ggpht.com/a-/AN66SAyxvKvpstRZN6-LzcuggRm6kEQs-lKW5cOg6g=s900-mo-c-c0xffffffff-rj-k-no',
 		fullName: 'Claudia Kulmitzer',
 		userName: 'claudiam',
-		location: 'Berlin',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 ];
@@ -143,7 +134,7 @@ export const posts: IWallPostData[] = [
 			},
 		],
 		likes,
-		comments: [],
+		commentIds: [],
 		topComments,
 		loading: false,
 		suggested: undefined,
@@ -182,7 +173,7 @@ export const posts: IWallPostData[] = [
 			},
 		],
 		likes,
-		comments: [],
+		commentIds: [],
 		topComments,
 		loading: false,
 		suggested: suggestedItems,
@@ -221,7 +212,7 @@ export const posts: IWallPostData[] = [
 			},
 		],
 		likes,
-		comments: [],
+		commentIds: [],
 		topComments,
 		loading: false,
 		suggested: undefined,

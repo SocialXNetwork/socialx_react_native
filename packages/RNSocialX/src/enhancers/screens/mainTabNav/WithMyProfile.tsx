@@ -12,7 +12,7 @@ import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUserContent } from '../intermediary';
+import { WithCurrentUserContent } from '../../intermediary';
 
 export interface IWithMyProfileEnhancedData {
 	currentUser: ICurrentUser;

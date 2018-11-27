@@ -1,15 +1,6 @@
 import * as React from 'react';
+import { Keyboard } from 'react-native';
 import uuid from 'uuid/v4';
-
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
-import {
-	IWithPhotoEnhancedActions,
-	IWithPhotoEnhancedData,
-	WithPhoto,
-} from '../../enhancers/screens';
 
 import { WithModalForAddFriends } from '../../components';
 import { IMAGE_PICKER_TYPES } from '../../environment/consts';
@@ -22,10 +13,13 @@ import {
 } from '../../utilities';
 import { PhotoScreenView } from './PhotoScreen.view';
 
-type IPhotoScreenProps = INavigationProps &
-	IWithPhotoEnhancedActions &
-	IWithPhotoEnhancedData &
-	IWithNavigationHandlersEnhancedActions;
+import {
+	IWithPhotoEnhancedActions,
+	IWithPhotoEnhancedData,
+	WithPhoto,
+} from '../../enhancers/screens';
+
+type IPhotoScreenProps = INavigationProps & IWithPhotoEnhancedActions & IWithPhotoEnhancedData;
 
 interface IPhotoScreenState {
 	locationEnabled: boolean;
@@ -45,31 +39,33 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	public render() {
-		const { currentUser, marginBottom, onGoBack, getText } = this.props;
+		const { currentUser, marginBottom, getText } = this.props;
 		const { locationEnabled, location, tagFriends, caption, media } = this.state;
 
 		return (
 			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
-				{({ showAddFriendsModal, addedFriends }) => (
-					<PhotoScreenView
-						avatar={currentUser.avatar}
-						media={media.map((m) => m.path)}
-						taggedFriends={addedFriends}
-						locationEnabled={locationEnabled}
-						location={location}
-						tagFriends={tagFriends}
-						caption={caption}
-						onShowTagFriends={showAddFriendsModal}
-						onTagFriendsToggle={this.onTagFriendsToggleHandler}
-						onLocationTextUpdate={this.onLocationTextUpdate}
-						onLocationToggle={this.onLocationToggle}
-						onChangeText={this.onChangeTextHandler}
-						onAddMedia={this.onAddMediaHandler}
-						onCreatePost={this.onCreatePostHandler}
-						onClose={onGoBack}
-						getText={getText}
-					/>
-				)}
+				{({ showAddFriendsModal, addedFriends }) => {
+					return (
+						<PhotoScreenView
+							avatar={currentUser.avatar}
+							media={media.map((m) => m.path)}
+							taggedFriends={addedFriends}
+							locationEnabled={locationEnabled}
+							location={location}
+							tagFriends={tagFriends}
+							caption={caption}
+							onShowTagFriends={showAddFriendsModal}
+							onTagFriendsToggle={this.onTagFriendsToggleHandler}
+							onLocationTextUpdate={this.onLocationTextUpdate}
+							onLocationToggle={this.onLocationToggle}
+							onChangeText={this.onChangeTextHandler}
+							onAddMedia={this.onAddMediaHandler}
+							onCreatePost={this.onCreatePostHandler}
+							onClose={this.onCloseHandler}
+							getText={getText}
+						/>
+					);
+				}}
 			</WithModalForAddFriends>
 		);
 	}
@@ -100,7 +96,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 
 	private onAddMediaHandler = () => {
 		const { showOptionsMenu, getText } = this.props;
-		const items = [
+		const menuItems = [
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
@@ -112,24 +108,23 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-
-		showOptionsMenu(items);
+		showOptionsMenu(menuItems);
 	};
 
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
-		let selectedmedia: IPickerImageMultiple = [];
+		let selectedMedia: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
-			selectedmedia = await getGalleryMediaObjectMultiple();
+			selectedMedia = await getGalleryMediaObjectMultiple();
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
-			selectedmedia = await getCameraMediaObjectMultiple();
+			selectedMedia = await getCameraMediaObjectMultiple();
 		}
-		if (selectedmedia.length > 0) {
-			const optimizedmedia = await Promise.all(
-				selectedmedia.map(async (mObject) => getOptimizedMediaObject(mObject)),
+		if (selectedMedia.length > 0) {
+			const optimizedMedia = await Promise.all(
+				selectedMedia.map(async (m) => getOptimizedMediaObject(m)),
 			);
 
 			this.setState({
-				media: [...this.state.media, ...optimizedmedia],
+				media: [...this.state.media, ...optimizedMedia],
 			});
 		}
 	};
@@ -170,16 +165,15 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 			text: caption,
 			media,
 		});
-		this.props.onGoBack();
+		this.onCloseHandler();
+	};
+
+	private onCloseHandler = () => {
+		Keyboard.dismiss();
+		this.props.navigation.goBack(null);
 	};
 }
 
-export const PhotoScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
-		{(nav) => (
-			<WithPhoto>
-				{(photo) => <Screen {...props} {...photo.data} {...photo.actions} {...nav.actions} />}
-			</WithPhoto>
-		)}
-	</WithNavigationHandlers>
+export const PhotoScreen = (navProps: INavigationProps) => (
+	<WithPhoto>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
 );

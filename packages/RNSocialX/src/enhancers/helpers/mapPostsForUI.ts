@@ -52,11 +52,12 @@ export const mapPostsForUI = (
 						userName: like.owner.alias,
 						fullName: likeProfile!.fullName,
 						avatar: likeProfile!.avatar.length > 0 ? url + likeProfile!.avatar : '',
-						location: '',
 						relationship: likeProfile!.status,
 					};
 				}),
-				comments: getComments(post.comments, profiles, currentUser!.userId, url),
+				commentIds: post.comments
+					.sort((x, y) => x.timestamp - y.timestamp)
+					.map((comm) => comm.commentId),
 				topComments: getTopComments(post.comments),
 				// TODO: add this later when data is available
 				numberOfSuperLikes: 0,

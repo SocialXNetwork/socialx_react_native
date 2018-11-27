@@ -1,14 +1,13 @@
 import * as React from 'react';
 
-import { IVisitedUser } from '../../../types';
-import { extractMediaFromPosts, mapPostsForUI } from '../../helpers';
+import { IVisitedUser } from '../../types';
+import { extractMediaFromPosts, mapPostsForUI } from '../helpers';
 
-import { IPostReturnData } from '../../../store/data/posts';
-import { ActionTypes } from '../../../store/data/posts/Types';
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
-import { WithConfig } from '../../connectors/app/WithConfig';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
-import { WithActivities } from '../../connectors/ui/WithActivities';
+import { IPostReturnData } from '../../store/data/posts';
+import { WithAggregations } from '../connectors/aggregations/WithAggregations';
+import { WithConfig } from '../connectors/app/WithConfig';
+import { WithProfiles } from '../connectors/data/WithProfiles';
+import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithCurrentUser } from './WithCurrentUser';
 import { WithVisitedUser } from './WithVisitedUser';
 

@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
 import { OS_TYPES, SCREENS } from '../../environment/consts';

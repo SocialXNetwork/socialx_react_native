@@ -61,7 +61,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 						refreshing={refreshing}
 						onRefresh={onRefresh}
 						data={allPosts}
-						keyExtractor={(item: IWallPostData) => item.postId}
+						keyExtractor={(item) => item.postId}
 						renderItem={(data) => this.renderWallPosts(data)}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
 						onEndReachedThreshold={0.5}
@@ -85,7 +85,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 	}
 
 	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
-		const { skeletonPost, errors, navigation } = this.props;
+		const { skeletonPost, errors, navigation, getText, onAddComment } = this.props;
 		const post = data.item;
 
 		return (
@@ -94,13 +94,11 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					post={post}
 					commentInput={true}
 					errors={errors}
-					onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
+					onAddComment={(cardHeight: number) => onAddComment(data.index, cardHeight)}
 					navigation={navigation}
 				/>
 				{skeletonPost && <View style={styles.overlay} />}
-				{post.suggested && (
-					<SuggestionsCarousel items={post.suggested} getText={this.props.getText} />
-				)}
+				{post.suggested && <SuggestionsCarousel items={post.suggested} getText={getText} />}
 			</View>
 		);
 	};

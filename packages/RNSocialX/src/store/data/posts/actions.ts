@@ -2,9 +2,7 @@ import {
 	ICreatePostInput,
 	IPostArrayData,
 	IPostReturnData,
-	IRemoveCommentInput,
 	IRemovePostInput,
-	IUnlikeCommentInput,
 	IUnlikePostInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
@@ -16,35 +14,33 @@ import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { setGlobal } from '../../ui/globals';
+import { loadCommentsAction } from '../comments';
 import { getCurrentProfile, getProfilesByPosts } from '../profiles';
 import {
 	ActionTypes,
-	ICommentIdInput,
-	ICreateCommentAction,
-	ICreateCommentInput,
 	ICreatePostAction,
 	IDateInput,
 	IGetPostByIdAction,
 	IGetPostByPathAction,
 	IGetPostsByUsernameAction,
 	IGetPublicPostsByDateAction,
-	ILikeCommentAction,
 	ILikePostAction,
 	ILoadMoreFriendsPostsAction,
 	ILoadMorePostsAction,
 	IPostIdInput,
 	IPostPathInput,
-	IRemoveCommentAction,
 	IRemovePostAction,
 	IResetPostsAction,
+	ISyncAddCommentAction,
+	ISyncCommentInput,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
 	ISyncGetPublicPostsByDateAction,
 	ISyncLoadMoreFriendsPostsAction,
 	ISyncLoadMorePostsAction,
+	ISyncRemoveCommentAction,
 	ISyncRemovePostAction,
-	IUnlikeCommentAction,
 	IUnlikePostAction,
 	IUsernameInput,
 } from './Types';
@@ -225,6 +221,7 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 		const { dataApi } = context;
 		const data = await dataApi.posts.loadMorePosts({ nextToken, limit: 5 });
 		await dispatch(getProfilesByPosts(data.posts));
+		dispatch(loadCommentsAction(data.posts));
 		dispatch(syncLoadMorePostsAction(data));
 	} catch (e) {
 		await dispatch(
@@ -270,6 +267,7 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 		const { dataApi } = context;
 		const data = await dataApi.posts.loadMoreFriendsPosts({ nextToken, limit: 5 });
 		await dispatch(getProfilesByPosts(data.posts));
+		dispatch(loadCommentsAction(data.posts));
 		dispatch(syncLoadMoreFriendsPostsAction(data));
 	} catch (e) {
 		await dispatch(
@@ -336,7 +334,6 @@ export const createPost = (
 
 			if (createPostInput.media && createPostInput.media.length > 0) {
 				const { media, ...postRest } = createPostInput;
-				console.log('Media', media);
 
 				const bootstrapStatus = async (uploadIdStarted: string) => {
 					await dispatch(
@@ -550,215 +547,16 @@ export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
 	}
 };
 
-// <================= comments =================>
-const createCommentAction: ActionCreator<ICreateCommentAction> = (
-	createCommentInput: ICreateCommentInput,
+export const syncAddCommentAction: ActionCreator<ISyncAddCommentAction> = (
+	input: ISyncCommentInput,
 ) => ({
-	type: ActionTypes.CREATE_COMMENT,
-	payload: createCommentInput,
+	type: ActionTypes.SYNC_ADD_COMMENT,
+	payload: input,
 });
 
-export const createComment = (createCommentInput: ICreateCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(createCommentAction(createCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.CREATE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.createComment(createCommentInput);
-			await dispatch(getPostById({ postId: createCommentInput.postId }));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.CREATE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
-
-const likeCommentAction: ActionCreator<ILikeCommentAction> = (
-	likeCommentInput: ICommentIdInput,
+export const syncRemoveCommentAction: ActionCreator<ISyncRemoveCommentAction> = (
+	input: ISyncCommentInput,
 ) => ({
-	type: ActionTypes.LIKE_COMMENT,
-	payload: likeCommentInput,
+	type: ActionTypes.SYNC_REMOVE_COMMENT,
+	payload: input,
 });
-
-export const likeComment = (likeCommentInput: ICommentIdInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const { commentId } = likeCommentInput;
-
-	const storeState = getState();
-	const parentGlobalPost = storeState.data.posts.global.posts.find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const parentFriendPost = storeState.data.posts.friends.posts.find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(likeCommentAction(likeCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.LIKE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.likeComment(likeCommentInput);
-			await dispatch(
-				getPostById({
-					postId: parentGlobalPost
-						? parentGlobalPost.postId
-						: parentFriendPost
-						? parentFriendPost.postId
-						: '',
-				}),
-			);
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.LIKE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
-
-const removeCommentAction: ActionCreator<IRemoveCommentAction> = (
-	removeCommentInput: IRemoveCommentInput,
-) => ({
-	type: ActionTypes.REMOVE_COMMENT,
-	payload: removeCommentInput,
-});
-
-export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const { commentId } = removeCommentInput;
-
-	const storeState = getState();
-	const parentGlobalPost = [...storeState.data.posts.global.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const parentFriendPost = [...storeState.data.posts.friends.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(removeCommentAction(removeCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.REMOVE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.removeComment(removeCommentInput);
-			await dispatch(
-				getPostById({
-					postId: parentGlobalPost
-						? parentGlobalPost.postId
-						: parentFriendPost
-						? parentFriendPost.postId
-						: '',
-				}),
-			);
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.REMOVE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
-
-const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
-	unlikeCommentInput: IUnlikeCommentInput,
-) => ({
-	type: ActionTypes.UNLIKE_COMMENT,
-	payload: unlikeCommentInput,
-});
-
-export const unlikeComment = (unlikeCommentInput: IUnlikeCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const { commentId } = unlikeCommentInput;
-
-	const storeState = getState();
-	const parentGlobalPost = [...storeState.data.posts.global.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const parentFriendsPost = [...storeState.data.posts.friends.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(unlikeCommentAction(unlikeCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.UNLIKE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.unlikeComment(unlikeCommentInput);
-			await dispatch(
-				getPostById({
-					postId: parentGlobalPost
-						? parentGlobalPost.postId
-						: parentFriendsPost
-						? parentFriendsPost.postId
-						: '',
-				}),
-			);
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.UNLIKE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};

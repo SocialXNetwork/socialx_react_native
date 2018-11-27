@@ -44,18 +44,14 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 
 	public render() {
 		const {
-			feedType,
 			currentUser,
-			globalPosts,
-			friendsPosts,
+			posts,
 			errors,
 			skeletonPost,
 			shareSectionPlaceholder,
-			canLoadMoreGlobalPosts,
-			canLoadMoreFriendsPosts,
+			canLoadMore,
 			refreshingFeed,
-			loadingMoreGlobalPosts,
-			loadingMoreFriendsPosts,
+			loadingMorePosts,
 			creatingPost,
 			navigation,
 			getText,
@@ -63,17 +59,13 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 
 		return (
 			<UserFeedScreenView
-				posts={feedType === FEED_TYPES.FRIENDS ? friendsPosts : globalPosts}
+				posts={posts}
 				avatarImage={currentUser.avatar}
 				skeletonPost={skeletonPost}
 				refreshing={refreshingFeed}
 				creatingPost={creatingPost}
-				canLoadMorePosts={
-					feedType === FEED_TYPES.FRIENDS ? canLoadMoreFriendsPosts : canLoadMoreGlobalPosts
-				}
-				loadingMorePosts={
-					feedType === FEED_TYPES.FRIENDS ? loadingMoreFriendsPosts : loadingMoreGlobalPosts
-				}
+				canLoadMorePosts={canLoadMore}
+				loadingMorePosts={loadingMorePosts}
 				shareSectionPlaceholder={shareSectionPlaceholder}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
@@ -89,18 +81,10 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	}
 
 	private onLoadMorePostsHandler = async () => {
-		const { loadMoreFriendsPosts, loadMoreGlobalPosts } = this.props;
+		const { refreshingFeed, loadingMorePosts, loadMorePosts } = this.props;
 
-		if (
-			!this.props.loadingMoreFriendsPosts &&
-			!this.props.loadingMoreGlobalPosts &&
-			!this.props.refreshingFeed
-		) {
-			if (this.props.feedType === FEED_TYPES.FRIENDS) {
-				await loadMoreFriendsPosts();
-			} else {
-				await loadMoreGlobalPosts();
-			}
+		if (!loadingMorePosts && !refreshingFeed) {
+			await loadMorePosts();
 		}
 	};
 
@@ -119,24 +103,16 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	};
 
 	private onRefreshHandler = async () => {
-		const { refreshFeed, feedType } = this.props;
+		const { refreshingFeed, loadingMorePosts, refreshFeed } = this.props;
 
-		if (
-			!this.props.refreshingFeed &&
-			!this.props.loadingMoreFriendsPosts &&
-			!this.props.loadingMoreGlobalPosts
-		) {
-			await refreshFeed(feedType);
+		if (!refreshingFeed && !loadingMorePosts) {
+			await refreshFeed();
 		}
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		if (
-			!this.props.refreshingFeed &&
-			!this.props.loadingMoreFriendsPosts &&
-			!this.props.loadingMoreGlobalPosts &&
-			this.scrollRef.current
-		) {
+		const { refreshingFeed, loadingMorePosts } = this.props;
+		if (!refreshingFeed && !loadingMorePosts && this.scrollRef.current) {
 			this.scrollRef.current.scrollToIndex({
 				animated: true,
 				index,

@@ -6,7 +6,7 @@ import { LikesScreenView } from './LikesScreen.view';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithLikesEnhancedActions,
 	IWithLikesEnhancedData,

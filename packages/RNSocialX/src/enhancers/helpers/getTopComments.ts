@@ -1,6 +1,6 @@
-import { ICommentsArray } from '@socialx/api-data';
+import { ICommentsReturnData } from '@socialx/api-data';
 
-export const getTopComments = (comments: ICommentsArray) => {
+export const getTopComments = (comments: ICommentsReturnData[]) => {
 	return comments
 		.sort((x, y) => y.timestamp - x.timestamp)
 		.sort((x, y) => y.likes.length - x.likes.length)
@@ -9,12 +9,6 @@ export const getTopComments = (comments: ICommentsArray) => {
 			return {
 				commentId: comment.commentId,
 				text: comment.text,
-				likes: comment.likes.map((like) => {
-					return {
-						userId: like.owner.alias,
-						userName: like.owner.alias,
-					};
-				}),
 				owner: {
 					userId: comment.owner.alias,
 					userName: comment.owner.alias,

@@ -7,11 +7,11 @@ import { IMediaProps, INavigationProps, IWallPostData } from '../../types';
 import { IPostReturnData } from '@socialx/api-data';
 import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
-import { WithCurrentUser } from '../screens';
+import { WithCurrentUser } from '../intermediary';
 
 export interface IWithNavigationHandlersEnhancedActions {
 	onViewUserProfile: (visitedUserId: string, origin?: TABS) => void;
-	onViewComments: (post: IWallPostData, keyboardRaised: boolean) => void;
+	onViewComments: (postId: string, keyboardRaised: boolean) => void;
 	onViewImage: (media: IMediaProps[], index: number, post?: IWallPostData) => void;
 	onGoBack: () => void;
 }
@@ -95,11 +95,11 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		}
 	};
 
-	private onViewCommentsHandler = (post: IWallPostData, keyboardRaised: boolean) => {
-		if (post) {
+	private onViewCommentsHandler = (postId: string, keyboardRaised: boolean) => {
+		if (postId) {
 			this.actions.setNavigationParams({
 				screenName: SCREENS.Comments,
-				params: { post, keyboardRaised },
+				params: { postId, keyboardRaised },
 			});
 			this.props.navigation.navigate(SCREENS.Comments);
 		}

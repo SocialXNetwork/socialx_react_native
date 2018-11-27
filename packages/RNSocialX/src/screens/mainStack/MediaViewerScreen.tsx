@@ -9,12 +9,10 @@ import { MediaViewerScreenView } from './MediaViewerScreen.view';
 import {
 	IWithLikingEnhancedActions,
 	IWithLikingEnhancedData,
-	WithLiking,
-} from '../../enhancers/logic/WithLiking';
-import {
 	IWithNavigationHandlersEnhancedActions,
+	WithLiking,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithMediaViewerEnhancedActions,
 	IWithMediaViewerEnhancedData,
@@ -93,7 +91,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				onLayout={this.onLayoutHandler}
 				onExitFullScreen={this.onExitFullScreenHandler}
 				onLikePress={() => onLikePost(post!.postId)}
-				onCommentPress={() => onViewComments(post!, false)}
+				onCommentPress={() => onViewComments(post!.postId, false)}
 				onClose={onGoBack}
 				getText={getText}
 			/>
