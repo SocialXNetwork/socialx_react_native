@@ -52,7 +52,7 @@ public class VideoActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     if(BridgeModule.duration!=0)
                      myVideoView.seekTo(BridgeModule.duration);
-                    myVideoView.start();
+                    myVideoView.pause();
                 }
             });
 
