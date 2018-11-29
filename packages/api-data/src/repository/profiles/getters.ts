@@ -52,6 +52,7 @@ const asyncFriendWithMutualStatus = (
 						...friend,
 						status: FRIEND_TYPES.NOT_FRIEND,
 						numberOfFriends,
+						posts: [],
 					});
 				});
 			} else {
@@ -63,6 +64,7 @@ const asyncFriendWithMutualStatus = (
 									...friend,
 									status: FRIEND_TYPES.PENDING,
 									numberOfFriends,
+									posts: [],
 								});
 							});
 						} else {
@@ -71,6 +73,7 @@ const asyncFriendWithMutualStatus = (
 									...friend,
 									status: FRIEND_TYPES.MUTUAL,
 									numberOfFriends,
+									posts: [],
 								});
 							});
 						}
@@ -119,6 +122,7 @@ const friendWithMutualStatus = (
 				...friend,
 				status,
 				numberOfFriends,
+				posts: [],
 			});
 		});
 	};
