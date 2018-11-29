@@ -30,6 +30,8 @@ declare interface Json {
 
 declare module 'camel-case';
 
+declare module 'bip39';
+
 declare module 'eosjs';
 
 declare module 'text-encoding';
