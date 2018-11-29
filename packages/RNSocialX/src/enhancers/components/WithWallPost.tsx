@@ -15,15 +15,13 @@ import {
 	ICurrentUser,
 	IError,
 	IGlobal,
-	INavigationProps,
 	IOptionsMenuProps,
 	ITranslatedProps,
-	IWallPostData,
+	IWallPost,
 } from '../../types';
 
 import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../connectors/app/WithI18n';
-import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
 import { WithComments } from '../connectors/data/WithComments';
 import { WithPosts } from '../connectors/data/WithPosts';
 import { WithActivities } from '../connectors/ui/WithActivities';
@@ -32,10 +30,10 @@ import { WithOverlays } from '../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWallPostEnhancedData {
-	post: IWallPostData;
+	post: IWallPost;
 	currentUser: ICurrentUser;
 	errors: IError[];
-	skeletonPost: IWallPostData;
+	skeletonPost: IWallPost;
 	commentInput?: boolean;
 	isCommentsScreen: boolean;
 	keyboardRaised?: boolean;
@@ -63,7 +61,7 @@ interface IWithWallPostEnhancedProps {
 	actions: IWallPostEnhancedActions;
 }
 
-interface IWithWallPostProps extends INavigationProps {
+interface IWithWallPostProps {
 	children(props: IWithWallPostEnhancedProps): JSX.Element;
 }
 
@@ -77,7 +75,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		removeComment: (input: IRemoveCommentInput) => void;
 		likeComment: (input: ILikeCommentInput) => void;
 		unlikeComment: (input: ILikeCommentInput) => void;
-		setNavigationParams: (input: any) => void;
 		setGlobal: (global: IGlobal) => void;
 	} = {
 		getUserPosts: () => undefined,
@@ -86,7 +83,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		removeComment: () => undefined,
 		likeComment: () => undefined,
 		unlikeComment: () => undefined,
-		setNavigationParams: () => undefined,
 		setGlobal: () => undefined,
 	};
 
@@ -94,77 +90,72 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithNavigationParams>
-						{({ setNavigationParams }) => (
-							<WithOverlays>
-								{({ showOptionsMenu }) => (
-									<WithGlobals>
-										{({ globals, setGlobal }) => (
-											<WithActivities>
-												{({ errors }) => (
-													<KeyboardContext.Consumer>
-														{({ marginBottom }) => (
-															<WithAggregations>
-																{({ getUserPosts }) => (
-																	<WithPosts>
-																		{({ removePost }) => (
-																			<WithComments>
-																				{({
-																					likeComment,
-																					unlikeComment,
-																					createComment,
-																					removeComment,
-																				}) => (
-																					<WithCurrentUser>
-																						{({ currentUser }) => {
-																							this.actions = {
-																								getUserPosts,
-																								likeComment,
-																								unlikeComment,
-																								createComment,
-																								removeComment,
-																								removePost,
-																								setNavigationParams,
-																								setGlobal,
-																							};
+					<WithOverlays>
+						{({ showOptionsMenu }) => (
+							<WithGlobals>
+								{({ globals, setGlobal }) => (
+									<WithActivities>
+										{({ errors }) => (
+											<KeyboardContext.Consumer>
+												{({ marginBottom }) => (
+													<WithAggregations>
+														{({ getUserPosts }) => (
+															<WithPosts>
+																{({ removePost }) => (
+																	<WithComments>
+																		{({
+																			likeComment,
+																			unlikeComment,
+																			createComment,
+																			removeComment,
+																		}) => (
+																			<WithCurrentUser>
+																				{({ currentUser }) => {
+																					this.actions = {
+																						getUserPosts,
+																						likeComment,
+																						unlikeComment,
+																						createComment,
+																						removeComment,
+																						removePost,
+																						setGlobal,
+																					};
 
-																							return this.props.children({
-																								data: {
-																									currentUser,
-																									skeletonPost: globals.skeletonPost,
-																									errors,
-																									marginBottom,
-																								} as any,
-																								actions: {
-																									onRemovePost: this.onRemovePostHandler,
-																									onSubmitComment: this.onSubmitCommentHandler,
-																									onLikeComment: this.onLikeCommentHandler,
-																									onRemoveComment: this.onRemoveCommentHandler,
-																									onBlockUser: () => undefined,
-																									onReportProblem: () => undefined,
-																									showOptionsMenu: (items) =>
-																										showOptionsMenu({ items }),
-																									getText,
-																								},
-																							});
-																						}}
-																					</WithCurrentUser>
-																				)}
-																			</WithComments>
+																					return this.props.children({
+																						data: {
+																							currentUser,
+																							skeletonPost: globals.skeletonPost,
+																							errors,
+																							marginBottom,
+																						} as any,
+																						actions: {
+																							onRemovePost: this.onRemovePostHandler,
+																							onSubmitComment: this.onSubmitCommentHandler,
+																							onLikeComment: this.onLikeCommentHandler,
+																							onRemoveComment: this.onRemoveCommentHandler,
+																							onBlockUser: () => undefined,
+																							onReportProblem: () => undefined,
+																							showOptionsMenu: (items) =>
+																								showOptionsMenu({ items }),
+																							getText,
+																						},
+																					});
+																				}}
+																			</WithCurrentUser>
 																		)}
-																	</WithPosts>
+																	</WithComments>
 																)}
-															</WithAggregations>
+															</WithPosts>
 														)}
-													</KeyboardContext.Consumer>
+													</WithAggregations>
 												)}
-											</WithActivities>
+											</KeyboardContext.Consumer>
 										)}
-									</WithGlobals>
+									</WithActivities>
 								)}
-							</WithOverlays>
+							</WithGlobals>
 						)}
-					</WithNavigationParams>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

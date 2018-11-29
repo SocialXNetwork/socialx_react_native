@@ -4,7 +4,7 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { AnimatedValue } from 'react-navigation';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
-import { INavigationProps, IWallPostData } from '../../../types';
+import { INavigationProps, IWallPost } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
@@ -17,7 +17,7 @@ const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
 const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 export interface IFeedProps {
-	shareSectionPlaceholder: string;
+	shareMessage: string;
 	feedType: FEED_TYPES;
 }
 
@@ -27,7 +27,7 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
-	private readonly scrollRef: React.RefObject<FlatList<IWallPostData>> = React.createRef();
+	private readonly scrollRef: React.RefObject<FlatList<IWallPost>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public componentDidMount() {
@@ -48,7 +48,7 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 			posts,
 			errors,
 			skeletonPost,
-			shareSectionPlaceholder,
+			shareMessage,
 			canLoadMore,
 			refreshingFeed,
 			loadingMorePosts,
@@ -66,7 +66,7 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 				creatingPost={creatingPost}
 				canLoadMorePosts={canLoadMore}
 				loadingMorePosts={loadingMorePosts}
-				shareSectionPlaceholder={shareSectionPlaceholder}
+				shareMessage={shareMessage}
 				scrollRef={this.scrollRef}
 				scrollY={this.scrollY}
 				onRefresh={this.onRefreshHandler}

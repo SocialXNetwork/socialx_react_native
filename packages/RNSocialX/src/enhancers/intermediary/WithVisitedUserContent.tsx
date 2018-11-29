@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IVisitedUser } from '../../types';
 import { extractMediaFromPosts, mapPostsForUI } from '../helpers';
 
-import { IPostReturnData } from '../../store/data/posts';
+import { IPost } from '../../store/data/posts';
 import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithConfig } from '../connectors/app/WithConfig';
 import { WithProfiles } from '../connectors/data/WithProfiles';
@@ -36,8 +36,7 @@ export class WithVisitedUserContent extends React.Component<
 													<WithActivities>
 														{({ activities }) => {
 															if (visitedUser) {
-																const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-																let posts: IPostReturnData[] = [];
+																let posts: IPost[] = [];
 
 																if (userPosts[visitedUser.userId]) {
 																	posts = userPosts[visitedUser.userId];
@@ -48,11 +47,10 @@ export class WithVisitedUserContent extends React.Component<
 																	currentUser,
 																	profiles,
 																	activities,
-																	IPFS_URL,
 																);
 
 																visitedUser.numberOfLikes = posts.reduce(
-																	(acc, post) => acc + post.likes.length,
+																	(acc, post) => acc + post.likes.ids.length,
 																	0,
 																);
 
@@ -66,11 +64,11 @@ export class WithVisitedUserContent extends React.Component<
 																	0,
 																);
 
-																visitedUser.media = extractMediaFromPosts(
-																	posts,
-																	currentUser.userId,
-																	appConfig,
-																);
+																// visitedUser.media = extractMediaFromPosts(
+																// 	posts,
+																// 	currentUser.userId,
+																// 	appConfig,
+																// );
 
 																visitedUser.recentPosts = recentPosts;
 															}

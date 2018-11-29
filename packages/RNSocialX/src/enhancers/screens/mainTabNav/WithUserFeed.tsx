@@ -6,13 +6,13 @@
 import * as React from 'react';
 
 import { FEED_TYPES } from '../../../environment/consts';
-import { IPostReturnData } from '../../../store/data/posts';
+import { IPost } from '../../../store/data/posts';
 import {
 	ICurrentUser,
 	IError,
 	INavigationParamsActions,
 	ITranslatedProps,
-	IWallPostData,
+	IWallPost,
 } from '../../../types';
 import { getActivity, mapPostsForUI } from '../../helpers';
 
@@ -29,9 +29,9 @@ import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	posts: IWallPostData[];
+	posts: IWallPost[];
 	errors: IError[];
-	skeletonPost: IWallPostData;
+	skeletonPost: IWallPost;
 	creatingPost: boolean;
 	refreshingFeed: boolean;
 	canLoadMore: boolean;
@@ -77,14 +77,12 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																	<WithCurrentUser>
 																		{({ currentUser }) => {
 																			const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-																			// let globalPosts: IWallPostData[] = [];
-																			// let friendsPosts: IWallPostData[] = [];
 																			const friendsAliases = friends[currentUser.userId].map(
 																				(fr) => fr.alias,
 																			);
 
-																			let globalPosts: IPostReturnData[] = [];
-																			let friendsPosts: IPostReturnData[] = [];
+																			let globalPosts: IPost[] = [];
+																			let friendsPosts: IPost[] = [];
 
 																			Object.keys(feed.all).map((key) => {
 																				const owner = feed.all[key].owner.alias;
@@ -95,7 +93,6 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				globalPosts = [...globalPosts, feed.all[key]];
 																			});
 
-																			// if (feed.global.posts.length > 0) {
 																			const shapedGlobalPosts = mapPostsForUI(
 																				globalPosts,
 																				currentUser,
@@ -103,9 +100,7 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				activities,
 																				IPFS_URL,
 																			);
-																			// 	}
 
-																			// if (feed.friends.posts.length > 0) {
 																			const shapedFriendsPosts = mapPostsForUI(
 																				friendsPosts,
 																				currentUser,
@@ -113,7 +108,6 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																				activities,
 																				IPFS_URL,
 																			);
-																			// }
 
 																			return this.props.children({
 																				data: {

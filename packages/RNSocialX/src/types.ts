@@ -114,8 +114,6 @@ export interface IConfirmActions {
 	hideConfirm: () => void;
 }
 
-// Media types
-
 export interface IMediaTypes {
 	key: string;
 	name: string;
@@ -134,33 +132,22 @@ export const MediaTypeVideo: IMediaTypes = {
 	category: 'Videos',
 };
 
-export interface IGridMediaObject {
-	url: string;
+export interface IGridMedia {
+	hash: string;
 	type: IMediaTypes;
 	index: number;
 }
 
-// END Media types
-
-export interface IMediaProps {
-	url: string;
+export interface IMedia {
+	hash: string;
 	type: IMediaTypes;
-	hash?: string;
-	extension?: string;
-	size?: number;
-	numberOfLikes?: number;
-	numberOfComments?: number;
-	likedByCurrentUser?: boolean;
-	postId?: string;
+	extension: string;
+	size: number;
 }
 
-export interface ISimpleComment {
-	commentId: string;
-	text: string;
-	owner: {
-		userId: string;
-		userName: string;
-	};
+export interface IMedias {
+	objects: IMedia[];
+	postId: string;
 }
 
 export interface IPostOwner {
@@ -174,7 +161,7 @@ export interface IComment {
 	text: string;
 	user: IPostOwner;
 	timestamp: Date;
-	likes: ILike[];
+	likeIds: string[];
 	likedByCurrentUser: boolean;
 }
 
@@ -184,15 +171,7 @@ export interface IWallPostPhotoOptimized extends PickerImage {
 	pathx: string;
 }
 
-export interface ILike {
-	userId: string;
-	userName: string;
-	fullName: string;
-	avatar: string;
-	relationship: FRIEND_TYPES;
-}
-
-export interface IWallPostData {
+export interface IWallPost {
 	postId: string;
 	postText: string;
 	location: string | undefined;
@@ -201,18 +180,15 @@ export interface IWallPostData {
 	owner: IPostOwner;
 	likedByCurrentUser: boolean;
 	removable: boolean;
-	media: IMediaProps[];
-	likes: ILike[];
-	// comments: IComment[];
+	media: IMedias;
+	likeIds: string[];
 	commentIds: string[];
-	topComments: ISimpleComment[];
+	topCommentIds: string[];
 	numberOfSuperLikes: number;
 	numberOfComments: number;
 	numberOfWalletCoins: number;
 	suggested: IUserEntry[] | undefined;
 	loading: boolean;
-	currentUserAvatar: string;
-	currentUserName: string;
 	offensiveContent: boolean;
 }
 
@@ -266,6 +242,7 @@ export interface ICurrentUser {
 	userId: string;
 	avatar: string;
 	email: string;
+	pub: string;
 	fullName: string;
 	userName: string;
 	description: string;
@@ -273,11 +250,10 @@ export interface ICurrentUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	media: IMediaProps[];
-	recentPosts: IWallPostData[];
+	media: IMedias;
+	recentPosts: IWallPost[];
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
-	pub: string;
 }
 
 export interface IVisitedUser {
@@ -290,8 +266,8 @@ export interface IVisitedUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	media: IMediaProps[];
-	recentPosts: IWallPostData[];
+	media: IMedias;
+	recentPosts: IWallPost[];
 	relationship: FRIEND_TYPES;
 }
 

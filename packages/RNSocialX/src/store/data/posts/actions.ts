@@ -3,7 +3,6 @@ import {
 	IPostArrayData,
 	IPostReturnData,
 	IRemovePostInput,
-	IUnlikePostInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
@@ -15,7 +14,7 @@ import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { setGlobal } from '../../ui/globals';
 import { loadCommentsAction } from '../comments';
-import { getCurrentProfile, getProfilesByPosts } from '../profiles';
+import { getProfilesByPosts } from '../profiles';
 import {
 	ActionTypes,
 	ICreatePostAction,
@@ -25,9 +24,11 @@ import {
 	IGetPostsByUsernameAction,
 	IGetPublicPostsByDateAction,
 	ILikePostAction,
+	ILikePostErrorAction,
 	ILoadMoreFriendsPostsAction,
 	ILoadMorePostsAction,
 	IPostIdInput,
+	IPostLikeInput,
 	IPostPathInput,
 	IRemovePostAction,
 	IResetPostsAction,
@@ -42,6 +43,7 @@ import {
 	ISyncRemoveCommentAction,
 	ISyncRemovePostAction,
 	IUnlikePostAction,
+	IUnlikePostErrorAction,
 	IUsernameInput,
 } from './Types';
 
@@ -423,46 +425,6 @@ export const createPost = (
 	}
 };
 
-const likePostAction: ActionCreator<ILikePostAction> = (likePostInput: IPostIdInput) => ({
-	type: ActionTypes.LIKE_POST,
-	payload: likePostInput,
-});
-
-export const likePost = (likePostInput: IPostIdInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(likePostAction(likePostInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.LIKE_POST,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.posts.likePost(likePostInput);
-			await dispatch(getPostById(likePostInput));
-			await dispatch(getCurrentProfile());
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.LIKE_POST,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
-
 const removePostAction: ActionCreator<IRemovePostAction> = (removePostInput: IRemovePostInput) => ({
 	type: ActionTypes.REMOVE_POST,
 	payload: removePostInput,
@@ -508,42 +470,63 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	}
 };
 
-const unlikePostAction: ActionCreator<IUnlikePostAction> = (unlikePostInput: IUnlikePostInput) => ({
-	type: ActionTypes.UNLIKE_POST,
-	payload: unlikePostInput,
+const likePostAction: ActionCreator<ILikePostAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.LIKE_POST,
+	payload: input,
 });
 
-export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
+const likePostErrorAction: ActionCreator<ILikePostErrorAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.LIKE_POST_ERROR,
+	payload: input,
+});
+
+export const likePost = (input: IPostLikeInput): IThunk => async (dispatch, getState, context) => {
+	const { postId } = input;
+
+	try {
+		dispatch(likePostAction(input));
+		await context.dataApi.posts.likePost({ postId });
+	} catch (e) {
+		dispatch(likePostErrorAction(input));
+		await dispatch(
+			setError({
+				type: ActionTypes.LIKE_POST,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	}
+};
+
+const unlikePostAction: ActionCreator<IUnlikePostAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.UNLIKE_POST,
+	payload: input,
+});
+
+const unlikePostErrorAction: ActionCreator<IUnlikePostErrorAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.UNLIKE_POST_ERROR,
+	payload: input,
+});
+
+export const unlikePost = (input: IPostLikeInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(unlikePostAction(unlikePostInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.UNLIKE_POST,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.posts.unlikePost(unlikePostInput);
-			await dispatch(getPostById(unlikePostInput));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.UNLIKE_POST,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+	const { postId } = input;
+
+	try {
+		dispatch(unlikePostAction(input));
+		await context.dataApi.posts.unlikePost({ postId });
+	} catch (e) {
+		dispatch(unlikePostErrorAction(input));
+		await dispatch(
+			setError({
+				type: ActionTypes.UNLIKE_POST,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
 	}
 };
 

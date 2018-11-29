@@ -2,8 +2,14 @@ import { ICommentsReturnData, IPostArrayData } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
+export interface IComment extends ICommentsReturnData {}
+
+export interface IComments {
+	[commentId: string]: ICommentsReturnData;
+}
+
 export type IState = DeepReadonly<{
-	comments: { [commentId: string]: ICommentsReturnData };
+	comments: IComments;
 }>;
 
 export const enum ActionTypes {

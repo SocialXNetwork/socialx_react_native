@@ -2,14 +2,14 @@ import * as React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 
 import { UserEntries } from '../../components';
-import { ITranslatedProps, IUserEntry } from '../../types';
+import { ITranslatedProps } from '../../types';
 
 import styles from './SearchResults.style';
 
 interface ISearchResultsProps extends ITranslatedProps {
 	searching: boolean;
-	searchResults: IUserEntry[];
-	onResultPress: (result: IUserEntry) => void;
+	searchResults: string[];
+	onResultPress: () => void;
 	onLoadMore: () => void;
 	hasMore: boolean;
 }
@@ -40,7 +40,7 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 		{!searching && searchResults.length === 0 && <SearchNoResults getText={getText} />}
 		{!searching && searchResults.length > 0 && (
 			<UserEntries
-				entries={searchResults}
+				entryIds={searchResults}
 				onEntryPress={onResultPress}
 				onLoadMore={onLoadMore}
 				hasMore={hasMore}

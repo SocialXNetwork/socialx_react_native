@@ -1,9 +1,10 @@
 export { IWallPostActions, WallPostActions } from './WallPostActions';
 export { UserDetails } from './UserDetails';
+export { Comment } from './Comment';
 export { TaggedFriends } from './TaggedFriends';
 export { Location } from './Location';
 export { PostText } from './PostText';
-export { RecentLikes } from './RecentLikes';
+export { Likes } from './Likes';
 export { CommentInput } from './CommentInput';
 export { ViewAllComments } from './ViewAllComments';
 export { TopComments } from './TopComments';

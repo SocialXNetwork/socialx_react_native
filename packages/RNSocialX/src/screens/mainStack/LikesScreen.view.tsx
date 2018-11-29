@@ -3,16 +3,16 @@ import { StyleSheet, View } from 'react-native';
 
 import { Header, HeaderButton, UserEntries } from '../../components';
 import { Colors } from '../../environment/theme';
-import { ILike, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 
 interface ILikesScreenViewProps extends ITranslatedProps {
-	likes: ILike[];
-	onViewUserProfile: (userId: string) => void;
+	likeIds: string[];
+	onViewUserProfile: (alias: string) => void;
 	onGoBack: () => void;
 }
 
 export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
-	likes,
+	likeIds,
 	onViewUserProfile,
 	onGoBack,
 	getText,
@@ -23,7 +23,7 @@ export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.container}>
-			<UserEntries entries={likes} onEntryPress={(entry) => onViewUserProfile(entry.userId)} />
+			<UserEntries entryIds={likeIds} onEntryPress={onViewUserProfile} />
 		</View>
 	</View>
 );

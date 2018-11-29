@@ -15,7 +15,7 @@ import {
 } from '../../enhancers/screens';
 
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { IMediaProps, INavigationProps, MediaTypeImage } from '../../types';
+import { IMedia, INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -91,19 +91,19 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 		const headerElement = [{ index: uuidv4() }];
 
-		if (media.length === 0) {
+		if (media.objects.length === 0) {
 			this.setState({
 				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < media.length) {
+		} else if (this.lastLoadedPhotoIndex < media.objects.length) {
 			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
-			const newMedia = media
+			const newMedia = media.objects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
-				.map((mediaObject: IMediaProps, index: number) => ({
-					url: mediaObject.url,
-					type: mediaObject.type,
+				.map((obj: IMedia, index: number) => ({
+					hash: obj.hash,
+					type: obj.type,
 					index: this.lastLoadedPhotoIndex + index,
 				}));
 
@@ -142,7 +142,9 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		if (visitedUser.avatar.length > 0) {
 			const media = [
 				{
-					url: visitedUser.avatar,
+					hash: visitedUser.avatar,
+					size: 0,
+					extension: '',
 					type: MediaTypeImage,
 				},
 			];
@@ -153,14 +155,11 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onViewMediaHandler = (index: number) => {
 		const {
-			visitedUser: { media, recentPosts },
+			visitedUser: { media },
 			onViewImage,
 		} = this.props;
 
-		const selectedMedia = media[index];
-		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
-
-		onViewImage(media, index, post);
+		onViewImage(media.objects, index, media.postId);
 	};
 
 	private onIconPressHandler = (tab: string) => {

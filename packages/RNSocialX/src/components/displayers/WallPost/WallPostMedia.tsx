@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
-import { IMediaProps, ITranslatedProps } from '../../../types';
+import { IMedia, ITranslatedProps } from '../../../types';
 import { MediaObjectViewer } from '../MediaObjectViewer';
 import style from './WallPostMedia.style';
 
 interface ISingleMediaPostProps extends ITranslatedProps {
-	mediaObject: IMediaProps;
+	media: IMedia;
 	noInteraction: boolean;
 	placeholder: boolean;
 	onMediaObjectView: (index: number) => void;
@@ -20,7 +20,7 @@ const Placeholder: React.SFC<{ extraStyle?: object }> = ({ extraStyle }) => (
 );
 
 const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
-	mediaObject,
+	media,
 	noInteraction,
 	placeholder,
 	onMediaObjectView,
@@ -32,9 +32,9 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 			onPress={() => onMediaObjectView(0)}
 			onDoublePress={onDoublePress}
 			thumbOnly={noInteraction}
-			uri={mediaObject.url}
+			hash={media.hash}
 			style={style.postMediaContainerFullWidth}
-			extension={mediaObject.extension}
+			extension={media.extension}
 			getText={getText}
 		/>
 	) : (
@@ -42,7 +42,7 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	);
 };
 interface IDualMediaPostProps extends ITranslatedProps {
-	media: IMediaProps[];
+	media: IMedia[];
 	onMediaObjectView: (index: number) => void;
 	placeholder: boolean;
 }
@@ -60,7 +60,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 					<MediaObjectViewer
 						onPress={() => onMediaObjectView(0)}
 						thumbOnly={true}
-						uri={media[0].url}
+						hash={media[0].hash}
 						style={style.fullWidthHeight}
 						extension={media[0].extension}
 						getText={getText}
@@ -70,7 +70,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 					<MediaObjectViewer
 						onPress={() => onMediaObjectView(1)}
 						thumbOnly={true}
-						uri={media[1].url}
+						hash={media[1].hash}
 						style={style.fullWidthHeight}
 						extension={media[1].extension}
 						getText={getText}
@@ -84,7 +84,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 );
 
 interface IMultiMediaPostProps extends ITranslatedProps {
-	media: IMediaProps[];
+	media: IMedia[];
 	placeholder: boolean;
 	onMediaObjectView: (index: number) => void;
 }
@@ -105,7 +105,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						<MediaObjectViewer
 							onPress={() => onMediaObjectView(0)}
 							thumbOnly={true}
-							uri={media[0].url}
+							hash={media[0].hash}
 							style={style.fullWidthHeight}
 							extension={media[0].extension}
 							getText={getText}
@@ -116,7 +116,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 							<MediaObjectViewer
 								onPress={() => onMediaObjectView(1)}
 								thumbOnly={true}
-								uri={media[1].url}
+								hash={media[1].hash}
 								extension={media[1].extension}
 								getText={getText}
 							/>
@@ -128,7 +128,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						>
 							<MediaObjectViewer
 								thumbOnly={true}
-								uri={media[2].url}
+								hash={media[2].hash}
 								style={style.fullWidthHeight}
 								extension={media[2].extension}
 								getText={getText}
@@ -150,7 +150,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 };
 
 interface IWallPostMediaProps extends ITranslatedProps {
-	media: IMediaProps[];
+	media: IMedia[];
 	onMediaObjectView: (index: number) => void;
 	onDoublePress: () => void;
 	noInteraction?: boolean;
@@ -185,7 +185,7 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 			)}
 			{media.length === 1 && (
 				<SingleMediaPost
-					mediaObject={media[0]}
+					media={media[0]}
 					noInteraction={noInteraction}
 					onMediaObjectView={onMediaObjectView}
 					onDoublePress={onDoublePress}

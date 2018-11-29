@@ -1,24 +1,21 @@
-import { IPostReturnData } from '../../store/data/posts';
-import { ActionTypes } from '../../store/data/posts/Types';
+import { ActionTypes, IPost } from '../../store/data/posts/Types';
+import { IProfiles } from '../../store/data/profiles/Types';
 import { IActivity } from '../../store/ui/activities';
 
-import { ICurrentUser, IProfile, IWallPostData, MediaTypeImage, MediaTypeVideo } from '../../types';
-import { getActivity, getComments, getTopComments } from './';
+import { ICurrentUser, IWallPost } from '../../types';
+import { getActivity } from './';
 
 export const mapPostsForUI = (
-	posts: IPostReturnData[],
-	currentUser: ICurrentUser | undefined,
-	profiles: IProfile[],
+	posts: IPost[],
+	currentUser: ICurrentUser,
+	profiles: IProfiles,
 	activities: IActivity[],
-	url: string,
-): IWallPostData[] => {
+) => {
 	return posts
-		.sort((x: any, y: any) => y.timestamp - x.timestamp)
+		.sort((x: IPost, y: IPost) => y.timestamp - x.timestamp)
 		.map((post) => {
-			const ownerProfile = profiles.find((profile) => profile.alias === post.owner.alias);
-			const likedByCurrentUser = !!post.likes.find(
-				(like) => like.owner.alias === currentUser!.userId,
-			);
+			const ownerProfile = profiles[post.owner.alias];
+			const likedByCurrentUser = !!post.likes.byId[currentUser.userId];
 
 			return {
 				postId: post.postId,
@@ -28,37 +25,23 @@ export const mapPostsForUI = (
 				timestamp: new Date(post.timestamp),
 				owner: {
 					userId: post.owner.alias,
-					fullName: ownerProfile!.fullName,
-					avatar: ownerProfile!.avatar.length > 0 ? url + ownerProfile!.avatar : '',
+					fullName: ownerProfile.fullName,
+					avatar: ownerProfile.avatar,
 				},
 				likedByCurrentUser,
-				removable: post.owner.alias === currentUser!.userId,
-				media: post.media.map((media) => ({
-					url: url + media.hash,
-					hash: media.hash,
-					type: media.type.name === 'Photo' ? MediaTypeImage : MediaTypeVideo,
-					extension: media.extension,
-					size: media.size,
-					numberOfLikes: post.likes.length,
-					numberOfComments: post.comments.length,
-					likedByCurrentUser,
+				removable: post.owner.alias === currentUser.userId,
+				media: {
+					objects: post.media,
 					postId: post.postId,
-				})),
-				likes: post.likes.map((like) => {
-					const likeProfile = profiles.find((p) => p.alias === like.owner.alias);
-
-					return {
-						userId: like.owner.alias,
-						userName: like.owner.alias,
-						fullName: likeProfile!.fullName,
-						avatar: likeProfile!.avatar.length > 0 ? url + likeProfile!.avatar : '',
-						relationship: likeProfile!.status,
-					};
-				}),
-				commentIds: post.comments
-					.sort((x, y) => x.timestamp - y.timestamp)
-					.map((comm) => comm.commentId),
-				topComments: getTopComments(post.comments),
+				},
+				likeIds: post.likes.ids,
+				commentIds: post.comments,
+				topCommentIds:
+					post.comments.length > 0
+						? post.comments.length > 1
+							? [post.comments[0], post.comments[1]]
+							: [post.comments[0]]
+						: [],
 				// TODO: add this later when data is available
 				numberOfSuperLikes: 0,
 				numberOfComments: post.comments.length,
@@ -66,9 +49,7 @@ export const mapPostsForUI = (
 				numberOfWalletCoins: 0,
 				suggested: undefined,
 				loading: getActivity(activities, ActionTypes.LOAD_MORE_POSTS),
-				currentUserAvatar: currentUser!.avatar,
-				currentUserName: currentUser!.userName,
 				offensiveContent: false,
 			};
-		}) as IWallPostData[];
+		}) as IWallPost[];
 };

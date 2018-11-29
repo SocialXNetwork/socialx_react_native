@@ -9,7 +9,7 @@ export const GlobalUserFeed = ({ navigation }: INavigationProps) => (
 	<WithUserFeed type={FEED_TYPES.GLOBAL}>
 		{({ data, actions }) => (
 			<Screen
-				shareSectionPlaceholder="Share with the world what you think"
+				shareMessage="Share with the world what you think"
 				feedType={FEED_TYPES.GLOBAL}
 				navigation={navigation}
 				{...data}

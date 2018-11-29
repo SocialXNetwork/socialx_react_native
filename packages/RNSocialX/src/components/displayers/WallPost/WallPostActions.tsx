@@ -7,7 +7,6 @@ import styles from './WallPostActions.style';
 
 export interface IWallPostActions {
 	likedByCurrentUser: boolean;
-	likeDisabled: boolean;
 	numberOfSuperLikes: number;
 	numberOfWalletCoins: number;
 	onLikePost: () => void;
@@ -18,7 +17,6 @@ export interface IWallPostActions {
 
 export const WallPostActions: React.SFC<IWallPostActions> = ({
 	likedByCurrentUser,
-	likeDisabled,
 	onLikePost,
 	onCommentPress,
 }) => {
@@ -31,11 +29,7 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 					label={numberOfWalletCoins + ' SOCX'}
 				/> */}
 
-			<LikeAnimatingButton
-				likedByCurrentUser={likedByCurrentUser}
-				disabled={likeDisabled}
-				onLikePost={onLikePost}
-			/>
+			<LikeAnimatingButton likedByCurrentUser={likedByCurrentUser} onLikePost={onLikePost} />
 			{/* TODO: add when implemented: SuperLikes
 					 <IconButton
 						iconSource={Icons.iconPostSuperLike}

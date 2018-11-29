@@ -1,18 +1,18 @@
 export { default as reducer } from './reducer';
-export { IState, IAction, IUsernameInput } from './Types';
+export { IState, IAction, IUsernameInput, IProfiles, IFriends, IProfile } from './Types';
+
 export {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	ICreateProfileInput,
 	IProfileData,
-	IFriendData,
 	IRemoveFriendInput,
 	IFindFriendsSuggestionsInput,
 	IUpdateProfileInput,
-	IPostArrayData,
 	IRejectFriendInput,
 	IClearFriendResponseInput,
 } from '@socialx/api-data';
+
 export {
 	getCurrentProfile,
 	getProfileByUsername,

@@ -3,33 +3,41 @@ import * as React from 'react';
 import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
-import { IWithDataShapeEnhancedProps, WithDataShape } from '../../../enhancers/intermediary';
-import { ICommentsReturnData } from '../../../store/data/comments';
+import {
+	IWithDataShapeEnhancedProps,
+	WithDataShape,
+	WithNavigationHandlers,
+} from '../../../enhancers/intermediary';
+
+import { IComment as IStateComment } from '../../../store/data/comments';
 import { IApplicationState, selectComment } from '../../../store/selectors';
 
 import { AvatarImage, RichText } from '../../';
-import { IComment, ITranslatedProps } from '../../../types';
+import { IComment, INavigationProps, ITranslatedProps } from '../../../types';
 import { CommentLikes } from './';
 
 import styles from './CommentCard.style';
 
 const TEXT_LENGTH_TRESHOLD = 15;
 
-interface ICommentCardProps extends IWithDataShapeEnhancedProps, ITranslatedProps {
+interface ICommentCardProps extends INavigationProps, ITranslatedProps {
 	commentId: string;
-	comment: ICommentsReturnData;
+	comment: IStateComment;
 	alias: string;
 	pub: string;
 	onLikeComment: (alias: string, pub: string, liked: boolean, commentId: string) => void;
 	onUserPress: (userId: string) => void;
+	onViewLikes: (likeIds: string[]) => void;
 	onShowOptionsMenu: (comment: IComment) => void;
 }
 
-interface ICommentCardState {
+type IProps = ICommentCardProps & IWithDataShapeEnhancedProps;
+
+interface IState {
 	commentLikesPosition: StyleProp<ViewStyle>;
 }
 
-class Component extends React.Component<ICommentCardProps, ICommentCardState> {
+class Component extends React.Component<IProps, IState> {
 	public state = {
 		commentLikesPosition: {
 			bottom: -18,
@@ -49,10 +57,10 @@ class Component extends React.Component<ICommentCardProps, ICommentCardState> {
 	}
 
 	public render() {
-		const { shapedComment, onUserPress, onShowOptionsMenu, getText } = this.props;
+		const { shapedComment, onUserPress, onViewLikes, onShowOptionsMenu, getText } = this.props;
 
 		if (shapedComment) {
-			const { text, user, timestamp, likes, likedByCurrentUser } = shapedComment!;
+			const { text, user, timestamp, likeIds, likedByCurrentUser } = shapedComment!;
 			const commentTimestamp = moment(timestamp).fromNow();
 
 			return (
@@ -95,10 +103,11 @@ class Component extends React.Component<ICommentCardProps, ICommentCardState> {
 									{text}
 								</RichText>
 							</TouchableOpacity>
-							{likes.length > 0 && (
+							{likeIds.length > 0 && (
 								<CommentLikes
-									numberOfLikes={likes.length}
+									numberOfLikes={likeIds.length}
 									commentLikesPosition={this.state.commentLikesPosition}
+									onViewLikes={() => onViewLikes(likeIds)}
 								/>
 							)}
 						</View>
@@ -128,10 +137,16 @@ class Component extends React.Component<ICommentCardProps, ICommentCardState> {
 	};
 }
 
-const EnhancedComponent: React.SFC<ICommentCardProps> = (props) => (
-	<WithDataShape comment={props.comment}>
-		{({ shapedComment }) => <Component {...props} shapedComment={shapedComment} />}
-	</WithDataShape>
+const EnhancedComponent: React.SFC<IProps> = (props) => (
+	<WithNavigationHandlers navigation={props.navigation}>
+		{({ actions }) => (
+			<WithDataShape comment={props.comment}>
+				{({ shapedComment }) => (
+					<Component {...props} shapedComment={shapedComment} onViewLikes={actions.onViewLikes} />
+				)}
+			</WithDataShape>
+		)}
+	</WithNavigationHandlers>
 );
 
 const mapStateToProps = (state: IApplicationState, props: ICommentCardProps) => ({

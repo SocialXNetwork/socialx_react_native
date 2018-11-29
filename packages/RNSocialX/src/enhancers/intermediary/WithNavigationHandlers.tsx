@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Keyboard } from 'react-native';
 
 import { SCREENS, TABS } from '../../environment/consts';
-import { IMediaProps, INavigationProps, IWallPostData } from '../../types';
+import { IMedia, INavigationProps } from '../../types';
 
 import { IPostReturnData } from '@socialx/api-data';
 import { WithAggregations } from '../connectors/aggregations/WithAggregations';
@@ -11,8 +11,9 @@ import { WithCurrentUser } from '../intermediary';
 
 export interface IWithNavigationHandlersEnhancedActions {
 	onViewUserProfile: (visitedUserId: string, origin?: TABS) => void;
+	onViewLikes: (likeIds: string[]) => void;
 	onViewComments: (postId: string, keyboardRaised: boolean) => void;
-	onViewImage: (media: IMediaProps[], index: number, post?: IWallPostData) => void;
+	onViewImage: (media: IMedia[], startIndex: number, postId?: string) => void;
 	onGoBack: () => void;
 }
 
@@ -55,6 +56,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 													visitedUserId,
 													origin,
 												),
+											onViewLikes: this.onViewLikesHandler,
 											onViewComments: this.onViewCommentsHandler,
 											onViewImage: this.onViewImageHandler,
 											onGoBack: this.onGoBackHandler,
@@ -95,6 +97,14 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		}
 	};
 
+	private onViewLikesHandler = (likeIds: string[]) => {
+		this.actions.setNavigationParams({
+			screenName: SCREENS.Likes,
+			params: { likeIds },
+		});
+		this.props.navigation.navigate(SCREENS.Likes);
+	};
+
 	private onViewCommentsHandler = (postId: string, keyboardRaised: boolean) => {
 		if (postId) {
 			this.actions.setNavigationParams({
@@ -105,13 +115,13 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		}
 	};
 
-	private onViewImageHandler = (media: IMediaProps[], index: number, post?: IWallPostData) => {
+	private onViewImageHandler = (media: IMedia[], startIndex: number, postId?: string) => {
 		this.actions.setNavigationParams({
 			screenName: SCREENS.MediaViewer,
 			params: {
 				media,
-				startIndex: index,
-				post,
+				startIndex,
+				postId,
 			},
 		});
 		this.props.navigation.navigate(SCREENS.MediaViewer);

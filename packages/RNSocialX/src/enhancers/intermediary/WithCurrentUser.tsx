@@ -2,12 +2,11 @@ import * as React from 'react';
 
 import { ICurrentUser } from '../../types';
 
-import { WithConfig } from '../connectors/app/WithConfig';
 import { WithAuth } from '../connectors/auth/WithAuth';
 import { WithProfiles } from '../connectors/data/WithProfiles';
 
 interface IWithCurrentUserProps {
-	children({ currentUser }: { currentUser: ICurrentUser | any }): JSX.Element;
+	children({ currentUser }: { currentUser: ICurrentUser }): JSX.Element;
 }
 
 interface IWithCurrentUserState {}
@@ -15,49 +14,41 @@ interface IWithCurrentUserState {}
 export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWithCurrentUserState> {
 	render() {
 		return (
-			<WithConfig>
-				{({ appConfig }) => (
-					<WithAuth>
-						{({ auth }) => (
-							<WithProfiles>
-								{({ profiles }) => {
-									let currentUser;
-									if (auth && profiles.length > 0) {
-										const foundProfile = profiles.find((profile) => profile.alias === auth.alias);
+			<WithAuth>
+				{({ auth }) => (
+					<WithProfiles>
+						{({ profiles }) => {
+							let currentUser: ICurrentUser;
 
-										if (foundProfile) {
-											currentUser = {
-												userId: foundProfile.alias,
-												email: foundProfile.email,
-												fullName: foundProfile.fullName,
-												userName: foundProfile.alias,
-												avatar:
-													foundProfile.avatar.length > 0
-														? appConfig.ipfsConfig.ipfs_URL +
-													  foundProfile.avatar // tslint:disable-line
-														: '',
-												description: foundProfile.aboutMeText,
-												numberOfFriends: foundProfile.numberOfFriends,
-												numberOfLikes: 0,
-												numberOfPhotos: 0,
-												numberOfComments: 0,
-												media: [],
-												recentPosts: [],
-												miningEnabled: foundProfile.miningEnabled,
-												pub: foundProfile.pub,
-											};
-										}
-									}
+							if (auth && Object.keys(profiles).length > 0) {
+								const profile = profiles[auth.alias!];
 
-									return this.props.children({
-										currentUser,
-									});
-								}}
-							</WithProfiles>
-						)}
-					</WithAuth>
+								currentUser = {
+									userId: profile.alias,
+									email: profile.email,
+									pub: profile.pub,
+									fullName: profile.fullName,
+									userName: profile.alias,
+									avatar: profile.avatar,
+									description: profile.aboutMeText,
+									numberOfFriends: profile.numberOfFriends,
+									numberOfLikes: 0,
+									numberOfPhotos: 0,
+									numberOfComments: 0,
+									media: [],
+									recentPosts: [],
+									miningEnabled: profile.miningEnabled,
+									shareDataEnabled: false,
+								};
+							}
+
+							return this.props.children({
+								currentUser: currentUser!,
+							});
+						}}
+					</WithProfiles>
 				)}
-			</WithConfig>
+			</WithAuth>
 		);
 	}
 }

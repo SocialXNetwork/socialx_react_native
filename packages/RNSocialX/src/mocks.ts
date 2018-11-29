@@ -1,13 +1,11 @@
 import {
 	FRIEND_TYPES,
 	ICurrentUser,
-	ILike,
-	ISimpleComment,
 	ITransactionData,
 	ITrendingCategoriesItem,
 	ITrendingContentItem,
 	IUserEntry,
-	IWallPostData,
+	IWallPost,
 	MediaTypeImage,
 	MediaTypeVideo,
 	TransactionType,
@@ -25,41 +23,7 @@ export const getTextMock = (key: string, ...args: Array<string | number>) => {
 const avatar =
 	'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
 
-const likes: ILike[] = [
-	{
-		userId: 'sethsaunders',
-		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
-		fullName: 'Seth Saunders',
-		userName: 'sethsaunders',
-		relationship: FRIEND_TYPES.NOT_FRIEND,
-	},
-	{
-		userId: 'janedoe',
-		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
-		fullName: 'Jane Doe',
-		userName: 'janedoe',
-		relationship: FRIEND_TYPES.NOT_FRIEND,
-	},
-];
-
-const topComments: ISimpleComment[] = [
-	{
-		commentId: '1',
-		text: 'Lorem ipsum dolor sit amet',
-		owner: {
-			userId: '2',
-			userName: 'janedoe',
-		},
-	},
-	{
-		commentId: '2',
-		text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		owner: {
-			userId: '1',
-			userName: 'johndoe',
-		},
-	},
-];
+const topCommentIds = ['topCommentId1', 'topCommentId2'];
 
 export const suggestedItems: IUserEntry[] = [
 	{
@@ -103,7 +67,7 @@ export const suggestedItems: IUserEntry[] = [
 	},
 ];
 
-export const posts: IWallPostData[] = [
+export const posts: IWallPost[] = [
 	{
 		postId: '1',
 		postText: 'Lorem ipsum dolor sit amet.',
@@ -120,26 +84,22 @@ export const posts: IWallPostData[] = [
 		numberOfWalletCoins: 0,
 		likedByCurrentUser: false,
 		removable: false,
-		media: [
-			{
-				postId: '1',
-				url: 'https://clips.vorwaerts-gmbh.de/VfE_html5.mp4',
-				hash: '131289fsdf03yr9hehdiwb32',
-				type: MediaTypeVideo,
-				extension: 'mp4',
-				size: 51231,
-				numberOfLikes: 0,
-				numberOfComments: 0,
-				likedByCurrentUser: false,
-			},
-		],
-		likes,
+		media: {
+			objects: [
+				{
+					hash: '131289fsdf03yr9hehdiwb32',
+					type: MediaTypeVideo,
+					extension: 'mp4',
+					size: 51231,
+				},
+			],
+			postId: '1',
+		},
+		likeIds: ['likeId1', 'likeId2'],
 		commentIds: [],
-		topComments,
+		topCommentIds,
 		loading: false,
 		suggested: undefined,
-		currentUserAvatar: avatar,
-		currentUserName: 'Alex',
 		offensiveContent: false,
 	},
 	{
@@ -158,27 +118,22 @@ export const posts: IWallPostData[] = [
 		numberOfWalletCoins: 0,
 		likedByCurrentUser: false,
 		removable: false,
-		media: [
-			{
-				postId: '2',
-				url:
-					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-				hash: '131289fsdf03yr9hehdiwb32',
-				type: MediaTypeImage,
-				extension: 'jpg',
-				size: 51231,
-				numberOfLikes: 0,
-				numberOfComments: 0,
-				likedByCurrentUser: false,
-			},
-		],
-		likes,
+		media: {
+			objects: [
+				{
+					hash: '131289fsdf03yr9hehdiwb32',
+					type: MediaTypeVideo,
+					extension: 'mp4',
+					size: 51231,
+				},
+			],
+			postId: '2',
+		},
+		likeIds: ['likeId1', 'likeId2'],
 		commentIds: [],
-		topComments,
+		topCommentIds,
 		loading: false,
 		suggested: suggestedItems,
-		currentUserAvatar: avatar,
-		currentUserName: 'Alex',
 		offensiveContent: true,
 	},
 	{
@@ -197,27 +152,22 @@ export const posts: IWallPostData[] = [
 		numberOfWalletCoins: 0,
 		likedByCurrentUser: false,
 		removable: false,
-		media: [
-			{
-				postId: '3',
-				url:
-					'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-				hash: '131289fsdf03yr9hehdiwb32',
-				type: MediaTypeImage,
-				extension: 'jpg',
-				size: 51231,
-				numberOfLikes: 0,
-				numberOfComments: 0,
-				likedByCurrentUser: true,
-			},
-		],
-		likes,
+		media: {
+			objects: [
+				{
+					hash: '131289fsdf03yr9hehdiwb32',
+					type: MediaTypeVideo,
+					extension: 'mp4',
+					size: 51231,
+				},
+			],
+			postId: '3',
+		},
+		likeIds: ['likeId1', 'likeId2'],
 		commentIds: [],
-		topComments,
+		topCommentIds,
 		loading: false,
 		suggested: undefined,
-		currentUserAvatar: avatar,
-		currentUserName: 'Alex',
 		offensiveContent: false,
 	},
 ];
@@ -236,20 +186,17 @@ export const currentUser: ICurrentUser = {
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
 	numberOfComments: 87,
-	media: [
-		{
-			postId: '3',
-			url:
-				'https://images.unsplash.com/photo-1530482817083-29ae4b92ff15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=44f4aebbd1e1371d5bf7dc22016c5d29&w=1000&q=80',
-			hash: '131289fsdf03yr9hehdiwb32',
-			type: MediaTypeImage,
-			extension: 'jpg',
-			size: 512,
-			numberOfLikes: 0,
-			numberOfComments: 0,
-			likedByCurrentUser: false,
-		},
-	],
+	media: {
+		objects: [
+			{
+				hash: '131289fsdf03yr9hehdiwb32',
+				type: MediaTypeVideo,
+				extension: 'mp4',
+				size: 51231,
+			},
+		],
+		postId: '3',
+	},
 	recentPosts: posts,
 };
 

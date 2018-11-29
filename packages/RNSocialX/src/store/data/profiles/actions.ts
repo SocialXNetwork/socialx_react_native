@@ -2,15 +2,14 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IClearFriendResponseInput,
-	IFriendData,
-	IPostArrayData,
-	IProfileData,
+	IPostReturnData,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
+
 import { getUserPosts } from '../../aggregations/posts';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
@@ -25,6 +24,7 @@ import {
 	IGetProfileByUsernameAction,
 	IGetProfilesByPostsAction,
 	IGetProfilesByUsernamesAction,
+	IProfile,
 	IRejectFriendAction,
 	IRemoveFriendAction,
 	ISyncGetCurrentFriendsAction,
@@ -38,20 +38,20 @@ import {
 } from './Types';
 
 const getProfilesByPostsAction: ActionCreator<IGetProfilesByPostsAction> = (
-	posts: IPostArrayData,
+	posts: IPostReturnData[],
 ) => ({
 	type: ActionTypes.GET_PROFILES_BY_POSTS,
 	payload: posts,
 });
 
 const syncGetProfilesByPostsAction: ActionCreator<ISyncGetProfilesByPostsAction> = (
-	profiles: IFriendData[],
+	profiles: IProfile[],
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS,
 	payload: profiles,
 });
 
-export const getProfilesByPosts = (getProfileByPostsInput: IPostArrayData): IThunk => async (
+export const getProfilesByPosts = (getProfileByPostsInput: IPostReturnData[]): IThunk => async (
 	dispatch,
 	getState,
 	context,
@@ -95,7 +95,7 @@ const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
 });
 
 const syncGetProfileByUsernameAction: ActionCreator<ISyncGetProfileByUsernameAction> = (
-	profile: IFriendData,
+	profile: IProfile,
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME,
 	payload: profile,
@@ -142,7 +142,7 @@ const getProfilesByUsernamesAction: ActionCreator<IGetProfilesByUsernamesAction>
 });
 
 const syncGetProfilesByUsernamesAction: ActionCreator<ISyncGetProfilesByUsernamesAction> = (
-	profiles: IFriendData[],
+	profiles: IProfile[],
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES,
 	payload: profiles,
@@ -186,7 +186,7 @@ const getCurrentProfileAction: ActionCreator<IGetCurrentProfileAction> = () => (
 });
 
 const syncGetCurrentProfileAction: ActionCreator<ISyncGetCurrentProfileAction> = (
-	profile: IProfileData,
+	profile: IProfile,
 ) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_PROFILE,
 	payload: profile,
@@ -196,6 +196,7 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
+
 	if (auth && auth.alias) {
 		try {
 			dispatch(getCurrentProfileAction());
@@ -231,7 +232,7 @@ const getCurrentFriendsAction: ActionCreator<IGetCurrentFriendsAction> = () => (
 
 const syncGetCurrentFriendsAction: ActionCreator<ISyncGetCurrentFriendsAction> = (syncFriends: {
 	username: string;
-	friends: IFriendData[];
+	friends: IProfile[];
 }) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS,
 	payload: syncFriends,

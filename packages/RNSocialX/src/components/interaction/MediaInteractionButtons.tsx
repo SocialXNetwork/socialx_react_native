@@ -2,16 +2,15 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { IMediaProps } from '../../types';
+import { IMedia } from '../../types';
 import { LikeAnimatingButton } from './LikeAnimatingButton';
 
 import styles from './MediaInteractionButtons.style';
 
 interface IMediaInfoSectionProps {
-	media: IMediaProps[];
+	media: IMedia[];
 	activeSlide: number;
 	canReact: boolean | undefined;
-	likeDisabled: boolean;
 	likedByCurrentUser: boolean;
 	onCommentPress: () => void;
 	onLikePress: () => void;
@@ -21,7 +20,6 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 	media,
 	activeSlide,
 	canReact = false,
-	likeDisabled,
 	likedByCurrentUser,
 	onLikePress,
 	onCommentPress,
@@ -39,7 +37,6 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 						<LikeAnimatingButton
 							likedByCurrentUser={likedByCurrentUser}
 							secondary={true}
-							disabled={likeDisabled}
 							onLikePost={onLikePress}
 						/>
 						{hasLikesOrComments && numberOfLikes > 0 && (

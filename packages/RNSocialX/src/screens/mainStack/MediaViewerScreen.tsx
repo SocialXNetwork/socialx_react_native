@@ -61,17 +61,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	}
 
 	public render() {
-		const {
-			media,
-			startIndex,
-			post,
-			likeDisabled,
-			optLikedByCurrentUser,
-			onLikePost,
-			onViewComments,
-			onGoBack,
-			getText,
-		} = this.props;
+		const { media, startIndex, post, onLikePost, onViewComments, onGoBack, getText } = this.props;
 		const { orientation, activeSlide, viewport, infoVisible } = this.state;
 
 		return (
@@ -83,8 +73,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				viewport={viewport}
 				infoVisible={infoVisible}
 				canReact={!!post}
-				likeDisabled={likeDisabled}
-				likedByCurrentUser={optLikedByCurrentUser}
+				likedByCurrentUser={post!.likedByCurrentUser}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
@@ -140,13 +129,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 export const MediaViewerScreen = (props: INavigationProps) => (
 	<WithMediaViewer>
 		{(media) => (
-			<WithLiking
-				likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}
-				likes={media.data.post ? media.data.post.likes : []}
-				currentUserName={media.data.post ? media.data.post.currentUserName : ''}
-				errors={media.data.errors}
-				navigation={props.navigation}
-			>
+			<WithLiking likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}>
 				{(likes) => (
 					<WithNavigationHandlers navigation={props.navigation}>
 						{(nav) => (

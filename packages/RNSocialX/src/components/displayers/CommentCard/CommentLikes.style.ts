@@ -2,11 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const styles: any = {
-	likesContainer: {
+	container: {
 		position: 'absolute',
-		zIndex: 1,
-	},
-	likesBorder: {
 		flexDirection: 'row',
 		backgroundColor: Colors.white,
 		borderRadius: Sizes.smartHorizontalScale(15),

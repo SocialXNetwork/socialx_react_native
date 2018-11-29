@@ -32,14 +32,14 @@ export { RichText } from './displayers/RichText/RichText';
 export { Notification } from './displayers/Notification';
 export { SearchHeader } from './displayers/SearchHeader';
 export { SearchResults } from './displayers/SearchResults';
-export { UserEntry } from './displayers/UserEntry';
+export { UserEntry, IUserEntryProps } from './displayers/UserEntry';
 export { UserEntries } from './displayers/UserEntries';
 export { SearchTabResults } from './displayers/SearchTabResults';
 export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
 export { TransactionItem } from './displayers/TransactionItem';
-export { WallPost, PostText, RecentLikes, UserDetails } from './displayers/WallPost';
+export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';

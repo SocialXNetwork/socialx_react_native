@@ -137,19 +137,19 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		const { media } = this.props.currentUser;
 		const headerElement = [{ index: uuid() }];
 
-		if (media.length === 0) {
+		if (media.objects.length === 0) {
 			this.setState({
 				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedPhotoIndex < media.length) {
+		} else if (this.lastLoadedPhotoIndex < media.objects.length) {
 			const loadedSize = dataProvider.getSize();
 			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
 			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
-			const newMedia = media
+			const newMedia = media.objects
 				.slice(this.lastLoadedPhotoIndex, endIndex)
-				.map((mediaObject, index: number) => ({
-					url: mediaObject.url,
-					type: mediaObject.type,
+				.map((obj, index: number) => ({
+					hash: obj.hash,
+					type: obj.type,
 					index: this.lastLoadedPhotoIndex + index,
 				}));
 
@@ -164,14 +164,11 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 
 	private onViewMediaHandler = (index: number) => {
 		const {
-			currentUser: { media, recentPosts },
+			currentUser: { media },
 			onViewImage,
 		} = this.props;
 
-		const selectedMedia = media[index];
-		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
-
-		onViewImage(media, index, post);
+		onViewImage(media.objects, index, media.postId);
 	};
 
 	private onProfilePhotoPressHandler = () => {
@@ -180,7 +177,9 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		if (currentUser.avatar.length > 0) {
 			const media = [
 				{
-					url: currentUser.avatar,
+					hash: currentUser.avatar,
+					size: 0,
+					extension: '',
 					type: MediaTypeImage,
 				},
 			];

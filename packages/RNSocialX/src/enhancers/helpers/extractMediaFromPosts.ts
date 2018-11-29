@@ -1,14 +1,14 @@
 import { IApplicationConfig } from '../../store/app/config/Types';
-import { IPostArrayData } from '../../store/data/posts';
-import { IMediaProps, MediaTypeImage, MediaTypeVideo } from '../../types';
+import { IPost } from '../../store/data/posts';
+import { IMedia, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 export const extractMediaFromPosts = (
-	posts: IPostArrayData,
+	posts: IPost[],
 	currentUserId: string,
 	appConfig: IApplicationConfig,
 ) => {
 	return posts.reduce(
-		(acc: IMediaProps[], post) =>
+		(acc: IMedia[], post) =>
 			post.media
 				? acc.concat(
 						post.media.map((media) => ({
@@ -17,9 +17,9 @@ export const extractMediaFromPosts = (
 							type: media.type.name === 'Photo' ? MediaTypeImage : MediaTypeVideo,
 							extension: media.extension,
 							size: media.size,
-							numberOfLikes: post.likes.length,
+							numberOfLikes: post.likes.ids.length,
 							numberOfComments: post.comments.length,
-							likedByCurrentUser: !!post.likes.find((like) => like.owner.alias === currentUserId),
+							likedByCurrentUser: !!post.likes.byId[currentUserId],
 							postId: post.postId,
 						})),
 				  ) // tslint:disable-line indent (tslint bug!!!)

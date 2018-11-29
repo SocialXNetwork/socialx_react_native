@@ -9,12 +9,10 @@ import {
 	getPublicPostsByDate,
 	ICreatePostInput,
 	IDateInput,
-	IPostArrayData,
-	IPostIdInput,
+	IPost,
+	IPostLikeInput,
 	IPostPathInput,
-	IPostReturnData,
 	IRemovePostInput,
-	IUnlikePostInput,
 	IUsernameInput,
 	likePost,
 	loadMoreFriendsPosts,
@@ -28,34 +26,29 @@ import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	all: {
-		[postId: string]: IPostReturnData;
+		[postId: string]: IPost;
 	};
 	global: {
 		canLoadMore: boolean;
-		posts: IPostArrayData;
+		posts: IPost[];
 	};
 	friends: {
 		canLoadMore: boolean;
-		posts: IPostArrayData;
+		posts: IPost[];
 	};
 }
 
 interface IActionProps {
-	createPost: (createPostInput: ICreatePostInput) => void;
+	loadMorePosts: () => void;
+	loadMoreFriendsPosts: () => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
 	resetPostsAndRefetch: () => void;
-	loadMorePosts: () => void;
-	loadMoreFriendsPosts: () => void;
+	createPost: (createPostInput: ICreatePostInput) => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
-	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
-	likePost: (likePostInput: IPostIdInput) => void;
-	// comments
-	// createComment: (createCommentInput: ICreateCommentInput) => void;
-	// removeComment: (removeCommentInput: IRemoveCommentInput) => void;
-	// likeComment: (likeCommentInput: ICommentIdInput) => void;
-	// unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) => void;
+	likePost: (input: IPostLikeInput) => void;
+	unlikePost: (input: IPostLikeInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -109,27 +102,18 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	// @Jake fix typing of IMedia
-	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
-	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
-	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	loadMorePosts: () => dispatch(loadMorePosts()),
 	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
+	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
 	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
+	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
 	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
-	unlikePost: (unlikePostInput: IUnlikePostInput) => dispatch(unlikePost(unlikePostInput)),
-	// comments
-	// createComment: (createCommentInput: ICreateCommentInput) =>
-	// 	dispatch(createComment(createCommentInput)),
-	// removeComment: (removeCommentInput: IRemoveCommentInput) =>
-	// 	dispatch(removeComment(removeCommentInput)),
-	// likeComment: (likeCommentInput: ICommentIdInput) => dispatch(likeComment(likeCommentInput)),
-	// unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
-	// 	dispatch(unlikeComment(unlikeCommentInput)),
+	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
+	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),
 });
 
 export const WithPosts: ConnectedComponentClass<JSX.Element, IChildren> = connect(

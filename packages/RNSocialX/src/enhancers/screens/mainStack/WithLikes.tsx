@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { ILike, INavigationParamsActions, ITranslatedProps } from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 
 export interface IWithLikesEnhancedData {
-	likes: ILike[];
+	likeIds: string[];
 }
 
-export interface IWithLikesEnhancedActions extends ITranslatedProps, INavigationParamsActions {}
+export interface IWithLikesEnhancedActions extends ITranslatedProps {}
 
 interface IUserProfileEnhancedProps {
 	data: IWithLikesEnhancedData;
@@ -29,13 +29,12 @@ export class WithLikes extends React.Component<IWithLikesProps, IWithLikesState>
 			<WithI18n>
 				{({ getText }) => (
 					<WithNavigationParams>
-						{({ setNavigationParams, navigationParams }) =>
+						{({ navigationParams }) =>
 							this.props.children({
 								data: {
-									likes: navigationParams[SCREENS.Likes].likes,
+									likeIds: navigationParams[SCREENS.Likes].likeIds,
 								},
 								actions: {
-									setNavigationParams,
 									getText,
 								},
 							})

@@ -20,13 +20,7 @@ import {
 	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import {
-	ICurrentUser,
-	IError,
-	INavigationProps,
-	ITranslatedProps,
-	IWallPostData,
-} from '../../types';
+import { ICurrentUser, IError, INavigationProps, ITranslatedProps, IWallPost } from '../../types';
 
 import styles, { colors, icons, SCREEN_HEIGHT } from './MyProfileScreen.style';
 
@@ -158,7 +152,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 								<FlatList
 									windowSize={10}
 									data={recentPosts}
-									keyExtractor={(item: IWallPostData) => item.postId}
+									keyExtractor={(item: IWallPost) => item.postId}
 									renderItem={(data) => (
 										<View style={styles.post}>
 											<WallPost

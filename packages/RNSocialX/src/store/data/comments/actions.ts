@@ -3,7 +3,7 @@ import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
 import { IThunk } from '../../types';
-import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { setError } from '../../ui/activities';
 import { syncAddCommentAction, syncRemoveCommentAction } from '../posts';
 import {
 	ActionTypes,
@@ -43,8 +43,6 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 	getState,
 	context,
 ) => {
-	const activityId = uuid();
-
 	const { text, alias, pub, postId } = createCommentInput;
 	const comment = {
 		commentId: uuid(),
@@ -59,17 +57,11 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 
 	try {
 		dispatch(createCommentAction(comment));
-		await dispatch(
-			beginActivity({
-				type: ActionTypes.CREATE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		dispatch(syncAddCommentAction({ postId, comment, error: false }));
+		dispatch(syncAddCommentAction({ postId, commentId: comment.commentId, error: false }));
 		await context.dataApi.comments.createComment({ text, postId });
 	} catch (e) {
 		dispatch(createCommentErrorAction(comment.commentId));
-		dispatch(syncAddCommentAction({ postId, comment, error: true }));
+		dispatch(syncAddCommentAction({ postId, commentId: comment.commentId, error: true }));
 		await dispatch(
 			setError({
 				type: ActionTypes.CREATE_COMMENT,
@@ -77,8 +69,6 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 				uuid: uuid(),
 			}),
 		);
-	} finally {
-		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -99,8 +89,6 @@ export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk =
 	getState,
 	context,
 ) => {
-	const activityId = uuid();
-
 	const { text, alias, pub, commentId, postId } = removeCommentInput;
 	const comment = {
 		commentId: uuid(),
@@ -115,18 +103,11 @@ export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk =
 
 	try {
 		dispatch(removeCommentAction(commentId));
-		await dispatch(
-			beginActivity({
-				type: ActionTypes.REMOVE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		dispatch(syncRemoveCommentAction({ postId, comment, commentId, error: false }));
-		await dataApi.comments.removeComment({ commentId });
+		dispatch(syncRemoveCommentAction({ postId, syncRemoveCommentAction, commentId, error: false }));
+		await context.dataApi.comments.removeComment({ commentId });
 	} catch (e) {
 		dispatch(removeCommentErrorAction(comment));
-		dispatch(syncRemoveCommentAction({ postId, comment, commentId, error: true }));
+		dispatch(syncRemoveCommentAction({ postId, syncRemoveCommentAction, commentId, error: true }));
 		await dispatch(
 			setError({
 				type: ActionTypes.REMOVE_COMMENT,
@@ -134,8 +115,6 @@ export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk =
 				uuid: uuid(),
 			}),
 		);
-	} finally {
-		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -158,18 +137,9 @@ export const likeComment = (likeCommentInput: ILikeCommentInput): IThunk => asyn
 	getState,
 	context,
 ) => {
-	const activityId = uuid();
-
 	try {
 		dispatch(likeCommentAction(likeCommentInput));
-		await dispatch(
-			beginActivity({
-				type: ActionTypes.LIKE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.comments.likeComment(likeCommentInput);
+		await context.dataApi.comments.likeComment(likeCommentInput);
 	} catch (e) {
 		dispatch(likeCommentErrorAction(likeCommentInput));
 		await dispatch(
@@ -179,8 +149,6 @@ export const likeComment = (likeCommentInput: ILikeCommentInput): IThunk => asyn
 				uuid: uuid(),
 			}),
 		);
-	} finally {
-		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -203,17 +171,9 @@ export const unlikeComment = (unlikeCommentInput: ILikeCommentInput): IThunk => 
 	getState,
 	context,
 ) => {
-	const activityId = uuid();
 	try {
 		dispatch(unlikeCommentAction(unlikeCommentInput));
-		await dispatch(
-			beginActivity({
-				type: ActionTypes.UNLIKE_COMMENT,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		await dataApi.comments.unlikeComment(unlikeCommentInput);
+		await context.dataApi.comments.unlikeComment(unlikeCommentInput);
 	} catch (e) {
 		dispatch(unlikeCommentErrorAction(unlikeCommentInput));
 		await dispatch(
@@ -223,7 +183,5 @@ export const unlikeComment = (unlikeCommentInput: ILikeCommentInput): IThunk => 
 				uuid: uuid(),
 			}),
 		);
-	} finally {
-		await dispatch(endActivity({ uuid: activityId }));
 	}
 };

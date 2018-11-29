@@ -12,7 +12,8 @@ import {
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IClearFriendResponseInput,
-	IFriendData,
+	IFriends,
+	IProfiles,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
@@ -24,8 +25,8 @@ import {
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	profiles: IFriendData[];
-	friends: { [key: string]: IFriendData[] };
+	profiles: IProfiles;
+	friends: IFriends;
 }
 
 interface IActionProps {

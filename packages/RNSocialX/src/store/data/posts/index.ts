@@ -8,12 +8,12 @@ export {
 	IPostPathInput,
 	IUsernameInput,
 	IDateInput,
+	IPost,
+	IPostLikeInput,
 } from './Types';
 
 export {
 	ICreatePostInput,
-	IPostArrayData,
-	IPostReturnData,
 	IRemoveCommentInput,
 	IRemovePostInput,
 	IUnlikeCommentInput,

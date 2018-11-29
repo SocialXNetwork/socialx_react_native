@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IError, IMediaProps, ITranslatedProps, IWallPostData } from '../../../types';
+import { IMedia, ITranslatedProps, IWallPost } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
-import { WithActivities } from '../../connectors/ui/WithActivities';
+import { WithPosts } from '../../connectors/data/WithPosts';
+import { WithDataShape } from '../../intermediary';
 
 export interface IWithMediaViewerEnhancedData {
-	errors: IError[];
-	media: IMediaProps[];
+	media: IMedia[];
 	startIndex: number;
-	post?: IWallPostData;
+	post?: IWallPost;
 }
 
 export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {}
@@ -33,21 +33,28 @@ export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWit
 				{({ getText }) => (
 					<WithNavigationParams>
 						{({ navigationParams }) => (
-							<WithActivities>
-								{({ errors }) =>
-									this.props.children({
-										data: {
-											errors,
-											media: navigationParams[SCREENS.MediaViewer].media,
-											startIndex: navigationParams[SCREENS.MediaViewer].startIndex,
-											post: navigationParams[SCREENS.MediaViewer].post,
-										},
-										actions: {
-											getText,
-										},
-									})
-								}
-							</WithActivities>
+							<WithPosts>
+								{({ all }) => {
+									const { media, startIndex, postId } = navigationParams[SCREENS.MediaViewer];
+
+									return (
+										<WithDataShape post={all[postId]}>
+											{({ shapedPost }) =>
+												this.props.children({
+													data: {
+														media,
+														startIndex,
+														post: shapedPost,
+													},
+													actions: {
+														getText,
+													},
+												})
+											}
+										</WithDataShape>
+									);
+								}}
+							</WithPosts>
 						)}
 					</WithNavigationParams>
 				)}

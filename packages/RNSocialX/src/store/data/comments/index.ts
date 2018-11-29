@@ -9,17 +9,11 @@ export {
 	IUnlikeCommentErrorAction,
 	ICreateCommentErrorAction,
 	IRemoveCommentErrorAction,
+	IComment,
+	IComments,
 } from './Types';
 
-export {
-	ICreatePostInput,
-	IPostArrayData,
-	IPostReturnData,
-	IRemovePostInput,
-	IUnlikePostInput,
-	ICommentsReturnData,
-	ILikeData,
-} from '@socialx/api-data';
+export { ICreatePostInput, IRemovePostInput, IUnlikePostInput, ILikeData } from '@socialx/api-data';
 
 export {
 	createComment,

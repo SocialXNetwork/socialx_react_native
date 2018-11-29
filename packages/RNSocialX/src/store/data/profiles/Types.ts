@@ -4,7 +4,6 @@ import {
 	IClearFriendResponseInput,
 	IFriendData,
 	IPostArrayData,
-	IProfileData,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
@@ -12,11 +11,19 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
+export interface IProfile extends IFriendData {}
+
+export interface IProfiles {
+	[alias: string]: IProfile;
+}
+
+export interface IFriends {
+	[alias: string]: IProfile[];
+}
+
 export type IState = DeepReadonly<{
-	profiles: IFriendData[];
-	friends: {
-		[username: string]: IFriendData[];
-	};
+	profiles: IProfiles;
+	friends: IFriends;
 }>;
 
 export interface IUsernameInput {
@@ -82,7 +89,7 @@ export interface IGetCurrentProfileAction extends Action {
 
 export interface ISyncGetCurrentProfileAction extends Action {
 	type: ActionTypes.SYNC_GET_CURRENT_PROFILE;
-	payload: IProfileData;
+	payload: IFriendData;
 }
 
 export interface IGetCurrentFriendsAction extends Action {

@@ -1,25 +1,41 @@
-import {
-	ICommentsReturnData,
-	ICreatePostInput,
-	IPostArrayData,
-	IPostReturnData,
-	IRemovePostInput,
-	IUnlikePostInput,
-} from '@socialx/api-data';
+import { ICreatePostInput, IMedia, IPostReturnData, IRemovePostInput } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
+export interface IPost {
+	postId: string;
+	postText: string;
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	timestamp: number;
+	likes: {
+		ids: string[];
+		byId: {
+			[alias: string]: number;
+		};
+	};
+	comments: string[];
+	media: IMedia[];
+	privatePost: boolean;
+	location?: string;
+	taggedFriends?: Array<{
+		fullName: string;
+	}>;
+}
+
 export type IState = DeepReadonly<{
 	all: {
-		[postId: string]: IPostReturnData;
+		[postId: string]: IPost;
 	};
 	global: {
-		posts: IPostArrayData;
+		posts: IPost[];
 		canLoadMore: boolean;
 		nextToken?: string;
 	};
 	friends: {
-		posts: IPostArrayData;
+		posts: IPost[];
 		canLoadMore: boolean;
 		nextToken?: string;
 	};
@@ -41,6 +57,11 @@ export interface IPostIdInput {
 	postId: string;
 }
 
+export interface IPostLikeInput {
+	alias: string;
+	postId: string;
+}
+
 export interface IProfile {
 	pub: string;
 	email: string;
@@ -48,9 +69,8 @@ export interface IProfile {
 }
 
 export interface ISyncCommentInput {
-	comment: ICommentsReturnData;
+	commentId: string;
 	postId: string;
-	commentId?: string;
 	error: boolean;
 }
 
@@ -68,13 +88,15 @@ export const enum ActionTypes {
 	LOAD_MORE_FRIENDS_POSTS = 'data/posts/LOAD_MORE_FRIENDS_POSTS',
 	SYNC_LOAD_MORE_FRIENDS_POSTS = 'data/posts/SYNC_LOAD_MORE_FRIENDS_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
-	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
+	LIKE_POST = 'data/posts/LIKE_POST',
+	LIKE_POST_ERROR = 'data/comments/LIKE_POST_ERROR',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
-	RESET_POSTS = 'data/posts/RESET_POSTS',
+	UNLIKE_POST_ERROR = 'data/comments/UNLIKE_POST_ERROR',
 	SYNC_ADD_COMMENT = 'data/posts/SYNC_ADD_COMMENT',
 	SYNC_REMOVE_COMMENT = 'data/posts/SYNC_REMOVE_COMMENT',
+	RESET_POSTS = 'data/posts/RESET_POSTS',
 }
 
 export interface IResetPostsAction extends Action {
@@ -88,7 +110,7 @@ export interface IGetPostsByUsernameAction extends Action {
 
 export interface ISyncGetPostsByUserAction extends Action {
 	type: ActionTypes.SYNC_GET_POSTS_BY_USER;
-	payload: IPostArrayData;
+	payload: IPostReturnData[];
 }
 
 export interface IGetPostByPathAction extends Action {
@@ -108,7 +130,7 @@ export interface IGetPublicPostsByDateAction extends Action {
 
 export interface ISyncGetPublicPostsByDateAction extends Action {
 	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE;
-	payload: IPostArrayData;
+	payload: IPostReturnData[];
 }
 
 export interface IGetPostByIdAction extends Action {
@@ -128,7 +150,7 @@ export interface ILoadMorePostsAction extends Action {
 export interface ISyncLoadMorePostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
 	payload: {
-		posts: IPostArrayData;
+		posts: IPostReturnData[];
 		canLoadMore: boolean;
 		nextToken: string;
 	};
@@ -141,7 +163,7 @@ export interface ILoadMoreFriendsPostsAction extends Action {
 export interface ISyncLoadMoreFriendsPostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS;
 	payload: {
-		posts: IPostArrayData;
+		posts: IPostReturnData[];
 		canLoadMore: boolean;
 		nextToken: string;
 	};
@@ -150,11 +172,6 @@ export interface ISyncLoadMoreFriendsPostsAction extends Action {
 export interface ICreatePostAction extends Action {
 	type: ActionTypes.CREATE_POST;
 	payload: ICreatePostInput;
-}
-
-export interface ILikePostAction extends Action {
-	type: ActionTypes.LIKE_POST;
-	payload: IPostIdInput;
 }
 
 export interface IRemovePostAction extends Action {
@@ -167,9 +184,24 @@ export interface ISyncRemovePostAction extends Action {
 	payload: string;
 }
 
+export interface ILikePostAction extends Action {
+	type: ActionTypes.LIKE_POST;
+	payload: IPostLikeInput;
+}
+
+export interface ILikePostErrorAction extends Action {
+	type: ActionTypes.LIKE_POST_ERROR;
+	payload: IPostLikeInput;
+}
+
 export interface IUnlikePostAction extends Action {
 	type: ActionTypes.UNLIKE_POST;
-	payload: IUnlikePostInput;
+	payload: IPostLikeInput;
+}
+
+export interface IUnlikePostErrorAction extends Action {
+	type: ActionTypes.UNLIKE_POST_ERROR;
+	payload: IPostLikeInput;
 }
 
 export interface ISyncAddCommentAction extends Action {
@@ -203,9 +235,11 @@ export type IAction =
 	| ILoadMoreFriendsPostsAction
 	// setters
 	| ICreatePostAction
-	| ILikePostAction
 	| IRemovePostAction
-	| IUnlikePostAction
 	| ISyncRemovePostAction
+	| ILikePostAction
+	| ILikePostErrorAction
+	| IUnlikePostAction
+	| IUnlikePostErrorAction
 	| ISyncAddCommentAction
 	| ISyncRemoveCommentAction;

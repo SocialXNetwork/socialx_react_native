@@ -41,7 +41,6 @@ export class WithCurrentUserContent extends React.Component<
 															currentUser,
 															profiles,
 															activities,
-															IPFS_URL,
 														);
 
 														currentUser.numberOfLikes = posts.reduce(

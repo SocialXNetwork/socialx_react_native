@@ -33,15 +33,10 @@ class Screen extends Component<ICommentsScreenProps> {
 	}
 
 	public render() {
-		const { post, errors, keyboardRaised, navigation } = this.props;
+		const { post, keyboardRaised, navigation } = this.props;
 
 		return (
-			<CommentsScreenView
-				post={post}
-				errors={errors}
-				keyboardRaised={keyboardRaised}
-				navigation={navigation}
-			/>
+			<CommentsScreenView post={post} keyboardRaised={keyboardRaised} navigation={navigation} />
 		);
 	}
 }

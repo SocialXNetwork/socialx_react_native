@@ -9,20 +9,20 @@ import {
 	SuggestionsCarousel,
 	WallPost,
 } from '../../../components';
-import { IError, INavigationProps, ITranslatedProps, IWallPostData } from '../../../types';
+import { IError, INavigationProps, ITranslatedProps, IWallPost } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	avatarImage: string;
-	posts: IWallPostData[];
-	skeletonPost: IWallPostData;
+	posts: IWallPost[];
+	skeletonPost: IWallPost;
 	refreshing: boolean;
 	creatingPost: boolean;
-	shareSectionPlaceholder: string;
+	shareMessage: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
-	scrollRef: React.RefObject<FlatList<IWallPostData>>;
+	scrollRef: React.RefObject<FlatList<IWallPost>>;
 	scrollY: AnimatedValue;
 	errors: IError[];
 	onRefresh: () => void;
@@ -41,7 +41,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 			refreshing,
 			canLoadMorePosts,
 			onCreateWallPost,
-			shareSectionPlaceholder,
+			shareMessage,
 			scrollRef,
 			scrollY,
 			skeletonPost,
@@ -68,9 +68,9 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 						keyboardShouldPersistTaps="handled"
 						ListHeaderComponent={
 							<ShareSection
-								avatarImage={avatarImage}
+								avatar={avatarImage}
+								message={shareMessage}
 								onCreateWallPost={onCreateWallPost}
-								sharePlaceholder={shareSectionPlaceholder}
 							/>
 						}
 						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
@@ -84,7 +84,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		);
 	}
 
-	private renderWallPosts = (data: { item: IWallPostData; index: number }) => {
+	private renderWallPosts = (data: { item: IWallPost; index: number }) => {
 		const { skeletonPost, errors, navigation, getText, onAddComment } = this.props;
 		const post = data.item;
 

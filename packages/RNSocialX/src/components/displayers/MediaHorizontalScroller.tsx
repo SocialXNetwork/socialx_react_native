@@ -8,7 +8,7 @@ import { ITranslatedProps } from '../../types';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface IMediaHorizontalScrollerProps extends ITranslatedProps {
-	mediaURIs: string[];
+	hashes: string[];
 }
 
 const scrollViewRef: React.RefObject<ScrollView> = React.createRef();
@@ -20,27 +20,27 @@ const onScrollContentSizeChange = () => {
 };
 
 export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> = ({
-	mediaURIs,
+	hashes,
 	getText,
 }) => {
 	return (
 		<ScrollView
 			ref={scrollViewRef}
-			contentContainerStyle={style.scrollContent}
+			contentContainerStyle={style.container}
 			horizontal={true}
 			alwaysBounceHorizontal={false}
 			showsHorizontalScrollIndicator={false}
 			onContentSizeChange={onScrollContentSizeChange}
 		>
-			{mediaURIs.map((mediaURI) => (
+			{hashes.map((hash) => (
 				<MediaObjectViewer
-					key={mediaURI}
-					uri={mediaURI}
+					key={hash}
+					hash={hash}
 					thumbOnly={true}
 					style={[
-						style.mediaObject,
+						style.media,
 						{
-							width: mediaURIs.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
+							width: hashes.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
 						},
 					]}
 					getText={getText}
@@ -50,13 +50,13 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 	);
 };
 
-const style: any = StyleSheet.create({
-	scrollContent: {
+const style = StyleSheet.create({
+	container: {
 		minWidth: '100%',
 		height: '100%',
 		justifyContent: 'center',
 	},
-	mediaObject: {
+	media: {
 		height: '100%',
 		paddingHorizontal: Sizes.smartHorizontalScale(3),
 	},

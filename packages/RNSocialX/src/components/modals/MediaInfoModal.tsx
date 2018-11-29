@@ -5,15 +5,15 @@ import Modal from 'react-native-modal';
 
 import { IMediaTypes, ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
+
 import styles from './MediaInfoModal.style';
 
 interface IMediaInfoModalProps extends ITranslatedProps {
 	visible: boolean;
-	mediaHash: string;
-	mediaSize: number;
-	mediaType: IMediaTypes;
-	mediaURL: string;
-	closeHandler: () => void;
+	hash: string;
+	size: number;
+	type: IMediaTypes;
+	onCloseHandler: () => void;
 }
 
 const openURL = async (url: string, errorText: string) => {
@@ -31,11 +31,10 @@ const openURL = async (url: string, errorText: string) => {
 
 export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 	visible,
-	mediaHash,
-	mediaSize,
-	mediaType,
-	mediaURL,
-	closeHandler,
+	hash,
+	size,
+	type,
+	onCloseHandler,
 	getText,
 }) => (
 	<WithManagedTransitions modalVisible={visible}>
@@ -47,8 +46,8 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 				backdropOpacity={0.5}
 				animationIn="zoomIn"
 				animationOut="zoomOut"
-				onBackButtonPress={closeHandler}
-				onBackdropPress={closeHandler}
+				onBackButtonPress={onCloseHandler}
+				onBackdropPress={onCloseHandler}
 				style={styles.container}
 			>
 				<View style={styles.boxContainer}>
@@ -60,18 +59,14 @@ export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
 							<Text style={styles.fieldTitle}>{getText('media.info.type')}</Text>
 						</View>
 						<View style={{ flex: 1 }}>
-							<Text
-								style={[styles.fieldValue, styles.filedValueLink]}
-								numberOfLines={1}
-								onPress={() => openURL(mediaURL, getText('message.link.not.supported'))}
-							>
-								{mediaHash}
+							<Text style={[styles.fieldValue, styles.filedValueLink]} numberOfLines={1}>
+								{hash}
 							</Text>
 							<Text style={styles.fieldValue} numberOfLines={1}>
-								{numeral(mediaSize).format('0.00 b')}
+								{numeral(size).format('0.00 b')}
 							</Text>
 							<Text style={styles.fieldValue} numberOfLines={1}>
-								{getText('media.types.' + mediaType.name.toLowerCase())}
+								{getText('media.types.' + type.name.toLowerCase())}
 							</Text>
 						</View>
 					</View>

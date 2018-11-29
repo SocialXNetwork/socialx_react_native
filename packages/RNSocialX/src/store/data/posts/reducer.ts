@@ -4,14 +4,6 @@ import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
-		case ActionTypes.CREATE_POST: {
-			return state;
-		}
-
-		case ActionTypes.LIKE_POST: {
-			return state;
-		}
-
 		case ActionTypes.GET_PUBLIC_POSTS_BY_DATE: {
 			return state;
 		}
@@ -33,19 +25,52 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POSTS_BY_USER: {
-			const updatedPosts = action.payload.reduce(
-				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-					newPost,
-				],
-				[...state.global.posts],
-			);
+			// const updatedPosts = action.payload.reduce(
+			// 	(updatedPostsAcc, newPost) => [
+			// 		...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
+			// 		newPost,
+			// 	],
+			// 	[...state.global.posts],
+			// );
+
+			// return {
+			// 	...state,
+			// 	global: {
+			// 		...state.global,
+			// 		posts: updatedPosts,
+			// 	},
+			// };
+
+			const all = { ...state.all };
+			for (const post of action.payload) {
+				const byId: any = {};
+				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+				for (const like of sortedLikes) {
+					byId[like.owner.alias] = like.timestamp;
+				}
+
+				const shapedPost = {
+					...post,
+					likes: {
+						ids: post.likes.map((like) => like.owner.alias),
+						byId,
+					},
+					comments: post.comments
+						.sort((x, y) => x.timestamp - y.timestamp)
+						.map((comm) => comm.commentId),
+				};
+				all[post.postId] = shapedPost;
+			}
+
 			return {
 				...state,
-				global: {
-					...state.global,
-					posts: updatedPosts,
-				},
+				all,
+				// global: {
+				// 	canLoadMore: action.payload.canLoadMore,
+				// 	nextToken: action.payload.nextToken,
+				// 	posts: updatedPosts,
+				// },
 			};
 		}
 
@@ -54,11 +79,27 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POST_BY_ID: {
+			const byId: any = {};
+			const sortedLikes = action.payload.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+			for (const like of sortedLikes) {
+				byId[like.owner.alias] = like.timestamp;
+			}
+
 			return {
 				...state,
 				all: {
 					...state.all,
-					[action.payload.postId]: action.payload,
+					[action.payload.postId]: {
+						...action.payload,
+						likes: {
+							ids: action.payload.likes.map((like) => like.owner.alias),
+							byId,
+						},
+						comments: action.payload.comments
+							.sort((x, y) => x.timestamp - y.timestamp)
+							.map((comm) => comm.commentId),
+					} as any,
 				},
 			};
 		}
@@ -68,27 +109,44 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_LOAD_MORE_POSTS: {
-			const updatedPosts = action.payload.posts.reduce(
-				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-					newPost,
-				],
-				[...state.global.posts],
-			);
+			// const updatedPosts = action.payload.posts.reduce(
+			// 	(updatedPostsAcc, newPost) => [
+			// 		...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
+			// 		newPost,
+			// 	],
+			// 	[...state.global.posts],
+			// );
 
 			const all = { ...state.all };
 			for (const post of action.payload.posts) {
-				all[post.postId] = post;
+				const byId: any = {};
+				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+				for (const like of sortedLikes) {
+					byId[like.owner.alias] = like.timestamp;
+				}
+
+				const shapedPost = {
+					...post,
+					likes: {
+						ids: post.likes.map((like) => like.owner.alias),
+						byId,
+					},
+					comments: post.comments
+						.sort((x, y) => x.timestamp - y.timestamp)
+						.map((comm) => comm.commentId),
+				};
+				all[post.postId] = shapedPost;
 			}
 
 			return {
 				...state,
 				all,
-				global: {
-					canLoadMore: action.payload.canLoadMore,
-					nextToken: action.payload.nextToken,
-					posts: updatedPosts,
-				},
+				// global: {
+				// 	canLoadMore: action.payload.canLoadMore,
+				// 	nextToken: action.payload.nextToken,
+				// 	posts: updatedPosts,
+				// },
 			};
 		}
 
@@ -97,29 +155,49 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS: {
-			const updatedPosts = action.payload.posts.reduce(
-				(updatedPostsAcc, newPost) => [
-					...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-					newPost,
-				],
-				[...state.friends.posts],
-			);
-
+			// const updatedPosts = action.payload.posts.reduce(
+			// 	(updatedPostsAcc, newPost) => [
+			// 		...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
+			// 		newPost,
+			// 	],
+			// 	[...state.friends.posts],
+			// );
 			const all = { ...state.all };
 			for (const post of action.payload.posts) {
-				all[post.postId] = post;
+				const byId: any = {};
+				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+				for (const like of sortedLikes) {
+					byId[like.owner.alias] = like.timestamp;
+				}
+
+				const shapedPost = {
+					...post,
+					likes: {
+						ids: post.likes.map((like) => like.owner.alias),
+						byId,
+					},
+					comments: post.comments
+						.sort((x, y) => x.timestamp - y.timestamp)
+						.map((comm) => comm.commentId),
+				};
+				all[post.postId] = shapedPost;
 			}
 
 			return {
 				...state,
 				all,
-				friends: {
-					...state.friends,
-					posts: updatedPosts,
-					canLoadMore: action.payload.canLoadMore,
-					nextToken: action.payload.nextToken,
-				},
+				// friends: {
+				// 	...state.friends,
+				// 	posts: updatedPosts,
+				// 	canLoadMore: action.payload.canLoadMore,
+				// 	nextToken: action.payload.nextToken,
+				// },
 			};
+		}
+
+		case ActionTypes.CREATE_POST: {
+			return state;
 		}
 
 		case ActionTypes.REMOVE_POST: {
@@ -138,12 +216,100 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.LIKE_POST: {
+			const timestamp = Number(new Date(Date.now()));
+			const { postId, alias } = action.payload;
+
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						likes: {
+							...state.all[postId].likes,
+							ids: [...state.all[postId].likes.ids, alias],
+							byId: {
+								...state.all[postId].likes.byId,
+								[alias]: timestamp,
+							},
+						},
+					},
+				},
+			};
+		}
+
+		case ActionTypes.LIKE_POST_ERROR: {
+			const { postId, alias } = action.payload;
+			const {
+				[alias]: {},
+				...updatedLikes
+			} = state.all[postId].likes.byId;
+
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						likes: {
+							...state.all[postId].likes,
+							ids: state.all[postId].likes.ids.filter((id) => id !== alias),
+							byId: updatedLikes,
+						},
+					},
+				},
+			};
+		}
+
 		case ActionTypes.UNLIKE_POST: {
-			return state;
+			const { postId, alias } = action.payload;
+			const {
+				[alias]: {},
+				...updatedLikes
+			} = state.all[postId].likes.byId;
+
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						likes: {
+							...state.all[postId].likes,
+							ids: state.all[postId].likes.ids.filter((id) => id !== alias),
+							byId: updatedLikes,
+						},
+					},
+				},
+			};
+		}
+
+		case ActionTypes.UNLIKE_POST_ERROR: {
+			const timestamp = Number(new Date(Date.now()));
+			const { postId, alias } = action.payload;
+
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						likes: {
+							...state.all[postId].likes,
+							ids: [...state.all[postId].likes.ids, alias],
+							byId: {
+								...state.all[postId].likes.byId,
+								[alias]: timestamp,
+							},
+						},
+					},
+				},
+			};
 		}
 
 		case ActionTypes.SYNC_ADD_COMMENT: {
-			const { postId, comment, error } = action.payload;
+			const { postId, commentId, error } = action.payload;
 
 			if (error) {
 				return {
@@ -152,9 +318,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 						...state.all,
 						[postId]: {
 							...state.all[postId],
-							comments: state.all[postId].comments.filter(
-								(comm) => comm.commentId !== comment.commentId,
-							),
+							comments: state.all[postId].comments.filter((comm) => comm !== commentId),
 						},
 					},
 				};
@@ -165,7 +329,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 						...state.all,
 						[postId]: {
 							...state.all[postId],
-							comments: [...state.all[postId].comments, comment],
+							comments: [...state.all[postId].comments, commentId],
 						},
 					},
 				};
@@ -173,7 +337,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_REMOVE_COMMENT: {
-			const { postId, comment, commentId, error } = action.payload;
+			const { postId, commentId, error } = action.payload;
 
 			if (error) {
 				return {
@@ -182,7 +346,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 						...state.all,
 						[postId]: {
 							...state.all[postId],
-							comments: [...state.all[postId].comments, comment],
+							comments: [...state.all[postId].comments, commentId],
 						},
 					},
 				};
@@ -193,7 +357,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 						...state.all,
 						[postId]: {
 							...state.all[postId],
-							comments: state.all[postId].comments.filter((comm) => comm.commentId !== commentId),
+							comments: state.all[postId].comments.filter((comm) => comm !== commentId),
 						},
 					},
 				};
