@@ -28,7 +28,7 @@
             tools:replace="android:allowBackup">
         <activity 
         android:name=".VideoActivity" 
-        android:configChanges="screenSize|screenLayout|keyboardHidden"       
+        android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"       
         >
         </activity>
         <activity

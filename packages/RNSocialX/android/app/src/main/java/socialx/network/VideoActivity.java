@@ -14,17 +14,25 @@ import android.widget.Toast;
 import android.widget.VideoView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.KeyEvent;
+import android.view.ViewGroup;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.content.res.Configuration;
+import android.content.pm.ActivityInfo;
 
 public class VideoActivity extends AppCompatActivity {
     private static ProgressDialog progressDialog;
+
+    private int currentVolume;
+    private boolean highSoundEnabled = true;
+    private boolean muteSoundEnabled = false;
 
     private String videoPath;
     private GestureDetector gestureDetector;
@@ -35,6 +43,7 @@ public class VideoActivity extends AppCompatActivity {
     private ImageButton sound_mute;
     private RelativeLayout relativeLayout;
     private MediaController mediaController;
+    private AudioManager audioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +56,6 @@ public class VideoActivity extends AppCompatActivity {
         close_fullscreen = (ImageButton) findViewById(R.id.close_fullscreen);
         sound_high = (ImageButton) findViewById(R.id.sound_high);
         sound_mute = (ImageButton) findViewById(R.id.sound_mute);
-
-        close_fullscreen.setVisibility(View.GONE);
-        sound_mute.setVisibility(View.GONE);
-        sound_high.setVisibility(View.GONE);
 
         close_fullscreen.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -73,7 +78,10 @@ public class VideoActivity extends AppCompatActivity {
                     sound_high.setVisibility(View.GONE);
                     sound_mute.setVisibility(View.VISIBLE);
 
-                    mediaPlayer.setVolume(0, 0);
+                    mediaPlayer.setVolume(0f, 0f);
+
+                    highSoundEnabled = false;
+                    muteSoundEnabled = true;
 
                     return true;
                 }
@@ -89,7 +97,10 @@ public class VideoActivity extends AppCompatActivity {
                     sound_mute.setVisibility(View.GONE);
                     sound_high.setVisibility(View.VISIBLE);
 
-                    mediaPlayer.setVolume(0, 1);
+                    mediaPlayer.setVolume(1f, 1f);
+
+                    highSoundEnabled = true;
+                    muteSoundEnabled = false;
 
                     return true;
                 }
@@ -114,13 +125,27 @@ public class VideoActivity extends AppCompatActivity {
         try {
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
-            close_fullscreen.setVisibility(View.VISIBLE);
-            sound_high.setVisibility(View.VISIBLE);
-
             mediaController = new MediaController(VideoActivity.this){
                 @Override
                 public void hide() {
-                    // Overwrite the default hide stub (don't hide the MediaController as default)
+                    super.hide();
+                    close_fullscreen.setVisibility(View.GONE);
+                    sound_high.setVisibility(View.GONE);
+                    sound_mute.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void show() {
+                    super.show(0);
+                    close_fullscreen.setVisibility(View.VISIBLE);
+
+                    if(!highSoundEnabled){
+                        sound_mute.setVisibility(View.VISIBLE);
+                        sound_high.setVisibility(View.GONE);
+                    } else if(!muteSoundEnabled){
+                        sound_high.setVisibility(View.VISIBLE);
+                        sound_mute.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
@@ -139,29 +164,15 @@ public class VideoActivity extends AppCompatActivity {
             };
             mediaController.setAnchorView(myVideoView);
 
-            relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout);
-            myVideoView.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent motion) {
-                    if(relativeLayout.getVisibility() == View.VISIBLE) {
-                        if(gestureDetector.onTouchEvent(motion)) {
-                            mediaController.setVisibility(View.VISIBLE);
-                            close_fullscreen.setVisibility(View.VISIBLE);
-
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-            });
-        
             Uri video = Uri.parse(videoPath);
             myVideoView.setMediaController(mediaController);
             myVideoView.setVideoURI(video);
             myVideoView.requestFocus();
             myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
+                    close_fullscreen.setVisibility(View.VISIBLE);
+                    sound_high.setVisibility(View.VISIBLE);
+                    
                     mediaPlayer = mp;
                     progressDialog.dismiss();
                     if(BridgeModule.duration!=0)
@@ -181,6 +192,37 @@ public class VideoActivity extends AppCompatActivity {
         @Override
         public boolean onSingleTapUp(MotionEvent event) {
             return true;
+        }
+    }
+
+    private int getCurrentVolume() {
+        audioManager = (AudioManager) getSystemService(this.AUDIO_SERVICE);
+        currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+        return currentVolume;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            LayoutParams layoutParams =  new LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            myVideoView.setLayoutParams(layoutParams);
+
+            myVideoView.pause();
+        }
+
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            LayoutParams layoutParams =  new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            myVideoView.setLayoutParams(layoutParams);
+
+            myVideoView.pause();
         }
     }
 }

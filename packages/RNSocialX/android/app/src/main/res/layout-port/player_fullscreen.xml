@@ -26,7 +26,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:padding="10dp"
-        android:background="@color/button_background"
+        android:background="@drawable/icon_background"
+        android:visibility="gone"
     />
 
     <ImageButton
@@ -35,13 +36,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:visibility="visible"
         android:src="@drawable/volume_high"
         android:tint="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:padding="10dp"
-        android:background="@color/button_background"
+        android:background="@drawable/icon_background"
+        android:visibility="gone"
     />
 
     <ImageButton
@@ -51,12 +52,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/volume_mute"
-        android:visibility="gone"
         android:tint="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:padding="10dp"
-        android:background="@color/button_background"
+        android:background="@drawable/icon_background"
+        android:visibility="gone"
     />
 
 </RelativeLayout>
