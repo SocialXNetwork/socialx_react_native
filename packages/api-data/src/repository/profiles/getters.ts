@@ -150,7 +150,7 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 			}
 			const sanitizedProfile = cleanGunMetaFromObject(currentProfileData);
 			getProfileNumberOfFriends(context, sanitizedProfile, (numberOfFriends) => {
-				return callback(null, { ...sanitizedProfile, numberOfFriends });
+				return callback(null, { ...sanitizedProfile, numberOfFriends, posts: [] });
 			});
 		},
 		{ wait: 1000 },
