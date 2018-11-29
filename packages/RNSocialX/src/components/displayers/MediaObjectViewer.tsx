@@ -5,7 +5,6 @@ import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
-import { OS_TYPES } from '../../environment/consts';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
@@ -16,6 +15,7 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	onPress?: () => void;
 	onDoublePress?: () => void;
 	canZoom?: boolean;
+	resizeMode?: 'cover' | 'contain' | 'stretch';
 }
 
 const getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: string) => {
@@ -38,10 +38,6 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	type,
 	getText,
 	canZoom = false,
-	muted = false,
-	thumbOnly,
-	paused = true,
-	resizeToChangeAspectRatio = false,
 	onPress = () => undefined,
 	onDoublePress = () => undefined,
 }) => {
@@ -88,13 +84,9 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 			{mediaMimeType && mediaMimeType.startsWith(MediaTypeVideo.key) && (
 				<VideoPlayer
 					videoURL={uri}
-					onPressVideo={onPress}
 					containerStyle={customStyle}
-					muted={muted}
-					thumbOnly={thumbOnly}
-					resizeMode={resizeMode}
-					resizeToChangeAspectRatio={resizeToChangeAspectRatio}
-					paused={paused}
+					replayVideoText={getText('media.types.video.replay')}
+					thumbOnly={false}
 				/>
 			)}
 		</View>

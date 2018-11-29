@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, colorWithAlpha, Sizes } from '../../../environment/theme';
+import { Colors, colorWithAlpha, Fonts, Sizes } from '../../../environment/theme';
 
 const styles: any = {
 	container: {
@@ -12,7 +12,34 @@ const styles: any = {
 	playIcon: {
 		fontSize: Sizes.smartHorizontalScale(50),
 		lineHeight: Sizes.smartHorizontalScale(50),
+		color: Colors.white,
+	},
+	resizeIcon: {
+		fontSize: Sizes.smartHorizontalScale(20),
+		lineHeight: Sizes.smartHorizontalScale(20),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
+		paddingVertical: Sizes.smartVerticalScale(5),
+		color: Colors.white,
+	},
+	darkBackground: {
+		height: '100%',
+		width: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: colorWithAlpha(Colors.black, 0.6),
+	},
+	replayVideoText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.white,
+		lineHeight: Sizes.smartVerticalScale(16),
+		paddingTop: Sizes.smartVerticalScale(2),
+		textAlign: 'center',
+	},
+	replayIcon: {
+		textAlign: 'center',
+		fontSize: Sizes.smartHorizontalScale(40),
+		lineHeight: Sizes.smartHorizontalScale(40),
 		color: Colors.white,
 	},
 	muteButton: {
@@ -21,8 +48,8 @@ const styles: any = {
 		right: 0,
 		paddingBottom: Sizes.smartVerticalScale(10),
 	},
-	smallControlIcon: {
-		fontSize: Sizes.smartHorizontalScale(20),
+	volumeIcon: {
+		fontSize: Sizes.smartHorizontalScale(30),
 		lineHeight: Sizes.smartHorizontalScale(29),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 		color: Colors.white,
