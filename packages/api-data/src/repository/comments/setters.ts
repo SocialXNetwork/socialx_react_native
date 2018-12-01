@@ -24,7 +24,7 @@ const loadAllMetas = (gun: IGunInstance, cb: any) => {
 export const createComment = (
 	context: IContext,
 	createCommentInput: ICreateCommentInput,
-	callback: IGunCallback<null>,
+	callback: IGunCallback<string>,
 ) => {
 	const { account, gun } = context;
 	const errPrefix = 'failed to create comment';
@@ -93,7 +93,8 @@ export const createComment = (
 						}),
 					);
 				}
-				return callback(null);
+				// for optimistic updates
+				return callback(commentId);
 			});
 	};
 	mainRunner();

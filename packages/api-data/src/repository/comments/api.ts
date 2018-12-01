@@ -7,7 +7,7 @@ import { resolveCallback } from '../../utils/helpers';
 import { IRemoveCommentInput, IUnlikeCommentInput } from './types';
 
 export default (context: IContext) => ({
-	createComment: async (createCommentInput: { text: string; postId: string }): Promise<null> => {
+	createComment: async (createCommentInput: { text: string; postId: string }): Promise<string> => {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.createComment.validate(createCommentInput, {
@@ -19,11 +19,17 @@ export default (context: IContext) => ({
 			});
 		}
 
-		return new Promise<null>((resolve, reject) => {
+		return new Promise<string>((resolve, reject) => {
 			setters.createComment(
 				context,
 				validatedInput as { text: string; postId: string },
-				resolveCallback(resolve, reject),
+				(err, res) => {
+					if (err) {
+						reject(err);
+					}
+
+					resolve(res);
+				},
 			);
 		});
 	},
