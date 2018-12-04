@@ -17,7 +17,7 @@ import { resolveCallback } from '../../utils/helpers';
 
 export default function(context: IContext) {
 	const api = {
-		createPost: async (createPostInput: ICreatePostInput): Promise<null> => {
+		createPost: async (createPostInput: ICreatePostInput): Promise<string> => {
 			let validatedInput: any;
 			try {
 				validatedInput = await schemas.postData.validate(createPostInput, {
@@ -29,12 +29,13 @@ export default function(context: IContext) {
 				});
 			}
 
-			return new Promise<null>((resolve, reject) => {
-				setters.createPost(
-					context,
-					validatedInput as ICreatePostInput,
-					resolveCallback(resolve, reject),
-				);
+			return new Promise<string>((resolve, reject) => {
+				setters.createPost(context, validatedInput as ICreatePostInput, (err, res) => {
+					if (err) {
+						reject(err);
+					}
+					resolve(res);
+				});
 			});
 		},
 		async getPostById(getPostById: IGetPostByIdInput): Promise<IPostReturnData> {

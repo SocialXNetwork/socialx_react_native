@@ -54,7 +54,7 @@ const loadAllMetasAndPass = (gun: IGunInstance, cb: any) => {
 export const createPost = (
 	context: IContext,
 	createPostInput: ICreatePostInput,
-	callback: IGunCallback<null>,
+	callback: IGunCallback<string>,
 ) => {
 	const { account, gun } = context;
 	if (!account.is) {
@@ -185,7 +185,7 @@ export const createPost = (
 					);
 				}
 
-				return callback(null);
+				return callback(null, postId);
 			},
 		);
 
