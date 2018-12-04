@@ -191,7 +191,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 						this.onReportAProblemHandler(true, subject, description)
 					}
 					declineHandler={() => this.onReportAProblemHandler(false)}
-					marginBottom={marginBottom}
 					getText={getText}
 				/>
 				{isCommentsScreen && (

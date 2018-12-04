@@ -97,10 +97,6 @@ export interface INavigationParamsActions {
 	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) => void;
 }
 
-export interface IResizeProps {
-	marginBottom: number;
-}
-
 export interface IConfirmationModalProps {
 	title?: string;
 	message?: string;

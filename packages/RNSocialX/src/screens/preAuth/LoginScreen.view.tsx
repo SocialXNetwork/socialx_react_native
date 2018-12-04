@@ -12,7 +12,6 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { KeyboardContext } from '../../environment/consts';
 import { IError, ITranslatedProps } from '../../types';
 
 import style, { customStyleProps } from './LoginScreen.style';
@@ -31,98 +30,94 @@ interface ILoginScreenData {
 }
 
 const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors }) => (
-	<KeyboardContext.Consumer>
-		{({ safeRunAfterKeyboardHide }) => (
-			<Formik
-				// TODO: later remove isInitialValid + set initialValues to ''
-				isInitialValid={true}
-				initialValues={{
-					userName: '',
-					password: '',
-				}}
-				validate={({ userName, password }: ILoginScreenData) => {
-					const errors: FormikErrors<ILoginScreenData> = {};
-					if (!userName) {
-						errors.userName = getText('login.username.required');
-					}
-					if (!password) {
-						errors.password = getText('login.password.required');
-					}
-					return errors;
-				}}
-				onSubmit={(values: ILoginScreenData) => {
-					safeRunAfterKeyboardHide(() => onLogin(values.userName, values.password));
-					Keyboard.dismiss();
-				}}
-				render={({
-					values: { userName, password },
-					errors,
-					handleSubmit,
-					touched,
-					isValid,
-					setFieldValue,
-					setFieldTouched,
-				}: FormikProps<ILoginScreenData>) => (
-					<React.Fragment>
-						<PrimaryTextInput
-							icon="md-person"
-							placeholder={getText('login.username.input')}
-							placeholderColor={customStyleProps.inputPlaceholderColor}
-							returnKeyType={TRKeyboardKeys.next}
-							keyboardType={TKeyboardKeys.emailAddress}
-							value={userName}
-							onChangeText={(value: string) => {
-								setFieldValue('userName', value);
-								setFieldTouched('userName');
-							}}
-							focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('userName')}
-							onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
-							ref={usernameRef}
-						/>
-						{touched.userName && errors.userName && (
-							<Text style={style.errorText}>{errors.userName}</Text>
-						)}
-						<View style={style.passwordContainer}>
-							<PrimaryTextInput
-								icon="ios-lock"
-								placeholder={getText('login.password.input')}
-								placeholderColor={customStyleProps.inputPlaceholderColor}
-								returnKeyType={TRKeyboardKeys.go}
-								onSubmitPressed={handleSubmit}
-								isPassword={true}
-								blurOnSubmit={true}
-								value={password}
-								onChangeText={(value: string) => {
-									setFieldValue('password', value);
-									setFieldTouched('password');
-								}}
-								focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('password')}
-								ref={passwordRef}
-							/>
-							{touched.password && errors.password && (
-								<Text style={style.errorText}>{errors.password}</Text>
-							)}
-						</View>
-						<View style={style.authErrorContainer}>
-							{authErrors.map((error) => (
-								<Text style={style.authError} key={error.uuid}>
-									{getText(`error.${error.type}`)}
-								</Text>
-							))}
-						</View>
-						<View style={style.fullWidth}>
-							<PrimaryButton
-								label={getText('login.login.button')}
-								onPress={handleSubmit}
-								disabled={!isValid}
-								borderColor={customStyleProps.borderTransparent}
-							/>
-						</View>
-					</React.Fragment>
+	<Formik
+		// TODO: later remove isInitialValid + set initialValues to ''
+		isInitialValid={true}
+		initialValues={{
+			userName: '',
+			password: '',
+		}}
+		validate={({ userName, password }: ILoginScreenData) => {
+			const errors: FormikErrors<ILoginScreenData> = {};
+			if (!userName) {
+				errors.userName = getText('login.username.required');
+			}
+			if (!password) {
+				errors.password = getText('login.password.required');
+			}
+			return errors;
+		}}
+		onSubmit={(values: ILoginScreenData) => {
+			onLogin(values.userName, values.password);
+			Keyboard.dismiss();
+		}}
+		render={({
+			values: { userName, password },
+			errors,
+			handleSubmit,
+			touched,
+			isValid,
+			setFieldValue,
+			setFieldTouched,
+		}: FormikProps<ILoginScreenData>) => (
+			<React.Fragment>
+				<PrimaryTextInput
+					icon="md-person"
+					placeholder={getText('login.username.input')}
+					placeholderColor={customStyleProps.inputPlaceholderColor}
+					returnKeyType={TRKeyboardKeys.next}
+					keyboardType={TKeyboardKeys.emailAddress}
+					value={userName}
+					onChangeText={(value: string) => {
+						setFieldValue('userName', value);
+						setFieldTouched('userName');
+					}}
+					focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('userName')}
+					onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
+					ref={usernameRef}
+				/>
+				{touched.userName && errors.userName && (
+					<Text style={style.errorText}>{errors.userName}</Text>
 				)}
-			/>
+				<View style={style.passwordContainer}>
+					<PrimaryTextInput
+						icon="ios-lock"
+						placeholder={getText('login.password.input')}
+						placeholderColor={customStyleProps.inputPlaceholderColor}
+						returnKeyType={TRKeyboardKeys.go}
+						onSubmitPressed={handleSubmit}
+						isPassword={true}
+						blurOnSubmit={true}
+						value={password}
+						onChangeText={(value: string) => {
+							setFieldValue('password', value);
+							setFieldTouched('password');
+						}}
+						focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('password')}
+						ref={passwordRef}
+					/>
+					{touched.password && errors.password && (
+						<Text style={style.errorText}>{errors.password}</Text>
+					)}
+				</View>
+				<View style={style.authErrorContainer}>
+					{authErrors.map((error) => (
+						<Text style={style.authError} key={error.uuid}>
+							{getText(`error.${error.type}`)}
+						</Text>
+					))}
+				</View>
+				<View style={style.fullWidth}>
+					<PrimaryButton
+						label={getText('login.login.button')}
+						onPress={handleSubmit}
+						disabled={!isValid}
+						borderColor={customStyleProps.borderTransparent}
+					/>
+				</View>
+			</React.Fragment>
 		)}
-	</KeyboardContext.Consumer>
+	/>
 );
 
 interface ILoginScreenViewProps extends ITranslatedProps {

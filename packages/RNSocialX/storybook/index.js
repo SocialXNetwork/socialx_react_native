@@ -3,9 +3,6 @@ import React, { Component } from 'react';
 import { getStorybookUI, configure } from '@storybook/react-native';
 import SplashScreen from 'react-native-smart-splash-screen';
 
-import { KeyboardContext } from '../src/environment/consts';
-import { ManagedKeyboard } from '../src/components/managedTransitions';
-
 import './rn-addons';
 
 // import stories (components or screens)
@@ -34,13 +31,7 @@ class StorybookUIHMRRoot extends Component {
   render() {
     return (
       <Root>
-        <ManagedKeyboard>
-          {(keyboardContextProps) => (
-            <KeyboardContext.Provider value={keyboardContextProps}>
-              <StorybookUIRoot/>
-            </KeyboardContext.Provider>
-          )}
-        </ManagedKeyboard>
+        <StorybookUIRoot/>
       </Root>
     );
   }
