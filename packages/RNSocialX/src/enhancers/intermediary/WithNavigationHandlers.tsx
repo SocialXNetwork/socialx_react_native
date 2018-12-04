@@ -4,9 +4,10 @@ import { Keyboard } from 'react-native';
 import { SCREENS, TABS } from '../../environment/consts';
 import { IMedia, INavigationProps } from '../../types';
 
-import { IPostReturnData } from '@socialx/api-data';
-import { WithAggregations } from '../connectors/aggregations/WithAggregations';
+import { IProfile } from '../../store/data/profiles';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
+import { WithPosts } from '../connectors/data/WithPosts';
+import { WithProfiles } from '../connectors/data/WithProfiles';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithNavigationHandlersEnhancedActions {
@@ -27,7 +28,7 @@ interface IWithNavigationHandlersProps extends INavigationProps {
 
 export class WithNavigationHandlers extends React.Component<IWithNavigationHandlersProps> {
 	private actions: {
-		getUserPosts: (input: { username: string }) => void;
+		getUserPosts: (alias: string) => void;
 		setNavigationParams: (input: any) => void;
 	} = {
 		getUserPosts: () => undefined,
@@ -38,34 +39,38 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		return (
 			<WithNavigationParams>
 				{({ setNavigationParams }) => (
-					<WithAggregations>
-						{({ userPosts, getUserPosts }) => (
-							<WithCurrentUser>
-								{({ currentUser }) => {
-									this.actions = {
-										getUserPosts,
-										setNavigationParams,
-									};
+					<WithPosts>
+						{({ getUserPosts }) => (
+							<WithProfiles>
+								{({ profiles }) => (
+									<WithCurrentUser>
+										{({ currentUser }) => {
+											this.actions = {
+												getUserPosts,
+												setNavigationParams,
+											};
 
-									return this.props.children({
-										actions: {
-											onViewUserProfile: (visitedUserId, origin) =>
-												this.onViewUserProfileHandler(
-													currentUser.userId,
-													userPosts,
-													visitedUserId,
-													origin,
-												),
-											onViewLikes: this.onViewLikesHandler,
-											onViewComments: this.onViewCommentsHandler,
-											onViewImage: this.onViewImageHandler,
-											onGoBack: this.onGoBackHandler,
-										},
-									});
-								}}
-							</WithCurrentUser>
+											return this.props.children({
+												actions: {
+													onViewUserProfile: (visitedUserId, origin) =>
+														this.onViewUserProfileHandler(
+															currentUser.userId,
+															profiles,
+															visitedUserId,
+															origin,
+														),
+													onViewLikes: this.onViewLikesHandler,
+													onViewComments: this.onViewCommentsHandler,
+													onViewImage: this.onViewImageHandler,
+													onGoBack: this.onGoBackHandler,
+												},
+											});
+										}}
+									</WithCurrentUser>
+								)}
+							</WithProfiles>
 						)}
-					</WithAggregations>
+					</WithPosts>
 				)}
 			</WithNavigationParams>
 		);
@@ -77,21 +82,21 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 	};
 
 	private onViewUserProfileHandler = (
-		currentUserId: string,
-		userPosts: { [owner: string]: IPostReturnData[] },
-		visitedUserId: string,
+		currentUser: string,
+		profiles: { [alias: string]: IProfile },
+		visitedUser: string,
 		origin?: TABS,
 	) => {
-		if (visitedUserId === currentUserId) {
+		if (visitedUser === currentUser) {
 			this.props.navigation.navigate(SCREENS.MyProfile);
 		} else {
-			if (!userPosts[visitedUserId]) {
-				this.actions.getUserPosts({ username: visitedUserId });
+			if (profiles[visitedUser].posts.length === 0) {
+				this.actions.getUserPosts(visitedUser);
 			}
 
 			this.actions.setNavigationParams({
 				screenName: SCREENS.UserProfile,
-				params: { userId: visitedUserId, origin: origin ? origin : TABS.Feed },
+				params: { user: visitedUser, origin: origin ? origin : TABS.Feed },
 			});
 			this.props.navigation.navigate(SCREENS.UserProfile);
 		}

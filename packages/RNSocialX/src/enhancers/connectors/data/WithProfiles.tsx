@@ -8,7 +8,7 @@ import {
 	clearFriendResponse,
 	getCurrentFriends,
 	getCurrentProfile,
-	getProfileByUsername,
+	getProfileByAlias,
 	IAcceptFriendInput,
 	IAddFriendInput,
 	IClearFriendResponseInput,
@@ -17,7 +17,6 @@ import {
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
-	IUsernameInput,
 	rejectFriend,
 	removeFriend,
 	updateCurrentProfile,
@@ -32,7 +31,7 @@ interface IDataProps {
 interface IActionProps {
 	getCurrentProfile: () => void;
 	getCurrentFriends: () => void;
-	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) => void;
+	getProfileByAlias: (alias: string) => void;
 	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
@@ -72,8 +71,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
 	getCurrentFriends: () => dispatch(getCurrentFriends()),
-	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) =>
-		dispatch(getProfileByUsername(getProfileByUsernameInput)),
+	getProfileByAlias: (alias: string) => dispatch(getProfileByAlias(alias)),
 	addFriend: (addFriendInput: IAddFriendInput) => dispatch(addFriend(addFriendInput)),
 	removeFriend: (removeFriendInput: IRemoveFriendInput) =>
 		dispatch(removeFriend(removeFriendInput)),

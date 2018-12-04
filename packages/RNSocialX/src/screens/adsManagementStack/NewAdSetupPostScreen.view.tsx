@@ -33,7 +33,7 @@ export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps>
 				headline: '',
 				description: '',
 			}}
-			validate={({ headline, description }: INewNewAdSetupPostScreenViewData) => {
+			validate={({ headline }: INewNewAdSetupPostScreenViewData) => {
 				const errors: FormikErrors<INewNewAdSetupPostScreenViewData> = {};
 				if (!headline) {
 					errors.headline = getText('new.ad.setup.post.headline.required');
@@ -46,8 +46,6 @@ export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps>
 			render={({
 				values: { headline, description },
 				errors,
-				handleBlur,
-				isValid,
 				setFieldValue,
 			}: FormikProps<INewNewAdSetupPostScreenViewData>) => (
 				<ScrollView

@@ -54,7 +54,7 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 			</TouchableOpacity>
 			{media.length > 0 && (
 				<View style={styles.mediaContainer}>
-					<MediaHorizontalScroller hashes={media} getText={getText} />
+					<MediaHorizontalScroller paths={media} getText={getText} />
 				</View>
 			)}
 			<View style={styles.buttonContainer}>

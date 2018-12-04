@@ -10,7 +10,7 @@ import { WithDataShape } from '../../intermediary';
 export interface IWithMediaViewerEnhancedData {
 	media: IMedia[];
 	startIndex: number;
-	post?: IWallPost;
+	post: IWallPost | null;
 }
 
 export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {}

@@ -65,6 +65,7 @@ export default {
 	'post.card.liked.by': 'Liked by',
 	'post.card.other': 'other',
 	'post.card.others': 'others',
+	'post.card.creating': 'Posting...',
 	'forgot.password.screen.title': 'FORGOT PASSWORD',
 	'forgot.password.instructions': 'Enter your username to get a new password.',
 	'forgot.password.username': 'Username',

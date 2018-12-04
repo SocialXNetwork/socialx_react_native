@@ -1,32 +1,35 @@
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 
-import { IMedia } from '../../types';
+import { IPost } from '../../store/data/posts';
+import { IApplicationState, selectPost } from '../../store/selectors';
+
 import { LikeAnimatingButton } from './LikeAnimatingButton';
-
 import styles from './MediaInteractionButtons.style';
 
-interface IMediaInfoSectionProps {
-	media: IMedia[];
-	activeSlide: number;
+interface IMediaInteractionButtonsProps {
+	postId: string;
 	canReact: boolean | undefined;
 	likedByCurrentUser: boolean;
 	onCommentPress: () => void;
 	onLikePress: () => void;
 }
 
-export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
-	media,
-	activeSlide,
+interface IProps extends IMediaInteractionButtonsProps {
+	post: IPost;
+}
+
+const Component: React.SFC<IProps> = ({
+	post,
 	canReact = false,
 	likedByCurrentUser,
 	onLikePress,
 	onCommentPress,
 }) => {
-	const currentMedia = media[activeSlide];
-	const numberOfLikes = currentMedia.numberOfLikes || 0;
-	const numberOfComments = currentMedia.numberOfComments || 0;
+	const numberOfLikes = post.likes.ids.length || 0;
+	const numberOfComments = post.comments.length || 0;
 	const hasLikesOrComments = numberOfComments > 0 || numberOfLikes > 0;
 
 	return (
@@ -56,3 +59,9 @@ export const MediaInteractionButtons: React.SFC<IMediaInfoSectionProps> = ({
 		</React.Fragment>
 	);
 };
+
+const mapStateToProps = (state: IApplicationState, props: IMediaInteractionButtonsProps) => ({
+	post: selectPost(state, props),
+});
+
+export const MediaInteractionButtons = connect(mapStateToProps)(Component as any) as any;

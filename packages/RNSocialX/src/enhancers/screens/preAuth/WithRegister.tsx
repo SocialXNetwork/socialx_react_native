@@ -21,27 +21,12 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { resetNavigationToRoute } from '../../helpers/';
 
-const mock: IWithRegisterEnhancedProps = {
-	data: {
-		errors: [],
-	},
-	actions: {
-		register: (registerData: IRegisterData) => undefined,
-		loadPosts: () => undefined,
-		setGlobal: (global: IGlobal) => undefined,
-		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) =>
-			undefined,
-		getText: (value: string, ...args: any[]) => value,
-		showOptionsMenu: (items) => undefined,
-	},
-};
-
 export interface IWithRegisterEnhancedData {
 	errors: IError[];
 }
 
 export interface IWithRegisterEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	register: (registerData: IRegisterData) => void;
+	register: (data: IRegisterData) => void;
 	loadPosts: () => void;
 	setGlobal: (global: IGlobal) => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
@@ -64,7 +49,7 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 			<WithI18n>
 				{(i18nProps) => (
 					<WithOverlays>
-						{(overlayProps) => (
+						{({ showOptionsMenu }) => (
 							<WithGlobals>
 								{({ setGlobal }) => (
 									<WithActivities>
@@ -75,11 +60,9 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 														{(accountsProps) =>
 															this.props.children({
 																data: {
-																	...mock.data,
 																	errors,
 																},
 																actions: {
-																	...mock.actions,
 																	register: (registerData: IRegisterData) =>
 																		accountsProps.createAccount({
 																			recover: {
@@ -97,11 +80,10 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 																			aboutMeText: 'about me text',
 																		}),
 																	loadPosts: loadMorePosts,
+																	showOptionsMenu: (items) => showOptionsMenu({ items }),
 																	setGlobal,
 																	resetNavigationToRoute,
 																	getText: i18nProps.getText,
-																	showOptionsMenu: (items) =>
-																		overlayProps.showOptionsMenu({ items }),
 																},
 															})
 														}

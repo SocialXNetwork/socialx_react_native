@@ -3,10 +3,8 @@ import * as React from 'react';
 import { ICurrentUser } from '../../types';
 import { extractMediaFromPosts, mapPostsForUI } from '../helpers';
 
-import { WithAggregations } from '../connectors/aggregations/WithAggregations';
-import { WithConfig } from '../connectors/app/WithConfig';
+import { WithPosts } from '../connectors/data/WithPosts';
 import { WithProfiles } from '../connectors/data/WithProfiles';
-import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithCurrentUser } from './WithCurrentUser';
 
 interface IWithCurrentUserContentProps {
@@ -21,65 +19,51 @@ export class WithCurrentUserContent extends React.Component<
 > {
 	render() {
 		return (
-			<WithConfig>
-				{({ appConfig }) => (
-					<WithAggregations>
-						{({ userPosts }) => (
-							<WithProfiles>
-								{({ profiles }) => (
-									<WithCurrentUser>
-										{({ currentUser }) => (
-											<WithActivities>
-												{({ activities }) => {
-													const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
+			<WithPosts>
+				{({ all }) => (
+					<WithProfiles>
+						{({ profiles }) => (
+							<WithCurrentUser>
+								{({ currentUser }) => {
+									if (currentUser) {
+										const postIds = profiles[currentUser.userId].posts;
+										const posts = [];
 
-													if (currentUser) {
-														const posts = userPosts[currentUser.userId];
+										for (const id of postIds) {
+											posts.push(all[id]);
+										}
 
-														const recentPosts = mapPostsForUI(
-															posts,
-															currentUser,
-															profiles,
-															activities,
-														);
+										const shapedPosts = mapPostsForUI(posts, currentUser, profiles);
 
-														currentUser.numberOfLikes = posts.reduce(
-															(acc, post) => acc + post.likes.length,
-															0,
-														);
+										currentUser.numberOfLikes = posts.reduce(
+											(acc, post) => acc + post.likes.ids.length,
+											0,
+										);
 
-														currentUser.numberOfPhotos = posts.reduce(
-															(acc, post) => (post.media ? acc + post.media.length : 0),
-															0,
-														);
+										currentUser.numberOfPhotos = posts.reduce(
+											(acc, post) => (post.media ? acc + post.media.length : 0),
+											0,
+										);
 
-														currentUser.numberOfComments = posts.reduce(
-															(acc, post) => acc + post.comments.length,
-															0,
-														);
+										currentUser.numberOfComments = posts.reduce(
+											(acc, post) => acc + post.comments.length,
+											0,
+										);
 
-														currentUser.media = extractMediaFromPosts(
-															posts,
-															currentUser.userId,
-															appConfig,
-														);
+										currentUser.media = extractMediaFromPosts(posts);
 
-														currentUser.recentPosts = recentPosts;
-													}
+										currentUser.posts = shapedPosts;
+									}
 
-													return this.props.children({
-														currentUser,
-													});
-												}}
-											</WithActivities>
-										)}
-									</WithCurrentUser>
-								)}
-							</WithProfiles>
+									return this.props.children({
+										currentUser,
+									});
+								}}
+							</WithCurrentUser>
 						)}
-					</WithAggregations>
+					</WithProfiles>
 				)}
-			</WithConfig>
+			</WithPosts>
 		);
 	}
 }

@@ -32,7 +32,7 @@ export { RichText } from './displayers/RichText/RichText';
 export { Notification } from './displayers/Notification';
 export { SearchHeader } from './displayers/SearchHeader';
 export { SearchResults } from './displayers/SearchResults';
-export { UserEntry, IUserEntryProps } from './displayers/UserEntry';
+export { UserEntry } from './displayers/UserEntry';
 export { UserEntries } from './displayers/UserEntries';
 export { SearchTabResults } from './displayers/SearchTabResults';
 export { SendCoinsHeader } from './displayers/SendCoinsHeader';

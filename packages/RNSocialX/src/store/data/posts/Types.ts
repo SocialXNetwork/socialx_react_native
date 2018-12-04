@@ -44,13 +44,8 @@ export type IState = DeepReadonly<{
 export interface IUsernameInput {
 	username: string;
 }
-
 export interface IPostPathInput {
 	postPath: string;
-}
-
-export interface IDateInput {
-	date: Date;
 }
 
 export interface IPostIdInput {
@@ -71,7 +66,7 @@ export interface IProfile {
 export interface ISyncCommentInput {
 	commentId: string;
 	postId: string;
-	error: boolean;
+	error?: boolean;
 }
 
 export const enum ActionTypes {
@@ -87,6 +82,8 @@ export const enum ActionTypes {
 	SYNC_LOAD_MORE_POSTS = 'data/posts/SYNC_LOAD_MORE_POSTS',
 	LOAD_MORE_FRIENDS_POSTS = 'data/posts/LOAD_MORE_FRIENDS_POSTS',
 	SYNC_LOAD_MORE_FRIENDS_POSTS = 'data/posts/SYNC_LOAD_MORE_FRIENDS_POSTS',
+	GET_USER_POSTS = 'data/posts/GET_USER_POSTS',
+	SYNC_GET_USER_POSTS = 'data/posts/SYNC_GET_USER_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
@@ -123,16 +120,6 @@ export interface ISyncGetPostByPathAction extends Action {
 	payload: IPostReturnData;
 }
 
-export interface IGetPublicPostsByDateAction extends Action {
-	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE;
-	payload: IDateInput;
-}
-
-export interface ISyncGetPublicPostsByDateAction extends Action {
-	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE;
-	payload: IPostReturnData[];
-}
-
 export interface IGetPostByIdAction extends Action {
 	type: ActionTypes.GET_POST_BY_ID;
 	payload: IPostIdInput;
@@ -167,6 +154,16 @@ export interface ISyncLoadMoreFriendsPostsAction extends Action {
 		canLoadMore: boolean;
 		nextToken: string;
 	};
+}
+
+export interface IGetUserPostsAction extends Action {
+	type: ActionTypes.GET_USER_POSTS;
+	payload: string;
+}
+
+export interface ISyncGetUserPostsAction extends Action {
+	type: ActionTypes.SYNC_GET_USER_POSTS;
+	payload: IPostReturnData[];
 }
 
 export interface ICreatePostAction extends Action {
@@ -223,8 +220,6 @@ export type IAction =
 	// getters
 	| IGetPostsByUsernameAction
 	| ISyncGetPostsByUserAction
-	| IGetPublicPostsByDateAction
-	| ISyncGetPublicPostsByDateAction
 	| IGetPostByPathAction
 	| ISyncGetPostByPathAction
 	| IGetPostByIdAction
@@ -233,6 +228,8 @@ export type IAction =
 	| ILoadMorePostsAction
 	| ISyncLoadMoreFriendsPostsAction
 	| ILoadMoreFriendsPostsAction
+	| IGetUserPostsAction
+	| ISyncGetUserPostsAction
 	// setters
 	| ICreatePostAction
 	| IRemovePostAction

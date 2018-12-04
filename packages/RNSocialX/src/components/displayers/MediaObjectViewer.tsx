@@ -11,7 +11,8 @@ import { OS_TYPES } from '../../environment/consts';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
-	hash: string;
+	hash?: string;
+	path?: string;
 	extension?: string;
 	type?: IMediaTypes;
 	canZoom?: boolean;
@@ -41,6 +42,7 @@ const getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: str
 export const Component: React.SFC<IProps> = ({
 	IPFS_URL,
 	hash,
+	path,
 	style: customStyle,
 	resizeMode = 'cover',
 	extension,
@@ -54,7 +56,7 @@ export const Component: React.SFC<IProps> = ({
 	onPress = () => undefined,
 	onDoublePress = () => undefined,
 }) => {
-	const uri = IPFS_URL + hash;
+	const uri = path ? path : IPFS_URL + hash;
 	const ImageComponent =
 		Platform.OS === OS_TYPES.Android && uri.startsWith('https://') ? FastImage : Image;
 	const mediaMimeType = getMimeType(uri, type, extension);

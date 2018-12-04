@@ -9,22 +9,20 @@ import {
 	SuggestionsCarousel,
 	WallPost,
 } from '../../../components';
-import { IError, INavigationProps, ITranslatedProps, IWallPost } from '../../../types';
+import { INavigationProps, ITranslatedProps, IWallPost } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	avatarImage: string;
 	posts: IWallPost[];
-	skeletonPost: IWallPost;
+	placeholderPost: IWallPost;
 	refreshing: boolean;
-	creatingPost: boolean;
 	shareMessage: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
 	scrollRef: React.RefObject<FlatList<IWallPost>>;
 	scrollY: AnimatedValue;
-	errors: IError[];
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
@@ -36,19 +34,19 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		const {
 			posts,
 			avatarImage,
-			onLoadMorePosts,
-			onRefresh,
 			refreshing,
 			canLoadMorePosts,
-			onCreateWallPost,
 			shareMessage,
 			scrollRef,
 			scrollY,
-			skeletonPost,
+			placeholderPost,
+			onRefresh,
+			onLoadMorePosts,
+			onCreateWallPost,
 			getText,
 		} = this.props;
 
-		const allPosts = skeletonPost ? [skeletonPost, ...posts] : posts;
+		const allPosts = placeholderPost ? [placeholderPost, ...posts] : posts;
 
 		return (
 			<View style={styles.container}>
@@ -85,7 +83,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 	}
 
 	private renderWallPosts = (data: { item: IWallPost; index: number }) => {
-		const { skeletonPost, errors, navigation, getText, onAddComment } = this.props;
+		const { navigation, getText, onAddComment } = this.props;
 		const post = data.item;
 
 		return (
@@ -93,11 +91,9 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 				<WallPost
 					post={post}
 					commentInput={true}
-					errors={errors}
 					onAddComment={(cardHeight: number) => onAddComment(data.index, cardHeight)}
 					navigation={navigation}
 				/>
-				{skeletonPost && <View style={styles.overlay} />}
 				{post.suggested && <SuggestionsCarousel items={post.suggested} getText={getText} />}
 			</View>
 		);

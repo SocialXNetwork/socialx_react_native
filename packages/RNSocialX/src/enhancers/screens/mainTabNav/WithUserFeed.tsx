@@ -9,7 +9,6 @@ import { FEED_TYPES } from '../../../environment/consts';
 import { IPost } from '../../../store/data/posts';
 import {
 	ICurrentUser,
-	IError,
 	INavigationParamsActions,
 	ITranslatedProps,
 	IWallPost,
@@ -18,7 +17,6 @@ import { getActivity, mapPostsForUI } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
 import { assertNever } from '../../../store/helpers';
-import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
@@ -30,9 +28,7 @@ import { WithCurrentUser } from '../../intermediary';
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
 	posts: IWallPost[];
-	errors: IError[];
-	skeletonPost: IWallPost;
-	creatingPost: boolean;
+	placeholderPost: IWallPost;
 	refreshingFeed: boolean;
 	canLoadMore: boolean;
 	loadingMorePosts: boolean;
@@ -62,123 +58,107 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithConfig>
-						{({ appConfig }) => (
-							<WithNavigationParams>
-								{({ setNavigationParams }) => (
-									<WithGlobals>
-										{({ globals }) => (
-											<WithActivities>
-												{({ activities, errors }) => (
-													<WithProfiles>
-														{({ profiles, friends }) => (
-															<WithPosts>
-																{(feed) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) => {
-																			const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-																			const friendsAliases = friends[currentUser.userId].map(
-																				(fr) => fr.alias,
-																			);
+					<WithNavigationParams>
+						{({ setNavigationParams }) => (
+							<WithGlobals>
+								{({ globals }) => (
+									<WithActivities>
+										{({ activities }) => (
+											<WithProfiles>
+												{({ profiles, friends }) => (
+													<WithPosts>
+														{(feed) => (
+															<WithCurrentUser>
+																{({ currentUser }) => {
+																	const friendsAliases = friends[currentUser.userId];
 
-																			let globalPosts: IPost[] = [];
-																			let friendsPosts: IPost[] = [];
+																	let globalPosts: IPost[] = [];
+																	let friendsPosts: IPost[] = [];
 
-																			Object.keys(feed.all).map((key) => {
-																				const owner = feed.all[key].owner.alias;
+																	for (const key of Object.keys(feed.all)) {
+																		const owner = feed.all[key].owner.alias;
 
-																				if (friendsAliases.includes(owner)) {
-																					friendsPosts = [...friendsPosts, feed.all[key]];
+																		if (friendsAliases.includes(owner)) {
+																			friendsPosts = [...friendsPosts, feed.all[key]];
+																		}
+																		globalPosts = [...globalPosts, feed.all[key]];
+																	}
+
+																	const shapedGlobalPosts = mapPostsForUI(
+																		globalPosts,
+																		currentUser,
+																		profiles,
+																	);
+
+																	const shapedFriendsPosts = mapPostsForUI(
+																		friendsPosts,
+																		currentUser,
+																		profiles,
+																	);
+
+																	return this.props.children({
+																		data: {
+																			currentUser,
+																			posts:
+																				type === FEED_TYPES.GLOBAL
+																					? shapedGlobalPosts
+																					: shapedFriendsPosts,
+																			placeholderPost: globals.placeholderPost,
+																			canLoadMore:
+																				type === FEED_TYPES.GLOBAL
+																					? feed.global.canLoadMore
+																					: feed.friends.canLoadMore,
+																			loadingMorePosts:
+																				type === FEED_TYPES.GLOBAL
+																					? getActivity(activities, ActionTypes.LOAD_MORE_POSTS)
+																					: getActivity(
+																							activities,
+																							ActionTypes.LOAD_MORE_FRIENDS_POSTS,
+																							// tslint:disable-next-line
+																				  ),
+																			refreshingFeed: getActivity(
+																				activities,
+																				ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
+																			),
+																		},
+																		actions: {
+																			loadMorePosts:
+																				type === FEED_TYPES.GLOBAL
+																					? feed.loadMorePosts
+																					: feed.loadMoreFriendsPosts,
+																			refreshFeed: async () => {
+																				switch (type) {
+																					case FEED_TYPES.GLOBAL: {
+																						await feed.resetPostsAndRefetch();
+																						break;
+																					}
+
+																					case FEED_TYPES.FRIENDS: {
+																						// TODO: this
+																						break;
+																					}
+
+																					default:
+																						assertNever(type);
+																						break;
 																				}
-																				globalPosts = [...globalPosts, feed.all[key]];
-																			});
-
-																			const shapedGlobalPosts = mapPostsForUI(
-																				globalPosts,
-																				currentUser,
-																				profiles,
-																				activities,
-																				IPFS_URL,
-																			);
-
-																			const shapedFriendsPosts = mapPostsForUI(
-																				friendsPosts,
-																				currentUser,
-																				profiles,
-																				activities,
-																				IPFS_URL,
-																			);
-
-																			return this.props.children({
-																				data: {
-																					currentUser,
-																					posts:
-																						type === FEED_TYPES.GLOBAL
-																							? shapedGlobalPosts
-																							: shapedFriendsPosts,
-																					errors,
-																					skeletonPost: globals.skeletonPost,
-																					canLoadMore:
-																						type === FEED_TYPES.GLOBAL
-																							? feed.global.canLoadMore
-																							: feed.friends.canLoadMore,
-																					loadingMorePosts:
-																						type === FEED_TYPES.GLOBAL
-																							? getActivity(activities, ActionTypes.LOAD_MORE_POSTS)
-																							: getActivity(
-																									activities,
-																									ActionTypes.LOAD_MORE_FRIENDS_POSTS,
-																									// tslint:disable-next-line
-																							  ),
-																					refreshingFeed: getActivity(
-																						activities,
-																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																					),
-																					creatingPost: getActivity(
-																						activities,
-																						ActionTypes.CREATE_POST,
-																					),
-																				},
-																				actions: {
-																					loadMorePosts:
-																						type === FEED_TYPES.GLOBAL
-																							? feed.loadMorePosts
-																							: feed.loadMoreFriendsPosts,
-																					refreshFeed: async () => {
-																						switch (type) {
-																							case FEED_TYPES.GLOBAL: {
-																								await feed.resetPostsAndRefetch();
-																								break;
-																							}
-
-																							case FEED_TYPES.FRIENDS: {
-																								// TODO: this
-																								break;
-																							}
-
-																							default:
-																								assertNever(type);
-																								break;
-																						}
-																					},
-																					setNavigationParams,
-																					getText,
-																				},
-																			});
-																		}}
-																	</WithCurrentUser>
-																)}
-															</WithPosts>
+																			},
+																			setNavigationParams,
+																			getText,
+																		},
+																	});
+																}}
+															</WithCurrentUser>
 														)}
-													</WithProfiles>
+													</WithPosts>
 												)}
-											</WithActivities>
+											</WithProfiles>
 										)}
-									</WithGlobals>
+									</WithActivities>
 								)}
-							</WithNavigationParams>
+							</WithGlobals>
 						)}
-					</WithConfig>
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);

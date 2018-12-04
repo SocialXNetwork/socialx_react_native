@@ -12,7 +12,7 @@ storiesOf('Components/avatar', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('AvatarPicker', () => (
 		<AvatarPicker
-			avatarImage={{ uri: image }}
+			avatar={{ uri: image }}
 			avatarSize={200}
 			afterImagePick={action('afterImagePick')}
 			showOptionsMenu={action('showOptionsMenu')}

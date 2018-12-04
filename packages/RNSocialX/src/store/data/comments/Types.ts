@@ -17,7 +17,6 @@ export const enum ActionTypes {
 	CREATE_COMMENT = 'data/comments/CREATE_COMMENT',
 	CREATE_COMMENT_ERROR = 'data/comments/CREATE_COMMENT_ERROR',
 	REMOVE_COMMENT = 'data/comments/REMOVE_COMMENT',
-	REMOVE_COMMENT_ERROR = 'data/comments/REMOVE_COMMENT_ERROR',
 	LIKE_COMMENT = 'data/comments/LIKE_COMMENT',
 	LIKE_COMMENT_ERROR = 'data/comments/LIKE_COMMENT_ERROR',
 	UNLIKE_COMMENT = 'data/comments/UNLIKE_COMMENT',
@@ -31,8 +30,9 @@ export interface ICreateCommentInput {
 	postId: string;
 }
 
-export interface IRemoveCommentInput extends ICreateCommentInput {
+export interface IRemoveCommentInput {
 	commentId: string;
+	postId: string;
 }
 
 export interface ILikeCommentInput {
@@ -59,11 +59,6 @@ export interface ICreateCommentErrorAction extends Action {
 export interface IRemoveCommentAction extends Action {
 	type: ActionTypes.REMOVE_COMMENT;
 	payload: string;
-}
-
-export interface IRemoveCommentErrorAction extends Action {
-	type: ActionTypes.REMOVE_COMMENT_ERROR;
-	payload: ICommentsReturnData;
 }
 
 export interface ILikeCommentAction extends Action {
@@ -96,7 +91,6 @@ export type IAction =
 	| ICreateCommentAction
 	| ICreateCommentErrorAction
 	| IRemoveCommentAction
-	| IRemoveCommentErrorAction
 	| ILikeCommentAction
 	| ILikeCommentErrorAction
 	| IUnlikeCommentAction

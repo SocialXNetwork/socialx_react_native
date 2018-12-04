@@ -9,11 +9,16 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
+			const profile = action.payload;
+
 			return {
 				...state,
 				profiles: {
 					...state.profiles,
-					[action.payload.alias]: action.payload,
+					[profile.alias]: {
+						...state.profiles[profile.alias],
+						...profile,
+					},
 				},
 			};
 		}
@@ -24,23 +29,41 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_GET_PROFILES_BY_POSTS: {
 			const profiles = { ...state.profiles };
+
 			for (const profile of action.payload) {
-				profiles[profile.alias] = profile;
+				if (profile !== profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...state.profiles[profile.alias],
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
+				}
 			}
 
-			return { ...state, profiles };
+			return {
+				...state,
+				profiles,
+			};
 		}
 
-		case ActionTypes.GET_PROFILE_BY_USERNAME: {
+		case ActionTypes.GET_PROFILE_BY_ALIAS: {
 			return state;
 		}
 
-		case ActionTypes.SYNC_GET_PROFILE_BY_USERNAME: {
+		case ActionTypes.SYNC_GET_PROFILE_BY_ALIAS: {
+			const profile = action.payload;
+
 			return {
 				...state,
 				profiles: {
 					...state.profiles,
-					[action.payload.alias]: action.payload,
+					[profile.alias]: {
+						...state.profiles[profile.alias],
+						...profile,
+					},
 				},
 			};
 		}
@@ -51,11 +74,24 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES: {
 			const profiles = { ...state.profiles };
+
 			for (const profile of action.payload) {
-				profiles[profile.alias] = profile;
+				if (profile !== profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...state.profiles[profile.alias],
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
+				}
 			}
 
-			return { ...state, profiles };
+			return {
+				...state,
+				profiles,
+			};
 		}
 
 		case ActionTypes.GET_CURRENT_FRIENDS: {
@@ -63,21 +99,34 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_FRIENDS: {
-			const friends = action.payload.friends;
-			const username = action.payload.username;
-			const oldFriends = state.friends[username] || [];
-			const finalFriends = friends.reduce(
-				(updatedFriends, newFriend) => [
-					...updatedFriends.filter((friend) => friend.alias !== newFriend.alias),
-					newFriend,
-				],
-				[...oldFriends],
-			);
+			const { friends, alias } = action.payload;
+
+			const profiles = { ...state.profiles };
+			const friendIds = [];
+
+			for (const friend of friends) {
+				if (friend !== profiles[friend.alias]) {
+					profiles[friend.alias] = {
+						...state.profiles[friend.alias],
+						...friend,
+						posts:
+							profiles[friend.alias] && profiles[friend.alias].posts
+								? profiles[friend.alias].posts
+								: [],
+					};
+				}
+
+				if (friendIds.indexOf(friend.alias) === -1) {
+					friendIds.push(friend.alias);
+				}
+			}
+
 			return {
 				...state,
+				profiles,
 				friends: {
 					...state.friends,
-					[username]: finalFriends,
+					[alias]: friendIds,
 				},
 			};
 		}
@@ -104,6 +153,21 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.CLEAR_FRIEND_RESPONSE: {
 			return state;
+		}
+
+		case ActionTypes.ADD_POSTS_TO_PROFILE: {
+			const { postIds, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						posts: postIds,
+					},
+				},
+			};
 		}
 
 		case 'RESET_STORE': {

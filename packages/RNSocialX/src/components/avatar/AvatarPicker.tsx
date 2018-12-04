@@ -31,7 +31,7 @@ const AVATAR_CAMERA_OPTIONS = {
 };
 
 interface IAvatarPickerProps extends ITranslatedProps, IOptionsMenuProps {
-	avatarImage: { uri: string };
+	avatar: { uri: string };
 	afterImagePick: (image: string) => void;
 	avatarSize?: number;
 }
@@ -81,7 +81,7 @@ const editAvatar = (
 };
 
 export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
-	avatarImage,
+	avatar,
 	avatarSize = Sizes.smartHorizontalScale(80),
 	afterImagePick,
 	getText,
@@ -95,9 +95,9 @@ export const AvatarPicker: React.SFC<IAvatarPickerProps> = ({
 
 	return (
 		<TouchableOpacity
-			onPress={() => editAvatar(avatarImage.uri, afterImagePick, showOptionsMenu, getText)}
+			onPress={() => editAvatar(avatar.uri, afterImagePick, showOptionsMenu, getText)}
 		>
-			<AvatarImage image={avatarImage.uri} style={avatarSizeStyle} />
+			<AvatarImage local={avatar.uri} style={avatarSizeStyle} />
 			<View style={style.editIcon}>
 				<Icon name="camera" size={17.5} color={Colors.cloudBurst} />
 			</View>

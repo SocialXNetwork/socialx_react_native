@@ -20,7 +20,7 @@ import {
 	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { ICurrentUser, IError, INavigationProps, ITranslatedProps, IWallPost } from '../../types';
+import { ICurrentUser, INavigationProps, ITranslatedProps, IWallPost } from '../../types';
 
 import styles, { colors, icons, SCREEN_HEIGHT } from './MyProfileScreen.style';
 
@@ -33,7 +33,6 @@ interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
-	errors: IError[];
 	onRefresh: () => void;
 	onProfilePhotoPress: () => void;
 	onLoadMorePhotos: () => void;
@@ -63,7 +62,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	onEditProfile,
 	onSharePress,
 	onShowOptionsMenu,
-	errors,
 	navigation,
 	getText,
 }) => {
@@ -77,11 +75,11 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 		numberOfFriends,
 		numberOfComments,
 		description,
-		recentPosts,
+		posts,
 	} = currentUser;
 
 	const hasPhotos = numberOfPhotos > 0;
-	const hasPosts = recentPosts.length > 0;
+	const hasPosts = posts.length > 0;
 
 	let contentContainerStyle;
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
@@ -151,7 +149,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							{hasPosts ? (
 								<FlatList
 									windowSize={10}
-									data={recentPosts}
+									data={posts}
 									keyExtractor={(item: IWallPost) => item.postId}
 									renderItem={(data) => (
 										<View style={styles.post}>
@@ -159,7 +157,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 												post={data.item}
 												onAddComment={() => undefined}
 												commentInput={false}
-												errors={errors}
 												navigation={navigation}
 											/>
 										</View>

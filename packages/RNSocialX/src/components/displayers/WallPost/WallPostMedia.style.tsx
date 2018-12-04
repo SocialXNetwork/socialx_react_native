@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, colorWithAlpha, Fonts, Sizes } from '../../../environment/theme';
 
-const style: any = {
+const styles: any = {
 	postMediaContainerFullWidth: {
 		width: '100%',
 		height: Sizes.smartVerticalScale(254),
@@ -41,4 +41,4 @@ const style: any = {
 	},
 };
 
-export default StyleSheet.create(style);
+export default StyleSheet.create(styles);

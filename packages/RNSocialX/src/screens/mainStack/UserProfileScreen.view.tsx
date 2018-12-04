@@ -35,7 +35,6 @@ interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
-	errors: IError[];
 	onRefresh: () => void;
 	onGoBack: () => void;
 	onAddFriend: () => void;
@@ -65,13 +64,12 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onIconPress,
 	onLayoutChange,
 	onGoBack,
-	errors,
 	navigation,
 	getText,
 }) => {
 	const {
 		userId,
-		recentPosts,
+		posts,
 		numberOfLikes,
 		numberOfPhotos,
 		numberOfFriends,
@@ -84,7 +82,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	} = visitedUser;
 
 	const hasPhotos = numberOfPhotos > 0;
-	const hasPosts = recentPosts.length > 0;
+	const hasPosts = posts.length > 0;
 
 	let contentContainerStyle;
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
@@ -146,7 +144,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							{hasPosts ? (
 								<FlatList
 									windowSize={10}
-									data={recentPosts}
+									data={posts}
 									keyExtractor={(item: IWallPost) => item.postId}
 									renderItem={(data) => (
 										<View style={styles.post}>
@@ -154,7 +152,6 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 												post={data.item}
 												onAddComment={() => undefined}
 												commentInput={false}
-												errors={errors}
 												navigation={navigation}
 											/>
 										</View>

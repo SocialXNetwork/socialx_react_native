@@ -46,7 +46,7 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	public componentDidMount() {
-		if (this.props.shapedComment!.text.length < TEXT_LENGTH_TRESHOLD) {
+		if (this.props.shapedComment && this.props.shapedComment.text.length < TEXT_LENGTH_TRESHOLD) {
 			this.setState({
 				commentLikesPosition: {
 					bottom: 10,

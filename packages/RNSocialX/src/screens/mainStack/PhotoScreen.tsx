@@ -4,7 +4,7 @@ import uuid from 'uuid/v4';
 
 import { WithModalForAddFriends } from '../../components';
 import { IMAGE_PICKER_TYPES } from '../../environment/consts';
-import { INavigationProps, IWallPostPhotoOptimized } from '../../types';
+import { INavigationProps, IOptimizedMedia } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -26,7 +26,7 @@ interface IPhotoScreenState {
 	tagFriends: boolean;
 	location: string;
 	caption: string;
-	media: IWallPostPhotoOptimized[];
+	media: IOptimizedMedia[];
 }
 
 class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {

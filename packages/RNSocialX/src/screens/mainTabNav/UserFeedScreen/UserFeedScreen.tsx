@@ -46,13 +46,11 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 		const {
 			currentUser,
 			posts,
-			errors,
-			skeletonPost,
+			placeholderPost,
 			shareMessage,
 			canLoadMore,
 			refreshingFeed,
 			loadingMorePosts,
-			creatingPost,
 			navigation,
 			getText,
 		} = this.props;
@@ -61,9 +59,8 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 			<UserFeedScreenView
 				posts={posts}
 				avatarImage={currentUser.avatar}
-				skeletonPost={skeletonPost}
+				placeholderPost={placeholderPost}
 				refreshing={refreshingFeed}
-				creatingPost={creatingPost}
 				canLoadMorePosts={canLoadMore}
 				loadingMorePosts={loadingMorePosts}
 				shareMessage={shareMessage}
@@ -73,7 +70,6 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
 				onAddComment={this.onAddCommentPressHandler}
-				errors={errors}
 				navigation={navigation}
 				getText={getText}
 			/>

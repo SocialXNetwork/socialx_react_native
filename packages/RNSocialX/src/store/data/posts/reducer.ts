@@ -4,14 +4,6 @@ import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
-		case ActionTypes.GET_PUBLIC_POSTS_BY_DATE: {
-			return state;
-		}
-
-		case ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE: {
-			return state;
-		}
-
 		case ActionTypes.GET_POST_BY_PATH: {
 			return state;
 		}
@@ -25,22 +17,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_POSTS_BY_USER: {
-			// const updatedPosts = action.payload.reduce(
-			// 	(updatedPostsAcc, newPost) => [
-			// 		...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-			// 		newPost,
-			// 	],
-			// 	[...state.global.posts],
-			// );
-
-			// return {
-			// 	...state,
-			// 	global: {
-			// 		...state.global,
-			// 		posts: updatedPosts,
-			// 	},
-			// };
-
 			const all = { ...state.all };
 			for (const post of action.payload) {
 				const byId: any = {};
@@ -66,11 +42,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				...state,
 				all,
-				// global: {
-				// 	canLoadMore: action.payload.canLoadMore,
-				// 	nextToken: action.payload.nextToken,
-				// 	posts: updatedPosts,
-				// },
 			};
 		}
 
@@ -109,14 +80,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_LOAD_MORE_POSTS: {
-			// const updatedPosts = action.payload.posts.reduce(
-			// 	(updatedPostsAcc, newPost) => [
-			// 		...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-			// 		newPost,
-			// 	],
-			// 	[...state.global.posts],
-			// );
-
 			const all = { ...state.all };
 			for (const post of action.payload.posts) {
 				const byId: any = {};
@@ -142,11 +105,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				...state,
 				all,
-				// global: {
-				// 	canLoadMore: action.payload.canLoadMore,
-				// 	nextToken: action.payload.nextToken,
-				// 	posts: updatedPosts,
-				// },
 			};
 		}
 
@@ -155,13 +113,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS: {
-			// const updatedPosts = action.payload.posts.reduce(
-			// 	(updatedPostsAcc, newPost) => [
-			// 		...updatedPostsAcc.filter((updatedPost) => updatedPost.postId !== newPost.postId),
-			// 		newPost,
-			// 	],
-			// 	[...state.friends.posts],
-			// );
 			const all = { ...state.all };
 			for (const post of action.payload.posts) {
 				const byId: any = {};
@@ -187,12 +138,40 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				...state,
 				all,
-				// friends: {
-				// 	...state.friends,
-				// 	posts: updatedPosts,
-				// 	canLoadMore: action.payload.canLoadMore,
-				// 	nextToken: action.payload.nextToken,
-				// },
+			};
+		}
+
+		case ActionTypes.GET_USER_POSTS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_GET_USER_POSTS: {
+			const all = { ...state.all };
+
+			for (const post of action.payload) {
+				const byId: any = {};
+				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+				for (const like of sortedLikes) {
+					byId[like.owner.alias] = like.timestamp;
+				}
+
+				const shapedPost = {
+					...post,
+					likes: {
+						ids: post.likes.map((like) => like.owner.alias),
+						byId,
+					},
+					comments: post.comments
+						.sort((x, y) => x.timestamp - y.timestamp)
+						.map((comm) => comm.commentId),
+				};
+				all[post.postId] = shapedPost;
+			}
+
+			return {
+				...state,
+				all,
 			};
 		}
 
@@ -337,31 +316,18 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_REMOVE_COMMENT: {
-			const { postId, commentId, error } = action.payload;
+			const { postId, commentId } = action.payload;
 
-			if (error) {
-				return {
-					...state,
-					all: {
-						...state.all,
-						[postId]: {
-							...state.all[postId],
-							comments: [...state.all[postId].comments, commentId],
-						},
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						comments: state.all[postId].comments.filter((comm) => comm !== commentId),
 					},
-				};
-			} else {
-				return {
-					...state,
-					all: {
-						...state.all,
-						[postId]: {
-							...state.all[postId],
-							comments: state.all[postId].comments.filter((comm) => comm !== commentId),
-						},
-					},
-				};
-			}
+				},
+			};
 		}
 
 		case ActionTypes.RESET_POSTS: {

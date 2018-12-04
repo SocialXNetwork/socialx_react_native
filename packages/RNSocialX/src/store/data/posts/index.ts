@@ -7,31 +7,30 @@ export {
 	IPostIdInput,
 	IPostPathInput,
 	IUsernameInput,
-	IDateInput,
 	IPost,
 	IPostLikeInput,
 } from './Types';
 
 export {
-	ICreatePostInput,
 	IRemoveCommentInput,
 	IRemovePostInput,
 	IUnlikeCommentInput,
 	IUnlikePostInput,
+	ICreatePostInput,
 } from '@socialx/api-data';
 
 export {
-	getPostByPath,
-	getPostsByUsername,
-	getPublicPostsByDate,
-	resetPostsAndRefetch,
 	loadMorePosts,
 	loadMoreFriendsPosts,
+	getPostByPath,
+	getPostsByUsername,
+	getPostById,
+	getUserPosts,
 	createPost,
 	likePost,
 	removePost,
 	unlikePost,
-	getPostById,
 	syncAddCommentAction,
 	syncRemoveCommentAction,
+	resetPostsAndRefetch,
 } from './actions';

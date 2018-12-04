@@ -43,27 +43,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.REMOVE_COMMENT: {
-			const {
-				[action.payload]: {},
-				...updatedComments
-			} = state.comments;
-
-			return {
-				...state,
-				comments: updatedComments,
-			};
-		}
-
-		case ActionTypes.REMOVE_COMMENT_ERROR: {
-			const { commentId } = action.payload;
-
-			return {
-				...state,
-				comments: {
-					...state.comments,
-					[commentId]: action.payload,
-				},
-			};
+			return state;
 		}
 
 		case ActionTypes.LIKE_COMMENT: {

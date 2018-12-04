@@ -1,28 +1,21 @@
-import {
-	ICreatePostInput,
-	IPostArrayData,
-	IPostReturnData,
-	IRemovePostInput,
-} from '@socialx/api-data';
+import { ICreatePostInput, IPostReturnData, IRemovePostInput } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 
-import { IWallPostPhotoOptimized } from '../../../types';
-import { getUserPosts } from '../../aggregations/posts';
+import { IOptimizedMedia } from '../../../types';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { setGlobal } from '../../ui/globals';
 import { loadCommentsAction } from '../comments';
-import { getProfilesByPosts } from '../profiles';
+import { addPostsToProfile, getProfilesByPosts } from '../profiles';
 import {
 	ActionTypes,
 	ICreatePostAction,
-	IDateInput,
 	IGetPostByIdAction,
 	IGetPostByPathAction,
 	IGetPostsByUsernameAction,
-	IGetPublicPostsByDateAction,
+	IGetUserPostsAction,
 	ILikePostAction,
 	ILikePostErrorAction,
 	ILoadMoreFriendsPostsAction,
@@ -37,7 +30,7 @@ import {
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
-	ISyncGetPublicPostsByDateAction,
+	ISyncGetUserPostsAction,
 	ISyncLoadMoreFriendsPostsAction,
 	ISyncLoadMorePostsAction,
 	ISyncRemoveCommentAction,
@@ -53,11 +46,11 @@ const resetPostsAction: ActionCreator<IResetPostsAction> = () => ({
 
 export const resetPostsAndRefetch = (): IThunk => async (dispatch, getState, context) => {
 	dispatch(resetPostsAction);
-	await dispatch(
-		getPublicPostsByDate({
-			date: new Date(Date.now()),
-		}),
-	);
+	// await dispatch(
+	// 	getPublicPostsByDate({
+	// 		date: new Date(Date.now()),
+	// 	}),
+	// );
 };
 
 const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
@@ -68,7 +61,7 @@ const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
 });
 
 const syncGetPostsByUsernameAction: ActionCreator<ISyncGetPostsByUserAction> = (
-	posts: IPostArrayData,
+	posts: IPostReturnData[],
 ) => ({
 	type: ActionTypes.SYNC_GET_POSTS_BY_USER,
 	payload: posts,
@@ -90,10 +83,10 @@ export const getPostsByUsername = (getPostsByUsernameInput: IUsernameInput): ITh
 		);
 		const { dataApi } = context;
 		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
-		await dispatch(setGlobal({ skeletonPost: null }));
+		await dispatch(setGlobal({ placeholderPost: null }));
 		dispatch(syncGetPostsByUsernameAction(posts));
 		await dispatch(getProfilesByPosts(posts));
-		await dispatch(getUserPosts(getPostsByUsernameInput));
+		await dispatch(getUserPosts(getPostsByUsernameInput.username));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -197,7 +190,7 @@ const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
 });
 
 const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (data: {
-	posts: IPostArrayData;
+	posts: IPostReturnData[];
 	canLoadMore: boolean;
 	nextToken: string;
 }) => ({
@@ -243,7 +236,7 @@ const loadMoreFriendsPostsAction: ActionCreator<ILoadMoreFriendsPostsAction> = (
 });
 
 const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAction> = (data: {
-	posts: IPostArrayData;
+	posts: IPostReturnData[];
 	canLoadMore: boolean;
 	nextToken: string;
 }) => ({
@@ -284,26 +277,53 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 	}
 };
 
-const getPublicPostsByDateAction: ActionCreator<IGetPublicPostsByDateAction> = (
-	getPostByDateInput: IDateInput,
-) => ({
-	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-	payload: getPostByDateInput,
+/**
+ * 	Retrieves all the posts of a user, given his alias, adds
+ * 	them to the store and dispatches an action to update
+ * 	the profile with an array of post ids
+ */
+
+export const getUserPostsAction: ActionCreator<IGetUserPostsAction> = (alias: string) => ({
+	type: ActionTypes.GET_USER_POSTS,
+	payload: alias,
 });
 
-const syncGetPublicPostsByDateAction: ActionCreator<ISyncGetPublicPostsByDateAction> = (
-	posts: IPostArrayData,
+export const syncGetUserPostsAction: ActionCreator<ISyncGetUserPostsAction> = (
+	posts: IPostReturnData[],
 ) => ({
-	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE,
+	type: ActionTypes.SYNC_GET_USER_POSTS,
 	payload: posts,
 });
 
-export const getPublicPostsByDate = (getPostByDateInput: IDateInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	//
+export const getUserPosts = (alias: string): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+
+	try {
+		dispatch(getUserPostsAction(alias));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.GET_USER_POSTS,
+				uuid: activityId,
+			}),
+		);
+
+		const posts = await context.dataApi.posts.getPostsByUser({ username: alias });
+		const postIds = posts.sort((x, y) => x.timestamp - y.timestamp).map((post) => post.postId);
+
+		await dispatch(getProfilesByPosts(posts));
+		dispatch(syncGetUserPostsAction(posts));
+		dispatch(addPostsToProfile({ alias, postIds }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.SYNC_GET_USER_POSTS,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
 };
 
 const createPostAction: ActionCreator<ICreatePostAction> = (createPostInput: ICreatePostInput) => ({
@@ -311,17 +331,12 @@ const createPostAction: ActionCreator<ICreatePostAction> = (createPostInput: ICr
 	payload: createPostInput,
 });
 
-// TODO @Jake move this
-interface IUploadResponse {
-	uploadId: string;
-	responseBody: string;
-}
-
 export const createPost = (
-	createPostInput: ICreatePostInput & { media: IWallPostPhotoOptimized[] },
+	createPostInput: ICreatePostInput & { media: IOptimizedMedia[] },
 ): IThunk => async (dispatch, getState, context) => {
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
+
 	if (auth && auth.alias) {
 		const activityId = uuidv4();
 		try {
@@ -368,7 +383,7 @@ export const createPost = (
 
 				const uploadedFiles = await Promise.all(
 					// TODO: fix the media type
-					media.map((obj: IWallPostPhotoOptimized | any) =>
+					media.map((obj: IOptimizedMedia | any) =>
 						storageApi.uploadFile(
 							obj.type.includes('gif') || obj.type.includes('video')
 								? obj.sourceURL
@@ -400,7 +415,7 @@ export const createPost = (
 					type: {
 						key: media[index].type,
 						name: media[index].type.indexOf('image') < 0 ? 'Video' : 'Photo',
-						category: 'Photography',
+						category: media[index].type.indexOf('image') < 0 ? 'Videos' : 'Photography',
 					},
 				}));
 
@@ -441,32 +456,28 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	context,
 ) => {
 	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(removePostAction(removePostInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.REMOVE_POST,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.posts.removePost(removePostInput);
-			dispatch(syncRemovePostAction(removePostInput.postId));
-			await dispatch(getUserPosts({ username: auth.alias }));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.REMOVE_POST,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+
+	try {
+		dispatch(removePostAction(removePostInput));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.REMOVE_POST,
+				uuid: activityId,
+			}),
+		);
+
+		await context.dataApi.posts.removePost(removePostInput);
+		dispatch(syncRemovePostAction(removePostInput.postId));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.REMOVE_POST,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 

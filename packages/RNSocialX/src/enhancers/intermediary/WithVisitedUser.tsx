@@ -22,13 +22,13 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 						{({ profiles }) => (
 							<WithAggregations>
 								{({ searchResults }) => {
-									const { userId, origin } = navigationParams[SCREENS.UserProfile];
+									const { user, origin } = navigationParams[SCREENS.UserProfile];
 
 									let foundProfile;
 									if (origin === TABS.Feed) {
-										foundProfile = profiles[userId];
+										foundProfile = profiles[user];
 									} else if (origin === TABS.Search) {
-										foundProfile = searchResults.find((profile) => profile.alias === userId);
+										foundProfile = searchResults.find((profile) => profile.alias === user);
 									}
 
 									let visitedUser: IVisitedUser;
@@ -44,7 +44,7 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 											numberOfPhotos: 0,
 											numberOfComments: 0,
 											media: [],
-											recentPosts: [],
+											posts: [],
 											relationship: foundProfile.status,
 										};
 									}

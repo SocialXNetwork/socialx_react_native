@@ -5,20 +5,16 @@
 import * as React from 'react';
 
 import { IComment as IStateComment } from '../../store/data/comments';
-import { ActionTypes, IPost } from '../../store/data/posts/Types';
+import { IPost } from '../../store/data/posts/Types';
 import { IProfiles } from '../../store/data/profiles';
-import { IActivity } from '../../store/ui/activities';
-import { IComment, ICurrentUser, IWallPost, MediaTypeImage, MediaTypeVideo } from '../../types';
-import { getActivity } from '../helpers';
+import { IComment, ICurrentUser, IWallPost } from '../../types';
 
-import { WithConfig } from '../connectors/app/WithConfig';
 import { WithProfiles } from '../connectors/data/WithProfiles';
-import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithDataShapeEnhancedProps {
-	shapedComment: IComment | undefined;
-	shapedPost: IWallPost | undefined;
+	shapedComment: IComment | null;
+	shapedPost: IWallPost | null;
 }
 
 interface IWithDataShapeProps {
@@ -30,38 +26,18 @@ interface IWithDataShapeProps {
 export class WithDataShape extends React.Component<IWithDataShapeProps> {
 	public render() {
 		return (
-			<WithConfig>
-				{({ appConfig }) => (
-					<WithActivities>
-						{({ activities }) => (
-							<WithProfiles>
-								{({ profiles }) => (
-									<WithCurrentUser>
-										{({ currentUser }) => {
-											const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-
-											return this.props.children({
-												shapedComment: this.getComment(
-													this.props.comment,
-													profiles,
-													currentUser.userId,
-												),
-												shapedPost: this.getPost(
-													this.props.post,
-													currentUser,
-													profiles,
-													activities,
-													IPFS_URL,
-												),
-											});
-										}}
-									</WithCurrentUser>
-								)}
-							</WithProfiles>
-						)}
-					</WithActivities>
+			<WithProfiles>
+				{({ profiles }) => (
+					<WithCurrentUser>
+						{({ currentUser }) => {
+							return this.props.children({
+								shapedComment: this.getComment(this.props.comment, profiles, currentUser.userId),
+								shapedPost: this.getPost(this.props.post, currentUser, profiles),
+							});
+						}}
+					</WithCurrentUser>
 				)}
-			</WithConfig>
+			</WithProfiles>
 		);
 	}
 
@@ -86,15 +62,11 @@ export class WithDataShape extends React.Component<IWithDataShapeProps> {
 				likedByCurrentUser: !!comment.likes.find((like) => like.owner.alias === currentUserId),
 			};
 		}
+
+		return null;
 	};
 
-	private getPost = (
-		post: IPost | undefined,
-		currentUser: ICurrentUser,
-		profiles: IProfiles,
-		activities: IActivity[],
-		IPFS_URL: string,
-	) => {
+	private getPost = (post: IPost | undefined, currentUser: ICurrentUser, profiles: IProfiles) => {
 		if (post) {
 			const ownerProfile = profiles[post.owner.alias];
 			const likedByCurrentUser = !!post.likes.byId[currentUser.userId];
@@ -112,10 +84,7 @@ export class WithDataShape extends React.Component<IWithDataShapeProps> {
 				},
 				likedByCurrentUser,
 				removable: post.owner.alias === currentUser.userId,
-				media: {
-					objects: post.media,
-					postId: post.postId,
-				},
+				media: post.media.map((obj) => ({ ...obj, postId: post.postId })),
 				likeIds: post.likes.ids,
 				commentIds: post.comments,
 				topCommentIds:
@@ -130,9 +99,10 @@ export class WithDataShape extends React.Component<IWithDataShapeProps> {
 				// TODO: add this later when data is available
 				numberOfWalletCoins: 0,
 				suggested: undefined,
-				loading: getActivity(activities, ActionTypes.LOAD_MORE_POSTS),
 				offensiveContent: false,
 			};
 		}
+
+		return null;
 	};
 }

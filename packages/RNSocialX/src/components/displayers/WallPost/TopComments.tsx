@@ -11,7 +11,7 @@ interface ITopCommentsProps {
 }
 
 export const TopComments: React.SFC<ITopCommentsProps> = ({
-	commentIds,
+	commentIds = [],
 	onUserPress,
 	onCommentPress,
 }) => (

@@ -8,7 +8,6 @@ import * as React from 'react';
 import { INotificationData, IOptionsMenuProps, ITranslatedProps } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/notifications/Types';
-import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithActivities } from '../../connectors/ui/WithActivities';
@@ -42,50 +41,40 @@ export class WithNotifications extends React.Component<
 > {
 	render() {
 		return (
-			<WithConfig>
-				{({ appConfig }) => (
-					<WithI18n>
-						{({ getText }) => (
-							<WithOverlays>
-								{({ showOptionsMenu }) => (
-									<WithActivities>
-										{({ activities }) => (
-											<WithNotificationsData>
-												{({
-													friendRequests,
-													friendResponses,
+			<WithI18n>
+				{({ getText }) => (
+					<WithOverlays>
+						{({ showOptionsMenu }) => (
+							<WithActivities>
+								{({ activities }) => (
+									<WithNotificationsData>
+										{({ friendRequests, friendResponses, getNotifications, removeNotification }) =>
+											this.props.children({
+												data: {
+													refreshing: getActivity(
+														activities,
+														ActionTypes.GET_CURRENT_NOTIFICATIONS,
+													),
+													notifications: mapRequestsToNotifications(
+														friendRequests,
+														friendResponses,
+													),
+												},
+												actions: {
 													getNotifications,
 													removeNotification,
-												}) =>
-													this.props.children({
-														data: {
-															refreshing: getActivity(
-																activities,
-																ActionTypes.GET_CURRENT_NOTIFICATIONS,
-															),
-															notifications: mapRequestsToNotifications(
-																friendRequests,
-																friendResponses,
-																appConfig.ipfsConfig.ipfs_URL,
-															),
-														},
-														actions: {
-															getNotifications,
-															removeNotification,
-															showOptionsMenu: (items) => showOptionsMenu({ items }),
-															getText,
-														},
-													})
-												}
-											</WithNotificationsData>
-										)}
-									</WithActivities>
+													showOptionsMenu: (items) => showOptionsMenu({ items }),
+													getText,
+												},
+											})
+										}
+									</WithNotificationsData>
 								)}
-							</WithOverlays>
+							</WithActivities>
 						)}
-					</WithI18n>
+					</WithOverlays>
 				)}
-			</WithConfig>
+			</WithI18n>
 		);
 	}
 }

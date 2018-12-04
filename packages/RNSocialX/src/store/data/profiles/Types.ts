@@ -18,7 +18,7 @@ export interface IProfiles {
 }
 
 export interface IFriends {
-	[alias: string]: IProfile[];
+	[alias: string]: string[];
 }
 
 export type IState = DeepReadonly<{
@@ -26,31 +26,38 @@ export type IState = DeepReadonly<{
 	friends: IFriends;
 }>;
 
-export interface IUsernameInput {
-	username: string;
-}
-
 export interface IUsernamesInput {
 	usernames: string[];
 }
 
+export interface ISyncFriendsInput {
+	alias: string;
+	friends: IProfile[];
+}
+
+export interface IPostsToProfileInput {
+	alias: string;
+	postIds: string[];
+}
+
 export const enum ActionTypes {
-	GET_PROFILE_BY_USERNAME = 'app/data/profiles/GET_PROFILE_BY_USERNAME',
-	SYNC_GET_PROFILE_BY_USERNAME = 'app/data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
-	GET_PROFILES_BY_USERNAMES = 'app/data/profiles/GET_PROFILES_BY_USERNAMES',
-	SYNC_GET_PROFILES_BY_USERNAMES = 'app/data/profiles/SYNC_GET_PROFILES_BY_USERNAMES',
-	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
-	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
-	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
-	SYNC_GET_PROFILES_BY_POSTS = 'app/data/profiles/SYNC_GET_PROFILES_BY_POSTS',
-	GET_CURRENT_FRIENDS = 'app/data/profiles/GET_CURRENT_FRIENDS',
-	SYNC_GET_CURRENT_FRIENDS = 'app/data/profiles/SYNC_GET_CURRENT_FRIENDS',
-	UPDATE_PROFILE = 'app/data/profiles/UPDATE_PROFILE',
-	ADD_FRIEND = 'app/data/profiles/ADD_FRIEND',
-	REMOVE_FRIEND = 'app/data/profiles/REMOVE_FRIEND',
-	ACCEPT_FRIEND = 'app/data/profiles/ACCEPT_FRIEND',
-	REJECT_FRIEND = 'app/data/profiles/REJECT_FRIEND',
-	CLEAR_FRIEND_RESPONSE = 'app/data/profiles/CLEAR_FRIEND_RESPONSE',
+	GET_PROFILE_BY_ALIAS = 'data/profiles/GET_PROFILE_BY_ALIAS',
+	SYNC_GET_PROFILE_BY_ALIAS = 'data/profiles/SYNC_GET_PROFILE_BY_ALIAS',
+	GET_PROFILES_BY_USERNAMES = 'data/profiles/GET_PROFILES_BY_USERNAMES',
+	SYNC_GET_PROFILES_BY_USERNAMES = 'data/profiles/SYNC_GET_PROFILES_BY_USERNAMES',
+	GET_CURRENT_PROFILE = 'data/profiles/GET_CURRENT_PROFILE',
+	SYNC_GET_CURRENT_PROFILE = 'data/profiles/SYNC_GET_CURRENT_PROFILE',
+	GET_PROFILES_BY_POSTS = 'data/profiles/GET_PROFILES_BY_POSTS',
+	SYNC_GET_PROFILES_BY_POSTS = 'data/profiles/SYNC_GET_PROFILES_BY_POSTS',
+	GET_CURRENT_FRIENDS = 'data/profiles/GET_CURRENT_FRIENDS',
+	SYNC_GET_CURRENT_FRIENDS = 'data/profiles/SYNC_GET_CURRENT_FRIENDS',
+	UPDATE_PROFILE = 'data/profiles/UPDATE_PROFILE',
+	ADD_FRIEND = 'data/profiles/ADD_FRIEND',
+	REMOVE_FRIEND = 'data/profiles/REMOVE_FRIEND',
+	ACCEPT_FRIEND = 'data/profiles/ACCEPT_FRIEND',
+	REJECT_FRIEND = 'data/profiles/REJECT_FRIEND',
+	CLEAR_FRIEND_RESPONSE = 'data/profiles/CLEAR_FRIEND_RESPONSE',
+	ADD_POSTS_TO_PROFILE = 'data/profiles/ADD_POSTS_TO_PROFILE',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -60,17 +67,17 @@ export interface IGetProfilesByPostsAction extends Action {
 
 export interface ISyncGetProfilesByPostsAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS;
-	payload: IFriendData[];
+	payload: IProfile[];
 }
 
-export interface IGetProfileByUsernameAction extends Action {
-	type: ActionTypes.GET_PROFILE_BY_USERNAME;
-	payload: IUsernameInput;
+export interface IGetProfileByAliasAction extends Action {
+	type: ActionTypes.GET_PROFILE_BY_ALIAS;
+	payload: string;
 }
 
-export interface ISyncGetProfileByUsernameAction extends Action {
-	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME;
-	payload: IFriendData;
+export interface ISyncGetProfileByAliasAction extends Action {
+	type: ActionTypes.SYNC_GET_PROFILE_BY_ALIAS;
+	payload: IProfile;
 }
 
 export interface IGetProfilesByUsernamesAction extends Action {
@@ -80,7 +87,7 @@ export interface IGetProfilesByUsernamesAction extends Action {
 
 export interface ISyncGetProfilesByUsernamesAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES;
-	payload: IFriendData[];
+	payload: IProfile[];
 }
 
 export interface IGetCurrentProfileAction extends Action {
@@ -98,7 +105,7 @@ export interface IGetCurrentFriendsAction extends Action {
 
 export interface ISyncGetCurrentFriendsAction extends Action {
 	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS;
-	payload: { username: string; friends: IFriendData[] };
+	payload: ISyncFriendsInput;
 }
 
 export interface IUpdateProfileAction extends Action {
@@ -131,13 +138,18 @@ export interface IClearFriendResponseAction extends Action {
 	payload: IClearFriendResponseInput;
 }
 
+export interface IAddPostsToProfileAction extends Action {
+	type: ActionTypes.ADD_POSTS_TO_PROFILE;
+	payload: IPostsToProfileInput;
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
 export type IAction =
 	| IResetStoreAction
-	| IGetProfileByUsernameAction
-	| ISyncGetProfileByUsernameAction
+	| IGetProfileByAliasAction
+	| ISyncGetProfileByAliasAction
 	| IGetProfilesByUsernamesAction
 	| ISyncGetProfilesByUsernamesAction
 	| IGetCurrentProfileAction
@@ -151,4 +163,5 @@ export type IAction =
 	| ISyncGetProfilesByPostsAction
 	| IAcceptFriendAction
 	| IRejectFriendAction
-	| IClearFriendResponseAction;
+	| IClearFriendResponseAction
+	| IAddPostsToProfileAction;

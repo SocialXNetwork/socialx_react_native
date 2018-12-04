@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { KeyboardContext } from '../../../environment/consts';
 import {
-	ICreateWallPostData,
+	ICreateWallPost,
 	ICurrentUser,
 	IGlobal,
 	IOptionsMenuProps,
@@ -23,7 +23,7 @@ export interface IWithCreateWallPostEnhancedData extends IResizeProps {
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: ICreateWallPostData) => void;
+	createPost: (post: ICreateWallPost) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
 }
@@ -66,7 +66,7 @@ export class WithCreateWallPost extends React.Component<
 																		},
 																		actions: {
 																			uploadFile,
-																			createPost: async (post: ICreateWallPostData) => {
+																			createPost: async (post: ICreateWallPost) => {
 																				await createPost({
 																					postText: post.text,
 																					location: post.location,

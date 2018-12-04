@@ -36,7 +36,7 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 									numberOfPhotos: 0,
 									numberOfComments: 0,
 									media: [],
-									recentPosts: [],
+									posts: [],
 									miningEnabled: profile.miningEnabled,
 									shareDataEnabled: false,
 								};

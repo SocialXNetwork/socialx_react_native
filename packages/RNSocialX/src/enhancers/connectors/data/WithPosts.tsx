@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { IApplicationState } from '../../../store';
 import {
 	createPost,
 	getPostByPath,
 	getPostsByUsername,
-	getPublicPostsByDate,
+	getUserPosts,
 	ICreatePostInput,
-	IDateInput,
 	IPost,
 	IPostLikeInput,
 	IPostPathInput,
@@ -21,7 +21,6 @@ import {
 	resetPostsAndRefetch,
 	unlikePost,
 } from '../../../store/data/posts';
-
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
@@ -41,14 +40,14 @@ interface IDataProps {
 interface IActionProps {
 	loadMorePosts: () => void;
 	loadMoreFriendsPosts: () => void;
+	getUserPosts: (alias: string) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
-	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
-	resetPostsAndRefetch: () => void;
 	createPost: (createPostInput: ICreatePostInput) => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
 	likePost: (input: IPostLikeInput) => void;
 	unlikePost: (input: IPostLikeInput) => void;
+	resetPostsAndRefetch: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -104,16 +103,15 @@ const mapStateToProps = (state: IApplicationState) => ({
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	loadMorePosts: () => dispatch(loadMorePosts()),
 	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
+	getUserPosts: (alias: string) => dispatch(getUserPosts(alias)),
 	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
-	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
-		dispatch(getPublicPostsByDate(getPostByDateInput)),
-	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
 	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
 	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
 	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
 	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),
+	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
 });
 
 export const WithPosts: ConnectedComponentClass<JSX.Element, IChildren> = connect(

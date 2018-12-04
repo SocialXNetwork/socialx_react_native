@@ -16,44 +16,49 @@ interface ICommentProps {
 	onCommentPress: () => void;
 }
 
-export const Component: React.SFC<ICommentProps> = ({ comment, onUserPress, onCommentPress }) => (
-	<Text style={styles.container} numberOfLines={2}>
-		<Text
-			style={styles.user}
-			onPress={() => onUserPress(comment.owner.alias)}
-			suppressHighlighting={true}
-		>
-			{comment.owner.alias}
-		</Text>
-		<RichText
-			style={styles.text}
-			childrenProps={{
-				onPress: onCommentPress,
-				suppressHighlighting: true,
-			}}
-			parse={[
-				{
-					type: 'hashtag',
-					style: styles.hashtag,
-					onPress: () => undefined,
-				},
-				{
-					type: 'tags',
-					style: styles.tag,
-					onPress: () => undefined,
-				},
-				{
-					type: 'url',
-					style: styles.url,
-					onPress: () => undefined,
-				},
-			]}
-		>
-			{'  ' + comment.text}
-		</RichText>
-	</Text>
-);
+export const Component: React.SFC<ICommentProps> = ({ comment, onUserPress, onCommentPress }) => {
+	if (comment) {
+		return (
+			<Text style={styles.container} numberOfLines={2}>
+				<Text
+					style={styles.user}
+					onPress={() => onUserPress(comment.owner.alias)}
+					suppressHighlighting={true}
+				>
+					{comment.owner.alias}
+				</Text>
+				<RichText
+					style={styles.text}
+					childrenProps={{
+						onPress: onCommentPress,
+						suppressHighlighting: true,
+					}}
+					parse={[
+						{
+							type: 'hashtag',
+							style: styles.hashtag,
+							onPress: () => undefined,
+						},
+						{
+							type: 'tags',
+							style: styles.tag,
+							onPress: () => undefined,
+						},
+						{
+							type: 'url',
+							style: styles.url,
+							onPress: () => undefined,
+						},
+					]}
+				>
+					{'  ' + comment.text}
+				</RichText>
+			</Text>
+		);
+	}
 
+	return null;
+};
 const mapStateToProps = (state: IApplicationState, props: ICommentProps) => ({
 	comment: selectComment(state, props),
 });

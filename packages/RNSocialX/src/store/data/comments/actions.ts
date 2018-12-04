@@ -3,7 +3,7 @@ import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
 import { IThunk } from '../../types';
-import { setError } from '../../ui/activities';
+import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { syncAddCommentAction, syncRemoveCommentAction } from '../posts';
 import {
 	ActionTypes,
@@ -15,7 +15,6 @@ import {
 	ILikeCommentInput,
 	ILoadCommentsAction,
 	IRemoveCommentAction,
-	IRemoveCommentErrorAction,
 	IRemoveCommentInput,
 	IUnlikeCommentAction,
 	IUnlikeCommentErrorAction,
@@ -43,6 +42,8 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 	getState,
 	context,
 ) => {
+	const activityId = uuid();
+
 	const { text, alias, pub, postId } = createCommentInput;
 	const comment = {
 		commentId: uuid(),
@@ -57,8 +58,15 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 
 	try {
 		dispatch(createCommentAction(comment));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.CREATE_COMMENT,
+				uuid: activityId,
+			}),
+		);
 		dispatch(syncAddCommentAction({ postId, commentId: comment.commentId, error: false }));
-		await context.dataApi.comments.createComment({ text, postId });
+		const id = await context.dataApi.comments.createComment({ text, postId });
+		console.log(id);
 	} catch (e) {
 		dispatch(createCommentErrorAction(comment.commentId));
 		dispatch(syncAddCommentAction({ postId, commentId: comment.commentId, error: true }));
@@ -69,6 +77,8 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 				uuid: uuid(),
 			}),
 		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -77,37 +87,18 @@ const removeCommentAction: ActionCreator<IRemoveCommentAction> = (commentId: str
 	payload: commentId,
 });
 
-const removeCommentErrorAction: ActionCreator<IRemoveCommentErrorAction> = (
-	comment: ICommentsReturnData,
-) => ({
-	type: ActionTypes.REMOVE_COMMENT_ERROR,
-	payload: comment,
-});
-
-export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk => async (
+export const removeComment = (input: IRemoveCommentInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
-	const { text, alias, pub, commentId, postId } = removeCommentInput;
-	const comment = {
-		commentId: uuid(),
-		text,
-		owner: {
-			alias,
-			pub,
-		},
-		timestamp: Number(new Date(Date.now())),
-		likes: [],
-	};
+	const { commentId, postId } = input;
 
 	try {
 		dispatch(removeCommentAction(commentId));
-		dispatch(syncRemoveCommentAction({ postId, syncRemoveCommentAction, commentId, error: false }));
 		await context.dataApi.comments.removeComment({ commentId });
+		dispatch(syncRemoveCommentAction({ postId, commentId }));
 	} catch (e) {
-		dispatch(removeCommentErrorAction(comment));
-		dispatch(syncRemoveCommentAction({ postId, syncRemoveCommentAction, commentId, error: true }));
 		await dispatch(
 			setError({
 				type: ActionTypes.REMOVE_COMMENT,

@@ -116,7 +116,7 @@ export interface IConfirmActions {
 
 export interface IMediaTypes {
 	key: string;
-	name: string;
+	name: 'Video' | 'Photo';
 	category: string;
 }
 
@@ -132,22 +132,24 @@ export const MediaTypeVideo: IMediaTypes = {
 	category: 'Videos',
 };
 
-export interface IGridMedia {
-	hash: string;
-	type: IMediaTypes;
-	index: number;
-}
-
 export interface IMedia {
 	hash: string;
 	type: IMediaTypes;
 	extension: string;
 	size: number;
+	postId?: string;
 }
 
-export interface IMedias {
-	objects: IMedia[];
-	postId: string;
+export interface IOptimizedMedia extends PickerImage {
+	contentOptimizedPath?: string;
+	type: string;
+	pathx: string;
+}
+
+export interface IGridMedia {
+	hash: string;
+	type: IMediaTypes;
+	index: number;
 }
 
 export interface IPostOwner {
@@ -165,12 +167,6 @@ export interface IComment {
 	likedByCurrentUser: boolean;
 }
 
-export interface IWallPostPhotoOptimized extends PickerImage {
-	contentOptimizedPath?: string;
-	type: string;
-	pathx: string;
-}
-
 export interface IWallPost {
 	postId: string;
 	postText: string;
@@ -180,7 +176,7 @@ export interface IWallPost {
 	owner: IPostOwner;
 	likedByCurrentUser: boolean;
 	removable: boolean;
-	media: IMedias;
+	media: IMedia[];
 	likeIds: string[];
 	commentIds: string[];
 	topCommentIds: string[];
@@ -188,13 +184,13 @@ export interface IWallPost {
 	numberOfComments: number;
 	numberOfWalletCoins: number;
 	suggested: IUserEntry[] | undefined;
-	loading: boolean;
 	offensiveContent: boolean;
+	creating?: boolean;
 }
 
-export interface ICreateWallPostData {
+export interface ICreateWallPost {
 	text: string;
-	media: IWallPostPhotoOptimized[];
+	media: IOptimizedMedia[];
 	taggedFriends?: Array<{
 		fullName: string;
 	}>;
@@ -250,8 +246,8 @@ export interface ICurrentUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	media: IMedias;
-	recentPosts: IWallPost[];
+	media: IMedia[];
+	posts: IWallPost[];
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
 }
@@ -266,8 +262,8 @@ export interface IVisitedUser {
 	numberOfPhotos: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	media: IMedias;
-	recentPosts: IWallPost[];
+	media: IMedia[];
+	posts: IWallPost[];
 	relationship: FRIEND_TYPES;
 }
 
@@ -354,7 +350,7 @@ export enum ICreateAdSteps {
 export interface IAdSetupPostData {
 	headline: string;
 	description: string;
-	media: IWallPostPhotoOptimized[];
+	media: IMedia[];
 }
 
 export enum IGenderSelect {

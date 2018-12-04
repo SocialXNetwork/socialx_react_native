@@ -14,7 +14,7 @@ const initialState: IState = {
 		alpha: 0,
 		loader: false,
 	},
-	skeletonPost: null,
+	placeholderPost: null,
 };
 
 export default initialState;

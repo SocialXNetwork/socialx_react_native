@@ -148,8 +148,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
 					<View style={styles.screenFooter}>
 						<MediaInteractionButtons
-							media={media}
-							activeSlide={activeSlide}
+							postId={currentMedia.postId}
 							canReact={canReact}
 							likedByCurrentUser={likedByCurrentUser}
 							onCommentPress={onCommentPress}

@@ -37,19 +37,20 @@ import {
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
-import { IComment, INavigationProps, IWallPost } from '../../../types';
+import { IComment, INavigationProps, IOptimizedMedia, IWallPost } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import styles, { SCREEN_WIDTH } from './WallPost.style';
 
-type IWallPostCardProps = IWallPostEnhancedActions &
+type IProps = IWallPostProps &
+	IWallPostEnhancedActions &
 	IWallPostEnhancedData &
 	IWithLikingEnhancedActions &
 	IWithLikingEnhancedData &
 	IWithNavigationHandlersEnhancedActions &
 	INavigationProps;
 
-interface IWallPostCardState {
+interface IState {
 	fullTextVisible: boolean;
 	comment: string;
 	inputFocused: boolean;
@@ -59,7 +60,7 @@ interface IWallPostCardState {
 	reportAProblem: boolean;
 }
 
-class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCardState> {
+class Component extends React.PureComponent<IProps, IState> {
 	public state = {
 		fullTextVisible: false,
 		comment: '',
@@ -86,7 +87,6 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 		const {
 			post,
 			currentUser,
-			skeletonPost,
 			commentInput,
 			isCommentsScreen,
 			keyboardRaised,
@@ -120,8 +120,8 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 			numberOfSuperLikes,
 			numberOfComments,
 			numberOfWalletCoins,
-			loading,
 			offensiveContent,
+			creating,
 		} = post;
 
 		const {
@@ -140,13 +140,13 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 
 		return (
 			<View
-				style={styles.container}
+				style={[styles.container, { opacity: creating ? 0.5 : 1 }]}
 				ref={this.containerViewRef}
 				// Measuring the element doesn't work on Android without this
 				renderToHardwareTextureAndroid={true}
 			>
 				<UserDetails
-					canBack={isCommentsScreen}
+					canBack={isCommentsScreen!}
 					user={owner}
 					timestamp={timestamp}
 					taggedFriends={taggedFriends}
@@ -184,19 +184,20 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 								handleUrls={() => undefined}
 								getText={getText}
 							/>
-							{media.objects.length > 0 && (
+							{media.length > 0 && (
 								<View style={styles.mediaContainer}>
 									{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 									<WallPostMedia
-										media={media.objects}
-										onMediaObjectView={(index: number) => onViewImage(media.objects, index, postId)}
+										media={media}
+										onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 										onDoublePress={() => onDoubleTapLikePost(postId)}
-										placeholder={!!skeletonPost}
+										creating={creating}
 										getText={getText}
 									/>
 								</View>
 							)}
 							<WallPostActions
+								creating={creating}
 								likedByCurrentUser={likedByCurrentUser}
 								numberOfSuperLikes={numberOfSuperLikes}
 								numberOfWalletCoins={numberOfWalletCoins}
@@ -205,13 +206,15 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 								onSuperLikePress={() => undefined}
 								onWalletCoinsPress={() => undefined}
 							/>
-							<Likes
-								alias={likeIds[likeIds.length - 1]}
-								total={likeIds.length}
-								onUserPress={onViewUserProfile}
-								onViewLikes={() => onViewLikes(likeIds)}
-								getText={getText}
-							/>
+							{likeIds.length > 0 && (
+								<Likes
+									alias={likeIds[likeIds.length - 1]}
+									total={likeIds.length}
+									onUserPress={onViewUserProfile}
+									onViewLikes={() => onViewLikes(likeIds)}
+									getText={getText}
+								/>
+							)}
 							{commentIds.length > 0 &&
 								commentIds.map((id) => (
 									<CommentCard
@@ -230,7 +233,7 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 						<KeyboardAvoidingView
 							behavior="padding"
 							keyboardVerticalOffset={50}
-							enabled={Platform.OS === OS_TYPES.IOS ? true : false}
+							enabled={Platform.OS === OS_TYPES.IOS}
 						>
 							<CommentInput
 								comment={comment}
@@ -254,15 +257,15 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 							handleUrls={() => undefined}
 							getText={getText}
 						/>
-						{media.objects.length > 0 && (
+						{media.length > 0 && (
 							<View style={styles.mediaContainer}>
 								{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 								{(!offensiveContent || viewOffensiveContent) && (
 									<WallPostMedia
-										media={media.objects}
-										onMediaObjectView={(index: number) => onViewImage(media.objects, index, postId)}
+										media={media}
+										onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 										onDoublePress={() => onDoubleTapLikePost(post.postId)}
-										placeholder={!!skeletonPost}
+										creating={creating}
 										getText={getText}
 									/>
 								)}
@@ -274,6 +277,7 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 							</View>
 						)}
 						<WallPostActions
+							creating={creating}
 							likedByCurrentUser={likedByCurrentUser}
 							numberOfSuperLikes={numberOfSuperLikes}
 							numberOfWalletCoins={numberOfWalletCoins}
@@ -282,13 +286,15 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 							onSuperLikePress={() => undefined}
 							onWalletCoinsPress={() => undefined}
 						/>
-						<Likes
-							alias={likeIds[likeIds.length - 1]}
-							total={likeIds.length}
-							onUserPress={onViewUserProfile}
-							onViewLikes={() => onViewLikes(likeIds)}
-							getText={getText}
-						/>
+						{likeIds.length > 0 && (
+							<Likes
+								alias={likeIds[likeIds.length - 1]}
+								total={likeIds.length}
+								onUserPress={onViewUserProfile}
+								onViewLikes={() => onViewLikes(likeIds)}
+								getText={getText}
+							/>
+						)}
 						<ViewAllComments
 							numberOfComments={numberOfComments}
 							onCommentPress={() => onViewComments(postId, false)}
@@ -299,11 +305,10 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 							onUserPress={onViewUserProfile}
 							onCommentPress={() => onViewComments(postId, false)}
 						/>
-						{!!commentInput && (
+						{!!commentInput && !creating && (
 							<CommentInput
 								feed={true}
 								comment={comment}
-								disabled={loading}
 								avatar={currentUser.avatar}
 								animationValues={animationValues}
 								onCommentInputChange={this.onCommentInputChangeHandler}
@@ -335,7 +340,7 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 	};
 
 	private onCommentInputPressHandler = () => {
-		if (!this.props.post.loading && this.containerViewRef.current) {
+		if (!this.props.post.creating && this.containerViewRef.current) {
 			this.containerViewRef.current.measure(
 				(x: number, y: number, width: number, height: number) => {
 					this.props.onAddComment!(height);
@@ -359,7 +364,7 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 	};
 
 	private onCommentInputChangeHandler = (comment: string) => {
-		if (!this.props.post.loading) {
+		if (!this.props.post.creating) {
 			this.setState({ comment });
 		}
 	};
@@ -412,7 +417,7 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 	};
 
 	private onShowCommentOptionsHandler = (comment: IComment) => {
-		const { post, currentUser, showOptionsMenu, onRemoveComment, getText } = this.props;
+		const { post, showOptionsMenu, onRemoveComment, getText } = this.props;
 
 		const menuItems = [
 			{
@@ -423,14 +428,7 @@ class WallPostCard extends React.PureComponent<IWallPostCardProps, IWallPostCard
 			{
 				label: getText('comments.screen.advanced.menu.delete'),
 				icon: 'ios-trash',
-				actionHandler: () =>
-					onRemoveComment(
-						comment.text,
-						currentUser.userId,
-						currentUser.pub,
-						post.postId,
-						comment.commentId,
-					),
+				actionHandler: () => onRemoveComment(comment.commentId, post.postId),
 			},
 		];
 
@@ -465,7 +463,7 @@ export const WallPost: React.SFC<IWallPostProps> = (props) => (
 				{(likes) => (
 					<WithNavigationHandlers navigation={props.navigation}>
 						{(nav) => (
-							<WallPostCard
+							<Component
 								{...props}
 								{...wallPost.data}
 								{...wallPost.actions}

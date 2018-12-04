@@ -23,6 +23,7 @@ import {
 } from '../../components';
 import { KeyboardContext } from '../../environment/consts';
 import { IOptionsMenuProps, ITranslatedProps } from '../../types';
+
 import style, { colors } from './RegisterScreen.style';
 
 export interface IRegisterData {
@@ -67,8 +68,8 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	onRegister,
 	onNavigateToTermsAndConditions,
 	onGoBack,
-	getText,
 	showOptionsMenu,
+	getText,
 }) => (
 	<KeyboardContext.Consumer>
 		{({ safeRunAfterKeyboardHide }) => (
@@ -136,9 +137,9 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							}
 							return errors;
 						}}
-						onSubmit={({ termsAccepted, ...registerData }: IRegisterFormData) => {
+						onSubmit={({ termsAccepted, ...data }: IRegisterFormData) => {
 							safeRunAfterKeyboardHide(() => {
-								onRegister(registerData);
+								onRegister(data);
 							});
 							Keyboard.dismiss();
 						}}
@@ -154,12 +155,10 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							<React.Fragment>
 								<View style={style.avatarPickerContainer}>
 									<AvatarPicker
-										getText={getText}
-										avatarImage={avatar}
-										afterImagePick={(localPhotoPath: string) =>
-											setFieldValue('avatar', { uri: localPhotoPath }, false)
-										}
+										avatar={avatar}
+										afterImagePick={(path: string) => setFieldValue('avatar', { uri: path }, false)}
 										showOptionsMenu={showOptionsMenu}
+										getText={getText}
 									/>
 								</View>
 								<View style={[style.textInputContainer, style.textInputContainerFirst]}>

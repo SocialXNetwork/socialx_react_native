@@ -16,7 +16,7 @@ import { IApplicationState, selectProfile } from '../../store/selectors';
 
 import styles from './UserEntry.style';
 
-export interface IUserEntryProps {
+interface IUserEntryProps {
 	id: string;
 	currentUserId: string;
 	profile: IProfile;
@@ -78,4 +78,4 @@ const mapStateToProps = (state: IApplicationState, props: IUserEntryProps) => ({
 	profile: selectProfile(state, props),
 });
 
-export const UserEntry = connect(mapStateToProps)(EnhancedComponent) as any;
+export const UserEntry = connect(mapStateToProps)(EnhancedComponent as any) as any;

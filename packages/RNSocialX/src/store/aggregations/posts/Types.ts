@@ -37,11 +37,6 @@ export interface ISyncGetUserPostsAction extends Action {
 	};
 }
 
-export interface IGetUserPostsAction extends Action {
-	type: ActionTypes.GET_USER_POSTS;
-	payload: IGetUserPostsInput;
-}
-
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
