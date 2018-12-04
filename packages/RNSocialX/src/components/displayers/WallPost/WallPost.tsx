@@ -132,7 +132,6 @@ class WallPostCard extends React.Component<IWallPostCardProps, IWallPostCardStat
 			onViewUserProfile,
 			onGoBack,
 			getText,
-			marginBottom,
 		} = this.props;
 
 		const {

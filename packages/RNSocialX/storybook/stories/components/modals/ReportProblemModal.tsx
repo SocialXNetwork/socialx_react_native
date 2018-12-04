@@ -18,7 +18,6 @@ storiesOf('Components/modals', module)
 				visible={visible}
 				confirmHandler={action('Confirm')}
 				declineHandler={action('Decline')}
-				marginBottom={125}
 				getText={getTextMock}
 			/>
 		);

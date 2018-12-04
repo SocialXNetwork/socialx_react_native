@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import Modal from 'react-native-modal';
 
@@ -10,11 +10,10 @@ import {
 	PrimaryTextInput,
 	TRKeyboardKeys,
 } from '..';
-import { OS_TYPES } from '../../environment/consts';
-import { IFriendsSearchResult, IResizeProps, ITranslatedProps } from '../../types';
+import { IFriendsSearchResult, ITranslatedProps } from '../../types';
 import style, { customStyleProps } from './TagFriendsModal.style';
 
-interface ITagFriendsModalProps extends ITranslatedProps, IManagedModal, IResizeProps {
+interface ITagFriendsModalProps extends ITranslatedProps, IManagedModal {
 	visible: boolean;
 	doneHandler: () => void;
 	cancelHandler: () => void;
@@ -37,7 +36,6 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 	getText,
 	onDismiss,
 	onModalHide,
-	marginBottom,
 }) => {
 	return (
 		<Modal
@@ -50,7 +48,7 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 			style={style.container}
 		>
 			<BlurView style={style.blurView} viewRef={blurViewRef} blurType={'dark'} blurAmount={2} />
-			<View style={[style.keyboardView, Platform.OS === OS_TYPES.IOS ? { marginBottom } : {}]}>
+			<View style={style.keyboardView}>
 				<View style={style.boxContainer}>
 					<View style={style.pinkContainer}>
 						<Text style={style.title}>{getText('modal.tag.friends.title')}</Text>

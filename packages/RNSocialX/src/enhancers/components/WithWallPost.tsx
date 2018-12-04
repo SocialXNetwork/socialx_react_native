@@ -33,7 +33,6 @@ export interface IWallPostEnhancedData {
 	commentInput?: boolean;
 	isCommentsScreen: boolean;
 	keyboardRaised?: boolean;
-	marginBottom: number;
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {

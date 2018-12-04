@@ -45,11 +45,11 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	public render() {
-		const { currentUser, marginBottom, onGoBack, getText } = this.props;
+		const { currentUser, onGoBack, getText } = this.props;
 		const { locationEnabled, location, tagFriends, caption, media } = this.state;
 
 		return (
-			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
+			<WithModalForAddFriends getText={getText}>
 				{({ showAddFriendsModal, addedFriends }) => (
 					<PhotoScreenView
 						avatar={currentUser.avatar}

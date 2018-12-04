@@ -9,7 +9,6 @@ storiesOf('Screens/mainStack', module).add('CreateWallPostScreen', () => {
 	return (
 		<CreateWallPostScreenView
 			getText={getTextMock}
-			marginBottom={0}
 			avatar={'https://placeimg.com/200/200/people'}
 			caption={'Here new post content.\nWith two lines.'}
 			media={['https://placeimg.com/300/300/any', 'https://placeimg.com/301/301/any']}
