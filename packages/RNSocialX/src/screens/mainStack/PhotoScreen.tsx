@@ -39,11 +39,11 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	public render() {
-		const { currentUser, marginBottom, getText } = this.props;
+		const { currentUser, getText } = this.props;
 		const { locationEnabled, location, tagFriends, caption, media } = this.state;
 
 		return (
-			<WithModalForAddFriends getText={getText} marginBottom={marginBottom}>
+			<WithModalForAddFriends getText={getText}>
 				{({ showAddFriendsModal, addedFriends }) => {
 					return (
 						<PhotoScreenView
@@ -129,15 +129,15 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 		}
 	};
 
-	private onCreatePostHandler = async () => {
+	private onCreatePostHandler = () => {
 		const { media, caption } = this.state;
 		const { currentUser, createPost, setGlobal } = this.props;
 
-		await setGlobal({
-			skeletonPost: {
+		setGlobal({
+			placeholderPost: {
 				postId: uuid(),
 				postText: caption,
-				location: '',
+				location: undefined,
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
@@ -145,19 +145,18 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 					fullName: currentUser.fullName,
 					avatar: currentUser.avatar,
 				},
-				numberOfSuperLikes: 0,
-				numberOfComments: 0,
-				numberOfWalletCoins: 0,
 				likedByCurrentUser: false,
 				removable: false,
 				media,
-				likes: [],
-				topComments: [],
-				loading: false,
+				likeIds: [],
+				commentIds: [],
+				topCommentIds: [],
+				numberOfSuperLikes: 0,
+				numberOfComments: 0,
+				numberOfWalletCoins: 0,
 				currentUserAvatar: currentUser.avatar,
 				suggested: undefined,
-				likeFailed: false,
-				skeleton: true,
+				creating: true,
 			},
 		});
 
@@ -174,6 +173,6 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 }
 
-export const PhotoScreen = (navProps: INavigationProps) => (
-	<WithPhoto>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithPhoto>
+export const PhotoScreen = (props: INavigationProps) => (
+	<WithPhoto>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithPhoto>
 );

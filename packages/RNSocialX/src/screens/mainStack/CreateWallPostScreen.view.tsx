@@ -10,11 +10,11 @@ import {
 	SharePostInput,
 } from '../../components';
 import { Colors, Icons } from '../../environment/theme';
-import { IResizeProps, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 
 import styles, { buttonWidth } from './CreateWallPostScreen.style';
 
-interface ICreateWallPostScreenViewProps extends ITranslatedProps, IResizeProps {
+interface ICreateWallPostScreenViewProps extends ITranslatedProps {
 	avatar: string;
 	caption: string;
 	media: string[];

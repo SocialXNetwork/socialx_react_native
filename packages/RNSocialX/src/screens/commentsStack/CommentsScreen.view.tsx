@@ -2,23 +2,23 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 
 import { WallPost } from '../../components';
-import { IError, INavigationProps, IWallPost } from '../../types';
+import { INavigationProps } from '../../types';
 
 import styles from './CommentsScreen.style';
 
 interface ICommentsScreenComponentProps extends INavigationProps {
-	post: IWallPost;
+	postId: string;
 	keyboardRaised: boolean;
 }
 
 export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
-	post,
+	postId,
 	keyboardRaised,
 	navigation,
 }) => (
 	<SafeAreaView style={styles.container}>
 		<WallPost
-			post={post}
+			postId={postId}
 			isCommentsScreen={true}
 			keyboardRaised={keyboardRaised}
 			navigation={navigation}

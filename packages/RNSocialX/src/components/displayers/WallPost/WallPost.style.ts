@@ -7,16 +7,13 @@ const styles: any = {
 		width: '100%',
 		paddingVertical: Sizes.smartVerticalScale(16),
 	},
-	mediaContainer: {
+	media: {
 		marginTop: Sizes.smartVerticalScale(10),
 	},
-	postedTimeContainer: {
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
-		marginVertical: Sizes.smartVerticalScale(10),
-	},
-	postedTime: {
-		fontSize: Sizes.smartHorizontalScale(10),
-		color: Colors.grayText,
+	overlay: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%',
 	},
 };
 

@@ -26,4 +26,5 @@ export {
 	clearFriendResponse,
 	getCurrentFriends,
 	addPostsToProfile,
+	removePostFromProfile,
 } from './actions';

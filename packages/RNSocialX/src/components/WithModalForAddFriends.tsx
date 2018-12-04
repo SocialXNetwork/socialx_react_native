@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { findNodeHandle, View } from 'react-native';
 
-import { IFriendsSearchResult, IResizeProps, ITranslatedProps } from '../types';
+import { IFriendsSearchResult, ITranslatedProps } from '../types';
 import { TagFriendsModal, WithManagedTransitions } from './';
 
 const SEARCH_RESULTS_TAG_FRIENDS = [
@@ -56,7 +56,7 @@ interface IWithModalForAddFriendsState {
 	taggedFriends: IFriendsSearchResult[];
 }
 
-interface IWithModalForAddFriendsProps extends IResizeProps, ITranslatedProps {
+interface IWithModalForAddFriendsProps extends ITranslatedProps {
 	children(props: IModalForAddFriendsProps): JSX.Element;
 }
 
@@ -80,7 +80,7 @@ export class WithModalForAddFriends extends React.Component<
 	}
 
 	public render() {
-		const { children, marginBottom, getText } = this.props;
+		const { children, getText } = this.props;
 		const {
 			modalVisible,
 			blurViewRef,
@@ -101,7 +101,6 @@ export class WithModalForAddFriends extends React.Component<
 							selectedUsers={taggedFriendsInModal}
 							onSearchUpdated={this.friendsSearchUpdatedHandler}
 							selectTagUserInModal={this.tagFriendHandler}
-							marginBottom={marginBottom}
 							getText={getText}
 							onModalHide={onModalHide}
 							onDismiss={onDismiss}

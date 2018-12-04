@@ -6,7 +6,6 @@ export {
 	IProfile,
 	IPostIdInput,
 	IPostPathInput,
-	IUsernameInput,
 	IPost,
 	IPostLikeInput,
 } from './Types';
@@ -23,7 +22,6 @@ export {
 	loadMorePosts,
 	loadMoreFriendsPosts,
 	getPostByPath,
-	getPostsByUsername,
 	getPostById,
 	getUserPosts,
 	createPost,

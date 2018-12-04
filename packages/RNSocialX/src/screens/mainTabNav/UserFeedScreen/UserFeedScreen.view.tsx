@@ -9,19 +9,19 @@ import {
 	SuggestionsCarousel,
 	WallPost,
 } from '../../../components';
-import { INavigationProps, ITranslatedProps, IWallPost } from '../../../types';
+import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
 interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
-	avatarImage: string;
-	posts: IWallPost[];
-	placeholderPost: IWallPost;
+	avatar: string;
+	postIds: string[];
+	placeholderPostId: string | null;
 	refreshing: boolean;
 	shareMessage: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
-	scrollRef: React.RefObject<FlatList<IWallPost>>;
+	scrollRef: React.RefObject<FlatList<string>>;
 	scrollY: AnimatedValue;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
@@ -32,25 +32,25 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
 	public render() {
 		const {
-			posts,
-			avatarImage,
+			postIds,
+			avatar,
 			refreshing,
 			canLoadMorePosts,
 			shareMessage,
 			scrollRef,
 			scrollY,
-			placeholderPost,
+			placeholderPostId,
 			onRefresh,
 			onLoadMorePosts,
 			onCreateWallPost,
 			getText,
 		} = this.props;
 
-		const allPosts = placeholderPost ? [placeholderPost, ...posts] : posts;
+		const data = placeholderPostId ? [placeholderPostId, ...postIds] : postIds;
 
 		return (
 			<View style={styles.container}>
-				{posts.length === 0 ? (
+				{postIds.length === 0 ? (
 					<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
 				) : (
 					<FlatList
@@ -58,15 +58,15 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 						windowSize={10}
 						refreshing={refreshing}
 						onRefresh={onRefresh}
-						data={allPosts}
-						keyExtractor={(item) => item.postId}
-						renderItem={(data) => this.renderWallPosts(data)}
+						data={data}
+						keyExtractor={(id) => id}
+						renderItem={this.renderItem}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
 						onEndReachedThreshold={0.5}
 						keyboardShouldPersistTaps="handled"
 						ListHeaderComponent={
 							<ShareSection
-								avatar={avatarImage}
+								avatar={avatar}
 								message={shareMessage}
 								onCreateWallPost={onCreateWallPost}
 							/>
@@ -82,20 +82,14 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		);
 	}
 
-	private renderWallPosts = (data: { item: IWallPost; index: number }) => {
-		const { navigation, getText, onAddComment } = this.props;
-		const post = data.item;
-
-		return (
-			<View style={styles.post}>
-				<WallPost
-					post={post}
-					commentInput={true}
-					onAddComment={(cardHeight: number) => onAddComment(data.index, cardHeight)}
-					navigation={navigation}
-				/>
-				{post.suggested && <SuggestionsCarousel items={post.suggested} getText={getText} />}
-			</View>
-		);
-	};
+	private renderItem = (data: { item: string; index: number }) => (
+		<View style={styles.post}>
+			<WallPost
+				postId={data.item}
+				commentInput={true}
+				onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
+				navigation={this.props.navigation}
+			/>
+		</View>
+	);
 }

@@ -12,39 +12,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
-		case ActionTypes.GET_POSTS_BY_USER: {
-			return state;
-		}
-
-		case ActionTypes.SYNC_GET_POSTS_BY_USER: {
-			const all = { ...state.all };
-			for (const post of action.payload) {
-				const byId: any = {};
-				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
-
-				for (const like of sortedLikes) {
-					byId[like.owner.alias] = like.timestamp;
-				}
-
-				const shapedPost = {
-					...post,
-					likes: {
-						ids: post.likes.map((like) => like.owner.alias),
-						byId,
-					},
-					comments: post.comments
-						.sort((x, y) => x.timestamp - y.timestamp)
-						.map((comm) => comm.commentId),
-				};
-				all[post.postId] = shapedPost;
-			}
-
-			return {
-				...state,
-				all,
-			};
-		}
-
 		case ActionTypes.GET_POST_BY_ID: {
 			return state;
 		}
@@ -70,7 +37,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 						comments: action.payload.comments
 							.sort((x, y) => x.timestamp - y.timestamp)
 							.map((comm) => comm.commentId),
-					} as any,
+					},
 				},
 			};
 		}
@@ -81,7 +48,9 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_LOAD_MORE_POSTS: {
 			const all = { ...state.all };
-			for (const post of action.payload.posts) {
+			const posts = [...state.global.posts];
+
+			for (const post of action.payload) {
 				const byId: any = {};
 				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
 
@@ -100,11 +69,18 @@ export default (state: IState = initialState, action: IAction): IState => {
 						.map((comm) => comm.commentId),
 				};
 				all[post.postId] = shapedPost;
+				if (posts.indexOf(post.postId) === -1) {
+					posts.push(post.postId);
+				}
 			}
 
 			return {
 				...state,
 				all,
+				global: {
+					...state.global,
+					posts,
+				},
 			};
 		}
 
@@ -114,6 +90,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS: {
 			const all = { ...state.all };
+			const posts = [...state.friends.posts];
+
 			for (const post of action.payload.posts) {
 				const byId: any = {};
 				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
@@ -133,11 +111,18 @@ export default (state: IState = initialState, action: IAction): IState => {
 						.map((comm) => comm.commentId),
 				};
 				all[post.postId] = shapedPost;
+				if (posts.indexOf(post.postId) === -1) {
+					posts.push(post.postId);
+				}
 			}
 
 			return {
 				...state,
 				all,
+				friends: {
+					...state.friends,
+					posts,
+				},
 			};
 		}
 

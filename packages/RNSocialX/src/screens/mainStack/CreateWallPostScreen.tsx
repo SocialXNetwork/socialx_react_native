@@ -33,7 +33,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	public render() {
-		const { getText, marginBottom, currentUser } = this.props;
+		const { getText, currentUser } = this.props;
 		const { caption, media } = this.state;
 
 		return (
@@ -45,7 +45,6 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
 				onClose={this.onCloseHandler}
-				marginBottom={marginBottom}
 				getText={getText}
 			/>
 		);

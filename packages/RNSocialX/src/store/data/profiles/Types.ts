@@ -35,9 +35,14 @@ export interface ISyncFriendsInput {
 	friends: IProfile[];
 }
 
-export interface IPostsToProfileInput {
+export interface IAddPostsToProfileInput {
 	alias: string;
 	postIds: string[];
+}
+
+export interface IRemovePostFromProfileInput {
+	alias: string;
+	postId: string;
 }
 
 export const enum ActionTypes {
@@ -58,6 +63,7 @@ export const enum ActionTypes {
 	REJECT_FRIEND = 'data/profiles/REJECT_FRIEND',
 	CLEAR_FRIEND_RESPONSE = 'data/profiles/CLEAR_FRIEND_RESPONSE',
 	ADD_POSTS_TO_PROFILE = 'data/profiles/ADD_POSTS_TO_PROFILE',
+	REMOVE_POST_FROM_PROFILE = 'data/profiles/REMOVE_POST_FROM_PROFILE',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -140,7 +146,12 @@ export interface IClearFriendResponseAction extends Action {
 
 export interface IAddPostsToProfileAction extends Action {
 	type: ActionTypes.ADD_POSTS_TO_PROFILE;
-	payload: IPostsToProfileInput;
+	payload: IAddPostsToProfileInput;
+}
+
+export interface IRemovePostFromProfileAction extends Action {
+	type: ActionTypes.REMOVE_POST_FROM_PROFILE;
+	payload: IRemovePostFromProfileInput;
 }
 
 interface IResetStoreAction {
@@ -164,4 +175,5 @@ export type IAction =
 	| IAcceptFriendAction
 	| IRejectFriendAction
 	| IClearFriendResponseAction
-	| IAddPostsToProfileAction;
+	| IAddPostsToProfileAction
+	| IRemovePostFromProfileAction;

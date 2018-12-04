@@ -11,11 +11,6 @@ const styles: any = {
 		borderBottomColor: Colors.geyser,
 		borderBottomWidth: Sizes.smartHorizontalScale(8),
 	},
-	overlay: {
-		position: 'absolute',
-		width: '100%',
-		height: '100%',
-	},
 };
 
 export default StyleSheet.create(styles) as any;

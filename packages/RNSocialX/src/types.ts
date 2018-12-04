@@ -96,10 +96,6 @@ export interface INavigationParamsActions {
 	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) => void;
 }
 
-export interface IResizeProps {
-	marginBottom: number;
-}
-
 export interface IConfirmationModalProps {
 	title?: string;
 	message?: string;
@@ -247,7 +243,7 @@ export interface ICurrentUser {
 	numberOfFriends: number;
 	numberOfComments: number;
 	media: IMedia[];
-	posts: IWallPost[];
+	postIds: string[];
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
 }
@@ -263,7 +259,7 @@ export interface IVisitedUser {
 	numberOfFriends: number;
 	numberOfComments: number;
 	media: IMedia[];
-	posts: IWallPost[];
+	postIds: string[];
 	relationship: FRIEND_TYPES;
 }
 

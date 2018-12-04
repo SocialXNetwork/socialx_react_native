@@ -6,14 +6,11 @@ import { IApplicationState } from '../../../store';
 import {
 	createPost,
 	getPostByPath,
-	getPostsByUsername,
 	getUserPosts,
 	ICreatePostInput,
 	IPost,
 	IPostLikeInput,
 	IPostPathInput,
-	IRemovePostInput,
-	IUsernameInput,
 	likePost,
 	loadMoreFriendsPosts,
 	loadMorePosts,
@@ -29,11 +26,11 @@ interface IDataProps {
 	};
 	global: {
 		canLoadMore: boolean;
-		posts: IPost[];
+		posts: string[];
 	};
 	friends: {
 		canLoadMore: boolean;
-		posts: IPost[];
+		posts: string[];
 	};
 }
 
@@ -42,9 +39,8 @@ interface IActionProps {
 	loadMoreFriendsPosts: () => void;
 	getUserPosts: (alias: string) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
-	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
 	createPost: (createPostInput: ICreatePostInput) => void;
-	removePost: (removePostInput: IRemovePostInput) => void;
+	removePost: (postId: string) => void;
 	likePost: (input: IPostLikeInput) => void;
 	unlikePost: (input: IPostLikeInput) => void;
 	resetPostsAndRefetch: () => void;
@@ -105,10 +101,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
 	getUserPosts: (alias: string) => dispatch(getUserPosts(alias)),
 	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
-	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
-		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
-	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
+	removePost: (postId: string) => dispatch(removePost(postId)),
 	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
 	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),
 	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),

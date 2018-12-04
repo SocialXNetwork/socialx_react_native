@@ -44,7 +44,7 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 											numberOfPhotos: 0,
 											numberOfComments: 0,
 											media: [],
-											posts: [],
+											postIds: [],
 											relationship: foundProfile.status,
 										};
 									}

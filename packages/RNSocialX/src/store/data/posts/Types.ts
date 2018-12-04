@@ -1,4 +1,4 @@
-import { ICreatePostInput, IMedia, IPostReturnData, IRemovePostInput } from '@socialx/api-data';
+import { ICreatePostInput, IMedia, IPostReturnData } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
@@ -30,20 +30,17 @@ export type IState = DeepReadonly<{
 		[postId: string]: IPost;
 	};
 	global: {
-		posts: IPost[];
+		posts: string[];
 		canLoadMore: boolean;
 		nextToken?: string;
 	};
 	friends: {
-		posts: IPost[];
+		posts: string[];
 		canLoadMore: boolean;
 		nextToken?: string;
 	};
 }>;
 
-export interface IUsernameInput {
-	username: string;
-}
 export interface IPostPathInput {
 	postPath: string;
 }
@@ -70,20 +67,18 @@ export interface ISyncCommentInput {
 }
 
 export const enum ActionTypes {
-	GET_POSTS_BY_USER = 'data/posts/GET_POST_PATHS_BY_USER',
-	SYNC_GET_POSTS_BY_USER = 'data/posts/SYNC_GET_POST_PATHS_BY_USER',
 	GET_POST_BY_PATH = 'data/posts/GET_POST_BY_PATH',
 	SYNC_GET_POST_BY_PATH = 'data/posts/SYNC_GET_POST_BY_PATH',
 	GET_PUBLIC_POSTS_BY_DATE = 'data/posts/GET_PUBLIC_POSTS_BY_DATE',
 	SYNC_GET_PUBLIC_POSTS_BY_DATE = 'data/posts/SYNC_GET_PUBLIC_POSTS_BY_DATE',
 	GET_POST_BY_ID = 'data/posts/GET_POST_BY_ID',
 	SYNC_GET_POST_BY_ID = 'data/posts/SYNC_GET_POST_BY_ID',
+	GET_USER_POSTS = 'data/posts/GET_USER_POSTS',
+	SYNC_GET_USER_POSTS = 'data/posts/SYNC_GET_USER_POSTS',
 	LOAD_MORE_POSTS = 'data/posts/LOAD_MORE_POSTS',
 	SYNC_LOAD_MORE_POSTS = 'data/posts/SYNC_LOAD_MORE_POSTS',
 	LOAD_MORE_FRIENDS_POSTS = 'data/posts/LOAD_MORE_FRIENDS_POSTS',
 	SYNC_LOAD_MORE_FRIENDS_POSTS = 'data/posts/SYNC_LOAD_MORE_FRIENDS_POSTS',
-	GET_USER_POSTS = 'data/posts/GET_USER_POSTS',
-	SYNC_GET_USER_POSTS = 'data/posts/SYNC_GET_USER_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
@@ -98,16 +93,6 @@ export const enum ActionTypes {
 
 export interface IResetPostsAction extends Action {
 	type: ActionTypes.RESET_POSTS;
-}
-
-export interface IGetPostsByUsernameAction extends Action {
-	type: ActionTypes.GET_POSTS_BY_USER;
-	payload: IUsernameInput;
-}
-
-export interface ISyncGetPostsByUserAction extends Action {
-	type: ActionTypes.SYNC_GET_POSTS_BY_USER;
-	payload: IPostReturnData[];
 }
 
 export interface IGetPostByPathAction extends Action {
@@ -136,11 +121,7 @@ export interface ILoadMorePostsAction extends Action {
 
 export interface ISyncLoadMorePostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
-	payload: {
-		posts: IPostReturnData[];
-		canLoadMore: boolean;
-		nextToken: string;
-	};
+	payload: IPostReturnData[];
 }
 
 export interface ILoadMoreFriendsPostsAction extends Action {
@@ -173,7 +154,7 @@ export interface ICreatePostAction extends Action {
 
 export interface IRemovePostAction extends Action {
 	type: ActionTypes.REMOVE_POST;
-	payload: IRemovePostInput;
+	payload: string;
 }
 
 export interface ISyncRemovePostAction extends Action {
@@ -218,8 +199,6 @@ export type IAction =
 	| IResetStoreAction
 	| IResetPostsAction
 	// getters
-	| IGetPostsByUsernameAction
-	| ISyncGetPostsByUserAction
 	| IGetPostByPathAction
 	| ISyncGetPostByPathAction
 	| IGetPostByIdAction

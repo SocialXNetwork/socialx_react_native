@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ICurrentUser } from '../../types';
-import { extractMediaFromPosts, mapPostsForUI } from '../helpers';
+import { extractMediaFromPosts } from '../helpers';
 
 import { WithPosts } from '../connectors/data/WithPosts';
 import { WithProfiles } from '../connectors/data/WithProfiles';
@@ -33,8 +33,6 @@ export class WithCurrentUserContent extends React.Component<
 											posts.push(all[id]);
 										}
 
-										const shapedPosts = mapPostsForUI(posts, currentUser, profiles);
-
 										currentUser.numberOfLikes = posts.reduce(
 											(acc, post) => acc + post.likes.ids.length,
 											0,
@@ -51,8 +49,7 @@ export class WithCurrentUserContent extends React.Component<
 										);
 
 										currentUser.media = extractMediaFromPosts(posts);
-
-										currentUser.posts = shapedPosts;
+										currentUser.postIds = postIds;
 									}
 
 									return this.props.children({

@@ -1,16 +1,15 @@
 import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import * as React from 'react';
-import { ActivityIndicator, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { TKeyboardKeys, WithManagedTransitions } from '..';
-import { OS_TYPES } from '../../environment/consts';
-import { IResizeProps, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 import style, { customStyleProps } from './InputSMSCodeModal.style';
 
 const NUMBER_OF_DIGITS = 6;
 
-interface IInputSMSCodeModalComponentProps extends ITranslatedProps, IResizeProps {
+interface IInputSMSCodeModalComponentProps extends ITranslatedProps {
 	visible: boolean;
 	phoneNumber: string;
 	errorMessage: string | null;
@@ -20,10 +19,7 @@ interface IInputSMSCodeModalComponentProps extends ITranslatedProps, IResizeProp
 	resendHandler: () => void;
 }
 
-interface IWithSMSCodeProps
-	extends IInputSMSCodeModalComponentProps,
-		IResizeProps,
-		ITranslatedProps {
+interface IWithSMSCodeProps extends IInputSMSCodeModalComponentProps, ITranslatedProps {
 	smsCode: string;
 }
 
@@ -37,7 +33,6 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 		smsCode,
 		resendingCode,
 		getText,
-		marginBottom,
 	},
 	isValid,
 	handleSubmit,
@@ -54,7 +49,7 @@ const InputSMSCodeModalComponent: React.SFC<FormikProps<IWithSMSCodeProps>> = ({
 				animationIn="zoomIn"
 				animationOut="zoomOut"
 				onBackdropPress={declineHandler}
-				style={[style.container, Platform.OS === OS_TYPES.IOS ? { marginBottom } : {}]}
+				style={style.container}
 			>
 				<View style={style.boxContainer}>
 					<Text style={style.title}>{getText('modal.sms.code.title')}</Text>

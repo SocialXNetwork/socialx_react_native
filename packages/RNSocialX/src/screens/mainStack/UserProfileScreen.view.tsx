@@ -20,7 +20,7 @@ import {
 	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { IError, INavigationProps, ITranslatedProps, IVisitedUser, IWallPost } from '../../types';
+import { INavigationProps, ITranslatedProps, IVisitedUser, IWallPost } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
 
@@ -69,7 +69,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 }) => {
 	const {
 		userId,
-		posts,
+		postIds,
 		numberOfLikes,
 		numberOfPhotos,
 		numberOfFriends,
@@ -82,7 +82,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	} = visitedUser;
 
 	const hasPhotos = numberOfPhotos > 0;
-	const hasPosts = posts.length > 0;
+	const hasPosts = postIds.length > 0;
 
 	let contentContainerStyle;
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
@@ -144,12 +144,12 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							{hasPosts ? (
 								<FlatList
 									windowSize={10}
-									data={posts}
-									keyExtractor={(item: IWallPost) => item.postId}
+									data={postIds}
+									keyExtractor={(id) => id}
 									renderItem={(data) => (
 										<View style={styles.post}>
 											<WallPost
-												post={data.item}
+												postId={data.item}
 												onAddComment={() => undefined}
 												commentInput={false}
 												navigation={navigation}

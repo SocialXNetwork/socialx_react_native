@@ -19,16 +19,18 @@ import {
 	IAcceptFriendAction,
 	IAddFriendAction,
 	IAddPostsToProfileAction,
+	IAddPostsToProfileInput,
 	IClearFriendResponseAction,
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
 	IGetProfileByAliasAction,
 	IGetProfilesByPostsAction,
 	IGetProfilesByUsernamesAction,
-	IPostsToProfileInput,
 	IProfile,
 	IRejectFriendAction,
 	IRemoveFriendAction,
+	IRemovePostFromProfileAction,
+	IRemovePostFromProfileInput,
 	ISyncFriendsInput,
 	ISyncGetCurrentFriendsAction,
 	ISyncGetCurrentProfileAction,
@@ -268,6 +270,8 @@ export const getCurrentFriends = (): IThunk => async (dispatch, getState, contex
 				uuid: uuidv4(),
 			}),
 		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -583,8 +587,15 @@ export const clearFriendResponse = (
 };
 
 export const addPostsToProfile: ActionCreator<IAddPostsToProfileAction> = (
-	input: IPostsToProfileInput,
+	input: IAddPostsToProfileInput,
 ) => ({
 	type: ActionTypes.ADD_POSTS_TO_PROFILE,
+	payload: input,
+});
+
+export const removePostFromProfile: ActionCreator<IRemovePostFromProfileAction> = (
+	input: IRemovePostFromProfileInput,
+) => ({
+	type: ActionTypes.REMOVE_POST_FROM_PROFILE,
 	payload: input,
 });

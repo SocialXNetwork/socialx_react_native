@@ -27,7 +27,8 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
-	private readonly scrollRef: React.RefObject<FlatList<IWallPost>> = React.createRef();
+	// private readonly scrollRef: React.RefObject<FlatList<IWallPost>> = React.createRef();
+	private readonly scrollRef: React.RefObject<FlatList<string>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 
 	public componentDidMount() {
@@ -45,7 +46,7 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	public render() {
 		const {
 			currentUser,
-			posts,
+			postIds,
 			placeholderPost,
 			shareMessage,
 			canLoadMore,
@@ -57,9 +58,9 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 
 		return (
 			<UserFeedScreenView
-				posts={posts}
-				avatarImage={currentUser.avatar}
-				placeholderPost={placeholderPost}
+				postIds={postIds}
+				placeholderPostId={placeholderPost ? placeholderPost.postId : null}
+				avatar={currentUser.avatar}
 				refreshing={refreshingFeed}
 				canLoadMorePosts={canLoadMore}
 				loadingMorePosts={loadingMorePosts}

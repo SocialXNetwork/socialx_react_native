@@ -75,11 +75,11 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 		numberOfFriends,
 		numberOfComments,
 		description,
-		posts,
+		postIds,
 	} = currentUser;
 
 	const hasPhotos = numberOfPhotos > 0;
-	const hasPosts = posts.length > 0;
+	const hasPosts = postIds.length > 0;
 
 	let contentContainerStyle;
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
@@ -149,14 +149,14 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							{hasPosts ? (
 								<FlatList
 									windowSize={10}
-									data={posts}
-									keyExtractor={(item: IWallPost) => item.postId}
+									data={postIds}
+									keyExtractor={(id) => id}
 									renderItem={(data) => (
 										<View style={styles.post}>
 											<WallPost
-												post={data.item}
-												onAddComment={() => undefined}
+												postId={data.item}
 												commentInput={false}
+												onAddComment={() => undefined}
 												navigation={navigation}
 											/>
 										</View>

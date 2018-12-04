@@ -10,7 +10,7 @@ import {
 	ILikeCommentInput,
 	IRemoveCommentInput,
 } from '../../store/data/comments';
-import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../types';
+import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps, IWallPost } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithComments } from '../connectors/data/WithComments';
@@ -21,6 +21,7 @@ import { WithCurrentUser } from '../intermediary';
 
 export interface IWallPostEnhancedData {
 	currentUser: ICurrentUser;
+	placeholderPost?: IWallPost;
 	commentInput?: boolean;
 	keyboardRaised?: boolean;
 }
@@ -48,7 +49,7 @@ interface IWithWallPostState {}
 
 export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallPostState> {
 	private actions: {
-		removePost: (input: { postId: string }) => void;
+		removePost: (postId: string) => void;
 		createComment: (input: ICreateCommentInput) => void;
 		removeComment: (input: IRemoveCommentInput) => void;
 		likeComment: (input: ILikeCommentInput) => void;
@@ -70,7 +71,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithGlobals>
-								{({ setGlobal }) => (
+								{({ globals, setGlobal }) => (
 									<WithPosts>
 										{({ removePost }) => (
 											<WithComments>
@@ -89,6 +90,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 															return this.props.children({
 																data: {
 																	currentUser,
+																	placeholderPost: globals.placeholderPost,
 																},
 																actions: {
 																	onRemovePost: this.onRemovePostHandler,
@@ -149,7 +151,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 				loader: true,
 			},
 		});
-		await removePost({ postId });
+		await removePost(postId);
 		setGlobal({
 			transparentOverlay: {
 				visible: false,

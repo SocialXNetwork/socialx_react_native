@@ -1,14 +1,11 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IWallPost } from '../../../types';
 
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
-import { WithPosts } from '../../connectors/data/WithPosts';
-import { WithDataShape } from '../../intermediary';
 
 export interface IWithCommentsEnhancedData {
-	post: IWallPost;
+	postId: string;
 	keyboardRaised: boolean;
 }
 
@@ -29,27 +26,17 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 	render() {
 		return (
 			<WithNavigationParams>
-				{({ navigationParams }) => (
-					<WithPosts>
-						{({ all }) => {
-							const { postId, keyboardRaised } = navigationParams[SCREENS.Comments];
+				{({ navigationParams }) => {
+					const { postId, keyboardRaised } = navigationParams[SCREENS.Comments];
 
-							return (
-								<WithDataShape post={all[postId]}>
-									{({ shapedPost }) =>
-										this.props.children({
-											data: {
-												post: shapedPost!,
-												keyboardRaised,
-											},
-											actions: {},
-										})
-									}
-								</WithDataShape>
-							);
-						}}
-					</WithPosts>
-				)}
+					return this.props.children({
+						data: {
+							postId,
+							keyboardRaised,
+						},
+						actions: {},
+					});
+				}}
 			</WithNavigationParams>
 		);
 	}

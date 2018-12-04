@@ -8,7 +8,6 @@ import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 import {
 	IWithLikingEnhancedActions,
-	IWithLikingEnhancedData,
 	IWithNavigationHandlersEnhancedActions,
 	WithLiking,
 	WithNavigationHandlers,
@@ -31,7 +30,6 @@ interface IMediaViewerScreenState {
 type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions &
-	IWithLikingEnhancedData &
 	IWithLikingEnhancedActions &
 	IWithNavigationHandlersEnhancedActions;
 
@@ -72,8 +70,8 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				activeSlide={activeSlide}
 				viewport={viewport}
 				infoVisible={infoVisible}
-				canReact={!!post}
-				likedByCurrentUser={post!.likedByCurrentUser}
+				canReact={post ? true : false}
+				likedByCurrentUser={post ? post.likedByCurrentUser : false}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
@@ -137,7 +135,6 @@ export const MediaViewerScreen = (props: INavigationProps) => (
 								{...props}
 								{...media.data}
 								{...media.actions}
-								{...likes.data}
 								{...likes.actions}
 								{...nav.actions}
 							/>

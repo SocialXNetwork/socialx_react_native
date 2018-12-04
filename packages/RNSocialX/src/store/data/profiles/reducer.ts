@@ -157,6 +157,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.ADD_POSTS_TO_PROFILE: {
 			const { postIds, alias } = action.payload;
+			const updatedPostIds = [...state.profiles[alias].posts];
+
+			for (const postId of postIds) {
+				if (updatedPostIds.indexOf(postId) === -1) {
+					updatedPostIds.unshift(postId);
+				}
+			}
 
 			return {
 				...state,
@@ -164,7 +171,22 @@ export default (state: IState = initialState, action: IAction): IState => {
 					...state.profiles,
 					[alias]: {
 						...state.profiles[alias],
-						posts: postIds,
+						posts: updatedPostIds,
+					},
+				},
+			};
+		}
+
+		case ActionTypes.REMOVE_POST_FROM_PROFILE: {
+			const { postId, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						posts: state.profiles[alias].posts.filter((id) => id !== postId),
 					},
 				},
 			};

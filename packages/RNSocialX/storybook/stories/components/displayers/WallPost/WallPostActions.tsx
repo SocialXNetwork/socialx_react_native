@@ -9,6 +9,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('WallPostActions', () => (
 		<WallPostActions
+			creating={false}
 			likedByCurrentUser={false}
 			numberOfSuperLikes={0}
 			numberOfWalletCoins={15679}

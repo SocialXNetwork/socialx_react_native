@@ -8,6 +8,7 @@ import {
 	ScrollView,
 	View,
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import { CommentCard, HeartAnimation } from '../../';
 import {
@@ -28,21 +29,35 @@ import {
 	WithWallPost,
 } from '../../../enhancers/components/WithWallPost';
 import {
+	IWithDataShapeEnhancedProps,
 	IWithLikingEnhancedActions,
 	IWithLikingEnhancedData,
 	IWithNavigationHandlersEnhancedActions,
+	WithDataShape,
 	WithLiking,
 	WithNavigationHandlers,
 } from '../../../enhancers/intermediary';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
-import { IComment, INavigationProps, IOptimizedMedia, IWallPost } from '../../../types';
+import { IPost } from '../../../store/data/posts/Types';
+import { IApplicationState, selectPost } from '../../../store/selectors';
+import { IComment, INavigationProps, IWallPost } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import styles, { SCREEN_WIDTH } from './WallPost.style';
 
+interface IWallPostProps extends INavigationProps {
+	postId: string;
+	post: IPost;
+	commentInput?: boolean;
+	isCommentsScreen?: boolean;
+	keyboardRaised?: boolean;
+	onAddComment?: (cardHeight: number) => void;
+}
+
 type IProps = IWallPostProps &
+	IWithDataShapeEnhancedProps &
 	IWallPostEnhancedActions &
 	IWallPostEnhancedData &
 	IWithLikingEnhancedActions &
@@ -53,20 +68,20 @@ type IProps = IWallPostProps &
 interface IState {
 	fullTextVisible: boolean;
 	comment: string;
-	inputFocused: boolean;
-	inputWidth: Animated.Value;
-	inputIconPosition: Animated.Value;
+	commentInputFocused: boolean;
+	commentInputWidth: Animated.Value;
+	sendCommentIconPosition: Animated.Value;
 	viewOffensiveContent: boolean;
 	reportAProblem: boolean;
 }
 
-class Component extends React.PureComponent<IProps, IState> {
+class Component extends React.Component<IProps, IState> {
 	public state = {
 		fullTextVisible: false,
 		comment: '',
-		inputFocused: false,
-		inputWidth: new Animated.Value(SCREEN_WIDTH),
-		inputIconPosition: new Animated.Value(100),
+		commentInputFocused: false,
+		commentInputWidth: new Animated.Value(SCREEN_WIDTH),
+		sendCommentIconPosition: new Animated.Value(100),
 		viewOffensiveContent: false,
 		reportAProblem: false,
 	};
@@ -79,13 +94,26 @@ class Component extends React.PureComponent<IProps, IState> {
 		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
 	}
 
+	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
+		return (
+			this.state !== nextState ||
+			this.props.postId !== nextProps.postId ||
+			this.props.currentUser !== nextProps.currentUser ||
+			this.props.shapedPost !== nextProps.shapedPost ||
+			this.props.placeholderPost !== nextProps.placeholderPost ||
+			this.props.heartAnimation !== nextProps.heartAnimation ||
+			this.props.animationProgress !== nextProps.animationProgress
+		);
+	}
+
 	public componentWillUnmount() {
 		this.keyboardDidHideListener.remove();
 	}
 
 	public render() {
 		const {
-			post,
+			shapedPost,
+			placeholderPost,
 			currentUser,
 			commentInput,
 			isCommentsScreen,
@@ -101,9 +129,10 @@ class Component extends React.PureComponent<IProps, IState> {
 			onViewUserProfile,
 			onGoBack,
 			getText,
-			marginBottom,
 			navigation,
 		} = this.props;
+
+		const isPlaceholderPost = placeholderPost && placeholderPost.postId === this.props.postId;
 
 		const {
 			postId,
@@ -122,20 +151,20 @@ class Component extends React.PureComponent<IProps, IState> {
 			numberOfWalletCoins,
 			offensiveContent,
 			creating,
-		} = post;
+		} = isPlaceholderPost ? placeholderPost! : shapedPost!;
 
 		const {
 			viewOffensiveContent,
-			inputWidth,
-			inputIconPosition,
+			commentInputWidth,
+			sendCommentIconPosition,
 			fullTextVisible,
 			comment,
 			reportAProblem,
 		} = this.state;
 
 		const animationValues = {
-			width: inputWidth,
-			send: inputIconPosition,
+			width: commentInputWidth,
+			send: sendCommentIconPosition,
 		};
 
 		return (
@@ -145,6 +174,7 @@ class Component extends React.PureComponent<IProps, IState> {
 				// Measuring the element doesn't work on Android without this
 				renderToHardwareTextureAndroid={true}
 			>
+				{isPlaceholderPost && <View style={styles.overlay} />}
 				<UserDetails
 					canBack={isCommentsScreen!}
 					user={owner}
@@ -162,7 +192,6 @@ class Component extends React.PureComponent<IProps, IState> {
 						this.onReportAProblemHandler(true, subject, description)
 					}
 					declineHandler={() => this.onReportAProblemHandler(false)}
-					marginBottom={marginBottom}
 					getText={getText}
 				/>
 				{isCommentsScreen && (
@@ -185,7 +214,7 @@ class Component extends React.PureComponent<IProps, IState> {
 								getText={getText}
 							/>
 							{media.length > 0 && (
-								<View style={styles.mediaContainer}>
+								<View style={styles.media}>
 									{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 									<WallPostMedia
 										media={media}
@@ -258,13 +287,13 @@ class Component extends React.PureComponent<IProps, IState> {
 							getText={getText}
 						/>
 						{media.length > 0 && (
-							<View style={styles.mediaContainer}>
+							<View style={styles.media}>
 								{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 								{(!offensiveContent || viewOffensiveContent) && (
 									<WallPostMedia
 										media={media}
 										onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
-										onDoublePress={() => onDoubleTapLikePost(post.postId)}
+										onDoublePress={() => onDoubleTapLikePost(shapedPost!.postId)}
 										creating={creating}
 										getText={getText}
 									/>
@@ -324,47 +353,52 @@ class Component extends React.PureComponent<IProps, IState> {
 	}
 
 	private keyboardDidHide = () => {
-		if (this.state.inputFocused) {
+		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
+
+		if (commentInputFocused) {
 			Animated.parallel([
-				Animated.timing(this.state.inputWidth, {
+				Animated.timing(commentInputWidth, {
 					toValue: SCREEN_WIDTH,
 					duration: 250,
 				}),
-				Animated.timing(this.state.inputIconPosition, {
+				Animated.timing(sendCommentIconPosition, {
 					toValue: 100,
 					duration: 250,
 				}),
 			]).start();
-			this.setState({ inputFocused: false });
+			this.setState({ commentInputFocused: false });
 		}
 	};
 
 	private onCommentInputPressHandler = () => {
-		if (!this.props.post.creating && this.containerViewRef.current) {
+		const { shapedPost, onAddComment } = this.props;
+		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
+
+		if (shapedPost && !shapedPost.creating && this.containerViewRef.current) {
 			this.containerViewRef.current.measure(
 				(x: number, y: number, width: number, height: number) => {
-					this.props.onAddComment!(height);
+					onAddComment!(height);
 				},
 			);
 
-			if (!this.state.inputFocused) {
+			if (!commentInputFocused) {
 				Animated.parallel([
-					Animated.timing(this.state.inputWidth, {
+					Animated.timing(commentInputWidth, {
 						toValue: SCREEN_WIDTH - Sizes.smartHorizontalScale(115),
 						duration: 250,
 					}),
-					Animated.timing(this.state.inputIconPosition, {
+					Animated.timing(sendCommentIconPosition, {
 						toValue: 0,
 						duration: 250,
 					}),
 				]).start();
-				this.setState({ inputFocused: true });
+				this.setState({ commentInputFocused: true });
 			}
 		}
 	};
 
 	private onCommentInputChangeHandler = (comment: string) => {
-		if (!this.props.post.creating) {
+		if (this.props.shapedPost && !this.props.shapedPost.creating) {
 			this.setState({ comment });
 		}
 	};
@@ -376,30 +410,32 @@ class Component extends React.PureComponent<IProps, IState> {
 	};
 
 	private onShowPostOptionsHandler = () => {
-		const { getText, showOptionsMenu, post } = this.props;
+		const { getText, showOptionsMenu, shapedPost } = this.props;
 
-		const baseItems = [
-			{
-				label: getText('wall.post.menu.block.user'),
-				icon: 'ios-close-circle',
-				actionHandler: () => undefined,
-			},
-			{
-				label: getText('wall.post.menu.report.problem'),
-				icon: 'ios-warning',
-				actionHandler: () => this.setState({ reportAProblem: true }),
-			},
-		];
-		const deleteItem = {
-			label: getText('wall.post.menu.delete.post'),
-			icon: 'ios-trash',
-			actionHandler: async () => {
-				await this.props.onRemovePost(post.postId);
-			},
-		};
+		if (shapedPost) {
+			const baseItems = [
+				{
+					label: getText('wall.post.menu.block.user'),
+					icon: 'ios-close-circle',
+					actionHandler: () => undefined,
+				},
+				{
+					label: getText('wall.post.menu.report.problem'),
+					icon: 'ios-warning',
+					actionHandler: () => this.setState({ reportAProblem: true }),
+				},
+			];
+			const deleteItem = {
+				label: getText('wall.post.menu.delete.post'),
+				icon: 'ios-trash',
+				actionHandler: async () => {
+					await this.props.onRemovePost(shapedPost.postId);
+				},
+			};
 
-		const items = post.removable ? [...baseItems, deleteItem] : baseItems;
-		showOptionsMenu(items);
+			const items = shapedPost.removable ? [...baseItems, deleteItem] : baseItems;
+			showOptionsMenu(items);
+		}
 	};
 
 	private onShowFullTextHandler = () => {
@@ -448,33 +484,36 @@ class Component extends React.PureComponent<IProps, IState> {
 	};
 }
 
-interface IWallPostProps extends INavigationProps {
-	post: IWallPost;
-	commentInput?: boolean;
-	isCommentsScreen?: boolean;
-	keyboardRaised?: boolean;
-	onAddComment?: (cardHeight: number) => void;
-}
-
-export const WallPost: React.SFC<IWallPostProps> = (props) => (
+const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithWallPost>
 		{(wallPost) => (
-			<WithLiking likedByCurrentUser={props.post.likedByCurrentUser}>
-				{(likes) => (
-					<WithNavigationHandlers navigation={props.navigation}>
-						{(nav) => (
-							<Component
-								{...props}
-								{...wallPost.data}
-								{...wallPost.actions}
-								{...likes.data}
-								{...likes.actions}
-								{...nav.actions}
-							/>
+			<WithNavigationHandlers navigation={props.navigation}>
+				{(nav) => (
+					<WithDataShape post={props.post}>
+						{({ shapedPost }) => (
+							<WithLiking likedByCurrentUser={shapedPost ? shapedPost.likedByCurrentUser : false}>
+								{(likes) => (
+									<Component
+										shapedPost={shapedPost}
+										{...props}
+										{...wallPost.data}
+										{...wallPost.actions}
+										{...likes.data}
+										{...likes.actions}
+										{...nav.actions}
+									/>
+								)}
+							</WithLiking>
 						)}
-					</WithNavigationHandlers>
+					</WithDataShape>
 				)}
-			</WithLiking>
+			</WithNavigationHandlers>
 		)}
 	</WithWallPost>
 );
+
+const mapStateToProps = (state: IApplicationState, props: IWallPostProps) => ({
+	post: selectPost(state, props),
+});
+
+export const WallPost = connect(mapStateToProps)(EnhancedComponent as any) as any;
