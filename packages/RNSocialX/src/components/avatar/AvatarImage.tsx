@@ -22,7 +22,7 @@ export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 			let source;
 
 			if (local) {
-				source = local;
+				source = { uri: local };
 			} else if (image && image.length > 0) {
 				source = { uri: IPFS_URL + image };
 			} else {

@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import { KeyboardContext, SCREENS } from '../../../environment/consts';
+import { SCREENS } from '../../../environment/consts';
 import {
 	ICreateWallPost,
 	ICurrentUser,
 	IGlobal,
 	IOptimizedMedia,
 	IOptionsMenuProps,
-	IResizeProps,
 	ITranslatedProps,
 	IUploadFileInput,
 } from '../../../types';
@@ -20,7 +19,7 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../../intermediary';
 
-export interface IWithPhotoEnhancedData extends IResizeProps {
+export interface IWithPhotoEnhancedData {
 	currentUser: ICurrentUser;
 	media: IOptimizedMedia[];
 }
@@ -51,51 +50,46 @@ export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState>
 						{({ setGlobal }) => (
 							<WithOverlays>
 								{({ showOptionsMenu }) => (
-									<KeyboardContext.Consumer>
-										{({ marginBottom }) => (
-											<WithNavigationParams>
-												{({ navigationParams }) => (
-													<WithFiles>
-														{({ uploadFile }) => (
-															<WithPosts>
-																{({ createPost }) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) =>
-																			this.props.children({
-																				data: {
-																					currentUser: currentUser!,
-																					media: navigationParams[SCREENS.Photo].media,
-																					marginBottom,
-																				},
-																				actions: {
-																					uploadFile,
-																					createPost: async (post: ICreateWallPost) => {
-																						await createPost({
-																							postText: post.text,
-																							location: post.location,
-																							taggedFriends: post.taggedFriends,
-																							media: post.media,
-																							privatePost: false,
-																						} as any);
-																					},
-																					showOptionsMenu: (items) =>
-																						showOptionsMenu({
-																							items,
-																						}),
-																					setGlobal,
-																					getText,
-																				},
-																			})
-																		}
-																	</WithCurrentUser>
-																)}
-															</WithPosts>
+									<WithNavigationParams>
+										{({ navigationParams }) => (
+											<WithFiles>
+												{({ uploadFile }) => (
+													<WithPosts>
+														{({ createPost }) => (
+															<WithCurrentUser>
+																{({ currentUser }) =>
+																	this.props.children({
+																		data: {
+																			currentUser: currentUser!,
+																			media: navigationParams[SCREENS.Photo].media,
+																		},
+																		actions: {
+																			uploadFile,
+																			createPost: async (post: ICreateWallPost) => {
+																				await createPost({
+																					postText: post.text,
+																					location: post.location,
+																					taggedFriends: post.taggedFriends,
+																					media: post.media,
+																					privatePost: false,
+																				} as any);
+																			},
+																			showOptionsMenu: (items) =>
+																				showOptionsMenu({
+																					items,
+																				}),
+																			setGlobal,
+																			getText,
+																		},
+																	})
+																}
+															</WithCurrentUser>
 														)}
-													</WithFiles>
+													</WithPosts>
 												)}
-											</WithNavigationParams>
+											</WithFiles>
 										)}
-									</KeyboardContext.Consumer>
+									</WithNavigationParams>
 								)}
 							</WithOverlays>
 						)}

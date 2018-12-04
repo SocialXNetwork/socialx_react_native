@@ -60,11 +60,9 @@ const styles: any = {
 export default StyleSheet.create(styles);
 
 export const defaultStyles = {
-	avatarPickerSize: Sizes.smartHorizontalScale(100),
 	avatarFullNameColor: Colors.cloudBurst,
 	avatarUserNameColor: Colors.pink,
 	descriptionBorderColor: Colors.dustWhite,
 	userDataInputPlaceholderColor: Colors.paleSky,
 	userDataInputBorderColor: Colors.transparent,
-	avatarPlaceholderImg: Images.user_avatar_placeholder,
 };

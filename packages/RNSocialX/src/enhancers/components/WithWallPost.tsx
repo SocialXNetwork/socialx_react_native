@@ -5,13 +5,12 @@
 
 import * as React from 'react';
 
-import { KeyboardContext } from '../../environment/consts';
 import {
 	ICreateCommentInput,
 	ILikeCommentInput,
 	IRemoveCommentInput,
 } from '../../store/data/comments';
-import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps, IWallPost } from '../../types';
+import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithComments } from '../connectors/data/WithComments';
@@ -24,7 +23,6 @@ export interface IWallPostEnhancedData {
 	currentUser: ICurrentUser;
 	commentInput?: boolean;
 	keyboardRaised?: boolean;
-	marginBottom: number;
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
@@ -73,47 +71,42 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 						{({ showOptionsMenu }) => (
 							<WithGlobals>
 								{({ setGlobal }) => (
-									<KeyboardContext.Consumer>
-										{({ marginBottom }) => (
-											<WithPosts>
-												{({ removePost }) => (
-													<WithComments>
-														{({ likeComment, unlikeComment, createComment, removeComment }) => (
-															<WithCurrentUser>
-																{({ currentUser }) => {
-																	this.actions = {
-																		likeComment,
-																		unlikeComment,
-																		createComment,
-																		removeComment,
-																		removePost,
-																		setGlobal,
-																	};
+									<WithPosts>
+										{({ removePost }) => (
+											<WithComments>
+												{({ likeComment, unlikeComment, createComment, removeComment }) => (
+													<WithCurrentUser>
+														{({ currentUser }) => {
+															this.actions = {
+																likeComment,
+																unlikeComment,
+																createComment,
+																removeComment,
+																removePost,
+																setGlobal,
+															};
 
-																	return this.props.children({
-																		data: {
-																			currentUser,
-																			marginBottom,
-																		},
-																		actions: {
-																			onRemovePost: this.onRemovePostHandler,
-																			onSubmitComment: this.onSubmitCommentHandler,
-																			onRemoveComment: this.onRemoveCommentHandler,
-																			onLikeComment: this.onLikeCommentHandler,
-																			onBlockUser: () => undefined,
-																			onReportProblem: () => undefined,
-																			showOptionsMenu: (items) => showOptionsMenu({ items }),
-																			getText,
-																		},
-																	});
-																}}
-															</WithCurrentUser>
-														)}
-													</WithComments>
+															return this.props.children({
+																data: {
+																	currentUser,
+																},
+																actions: {
+																	onRemovePost: this.onRemovePostHandler,
+																	onSubmitComment: this.onSubmitCommentHandler,
+																	onRemoveComment: this.onRemoveCommentHandler,
+																	onLikeComment: this.onLikeCommentHandler,
+																	onBlockUser: () => undefined,
+																	onReportProblem: () => undefined,
+																	showOptionsMenu: (items) => showOptionsMenu({ items }),
+																	getText,
+																},
+															});
+														}}
+													</WithCurrentUser>
 												)}
-											</WithPosts>
+											</WithComments>
 										)}
-									</KeyboardContext.Consumer>
+									</WithPosts>
 								)}
 							</WithGlobals>
 						)}

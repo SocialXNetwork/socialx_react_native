@@ -3,7 +3,6 @@ import * as React from 'react';
 import BugSnag from './BugSnag';
 import ErrorBoundary from './ErrorBoundary';
 import Init from './Init';
-import Keyboard from './Keyboard';
 import Navigation from './Navigation';
 import OfflineHandler from './OfflineHandler';
 import Splash from './Splash';
@@ -21,17 +20,15 @@ export default class App extends React.Component<{}> {
 					{(bugsnag: any) => (
 						<Init>
 							<Splash>
-								<Keyboard>
-									<PolyfillCrypto />
-									<Store bugsnag={bugsnag}>
-										<React.Fragment>
-											<StatusBar />
-											<OfflineHandler>
-												<Navigation />
-											</OfflineHandler>
-										</React.Fragment>
-									</Store>
-								</Keyboard>
+								<PolyfillCrypto />
+								<Store bugsnag={bugsnag}>
+									<React.Fragment>
+										<StatusBar />
+										<OfflineHandler>
+											<Navigation />
+										</OfflineHandler>
+									</React.Fragment>
+								</Store>
 							</Splash>
 						</Init>
 					)}

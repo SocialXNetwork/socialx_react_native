@@ -113,9 +113,9 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				>
 					<View style={styles.picker}>
 						<AvatarPicker
-							avatar={{ uri: avatarValue }}
+							local={avatarValue}
+							hash={avatarValue === avatar}
 							afterImagePick={(path: string) => setFieldValue('avatar', path, false)}
-							avatarSize={defaultStyles.avatarPickerSize}
 							showOptionsMenu={showOptionsMenu}
 							getText={getText}
 						/>
