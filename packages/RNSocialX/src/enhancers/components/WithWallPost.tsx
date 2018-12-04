@@ -5,7 +5,6 @@
 
 import * as React from 'react';
 
-import { KeyboardContext } from '../../environment/consts';
 import {
 	IComment,
 	ICurrentUser,
@@ -89,58 +88,52 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 										{({ globals, setGlobal }) => (
 											<WithActivities>
 												{({ errors }) => (
-													<KeyboardContext.Consumer>
-														{({ marginBottom }) => (
-															<WithAggregations>
-																{({ getUserPosts }) => (
-																	<WithPosts>
-																		{({
-																			likeComment,
-																			unlikeComment,
-																			createComment,
-																			removeComment,
-																			removePost,
-																		}) => (
-																			<WithCurrentUser>
-																				{({ currentUser }) => {
-																					this.actions = {
-																						getUserPosts,
-																						likeComment,
-																						unlikeComment,
-																						createComment,
-																						removePost,
-																						setNavigationParams,
-																						setGlobal,
-																					};
+													<WithAggregations>
+														{({ getUserPosts }) => (
+															<WithPosts>
+																{({
+																	likeComment,
+																	unlikeComment,
+																	createComment,
+																	removeComment,
+																	removePost,
+																}) => (
+																	<WithCurrentUser>
+																		{({ currentUser }) => {
+																			this.actions = {
+																				getUserPosts,
+																				likeComment,
+																				unlikeComment,
+																				createComment,
+																				removePost,
+																				setNavigationParams,
+																				setGlobal,
+																			};
 
-																					return this.props.children({
-																						data: {
-																							currentUser,
-																							skeletonPost: globals.skeletonPost,
-																							errors,
-																							marginBottom,
-																						} as any,
-																						actions: {
-																							onRemovePost: this.onRemovePostHandler,
-																							onSubmitComment: this.onSubmitCommentHandler,
-																							onLikeComment: this.onLikeCommentHandler,
-																							onRemoveComment: (commentId) =>
-																								removeComment({ commentId }),
-																							onBlockUser: () => undefined,
-																							onReportProblem: () => undefined,
-																							showOptionsMenu: (items) =>
-																								showOptionsMenu({ items }),
-																							getText,
-																						},
-																					});
-																				}}
-																			</WithCurrentUser>
-																		)}
-																	</WithPosts>
+																			return this.props.children({
+																				data: {
+																					currentUser,
+																					skeletonPost: globals.skeletonPost,
+																					errors,
+																				} as any,
+																				actions: {
+																					onRemovePost: this.onRemovePostHandler,
+																					onSubmitComment: this.onSubmitCommentHandler,
+																					onLikeComment: this.onLikeCommentHandler,
+																					onRemoveComment: (commentId) =>
+																						removeComment({ commentId }),
+																					onBlockUser: () => undefined,
+																					onReportProblem: () => undefined,
+																					showOptionsMenu: (items) => showOptionsMenu({ items }),
+																					getText,
+																				},
+																			});
+																		}}
+																	</WithCurrentUser>
 																)}
-															</WithAggregations>
+															</WithPosts>
 														)}
-													</KeyboardContext.Consumer>
+													</WithAggregations>
 												)}
 											</WithActivities>
 										)}

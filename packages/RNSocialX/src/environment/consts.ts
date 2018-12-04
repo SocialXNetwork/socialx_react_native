@@ -79,18 +79,6 @@ export const dateFormatMomentJS = {
 	statisticsScreen: 'MMM DD, YYYY',
 };
 
-export interface IKeyboardContextProps {
-	marginBottom: number;
-	safeRunAfterKeyboardHide: (handler: () => void) => void;
-}
-
-export const KeyboardContext: React.Context<IKeyboardContextProps> = React.createContext({
-	marginBottom: 0,
-	safeRunAfterKeyboardHide: (handler: () => void) => {
-		/**/
-	},
-});
-
 export enum FEED_TYPES {
 	GLOBAL = 'global',
 	FRIENDS = 'friends',

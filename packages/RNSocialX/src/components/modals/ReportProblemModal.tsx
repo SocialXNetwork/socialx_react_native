@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+	KeyboardAvoidingView,
+	Platform,
+	Text,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	View,
+} from 'react-native';
 import { BlurView } from 'react-native-blur';
 import Modal from 'react-native-modal';
 
@@ -7,11 +14,11 @@ import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import { PrimaryTextInput } from '..';
 import { OS_TYPES } from '../../environment/consts';
 import { ApplicationStyles, Colors, Icons } from '../../environment/theme';
-import { IResizeProps, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 import style from './ReportProblemModal.style';
 
-interface IReportProblemModalProps extends IResizeProps, ITranslatedProps {
+interface IReportProblemModalProps extends ITranslatedProps {
 	visible: boolean;
 	confirmHandler: (subject: string, description: string) => void;
 	declineHandler: () => void;
@@ -23,7 +30,7 @@ interface IReportProblemModalComponentProps extends IReportProblemModalProps {
 }
 
 const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComponentProps>> = ({
-	values: { visible, declineHandler, marginBottom, getText, description, subject },
+	values: { visible, declineHandler, getText, description, subject },
 	isValid,
 	handleSubmit,
 	errors,
@@ -47,7 +54,12 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 						<BlurView style={style.blurView} blurType="dark" blurAmount={2} />
 					</TouchableWithoutFeedback>
 				)}
-				<View style={[style.keyboardView, Platform.OS === OS_TYPES.IOS ? { marginBottom } : {}]}>
+				<KeyboardAvoidingView
+					behavior="padding"
+					keyboardVerticalOffset={100}
+					enabled={Platform.OS === OS_TYPES.IOS ? true : false}
+					contentContainerStyle={style.keyboardView}
+				>
 					<View style={style.boxContainer}>
 						<View style={style.titleContainer}>
 							<Text style={style.title}>{getText('modal.report.title')}</Text>
@@ -109,7 +121,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 							</TouchableOpacity>
 						</View>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 			</Modal>
 		)}
 	</WithManagedTransitions>

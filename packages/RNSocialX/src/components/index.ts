@@ -69,12 +69,7 @@ export { TrendingCategoriesCarousel } from './interaction/trending/TrendingCateg
 export { TrendingContentCarousel } from './interaction/trending/TrendingContentCarousel';
 export { IVideoOptions, VideoPlayer } from './interaction/video';
 
-export {
-	WithManagedTransitions,
-	ModalManager,
-	IManagedModal,
-	ManagedKeyboard,
-} from './managedTransitions';
+export { WithManagedTransitions, ModalManager, IManagedModal } from './managedTransitions';
 
 export { ActivityIndicatorModal } from './modals/ActivityIndicatorModal';
 export { ConfirmationModal } from './modals/ConfirmationModal';
