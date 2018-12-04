@@ -57,7 +57,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 				<KeyboardAvoidingView
 					behavior="padding"
 					keyboardVerticalOffset={100}
-					enabled={Platform.OS === OS_TYPES.IOS ? true : false}
+					enabled={Platform.OS === OS_TYPES.IOS}
 					contentContainerStyle={style.keyboardView}
 				>
 					<View style={style.boxContainer}>
