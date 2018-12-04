@@ -203,7 +203,7 @@ export const getPostByPath = (
 	};
 	postHandles.postByPath(context, postPath).once(
 		(data: any) => {
-			if (!data) {
+			if (!data || !data.owner) {
 				return callback(null, undefined);
 			}
 			mainGetter();
@@ -251,20 +251,6 @@ const getPostsTimestampIds = (
 ) => {
 	const lastItem = token ? JSON.parse(Base64.decode(token)) : null;
 	const mainRunner = () => {
-		profileHandles.currentProfileFriendsRecord(context).once(
-			(friendsCallback: { [prop: string]: any }) => {
-				if (!friendsCallback) {
-					return callback(null, undefined);
-				}
-				const { _, ...rest } = friendsCallback;
-				const friendsAliases = Object.keys(rest).filter((key) => rest[key] !== null);
-
-				loadLimitedPosts(friendsAliases);
-			},
-			{ wait: 200 },
-		);
-	};
-	const loadLimitedPosts = (friends: string[]) => {
 		postHandles.postMetaByIdTimestampRecord(context).once(
 			(itemsCallback: { [prop: string]: any }) => {
 				console.log('itemsCallback', { itemsCallback });
@@ -283,7 +269,6 @@ const getPostsTimestampIds = (
 							owner: idTimestamp[2],
 						};
 					})
-					.filter((item: any) => !friends.includes(item.owner))
 					.sort((a, b) => {
 						return a.timestamp - b.timestamp;
 					});
@@ -308,9 +293,9 @@ const getPostsTimestampIds = (
 				postIds.push(postIdTimestamps[i].postId);
 			}
 			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
+			console.log('loadRetOffi', { nextToken, postIds, canLoadMore });
 
 			return callback(null, { nextToken, postIds, canLoadMore });
-			console.log('loadRetOffi', { nextToken, postIds, canLoadMore });
 		} else {
 			const startIndex = postIdTimestamps.indexOf(lastItem);
 
