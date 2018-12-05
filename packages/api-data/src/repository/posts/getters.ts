@@ -16,6 +16,7 @@ import {
 	convertGunSetToArray,
 	convertGunSetToArrayWithKey,
 	datePathFromDate,
+	getContextMeta,
 } from '../../utils/helpers';
 
 import moment from 'moment';
@@ -299,8 +300,6 @@ const getPostsTimestampIds = (
 			const lastItemMeta = postIdTimestamps.find((postMeta) => postMeta.postId === lastItem.postId);
 			const startIndex = postIdTimestamps.indexOf(lastItemMeta as any);
 
-			console.log('itemTokenizers', { lastItemMeta, startIndex });
-
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;
 				loadLimit = postIdTimestamps.length;
@@ -310,9 +309,7 @@ const getPostsTimestampIds = (
 			for (let i = startIndex; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
 			}
-			const uNextToken = Base64.encode(
-				JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]),
-			);
+			const uNextToken = Base64.encode(JSON.stringify(postIdTimestamps[startIndex + limit]));
 
 			return callback(null, { nextToken: uNextToken, postIds, canLoadMore });
 		}
@@ -327,11 +324,10 @@ const getFriendsPostsTimestampIds = (
 		{ nextToken: string; postIds: string[]; canLoadMore: boolean } | undefined
 	>,
 ) => {
+	const { owner } = getContextMeta(context);
 	const lastItem: { timestamp: number; postId: string } | null = nextToken
 		? JSON.parse(Base64.decode(nextToken))
 		: null;
-
-	console.log('tokens friends', { lastItem, nextToken });
 	const mainRunner = () => {
 		profileHandles.currentProfileFriendsRecord(context).once(
 			(friendsCallback: { [prop: string]: any }) => {
@@ -365,7 +361,7 @@ const getFriendsPostsTimestampIds = (
 							owner: idTimestamp[2],
 						};
 					})
-					.filter((item: any) => friends.includes(item.owner))
+					.filter((item: any) => friends.includes(item.owner) || item.owner === owner)
 					.sort((a, b) => {
 						const c = new Date(a.timestamp);
 						const d = new Date(b.timestamp);
@@ -381,7 +377,6 @@ const getFriendsPostsTimestampIds = (
 		const postIds = [];
 		let canLoadMore = true;
 		let loadLimit = limit;
-		console.log('metas friends', { postIdTimestamps });
 		if (postIdTimestamps.length < limit) {
 			canLoadMore = false;
 			loadLimit = postIdTimestamps.length;
@@ -397,8 +392,6 @@ const getFriendsPostsTimestampIds = (
 			const lastItemMeta = postIdTimestamps.find((postMeta) => postMeta.postId === lastItem.postId);
 			const startIndex = postIdTimestamps.indexOf(lastItemMeta as any);
 
-			console.log('itemTokenizers friends', { lastItemMeta, startIndex });
-
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;
 				loadLimit = postIdTimestamps.length;
@@ -408,9 +401,7 @@ const getFriendsPostsTimestampIds = (
 			for (let i = startIndex; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
 			}
-			const uNextToken = Base64.encode(
-				JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]),
-			);
+			const uNextToken = Base64.encode(JSON.stringify(postIdTimestamps[startIndex + limit]));
 
 			return callback(null, { nextToken: uNextToken, postIds, canLoadMore });
 		}
