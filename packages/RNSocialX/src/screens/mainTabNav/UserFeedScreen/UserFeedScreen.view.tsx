@@ -50,34 +50,33 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 
 		return (
 			<View style={styles.container}>
-				{postIds.length === 0 ? (
-					<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
-				) : (
-					<FlatList
-						ref={scrollRef}
-						windowSize={10}
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						data={data}
-						keyExtractor={(id) => id}
-						renderItem={this.renderItem}
-						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
-						onEndReachedThreshold={0.5}
-						keyboardShouldPersistTaps="handled"
-						ListHeaderComponent={
-							<ShareSection
-								avatar={avatar}
-								message={shareMessage}
-								onCreateWallPost={onCreateWallPost}
-							/>
-						}
-						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-						onScrollToIndexFailed={() => undefined}
-						onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
-						scrollEventThrottle={16}
-						showsVerticalScrollIndicator={false}
-					/>
-				)}
+				<FlatList
+					ref={scrollRef}
+					windowSize={10}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
+					data={data}
+					keyExtractor={(id) => id}
+					renderItem={this.renderItem}
+					onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
+					onEndReachedThreshold={2}
+					keyboardShouldPersistTaps="handled"
+					ListHeaderComponent={
+						<ShareSection
+							avatar={avatar}
+							message={shareMessage}
+							onCreateWallPost={onCreateWallPost}
+						/>
+					}
+					ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
+					ListEmptyComponent={
+						<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
+					}
+					onScrollToIndexFailed={() => undefined}
+					onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
+					scrollEventThrottle={16}
+					showsVerticalScrollIndicator={false}
+				/>
 			</View>
 		);
 	}

@@ -14,8 +14,9 @@ import {
 	likePost,
 	loadMoreFriendsPosts,
 	loadMorePosts,
+	refreshFriendsPosts,
+	refreshGlobalPosts,
 	removePost,
-	resetPostsAndRefetch,
 	unlikePost,
 } from '../../../store/data/posts';
 import { IThunkDispatch } from '../../../store/types';
@@ -43,7 +44,8 @@ interface IActionProps {
 	removePost: (postId: string) => void;
 	likePost: (input: IPostLikeInput) => void;
 	unlikePost: (input: IPostLikeInput) => void;
-	resetPostsAndRefetch: () => void;
+	refreshFriendsPosts: () => void;
+	refreshGlobalPosts: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -105,7 +107,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	removePost: (postId: string) => dispatch(removePost(postId)),
 	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
 	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),
-	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
+	refreshFriendsPosts: () => dispatch(refreshFriendsPosts()),
+	refreshGlobalPosts: () => dispatch(refreshGlobalPosts()),
 });
 
 export const WithPosts: ConnectedComponentClass<JSX.Element, IChildren> = connect(

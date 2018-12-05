@@ -146,26 +146,23 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						<Animated.View
 							style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
 						>
-							{hasPosts ? (
-								<FlatList
-									windowSize={10}
-									data={postIds}
-									keyExtractor={(id) => id}
-									renderItem={(data) => (
-										<View style={styles.post}>
-											<WallPost
-												postId={data.item}
-												commentInput={false}
-												onAddComment={() => undefined}
-												navigation={navigation}
-											/>
-										</View>
-									)}
-									showsVerticalScrollIndicator={false}
-								/>
-							) : (
-								<NoContent posts={true} getText={getText} />
-							)}
+							<FlatList
+								windowSize={10}
+								data={postIds}
+								keyExtractor={(id) => id}
+								renderItem={(data) => (
+									<View style={styles.post}>
+										<WallPost
+											postId={data.item}
+											commentInput={false}
+											onAddComment={() => undefined}
+											navigation={navigation}
+										/>
+									</View>
+								)}
+								showsVerticalScrollIndicator={false}
+								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
+							/>
 						</Animated.View>
 						<Animated.View
 							onLayout={(event: any) => {

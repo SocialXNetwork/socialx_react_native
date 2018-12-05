@@ -16,6 +16,7 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	extension?: string;
 	type?: IMediaTypes;
 	canZoom?: boolean;
+	resizeMode?: 'cover' | 'contain' | 'stretch';
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
 	onDoublePress?: () => void;
@@ -49,10 +50,6 @@ export const Component: React.SFC<IProps> = ({
 	type,
 	getText,
 	canZoom = false,
-	muted = false,
-	thumbOnly,
-	paused = true,
-	resizeToChangeAspectRatio = false,
 	onPress = () => undefined,
 	onDoublePress = () => undefined,
 }) => {
@@ -98,13 +95,9 @@ export const Component: React.SFC<IProps> = ({
 			{mediaMimeType && mediaMimeType.startsWith(MediaTypeVideo.key) && (
 				<VideoPlayer
 					videoURL={uri}
-					onPressVideo={onPress}
 					containerStyle={customStyle}
-					muted={muted}
-					thumbOnly={thumbOnly}
-					resizeMode={resizeMode}
-					resizeToChangeAspectRatio={resizeToChangeAspectRatio}
-					paused={paused}
+					replayVideoText={getText('media.types.video.replay')}
+					thumbOnly={false}
 				/>
 			)}
 		</View>

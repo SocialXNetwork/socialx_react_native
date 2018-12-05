@@ -22,33 +22,24 @@ import {
 	IPostIdInput,
 	IPostLikeInput,
 	IPostPathInput,
+	IRefreshFriendsPostsAction,
+	IRefreshGlobalPostsAction,
 	IRemovePostAction,
-	IResetPostsAction,
 	ISyncAddCommentAction,
 	ISyncCommentInput,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetUserPostsAction,
 	ISyncLoadMoreFriendsPostsAction,
+	ISyncLoadMoreInput,
 	ISyncLoadMorePostsAction,
+	ISyncRefreshFriendsPostsAction,
+	ISyncRefreshGlobalPostsAction,
 	ISyncRemoveCommentAction,
 	ISyncRemovePostAction,
 	IUnlikePostAction,
 	IUnlikePostErrorAction,
 } from './Types';
-
-const resetPostsAction: ActionCreator<IResetPostsAction> = () => ({
-	type: ActionTypes.RESET_POSTS,
-});
-
-export const resetPostsAndRefetch = (): IThunk => async (dispatch, getState, context) => {
-	dispatch(resetPostsAction);
-	// await dispatch(
-	// 	getPublicPostsByDate({
-	// 		date: new Date(Date.now()),
-	// 	}),
-	// );
-};
 
 /**
  * 	Retrieves a post, given the id
@@ -141,10 +132,10 @@ const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
 });
 
 const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (
-	posts: IPostReturnData[],
+	input: ISyncLoadMoreInput,
 ) => ({
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS,
-	payload: posts,
+	payload: input,
 });
 
 export const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
@@ -166,7 +157,7 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 		await dispatch(getProfilesByPosts(data.posts));
 
 		dispatch(loadCommentsAction(data.posts));
-		dispatch(syncLoadMorePostsAction(data.posts));
+		dispatch(syncLoadMorePostsAction(data));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -188,13 +179,11 @@ const loadMoreFriendsPostsAction: ActionCreator<ILoadMoreFriendsPostsAction> = (
 	type: ActionTypes.LOAD_MORE_FRIENDS_POSTS,
 });
 
-const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAction> = (data: {
-	posts: IPostReturnData[];
-	canLoadMore: boolean;
-	nextToken: string;
-}) => ({
+const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAction> = (
+	input: ISyncLoadMoreInput,
+) => ({
 	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS,
-	payload: data,
+	payload: input,
 });
 
 export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, context) => {
@@ -202,7 +191,7 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 
 	try {
 		const {
-			global: { nextToken },
+			friends: { nextToken },
 		} = getState().data.posts;
 		await dispatch(
 			beginActivity({
@@ -535,3 +524,95 @@ export const syncRemoveCommentAction: ActionCreator<ISyncRemoveCommentAction> = 
 	type: ActionTypes.SYNC_REMOVE_COMMENT,
 	payload: input,
 });
+
+/**
+ * 	Called when pulling the global feed to refresh,
+ *  gets a new batch of posts and updates the store
+ */
+
+const refreshGlobalPostsAction: ActionCreator<IRefreshGlobalPostsAction> = () => ({
+	type: ActionTypes.REFRESH_GLOBAL_POSTS,
+});
+
+const syncRefreshGlobalPostsAction: ActionCreator<ISyncRefreshGlobalPostsAction> = (
+	input: ISyncLoadMoreInput,
+) => ({
+	type: ActionTypes.SYNC_REFRESH_GLOBAL_POSTS,
+	payload: input,
+});
+
+export const refreshGlobalPosts = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
+
+	try {
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.REFRESH_GLOBAL_POSTS,
+				uuid: activityId,
+			}),
+		);
+		dispatch(refreshGlobalPostsAction());
+
+		const data = await context.dataApi.posts.loadMorePosts({ limit: 5 });
+		await dispatch(getProfilesByPosts(data.posts));
+
+		dispatch(loadCommentsAction(data.posts));
+		dispatch(syncRefreshGlobalPostsAction(data));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.REFRESH_GLOBAL_POSTS,
+				error: e.message,
+				uuid: activityId,
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
+/**
+ * 	Called when pulling the friends feed to refresh,
+ *  gets a new batch of posts and updates the store
+ */
+
+const refreshFriendsPostsAction: ActionCreator<IRefreshFriendsPostsAction> = () => ({
+	type: ActionTypes.REFRESH_FRIENDS_POSTS,
+});
+
+const syncRefreshFriendsPostsAction: ActionCreator<ISyncRefreshFriendsPostsAction> = (
+	input: ISyncLoadMoreInput,
+) => ({
+	type: ActionTypes.SYNC_REFRESH_FRIENDS_POSTS,
+	payload: input,
+});
+
+export const refreshFriendsPosts = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
+
+	try {
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.REFRESH_FRIENDS_POSTS,
+				uuid: activityId,
+			}),
+		);
+		dispatch(refreshFriendsPostsAction());
+
+		const data = await context.dataApi.posts.loadMoreFriendsPosts({ limit: 5 });
+		await dispatch(getProfilesByPosts(data.posts));
+
+		dispatch(loadCommentsAction(data.posts));
+		dispatch(syncRefreshFriendsPostsAction(data));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.REFRESH_FRIENDS_POSTS,
+				error: e.message,
+				uuid: activityId,
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
+};

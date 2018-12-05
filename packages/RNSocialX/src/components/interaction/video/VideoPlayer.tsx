@@ -1,33 +1,33 @@
-/**
- * TODO list:
- * 1. @Ionut & @Serkan: Figure out a better strategy and get rid of UNSAFE_componentWillReceiveProps.
- * What we want to do is allow user to pause/mute the video and also let player be paused/muted from the outside.
- * Control from the outside should take over user control.
- * 2. Support full screen on Android: request made with https://github.com/react-native-community/react-native-video/issues/1251
- * 3. Local videos don't fire onLoad: request made with https://github.com/react-native-community/react-native-video/issues/1195
- */
-
 import * as React from 'react';
-import { StyleProp, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import {
+	NativeModules,
+	Platform,
+	StyleProp,
+	TouchableWithoutFeedback,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Video from 'react-native-video';
 
+import { OS_TYPES } from '../../../environment/consts';
+import { VisibleViewPort } from './';
 import { VideoControls } from './VideoControls';
-import styles from './VideoPlayer.style';
+import styles from './VideoPlayer.styles';
 
 export interface IVideoOptions {
 	containerStyle?: StyleProp<ViewStyle>;
-	muted?: boolean;
 	thumbOnly?: boolean;
-	resizeMode?: 'cover' | 'contain';
-	resizeToChangeAspectRatio?: boolean;
-	paused?: boolean;
+	replayVideoText?: string;
 }
 
 interface IVideoPlayerProps extends IVideoOptions {
-	thumbOnly: boolean;
-	muted: boolean;
+	muted?: boolean;
 	videoURL: string;
-	onPressVideo?: () => void;
+	replayVideo?: boolean;
+	resizeToChangeAspectRatio?: boolean;
+	resizeMode?: 'cover' | 'contain' | 'stretch';
+	thumbOnly: boolean;
+	replayVideoText: string;
 }
 
 interface IVideoPlayerState {
@@ -36,105 +36,111 @@ interface IVideoPlayerState {
 	fullScreen: boolean;
 	paused: boolean;
 	muted: boolean;
-	resizeMode: 'cover' | 'contain';
+	replayVideo: boolean;
+	visibleView: boolean;
+	resizeMode: 'cover' | 'contain' | 'stretch';
 }
 
 export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayerState> {
 	public static defaultProps = {
 		containerStyle: styles.container,
-		muted: false,
+		muted: true,
 		paused: true,
+		replayVideo: false,
 		thumbOnly: false,
-		resizeMode: 'cover',
+		resizeMode: 'contain',
 		resizeToChangeAspectRatio: false,
 	};
 
 	public state = {
+		visibleView: false,
 		ended: false,
 		playReady: false,
 		fullScreen: false,
-		paused: 'paused' in this.props ? this.props.paused! : true,
-		muted: this.props.muted || false,
+		paused: true,
+		muted: true,
+		replayVideo: false,
 		resizeMode: this.props.resizeMode || 'cover',
 	};
 
 	private playerRef: React.RefObject<Video> = React.createRef();
 
-	public UNSAFE_componentWillReceiveProps(nextProps: IVideoPlayerProps) {
-		if ('paused' in nextProps && nextProps.paused !== this.props.paused) {
-			this.setState({
-				paused: nextProps.paused!,
-			});
-		}
-		if ('muted' in nextProps && nextProps.muted !== this.props.muted) {
-			this.setState({
-				muted: nextProps.muted!,
-			});
-		}
-	}
-
 	public render() {
-		const {
-			containerStyle,
-			thumbOnly,
-			resizeToChangeAspectRatio,
-			videoURL,
-			onPressVideo,
-		} = this.props;
-		const { ended, playReady, fullScreen, muted, paused, resizeMode } = this.state;
+		const { thumbOnly, containerStyle, replayVideoText, videoURL } = this.props;
+		const { fullScreen, resizeMode, playReady, muted, paused, replayVideo } = this.state;
 
-		const showPlayButton = paused || ended;
+		const showPlayButton = paused;
 
 		return (
-			<TouchableWithoutFeedback
-				onPress={thumbOnly ? onPressVideo : this.pauseVideoHandler}
-				disabled={thumbOnly && !onPressVideo}
+			<VisibleViewPort
+				onChange={(isVisible: boolean) => this.checkViewPortVisibleHandler(isVisible)}
 			>
-				<View style={containerStyle}>
-					<Video
-						onReadyForDisplay={this.videoReadyHandler}
-						// poster='https://baconmockup.com/300/200/'
-						source={{ uri: videoURL }}
-						resizeMode={resizeMode}
-						paused={paused}
-						muted={muted}
-						onEnd={this.onVideoEndHandler}
-						playInBackground={false}
-						playWhenInactive={false}
-						style={styles.videoObject}
-						fullscreen={fullScreen}
-						ref={this.playerRef}
-						onFullscreenPlayerDidDismiss={this.exitFullScreen}
-						useTextureView={true}
-					/>
-					<VideoControls
-						showPlayButton={showPlayButton}
-						muted={muted}
-						resizeToChangeAspectRatio={resizeToChangeAspectRatio}
-						playReady={playReady}
-						thumbOnly={thumbOnly}
-						onVideoPlayStart={this.onVideoPlayStart}
-						onVideoMuteToggle={this.onVideoMuteToggle}
-						onVideoEnterFullScreen={this.onVideoEnterFullScreen}
-					/>
-				</View>
-			</TouchableWithoutFeedback>
+				<TouchableWithoutFeedback onPress={this.onPauseVideoHandler}>
+					<View style={containerStyle}>
+						<Video
+							onReadyForDisplay={this.onVideoReadyHandler}
+							source={{ uri: videoURL }}
+							resizeMode={resizeMode}
+							paused={paused}
+							muted={muted}
+							onEnd={this.onVideoEndHandler}
+							playInBackground={false}
+							playWhenInactive={false}
+							style={styles.videoObject}
+							fullscreen={fullScreen}
+							ref={this.playerRef}
+							onFullscreenPlayerDidDismiss={this.onExitFullScreenHandler}
+							onFullscreenPlayerWillPresent={this.onFullScreenPresentHandler}
+							useTextureView={true}
+						/>
+						<VideoControls
+							showPlayButton={showPlayButton}
+							muted={muted}
+							replayVideo={replayVideo}
+							replayVideoText={replayVideoText}
+							resizeToChangeAspectRatio={true}
+							playReady={playReady}
+							thumbOnly={thumbOnly}
+							onVideoPlayStart={this.onVideoPlayStartHandler}
+							onVideoMuteToggle={this.onVideoMuteToggleHandler}
+							onVideoEnterFullScreen={this.onVideoEnterFullScreenHandler}
+							onVideoReplay={this.onVideoReplayHandler}
+						/>
+					</View>
+				</TouchableWithoutFeedback>
+			</VisibleViewPort>
 		);
 	}
 
-	private pauseVideoHandler = () => {
-		this.setState({
-			paused: true,
-		});
+	private checkViewPortVisibleHandler = (isVisible: boolean) => {
+		const { visibleView } = this.state;
+
+		if (isVisible) {
+			if (!visibleView) {
+				this.setState({ paused: false, visibleView: true });
+			}
+		} else {
+			if (visibleView) {
+				this.setState({ paused: true, visibleView: false });
+			}
+		}
 	};
 
-	private onVideoMuteToggle = () => {
+	private onPauseVideoHandler = () => {
+		if (!this.state.ended) {
+			this.setState({
+				paused: true,
+			});
+		}
+	};
+
+	private onVideoMuteToggleHandler = () => {
 		this.setState({
 			muted: !this.state.muted,
 		});
 	};
 
-	private videoReadyHandler = () => {
+	private onVideoReadyHandler = () => {
 		if (!this.state.playReady) {
 			this.setState({
 				playReady: true,
@@ -142,37 +148,57 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 		}
 	};
 
-	private onVideoPlayStart = () => {
-		if (this.state.ended && this.playerRef.current) {
-			this.playerRef.current.seek(0);
-		}
+	private onVideoPlayStartHandler = () => {
 		this.setState({
 			ended: false,
 			paused: false,
+			muted: false,
+			replayVideo: false,
 		});
 	};
 
 	private onVideoEndHandler = () => {
 		this.setState({
 			ended: true,
+			replayVideo: true,
+			paused: false,
 		});
 	};
 
-	private onVideoEnterFullScreen = () => {
-		if (this.props.resizeToChangeAspectRatio) {
-			this.setState({
-				resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
-			});
+	private onVideoEnterFullScreenHandler = () => {
+		if (Platform.OS === OS_TYPES.Android) {
+			const durationToSeek = 1.0;
+			const uri = this.props.videoURL;
+			this.setState({ paused: true });
+			NativeModules.BridgeModule.showFullscreen(uri, durationToSeek);
 		} else {
-			this.setState({
-				fullScreen: true,
-			});
+			if (this.props.resizeToChangeAspectRatio) {
+				this.setState({
+					resizeMode: this.state.resizeMode === 'cover' ? 'contain' : 'cover',
+				});
+			} else {
+				if (!this.state.replayVideo) {
+					this.setState({ fullScreen: true, muted: false, paused: true });
+				}
+			}
 		}
 	};
 
-	private exitFullScreen = () => {
+	private onExitFullScreenHandler = () => {
 		this.setState({
 			fullScreen: false,
+			muted: true,
+			paused: false,
 		});
+	};
+
+	private onVideoReplayHandler = () => {
+		this.setState({ replayVideo: false, fullScreen: false, muted: false, ended: false });
+
+		this.playerRef.current!.seek(0);
+	};
+
+	private onFullScreenPresentHandler = () => {
+		this.setState({ paused: true });
 	};
 }

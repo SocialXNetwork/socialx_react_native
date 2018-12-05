@@ -1,7 +1,7 @@
 import { eos } from '../api';
 
 export default (config: { [prop: string]: any }) => ({
-	getBlockHeight: () =>
+	getBlockHeight: (): Promise<number> =>
 		new Promise((resolve, reject) => {
 			eos(config).getInfo((error: any, info: any) => {
 				if (error) {

@@ -5,5 +5,5 @@
         <!-- Customize your theme here. -->
         <item name="android:windowIsTranslucent">true</item>
     </style>
-
+    
 </resources>

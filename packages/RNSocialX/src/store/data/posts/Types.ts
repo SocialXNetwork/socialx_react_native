@@ -66,6 +66,12 @@ export interface ISyncCommentInput {
 	error?: boolean;
 }
 
+export interface ISyncLoadMoreInput {
+	posts: IPostReturnData[];
+	nextToken: string;
+	canLoadMore: boolean;
+}
+
 export const enum ActionTypes {
 	GET_POST_BY_PATH = 'data/posts/GET_POST_BY_PATH',
 	SYNC_GET_POST_BY_PATH = 'data/posts/SYNC_GET_POST_BY_PATH',
@@ -89,10 +95,28 @@ export const enum ActionTypes {
 	SYNC_ADD_COMMENT = 'data/posts/SYNC_ADD_COMMENT',
 	SYNC_REMOVE_COMMENT = 'data/posts/SYNC_REMOVE_COMMENT',
 	RESET_POSTS = 'data/posts/RESET_POSTS',
+	REFRESH_GLOBAL_POSTS = 'data/posts/REFRESH_GLOBAL_POSTS',
+	SYNC_REFRESH_GLOBAL_POSTS = 'data/posts/SYNC_REFRESH_GLOBAL_POSTS',
+	REFRESH_FRIENDS_POSTS = 'data/posts/REFRESH_FRIENDS_POSTS',
+	SYNC_REFRESH_FRIENDS_POSTS = 'data/posts/SYNC_REFRESH_FRIENDS_POSTS',
 }
 
-export interface IResetPostsAction extends Action {
-	type: ActionTypes.RESET_POSTS;
+export interface IRefreshGlobalPostsAction extends Action {
+	type: ActionTypes.REFRESH_GLOBAL_POSTS;
+}
+
+export interface ISyncRefreshGlobalPostsAction extends Action {
+	type: ActionTypes.SYNC_REFRESH_GLOBAL_POSTS;
+	payload: ISyncLoadMoreInput;
+}
+
+export interface IRefreshFriendsPostsAction extends Action {
+	type: ActionTypes.REFRESH_FRIENDS_POSTS;
+}
+
+export interface ISyncRefreshFriendsPostsAction extends Action {
+	type: ActionTypes.SYNC_REFRESH_FRIENDS_POSTS;
+	payload: ISyncLoadMoreInput;
 }
 
 export interface IGetPostByPathAction extends Action {
@@ -121,7 +145,7 @@ export interface ILoadMorePostsAction extends Action {
 
 export interface ISyncLoadMorePostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
-	payload: IPostReturnData[];
+	payload: ISyncLoadMoreInput;
 }
 
 export interface ILoadMoreFriendsPostsAction extends Action {
@@ -130,11 +154,7 @@ export interface ILoadMoreFriendsPostsAction extends Action {
 
 export interface ISyncLoadMoreFriendsPostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS;
-	payload: {
-		posts: IPostReturnData[];
-		canLoadMore: boolean;
-		nextToken: string;
-	};
+	payload: ISyncLoadMoreInput;
 }
 
 export interface IGetUserPostsAction extends Action {
@@ -197,7 +217,10 @@ interface IResetStoreAction {
 }
 export type IAction =
 	| IResetStoreAction
-	| IResetPostsAction
+	| IRefreshGlobalPostsAction
+	| ISyncRefreshGlobalPostsAction
+	| IRefreshFriendsPostsAction
+	| ISyncRefreshFriendsPostsAction
 	// getters
 	| IGetPostByPathAction
 	| ISyncGetPostByPathAction

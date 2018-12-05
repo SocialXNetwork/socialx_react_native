@@ -4,7 +4,7 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { AnimatedValue } from 'react-navigation';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
-import { INavigationProps, IWallPost } from '../../../types';
+import { INavigationProps } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
@@ -27,7 +27,6 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
-	// private readonly scrollRef: React.RefObject<FlatList<IWallPost>> = React.createRef();
 	private readonly scrollRef: React.RefObject<FlatList<string>> = React.createRef();
 	private scrollY: AnimatedValue = new Animated.Value(0);
 

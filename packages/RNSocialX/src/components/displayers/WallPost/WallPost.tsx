@@ -42,7 +42,7 @@ import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
 import { IPost } from '../../../store/data/posts/Types';
 import { IApplicationState, selectPost } from '../../../store/selectors';
-import { IComment, INavigationProps, IWallPost } from '../../../types';
+import { IComment, INavigationProps } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import styles, { SCREEN_WIDTH } from './WallPost.style';

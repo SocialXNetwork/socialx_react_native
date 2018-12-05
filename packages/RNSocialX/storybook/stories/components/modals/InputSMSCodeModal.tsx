@@ -23,7 +23,6 @@ storiesOf('Components/modals', module)
 				declineHandler={action('Decline')}
 				resendHandler={action('Resend!')}
 				getText={getTextMock}
-				marginBottom={120}
 			/>
 		);
 	});

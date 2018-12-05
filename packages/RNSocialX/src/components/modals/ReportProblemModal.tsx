@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+	KeyboardAvoidingView,
+	Platform,
+	Text,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	View,
+} from 'react-native';
 import { BlurView } from 'react-native-blur';
 import Modal from 'react-native-modal';
 
@@ -48,7 +55,12 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 						<BlurView style={style.blurView} blurType="dark" blurAmount={2} />
 					</TouchableWithoutFeedback>
 				)}
-				<View style={style.keyboardView}>
+				<KeyboardAvoidingView
+					behavior="padding"
+					keyboardVerticalOffset={100}
+					enabled={Platform.OS === OS_TYPES.IOS}
+					contentContainerStyle={style.keyboardView}
+				>
 					<View style={style.boxContainer}>
 						<View style={style.titleContainer}>
 							<Text style={style.title}>{getText('modal.report.title')}</Text>
@@ -110,7 +122,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 							</TouchableOpacity>
 						</View>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 			</Modal>
 		)}
 	</WithManagedTransitions>

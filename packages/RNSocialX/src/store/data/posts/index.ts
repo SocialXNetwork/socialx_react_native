@@ -19,16 +19,17 @@ export {
 } from '@socialx/api-data';
 
 export {
+	getPostByPath,
+	refreshGlobalPosts,
 	loadMorePosts,
 	loadMoreFriendsPosts,
-	getPostByPath,
 	getPostById,
 	getUserPosts,
 	createPost,
 	likePost,
+	refreshFriendsPosts,
 	removePost,
 	unlikePost,
 	syncAddCommentAction,
 	syncRemoveCommentAction,
-	resetPostsAndRefetch,
 } from './actions';

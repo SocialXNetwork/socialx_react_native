@@ -50,7 +50,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const all = { ...state.all };
 			const posts = [...state.global.posts];
 
-			for (const post of action.payload) {
+			for (const post of action.payload.posts) {
 				const byId: any = {};
 				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
 
@@ -78,7 +78,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				all,
 				global: {
-					...state.global,
+					canLoadMore: action.payload.canLoadMore,
+					nextToken: action.payload.nextToken,
 					posts,
 				},
 			};
@@ -120,7 +121,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				all,
 				friends: {
-					...state.friends,
+					canLoadMore: action.payload.canLoadMore,
+					nextToken: action.payload.nextToken,
 					posts,
 				},
 			};
@@ -315,8 +317,86 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
-		case ActionTypes.RESET_POSTS: {
-			return initialState;
+		case ActionTypes.REFRESH_GLOBAL_POSTS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_REFRESH_GLOBAL_POSTS: {
+			const all = { ...state.all };
+			const posts = [];
+
+			for (const post of action.payload.posts) {
+				const byId: any = {};
+				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+				for (const like of sortedLikes) {
+					byId[like.owner.alias] = like.timestamp;
+				}
+
+				const shapedPost = {
+					...post,
+					likes: {
+						ids: post.likes.map((like) => like.owner.alias),
+						byId,
+					},
+					comments: post.comments
+						.sort((x, y) => x.timestamp - y.timestamp)
+						.map((comm) => comm.commentId),
+				};
+				all[post.postId] = shapedPost;
+				posts.push(post.postId);
+			}
+
+			return {
+				...state,
+				all,
+				global: {
+					canLoadMore: action.payload.canLoadMore,
+					nextToken: action.payload.nextToken,
+					posts,
+				},
+			};
+		}
+
+		case ActionTypes.REFRESH_FRIENDS_POSTS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_REFRESH_FRIENDS_POSTS: {
+			const all = { ...state.all };
+			const posts = [];
+
+			for (const post of action.payload.posts) {
+				const byId: any = {};
+				const sortedLikes = post.likes.sort((x, y) => x.timestamp - y.timestamp);
+
+				for (const like of sortedLikes) {
+					byId[like.owner.alias] = like.timestamp;
+				}
+
+				const shapedPost = {
+					...post,
+					likes: {
+						ids: post.likes.map((like) => like.owner.alias),
+						byId,
+					},
+					comments: post.comments
+						.sort((x, y) => x.timestamp - y.timestamp)
+						.map((comm) => comm.commentId),
+				};
+				all[post.postId] = shapedPost;
+				posts.push(post.postId);
+			}
+
+			return {
+				...state,
+				all,
+				friends: {
+					canLoadMore: action.payload.canLoadMore,
+					nextToken: action.payload.nextToken,
+					posts,
+				},
+			};
 		}
 
 		case 'RESET_STORE': {

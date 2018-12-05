@@ -43,8 +43,8 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 		onModalHide={onModalHide}
 		isVisible={visible}
 		backdropOpacity={0}
-		animationIn={'slideInUp'}
-		animationOut={'slideOutUp'}
+		animationIn="slideInUp"
+		animationOut="slideOutUp"
 		style={style.container}
 	>
 		<BlurView style={style.blurView} viewRef={blurViewRef} blurType={'dark'} blurAmount={2} />
@@ -58,7 +58,7 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 							autoCorrect={true}
 							onChangeText={onSearchUpdated}
 							placeholder={getText('modal.tag.friends.search.box.placeholder')}
-							icon={'search'}
+							icon="search"
 							canCancel={false}
 							size={InputSizes.Small}
 							borderColor={customStyleProps.searchInputBorderColor}
@@ -71,7 +71,7 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 				<ScrollView
 					contentContainerStyle={style.resultsContainer}
 					alwaysBounceVertical={false}
-					keyboardShouldPersistTaps={'handled'}
+					keyboardShouldPersistTaps="handled"
 				>
 					{searchResults.map((searchResult: IFriendsSearchResult, index: number) => (
 						<PeopleSearchResultEntry
@@ -95,6 +95,31 @@ export const TagFriendsModal: React.SFC<ITagFriendsModalProps> = ({
 						</Text>
 					</TouchableOpacity>
 				</View>
+			</View>
+			<ScrollView
+				contentContainerStyle={style.resultsContainer}
+				alwaysBounceVertical={false}
+				keyboardShouldPersistTaps="handled"
+			>
+				{searchResults.map((searchResult: IFriendsSearchResult, index: number) => (
+					<PeopleSearchResultEntry
+						key={index}
+						avatar={searchResult.avatar}
+						fullName={searchResult.fullName}
+						location={searchResult.location}
+						selected={selectedUsers.indexOf(searchResult) > -1}
+						addHandler={() => selectTagUserInModal(searchResult)}
+						getText={getText}
+					/>
+				))}
+			</ScrollView>
+			<View style={style.buttonsContainer}>
+				<TouchableOpacity style={[style.button, style.leftButton]} onPress={cancelHandler}>
+					<Text style={[style.buttonText, style.buttonTextCancel]}>{getText('button.back')}</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={style.button} onPress={doneHandler}>
+					<Text style={[style.buttonText, style.buttonTextConfirm]}>{getText('button.done')}</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	</Modal>

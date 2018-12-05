@@ -65,59 +65,59 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 											<WithPosts>
 												{(feed) => (
 													<WithCurrentUser>
-														{({ currentUser }) =>
-															this.props.children({
-																data: {
-																	currentUser,
-																	postIds:
-																		type === FEED_TYPES.GLOBAL
-																			? feed.global.posts
-																			: feed.friends.posts,
-																	placeholderPost: globals.placeholderPost,
-																	canLoadMore:
-																		type === FEED_TYPES.GLOBAL
-																			? feed.global.canLoadMore
-																			: feed.friends.canLoadMore,
-																	loadingMorePosts:
-																		type === FEED_TYPES.GLOBAL
-																			? getActivity(activities, ActionTypes.LOAD_MORE_POSTS)
-																			: getActivity(
-																					activities,
-																					ActionTypes.LOAD_MORE_FRIENDS_POSTS,
-																					// tslint:disable-next-line
-																	  ),
-																	refreshingFeed: getActivity(
-																		activities,
-																		ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																	),
-																},
-																actions: {
-																	loadMorePosts:
-																		type === FEED_TYPES.GLOBAL
-																			? feed.loadMorePosts
-																			: feed.loadMoreFriendsPosts,
-																	refreshFeed: async () => {
-																		switch (type) {
-																			case FEED_TYPES.GLOBAL: {
-																				await feed.resetPostsAndRefetch();
-																				break;
-																			}
-
-																			case FEED_TYPES.FRIENDS: {
-																				// TODO: this
-																				break;
-																			}
-
-																			default:
-																				assertNever(type);
-																				break;
-																		}
+														{({ currentUser }) => {
+															if (type === FEED_TYPES.GLOBAL) {
+																return this.props.children({
+																	data: {
+																		currentUser,
+																		postIds: feed.global.posts,
+																		placeholderPost: globals.placeholderPost,
+																		canLoadMore: feed.global.canLoadMore,
+																		loadingMorePosts: getActivity(
+																			activities,
+																			ActionTypes.LOAD_MORE_POSTS,
+																		),
+																		refreshingFeed: getActivity(
+																			activities,
+																			ActionTypes.REFRESH_GLOBAL_POSTS,
+																		),
 																	},
-																	setNavigationParams,
-																	getText,
-																},
-															})
-														}
+																	actions: {
+																		loadMorePosts: feed.loadMorePosts,
+																		refreshFeed: async () => {
+																			await feed.refreshGlobalPosts();
+																		},
+																		setNavigationParams,
+																		getText,
+																	},
+																});
+															} else {
+																return this.props.children({
+																	data: {
+																		currentUser,
+																		postIds: feed.friends.posts,
+																		placeholderPost: globals.placeholderPost,
+																		canLoadMore: feed.friends.canLoadMore,
+																		loadingMorePosts: getActivity(
+																			activities,
+																			ActionTypes.LOAD_MORE_FRIENDS_POSTS,
+																		),
+																		refreshingFeed: getActivity(
+																			activities,
+																			ActionTypes.REFRESH_FRIENDS_POSTS,
+																		),
+																	},
+																	actions: {
+																		loadMorePosts: feed.loadMoreFriendsPosts,
+																		refreshFeed: async () => {
+																			await feed.refreshFriendsPosts();
+																		},
+																		setNavigationParams,
+																		getText,
+																	},
+																});
+															}
+														}}
 													</WithCurrentUser>
 												)}
 											</WithPosts>
