@@ -94,7 +94,7 @@ export const createComment = (
 					);
 				}
 				// for optimistic updates
-				return callback(commentId);
+				return callback(null, commentId);
 			});
 	};
 	mainRunner();
