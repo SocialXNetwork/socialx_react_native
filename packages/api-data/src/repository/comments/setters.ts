@@ -111,7 +111,7 @@ export const removeComment = (
 	 * fetch the comment meta and check if the current user owns the comment
 	 */
 	const mainRunner = () => {
-		commentHandles.commentMetaById(context, commentId).docLoad(
+		commentHandles.commentMetaById(context, commentId).open(
 			(commentReturnCallback: ICommentMetasCallback) => {
 				if (!commentReturnCallback || !Object.keys(commentReturnCallback).length) {
 					return callback(
@@ -136,7 +136,7 @@ export const removeComment = (
 				}
 				eraseCommentNode(postPath);
 			},
-			{ wait: 500, timeout: 1000 },
+			{ wait: 1000, off: 1 },
 		);
 	};
 	/**
@@ -179,7 +179,15 @@ export const removeComment = (
 		});
 	};
 	// run sequence
-	mainRunner();
+	commentHandles.commentMetaById(context, commentId).once(
+		(data: any) => {
+			if (!data) {
+				return callback(new ApiError('failed to find the comment by this id'));
+			}
+			mainRunner();
+		},
+		{ wait: 500 },
+	);
 };
 
 export const likeComment = (
