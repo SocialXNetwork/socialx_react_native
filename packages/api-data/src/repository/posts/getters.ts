@@ -328,6 +328,8 @@ const getFriendsPostsTimestampIds = (
 	const lastItem: { timestamp: number; postId: string } | null = nextToken
 		? JSON.parse(Base64.decode(nextToken))
 		: null;
+
+	console.log('tokens friends', { lastItem, nextToken });
 	const mainRunner = () => {
 		profileHandles.currentProfileFriendsRecord(context).once(
 			(friendsCallback: { [prop: string]: any }) => {
@@ -377,7 +379,7 @@ const getFriendsPostsTimestampIds = (
 		const postIds = [];
 		let canLoadMore = true;
 		let loadLimit = limit;
-
+		console.log('metas friends', { postIdTimestamps });
 		if (postIdTimestamps.length < limit) {
 			canLoadMore = false;
 			loadLimit = postIdTimestamps.length;
@@ -393,7 +395,7 @@ const getFriendsPostsTimestampIds = (
 			const lastItemMeta = postIdTimestamps.find((postMeta) => postMeta.postId === lastItem.postId);
 			const startIndex = postIdTimestamps.indexOf(lastItemMeta as any);
 
-			console.log('itemTokenizers', { lastItemMeta, startIndex });
+			console.log('itemTokenizers friends', { lastItemMeta, startIndex });
 
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;

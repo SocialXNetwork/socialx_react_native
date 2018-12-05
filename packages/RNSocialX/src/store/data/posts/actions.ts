@@ -264,7 +264,7 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 
 	try {
 		const {
-			global: { nextToken },
+			friends: { nextToken },
 		} = getState().data.posts;
 		await dispatch(
 			beginActivity({
