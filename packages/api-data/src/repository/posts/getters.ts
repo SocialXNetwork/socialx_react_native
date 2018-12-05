@@ -304,6 +304,8 @@ const getPostsTimestampIds = (
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;
 				loadLimit = postIdTimestamps.length;
+			} else {
+				loadLimit += startIndex;
 			}
 			for (let i = startIndex; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
@@ -400,6 +402,8 @@ const getFriendsPostsTimestampIds = (
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;
 				loadLimit = postIdTimestamps.length;
+			} else {
+				loadLimit += startIndex;
 			}
 			for (let i = startIndex; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
