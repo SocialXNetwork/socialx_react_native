@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-export IOS_VERSION_STRING="0.3.0"
-export IOS_VERSION_CODE=30
+export IOS_VERSION_STRING="0.3.1"
+export IOS_VERSION_CODE=31
 
 export $(egrep -v '^#' .env | xargs) # use env variables from .env file
 
