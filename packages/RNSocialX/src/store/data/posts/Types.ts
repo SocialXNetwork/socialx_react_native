@@ -63,7 +63,8 @@ export const enum ActionTypes {
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
-	RESET_POSTS = 'data/posts/RESET_POSTS',
+	RESET_GLOBAL_FEED = 'data/posts/RESET_GLOBAL_FEED',
+	RESET_FRIENDS_FEED = 'data/posts/RESET_FRIENDS_FEED',
 	// <================= comments =================>
 	CREATE_COMMENT = 'data/posts/CREATE_COMMENT',
 	LIKE_COMMENT = 'data/posts/LIKE_COMMENT',
@@ -71,8 +72,12 @@ export const enum ActionTypes {
 	UNLIKE_COMMENT = 'data/posts/UNLIKE_COMMENT',
 }
 
-export interface IResetPostsAction extends Action {
-	type: ActionTypes.RESET_POSTS;
+export interface IResetGlobalFeedAction extends Action {
+	type: ActionTypes.RESET_GLOBAL_FEED;
+}
+
+export interface IResetFriendsFeedAction extends Action {
+	type: ActionTypes.RESET_FRIENDS_FEED;
 }
 
 export interface IGetPostsByUsernameAction extends Action {
@@ -205,7 +210,8 @@ interface IResetStoreAction {
 }
 export type IAction =
 	| IResetStoreAction
-	| IResetPostsAction
+	| IResetGlobalFeedAction
+	| IResetFriendsFeedAction
 	// getters
 	| IGetPostsByUsernameAction
 	| ISyncGetPostsByUserAction

@@ -148,8 +148,18 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
-		case ActionTypes.RESET_POSTS: {
-			return initialState;
+		case ActionTypes.RESET_GLOBAL_FEED: {
+			return {
+				...state,
+				global: initialState.global,
+			};
+		}
+
+		case ActionTypes.RESET_FRIENDS_FEED: {
+			return {
+				...state,
+				friends: initialState.friends,
+			};
 		}
 
 		case 'RESET_STORE': {

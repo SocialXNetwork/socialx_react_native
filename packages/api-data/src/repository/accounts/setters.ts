@@ -206,11 +206,7 @@ export const createAccount = async (
 			return callback(new ApiError('cannot create account.'));
 		}
 
-		account.auth(username, password, (authCallback: any) => {
-			if (!authCallback.alias) {
-				return callback(new ApiError('failed to authenticate with the new account.'));
-			}
-
+		login(context, { username, password }, () => {
 			account
 				.get('profile')
 				.get(username)

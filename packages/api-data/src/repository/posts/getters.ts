@@ -244,16 +244,15 @@ export const getPostById = (
  */
 const getPostsTimestampIds = (
 	context: IContext,
-	{ token, limit }: { token?: string; limit: number },
+	{ nextToken, limit }: { nextToken?: string; limit: number },
 	callback: IGunCallback<
 		{ nextToken: string; postIds: string[]; canLoadMore: boolean } | undefined
 	>,
 ) => {
-	const lastItem = token ? JSON.parse(Base64.decode(token)) : null;
+	const lastItem = nextToken ? JSON.parse(Base64.decode(nextToken)) : null;
 	const mainRunner = () => {
 		postHandles.postMetaByIdTimestampRecord(context).once(
 			(itemsCallback: { [prop: string]: any }) => {
-				console.log('itemsCallback', { itemsCallback });
 				if (!itemsCallback) {
 					return callback(null, undefined);
 				}
@@ -270,9 +269,10 @@ const getPostsTimestampIds = (
 						};
 					})
 					.sort((a, b) => {
-						return a.timestamp - b.timestamp;
+						const c = new Date(a.timestamp);
+						const d = new Date(b.timestamp);
+						return c > d ? -1 : c < d ? 1 : 0;
 					});
-				console.log('postsIdsAndTimestamp', { postsIdsAndTimestamps });
 				findOffsetAndLoad(postsIdsAndTimestamps);
 			},
 			{ wait: 500 },
@@ -292,12 +292,14 @@ const getPostsTimestampIds = (
 			for (let i = 0; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
 			}
-			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
-			console.log('loadRetOffi', { nextToken, postIds, canLoadMore });
+			const uNextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
 
-			return callback(null, { nextToken, postIds, canLoadMore });
+			return callback(null, { nextToken: uNextToken, postIds, canLoadMore });
 		} else {
-			const startIndex = postIdTimestamps.indexOf(lastItem);
+			const lastItemMeta = postIdTimestamps.find((postMeta) => postMeta.postId === lastItem.postId);
+			const startIndex = postIdTimestamps.indexOf(lastItemMeta as any);
+
+			console.log('itemTokenizers', { lastItemMeta, startIndex });
 
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;
@@ -306,10 +308,11 @@ const getPostsTimestampIds = (
 			for (let i = startIndex; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
 			}
-			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]));
-			console.log('loadRetOffn', { nextToken, postIds, canLoadMore });
+			const uNextToken = Base64.encode(
+				JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]),
+			);
 
-			return callback(null, { nextToken, postIds, canLoadMore });
+			return callback(null, { nextToken: uNextToken, postIds, canLoadMore });
 		}
 	};
 	mainRunner();
@@ -317,12 +320,14 @@ const getPostsTimestampIds = (
 
 const getFriendsPostsTimestampIds = (
 	context: IContext,
-	{ token, limit }: { token?: string; limit: number },
+	{ nextToken, limit }: { nextToken?: string; limit: number },
 	callback: IGunCallback<
 		{ nextToken: string; postIds: string[]; canLoadMore: boolean } | undefined
 	>,
 ) => {
-	const lastItem = token ? JSON.parse(Base64.decode(token)) : null;
+	const lastItem: { timestamp: number; postId: string } | null = nextToken
+		? JSON.parse(Base64.decode(nextToken))
+		: null;
 	const mainRunner = () => {
 		profileHandles.currentProfileFriendsRecord(context).once(
 			(friendsCallback: { [prop: string]: any }) => {
@@ -341,7 +346,6 @@ const getFriendsPostsTimestampIds = (
 	const loadLimitedPosts = (friends: string[]) => {
 		postHandles.postMetaByIdTimestampRecord(context).once(
 			(itemsCallback: { [prop: string]: any }) => {
-				console.log('itemsCallback', { itemsCallback });
 				if (!itemsCallback) {
 					return callback(null, undefined);
 				}
@@ -359,9 +363,10 @@ const getFriendsPostsTimestampIds = (
 					})
 					.filter((item: any) => friends.includes(item.owner))
 					.sort((a, b) => {
-						return a.timestamp - b.timestamp;
+						const c = new Date(a.timestamp);
+						const d = new Date(b.timestamp);
+						return c > d ? -1 : c < d ? 1 : 0;
 					});
-				console.log('postsIdsAndTimestamp', { postsIdsAndTimestamps });
 				findOffsetAndLoad(postsIdsAndTimestamps);
 			},
 			{ wait: 500 },
@@ -381,12 +386,14 @@ const getFriendsPostsTimestampIds = (
 			for (let i = 0; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
 			}
-			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
+			const uNextToken = Base64.encode(JSON.stringify(postIdTimestamps[loadLimit - 1]));
 
-			return callback(null, { nextToken, postIds, canLoadMore });
-			console.log('loadRetOffi', { nextToken, postIds, canLoadMore });
+			return callback(null, { nextToken: uNextToken, postIds, canLoadMore });
 		} else {
-			const startIndex = postIdTimestamps.indexOf(lastItem);
+			const lastItemMeta = postIdTimestamps.find((postMeta) => postMeta.postId === lastItem.postId);
+			const startIndex = postIdTimestamps.indexOf(lastItemMeta as any);
+
+			console.log('itemTokenizers', { lastItemMeta, startIndex });
 
 			if (postIdTimestamps.length - startIndex < limit) {
 				canLoadMore = false;
@@ -395,10 +402,11 @@ const getFriendsPostsTimestampIds = (
 			for (let i = startIndex; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);
 			}
-			const nextToken = Base64.encode(JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]));
-			console.log('loadRetOffn', { nextToken, postIds, canLoadMore });
+			const uNextToken = Base64.encode(
+				JSON.stringify(postIdTimestamps[startIndex + loadLimit - 1]),
+			);
 
-			return callback(null, { nextToken, postIds, canLoadMore });
+			return callback(null, { nextToken: uNextToken, postIds, canLoadMore });
 		}
 	};
 	mainRunner();

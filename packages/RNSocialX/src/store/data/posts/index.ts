@@ -26,11 +26,12 @@ export {
 	getPostByPath,
 	getPostsByUsername,
 	getPublicPostsByDate,
-	resetPostsAndRefetch,
+	resetGlobalFeedAndRefetch,
 	loadMorePosts,
 	loadMoreFriendsPosts,
 	createPost,
 	likePost,
+	resetFriendsFeedAndRefetch,
 	removePost,
 	unlikePost,
 	// comments

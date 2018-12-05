@@ -26,7 +26,8 @@ import {
 	loadMorePosts,
 	removeComment,
 	removePost,
-	resetPostsAndRefetch,
+	resetFriendsFeedAndRefetch,
+	resetGlobalFeedAndRefetch,
 	unlikeComment,
 	unlikePost,
 } from '../../../store/data/posts';
@@ -49,7 +50,8 @@ interface IActionProps {
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
-	resetPostsAndRefetch: () => void;
+	refreshGlobalFeed: () => void;
+	refreshFriendsFeed: () => void;
 	loadMorePosts: () => void;
 	loadMoreFriendsPosts: () => void;
 	removePost: (removePostInput: IRemovePostInput) => void;
@@ -117,7 +119,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
 	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
 		dispatch(getPublicPostsByDate(getPostByDateInput)),
-	resetPostsAndRefetch: () => dispatch(resetPostsAndRefetch()),
+	refreshGlobalFeed: () => dispatch(resetGlobalFeedAndRefetch()),
+	refreshFriendsFeed: () => dispatch(resetFriendsFeedAndRefetch()),
 	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
 	unlikePost: (unlikePostInput: IUnlikePostInput) => dispatch(unlikePost(unlikePostInput)),
 	// comments

@@ -36,7 +36,8 @@ import {
 	IPostPathInput,
 	IRemoveCommentAction,
 	IRemovePostAction,
-	IResetPostsAction,
+	IResetFriendsFeedAction,
+	IResetGlobalFeedAction,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetPostsByUserAction,
@@ -49,17 +50,22 @@ import {
 	IUsernameInput,
 } from './Types';
 
-const resetPostsAction: ActionCreator<IResetPostsAction> = () => ({
-	type: ActionTypes.RESET_POSTS,
+const resetGlobalFeedAction: ActionCreator<IResetGlobalFeedAction> = () => ({
+	type: ActionTypes.RESET_GLOBAL_FEED,
 });
 
-export const resetPostsAndRefetch = (): IThunk => async (dispatch, getState, context) => {
-	dispatch(resetPostsAction);
-	await dispatch(
-		getPublicPostsByDate({
-			date: new Date(Date.now()),
-		}),
-	);
+export const resetGlobalFeedAndRefetch = (): IThunk => async (dispatch, getState, context) => {
+	dispatch(resetGlobalFeedAction());
+	await dispatch(loadMorePosts());
+};
+
+const resetFriendsFeedAction: ActionCreator<IResetFriendsFeedAction> = () => ({
+	type: ActionTypes.RESET_FRIENDS_FEED,
+});
+
+export const resetFriendsFeedAndRefetch = (): IThunk => async (dispatch, getState, context) => {
+	dispatch(resetFriendsFeedAction());
+	await dispatch(loadMoreFriendsPosts());
 };
 
 const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
@@ -223,6 +229,7 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 		dispatch(loadMorePostsAction());
 
 		const { dataApi } = context;
+		console.log('current Token', { nextToken });
 		const data = await dataApi.posts.loadMorePosts({ nextToken, limit: 5 });
 		await dispatch(getProfilesByPosts(data.posts));
 		dispatch(syncLoadMorePostsAction(data));

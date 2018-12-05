@@ -130,20 +130,10 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																					loadMoreGlobalPosts: feed.loadMorePosts,
 																					loadMoreFriendsPosts: feed.loadMoreFriendsPosts,
 																					refreshFeed: async (type) => {
-																						switch (type) {
-																							case FEED_TYPES.GLOBAL: {
-																								await feed.resetPostsAndRefetch();
-																								break;
-																							}
-
-																							case FEED_TYPES.FRIENDS: {
-																								// TODO: this
-																								break;
-																							}
-
-																							default:
-																								assertNever(type);
-																								break;
+																						if (type === FEED_TYPES.GLOBAL) {
+																							await feed.refreshGlobalFeed();
+																						} else {
+																							await feed.refreshFriendsFeed();
 																						}
 																					},
 																					setNavigationParams,
