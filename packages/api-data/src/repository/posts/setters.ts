@@ -255,7 +255,7 @@ export const removePost = (
 	let ownerAlias = '';
 
 	const mainRunner = () => {
-		postHandles.postMetaById(context, postId).docLoad(
+		postHandles.postMetaById(context, postId).open(
 			(postMetaIdCallback: IPostMetasCallback) => {
 				if (!postMetaIdCallback || !Object.keys(postMetaIdCallback).length) {
 					return callback(
@@ -285,7 +285,7 @@ export const removePost = (
 				}
 				erasePostNode(postPath);
 			},
-			{ wait: 500, timeout: 1000 },
+			{ wait: 1000, off: 1 },
 		);
 	};
 	const erasePostNode = (postPath: string) => {
@@ -337,7 +337,15 @@ export const removePost = (
 			},
 		);
 	};
-	loadAllMetasAndPass(gun, mainRunner);
+	postHandles.postMetaById(context, postId).once(
+		(data: any) => {
+			if (!data) {
+				return callback(new ApiError('failed to find the post by this id'));
+			}
+			loadAllMetasAndPass(gun, mainRunner);
+		},
+		{ wait: 500 },
+	);
 };
 
 export const unlikePost = (
