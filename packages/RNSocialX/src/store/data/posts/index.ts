@@ -30,6 +30,7 @@ export {
 	refreshFriendsPosts,
 	removePost,
 	unlikePost,
-	syncAddCommentAction,
-	syncRemoveCommentAction,
+	addCommentToPostAction,
+	removeCommentFromPostAction,
+	replaceCommentOnPostAction,
 } from './actions';

@@ -21,6 +21,7 @@ import { WithCurrentUser } from '../intermediary';
 
 export interface IWallPostEnhancedData {
 	currentUser: ICurrentUser;
+	postingCommentId: string;
 	placeholderPost?: IWallPost;
 	commentInput?: boolean;
 	keyboardRaised?: boolean;
@@ -90,6 +91,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 															return this.props.children({
 																data: {
 																	currentUser,
+																	postingCommentId: globals.postingCommentId,
 																	placeholderPost: globals.placeholderPost,
 																},
 																actions: {

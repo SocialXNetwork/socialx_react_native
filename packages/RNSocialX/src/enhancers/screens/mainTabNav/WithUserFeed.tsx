@@ -15,7 +15,6 @@ import {
 import { getActivity } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { assertNever } from '../../../store/helpers';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';

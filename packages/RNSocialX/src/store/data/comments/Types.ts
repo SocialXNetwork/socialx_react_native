@@ -16,7 +16,9 @@ export const enum ActionTypes {
 	LOAD_COMMENTS = 'data/comments/LOAD_COMMENTS',
 	CREATE_COMMENT = 'data/comments/CREATE_COMMENT',
 	CREATE_COMMENT_ERROR = 'data/comments/CREATE_COMMENT_ERROR',
+	SYNC_CREATE_COMMENT = 'data/comments/SYNC_CREATE_COMMENT',
 	REMOVE_COMMENT = 'data/comments/REMOVE_COMMENT',
+	SYNC_REMOVE_COMMENT = 'data/comments/SYNC_REMOVE_COMMENT',
 	LIKE_COMMENT = 'data/comments/LIKE_COMMENT',
 	LIKE_COMMENT_ERROR = 'data/comments/LIKE_COMMENT_ERROR',
 	UNLIKE_COMMENT = 'data/comments/UNLIKE_COMMENT',
@@ -28,6 +30,11 @@ export interface ICreateCommentInput {
 	alias: string;
 	pub: string;
 	postId: string;
+}
+
+export interface IReplaceCommentInput {
+	previousCommentId: string;
+	commentId: string;
 }
 
 export interface IRemoveCommentInput {
@@ -50,14 +57,23 @@ export interface ICreateCommentAction extends Action {
 	type: ActionTypes.CREATE_COMMENT;
 	payload: ICommentsReturnData;
 }
-
 export interface ICreateCommentErrorAction extends Action {
 	type: ActionTypes.CREATE_COMMENT_ERROR;
 	payload: string;
 }
 
+export interface ISyncCreateCommentAction extends Action {
+	type: ActionTypes.SYNC_CREATE_COMMENT;
+	payload: IReplaceCommentInput;
+}
+
 export interface IRemoveCommentAction extends Action {
 	type: ActionTypes.REMOVE_COMMENT;
+	payload: string;
+}
+
+export interface ISyncRemoveCommentAction extends Action {
+	type: ActionTypes.SYNC_REMOVE_COMMENT;
 	payload: string;
 }
 
@@ -90,7 +106,9 @@ export type IAction =
 	| ILoadCommentsAction
 	| ICreateCommentAction
 	| ICreateCommentErrorAction
+	| ISyncCreateCommentAction
 	| IRemoveCommentAction
+	| ISyncRemoveCommentAction
 	| ILikeCommentAction
 	| ILikeCommentErrorAction
 	| IUnlikeCommentAction

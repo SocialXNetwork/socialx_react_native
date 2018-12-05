@@ -44,28 +44,26 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 
 		return (
 			<WithModalForAddFriends getText={getText}>
-				{({ showAddFriendsModal, addedFriends }) => {
-					return (
-						<PhotoScreenView
-							avatar={currentUser.avatar}
-							media={media.map((m) => m.path)}
-							taggedFriends={addedFriends}
-							locationEnabled={locationEnabled}
-							location={location}
-							tagFriends={tagFriends}
-							caption={caption}
-							onShowTagFriends={showAddFriendsModal}
-							onTagFriendsToggle={this.onTagFriendsToggleHandler}
-							onLocationTextUpdate={this.onLocationTextUpdate}
-							onLocationToggle={this.onLocationToggle}
-							onChangeText={this.onChangeTextHandler}
-							onAddMedia={this.onAddMediaHandler}
-							onCreatePost={this.onCreatePostHandler}
-							onClose={this.onCloseHandler}
-							getText={getText}
-						/>
-					);
-				}}
+				{({ showAddFriendsModal, addedFriends }) => (
+					<PhotoScreenView
+						avatar={currentUser.avatar}
+						media={media.map((m) => m.path)}
+						taggedFriends={addedFriends}
+						locationEnabled={locationEnabled}
+						location={location}
+						tagFriends={tagFriends}
+						caption={caption}
+						onShowTagFriends={showAddFriendsModal}
+						onTagFriendsToggle={this.onTagFriendsToggleHandler}
+						onLocationTextUpdate={this.onLocationTextUpdate}
+						onLocationToggle={this.onLocationToggle}
+						onChangeText={this.onChangeTextHandler}
+						onAddMedia={this.onAddMediaHandler}
+						onCreatePost={this.onCreatePostHandler}
+						onClose={this.onCloseHandler}
+						getText={getText}
+					/>
+				)}
 			</WithModalForAddFriends>
 		);
 	}
@@ -156,7 +154,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				numberOfWalletCoins: 0,
 				currentUserAvatar: currentUser.avatar,
 				suggested: undefined,
-				creating: true,
+				creatingPost: true,
 			},
 		});
 

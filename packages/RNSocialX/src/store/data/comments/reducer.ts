@@ -42,8 +42,41 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.SYNC_CREATE_COMMENT: {
+			const { commentId, previousCommentId } = action.payload;
+
+			const comment = state.comments[previousCommentId];
+			const {
+				[previousCommentId]: {},
+				...updatedComments
+			} = state.comments;
+
+			return {
+				...state,
+				comments: {
+					...updatedComments,
+					[commentId]: {
+						...comment,
+						commentId,
+					},
+				},
+			};
+		}
+
 		case ActionTypes.REMOVE_COMMENT: {
 			return state;
+		}
+
+		case ActionTypes.SYNC_REMOVE_COMMENT: {
+			const {
+				[action.payload]: {},
+				...updatedComments
+			} = state.comments;
+
+			return {
+				...state,
+				comments: updatedComments,
+			};
 		}
 
 		case ActionTypes.LIKE_COMMENT: {

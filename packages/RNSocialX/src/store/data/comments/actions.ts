@@ -4,7 +4,12 @@ import uuid from 'uuid/v4';
 
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
-import { syncAddCommentAction, syncRemoveCommentAction } from '../posts';
+import { setGlobal } from '../../ui/globals';
+import {
+	addCommentToPostAction,
+	removeCommentFromPostAction,
+	replaceCommentOnPostAction,
+} from '../posts';
 import {
 	ActionTypes,
 	ICreateCommentAction,
@@ -16,6 +21,9 @@ import {
 	ILoadCommentsAction,
 	IRemoveCommentAction,
 	IRemoveCommentInput,
+	IReplaceCommentInput,
+	ISyncCreateCommentAction,
+	ISyncRemoveCommentAction,
 	IUnlikeCommentAction,
 	IUnlikeCommentErrorAction,
 } from './Types';
@@ -35,6 +43,13 @@ const createCommentAction: ActionCreator<ICreateCommentAction> = (
 const createCommentErrorAction: ActionCreator<ICreateCommentErrorAction> = (commentId: string) => ({
 	type: ActionTypes.CREATE_COMMENT_ERROR,
 	payload: commentId,
+});
+
+const syncCreateCommentAction: ActionCreator<ISyncCreateCommentAction> = (
+	input: IReplaceCommentInput,
+) => ({
+	type: ActionTypes.SYNC_CREATE_COMMENT,
+	payload: input,
 });
 
 export const createComment = (createCommentInput: ICreateCommentInput): IThunk => async (
@@ -64,12 +79,18 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 				uuid: activityId,
 			}),
 		);
-		dispatch(syncAddCommentAction({ postId, commentId: comment.commentId, error: false }));
+		dispatch(addCommentToPostAction({ postId, commentId: comment.commentId, error: false }));
+		await dispatch(setGlobal({ postingCommentId: comment.commentId }));
 		const id = await context.dataApi.comments.createComment({ text, postId });
-		console.log(id);
+
+		dispatch(syncCreateCommentAction({ previousCommentId: comment.commentId, commentId: id }));
+		dispatch(
+			replaceCommentOnPostAction({ postId, previousCommentId: comment.commentId, commentId: id }),
+		);
+		await dispatch(setGlobal({ postingCommentId: '' }));
 	} catch (e) {
 		dispatch(createCommentErrorAction(comment.commentId));
-		dispatch(syncAddCommentAction({ postId, commentId: comment.commentId, error: true }));
+		dispatch(addCommentToPostAction({ postId, commentId: comment.commentId, error: true }));
 		await dispatch(
 			setError({
 				type: ActionTypes.CREATE_COMMENT,
@@ -87,6 +108,11 @@ const removeCommentAction: ActionCreator<IRemoveCommentAction> = (commentId: str
 	payload: commentId,
 });
 
+const syncRemoveCommentAction: ActionCreator<ISyncRemoveCommentAction> = (commentId: string) => ({
+	type: ActionTypes.SYNC_REMOVE_COMMENT,
+	payload: commentId,
+});
+
 export const removeComment = (input: IRemoveCommentInput): IThunk => async (
 	dispatch,
 	getState,
@@ -97,7 +123,8 @@ export const removeComment = (input: IRemoveCommentInput): IThunk => async (
 	try {
 		dispatch(removeCommentAction(commentId));
 		await context.dataApi.comments.removeComment({ commentId });
-		dispatch(syncRemoveCommentAction({ postId, commentId }));
+		dispatch(removeCommentFromPostAction({ postId, commentId }));
+		dispatch(syncRemoveCommentAction(commentId));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -109,30 +136,28 @@ export const removeComment = (input: IRemoveCommentInput): IThunk => async (
 	}
 };
 
-const likeCommentAction: ActionCreator<ILikeCommentAction> = (
-	likeCommentInput: ILikeCommentInput,
-) => ({
+const likeCommentAction: ActionCreator<ILikeCommentAction> = (input: ILikeCommentInput) => ({
 	type: ActionTypes.LIKE_COMMENT,
-	payload: likeCommentInput,
+	payload: input,
 });
 
 const likeCommentErrorAction: ActionCreator<ILikeCommentErrorAction> = (
-	likeCommentErrorInput: ILikeCommentInput,
+	input: ILikeCommentInput,
 ) => ({
 	type: ActionTypes.LIKE_COMMENT_ERROR,
-	payload: likeCommentErrorInput,
+	payload: input,
 });
 
-export const likeComment = (likeCommentInput: ILikeCommentInput): IThunk => async (
+export const likeComment = (input: ILikeCommentInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(likeCommentAction(likeCommentInput));
-		await context.dataApi.comments.likeComment(likeCommentInput);
+		dispatch(likeCommentAction(input));
+		await context.dataApi.comments.likeComment(input);
 	} catch (e) {
-		dispatch(likeCommentErrorAction(likeCommentInput));
+		dispatch(likeCommentErrorAction(input));
 		await dispatch(
 			setError({
 				type: ActionTypes.LIKE_COMMENT,
@@ -143,30 +168,28 @@ export const likeComment = (likeCommentInput: ILikeCommentInput): IThunk => asyn
 	}
 };
 
-const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
-	unlikeCommentInput: ILikeCommentInput,
-) => ({
+const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (input: ILikeCommentInput) => ({
 	type: ActionTypes.UNLIKE_COMMENT,
-	payload: unlikeCommentInput,
+	payload: input,
 });
 
 const unlikeCommentErrorAction: ActionCreator<IUnlikeCommentErrorAction> = (
-	unlikeCommentErrorInput: ILikeCommentInput,
+	input: ILikeCommentInput,
 ) => ({
 	type: ActionTypes.UNLIKE_COMMENT_ERROR,
-	payload: unlikeCommentErrorInput,
+	payload: input,
 });
 
-export const unlikeComment = (unlikeCommentInput: ILikeCommentInput): IThunk => async (
+export const unlikeComment = (input: ILikeCommentInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(unlikeCommentAction(unlikeCommentInput));
-		await context.dataApi.comments.unlikeComment(unlikeCommentInput);
+		dispatch(unlikeCommentAction(input));
+		await context.dataApi.comments.unlikeComment(input);
 	} catch (e) {
-		dispatch(unlikeCommentErrorAction(unlikeCommentInput));
+		dispatch(unlikeCommentErrorAction(input));
 		await dispatch(
 			setError({
 				type: ActionTypes.UNLIKE_COMMENT,

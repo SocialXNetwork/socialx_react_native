@@ -39,6 +39,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 							.map((comm) => comm.commentId),
 					},
 				},
+				global: {
+					...state.global,
+					posts: [action.payload.postId, ...state.global.posts],
+				},
+				friends: {
+					...state.friends,
+					posts: [action.payload.postId, ...state.friends.posts],
+				},
 			};
 		}
 
@@ -179,6 +187,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				...state,
 				all: updatedPosts,
+				global: {
+					...state.global,
+					posts: state.global.posts.filter((id) => id !== action.payload),
+				},
+				friends: {
+					...state.friends,
+					posts: state.friends.posts.filter((id) => id !== action.payload),
+				},
 			};
 		}
 
@@ -274,49 +290,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
-		case ActionTypes.SYNC_ADD_COMMENT: {
-			const { postId, commentId, error } = action.payload;
-
-			if (error) {
-				return {
-					...state,
-					all: {
-						...state.all,
-						[postId]: {
-							...state.all[postId],
-							comments: state.all[postId].comments.filter((comm) => comm !== commentId),
-						},
-					},
-				};
-			} else {
-				return {
-					...state,
-					all: {
-						...state.all,
-						[postId]: {
-							...state.all[postId],
-							comments: [...state.all[postId].comments, commentId],
-						},
-					},
-				};
-			}
-		}
-
-		case ActionTypes.SYNC_REMOVE_COMMENT: {
-			const { postId, commentId } = action.payload;
-
-			return {
-				...state,
-				all: {
-					...state.all,
-					[postId]: {
-						...state.all[postId],
-						comments: state.all[postId].comments.filter((comm) => comm !== commentId),
-					},
-				},
-			};
-		}
-
 		case ActionTypes.REFRESH_GLOBAL_POSTS: {
 			return state;
 		}
@@ -395,6 +368,68 @@ export default (state: IState = initialState, action: IAction): IState => {
 					canLoadMore: action.payload.canLoadMore,
 					nextToken: action.payload.nextToken,
 					posts,
+				},
+			};
+		}
+
+		case ActionTypes.ADD_COMMENT: {
+			const { postId, commentId, error } = action.payload;
+
+			if (error) {
+				return {
+					...state,
+					all: {
+						...state.all,
+						[postId]: {
+							...state.all[postId],
+							comments: state.all[postId].comments.filter((comm) => comm !== commentId),
+						},
+					},
+				};
+			} else {
+				return {
+					...state,
+					all: {
+						...state.all,
+						[postId]: {
+							...state.all[postId],
+							comments: [...state.all[postId].comments, commentId],
+						},
+					},
+				};
+			}
+		}
+
+		case ActionTypes.REPLACE_COMMENT: {
+			const { postId, previousCommentId, commentId } = action.payload;
+
+			const comments = state.all[postId].comments.slice();
+			const index = comments.indexOf(previousCommentId);
+			comments[index] = commentId;
+
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						comments,
+					},
+				},
+			};
+		}
+
+		case ActionTypes.REMOVE_COMMENT: {
+			const { postId, commentId } = action.payload;
+
+			return {
+				...state,
+				all: {
+					...state.all,
+					[postId]: {
+						...state.all[postId],
+						comments: state.all[postId].comments.filter((comm) => comm !== commentId),
+					},
 				},
 			};
 		}

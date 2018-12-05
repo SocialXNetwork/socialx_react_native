@@ -131,7 +131,6 @@ export default {
 	'intro.third.slide.title': 'Your financial incentive',
 	'intro.third.slide.description':
 		'The days that firms make millions using your data are over',
-	'comments.order.title': 'Order by:',
 	'events.list.item.all.day': 'All Day',
 	'events.list.item.start.at': 'Start at',
 	'notifications.friend.request.accept.failed':

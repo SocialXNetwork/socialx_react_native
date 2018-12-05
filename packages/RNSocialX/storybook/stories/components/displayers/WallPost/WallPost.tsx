@@ -10,7 +10,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('WallPost', () => (
 		<WallPost
-			post={posts[0]}
+			postId="post1"
 			commentInput={false}
 			onAddComment={action('onAddComment')}
 			// @ts-ignore

@@ -11,6 +11,8 @@ import { loadCommentsAction } from '../comments';
 import { addPostsToProfile, getProfilesByPosts, removePostFromProfile } from '../profiles';
 import {
 	ActionTypes,
+	IAddCommentAction,
+	ICommentToPostInput,
 	ICreatePostAction,
 	IGetPostByIdAction,
 	IGetPostByPathAction,
@@ -24,9 +26,10 @@ import {
 	IPostPathInput,
 	IRefreshFriendsPostsAction,
 	IRefreshGlobalPostsAction,
+	IRemoveCommentAction,
 	IRemovePostAction,
-	ISyncAddCommentAction,
-	ISyncCommentInput,
+	IReplaceCommentAction,
+	IReplaceCommentInput,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetUserPostsAction,
@@ -35,7 +38,6 @@ import {
 	ISyncLoadMorePostsAction,
 	ISyncRefreshFriendsPostsAction,
 	ISyncRefreshGlobalPostsAction,
-	ISyncRemoveCommentAction,
 	ISyncRemovePostAction,
 	IUnlikePostAction,
 	IUnlikePostErrorAction,
@@ -502,30 +504,6 @@ export const unlikePost = (input: IPostLikeInput): IThunk => async (
 };
 
 /**
- * 	Called when creating a comment, adds the id to the
- * 	comments array of the post
- */
-
-export const syncAddCommentAction: ActionCreator<ISyncAddCommentAction> = (
-	input: ISyncCommentInput,
-) => ({
-	type: ActionTypes.SYNC_ADD_COMMENT,
-	payload: input,
-});
-
-/**
- * 	Called when deleting a comment, removes the id
- *  from the comments array of the post
- */
-
-export const syncRemoveCommentAction: ActionCreator<ISyncRemoveCommentAction> = (
-	input: ISyncCommentInput,
-) => ({
-	type: ActionTypes.SYNC_REMOVE_COMMENT,
-	payload: input,
-});
-
-/**
  * 	Called when pulling the global feed to refresh,
  *  gets a new batch of posts and updates the store
  */
@@ -616,3 +594,40 @@ export const refreshFriendsPosts = (): IThunk => async (dispatch, getState, cont
 		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
+
+/**
+ * 	Called when creating a comment, adds the id to the
+ * 	comments array of the post
+ */
+
+export const addCommentToPostAction: ActionCreator<IAddCommentAction> = (
+	input: ICommentToPostInput,
+) => ({
+	type: ActionTypes.ADD_COMMENT,
+	payload: input,
+});
+
+/**
+ * 	Called when creating a comment, replaces the frontend
+ * 	generated comment id with the proper one generated
+ *  on the backend
+ */
+
+export const replaceCommentOnPostAction: ActionCreator<IReplaceCommentAction> = (
+	input: IReplaceCommentInput,
+) => ({
+	type: ActionTypes.REPLACE_COMMENT,
+	payload: input,
+});
+
+/**
+ * 	Called when deleting a comment, removes the id
+ *  from the comments array of the post
+ */
+
+export const removeCommentFromPostAction: ActionCreator<IRemoveCommentAction> = (
+	input: ICommentToPostInput,
+) => ({
+	type: ActionTypes.REMOVE_COMMENT,
+	payload: input,
+});

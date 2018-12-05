@@ -60,10 +60,16 @@ export interface IProfile {
 	avatar: string;
 }
 
-export interface ISyncCommentInput {
+export interface ICommentToPostInput {
 	commentId: string;
 	postId: string;
 	error?: boolean;
+}
+
+export interface IReplaceCommentInput {
+	previousCommentId: string;
+	commentId: string;
+	postId: string;
 }
 
 export interface ISyncLoadMoreInput {
@@ -92,13 +98,14 @@ export const enum ActionTypes {
 	LIKE_POST_ERROR = 'data/comments/LIKE_POST_ERROR',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
 	UNLIKE_POST_ERROR = 'data/comments/UNLIKE_POST_ERROR',
-	SYNC_ADD_COMMENT = 'data/posts/SYNC_ADD_COMMENT',
-	SYNC_REMOVE_COMMENT = 'data/posts/SYNC_REMOVE_COMMENT',
-	RESET_POSTS = 'data/posts/RESET_POSTS',
 	REFRESH_GLOBAL_POSTS = 'data/posts/REFRESH_GLOBAL_POSTS',
 	SYNC_REFRESH_GLOBAL_POSTS = 'data/posts/SYNC_REFRESH_GLOBAL_POSTS',
 	REFRESH_FRIENDS_POSTS = 'data/posts/REFRESH_FRIENDS_POSTS',
 	SYNC_REFRESH_FRIENDS_POSTS = 'data/posts/SYNC_REFRESH_FRIENDS_POSTS',
+	ADD_COMMENT = 'data/posts/ADD_COMMENT',
+	REPLACE_COMMENT = 'data/posts/REPLACE_COMMENT',
+	REMOVE_COMMENT = 'data/posts/REMOVE_COMMENT',
+	RESET_POSTS = 'data/posts/RESET_POSTS',
 }
 
 export interface IRefreshGlobalPostsAction extends Action {
@@ -202,14 +209,19 @@ export interface IUnlikePostErrorAction extends Action {
 	payload: IPostLikeInput;
 }
 
-export interface ISyncAddCommentAction extends Action {
-	type: ActionTypes.SYNC_ADD_COMMENT;
-	payload: ISyncCommentInput;
+export interface IAddCommentAction extends Action {
+	type: ActionTypes.ADD_COMMENT;
+	payload: ICommentToPostInput;
 }
 
-export interface ISyncRemoveCommentAction extends Action {
-	type: ActionTypes.SYNC_REMOVE_COMMENT;
-	payload: ISyncCommentInput;
+export interface IReplaceCommentAction extends Action {
+	type: ActionTypes.REPLACE_COMMENT;
+	payload: IReplaceCommentInput;
+}
+
+export interface IRemoveCommentAction extends Action {
+	type: ActionTypes.REMOVE_COMMENT;
+	payload: ICommentToPostInput;
 }
 
 interface IResetStoreAction {
@@ -240,5 +252,6 @@ export type IAction =
 	| ILikePostErrorAction
 	| IUnlikePostAction
 	| IUnlikePostErrorAction
-	| ISyncAddCommentAction
-	| ISyncRemoveCommentAction;
+	| IAddCommentAction
+	| IReplaceCommentAction
+	| IRemoveCommentAction;

@@ -119,7 +119,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				numberOfWalletCoins: 0,
 				currentUserAvatar: currentUser.avatar,
 				suggested: undefined,
-				creating: true,
+				creatingPost: true,
 			},
 		});
 

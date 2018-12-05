@@ -22,16 +22,18 @@ const TEXT_LENGTH_TRESHOLD = 15;
 
 interface ICommentCardProps extends INavigationProps, ITranslatedProps {
 	commentId: string;
-	comment: IStateComment;
+	postingCommentId: string;
 	alias: string;
 	pub: string;
 	onLikeComment: (alias: string, pub: string, liked: boolean, commentId: string) => void;
 	onUserPress: (userId: string) => void;
-	onViewLikes: (likeIds: string[]) => void;
 	onShowOptionsMenu: (comment: IComment) => void;
 }
 
-type IProps = ICommentCardProps & IWithDataShapeEnhancedProps;
+interface IProps extends ICommentCardProps, IWithDataShapeEnhancedProps {
+	comment: IStateComment;
+	onViewLikes: (likeIds: string[]) => void;
+}
 
 interface IState {
 	commentLikesPosition: StyleProp<ViewStyle>;
@@ -57,7 +59,15 @@ class Component extends React.Component<IProps, IState> {
 	}
 
 	public render() {
-		const { shapedComment, onUserPress, onViewLikes, onShowOptionsMenu, getText } = this.props;
+		const {
+			commentId,
+			postingCommentId,
+			shapedComment,
+			onUserPress,
+			onViewLikes,
+			onShowOptionsMenu,
+			getText,
+		} = this.props;
 
 		if (shapedComment) {
 			const { text, user, timestamp, likeIds, likedByCurrentUser } = shapedComment!;
@@ -111,16 +121,20 @@ class Component extends React.Component<IProps, IState> {
 								/>
 							)}
 						</View>
-						<View style={styles.actionsContainer}>
-							<Text style={styles.timestamp}>{commentTimestamp}</Text>
-							<TouchableOpacity onPress={this.onCommentLikeHandler}>
-								<Text style={styles.actionButtonText}>
-									{likedByCurrentUser
-										? getText('comments.screen.actions.unlike')
-										: getText('comments.screen.actions.like')}
-								</Text>
-							</TouchableOpacity>
-						</View>
+						{postingCommentId === commentId ? (
+							<Text style={styles.timestamp}>{getText('post.card.creating')}</Text>
+						) : (
+							<View style={styles.actionsContainer}>
+								<Text style={styles.timestamp}>{commentTimestamp}</Text>
+								<TouchableOpacity onPress={this.onCommentLikeHandler}>
+									<Text style={styles.actionButtonText}>
+										{likedByCurrentUser
+											? getText('comments.screen.actions.unlike')
+											: getText('comments.screen.actions.like')}
+									</Text>
+								</TouchableOpacity>
+							</View>
+						)}
 					</View>
 				</View>
 			);
@@ -153,4 +167,4 @@ const mapStateToProps = (state: IApplicationState, props: ICommentCardProps) => 
 	comment: selectComment(state, props),
 });
 
-export const CommentCard = connect(mapStateToProps)(EnhancedComponent as any) as any;
+export const CommentCard = connect(mapStateToProps)(EnhancedComponent as any);

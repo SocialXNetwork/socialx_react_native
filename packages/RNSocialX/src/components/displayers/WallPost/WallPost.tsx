@@ -49,21 +49,23 @@ import styles, { SCREEN_WIDTH } from './WallPost.style';
 
 interface IWallPostProps extends INavigationProps {
 	postId: string;
-	post: IPost;
 	commentInput?: boolean;
 	isCommentsScreen?: boolean;
 	keyboardRaised?: boolean;
 	onAddComment?: (cardHeight: number) => void;
 }
 
-type IProps = IWallPostProps &
-	IWithDataShapeEnhancedProps &
-	IWallPostEnhancedActions &
-	IWallPostEnhancedData &
-	IWithLikingEnhancedActions &
-	IWithLikingEnhancedData &
-	IWithNavigationHandlersEnhancedActions &
-	INavigationProps;
+interface IProps
+	extends IWallPostProps,
+		IWithDataShapeEnhancedProps,
+		IWallPostEnhancedActions,
+		IWallPostEnhancedData,
+		IWithLikingEnhancedActions,
+		IWithLikingEnhancedData,
+		IWithNavigationHandlersEnhancedActions,
+		INavigationProps {
+	post: IPost;
+}
 
 interface IState {
 	fullTextVisible: boolean;
@@ -101,6 +103,7 @@ class Component extends React.Component<IProps, IState> {
 			this.props.currentUser !== nextProps.currentUser ||
 			this.props.shapedPost !== nextProps.shapedPost ||
 			this.props.placeholderPost !== nextProps.placeholderPost ||
+			this.props.postingCommentId !== nextProps.postingCommentId ||
 			this.props.heartAnimation !== nextProps.heartAnimation ||
 			this.props.animationProgress !== nextProps.animationProgress
 		);
@@ -114,6 +117,7 @@ class Component extends React.Component<IProps, IState> {
 		const {
 			shapedPost,
 			placeholderPost,
+			postingCommentId,
 			currentUser,
 			commentInput,
 			isCommentsScreen,
@@ -150,7 +154,7 @@ class Component extends React.Component<IProps, IState> {
 			numberOfComments,
 			numberOfWalletCoins,
 			offensiveContent,
-			creating,
+			creatingPost,
 		} = isPlaceholderPost ? placeholderPost! : shapedPost!;
 
 		const {
@@ -167,43 +171,118 @@ class Component extends React.Component<IProps, IState> {
 			send: sendCommentIconPosition,
 		};
 
-		return (
-			<View
-				style={[styles.container, { opacity: creating ? 0.5 : 1 }]}
-				ref={this.containerViewRef}
-				// Measuring the element doesn't work on Android without this
-				renderToHardwareTextureAndroid={true}
-			>
-				{isPlaceholderPost && <View style={styles.overlay} />}
-				<UserDetails
-					canBack={isCommentsScreen!}
-					user={owner}
-					timestamp={timestamp}
-					taggedFriends={taggedFriends}
-					location={location}
-					onUserPress={onViewUserProfile}
-					onShowOptions={this.onShowPostOptionsHandler}
-					onGoBack={onGoBack}
-					getText={getText}
-				/>
-				<ReportProblemModal
-					visible={reportAProblem}
-					confirmHandler={(subject, description) =>
-						this.onReportAProblemHandler(true, subject, description)
-					}
-					declineHandler={() => this.onReportAProblemHandler(false)}
-					getText={getText}
-				/>
-				{isCommentsScreen && (
-					<React.Fragment>
-						<ScrollView
-							style={{ flex: 1 }}
-							ref={this.scrollRef}
-							onLayout={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}
-							onContentSizeChange={() =>
-								this.scrollRef.current && this.scrollRef.current.scrollToEnd()
-							}
-						>
+		if (shapedPost || placeholderPost) {
+			return (
+				<View
+					style={[styles.container, { opacity: creatingPost ? 0.5 : 1 }]}
+					ref={this.containerViewRef}
+					// Measuring the element doesn't work on Android without this
+					renderToHardwareTextureAndroid={true}
+				>
+					{isPlaceholderPost && <View style={styles.overlay} />}
+					<UserDetails
+						canBack={isCommentsScreen!}
+						user={owner}
+						timestamp={timestamp}
+						taggedFriends={taggedFriends}
+						location={location}
+						onUserPress={onViewUserProfile}
+						onShowOptions={this.onShowPostOptionsHandler}
+						onGoBack={onGoBack}
+						getText={getText}
+					/>
+					<ReportProblemModal
+						visible={reportAProblem}
+						confirmHandler={(subject, description) =>
+							this.onReportAProblemHandler(true, subject, description)
+						}
+						declineHandler={() => this.onReportAProblemHandler(false)}
+						getText={getText}
+					/>
+					{isCommentsScreen && (
+						<React.Fragment>
+							<ScrollView
+								style={{ flex: 1 }}
+								ref={this.scrollRef}
+								onLayout={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}
+								onContentSizeChange={() =>
+									this.scrollRef.current && this.scrollRef.current.scrollToEnd()
+								}
+							>
+								<PostText
+									text={postText}
+									fullTextVisible={fullTextVisible}
+									onShowFullText={this.onShowFullTextHandler}
+									handleHashTag={() => undefined}
+									handleUserTag={() => undefined}
+									handleUrls={() => undefined}
+									getText={getText}
+								/>
+								{media.length > 0 && (
+									<View style={styles.media}>
+										{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
+										<WallPostMedia
+											media={media}
+											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
+											onDoublePress={() => onDoubleTapLikePost(postId)}
+											creating={creatingPost}
+											getText={getText}
+										/>
+									</View>
+								)}
+								<WallPostActions
+									creating={creatingPost}
+									likedByCurrentUser={likedByCurrentUser}
+									numberOfSuperLikes={numberOfSuperLikes}
+									numberOfWalletCoins={numberOfWalletCoins}
+									onLikePost={() => onLikePost(postId)}
+									onCommentPress={() => onViewComments(postId, true)}
+									onSuperLikePress={() => undefined}
+									onWalletCoinsPress={() => undefined}
+								/>
+								{likeIds.length > 0 && (
+									<Likes
+										alias={likeIds[likeIds.length - 1]}
+										total={likeIds.length}
+										onUserPress={onViewUserProfile}
+										onViewLikes={() => onViewLikes(likeIds)}
+										getText={getText}
+									/>
+								)}
+								{commentIds.length > 0 &&
+									commentIds.map((id) => (
+										<CommentCard
+											key={id}
+											commentId={id}
+											alias={currentUser.userName}
+											pub={currentUser.pub}
+											postingCommentId={postingCommentId}
+											onLikeComment={onLikeComment}
+											onUserPress={onViewUserProfile}
+											onShowOptionsMenu={this.onShowCommentOptionsHandler}
+											navigation={navigation}
+											getText={getText}
+										/>
+									))}
+							</ScrollView>
+							<KeyboardAvoidingView
+								behavior="padding"
+								keyboardVerticalOffset={50}
+								enabled={Platform.OS === OS_TYPES.IOS}
+							>
+								<CommentInput
+									comment={comment}
+									autoFocus={keyboardRaised}
+									onCommentInputChange={this.onCommentInputChangeHandler}
+									onCommentInputPress={() => undefined}
+									onSubmitComment={this.onSubmitCommentHandler}
+									getText={getText}
+								/>
+							</KeyboardAvoidingView>
+						</React.Fragment>
+					)}
+					{!isCommentsScreen && (
+						<React.Fragment>
 							<PostText
 								text={postText}
 								fullTextVisible={fullTextVisible}
@@ -216,17 +295,24 @@ class Component extends React.Component<IProps, IState> {
 							{media.length > 0 && (
 								<View style={styles.media}>
 									{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
-									<WallPostMedia
-										media={media}
-										onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
-										onDoublePress={() => onDoubleTapLikePost(postId)}
-										creating={creating}
+									{(!offensiveContent || viewOffensiveContent) && (
+										<WallPostMedia
+											media={media}
+											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
+											onDoublePress={() => onDoubleTapLikePost(shapedPost!.postId)}
+											creating={creatingPost}
+											getText={getText}
+										/>
+									)}
+									<WarnOffensiveContent
 										getText={getText}
+										onShowOffensiveContent={this.onShowOffensiveContentHandler}
+										visible={offensiveContent && !viewOffensiveContent}
 									/>
 								</View>
 							)}
 							<WallPostActions
-								creating={creating}
+								creating={creatingPost}
 								likedByCurrentUser={likedByCurrentUser}
 								numberOfSuperLikes={numberOfSuperLikes}
 								numberOfWalletCoins={numberOfWalletCoins}
@@ -244,112 +330,35 @@ class Component extends React.Component<IProps, IState> {
 									getText={getText}
 								/>
 							)}
-							{commentIds.length > 0 &&
-								commentIds.map((id) => (
-									<CommentCard
-										key={id}
-										commentId={id}
-										alias={currentUser.userName}
-										pub={currentUser.pub}
-										onLikeComment={onLikeComment}
-										onUserPress={onViewUserProfile}
-										onShowOptionsMenu={this.onShowCommentOptionsHandler}
-										navigation={navigation}
-										getText={getText}
-									/>
-								))}
-						</ScrollView>
-						<KeyboardAvoidingView
-							behavior="padding"
-							keyboardVerticalOffset={50}
-							enabled={Platform.OS === OS_TYPES.IOS}
-						>
-							<CommentInput
-								comment={comment}
-								autoFocus={keyboardRaised}
-								onCommentInputChange={this.onCommentInputChangeHandler}
-								onCommentInputPress={() => undefined}
-								onSubmitComment={this.onSubmitCommentHandler}
+							<ViewAllComments
+								numberOfComments={numberOfComments}
+								onCommentPress={() => onViewComments(postId, false)}
 								getText={getText}
 							/>
-						</KeyboardAvoidingView>
-					</React.Fragment>
-				)}
-				{!isCommentsScreen && (
-					<React.Fragment>
-						<PostText
-							text={postText}
-							fullTextVisible={fullTextVisible}
-							onShowFullText={this.onShowFullTextHandler}
-							handleHashTag={() => undefined}
-							handleUserTag={() => undefined}
-							handleUrls={() => undefined}
-							getText={getText}
-						/>
-						{media.length > 0 && (
-							<View style={styles.media}>
-								{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
-								{(!offensiveContent || viewOffensiveContent) && (
-									<WallPostMedia
-										media={media}
-										onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
-										onDoublePress={() => onDoubleTapLikePost(shapedPost!.postId)}
-										creating={creating}
-										getText={getText}
-									/>
-								)}
-								<WarnOffensiveContent
-									getText={getText}
-									onShowOffensiveContent={this.onShowOffensiveContentHandler}
-									visible={offensiveContent && !viewOffensiveContent}
-								/>
-							</View>
-						)}
-						<WallPostActions
-							creating={creating}
-							likedByCurrentUser={likedByCurrentUser}
-							numberOfSuperLikes={numberOfSuperLikes}
-							numberOfWalletCoins={numberOfWalletCoins}
-							onLikePost={() => onLikePost(postId)}
-							onCommentPress={() => onViewComments(postId, true)}
-							onSuperLikePress={() => undefined}
-							onWalletCoinsPress={() => undefined}
-						/>
-						{likeIds.length > 0 && (
-							<Likes
-								alias={likeIds[likeIds.length - 1]}
-								total={likeIds.length}
+							<TopComments
+								commentIds={topCommentIds}
 								onUserPress={onViewUserProfile}
-								onViewLikes={() => onViewLikes(likeIds)}
-								getText={getText}
+								onCommentPress={() => onViewComments(postId, false)}
 							/>
-						)}
-						<ViewAllComments
-							numberOfComments={numberOfComments}
-							onCommentPress={() => onViewComments(postId, false)}
-							getText={getText}
-						/>
-						<TopComments
-							commentIds={topCommentIds}
-							onUserPress={onViewUserProfile}
-							onCommentPress={() => onViewComments(postId, false)}
-						/>
-						{!!commentInput && !creating && (
-							<CommentInput
-								feed={true}
-								comment={comment}
-								avatar={currentUser.avatar}
-								animationValues={animationValues}
-								onCommentInputChange={this.onCommentInputChangeHandler}
-								onCommentInputPress={this.onCommentInputPressHandler}
-								onSubmitComment={this.onSubmitCommentHandler}
-								getText={getText}
-							/>
-						)}
-					</React.Fragment>
-				)}
-			</View>
-		);
+							{!!commentInput && !creatingPost && (
+								<CommentInput
+									feed={true}
+									comment={comment}
+									avatar={currentUser.avatar}
+									animationValues={animationValues}
+									onCommentInputChange={this.onCommentInputChangeHandler}
+									onCommentInputPress={this.onCommentInputPressHandler}
+									onSubmitComment={this.onSubmitCommentHandler}
+									getText={getText}
+								/>
+							)}
+						</React.Fragment>
+					)}
+				</View>
+			);
+		}
+
+		return null;
 	}
 
 	private keyboardDidHide = () => {
@@ -374,7 +383,7 @@ class Component extends React.Component<IProps, IState> {
 		const { shapedPost, onAddComment } = this.props;
 		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
 
-		if (shapedPost && !shapedPost.creating && this.containerViewRef.current) {
+		if (shapedPost && this.containerViewRef.current) {
 			this.containerViewRef.current.measure(
 				(x: number, y: number, width: number, height: number) => {
 					onAddComment!(height);
@@ -398,7 +407,7 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onCommentInputChangeHandler = (comment: string) => {
-		if (this.props.shapedPost && !this.props.shapedPost.creating) {
+		if (this.props.shapedPost) {
 			this.setState({ comment });
 		}
 	};
@@ -516,4 +525,4 @@ const mapStateToProps = (state: IApplicationState, props: IWallPostProps) => ({
 	post: selectPost(state, props),
 });
 
-export const WallPost = connect(mapStateToProps)(EnhancedComponent as any) as any;
+export const WallPost = connect(mapStateToProps)(EnhancedComponent as any);

@@ -255,35 +255,38 @@ export const removePost = (
 	let ownerAlias = '';
 
 	const mainRunner = () => {
-		postHandles.postMetaById(context, postId).docLoad((postMetaIdCallback: IPostMetasCallback) => {
-			if (!postMetaIdCallback || !Object.keys(postMetaIdCallback).length) {
-				return callback(
-					new ApiError(`${errPrefix}, no post found by id`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
+		postHandles.postMetaById(context, postId).docLoad(
+			(postMetaIdCallback: IPostMetasCallback) => {
+				if (!postMetaIdCallback || !Object.keys(postMetaIdCallback).length) {
+					return callback(
+						new ApiError(`${errPrefix}, no post found by id`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
 
-			const { owner } = getContextMeta(context);
+				const { owner } = getContextMeta(context);
 
-			const {
-				postPath,
-				owner: { alias },
-				timestamp,
-			} = postMetaIdCallback;
+				const {
+					postPath,
+					owner: { alias },
+					timestamp,
+				} = postMetaIdCallback;
 
-			postTimestamp = timestamp;
-			ownerAlias = owner;
+				postTimestamp = timestamp;
+				ownerAlias = owner;
 
-			if (owner !== alias) {
-				return callback(
-					new ApiError(`${errPrefix}, user does not own this post`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
-			erasePostNode(postPath);
-		});
+				if (owner !== alias) {
+					return callback(
+						new ApiError(`${errPrefix}, user does not own this post`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
+				erasePostNode(postPath);
+			},
+			{ wait: 500, timeout: 1000 },
+		);
 	};
 	const erasePostNode = (postPath: string) => {
 		postHandles.postsRecordByPostPath(context, postPath).erase(postId, (postRemoveCallback) => {

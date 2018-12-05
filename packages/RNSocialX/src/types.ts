@@ -181,7 +181,7 @@ export interface IWallPost {
 	numberOfWalletCoins: number;
 	suggested: IUserEntry[] | undefined;
 	offensiveContent: boolean;
-	creating?: boolean;
+	creatingPost?: boolean;
 }
 
 export interface ICreateWallPost {
