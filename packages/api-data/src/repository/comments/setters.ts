@@ -110,9 +110,8 @@ export const removeComment = (
 	 * fetch the comment meta and check if the current user owns the comment
 	 */
 	const mainRunner = () => {
-		commentHandles
-			.commentMetaById(context, commentId)
-			.docLoad((commentReturnCallback: ICommentMetasCallback) => {
+		commentHandles.commentMetaById(context, commentId).docLoad(
+			(commentReturnCallback: ICommentMetasCallback) => {
 				if (!commentReturnCallback || !Object.keys(commentReturnCallback).length) {
 					return callback(
 						new ApiError(`${errPrefix}, failed to find comment`, {
@@ -135,7 +134,9 @@ export const removeComment = (
 					);
 				}
 				eraseCommentNode(postPath);
-			});
+			},
+			{ wait: 500, timeout: 1000 },
+		);
 	};
 	/**
 	 * erase the comment on the post
