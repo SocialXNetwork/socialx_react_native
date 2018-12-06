@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Animated, Dimensions, FlatList, Platform } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { AnimatedValue } from 'react-navigation';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
@@ -27,16 +26,7 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
-	private readonly scrollRef: React.RefObject<FlatList<string>> = React.createRef();
-	private scrollY: AnimatedValue = new Animated.Value(0);
-
 	public componentDidMount() {
-		if (Platform.OS === OS_TYPES.Android) {
-			AndroidKeyboardAdjust.setAdjustNothing();
-		}
-	}
-
-	public componentWillUnmount() {
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustPan();
 		}
@@ -64,12 +54,9 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 				canLoadMorePosts={canLoadMore}
 				loadingMorePosts={loadingMorePosts}
 				shareMessage={shareMessage}
-				scrollRef={this.scrollRef}
-				scrollY={this.scrollY}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
-				onAddComment={this.onAddCommentPressHandler}
 				navigation={navigation}
 				getText={getText}
 			/>
@@ -84,20 +71,6 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 		}
 	};
 
-	private onCreateWallPostHandler = () => {
-		const { currentUser, navigation, setNavigationParams } = this.props;
-
-		setNavigationParams({
-			screenName: SCREENS.CreateWallPost,
-			params: {
-				fullName: currentUser.fullName,
-				avatarImage: currentUser.avatar,
-				afterPostCreate: this.onRefreshHandler,
-			},
-		});
-		navigation.navigate(SCREENS.CreateWallPost);
-	};
-
 	private onRefreshHandler = async () => {
 		const { refreshingFeed, loadingMorePosts, refreshFeed } = this.props;
 
@@ -106,44 +79,16 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 		}
 	};
 
-	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		const { refreshingFeed, loadingMorePosts } = this.props;
-		if (!refreshingFeed && !loadingMorePosts && this.scrollRef.current) {
-			this.scrollRef.current.scrollToIndex({
-				animated: true,
-				index,
-				viewOffset: this.calculateScrollOffset(cardHeight, index),
-				viewPosition: 0,
-			});
-		}
-	};
+	private onCreateWallPostHandler = () => {
+		const { currentUser, navigation, setNavigationParams } = this.props;
 
-	private calculateScrollOffset = (cardHeight: number, index: number) => {
-		const baseScreenHeight = 667;
-		let idealOffset;
-		let idealCardHeight;
-		let diff;
-
-		if (AVAILABLE_SCREEN_HEIGHT >= 667) {
-			if (index === 0 && cardHeight < 300) {
-				return 0;
-			}
-
-			idealOffset = 235;
-			idealCardHeight = 490;
-			diff = idealCardHeight - cardHeight;
-		} else {
-			idealOffset = 265;
-			idealCardHeight = 480;
-			diff = idealCardHeight - cardHeight;
-		}
-		const offset = (baseScreenHeight * idealOffset) / AVAILABLE_SCREEN_HEIGHT;
-
-		if (Platform.OS === OS_TYPES.Android) {
-			const softwareButtonsBarHeight = TOTAL_SCREEN_HEIGHT - AVAILABLE_SCREEN_HEIGHT;
-			return -(offset - diff + softwareButtonsBarHeight);
-		}
-
-		return -(offset - diff);
+		setNavigationParams({
+			screenName: SCREENS.CreateWallPost,
+			params: {
+				fullName: currentUser.fullName,
+				avatarImage: currentUser.avatar,
+			},
+		});
+		navigation.navigate(SCREENS.CreateWallPost);
 	};
 }

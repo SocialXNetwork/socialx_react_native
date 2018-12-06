@@ -52,7 +52,6 @@ interface IWallPostProps extends INavigationProps {
 	commentInput?: boolean;
 	isCommentsScreen?: boolean;
 	keyboardRaised?: boolean;
-	onAddComment?: (cardHeight: number) => void;
 }
 
 interface IProps
@@ -89,7 +88,6 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private keyboardDidHideListener: any;
-	private containerViewRef: React.RefObject<View> = React.createRef();
 	private scrollRef: React.RefObject<ScrollView> = React.createRef();
 
 	public componentDidMount() {
@@ -173,12 +171,7 @@ class Component extends React.Component<IProps, IState> {
 
 		if (shapedPost || placeholderPost) {
 			return (
-				<View
-					style={[styles.container, { opacity: creatingPost ? 0.5 : 1 }]}
-					ref={this.containerViewRef}
-					// Measuring the element doesn't work on Android without this
-					renderToHardwareTextureAndroid={true}
-				>
+				<View style={[styles.container, { opacity: creatingPost ? 0.5 : 1 }]}>
 					{isPlaceholderPost && <View style={styles.overlay} />}
 					<UserDetails
 						canBack={isCommentsScreen!}
@@ -380,16 +373,10 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onCommentInputPressHandler = () => {
-		const { shapedPost, onAddComment } = this.props;
+		const { shapedPost } = this.props;
 		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
 
-		if (shapedPost && this.containerViewRef.current) {
-			this.containerViewRef.current.measure(
-				(x: number, y: number, width: number, height: number) => {
-					onAddComment!(height);
-				},
-			);
-
+		if (shapedPost) {
 			if (!commentInputFocused) {
 				Animated.parallel([
 					Animated.timing(commentInputWidth, {

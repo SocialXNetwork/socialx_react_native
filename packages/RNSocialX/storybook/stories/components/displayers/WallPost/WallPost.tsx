@@ -12,7 +12,6 @@ storiesOf('Components/displayers', module)
 		<WallPost
 			postId="post1"
 			commentInput={false}
-			onAddComment={action('onAddComment')}
 			// @ts-ignore
 			navigation={null}
 			getText={getTextMock}

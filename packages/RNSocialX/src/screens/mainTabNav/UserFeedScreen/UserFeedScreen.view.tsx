@@ -1,14 +1,10 @@
 import * as React from 'react';
-import { Animated, FlatList, View } from 'react-native';
-import { AnimatedValue } from 'react-navigation';
+import { Dimensions, FlatList, Platform, RefreshControl, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import {
-	FeedWithNoPosts,
-	LoadingFooter,
-	ShareSection,
-	SuggestionsCarousel,
-	WallPost,
-} from '../../../components';
+import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
+import { OS_TYPES } from '../../../environment/consts';
+import { Sizes } from '../../../environment/theme';
 import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './UserFeedScreen.style';
@@ -21,12 +17,9 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	shareMessage: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
-	scrollRef: React.RefObject<FlatList<string>>;
-	scrollY: AnimatedValue;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
-	onAddComment: (index: number, cardHeight: number) => void;
 }
 
 export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
@@ -37,8 +30,6 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 			refreshing,
 			canLoadMorePosts,
 			shareMessage,
-			scrollRef,
-			scrollY,
 			placeholderPostId,
 			onRefresh,
 			onLoadMorePosts,
@@ -47,48 +38,52 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		} = this.props;
 
 		const data = placeholderPostId ? [placeholderPostId, ...postIds] : postIds;
+		const isPhoneXOrAbove = Platform.OS === OS_TYPES.IOS && Dimensions.get('screen').height > 800;
+		const scrollOffset =
+			Platform.OS === OS_TYPES.Android
+				? Sizes.smartVerticalScale(-30)
+				: isPhoneXOrAbove
+				? Sizes.smartVerticalScale(70)
+				: Sizes.smartVerticalScale(50);
 
 		return (
-			<View style={styles.container}>
-				<FlatList
-					ref={scrollRef}
-					windowSize={10}
-					refreshing={refreshing}
-					onRefresh={onRefresh}
-					data={data}
-					keyExtractor={(id) => id}
-					renderItem={this.renderItem}
-					onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
-					onEndReachedThreshold={2}
-					keyboardShouldPersistTaps="handled"
-					ListHeaderComponent={
-						<ShareSection
-							avatar={avatar}
-							message={shareMessage}
-							onCreateWallPost={onCreateWallPost}
-						/>
-					}
-					ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-					ListEmptyComponent={
-						<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
-					}
-					onScrollToIndexFailed={() => undefined}
-					onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
-					scrollEventThrottle={16}
-					showsVerticalScrollIndicator={false}
-				/>
-			</View>
+			<KeyboardAwareScrollView
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+				alwaysBounceVertical={false}
+				enableOnAndroid={true}
+				enableResetScrollToCoords={false}
+				extraScrollHeight={scrollOffset}
+				style={styles.container}
+			>
+				<View style={styles.container}>
+					<FlatList
+						windowSize={10}
+						data={data}
+						keyExtractor={(id) => id}
+						renderItem={this.renderItem}
+						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
+						onEndReachedThreshold={2}
+						ListHeaderComponent={
+							<ShareSection
+								avatar={avatar}
+								message={shareMessage}
+								onCreateWallPost={onCreateWallPost}
+							/>
+						}
+						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
+						ListEmptyComponent={
+							<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
+						}
+						showsVerticalScrollIndicator={false}
+					/>
+				</View>
+			</KeyboardAwareScrollView>
 		);
 	}
 
 	private renderItem = (data: { item: string; index: number }) => (
 		<View style={styles.post}>
-			<WallPost
-				postId={data.item}
-				commentInput={true}
-				onAddComment={(cardHeight: number) => this.props.onAddComment(data.index, cardHeight)}
-				navigation={this.props.navigation}
-			/>
+			<WallPost postId={data.item} commentInput={true} navigation={this.props.navigation} />
 		</View>
 	);
 }

@@ -152,12 +152,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 								keyExtractor={(id) => id}
 								renderItem={(data) => (
 									<View style={styles.post}>
-										<WallPost
-											postId={data.item}
-											commentInput={false}
-											onAddComment={() => undefined}
-											navigation={navigation}
-										/>
+										<WallPost postId={data.item} commentInput={false} navigation={navigation} />
 									</View>
 								)}
 								showsVerticalScrollIndicator={false}
