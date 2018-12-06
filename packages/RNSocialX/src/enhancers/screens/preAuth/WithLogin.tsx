@@ -8,7 +8,6 @@ import { NavigationScreenProp } from 'react-navigation';
 import { IError, IGlobal, ITranslatedProps } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -16,21 +15,6 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { resetNavigationToRoute } from '../../helpers/';
-
-const mock: IWithLoginEnhancedProps = {
-	data: {
-		auth: null,
-		errors: [],
-	},
-	actions: {
-		login: (userName: string, password: string) => undefined,
-		loadPosts: () => undefined,
-		setGlobal: (global: IGlobal) => undefined,
-		resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) =>
-			undefined,
-		getText: (value: string, ...args: any[]) => value,
-	},
-};
 
 export interface IWithLoginEnhancedData {
 	auth: IAuthData | null;
@@ -72,7 +56,6 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 														{(accountsProps) =>
 															this.props.children({
 																data: {
-																	...mock.data,
 																	auth,
 																	errors,
 																},

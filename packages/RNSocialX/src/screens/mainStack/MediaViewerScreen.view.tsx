@@ -19,7 +19,7 @@ import {
 	MediaObjectViewer,
 } from '../../components';
 import { DeviceOrientations } from '../../environment/consts';
-import { IMediaProps, ITranslatedProps } from '../../types';
+import { IMedia, ITranslatedProps } from '../../types';
 
 import styles from './MediaViewerScreen.style';
 
@@ -39,7 +39,7 @@ const CloseButton: React.SFC<{
 };
 
 const Pagination: React.SFC<{
-	media: IMediaProps[];
+	media: IMedia[];
 	activeSlide: number;
 }> = ({ media, activeSlide }) => {
 	if (media.length > 1) {
@@ -58,7 +58,7 @@ const Pagination: React.SFC<{
 };
 
 interface IMediaViewerScreenViewProps extends ITranslatedProps {
-	media: IMediaProps[];
+	media: IMedia[];
 	startIndex: number;
 	orientation: string;
 	activeSlide: number;
@@ -67,7 +67,6 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	};
 	infoVisible: boolean;
 	canReact: boolean | undefined;
-	likeDisabled: boolean;
 	likedByCurrentUser: boolean;
 	onChangeSlide: (index: number) => void;
 	onLayout: (event: any) => void;
@@ -88,7 +87,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	onChangeSlide,
 	infoVisible,
 	canReact,
-	likeDisabled,
 	likedByCurrentUser,
 	onLayout,
 	onShowInfo,
@@ -107,22 +105,21 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 			{isPortrait && <Header left={<CloseModal onClose={onClose} />} />}
 			<MediaInfoModal
 				visible={infoVisible}
-				closeHandler={onCloseInfo}
-				mediaHash={currentMedia.hash}
-				mediaSize={currentMedia.size}
-				mediaType={currentMedia.type}
-				mediaURL={currentMedia.url}
+				hash={currentMedia.hash}
+				size={currentMedia.size}
+				type={currentMedia.type}
+				onCloseHandler={onCloseInfo}
 				getText={getText}
 			/>
 			<SafeAreaView style={{ flex: 1 }}>
 				<View style={styles.carouselContainer} onLayout={onLayout}>
 					<Carousel
 						data={media}
-						renderItem={({ item, index }: { item: IMediaProps; index: number }) => (
+						renderItem={({ item, index }: { item: IMedia; index: number }) => (
 							<MediaObjectViewer
 								type={item.type}
 								paused={index !== activeSlide}
-								uri={item.url}
+								hash={item.hash}
 								style={[styles.carouselMediaObject, { width: viewport.width }]}
 								resizeMode="contain"
 								resizeToChangeAspectRatio={true}
@@ -151,10 +148,8 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
 					<View style={styles.screenFooter}>
 						<MediaInteractionButtons
-							media={media}
-							activeSlide={activeSlide}
+							postId={currentMedia.postId}
 							canReact={canReact}
-							likeDisabled={likeDisabled}
 							likedByCurrentUser={likedByCurrentUser}
 							onCommentPress={onCommentPress}
 							onLikePress={onLikePress}

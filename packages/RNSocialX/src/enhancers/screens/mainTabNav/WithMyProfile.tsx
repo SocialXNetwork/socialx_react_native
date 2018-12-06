@@ -1,28 +1,27 @@
 import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
-import { ActionTypes as AggActionTypes } from '../../../store/aggregations/posts/Types';
+import { ActionTypes as PostActionTypes } from '../../../store/data/posts/Types';
 import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
-import { ICurrentUser, IError, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../../types';
 import { getActivity, resetNavigationToRoute } from '../../helpers';
 
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUserContent } from '../intermediary';
+import { WithCurrentUserContent } from '../../intermediary';
 
 export interface IWithMyProfileEnhancedData {
 	currentUser: ICurrentUser;
 	loadingProfile: boolean;
 	loadingPosts: boolean;
-	errors: IError[];
 }
 
 export interface IWithMyProfileEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	getPostsForUser: (userName: string) => void;
+	getUserProfile: () => void;
 	logout: () => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	setGlobal: (input: IGlobal) => void;
@@ -51,27 +50,26 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 									<WithAccounts>
 										{({ logout }) => (
 											<WithActivities>
-												{({ activities, errors }) => (
-													<WithAggregations>
-														{({ getUserPosts }) => (
+												{({ activities }) => (
+													<WithProfiles>
+														{({ getCurrentProfile }) => (
 															<WithCurrentUserContent>
 																{({ currentUser }) =>
 																	this.props.children({
 																		data: {
 																			currentUser: currentUser!,
-																			errors,
 																			loadingProfile: getActivity(
 																				activities,
-																				ProfileActionTypes.GET_PROFILE_BY_USERNAME,
+																				ProfileActionTypes.GET_CURRENT_PROFILE,
 																			),
 																			loadingPosts: getActivity(
 																				activities,
-																				AggActionTypes.GET_USER_POSTS,
+																				PostActionTypes.GET_USER_POSTS,
 																			),
 																		},
 																		actions: {
-																			getPostsForUser: async (username: string) => {
-																				await getUserPosts({ username });
+																			getUserProfile: async () => {
+																				await getCurrentProfile();
 																			},
 																			showOptionsMenu: (items) => showOptionsMenu({ items }),
 																			logout,
@@ -83,7 +81,7 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 																}
 															</WithCurrentUserContent>
 														)}
-													</WithAggregations>
+													</WithProfiles>
 												)}
 											</WithActivities>
 										)}

@@ -8,7 +8,7 @@ import {
 	WithCreateWallPost,
 } from '../../enhancers/screens';
 import { IMAGE_PICKER_TYPES } from '../../environment/consts';
-import { INavigationProps, IWallPostPhotoOptimized } from '../../types';
+import { INavigationProps, IOptimizedMedia } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -22,7 +22,7 @@ type ICreateWallPostScreenProps = INavigationProps &
 	IWithCreateWallPostEnhancedActions;
 
 interface ICreateWallPostScreenState {
-	media: IWallPostPhotoOptimized[];
+	media: IOptimizedMedia[];
 	caption: string;
 }
 
@@ -32,16 +32,6 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 		caption: '',
 	};
 
-	public componentDidMount() {
-		const { setGlobal, getText } = this.props;
-
-		setGlobal({
-			activity: {
-				title: getText('new.wall.post.screen.progress.message'),
-			},
-		});
-	}
-
 	public render() {
 		const { getText, currentUser } = this.props;
 		const { caption, media } = this.state;
@@ -50,7 +40,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 			<CreateWallPostScreenView
 				avatar={currentUser.avatar}
 				caption={caption}
-				media={media.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
+				media={media.map((obj: IOptimizedMedia) => obj.path)}
 				onChangeText={this.onChangeTextHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
@@ -102,15 +92,15 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 		}
 	};
 
-	private onCreatePostHandler = async () => {
+	private onCreatePostHandler = () => {
 		const { media, caption } = this.state;
 		const { currentUser, createPost, setGlobal } = this.props;
 
-		await setGlobal({
-			skeletonPost: {
+		setGlobal({
+			placeholderPost: {
 				postId: uuid(),
 				postText: caption,
-				location: '',
+				location: undefined,
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
@@ -118,19 +108,18 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 					fullName: currentUser.fullName,
 					avatar: currentUser.avatar,
 				},
-				numberOfSuperLikes: 0,
-				numberOfComments: 0,
-				numberOfWalletCoins: 0,
 				likedByCurrentUser: false,
 				removable: false,
 				media,
-				likes: [],
-				topComments: [],
-				loading: false,
+				likeIds: [],
+				commentIds: [],
+				topCommentIds: [],
+				numberOfSuperLikes: 0,
+				numberOfComments: 0,
+				numberOfWalletCoins: 0,
 				currentUserAvatar: currentUser.avatar,
 				suggested: undefined,
-				likeFailed: false,
-				skeleton: true,
+				creatingPost: true,
 			},
 		});
 
@@ -147,8 +136,8 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 }
 
-export const CreateWallPostScreen = (navProps: INavigationProps) => (
+export const CreateWallPostScreen = (props: INavigationProps) => (
 	<WithCreateWallPost>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
 	</WithCreateWallPost>
 );

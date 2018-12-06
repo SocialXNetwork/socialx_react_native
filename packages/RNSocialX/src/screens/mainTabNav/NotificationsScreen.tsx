@@ -6,7 +6,7 @@ import { NotificationsScreenView } from './NotificationsScreen.view';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,

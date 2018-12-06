@@ -14,10 +14,10 @@ class SharePostInputStory extends React.Component {
 	public render() {
 		return (
 			<SharePostInput
-				avatarSource={image}
+				avatar={image}
 				placeholder="Type something"
-				text={this.state.value}
-				onTextUpdate={(value) => this.setState({ value })}
+				value={this.state.value}
+				onChangeText={(value) => this.setState({ value })}
 			/>
 		);
 	}

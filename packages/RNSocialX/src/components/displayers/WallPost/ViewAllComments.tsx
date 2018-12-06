@@ -14,10 +14,14 @@ export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({
 	onCommentPress,
 	getText,
 }) => {
-	if (numberOfComments > 2) {
+	if (numberOfComments > 0) {
 		return (
 			<TouchableOpacity style={styles.container} onPress={onCommentPress}>
-				<Text style={styles.text}>{getText('post.card.view.all.comments')}</Text>
+				<Text style={styles.text}>
+					{numberOfComments > 1
+						? getText('post.card.view.multiple.comments', numberOfComments)
+						: getText('post.card.view.comment')}
+				</Text>
 			</TouchableOpacity>
 		);
 	}

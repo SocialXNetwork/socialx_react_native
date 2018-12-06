@@ -20,13 +20,7 @@ import {
 	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import {
-	IError,
-	INavigationProps,
-	ITranslatedProps,
-	IVisitedUser,
-	IWallPostData,
-} from '../../types';
+import { INavigationProps, ITranslatedProps, IVisitedUser, IWallPost } from '../../types';
 
 import styles, { colors } from './UserProfileScreen.style';
 
@@ -41,7 +35,6 @@ interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps
 	gridTranslate: AnimatedValue;
 	activeTab: string;
 	containerHeight: number;
-	errors: IError[];
 	onRefresh: () => void;
 	onGoBack: () => void;
 	onAddFriend: () => void;
@@ -71,13 +64,12 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onIconPress,
 	onLayoutChange,
 	onGoBack,
-	errors,
 	navigation,
 	getText,
 }) => {
 	const {
 		userId,
-		recentPosts,
+		postIds,
 		numberOfLikes,
 		numberOfPhotos,
 		numberOfFriends,
@@ -90,7 +82,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	} = visitedUser;
 
 	const hasPhotos = numberOfPhotos > 0;
-	const hasPosts = recentPosts.length > 0;
+	const hasPosts = postIds.length > 0;
 
 	let contentContainerStyle;
 	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
@@ -149,27 +141,18 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 						<Animated.View
 							style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
 						>
-							{hasPosts ? (
-								<FlatList
-									windowSize={10}
-									data={recentPosts}
-									keyExtractor={(item: IWallPostData) => item.postId}
-									renderItem={(data) => (
-										<View style={styles.post}>
-											<WallPost
-												post={data.item}
-												onAddComment={() => undefined}
-												commentInput={false}
-												errors={errors}
-												navigation={navigation}
-											/>
-										</View>
-									)}
-									showsVerticalScrollIndicator={false}
-								/>
-							) : (
-								<NoContent posts={true} getText={getText} />
-							)}
+							<FlatList
+								windowSize={10}
+								data={postIds}
+								keyExtractor={(id) => id}
+								renderItem={(data) => (
+									<View style={styles.post}>
+										<WallPost postId={data.item} commentInput={false} navigation={navigation} />
+									</View>
+								)}
+								showsVerticalScrollIndicator={false}
+								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
+							/>
 						</Animated.View>
 						<Animated.View
 							onLayout={(event: any) => {

@@ -275,7 +275,6 @@ export default (context: IContext) => ({
 		new Promise((resolve) => {
 			getters.getCurrentProfileFriends(context, async (err, friends) => {
 				if (friends) {
-					console.log('friends', { friends });
 					const finalFriends = await Promise.all(
 						friends.map((friend) => getters.asyncFriendWithMutualStatus(context, friend)),
 					);

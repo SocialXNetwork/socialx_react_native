@@ -2,32 +2,24 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 
 import { Loader, UserEntry } from '../../components';
-import { IUserEntry } from '../../types';
 
 import styles from './UserEntries.style';
 
 interface IUserEntriesProps {
-	entries: IUserEntry[];
-	onEntryPress: (entry: IUserEntry) => void;
-	onLoadMore?: () => void;
+	aliases: string[];
 	hasMore?: boolean;
+	onEntryPress: (alias: string) => void;
+	onLoadMore?: () => void;
 }
 
-export const UserEntries: React.SFC<IUserEntriesProps> = ({
-	entries,
-	onEntryPress,
-	onLoadMore,
-	hasMore,
-}) => (
+export const UserEntries: React.SFC<IUserEntriesProps> = ({ aliases, onEntryPress, hasMore }) => (
 	<View style={styles.container}>
 		<FlatList
-			data={entries}
-			renderItem={({ item }) => <UserEntry entry={item} onPress={() => onEntryPress(item)} />}
+			data={aliases}
+			renderItem={({ item }) => <UserEntry alias={item} onPress={() => onEntryPress(item)} />}
 			keyboardShouldPersistTaps="handled"
-			keyExtractor={(item: IUserEntry) => item.userId}
+			keyExtractor={(item: string) => item}
 			showsVerticalScrollIndicator={false}
-			// onEndReached={onLoadMore}
-			// onEndReachedThreshold={0.5}
 			ListFooterComponent={<Loader visible={hasMore || false} />}
 		/>
 	</View>

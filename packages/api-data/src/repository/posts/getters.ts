@@ -289,6 +289,7 @@ const getPostsTimestampIds = (
 			canLoadMore = false;
 			loadLimit = postIdTimestamps.length;
 		}
+
 		if (!lastItem) {
 			for (let i = 0; i < loadLimit; i++) {
 				postIds.push(postIdTimestamps[i].postId);

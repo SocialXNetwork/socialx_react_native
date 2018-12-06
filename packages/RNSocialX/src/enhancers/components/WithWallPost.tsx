@@ -6,40 +6,32 @@
 import * as React from 'react';
 
 import {
-	IComment,
-	ICurrentUser,
-	IError,
-	IGlobal,
-	INavigationProps,
-	IOptionsMenuProps,
-	ITranslatedProps,
-	IWallPostData,
-} from '../../types';
+	ICreateCommentInput,
+	ILikeCommentInput,
+	IRemoveCommentInput,
+} from '../../store/data/comments';
+import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps, IWallPost } from '../../types';
 
-import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithI18n } from '../connectors/app/WithI18n';
-import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
+import { WithComments } from '../connectors/data/WithComments';
 import { WithPosts } from '../connectors/data/WithPosts';
-import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithGlobals } from '../connectors/ui/WithGlobals';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
-import { WithCurrentUser } from '../screens';
+import { WithCurrentUser } from '../intermediary';
 
 export interface IWallPostEnhancedData {
-	post: IWallPostData;
 	currentUser: ICurrentUser;
-	errors: IError[];
-	skeletonPost: IWallPostData;
+	postingCommentId: string;
+	placeholderPost?: IWallPost;
 	commentInput?: boolean;
-	isCommentsScreen: boolean;
 	keyboardRaised?: boolean;
 }
 
 export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	onRemovePost: (postId: string) => void;
-	onSubmitComment: (commentText: string, postId: string) => void;
-	onLikeComment: (comment: IComment) => void;
-	onRemoveComment: (commentId: string) => void;
+	onSubmitComment: (text: string, alias: string, pub: string, postId: string) => void;
+	onLikeComment: (alias: string, pub: string, liked: boolean, commentId: string) => void;
+	onRemoveComment: (commentId: string, postId: string) => void;
 	onBlockUser: (userId: string) => void;
 	onReportProblem: (subject: string, description: string) => void;
 	onAddComment?: (cardHeight: number) => void;
@@ -50,7 +42,7 @@ interface IWithWallPostEnhancedProps {
 	actions: IWallPostEnhancedActions;
 }
 
-interface IWithWallPostProps extends INavigationProps {
+interface IWithWallPostProps {
 	children(props: IWithWallPostEnhancedProps): JSX.Element;
 }
 
@@ -58,20 +50,18 @@ interface IWithWallPostState {}
 
 export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallPostState> {
 	private actions: {
-		getUserPosts: (input: { username: string }) => void;
-		likeComment: (input: { commentId: string }) => void;
-		unlikeComment: (input: { commentId: string }) => void;
-		createComment: (input: { text: string; postId: string }) => void;
-		removePost: (input: { postId: string }) => void;
-		setNavigationParams: (input: any) => void;
+		removePost: (postId: string) => void;
+		createComment: (input: ICreateCommentInput) => void;
+		removeComment: (input: IRemoveCommentInput) => void;
+		likeComment: (input: ILikeCommentInput) => void;
+		unlikeComment: (input: ILikeCommentInput) => void;
 		setGlobal: (global: IGlobal) => void;
 	} = {
-		getUserPosts: () => undefined,
+		removePost: () => undefined,
+		createComment: () => undefined,
+		removeComment: () => undefined,
 		likeComment: () => undefined,
 		unlikeComment: () => undefined,
-		createComment: () => undefined,
-		removePost: () => undefined,
-		setNavigationParams: () => undefined,
 		setGlobal: () => undefined,
 	};
 
@@ -79,72 +69,79 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithNavigationParams>
-						{({ setNavigationParams }) => (
-							<WithOverlays>
-								{({ showOptionsMenu }) => (
-									<WithGlobals>
-										{({ globals, setGlobal }) => (
-											<WithActivities>
-												{({ errors }) => (
-													<WithAggregations>
-														{({ getUserPosts }) => (
-															<WithPosts>
-																{({
-																	likeComment,
-																	unlikeComment,
-																	createComment,
-																	removeComment,
-																	removePost,
-																}) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) => {
-																			this.actions = {
-																				getUserPosts,
-																				likeComment,
-																				unlikeComment,
-																				createComment,
-																				removePost,
-																				setNavigationParams,
-																				setGlobal,
-																			};
+					<WithOverlays>
+						{({ showOptionsMenu }) => (
+							<WithGlobals>
+								{({ globals, setGlobal }) => (
+									<WithPosts>
+										{({ removePost }) => (
+											<WithComments>
+												{({ likeComment, unlikeComment, createComment, removeComment }) => (
+													<WithCurrentUser>
+														{({ currentUser }) => {
+															this.actions = {
+																likeComment,
+																unlikeComment,
+																createComment,
+																removeComment,
+																removePost,
+																setGlobal,
+															};
 
-																			return this.props.children({
-																				data: {
-																					currentUser,
-																					skeletonPost: globals.skeletonPost,
-																					errors,
-																				} as any,
-																				actions: {
-																					onRemovePost: this.onRemovePostHandler,
-																					onSubmitComment: this.onSubmitCommentHandler,
-																					onLikeComment: this.onLikeCommentHandler,
-																					onRemoveComment: (commentId) =>
-																						removeComment({ commentId }),
-																					onBlockUser: () => undefined,
-																					onReportProblem: () => undefined,
-																					showOptionsMenu: (items) => showOptionsMenu({ items }),
-																					getText,
-																				},
-																			});
-																		}}
-																	</WithCurrentUser>
-																)}
-															</WithPosts>
-														)}
-													</WithAggregations>
+															return this.props.children({
+																data: {
+																	currentUser,
+																	postingCommentId: globals.postingCommentId,
+																	placeholderPost: globals.placeholderPost,
+																},
+																actions: {
+																	onRemovePost: this.onRemovePostHandler,
+																	onSubmitComment: this.onSubmitCommentHandler,
+																	onRemoveComment: this.onRemoveCommentHandler,
+																	onLikeComment: this.onLikeCommentHandler,
+																	onBlockUser: () => undefined,
+																	onReportProblem: () => undefined,
+																	showOptionsMenu: (items) => showOptionsMenu({ items }),
+																	getText,
+																},
+															});
+														}}
+													</WithCurrentUser>
 												)}
-											</WithActivities>
+											</WithComments>
 										)}
-									</WithGlobals>
+									</WithPosts>
 								)}
-							</WithOverlays>
+							</WithGlobals>
 						)}
-					</WithNavigationParams>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);
 	}
+
+	private onSubmitCommentHandler = (text: string, alias: string, pub: string, postId: string) => {
+		this.actions.createComment({ text, alias, pub, postId });
+	};
+
+	private onRemoveCommentHandler = async (commentId: string, postId: string) => {
+		const { removeComment, setGlobal } = this.actions;
+
+		setGlobal({
+			transparentOverlay: {
+				visible: true,
+				alpha: 0.5,
+				loader: true,
+			},
+		});
+		await removeComment({ commentId, postId });
+		setGlobal({
+			transparentOverlay: {
+				visible: false,
+				loader: false,
+			},
+		});
+	};
 
 	private onRemovePostHandler = async (postId: string) => {
 		const { removePost, setGlobal } = this.actions;
@@ -156,9 +153,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 				loader: true,
 			},
 		});
-
-		await removePost({ postId });
-
+		await removePost(postId);
 		setGlobal({
 			transparentOverlay: {
 				visible: false,
@@ -167,17 +162,16 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 		});
 	};
 
-	private onSubmitCommentHandler = async (text: string, postId: string) => {
-		await this.actions.createComment({ text, postId });
-	};
-
-	private onLikeCommentHandler = async (comment: IComment) => {
-		const { likedByCurrentUser, commentId } = comment;
-
-		if (likedByCurrentUser) {
-			this.actions.unlikeComment({ commentId });
+	private onLikeCommentHandler = (
+		alias: string,
+		pub: string,
+		liked: boolean,
+		commentId: string,
+	) => {
+		if (liked) {
+			this.actions.unlikeComment({ alias, pub, commentId });
 		} else {
-			this.actions.likeComment({ commentId });
+			this.actions.likeComment({ alias, pub, commentId });
 		}
 	};
 }

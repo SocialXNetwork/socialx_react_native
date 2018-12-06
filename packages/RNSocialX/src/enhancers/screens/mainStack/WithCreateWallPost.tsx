@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {
-	ICreateWallPostData,
+	ICreateWallPost,
 	ICurrentUser,
 	IGlobal,
 	IOptionsMenuProps,
@@ -14,14 +14,14 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithCreateWallPostEnhancedData {
 	currentUser: ICurrentUser;
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: ICreateWallPostData) => void;
+	createPost: (post: ICreateWallPost) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
 }
@@ -61,7 +61,7 @@ export class WithCreateWallPost extends React.Component<
 																},
 																actions: {
 																	uploadFile,
-																	createPost: async (post: ICreateWallPostData) => {
+																	createPost: async (post: ICreateWallPost) => {
 																		await createPost({
 																			postText: post.text,
 																			location: post.location,

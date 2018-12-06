@@ -6,7 +6,7 @@ import { LikesScreenView } from './LikesScreen.view';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithLikesEnhancedActions,
 	IWithLikesEnhancedData,
@@ -22,7 +22,7 @@ class Screen extends React.Component<ILikesScreenProps> {
 	render() {
 		return (
 			<LikesScreenView
-				likes={this.props.likes}
+				likeIds={this.props.likeIds}
 				onViewUserProfile={this.props.onViewUserProfile}
 				onGoBack={this.props.onGoBack}
 				getText={this.props.getText}

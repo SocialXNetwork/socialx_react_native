@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
 import {
-	ICreateWallPostData,
+	ICreateWallPost,
 	ICurrentUser,
 	IGlobal,
+	IOptimizedMedia,
 	IOptionsMenuProps,
 	ITranslatedProps,
 	IUploadFileInput,
-	IWallPostPhotoOptimized,
 } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -17,15 +17,15 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithPhotoEnhancedData {
 	currentUser: ICurrentUser;
-	media: IWallPostPhotoOptimized[];
+	media: IOptimizedMedia[];
 }
 
 export interface IWithPhotoEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: ICreateWallPostData) => void;
+	createPost: (post: ICreateWallPost) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 	setGlobal: (global: IGlobal) => void;
 }
@@ -65,7 +65,7 @@ export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState>
 																		},
 																		actions: {
 																			uploadFile,
-																			createPost: async (post: ICreateWallPostData) => {
+																			createPost: async (post: ICreateWallPost) => {
 																				await createPost({
 																					postText: post.text,
 																					location: post.location,

@@ -8,13 +8,10 @@ import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 import {
 	IWithLikingEnhancedActions,
-	IWithLikingEnhancedData,
-	WithLiking,
-} from '../../enhancers/logic/WithLiking';
-import {
 	IWithNavigationHandlersEnhancedActions,
+	WithLiking,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithMediaViewerEnhancedActions,
 	IWithMediaViewerEnhancedData,
@@ -33,7 +30,6 @@ interface IMediaViewerScreenState {
 type IMediaViewerScreenProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions &
-	IWithLikingEnhancedData &
 	IWithLikingEnhancedActions &
 	IWithNavigationHandlersEnhancedActions;
 
@@ -63,17 +59,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	}
 
 	public render() {
-		const {
-			media,
-			startIndex,
-			post,
-			likeDisabled,
-			optLikedByCurrentUser,
-			onLikePost,
-			onViewComments,
-			onGoBack,
-			getText,
-		} = this.props;
+		const { media, startIndex, post, onLikePost, onViewComments, onGoBack, getText } = this.props;
 		const { orientation, activeSlide, viewport, infoVisible } = this.state;
 
 		return (
@@ -84,16 +70,15 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				activeSlide={activeSlide}
 				viewport={viewport}
 				infoVisible={infoVisible}
-				canReact={!!post}
-				likeDisabled={likeDisabled}
-				likedByCurrentUser={optLikedByCurrentUser}
+				canReact={post ? true : false}
+				likedByCurrentUser={post ? post.likedByCurrentUser : false}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
 				onLayout={this.onLayoutHandler}
 				onExitFullScreen={this.onExitFullScreenHandler}
 				onLikePress={() => onLikePost(post!.postId)}
-				onCommentPress={() => onViewComments(post!, false)}
+				onCommentPress={() => onViewComments(post!.postId, false)}
 				onClose={onGoBack}
 				getText={getText}
 			/>
@@ -142,13 +127,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 export const MediaViewerScreen = (props: INavigationProps) => (
 	<WithMediaViewer>
 		{(media) => (
-			<WithLiking
-				likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}
-				likes={media.data.post ? media.data.post.likes : []}
-				currentUserName={media.data.post ? media.data.post.currentUserName : ''}
-				errors={media.data.errors}
-				navigation={props.navigation}
-			>
+			<WithLiking likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}>
 				{(likes) => (
 					<WithNavigationHandlers navigation={props.navigation}>
 						{(nav) => (
@@ -156,7 +135,6 @@ export const MediaViewerScreen = (props: INavigationProps) => (
 								{...props}
 								{...media.data}
 								{...media.actions}
-								{...likes.data}
 								{...likes.actions}
 								{...nav.actions}
 							/>

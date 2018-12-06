@@ -54,18 +54,19 @@ const asyncFriendWithMutualStatus = (
 						...friend,
 						status: FRIEND_TYPES.NOT_FRIEND,
 						numberOfFriends,
+						posts: [],
 					});
 				});
 			} else {
 				profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
 					(currentUserProfile: IProfileData | undefined) => {
-						console.log(`friendChecks of ${alias}`, { currentUserProfile });
 						if (!currentUserProfile) {
 							getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
 								res({
 									...friend,
 									status: FRIEND_TYPES.PENDING,
 									numberOfFriends,
+									posts: [],
 								});
 							});
 						} else {
@@ -74,6 +75,7 @@ const asyncFriendWithMutualStatus = (
 									...friend,
 									status: FRIEND_TYPES.MUTUAL,
 									numberOfFriends,
+									posts: [],
 								});
 							});
 						}
@@ -126,6 +128,7 @@ const friendWithMutualStatus = (
 				...friend,
 				status,
 				numberOfFriends,
+				posts: [],
 			});
 		});
 	};
@@ -153,7 +156,7 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 			}
 			const sanitizedProfile = cleanGunMetaFromObject(currentProfileData);
 			getProfileNumberOfFriends(context, sanitizedProfile, (numberOfFriends) => {
-				return callback(null, { ...sanitizedProfile, numberOfFriends });
+				return callback(null, { ...sanitizedProfile, numberOfFriends, posts: [] });
 			});
 		},
 		{ wait: 1000 },

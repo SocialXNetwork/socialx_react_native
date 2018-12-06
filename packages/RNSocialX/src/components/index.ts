@@ -39,7 +39,7 @@ export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
 export { TransactionItem } from './displayers/TransactionItem';
-export { WallPost, PostText, RecentLikes, UserDetails } from './displayers/WallPost';
+export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';

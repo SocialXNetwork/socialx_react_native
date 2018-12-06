@@ -1,10 +1,10 @@
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { debounce } from 'throttle-debounce';
 
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../../enhancers/logic/WithNavigationHandlers';
+} from '../../../enhancers/intermediary';
 import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,
@@ -14,8 +14,8 @@ import {
 import { INavigationProps, SearchTabs } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
-const SEARCH_DEBOUNCE_TIME_MS = 300;
-const TabsByIndex = [SearchTabs.Top, SearchTabs.People, SearchTabs.Tags, SearchTabs.Places];
+const SEARCH_DEBOUNCE_TIME = 500;
+const tabs = [SearchTabs.Top, SearchTabs.People, SearchTabs.Tags, SearchTabs.Places];
 
 type ISearchScreenProps = INavigationProps &
 	IWithSearchEnhancedData &
@@ -23,51 +23,46 @@ type ISearchScreenProps = INavigationProps &
 	IWithNavigationHandlersEnhancedActions;
 
 interface IISearchScreenState {
-	loadedTabs: number[];
 	term: string;
+	loadedTabs: number[];
 	selectedTab: number;
+	suggestions: string[];
 }
 
 class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	public state = {
-		loadedTabs: [0],
 		term: '',
+		loadedTabs: [0],
 		selectedTab: 0,
+		suggestions: [],
 	};
 
-	private debounceSearch = debounce(SEARCH_DEBOUNCE_TIME_MS, (term: string) => {
-		this.props.search(term, TabsByIndex[this.state.selectedTab]);
-	});
+	private debounceSearch = debounce((term: string) => {
+		this.props.search(term, tabs[this.state.selectedTab]);
+	}, SEARCH_DEBOUNCE_TIME);
 
 	public componentDidMount() {
-		this.props.findFriendsSuggestions();
+		if (this.state.suggestions.length === 0) {
+			this.setState({ suggestions: this.props.suggestions });
+		}
 	}
 
 	public render() {
-		const {
-			navigation,
-			results,
-			suggestions,
-			searching,
-			hasMoreResults,
-			searchForMoreResults,
-			getText,
-		} = this.props;
+		const { navigation, results, suggestions, searching, hasMoreResults, getText } = this.props;
 		const { loadedTabs, term } = this.state;
 
 		return (
 			<SearchScreenView
-				navigation={navigation}
-				loadedTabs={loadedTabs}
+				term={term}
 				results={results}
-				suggestions={suggestions}
+				suggestions={this.state.suggestions}
+				loadedTabs={loadedTabs}
 				searching={searching}
 				hasMoreResults={hasMoreResults}
-				searchForMoreResults={searchForMoreResults}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
-				onResultPress={(userId) => this.props.onViewUserProfile(userId)}
-				searchTermValue={term}
+				onResultPress={(alias) => this.props.onViewUserProfile(alias)}
+				navigation={navigation}
 				getText={getText}
 			/>
 		);
@@ -84,7 +79,11 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 
 	private onSearchTermChangeHandler = (term: string) => {
 		this.setState({ term });
-		this.debounceSearch(term);
+		if (term.length === 1) {
+			this.props.search(term, tabs[this.state.selectedTab]);
+		} else {
+			this.debounceSearch(term);
+		}
 	};
 }
 

@@ -1,67 +1,51 @@
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { IApplicationState } from '../../../store';
 import {
-	createComment,
 	createPost,
 	getPostByPath,
-	getPostsByUsername,
-	getPublicPostsByDate,
-	ICommentIdInput,
-	ICreateCommentInput,
+	getUserPosts,
 	ICreatePostInput,
-	IDateInput,
-	IPostArrayData,
-	IPostIdInput,
+	IPost,
+	IPostLikeInput,
 	IPostPathInput,
-	IRemoveCommentInput,
-	IRemovePostInput,
-	IUnlikeCommentInput,
-	IUnlikePostInput,
-	IUsernameInput,
-	likeComment,
 	likePost,
 	loadMoreFriendsPosts,
 	loadMorePosts,
-	removeComment,
+	refreshFriendsPosts,
+	refreshGlobalPosts,
 	removePost,
-	resetFriendsFeedAndRefetch,
-	resetGlobalFeedAndRefetch,
-	unlikeComment,
 	unlikePost,
 } from '../../../store/data/posts';
-
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
+	all: {
+		[postId: string]: IPost;
+	};
 	global: {
 		canLoadMore: boolean;
-		posts: IPostArrayData;
+		posts: string[];
 	};
 	friends: {
 		canLoadMore: boolean;
-		posts: IPostArrayData;
+		posts: string[];
 	};
 }
 
 interface IActionProps {
-	createPost: (createPostInput: ICreatePostInput) => void;
-	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
-	getPostsByUsername: (getPostsByUsernameInput: IUsernameInput) => void;
-	getPublicPostsByDate: (getPostByDateInput: IDateInput) => void;
-	refreshGlobalFeed: () => void;
-	refreshFriendsFeed: () => void;
 	loadMorePosts: () => void;
 	loadMoreFriendsPosts: () => void;
-	removePost: (removePostInput: IRemovePostInput) => void;
-	unlikePost: (unlikePostInput: IUnlikePostInput) => void;
-	likePost: (likePostInput: IPostIdInput) => void;
-	// comments
-	createComment: (createCommentInput: ICreateCommentInput) => void;
-	removeComment: (removeCommentInput: IRemoveCommentInput) => void;
-	likeComment: (likeCommentInput: ICommentIdInput) => void;
-	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) => void;
+	getUserPosts: (alias: string) => void;
+	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
+	createPost: (createPostInput: ICreatePostInput) => void;
+	removePost: (postId: string) => void;
+	likePost: (input: IPostLikeInput) => void;
+	unlikePost: (input: IPostLikeInput) => void;
+	refreshFriendsPosts: () => void;
+	refreshGlobalPosts: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -76,6 +60,11 @@ class Enhancer extends React.Component<IProps & IChildren> {
 		return children(props);
 	}
 }
+
+const selectAllPosts = createSelector(
+	(state: IApplicationState) => state.data.posts.all,
+	(posts) => posts,
+);
 
 const selectGlobalPosts = createSelector(
 	(state: IApplicationState) => state.data.posts.global.posts,
@@ -98,6 +87,7 @@ const selectFriendsCanLoad = createSelector(
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
+	all: selectAllPosts(state),
 	global: {
 		posts: selectGlobalPosts(state),
 		canLoadMore: selectGlobalCanLoad(state),
@@ -109,28 +99,16 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	// @Jake fix typing of IMedia
-	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
-	likePost: (likePostInput: IPostIdInput) => dispatch(likePost(likePostInput)),
-	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	loadMorePosts: () => dispatch(loadMorePosts()),
 	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
-	getPostsByUsername: (getPostsByUsernameInpiut: IUsernameInput) =>
-		dispatch(getPostsByUsername(getPostsByUsernameInpiut)),
-	getPublicPostsByDate: (getPostByDateInput: IDateInput) =>
-		dispatch(getPublicPostsByDate(getPostByDateInput)),
-	refreshGlobalFeed: () => dispatch(resetGlobalFeedAndRefetch()),
-	refreshFriendsFeed: () => dispatch(resetFriendsFeedAndRefetch()),
-	removePost: (removePostInput: IRemovePostInput) => dispatch(removePost(removePostInput)),
-	unlikePost: (unlikePostInput: IUnlikePostInput) => dispatch(unlikePost(unlikePostInput)),
-	// comments
-	createComment: (createCommentInput: ICreateCommentInput) =>
-		dispatch(createComment(createCommentInput)),
-	removeComment: (removeCommentInput: IRemoveCommentInput) =>
-		dispatch(removeComment(removeCommentInput)),
-	likeComment: (likeCommentInput: ICommentIdInput) => dispatch(likeComment(likeCommentInput)),
-	unlikeComment: (unlikeCommentInput: IUnlikeCommentInput) =>
-		dispatch(unlikeComment(unlikeCommentInput)),
+	getUserPosts: (alias: string) => dispatch(getUserPosts(alias)),
+	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
+	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
+	removePost: (postId: string) => dispatch(removePost(postId)),
+	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
+	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),
+	refreshFriendsPosts: () => dispatch(refreshFriendsPosts()),
+	refreshGlobalPosts: () => dispatch(refreshGlobalPosts()),
 });
 
 export const WithPosts: ConnectedComponentClass<JSX.Element, IChildren> = connect(

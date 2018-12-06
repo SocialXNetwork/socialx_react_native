@@ -12,7 +12,7 @@ import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
 import { FRIEND_TYPES, ITranslatedProps } from '../../../types';
 import { Statistics, Tabs } from './';
 
-import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/logic/WithFriends';
+import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/intermediary';
 
 import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 

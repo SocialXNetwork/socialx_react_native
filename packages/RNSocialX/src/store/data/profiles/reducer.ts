@@ -1,3 +1,4 @@
+import { FRIEND_TYPES } from '@socialx/api-data';
 import { assertNever } from '../../helpers';
 import initialState from './initialState';
 import { ActionTypes, IAction, IState } from './Types';
@@ -9,12 +10,17 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
+			const profile = action.payload;
+
 			return {
 				...state,
-				profiles: [
-					...state.profiles.filter((profile) => profile.alias !== action.payload.alias),
-					action.payload,
-				],
+				profiles: {
+					...state.profiles,
+					[profile.alias]: {
+						...state.profiles[profile.alias],
+						...profile,
+					},
+				},
 			};
 		}
 
@@ -23,48 +29,43 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_PROFILES_BY_POSTS: {
-			const finalProfiles = action.payload.reduce(
-				(updatedProfiles, newProfile) => [
-					...updatedProfiles.filter((updatedProfile) => updatedProfile.alias !== newProfile.alias),
-					newProfile,
-				],
-				[...state.profiles],
-			);
+			const profiles = { ...state.profiles };
+
+			for (const profile of action.payload) {
+				if (profile !== profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...state.profiles[profile.alias],
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
+				}
+			}
+
 			return {
 				...state,
-				profiles: finalProfiles,
+				profiles,
 			};
 		}
 
-		case ActionTypes.GET_PROFILE_BY_USERNAME: {
+		case ActionTypes.GET_PROFILE_BY_ALIAS: {
 			return state;
 		}
 
-		case ActionTypes.SYNC_GET_PROFILE_BY_USERNAME: {
+		case ActionTypes.SYNC_GET_PROFILE_BY_ALIAS: {
+			const profile = action.payload;
+
 			return {
 				...state,
-				profiles: [
-					...state.profiles.filter((profile) => profile.alias !== action.payload.alias),
-					action.payload,
-				],
-			};
-		}
-
-		case ActionTypes.GET_PROFILES_BY_USERNAMES: {
-			return state;
-		}
-
-		case ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES: {
-			const finalProfiles = action.payload.reduce(
-				(updatedProfiles, newProfile) => [
-					...updatedProfiles.filter((updatedProfile) => updatedProfile.alias !== newProfile.alias),
-					newProfile,
-				],
-				[...state.profiles],
-			);
-			return {
-				...state,
-				profiles: finalProfiles,
+				profiles: {
+					...state.profiles,
+					[profile.alias]: {
+						...state.profiles[profile.alias],
+						...profile,
+					},
+				},
 			};
 		}
 
@@ -73,21 +74,34 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_FRIENDS: {
-			const friends = action.payload.friends;
-			const username = action.payload.username;
-			const oldFriends = state.friends[username] || [];
-			const finalFriends = friends.reduce(
-				(updatedFriends, newFriend) => [
-					...updatedFriends.filter((friend) => friend.alias !== newFriend.alias),
-					newFriend,
-				],
-				[...oldFriends],
-			);
+			const { friends, alias } = action.payload;
+
+			const profiles = { ...state.profiles };
+			const friendIds = [];
+
+			for (const friend of friends) {
+				if (friend !== profiles[friend.alias]) {
+					profiles[friend.alias] = {
+						...state.profiles[friend.alias],
+						...friend,
+						posts:
+							profiles[friend.alias] && profiles[friend.alias].posts
+								? profiles[friend.alias].posts
+								: [],
+					};
+				}
+
+				if (friendIds.indexOf(friend.alias) === -1) {
+					friendIds.push(friend.alias);
+				}
+			}
+
 			return {
 				...state,
+				profiles,
 				friends: {
 					...state.friends,
-					[username]: finalFriends,
+					[alias]: friendIds,
 				},
 			};
 		}
@@ -112,8 +126,107 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.UNDO_REQUEST: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_UNDO_REQUEST: {
+			const { currentUserAlias, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						status: FRIEND_TYPES.NOT_FRIEND,
+					},
+				},
+				friends: {
+					...state.friends,
+					[currentUserAlias]: state.friends[currentUserAlias].filter((friend) => friend !== alias),
+				},
+			};
+		}
+
 		case ActionTypes.CLEAR_FRIEND_RESPONSE: {
 			return state;
+		}
+
+		case ActionTypes.ADD_POSTS_TO_PROFILE: {
+			const { postIds, alias } = action.payload;
+			const updatedPostIds = [...state.profiles[alias].posts];
+
+			for (const postId of postIds) {
+				if (updatedPostIds.indexOf(postId) === -1) {
+					updatedPostIds.unshift(postId);
+				}
+			}
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						posts: updatedPostIds,
+					},
+				},
+			};
+		}
+
+		case ActionTypes.REMOVE_POST_FROM_PROFILE: {
+			const { postId, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						posts: state.profiles[alias].posts.filter((id) => id !== postId),
+					},
+				},
+			};
+		}
+
+		case ActionTypes.SEARCH_FOR_PROFILES: {
+			let profiles = { ...state.profiles };
+			for (const alias of action.payload) {
+				const {
+					[alias]: {},
+					...updatedProfiles
+				} = state.profiles;
+				profiles = updatedProfiles;
+			}
+
+			return {
+				...state,
+				profiles,
+			};
+		}
+
+		case ActionTypes.SYNC_SEARCH_FOR_PROFILES: {
+			const profiles = { ...state.profiles };
+
+			for (const profile of action.payload.profiles) {
+				if (profile !== profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...state.profiles[profile.alias],
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
+				}
+			}
+
+			return {
+				...state,
+				profiles,
+				results: action.payload.aliases,
+			};
 		}
 
 		case 'RESET_STORE': {

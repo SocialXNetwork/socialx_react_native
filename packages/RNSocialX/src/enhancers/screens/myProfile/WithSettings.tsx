@@ -8,7 +8,7 @@ import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithSettingsEnhancedData {
 	currentUser: ICurrentUser;

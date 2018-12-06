@@ -1,8 +1,9 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	profiles: [],
+	profiles: {},
 	friends: {},
+	results: [],
 };
 
 export default initialState;

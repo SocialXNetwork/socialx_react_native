@@ -19,7 +19,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 
 	public async componentDidMount() {
 		const {
-			recall,
+			login,
 			loadFeed,
 			globals,
 			auth,
@@ -34,8 +34,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 				if (window.crypto.loaded) {
 					clearInterval(this.cryptoLoadedInterval);
 					setTimeout(async () => {
-						console.log('*** logging in');
-						await recall({
+						await login({
 							username: auth.alias || '',
 							password: auth.password || '',
 						});

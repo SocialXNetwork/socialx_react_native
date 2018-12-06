@@ -15,13 +15,10 @@ storiesOf('Components/displayers', module)
 			onDoublePress={action('onDoublePress')}
 			media={[
 				{
-					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
 					hash: 'dadsdas',
 					type: MediaTypeImage,
 					size: 12315,
-					numberOfLikes: 0,
-					numberOfComments: 0,
 				},
 			]}
 			getText={getTextMock}
@@ -33,22 +30,16 @@ storiesOf('Components/displayers', module)
 			onDoublePress={action('onDoublePress')}
 			media={[
 				{
-					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
 					hash: 'dadsdas',
 					type: MediaTypeImage,
 					size: 12315,
-					numberOfLikes: 0,
-					numberOfComments: 0,
 				},
 				{
-					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
 					hash: 'dadsdas',
 					type: MediaTypeImage,
 					size: 12315,
-					numberOfLikes: 0,
-					numberOfComments: 0,
 				},
 			]}
 			getText={getTextMock}
@@ -60,31 +51,22 @@ storiesOf('Components/displayers', module)
 			onDoublePress={action('onDoublePress')}
 			media={[
 				{
-					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
 					hash: 'dadsdas',
 					type: MediaTypeImage,
 					size: 12315,
-					numberOfLikes: 0,
-					numberOfComments: 0,
 				},
 				{
-					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
 					hash: 'dadsdas',
 					type: MediaTypeImage,
 					size: 12315,
-					numberOfLikes: 0,
-					numberOfComments: 0,
 				},
 				{
-					url: 'https://avatars2.githubusercontent.com/u/212',
 					extension: 'jpg',
 					hash: 'dadsdas',
 					type: MediaTypeImage,
 					size: 12315,
-					numberOfLikes: 0,
-					numberOfComments: 0,
 				},
 			]}
 			getText={getTextMock}

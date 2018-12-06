@@ -1,57 +1,47 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { ITranslatedProps, IUserEntry } from '../../types';
+import { ITranslatedProps } from '../../types';
 import { SearchResults } from './SearchResults';
 import { SuggestedSearches } from './SuggestedSearches';
 
 import styles from './SearchTabResults.style';
 
 interface ISearchTabResultsProps extends ITranslatedProps {
-	searchTermValue: string;
-	searchResults: IUserEntry[];
-	suggestions: IUserEntry[];
+	term: string;
+	results: string[];
+	suggestions: string[];
 	searching: boolean;
 	hasMoreResults: boolean;
-	searchForMoreResults: () => void;
-	onResultPress: (userId: string) => void;
+	onResultPress: (alias: string) => void;
 }
 
-const onLoadMoreResultsHandler = (
-	searching: boolean,
-	hasMoreResults: boolean,
-	searchForMoreResults: any,
-) => {
-	if (!searching && hasMoreResults) {
-		searchForMoreResults();
-	}
-};
-
 export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
-	searchTermValue,
-	searchResults,
+	term,
+	results,
 	suggestions,
 	searching,
 	hasMoreResults,
-	searchForMoreResults,
 	onResultPress,
 	getText,
 }) => (
 	<View style={styles.container}>
-		{searchTermValue.length === 0 && (
+		{term.length === 0 && (
 			<SuggestedSearches
-				items={suggestions}
-				onResultPress={(result) => onResultPress(result.userId)}
+				suggestions={suggestions}
+				onResultPress={onResultPress}
+				onLoadMore={() => undefined}
 				getText={getText}
 			/>
 		)}
-		{searchTermValue.length !== 0 && (
+		{term.length !== 0 && (
 			<SearchResults
-				searchResults={searchResults}
+				term={term}
+				results={results}
 				searching={searching}
-				onResultPress={(result) => onResultPress(result.userId)}
 				hasMore={hasMoreResults}
-				onLoadMore={() => onLoadMoreResultsHandler(searching, hasMoreResults, searchForMoreResults)}
+				onLoadMore={() => undefined}
+				onResultPress={onResultPress}
 				getText={getText}
 			/>
 		)}

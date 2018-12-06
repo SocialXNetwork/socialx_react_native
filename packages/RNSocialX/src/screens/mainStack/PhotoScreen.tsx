@@ -1,19 +1,10 @@
 import * as React from 'react';
+import { Keyboard } from 'react-native';
 import uuid from 'uuid/v4';
-
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
-import {
-	IWithPhotoEnhancedActions,
-	IWithPhotoEnhancedData,
-	WithPhoto,
-} from '../../enhancers/screens';
 
 import { WithModalForAddFriends } from '../../components';
 import { IMAGE_PICKER_TYPES } from '../../environment/consts';
-import { INavigationProps, IWallPostPhotoOptimized } from '../../types';
+import { INavigationProps, IOptimizedMedia } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -22,17 +13,20 @@ import {
 } from '../../utilities';
 import { PhotoScreenView } from './PhotoScreen.view';
 
-type IPhotoScreenProps = INavigationProps &
-	IWithPhotoEnhancedActions &
-	IWithPhotoEnhancedData &
-	IWithNavigationHandlersEnhancedActions;
+import {
+	IWithPhotoEnhancedActions,
+	IWithPhotoEnhancedData,
+	WithPhoto,
+} from '../../enhancers/screens';
+
+type IPhotoScreenProps = INavigationProps & IWithPhotoEnhancedActions & IWithPhotoEnhancedData;
 
 interface IPhotoScreenState {
 	locationEnabled: boolean;
 	tagFriends: boolean;
 	location: string;
 	caption: string;
-	media: IWallPostPhotoOptimized[];
+	media: IOptimizedMedia[];
 }
 
 class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
@@ -45,7 +39,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 	};
 
 	public render() {
-		const { currentUser, onGoBack, getText } = this.props;
+		const { currentUser, getText } = this.props;
 		const { locationEnabled, location, tagFriends, caption, media } = this.state;
 
 		return (
@@ -66,7 +60,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 						onChangeText={this.onChangeTextHandler}
 						onAddMedia={this.onAddMediaHandler}
 						onCreatePost={this.onCreatePostHandler}
-						onClose={onGoBack}
+						onClose={this.onCloseHandler}
 						getText={getText}
 					/>
 				)}
@@ -100,7 +94,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 
 	private onAddMediaHandler = () => {
 		const { showOptionsMenu, getText } = this.props;
-		const items = [
+		const menuItems = [
 			{
 				label: getText('new.wall.post.screen.menu.gallery'),
 				icon: 'md-photos',
@@ -112,37 +106,36 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-
-		showOptionsMenu(items);
+		showOptionsMenu(menuItems);
 	};
 
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
-		let selectedmedia: IPickerImageMultiple = [];
+		let selectedMedia: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
-			selectedmedia = await getGalleryMediaObjectMultiple();
+			selectedMedia = await getGalleryMediaObjectMultiple();
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
-			selectedmedia = await getCameraMediaObjectMultiple();
+			selectedMedia = await getCameraMediaObjectMultiple();
 		}
-		if (selectedmedia.length > 0) {
-			const optimizedmedia = await Promise.all(
-				selectedmedia.map(async (mObject) => getOptimizedMediaObject(mObject)),
+		if (selectedMedia.length > 0) {
+			const optimizedMedia = await Promise.all(
+				selectedMedia.map(async (m) => getOptimizedMediaObject(m)),
 			);
 
 			this.setState({
-				media: [...this.state.media, ...optimizedmedia],
+				media: [...this.state.media, ...optimizedMedia],
 			});
 		}
 	};
 
-	private onCreatePostHandler = async () => {
+	private onCreatePostHandler = () => {
 		const { media, caption } = this.state;
 		const { currentUser, createPost, setGlobal } = this.props;
 
-		await setGlobal({
-			skeletonPost: {
+		setGlobal({
+			placeholderPost: {
 				postId: uuid(),
 				postText: caption,
-				location: '',
+				location: undefined,
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
@@ -150,19 +143,18 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 					fullName: currentUser.fullName,
 					avatar: currentUser.avatar,
 				},
-				numberOfSuperLikes: 0,
-				numberOfComments: 0,
-				numberOfWalletCoins: 0,
 				likedByCurrentUser: false,
 				removable: false,
 				media,
-				likes: [],
-				topComments: [],
-				loading: false,
+				likeIds: [],
+				commentIds: [],
+				topCommentIds: [],
+				numberOfSuperLikes: 0,
+				numberOfComments: 0,
+				numberOfWalletCoins: 0,
 				currentUserAvatar: currentUser.avatar,
 				suggested: undefined,
-				likeFailed: false,
-				skeleton: true,
+				creatingPost: true,
 			},
 		});
 
@@ -170,16 +162,15 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 			text: caption,
 			media,
 		});
-		this.props.onGoBack();
+		this.onCloseHandler();
+	};
+
+	private onCloseHandler = () => {
+		Keyboard.dismiss();
+		this.props.navigation.goBack(null);
 	};
 }
 
 export const PhotoScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
-		{(nav) => (
-			<WithPhoto>
-				{(photo) => <Screen {...props} {...photo.data} {...photo.actions} {...nav.actions} />}
-			</WithPhoto>
-		)}
-	</WithNavigationHandlers>
+	<WithPhoto>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithPhoto>
 );

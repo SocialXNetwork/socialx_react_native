@@ -1,13 +1,6 @@
 import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import * as React from 'react';
-import {
-	ActivityIndicator,
-	KeyboardAvoidingView,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { TKeyboardKeys, WithManagedTransitions } from '..';

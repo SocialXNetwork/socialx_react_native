@@ -15,6 +15,7 @@ import {
 	TRKeyboardKeys,
 } from '../../components';
 import { IOptionsMenuProps, ITranslatedProps } from '../../types';
+
 import style, { colors } from './RegisterScreen.style';
 
 export interface IRegisterData {
@@ -59,15 +60,14 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	onRegister,
 	onNavigateToTermsAndConditions,
 	onGoBack,
-	getText,
 	showOptionsMenu,
+	getText,
 }) => (
 	<View style={{ flex: 1 }}>
 		<Header
 			title={getText('register.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
-
 		<KeyboardAwareScrollView
 			style={style.keyboardView}
 			contentContainerStyle={style.container}
@@ -126,8 +126,8 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					}
 					return errors;
 				}}
-				onSubmit={({ termsAccepted, ...registerData }: IRegisterFormData) => {
-					onRegister(registerData);
+				onSubmit={({ termsAccepted, ...data }: IRegisterFormData) => {
+					onRegister(data);
 					Keyboard.dismiss();
 				}}
 				render={({
@@ -142,12 +142,10 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					<React.Fragment>
 						<View style={style.avatarPickerContainer}>
 							<AvatarPicker
-								getText={getText}
-								avatarImage={avatar}
-								afterImagePick={(localPhotoPath: string) =>
-									setFieldValue('avatar', { uri: localPhotoPath }, false)
-								}
+								local={avatar.uri}
+								afterImagePick={(path: string) => setFieldValue('avatar', { uri: path }, false)}
 								showOptionsMenu={showOptionsMenu}
+								getText={getText}
 							/>
 						</View>
 						<View style={[style.textInputContainer, style.textInputContainerFirst]}>

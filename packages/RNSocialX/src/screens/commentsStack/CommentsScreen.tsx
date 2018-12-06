@@ -33,21 +33,14 @@ class Screen extends Component<ICommentsScreenProps> {
 	}
 
 	public render() {
-		const { post, errors, keyboardRaised, navigation } = this.props;
+		const { postId, keyboardRaised, navigation } = this.props;
 
 		return (
-			<CommentsScreenView
-				post={post}
-				errors={errors}
-				keyboardRaised={keyboardRaised}
-				navigation={navigation}
-			/>
+			<CommentsScreenView postId={postId} keyboardRaised={keyboardRaised} navigation={navigation} />
 		);
 	}
 }
 
-export const CommentsScreen = (navProps: INavigationProps) => (
-	<WithComments>
-		{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}
-	</WithComments>
+export const CommentsScreen = (props: INavigationProps) => (
+	<WithComments>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithComments>
 );

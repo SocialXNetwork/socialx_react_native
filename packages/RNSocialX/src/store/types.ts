@@ -5,12 +5,10 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IApplicationState } from './rootReducer';
 
 import { IAction as IAccountActions } from './data/accounts/Types';
+import { IAction as ICommentsActions } from './data/comments/Types';
 import { IAction as INotificationsActions } from './data/notifications/Types';
 import { IAction as IPostsActions } from './data/posts/Types';
 import { IAction as IProfilesActions } from './data/profiles/Types';
-
-import { IAction as IPostsAggregationActions } from './aggregations/posts/Types';
-import { IAction as IProfilesAggregationActions } from './aggregations/profiles/Types';
 
 import { IAction as IConfigActions } from './app/config/Types';
 import { IAction as II18nActions } from './app/i18n/Types';
@@ -33,10 +31,9 @@ interface IResetStoreAction {
 type IApplicationAction =
 	| IAccountActions
 	| IProfilesActions
+	| ICommentsActions
 	| IPostsActions
 	| INotificationsActions
-	| IProfilesAggregationActions
-	| IPostsAggregationActions
 	| IAuthActions
 	| IConfigActions
 	| II18nActions

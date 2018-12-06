@@ -7,7 +7,7 @@ const PULSATE_PERIOD = 700;
 
 interface IProps {
 	likedByCurrentUser: boolean;
-	disabled: boolean;
+	disabled?: boolean;
 	label?: string;
 	secondary?: boolean;
 	onLikePost: () => void;

@@ -8,7 +8,8 @@ import { ITranslatedProps } from '../../types';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface IMediaHorizontalScrollerProps extends ITranslatedProps {
-	mediaURIs: string[];
+	hashes?: string[];
+	paths?: string[];
 }
 
 const scrollViewRef: React.RefObject<ScrollView> = React.createRef();
@@ -20,43 +21,59 @@ const onScrollContentSizeChange = () => {
 };
 
 export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> = ({
-	mediaURIs,
+	hashes,
+	paths,
 	getText,
-}) => {
-	return (
-		<ScrollView
-			ref={scrollViewRef}
-			contentContainerStyle={style.scrollContent}
-			horizontal={true}
-			alwaysBounceHorizontal={false}
-			showsHorizontalScrollIndicator={false}
-			onContentSizeChange={onScrollContentSizeChange}
-		>
-			{mediaURIs.map((mediaURI) => (
+}) => (
+	<ScrollView
+		ref={scrollViewRef}
+		contentContainerStyle={style.container}
+		horizontal={true}
+		alwaysBounceHorizontal={false}
+		showsHorizontalScrollIndicator={false}
+		onContentSizeChange={onScrollContentSizeChange}
+	>
+		{hashes &&
+			hashes.map((hash) => (
 				<MediaObjectViewer
-					key={mediaURI}
-					uri={mediaURI}
+					key={hash}
+					hash={hash}
 					thumbOnly={true}
 					style={[
-						style.mediaObject,
+						style.media,
 						{
-							width: mediaURIs.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
+							width: hashes.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
 						},
 					]}
 					getText={getText}
 				/>
 			))}
-		</ScrollView>
-	);
-};
+		{paths &&
+			paths.map((path) => (
+				<MediaObjectViewer
+					key={path}
+					path={path}
+					thumbOnly={true}
+					style={[
+						style.media,
+						{
+							width: paths.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
+						},
+					]}
+					getText={getText}
+				/>
+			))}
+		}
+	</ScrollView>
+);
 
-const style: any = StyleSheet.create({
-	scrollContent: {
+const style = StyleSheet.create({
+	container: {
 		minWidth: '100%',
 		height: '100%',
 		justifyContent: 'center',
 	},
-	mediaObject: {
+	media: {
 		height: '100%',
 		paddingHorizontal: Sizes.smartHorizontalScale(3),
 	},

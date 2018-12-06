@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataProvider } from 'recyclerlistview';
 
-import { IGridMediaObject, ITranslatedProps } from '../../types';
+import { IGridMedia, ITranslatedProps } from '../../types';
 import { MediaObjectViewer } from './MediaObjectViewer';
 import { PhotoGrid } from './PhotoGrid';
 
@@ -20,7 +20,7 @@ interface IProfilePhotoGridProps extends ITranslatedProps {
 
 interface IGridItemProps extends ITranslatedProps {
 	type: React.ReactText;
-	data: IGridMediaObject;
+	data: IGridMedia;
 	onViewMedia: (index: number) => void;
 }
 
@@ -33,7 +33,7 @@ const GridItem: React.SFC<IGridItemProps> = ({ data, onViewMedia, getText }) => 
 	return (
 		<MediaObjectViewer
 			type={data.type}
-			uri={data.url}
+			hash={data.hash}
 			style={styles}
 			thumbOnly={true}
 			onPress={() => onViewMedia(data.index!)}
@@ -53,7 +53,7 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 	<PhotoGrid
 		thumbWidth={USER_MEDIA_THUMB_SIZE}
 		thumbHeight={USER_MEDIA_THUMB_SIZE}
-		renderGridItem={(type: React.ReactText, data: IGridMediaObject) => (
+		renderGridItem={(type: React.ReactText, data: IGridMedia) => (
 			<GridItem type={type} data={data} onViewMedia={onViewMedia} getText={getText} />
 		)}
 		onLoadMore={onLoadMorePhotos}

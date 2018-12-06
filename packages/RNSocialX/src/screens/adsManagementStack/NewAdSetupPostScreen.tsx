@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import {
 	IAdSetupPostData,
+	IOptimizedMedia,
 	IOptionsMenuProps,
 	ITranslatedProps,
-	IWallPostPhotoOptimized,
 } from '../../types';
 import {
 	getCameraMediaObjectMultiple,
@@ -20,7 +20,7 @@ interface INewAdSetupPostScreenProps extends ITranslatedProps, IOptionsMenuProps
 }
 
 interface INewAdSetupPostScreenState {
-	media: IWallPostPhotoOptimized[];
+	media: IOptimizedMedia[];
 }
 
 export class NewAdSetupPostScreen extends React.Component<
@@ -37,10 +37,10 @@ export class NewAdSetupPostScreen extends React.Component<
 		return (
 			<NewAdSetupPostScreenView
 				adSetupPostFormik={adSetupPostFormik}
-				media={media.map((mediaObject: IWallPostPhotoOptimized) => mediaObject.path)}
-				getText={getText}
+				media={media.map((obj: IOptimizedMedia) => obj.path)}
 				onAddMedia={this.onAddMediaHandler}
 				updateAdSetPost={this.updateAdSetPostHandler}
+				getText={getText}
 			/>
 		);
 	}

@@ -60,10 +60,12 @@ export default {
 	'login.code.confirm.wait': 'Confirming code..',
 	'login.username.required': 'Username is required',
 	'login.password.required': 'Password is required',
-	'post.card.view.all.comments': 'View all comments',
+	'post.card.view.comment': 'View 1 comment',
+	'post.card.view.multiple.comments': 'View ${args[0]} comments',
 	'post.card.liked.by': 'Liked by',
 	'post.card.other': 'other',
 	'post.card.others': 'others',
+	'post.card.creating': 'Posting...',
 	'forgot.password.screen.title': 'FORGOT PASSWORD',
 	'forgot.password.instructions': 'Enter your username to get a new password.',
 	'forgot.password.username': 'Username',
@@ -129,7 +131,6 @@ export default {
 	'intro.third.slide.title': 'Your financial incentive',
 	'intro.third.slide.description':
 		'The days that firms make millions using your data are over',
-	'comments.order.title': 'Order by:',
 	'events.list.item.all.day': 'All Day',
 	'events.list.item.start.at': 'Start at',
 	'notifications.friend.request.accept.failed':
@@ -313,9 +314,9 @@ export default {
 	'search.screen.results.tab.places.title': 'Places',
 	'search.screen.results.coming.soon':
 		'Stay close, this feature is coming soon!',
-	'search.loader.text': 'Searching',
+	'search.indicator': 'Searching for',
 	'search.suggested': 'Suggested',
-	'search.no.results.text': 'No results found',
+	'search.no.results': 'No results found',
 	'new.ad.setup.post.screen.title': 'Create Ad',
 	'new.ad.setup.post.header.title': 'Create a post',
 	'new.ad.setup.post.header.headline.input.placeholder': 'Headline',

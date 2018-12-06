@@ -1,41 +1,56 @@
-import {
-	ICreatePostInput,
-	IPostArrayData,
-	IPostReturnData,
-	IRemoveCommentInput,
-	IRemovePostInput,
-	IUnlikeCommentInput,
-	IUnlikePostInput,
-} from '@socialx/api-data';
+import { ICreatePostInput, IMedia, IPostReturnData } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
+export interface IPost {
+	postId: string;
+	postText: string;
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	timestamp: number;
+	likes: {
+		ids: string[];
+		byId: {
+			[alias: string]: number;
+		};
+	};
+	comments: string[];
+	media: IMedia[];
+	privatePost: boolean;
+	location?: string;
+	taggedFriends?: Array<{
+		fullName: string;
+	}>;
+}
+
 export type IState = DeepReadonly<{
+	all: {
+		[postId: string]: IPost;
+	};
 	global: {
-		posts: IPostArrayData;
+		posts: string[];
 		canLoadMore: boolean;
 		nextToken?: string;
 	};
 	friends: {
-		posts: IPostArrayData;
+		posts: string[];
 		canLoadMore: boolean;
 		nextToken?: string;
 	};
 }>;
 
-export interface IUsernameInput {
-	username: string;
-}
-
 export interface IPostPathInput {
 	postPath: string;
 }
 
-export interface IDateInput {
-	date: Date;
+export interface IPostIdInput {
+	postId: string;
 }
 
-export interface IPostIdInput {
+export interface IPostLikeInput {
+	alias: string;
 	postId: string;
 }
 
@@ -45,49 +60,70 @@ export interface IProfile {
 	avatar: string;
 }
 
+export interface ICommentToPostInput {
+	commentId: string;
+	postId: string;
+	error?: boolean;
+}
+
+export interface IReplaceCommentInput {
+	previousCommentId: string;
+	commentId: string;
+	postId: string;
+}
+
+export interface ISyncLoadMoreInput {
+	posts: IPostReturnData[];
+	nextToken: string;
+	canLoadMore: boolean;
+}
+
 export const enum ActionTypes {
-	GET_POSTS_BY_USER = 'data/posts/GET_POST_PATHS_BY_USER',
-	SYNC_GET_POSTS_BY_USER = 'data/posts/SYNC_GET_POST_PATHS_BY_USER',
 	GET_POST_BY_PATH = 'data/posts/GET_POST_BY_PATH',
 	SYNC_GET_POST_BY_PATH = 'data/posts/SYNC_GET_POST_BY_PATH',
 	GET_PUBLIC_POSTS_BY_DATE = 'data/posts/GET_PUBLIC_POSTS_BY_DATE',
 	SYNC_GET_PUBLIC_POSTS_BY_DATE = 'data/posts/SYNC_GET_PUBLIC_POSTS_BY_DATE',
 	GET_POST_BY_ID = 'data/posts/GET_POST_BY_ID',
 	SYNC_GET_POST_BY_ID = 'data/posts/SYNC_GET_POST_BY_ID',
+	GET_USER_POSTS = 'data/posts/GET_USER_POSTS',
+	SYNC_GET_USER_POSTS = 'data/posts/SYNC_GET_USER_POSTS',
 	LOAD_MORE_POSTS = 'data/posts/LOAD_MORE_POSTS',
 	SYNC_LOAD_MORE_POSTS = 'data/posts/SYNC_LOAD_MORE_POSTS',
 	LOAD_MORE_FRIENDS_POSTS = 'data/posts/LOAD_MORE_FRIENDS_POSTS',
 	SYNC_LOAD_MORE_FRIENDS_POSTS = 'data/posts/SYNC_LOAD_MORE_FRIENDS_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
-	LIKE_POST = 'data/posts/LIKE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
+	LIKE_POST = 'data/posts/LIKE_POST',
+	LIKE_POST_ERROR = 'data/comments/LIKE_POST_ERROR',
 	UNLIKE_POST = 'data/posts/UNLIKE_POST',
-	RESET_GLOBAL_FEED = 'data/posts/RESET_GLOBAL_FEED',
-	RESET_FRIENDS_FEED = 'data/posts/RESET_FRIENDS_FEED',
-	// <================= comments =================>
-	CREATE_COMMENT = 'data/posts/CREATE_COMMENT',
-	LIKE_COMMENT = 'data/posts/LIKE_COMMENT',
+	UNLIKE_POST_ERROR = 'data/comments/UNLIKE_POST_ERROR',
+	REFRESH_GLOBAL_POSTS = 'data/posts/REFRESH_GLOBAL_POSTS',
+	SYNC_REFRESH_GLOBAL_POSTS = 'data/posts/SYNC_REFRESH_GLOBAL_POSTS',
+	REFRESH_FRIENDS_POSTS = 'data/posts/REFRESH_FRIENDS_POSTS',
+	SYNC_REFRESH_FRIENDS_POSTS = 'data/posts/SYNC_REFRESH_FRIENDS_POSTS',
+	ADD_COMMENT = 'data/posts/ADD_COMMENT',
+	REPLACE_COMMENT = 'data/posts/REPLACE_COMMENT',
 	REMOVE_COMMENT = 'data/posts/REMOVE_COMMENT',
-	UNLIKE_COMMENT = 'data/posts/UNLIKE_COMMENT',
+	RESET_POSTS = 'data/posts/RESET_POSTS',
 }
 
-export interface IResetGlobalFeedAction extends Action {
-	type: ActionTypes.RESET_GLOBAL_FEED;
+export interface IRefreshGlobalPostsAction extends Action {
+	type: ActionTypes.REFRESH_GLOBAL_POSTS;
 }
 
-export interface IResetFriendsFeedAction extends Action {
-	type: ActionTypes.RESET_FRIENDS_FEED;
+export interface ISyncRefreshGlobalPostsAction extends Action {
+	type: ActionTypes.SYNC_REFRESH_GLOBAL_POSTS;
+	payload: ISyncLoadMoreInput;
 }
 
-export interface IGetPostsByUsernameAction extends Action {
-	type: ActionTypes.GET_POSTS_BY_USER;
-	payload: IUsernameInput;
+export interface IRefreshFriendsPostsAction extends Action {
+	type: ActionTypes.REFRESH_FRIENDS_POSTS;
 }
 
-export interface ISyncGetPostsByUserAction extends Action {
-	type: ActionTypes.SYNC_GET_POSTS_BY_USER;
-	payload: IPostArrayData;
+export interface ISyncRefreshFriendsPostsAction extends Action {
+	type: ActionTypes.SYNC_REFRESH_FRIENDS_POSTS;
+	payload: ISyncLoadMoreInput;
 }
 
 export interface IGetPostByPathAction extends Action {
@@ -98,16 +134,6 @@ export interface IGetPostByPathAction extends Action {
 export interface ISyncGetPostByPathAction extends Action {
 	type: ActionTypes.SYNC_GET_POST_BY_PATH;
 	payload: IPostReturnData;
-}
-
-export interface IGetPublicPostsByDateAction extends Action {
-	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE;
-	payload: IDateInput;
-}
-
-export interface ISyncGetPublicPostsByDateAction extends Action {
-	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE;
-	payload: IPostArrayData;
 }
 
 export interface IGetPostByIdAction extends Action {
@@ -126,11 +152,7 @@ export interface ILoadMorePostsAction extends Action {
 
 export interface ISyncLoadMorePostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS;
-	payload: {
-		posts: IPostArrayData;
-		canLoadMore: boolean;
-		nextToken: string;
-	};
+	payload: ISyncLoadMoreInput;
 }
 
 export interface ILoadMoreFriendsPostsAction extends Action {
@@ -139,11 +161,17 @@ export interface ILoadMoreFriendsPostsAction extends Action {
 
 export interface ISyncLoadMoreFriendsPostsAction extends Action {
 	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS;
-	payload: {
-		posts: IPostArrayData;
-		canLoadMore: boolean;
-		nextToken: string;
-	};
+	payload: ISyncLoadMoreInput;
+}
+
+export interface IGetUserPostsAction extends Action {
+	type: ActionTypes.GET_USER_POSTS;
+	payload: string;
+}
+
+export interface ISyncGetUserPostsAction extends Action {
+	type: ActionTypes.SYNC_GET_USER_POSTS;
+	payload: IPostReturnData[];
 }
 
 export interface ICreatePostAction extends Action {
@@ -151,14 +179,9 @@ export interface ICreatePostAction extends Action {
 	payload: ICreatePostInput;
 }
 
-export interface ILikePostAction extends Action {
-	type: ActionTypes.LIKE_POST;
-	payload: IPostIdInput;
-}
-
 export interface IRemovePostAction extends Action {
 	type: ActionTypes.REMOVE_POST;
-	payload: IRemovePostInput;
+	payload: string;
 }
 
 export interface ISyncRemovePostAction extends Action {
@@ -166,43 +189,39 @@ export interface ISyncRemovePostAction extends Action {
 	payload: string;
 }
 
+export interface ILikePostAction extends Action {
+	type: ActionTypes.LIKE_POST;
+	payload: IPostLikeInput;
+}
+
+export interface ILikePostErrorAction extends Action {
+	type: ActionTypes.LIKE_POST_ERROR;
+	payload: IPostLikeInput;
+}
+
 export interface IUnlikePostAction extends Action {
 	type: ActionTypes.UNLIKE_POST;
-	payload: IUnlikePostInput;
+	payload: IPostLikeInput;
 }
 
-// <================ comments ================>
-export interface IPostIdInput {
-	postId: string;
+export interface IUnlikePostErrorAction extends Action {
+	type: ActionTypes.UNLIKE_POST_ERROR;
+	payload: IPostLikeInput;
 }
 
-export interface ICommentIdInput {
-	commentId: string;
+export interface IAddCommentAction extends Action {
+	type: ActionTypes.ADD_COMMENT;
+	payload: ICommentToPostInput;
 }
 
-export interface ICreateCommentInput {
-	text: string;
-	postId: string;
-}
-
-export interface ICreateCommentAction extends Action {
-	type: ActionTypes.CREATE_COMMENT;
-	payload: ICreateCommentInput;
-}
-
-export interface ILikeCommentAction extends Action {
-	type: ActionTypes.LIKE_COMMENT;
-	payload: ICommentIdInput;
+export interface IReplaceCommentAction extends Action {
+	type: ActionTypes.REPLACE_COMMENT;
+	payload: IReplaceCommentInput;
 }
 
 export interface IRemoveCommentAction extends Action {
 	type: ActionTypes.REMOVE_COMMENT;
-	payload: IRemoveCommentInput;
-}
-
-export interface IUnlikeCommentAction extends Action {
-	type: ActionTypes.UNLIKE_COMMENT;
-	payload: IUnlikeCommentInput;
+	payload: ICommentToPostInput;
 }
 
 interface IResetStoreAction {
@@ -210,13 +229,11 @@ interface IResetStoreAction {
 }
 export type IAction =
 	| IResetStoreAction
-	| IResetGlobalFeedAction
-	| IResetFriendsFeedAction
+	| IRefreshGlobalPostsAction
+	| ISyncRefreshGlobalPostsAction
+	| IRefreshFriendsPostsAction
+	| ISyncRefreshFriendsPostsAction
 	// getters
-	| IGetPostsByUsernameAction
-	| ISyncGetPostsByUserAction
-	| IGetPublicPostsByDateAction
-	| ISyncGetPublicPostsByDateAction
 	| IGetPostByPathAction
 	| ISyncGetPostByPathAction
 	| IGetPostByIdAction
@@ -225,13 +242,16 @@ export type IAction =
 	| ILoadMorePostsAction
 	| ISyncLoadMoreFriendsPostsAction
 	| ILoadMoreFriendsPostsAction
+	| IGetUserPostsAction
+	| ISyncGetUserPostsAction
 	// setters
 	| ICreatePostAction
-	| ILikePostAction
 	| IRemovePostAction
-	| IUnlikePostAction
-	| ICreateCommentAction
-	| ILikeCommentAction
-	| IRemoveCommentAction
 	| ISyncRemovePostAction
-	| IUnlikeCommentAction;
+	| ILikePostAction
+	| ILikePostErrorAction
+	| IUnlikePostAction
+	| IUnlikePostErrorAction
+	| IAddCommentAction
+	| IReplaceCommentAction
+	| IRemoveCommentAction;

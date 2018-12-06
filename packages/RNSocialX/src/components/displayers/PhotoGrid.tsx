@@ -92,7 +92,7 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 		dataProvider={dataProvider}
 		rowRenderer={(...args) => renderGridItemOrHeader(args[0], args[1], renderGridItem, header)}
 		onEndReached={onLoadMore}
-		onEndReachedThreshold={100} // must be >0 for Android
+		onEndReachedThreshold={100} // must be > 0 for Android
 		onScroll={onScroll}
 		extendedState={extendedState}
 		scrollViewProps={scrollViewProps}

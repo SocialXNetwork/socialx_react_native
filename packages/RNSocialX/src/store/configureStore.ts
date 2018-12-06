@@ -54,7 +54,8 @@ export const configureStore = (
 		});
 	}
 
-	store.dispatch(setAppConfig({ appConfig }));
+	// Check the type of appConfig
+	store.dispatch(setAppConfig({ appConfig }) as any);
 
 	// subscribe to all events on gun
 	// setTimeout(() => { dispatch(subscribeToAll) }, 2500);

@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const USER_AVATAR_SIZE = Sizes.smartHorizontalScale(40);
-export const USER_AVATAR_PLACEHOLDER = Images.user_avatar_placeholder;
 
 const styles: any = {
 	container: {
@@ -19,10 +18,10 @@ const styles: any = {
 		height: USER_AVATAR_SIZE,
 		borderRadius: USER_AVATAR_SIZE / 2,
 	},
-	textContainer: {
+	messageContainer: {
 		width: '100%',
 	},
-	placeholder: {
+	message: {
 		...Fonts.centuryGothic,
 		lineHeight: Sizes.smartHorizontalScale(24),
 		color: Colors.paleSky,

@@ -5,42 +5,44 @@ import { IApplicationState } from '../../../store';
 import {
 	acceptFriend,
 	addFriend,
-	clearFriendRequest,
 	clearFriendResponse,
 	getCurrentFriends,
 	getCurrentProfile,
-	getProfileByUsername,
+	getProfileByAlias,
 	IAcceptFriendInput,
 	IAddFriendInput,
-	IClearFriendRequestInput,
-	IClearFriendResponseInput,
-	IFriendData,
+	IAliasInput,
+	IFriends,
+	IProfiles,
 	IRejectFriendInput,
 	IRemoveFriendInput,
+	ISearchInput,
 	IUpdateProfileInput,
-	IUsernameInput,
 	rejectFriend,
 	removeFriend,
+	searchForProfiles,
+	undoRequest,
 	updateCurrentProfile,
 } from '../../../store/data/profiles';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	profiles: IFriendData[];
-	friends: { [key: string]: IFriendData[] };
+	profiles: IProfiles;
+	friends: IFriends;
+	results: string[];
 }
 
 interface IActionProps {
 	getCurrentProfile: () => void;
 	getCurrentFriends: () => void;
-	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) => void;
+	getProfileByAlias: (alias: string) => void;
 	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
-	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) => void;
-	clearFriendRequest: (clearFriendRequestInput: IClearFriendRequestInput) => void;
+	undoRequest: (input: IAliasInput) => void;
+	searchForProfiles: (input: ISearchInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -66,29 +68,29 @@ const selectFriends = createSelector(
 	(friends) => friends,
 );
 
+const selectResults = createSelector(
+	(state: IApplicationState) => state.data.profiles.results,
+	(results) => results,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
 	friends: selectFriends(state),
+	results: selectResults(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
 	getCurrentFriends: () => dispatch(getCurrentFriends()),
-	getProfileByUsername: (getProfileByUsernameInput: IUsernameInput) =>
-		dispatch(getProfileByUsername(getProfileByUsernameInput)),
-	addFriend: (addFriendInput: IAddFriendInput) => dispatch(addFriend(addFriendInput)),
-	removeFriend: (removeFriendInput: IRemoveFriendInput) =>
-		dispatch(removeFriend(removeFriendInput)),
-	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
-		dispatch(acceptFriend(acceptFriendInput)),
-	rejectFriend: (rejectFriendInput: IRejectFriendInput) =>
-		dispatch(rejectFriend(rejectFriendInput)),
-	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) =>
-		dispatch(updateCurrentProfile(updateProfileInput)),
-	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) =>
-		dispatch(clearFriendResponse(clearFriendResponseInput)),
-	clearFriendRequest: (clearFriendRequestInput: IClearFriendRequestInput) =>
-		dispatch(clearFriendRequest(clearFriendRequestInput)),
+	getProfileByAlias: (alias: string) => dispatch(getProfileByAlias(alias)),
+	updateCurrentProfile: (input: IUpdateProfileInput) => dispatch(updateCurrentProfile(input)),
+	addFriend: (input: IAddFriendInput) => dispatch(addFriend(input)),
+	removeFriend: (input: IRemoveFriendInput) => dispatch(removeFriend(input)),
+	acceptFriend: (input: IAcceptFriendInput) => dispatch(acceptFriend(input)),
+	rejectFriend: (input: IRejectFriendInput) => dispatch(rejectFriend(input)),
+	clearFriendResponse: (input: IAliasInput) => dispatch(clearFriendResponse(input)),
+	undoRequest: (input: IAliasInput) => dispatch(undoRequest(input)),
+	searchForProfiles: (input: ISearchInput) => dispatch(searchForProfiles(input)),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(

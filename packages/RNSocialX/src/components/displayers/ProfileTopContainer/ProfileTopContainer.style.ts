@@ -49,7 +49,7 @@ const styles: any = {
 	},
 	textContainer: {
 		marginBottom: Sizes.smartVerticalScale(10),
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		paddingHorizontal: Sizes.smartHorizontalScale(64),
 	},
 	name: {
 		...Fonts.centuryGothicBold,

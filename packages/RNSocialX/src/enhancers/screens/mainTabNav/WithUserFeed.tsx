@@ -8,42 +8,32 @@ import * as React from 'react';
 import { FEED_TYPES } from '../../../environment/consts';
 import {
 	ICurrentUser,
-	IError,
 	INavigationParamsActions,
 	ITranslatedProps,
-	IWallPostData,
+	IWallPost,
 } from '../../../types';
-import { getActivity, mapPostsForUI } from '../../helpers';
+import { getActivity } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
-import { assertNever } from '../../../store/helpers';
-import { WithConfig } from '../../connectors/app/WithConfig';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithPosts } from '../../connectors/data/WithPosts';
-import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
-import { WithCurrentUser } from '../intermediary';
+import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
-	friendsPosts: IWallPostData[];
-	globalPosts: IWallPostData[];
-	errors: IError[];
-	skeletonPost: IWallPostData;
-	creatingPost: boolean;
+	postIds: string[];
+	placeholderPost: IWallPost;
 	refreshingFeed: boolean;
-	canLoadMoreGlobalPosts: boolean;
-	canLoadMoreFriendsPosts: boolean;
-	loadingMoreGlobalPosts: boolean;
-	loadingMoreFriendsPosts: boolean;
+	canLoadMore: boolean;
+	loadingMorePosts: boolean;
 }
 
 export interface IWithUserFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
-	loadMoreGlobalPosts: () => void;
-	loadMoreFriendsPosts: () => void;
-	refreshFeed: (feed: FEED_TYPES) => void;
+	loadMorePosts: () => void;
+	refreshFeed: () => void;
 }
 
 interface IWithUserFeedEnhancedProps {
@@ -52,6 +42,7 @@ interface IWithUserFeedEnhancedProps {
 }
 
 interface IWithUserFeedProps {
+	type: FEED_TYPES;
 	children(props: IWithUserFeedEnhancedProps): JSX.Element;
 }
 
@@ -59,101 +50,82 @@ interface IWithUserFeedState {}
 
 export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserFeedState> {
 	render() {
+		const { type } = this.props;
+
 		return (
 			<WithI18n>
 				{({ getText }) => (
-					<WithConfig>
-						{({ appConfig }) => (
-							<WithNavigationParams>
-								{({ setNavigationParams }) => (
-									<WithGlobals>
-										{({ globals }) => (
-											<WithActivities>
-												{({ activities, errors }) => (
-													<WithProfiles>
-														{({ profiles }) => (
-															<WithPosts>
-																{(feed) => (
-																	<WithCurrentUser>
-																		{({ currentUser }) => {
-																			const IPFS_URL = appConfig.ipfsConfig.ipfs_URL;
-																			let globalPosts: IWallPostData[] = [];
-																			let friendsPosts: IWallPostData[] = [];
-
-																			if (feed.global.posts.length > 0) {
-																				globalPosts = mapPostsForUI(
-																					feed.global.posts,
-																					currentUser,
-																					profiles,
-																					activities,
-																					IPFS_URL,
-																				);
-																			}
-
-																			if (feed.friends.posts.length > 0) {
-																				friendsPosts = mapPostsForUI(
-																					feed.friends.posts,
-																					currentUser,
-																					profiles,
-																					activities,
-																					IPFS_URL,
-																				);
-																			}
-
-																			return this.props.children({
-																				data: {
-																					currentUser,
-																					globalPosts,
-																					friendsPosts,
-																					errors,
-																					skeletonPost: globals.skeletonPost,
-																					canLoadMoreGlobalPosts: feed.global.canLoadMore,
-																					canLoadMoreFriendsPosts: feed.friends.canLoadMore,
-																					loadingMoreGlobalPosts: getActivity(
-																						activities,
-																						ActionTypes.LOAD_MORE_POSTS,
-																					),
-																					loadingMoreFriendsPosts: getActivity(
-																						activities,
-																						ActionTypes.LOAD_MORE_FRIENDS_POSTS,
-																					),
-																					refreshingFeed: getActivity(
-																						activities,
-																						ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-																					),
-																					creatingPost: getActivity(
-																						activities,
-																						ActionTypes.CREATE_POST,
-																					),
-																				},
-																				actions: {
-																					loadMoreGlobalPosts: feed.loadMorePosts,
-																					loadMoreFriendsPosts: feed.loadMoreFriendsPosts,
-																					refreshFeed: async (type) => {
-																						if (type === FEED_TYPES.GLOBAL) {
-																							await feed.refreshGlobalFeed();
-																						} else {
-																							await feed.refreshFriendsFeed();
-																						}
-																					},
-																					setNavigationParams,
-																					getText,
-																				},
-																			});
-																		}}
-																	</WithCurrentUser>
-																)}
-															</WithPosts>
-														)}
-													</WithProfiles>
+					<WithNavigationParams>
+						{({ setNavigationParams }) => (
+							<WithGlobals>
+								{({ globals }) => (
+									<WithActivities>
+										{({ activities }) => (
+											<WithPosts>
+												{(feed) => (
+													<WithCurrentUser>
+														{({ currentUser }) => {
+															if (type === FEED_TYPES.GLOBAL) {
+																return this.props.children({
+																	data: {
+																		currentUser,
+																		postIds: feed.global.posts,
+																		placeholderPost: globals.placeholderPost,
+																		canLoadMore: feed.global.canLoadMore,
+																		loadingMorePosts: getActivity(
+																			activities,
+																			ActionTypes.LOAD_MORE_POSTS,
+																		),
+																		refreshingFeed: getActivity(
+																			activities,
+																			ActionTypes.REFRESH_GLOBAL_POSTS,
+																		),
+																	},
+																	actions: {
+																		loadMorePosts: feed.loadMorePosts,
+																		refreshFeed: async () => {
+																			await feed.refreshGlobalPosts();
+																		},
+																		setNavigationParams,
+																		getText,
+																	},
+																});
+															} else {
+																return this.props.children({
+																	data: {
+																		currentUser,
+																		postIds: feed.friends.posts,
+																		placeholderPost: globals.placeholderPost,
+																		canLoadMore: feed.friends.canLoadMore,
+																		loadingMorePosts: getActivity(
+																			activities,
+																			ActionTypes.LOAD_MORE_FRIENDS_POSTS,
+																		),
+																		refreshingFeed: getActivity(
+																			activities,
+																			ActionTypes.REFRESH_FRIENDS_POSTS,
+																		),
+																	},
+																	actions: {
+																		loadMorePosts: feed.loadMoreFriendsPosts,
+																		refreshFeed: async () => {
+																			await feed.refreshFriendsPosts();
+																		},
+																		setNavigationParams,
+																		getText,
+																	},
+																});
+															}
+														}}
+													</WithCurrentUser>
 												)}
-											</WithActivities>
+											</WithPosts>
 										)}
-									</WithGlobals>
+									</WithActivities>
 								)}
-							</WithNavigationParams>
+							</WithGlobals>
 						)}
-					</WithConfig>
+					</WithNavigationParams>
 				)}
 			</WithI18n>
 		);

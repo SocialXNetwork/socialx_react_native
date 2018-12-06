@@ -22,6 +22,7 @@ export interface IProfileData {
 	miningEnabled: boolean;
 	aboutMeText: string;
 	alias: string;
+	posts: any[];
 }
 
 export interface ISearchProfilesByFullNameInput {

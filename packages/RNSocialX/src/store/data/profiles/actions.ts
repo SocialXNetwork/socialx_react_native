@@ -1,59 +1,72 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
-	IClearFriendRequestInput,
 	IClearFriendResponseInput,
-	IFriendData,
-	IPostArrayData,
-	IProfileData,
+	IPostReturnData,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
-import { getUserPosts } from '../../aggregations/posts';
+
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { setGlobal } from '../../ui/globals';
+import { getUserPosts } from '../posts';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
 	IAddFriendAction,
-	IClearFriendRequestAction,
+	IAddPostsToProfileAction,
+	IAddPostsToProfileInput,
+	IAliasInput,
 	IClearFriendResponseAction,
+	IFriendInput,
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
-	IGetProfileByUsernameAction,
+	IGetProfileByAliasAction,
 	IGetProfilesByPostsAction,
-	IGetProfilesByUsernamesAction,
+	IProfile,
 	IRejectFriendAction,
 	IRemoveFriendAction,
+	IRemovePostFromProfileAction,
+	IRemovePostFromProfileInput,
+	ISearchForProfilesAction,
+	ISearchInput,
+	ISyncFriendsInput,
 	ISyncGetCurrentFriendsAction,
 	ISyncGetCurrentProfileAction,
-	ISyncGetProfileByUsernameAction,
+	ISyncGetProfileByAliasAction,
 	ISyncGetProfilesByPostsAction,
-	ISyncGetProfilesByUsernamesAction,
+	ISyncSearchForProfilesAction,
+	ISyncSearchInput,
+	ISyncUndoRequestAction,
+	IUndoRequestAction,
 	IUpdateProfileAction,
-	IUsernameInput,
-	IUsernamesInput,
 } from './Types';
 
+/**
+ * 	Retrieves the profiles of users engaged
+ * 	in posts and adds them to the store
+ */
+
 const getProfilesByPostsAction: ActionCreator<IGetProfilesByPostsAction> = (
-	posts: IPostArrayData,
+	posts: IPostReturnData[],
 ) => ({
 	type: ActionTypes.GET_PROFILES_BY_POSTS,
 	payload: posts,
 });
 
 const syncGetProfilesByPostsAction: ActionCreator<ISyncGetProfilesByPostsAction> = (
-	profiles: IFriendData[],
+	profiles: IProfile[],
 ) => ({
 	type: ActionTypes.SYNC_GET_PROFILES_BY_POSTS,
 	payload: profiles,
 });
 
-export const getProfilesByPosts = (getProfileByPostsInput: IPostArrayData): IThunk => async (
+export const getProfilesByPosts = (posts: IPostReturnData[]): IThunk => async (
 	dispatch,
 	getState,
 	context,
@@ -61,19 +74,18 @@ export const getProfilesByPosts = (getProfileByPostsInput: IPostArrayData): IThu
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
+
 	if (auth && auth.alias) {
 		try {
-			dispatch(getProfilesByPostsAction(getProfileByPostsInput));
+			dispatch(getProfilesByPostsAction(posts));
 			await dispatch(
 				beginActivity({
 					type: ActionTypes.GET_PROFILES_BY_POSTS,
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			const profiles = await dataApi.profiles.getUserProfilesByPosts({
-				posts: getProfileByPostsInput,
-			});
+
+			const profiles = await context.dataApi.profiles.getUserProfilesByPosts({ posts });
 			await dispatch(syncGetProfilesByPostsAction(profiles));
 		} catch (e) {
 			await dispatch(
@@ -89,44 +101,44 @@ export const getProfilesByPosts = (getProfileByPostsInput: IPostArrayData): IThu
 	}
 };
 
-const getProfileByUsernameAction: ActionCreator<IGetProfileByUsernameAction> = (
-	getProfileByUsernameInput: IUsernameInput,
-) => ({
-	type: ActionTypes.GET_PROFILE_BY_USERNAME,
-	payload: getProfileByUsernameInput,
+/**
+ * 	Retrieves the profile of a user given his alias
+ * 	and adds it to the store
+ */
+
+const getProfileByAliasAction: ActionCreator<IGetProfileByAliasAction> = (alias: string) => ({
+	type: ActionTypes.GET_PROFILE_BY_ALIAS,
+	payload: alias,
 });
 
-const syncGetProfileByUsernameAction: ActionCreator<ISyncGetProfileByUsernameAction> = (
-	profile: IFriendData,
+const syncGetProfileByAliasAction: ActionCreator<ISyncGetProfileByAliasAction> = (
+	profile: IProfile,
 ) => ({
-	type: ActionTypes.SYNC_GET_PROFILE_BY_USERNAME,
+	type: ActionTypes.SYNC_GET_PROFILE_BY_ALIAS,
 	payload: profile,
 });
 
-export const getProfileByUsername = (getProfileByUsernameInput: IUsernameInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const getProfileByAlias = (alias: string): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
+
 	if (auth && auth.alias) {
 		try {
-			dispatch(getProfileByUsernameAction(getProfileByUsernameInput));
+			dispatch(getProfileByAliasAction(alias));
 			await dispatch(
 				beginActivity({
-					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+					type: ActionTypes.GET_PROFILE_BY_ALIAS,
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			const profile = await dataApi.profiles.getProfileByUsername(getProfileByUsernameInput);
-			await dispatch(syncGetProfileByUsernameAction(profile));
+
+			const profile = await context.dataApi.profiles.getProfileByUsername({ username: alias });
+			await dispatch(syncGetProfileByAliasAction(profile));
 		} catch (e) {
 			await dispatch(
 				setError({
-					type: ActionTypes.GET_PROFILE_BY_USERNAME,
+					type: ActionTypes.GET_PROFILE_BY_ALIAS,
 					error: e.message,
 					uuid: uuidv4(),
 				}),
@@ -136,59 +148,18 @@ export const getProfileByUsername = (getProfileByUsernameInput: IUsernameInput):
 		}
 	}
 };
-const getProfilesByUsernamesAction: ActionCreator<IGetProfilesByUsernamesAction> = (
-	getProfilesByUsernamesInput: IUsernamesInput,
-) => ({
-	type: ActionTypes.GET_PROFILES_BY_USERNAMES,
-	payload: getProfilesByUsernamesInput,
-});
 
-const syncGetProfilesByUsernamesAction: ActionCreator<ISyncGetProfilesByUsernamesAction> = (
-	profiles: IFriendData[],
-) => ({
-	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES,
-	payload: profiles,
-});
-
-// relevant for fetching the users that liked/commented on stuff etc..
-export const getProfilesByUsernames = (
-	getProfileByUsernameInput: IUsernamesInput,
-): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(getProfilesByUsernamesAction(getProfileByUsernameInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.GET_PROFILE_BY_USERNAME,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			const profiles = await dataApi.profiles.getProfilesByUsernames(getProfileByUsernameInput);
-			dispatch(syncGetProfilesByUsernamesAction(profiles));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.GET_PROFILE_BY_USERNAME,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
+/**
+ * 	Retrieves the profile of the current user
+ *  and adds it to the store
+ */
 
 const getCurrentProfileAction: ActionCreator<IGetCurrentProfileAction> = () => ({
 	type: ActionTypes.GET_CURRENT_PROFILE,
 });
 
 const syncGetCurrentProfileAction: ActionCreator<ISyncGetCurrentProfileAction> = (
-	profile: IProfileData,
+	profile: IProfile,
 ) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_PROFILE,
 	payload: profile,
@@ -198,6 +169,7 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 	const activityId = uuidv4();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
+
 	if (auth && auth.alias) {
 		try {
 			dispatch(getCurrentProfileAction());
@@ -208,10 +180,9 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 				}),
 			);
 
-			const { dataApi } = context;
-			const profile = await dataApi.profiles.getCurrentProfile();
+			const profile = await context.dataApi.profiles.getCurrentProfile();
 			dispatch(syncGetCurrentProfileAction(profile));
-			await dispatch(getUserPosts({ username: profile.alias }));
+			await dispatch(getUserPosts(profile.alias));
 		} catch (e) {
 			console.log(e);
 			await dispatch(
@@ -227,22 +198,27 @@ export const getCurrentProfile = (): IThunk => async (dispatch, getState, contex
 	}
 };
 
+/**
+ * 	Retrieves the friends of the current user
+ * 	and adds them to the store
+ */
+
 const getCurrentFriendsAction: ActionCreator<IGetCurrentFriendsAction> = () => ({
 	type: ActionTypes.GET_CURRENT_FRIENDS,
 });
 
-const syncGetCurrentFriendsAction: ActionCreator<ISyncGetCurrentFriendsAction> = (syncFriends: {
-	username: string;
-	friends: IFriendData[];
-}) => ({
+const syncGetCurrentFriendsAction: ActionCreator<ISyncGetCurrentFriendsAction> = (
+	input: ISyncFriendsInput,
+) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_FRIENDS,
-	payload: syncFriends,
+	payload: input,
 });
 
 export const getCurrentFriends = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
 	const state = getState();
 	const currentUser = state.auth.database.gun;
+
 	try {
 		dispatch(getCurrentFriendsAction());
 		await dispatch(
@@ -252,9 +228,8 @@ export const getCurrentFriends = (): IThunk => async (dispatch, getState, contex
 			}),
 		);
 
-		const { dataApi } = context;
-		const friends = await dataApi.profiles.getCurrentProfileFriends();
-		dispatch(syncGetCurrentFriendsAction({ username: currentUser!.alias, friends }));
+		const friends = await context.dataApi.profiles.getCurrentProfileFriends();
+		dispatch(syncGetCurrentFriendsAction({ alias: currentUser!.alias, friends }));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -263,8 +238,14 @@ export const getCurrentFriends = (): IThunk => async (dispatch, getState, contex
 				uuid: uuidv4(),
 			}),
 		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
+
+/**
+ * 	Updates the profile of the current user
+ */
 
 const updateCurrentProfileAction: ActionCreator<IUpdateProfileAction> = (
 	updateProfileInput: IUpdateProfileInput,
@@ -398,7 +379,7 @@ export const addFriend = (addFriendInput: IAddFriendInput): IThunk => async (
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.addFriend(addFriendInput);
-			await dispatch(getProfileByUsername(addFriendInput));
+			await dispatch(getProfileByAlias(addFriendInput.username));
 			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
@@ -440,7 +421,7 @@ export const removeFriend = (removeFriendInput: IRemoveFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.removeFriend(removeFriendInput);
-			await dispatch(getProfileByUsername(removeFriendInput));
+			await dispatch(getProfileByAlias(removeFriendInput.username));
 			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
@@ -482,7 +463,7 @@ export const acceptFriend = (acceptFriendInput: IAcceptFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.acceptFriend(acceptFriendInput);
-			await dispatch(getProfileByUsername(acceptFriendInput));
+			await dispatch(getProfileByAlias(acceptFriendInput.username));
 			await dispatch(getCurrentFriends());
 		} catch (e) {
 			await dispatch(
@@ -524,7 +505,7 @@ export const rejectFriend = (rejectFriendInput: IRejectFriendInput): IThunk => a
 			);
 			const { dataApi } = context;
 			await dataApi.profiles.rejectFriend(rejectFriendInput);
-			await dispatch(getProfileByUsername(rejectFriendInput));
+			await dispatch(getProfileByAlias(rejectFriendInput.username));
 		} catch (e) {
 			await dispatch(
 				setError({
@@ -577,34 +558,127 @@ export const clearFriendResponse = (
 	}
 };
 
-const clearFriendRequestAction: ActionCreator<IClearFriendRequestAction> = (
-	clearFriendRequestInput: IClearFriendRequestInput,
-) => ({
-	type: ActionTypes.CLEAR_FRIEND_REQUEST,
-	payload: clearFriendRequestInput,
+const undoRequestAction: ActionCreator<IUndoRequestAction> = (input: IAliasInput) => ({
+	type: ActionTypes.UNDO_REQUEST,
+	payload: input,
 });
 
-export const clearFriendRequest = (
-	clearFriendRequestInput: IClearFriendRequestInput,
-): IThunk => async (dispatch, getState, context) => {
+const syncUndoRequestAction: ActionCreator<ISyncUndoRequestAction> = (input: IFriendInput) => ({
+	type: ActionTypes.SYNC_UNDO_REQUEST,
+	payload: input,
+});
+
+export const undoRequest = (input: IAliasInput): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
+	const { alias: currentUserAlias } = getState().auth.database.gun!;
+
+	try {
+		dispatch(undoRequestAction(input));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.UNDO_REQUEST,
+				uuid: activityId,
+			}),
+		);
+
+		await context.dataApi.profiles.clearFriendRequest(input);
+		dispatch(syncUndoRequestAction({ currentUserAlias, alias: input.username }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.UNDO_REQUEST,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
+/**
+ * 	Dispatched when we create a new post or we fetch
+ * 	some posts, adds it/them to the profile of the owner.
+ *  @param input an object that takes the alias of the user and an array of post ids
+ */
+
+export const addPostsToProfile: ActionCreator<IAddPostsToProfileAction> = (
+	input: IAddPostsToProfileInput,
+) => ({
+	type: ActionTypes.ADD_POSTS_TO_PROFILE,
+	payload: input,
+});
+
+/**
+ * 	Dispatched when we remove a post,
+ * 	removes it from the profile of the owner.
+ *  @param input an object that takes the alias of the user and the id of the post being removed
+ */
+
+export const removePostFromProfile: ActionCreator<IRemovePostFromProfileAction> = (
+	input: IRemovePostFromProfileInput,
+) => ({
+	type: ActionTypes.REMOVE_POST_FROM_PROFILE,
+	payload: input,
+});
+
+/**
+ * 	Removes the previously searched profiles from the store
+ *  @param aliases an array of aliases
+ */
+
+export const searchForProfilesAction: ActionCreator<ISearchForProfilesAction> = (
+	aliases: string[],
+) => ({
+	type: ActionTypes.SEARCH_FOR_PROFILES,
+	payload: aliases,
+});
+
+/**
+ * 	Adds the profiles returned by the search to the store
+ *  @param profiles an array of profiles
+ */
+
+export const syncSearchForProfilesAction: ActionCreator<ISyncSearchForProfilesAction> = (
+	input: ISyncSearchInput,
+) => ({
+	type: ActionTypes.SYNC_SEARCH_FOR_PROFILES,
+	payload: input,
+});
+
+/**
+ *  Searches and returns profiles based on the search term
+ *  @param input an object that takes the search term and a limit of how many profiles to be returned
+ */
+
+export const searchForProfiles = (input: ISearchInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuidv4();
+	const store = getState();
+	const { aliasesToRemove } = store.ui.globals;
+
+	if (input.term.length > 0) {
 		try {
-			dispatch(clearFriendRequestAction(clearFriendRequestInput));
+			dispatch(searchForProfilesAction(aliasesToRemove));
 			await dispatch(
 				beginActivity({
-					type: ActionTypes.CLEAR_FRIEND_REQUEST,
+					type: ActionTypes.SEARCH_FOR_PROFILES,
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			await dataApi.profiles.clearFriendRequest(clearFriendRequestInput);
+
+			const profiles = await context.dataApi.profiles.searchByFullName(input);
+			const aliases = profiles.map((profile) => profile.alias);
+
+			dispatch(syncSearchForProfilesAction({ profiles, aliases }));
+			await dispatch(setGlobal({ aliasesToRemove: aliases }));
 		} catch (e) {
 			await dispatch(
 				setError({
-					type: ActionTypes.CLEAR_FRIEND_REQUEST,
+					type: ActionTypes.SEARCH_FOR_PROFILES,
 					error: e.message,
 					uuid: uuidv4(),
 				}),

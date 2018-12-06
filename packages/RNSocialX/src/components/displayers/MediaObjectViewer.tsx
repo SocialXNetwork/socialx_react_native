@@ -4,18 +4,26 @@ import FastImage from 'react-native-fast-image';
 import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
 
+import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
+
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
+import { OS_TYPES } from '../../environment/consts';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
-	uri: string;
-	style?: StyleProp<ViewStyle>;
+	hash?: string;
+	path?: string;
 	extension?: string;
 	type?: IMediaTypes;
-	onPress?: () => void;
-	onDoublePress?: () => void;
 	canZoom?: boolean;
 	resizeMode?: 'cover' | 'contain' | 'stretch';
+	style?: StyleProp<ViewStyle>;
+	onPress?: () => void;
+	onDoublePress?: () => void;
+}
+
+interface IProps extends IMediaObjectViewerProps {
+	IPFS_URL: string;
 }
 
 const getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: string) => {
@@ -25,13 +33,17 @@ const getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: str
 		if (mime.extensions[extension]) {
 			return extension;
 		}
+
 		return mime.lookup('.' + extension);
 	}
+
 	return mime.lookup(uri);
 };
 
-export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
-	uri,
+export const Component: React.SFC<IProps> = ({
+	IPFS_URL,
+	hash,
+	path,
 	style: customStyle,
 	resizeMode = 'cover',
 	extension,
@@ -41,10 +53,9 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	onPress = () => undefined,
 	onDoublePress = () => undefined,
 }) => {
-	// const ImageComponent =
-	// 	Platform.OS === OS_TYPES.Android && uri.startsWith('https://')
-	// 		? FastImage
-	// 		: Image;
+	const uri = path ? path : IPFS_URL + hash;
+	const ImageComponent =
+		Platform.OS === OS_TYPES.Android && uri.startsWith('https://') ? FastImage : Image;
 	const mediaMimeType = getMimeType(uri, type, extension);
 
 	return (
@@ -60,7 +71,7 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 					{canZoom && (
 						<PhotoView
 							source={{ uri }}
-							style={styles.photoStyle}
+							style={styles.image}
 							minimumZoomScale={1}
 							maximumZoomScale={3}
 							androidScaleType="center"
@@ -70,13 +81,13 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 						/>
 					)}
 					{!canZoom && (
-						<FastImage
+						<ImageComponent
 							source={{ uri }}
 							resizeMode={
 								resizeMode === 'contain' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover
 							}
-							style={styles.photoStyle}
-							// resizeMethod="resize"
+							style={styles.image}
+							resizeMethod="resize"
 						/>
 					)}
 				</TouchableWithDoublePress>
@@ -93,9 +104,15 @@ export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = ({
 	);
 };
 
-const styles: any = StyleSheet.create({
-	photoStyle: {
+const styles = StyleSheet.create({
+	image: {
 		width: '100%',
 		height: '100%',
 	},
 });
+
+export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = (props) => (
+	<WithConfig>
+		{({ appConfig }) => <Component IPFS_URL={appConfig.ipfsConfig.ipfs_URL} {...props} />}
+	</WithConfig>
+);

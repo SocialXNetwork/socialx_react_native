@@ -6,8 +6,8 @@ import { IconButton, LikeAnimatingButton } from '../../';
 import styles from './WallPostActions.style';
 
 export interface IWallPostActions {
+	creating: boolean | undefined;
 	likedByCurrentUser: boolean;
-	likeDisabled: boolean;
 	numberOfSuperLikes: number;
 	numberOfWalletCoins: number;
 	onLikePost: () => void;
@@ -17,37 +17,36 @@ export interface IWallPostActions {
 }
 
 export const WallPostActions: React.SFC<IWallPostActions> = ({
+	creating,
 	likedByCurrentUser,
-	likeDisabled,
 	onLikePost,
 	onCommentPress,
 }) => {
-	return (
-		<View style={styles.container}>
-			{/* TODO: add when implmented: Socx Wallet / Post Total Rewards
-				 <IconButton
-					iconSource={Icons.iconPostWalletCoins}
-					onPress={onWalletCoinsPress}
-					label={numberOfWalletCoins + ' SOCX'}
-				/> */}
+	if (!creating) {
+		return (
+			<View style={styles.container}>
+				{/* TODO: add when implmented: Socx Wallet / Post Total Rewards
+						<IconButton
+							iconSource={Icons.iconPostWalletCoins}
+							onPress={onWalletCoinsPress}
+							label={numberOfWalletCoins + ' SOCX'}
+						/> */}
+				<LikeAnimatingButton likedByCurrentUser={likedByCurrentUser} onLikePost={onLikePost} />
+				{/* TODO: add when implemented: SuperLikes
+							<IconButton
+								iconSource={Icons.iconPostSuperLike}
+								onPress={onSuperLikePress}
+								label={umberOfSuperLikes.toString()}
+							/> */}
+				<IconButton
+					iconSource="comment-o"
+					iconType="fa"
+					onPress={onCommentPress}
+					iconStyle={styles.icon}
+				/>
+			</View>
+		);
+	}
 
-			<LikeAnimatingButton
-				likedByCurrentUser={likedByCurrentUser}
-				disabled={likeDisabled}
-				onLikePost={onLikePost}
-			/>
-			{/* TODO: add when implemented: SuperLikes
-					 <IconButton
-						iconSource={Icons.iconPostSuperLike}
-						onPress={onSuperLikePress}
-						label={umberOfSuperLikes.toString()}
-                    /> */}
-			<IconButton
-				iconSource="comment-o"
-				iconType="fa"
-				onPress={onCommentPress}
-				iconStyle={styles.icon}
-			/>
-		</View>
-	);
+	return null;
 };

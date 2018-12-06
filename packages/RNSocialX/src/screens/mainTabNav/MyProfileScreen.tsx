@@ -4,11 +4,10 @@ import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 import uuid from 'uuid/v4';
 
-import { resetNavigationToRoute } from '../../enhancers/helpers';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithMyProfileEnhancedActions,
 	IWithMyProfileEnhancedData,
@@ -62,7 +61,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public render() {
-		const { currentUser, loadingProfile, loadingPosts, errors, navigation, getText } = this.props;
+		const { currentUser, loadingProfile, loadingPosts, navigation, getText } = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -84,7 +83,6 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				onSharePress={this.onSharePressHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
-				errors={errors}
 				navigation={navigation}
 				getText={getText}
 			/>
@@ -92,15 +90,22 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	private onRefreshHandler = async () => {
-		const { currentUser, loadingProfile, loadingPosts, getPostsForUser } = this.props;
+		const { loadingProfile, loadingPosts, getUserProfile } = this.props;
 
 		if (!loadingProfile && !loadingPosts) {
-			await getPostsForUser(currentUser.userId);
+			await getUserProfile();
 		}
 	};
 
 	private onShowOptionsMenuHandler = () => {
-		const { showOptionsMenu, logout, setGlobal, navigation, getText } = this.props;
+		const {
+			showOptionsMenu,
+			logout,
+			setGlobal,
+			navigation,
+			resetNavigationToRoute,
+			getText,
+		} = this.props;
 		const menuItems = [
 			// {
 			// 	label: getText('my.profile.screen.menu.profile.analytics'),
@@ -147,9 +152,9 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
 			const newMedia = media
 				.slice(this.lastLoadedPhotoIndex, endIndex)
-				.map((mediaObject, index: number) => ({
-					url: mediaObject.url,
-					type: mediaObject.type,
+				.map((obj, index: number) => ({
+					hash: obj.hash,
+					type: obj.type,
 					index: this.lastLoadedPhotoIndex + index,
 				}));
 
@@ -164,14 +169,11 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 
 	private onViewMediaHandler = (index: number) => {
 		const {
-			currentUser: { media, recentPosts },
+			currentUser: { media },
 			onViewImage,
 		} = this.props;
 
-		const selectedMedia = media[index];
-		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
-
-		onViewImage(media, index, post);
+		onViewImage(media, index, media[index].postId);
 	};
 
 	private onProfilePhotoPressHandler = () => {
@@ -180,7 +182,9 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 		if (currentUser.avatar.length > 0) {
 			const media = [
 				{
-					url: currentUser.avatar,
+					hash: currentUser.avatar,
+					size: 0,
+					extension: '',
 					type: MediaTypeImage,
 				},
 			];

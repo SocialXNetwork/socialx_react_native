@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Animated, Dimensions, FlatList, Platform } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { AnimatedValue } from 'react-navigation';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
-import { INavigationProps, IWallPostData } from '../../../types';
+import { INavigationProps } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
 
@@ -13,11 +12,8 @@ import {
 	IWithUserFeedEnhancedData,
 } from '../../../enhancers/screens';
 
-const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
-const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
-
 export interface IFeedProps {
-	shareSectionPlaceholder: string;
+	shareMessage: string;
 	feedType: FEED_TYPES;
 }
 
@@ -27,9 +23,6 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
-	private readonly scrollRef: React.RefObject<FlatList<IWallPostData>> = React.createRef();
-	private scrollY: AnimatedValue = new Animated.Value(0);
-
 	public componentDidMount() {
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustPan();
@@ -38,44 +31,29 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 
 	public render() {
 		const {
-			feedType,
 			currentUser,
-			globalPosts,
-			friendsPosts,
-			errors,
-			skeletonPost,
-			shareSectionPlaceholder,
-			canLoadMoreGlobalPosts,
-			canLoadMoreFriendsPosts,
+			postIds,
+			placeholderPost,
+			shareMessage,
+			canLoadMore,
 			refreshingFeed,
-			loadingMoreGlobalPosts,
-			loadingMoreFriendsPosts,
-			creatingPost,
+			loadingMorePosts,
 			navigation,
 			getText,
 		} = this.props;
 
 		return (
 			<UserFeedScreenView
-				posts={feedType === FEED_TYPES.FRIENDS ? friendsPosts : globalPosts}
-				avatarImage={currentUser.avatar}
-				skeletonPost={skeletonPost}
+				postIds={postIds}
+				placeholderPostId={placeholderPost ? placeholderPost.postId : null}
+				avatar={currentUser.avatar}
 				refreshing={refreshingFeed}
-				creatingPost={creatingPost}
-				canLoadMorePosts={
-					feedType === FEED_TYPES.FRIENDS ? canLoadMoreFriendsPosts : canLoadMoreGlobalPosts
-				}
-				loadingMorePosts={
-					feedType === FEED_TYPES.FRIENDS ? loadingMoreFriendsPosts : loadingMoreGlobalPosts
-				}
-				shareSectionPlaceholder={shareSectionPlaceholder}
-				scrollRef={this.scrollRef}
-				scrollY={this.scrollY}
+				canLoadMorePosts={canLoadMore}
+				loadingMorePosts={loadingMorePosts}
+				shareMessage={shareMessage}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
-				onAddComment={this.onAddCommentPressHandler}
-				errors={errors}
 				navigation={navigation}
 				getText={getText}
 			/>
@@ -83,18 +61,18 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	}
 
 	private onLoadMorePostsHandler = async () => {
-		const { loadMoreFriendsPosts, loadMoreGlobalPosts } = this.props;
+		const { refreshingFeed, loadingMorePosts, loadMorePosts } = this.props;
 
-		if (
-			!this.props.loadingMoreFriendsPosts &&
-			!this.props.loadingMoreGlobalPosts &&
-			!this.props.refreshingFeed
-		) {
-			if (this.props.feedType === FEED_TYPES.FRIENDS) {
-				await loadMoreFriendsPosts();
-			} else {
-				await loadMoreGlobalPosts();
-			}
+		if (!loadingMorePosts && !refreshingFeed) {
+			await loadMorePosts();
+		}
+	};
+
+	private onRefreshHandler = async () => {
+		const { refreshingFeed, loadingMorePosts, refreshFeed } = this.props;
+
+		if (!refreshingFeed && !loadingMorePosts) {
+			await refreshFeed();
 		}
 	};
 
@@ -106,66 +84,8 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 			params: {
 				fullName: currentUser.fullName,
 				avatarImage: currentUser.avatar,
-				afterPostCreate: this.onRefreshHandler,
 			},
 		});
 		navigation.navigate(SCREENS.CreateWallPost);
-	};
-
-	private onRefreshHandler = async () => {
-		const { refreshFeed, feedType } = this.props;
-
-		if (
-			!this.props.refreshingFeed &&
-			!this.props.loadingMoreFriendsPosts &&
-			!this.props.loadingMoreGlobalPosts
-		) {
-			await refreshFeed(feedType);
-		}
-	};
-
-	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		// if (
-		// 	!this.props.refreshingFeed &&
-		// 	!this.props.loadingMoreFriendsPosts &&
-		// 	!this.props.loadingMoreGlobalPosts &&
-		// 	this.scrollRef.current
-		// ) {
-		// 	this.scrollRef.current.scrollToIndex({
-		// 		animated: true,
-		// 		index,
-		// 		viewOffset: this.calculateScrollOffset(cardHeight, index),
-		// 		viewPosition: 0,
-		// 	});
-		// }
-	};
-
-	private calculateScrollOffset = (cardHeight: number, index: number) => {
-		const baseScreenHeight = 667;
-		let idealOffset;
-		let idealCardHeight;
-		let diff;
-
-		if (AVAILABLE_SCREEN_HEIGHT >= 667) {
-			if (index === 0 && cardHeight < 300) {
-				return 0;
-			}
-
-			idealOffset = 235;
-			idealCardHeight = 490;
-			diff = idealCardHeight - cardHeight;
-		} else {
-			idealOffset = 265;
-			idealCardHeight = 480;
-			diff = idealCardHeight - cardHeight;
-		}
-		const offset = (baseScreenHeight * idealOffset) / AVAILABLE_SCREEN_HEIGHT;
-
-		if (Platform.OS === OS_TYPES.Android) {
-			const softwareButtonsBarHeight = TOTAL_SCREEN_HEIGHT - AVAILABLE_SCREEN_HEIGHT;
-			return -(offset - diff + softwareButtonsBarHeight);
-		}
-
-		return -(offset - diff);
 	};
 }

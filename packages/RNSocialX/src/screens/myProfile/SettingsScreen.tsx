@@ -17,7 +17,6 @@ type ISettingsScreenProps = INavigationProps &
 class Screen extends React.Component<ISettingsScreenProps> {
 	public render() {
 		const { currentUser, navigation, getText, showOptionsMenu } = this.props;
-		console.log('shareDataEnabled', currentUser.shareDataEnabled);
 
 		return (
 			<SettingsScreenView

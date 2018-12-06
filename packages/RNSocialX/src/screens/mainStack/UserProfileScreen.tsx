@@ -7,7 +7,7 @@ import uuidv4 from 'uuid/v4';
 import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
-} from '../../enhancers/logic/WithNavigationHandlers';
+} from '../../enhancers/intermediary';
 import {
 	IWithUserProfileEnhancedActions,
 	IWithUserProfileEnhancedData,
@@ -15,7 +15,7 @@ import {
 } from '../../enhancers/screens';
 
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { IMediaProps, INavigationProps, MediaTypeImage } from '../../types';
+import { IMedia, INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -54,7 +54,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const { visitedUser, loadingProfile, loadingPosts, errors, onGoBack } = this.props;
+		const { visitedUser, loadingProfile, loadingPosts, onGoBack, navigation, getText } = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -76,9 +76,8 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
 				onGoBack={onGoBack}
-				errors={errors}
-				navigation={this.props.navigation}
-				getText={this.props.getText}
+				navigation={navigation}
+				getText={getText}
 			/>
 		);
 	}
@@ -101,9 +100,9 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
 			const newMedia = media
 				.slice(this.lastLoadedPhotoIndex, endIndex)
-				.map((mediaObject: IMediaProps, index: number) => ({
-					url: mediaObject.url,
-					type: mediaObject.type,
+				.map((obj: IMedia, index: number) => ({
+					hash: obj.hash,
+					type: obj.type,
 					index: this.lastLoadedPhotoIndex + index,
 				}));
 
@@ -117,18 +116,10 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onRefreshHandler = async () => {
-		const {
-			visitedUser,
-			loadingProfile,
-			loadingPosts,
-			getProfileForUser,
-			getPostsForUser,
-		} = this.props;
+		const { visitedUser, loadingProfile, loadingPosts, getUserProfile } = this.props;
 
 		if (!loadingProfile && !loadingPosts) {
-			const userId = visitedUser.userId;
-			await getProfileForUser(userId);
-			await getPostsForUser(userId);
+			await getUserProfile(visitedUser.userId);
 		}
 	};
 
@@ -142,7 +133,9 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		if (visitedUser.avatar.length > 0) {
 			const media = [
 				{
-					url: visitedUser.avatar,
+					hash: visitedUser.avatar,
+					size: 0,
+					extension: '',
 					type: MediaTypeImage,
 				},
 			];
@@ -153,14 +146,11 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 
 	private onViewMediaHandler = (index: number) => {
 		const {
-			visitedUser: { media, recentPosts },
+			visitedUser: { media },
 			onViewImage,
 		} = this.props;
 
-		const selectedMedia = media[index];
-		const post = recentPosts.find((p) => p.postId === selectedMedia.postId);
-
-		onViewImage(media, index, post);
+		onViewImage(media, index, media[index].postId);
 	};
 
 	private onIconPressHandler = (tab: string) => {

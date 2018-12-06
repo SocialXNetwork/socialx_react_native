@@ -2,8 +2,6 @@ import { IState } from './Types';
 
 const initialState: IState = {
 	offline: false,
-	canLoadMorePosts: true,
-	canLoadMoreFriendsPosts: true,
 	activity: {
 		visible: false,
 		title: '',
@@ -14,7 +12,9 @@ const initialState: IState = {
 		alpha: 0,
 		loader: false,
 	},
-	skeletonPost: null,
+	placeholderPost: null,
+	postingCommentId: '',
+	aliasesToRemove: [],
 };
 
 export default initialState;

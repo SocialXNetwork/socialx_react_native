@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SearchHeader, SearchTabResults } from '../../../components';
-import { INavigationProps, ITranslatedProps, IUserEntry } from '../../../types';
+import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './SearchScreen.style';
 
@@ -16,39 +16,37 @@ export const ComingSoon: React.SFC<{ message: string }> = ({ message }) => (
 );
 
 interface ISearchScreenViewProps extends INavigationProps, ITranslatedProps {
+	term: string;
+	results: string[];
+	suggestions: string[];
 	loadedTabs: number[];
-	searchTermValue: string;
-	results: IUserEntry[];
-	suggestions: IUserEntry[];
 	searching: boolean;
 	hasMoreResults: boolean;
 	onTabIndexChanged: (value: { i: number }) => void;
 	onSearchTermChange: (value: string) => void;
-	onResultPress: (userId: string) => void;
-	searchForMoreResults: () => void;
+	onResultPress: (alias: string) => void;
 }
 
 export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
-	navigation,
-	loadedTabs,
-	searchTermValue,
-	onTabIndexChanged,
-	onSearchTermChange,
+	term,
 	results,
 	suggestions,
-	hasMoreResults,
+	loadedTabs,
 	searching,
-	searchForMoreResults,
+	hasMoreResults,
 	onResultPress,
+	onTabIndexChanged,
+	onSearchTermChange,
+	navigation,
 	getText,
 }) => (
 	<View style={styles.container}>
 		<SearchHeader
-			navigation={navigation}
-			onSearchTermChange={onSearchTermChange}
-			searchTermValue={searchTermValue}
+			term={term}
 			cancel={true}
 			autoFocus={true}
+			navigation={navigation}
+			onSearchTermChange={onSearchTermChange}
 		/>
 		<Tabs
 			locked={false}
@@ -64,12 +62,11 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 			>
 				{loadedTabs.includes(0) && (
 					<SearchTabResults
-						searchTermValue={searchTermValue}
-						searchResults={results}
+						term={term}
+						results={results}
 						suggestions={suggestions}
 						searching={searching}
 						hasMoreResults={hasMoreResults}
-						searchForMoreResults={searchForMoreResults}
 						onResultPress={onResultPress}
 						getText={getText}
 					/>

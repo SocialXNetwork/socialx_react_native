@@ -1,123 +1,51 @@
-import {
-	ICreatePostInput,
-	IPostArrayData,
-	IPostReturnData,
-	IRemoveCommentInput,
-	IRemovePostInput,
-	IUnlikeCommentInput,
-	IUnlikePostInput,
-} from '@socialx/api-data';
+import { ICreatePostInput, IPostReturnData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
-import uuidv4 from 'uuid/v4';
+import uuid from 'uuid/v4';
 
-import { IWallPostPhotoOptimized } from '../../../types';
-import { getUserPosts } from '../../aggregations/posts';
+import { IOptimizedMedia } from '../../../types';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { setGlobal } from '../../ui/globals';
-import { getCurrentProfile, getProfilesByPosts } from '../profiles';
+import { loadCommentsAction } from '../comments';
+import { addPostsToProfile, getProfilesByPosts, removePostFromProfile } from '../profiles';
 import {
 	ActionTypes,
-	ICommentIdInput,
-	ICreateCommentAction,
-	ICreateCommentInput,
+	IAddCommentAction,
+	ICommentToPostInput,
 	ICreatePostAction,
-	IDateInput,
 	IGetPostByIdAction,
 	IGetPostByPathAction,
-	IGetPostsByUsernameAction,
-	IGetPublicPostsByDateAction,
-	ILikeCommentAction,
+	IGetUserPostsAction,
 	ILikePostAction,
+	ILikePostErrorAction,
 	ILoadMoreFriendsPostsAction,
 	ILoadMorePostsAction,
 	IPostIdInput,
+	IPostLikeInput,
 	IPostPathInput,
+	IRefreshFriendsPostsAction,
+	IRefreshGlobalPostsAction,
 	IRemoveCommentAction,
 	IRemovePostAction,
-	IResetFriendsFeedAction,
-	IResetGlobalFeedAction,
+	IReplaceCommentAction,
+	IReplaceCommentInput,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
-	ISyncGetPostsByUserAction,
-	ISyncGetPublicPostsByDateAction,
+	ISyncGetUserPostsAction,
 	ISyncLoadMoreFriendsPostsAction,
+	ISyncLoadMoreInput,
 	ISyncLoadMorePostsAction,
+	ISyncRefreshFriendsPostsAction,
+	ISyncRefreshGlobalPostsAction,
 	ISyncRemovePostAction,
-	IUnlikeCommentAction,
 	IUnlikePostAction,
-	IUsernameInput,
+	IUnlikePostErrorAction,
 } from './Types';
 
-const resetGlobalFeedAction: ActionCreator<IResetGlobalFeedAction> = () => ({
-	type: ActionTypes.RESET_GLOBAL_FEED,
-});
-
-export const resetGlobalFeedAndRefetch = (): IThunk => async (dispatch, getState, context) => {
-	dispatch(resetGlobalFeedAction());
-	await dispatch(loadMorePosts());
-};
-
-const resetFriendsFeedAction: ActionCreator<IResetFriendsFeedAction> = () => ({
-	type: ActionTypes.RESET_FRIENDS_FEED,
-});
-
-export const resetFriendsFeedAndRefetch = (): IThunk => async (dispatch, getState, context) => {
-	dispatch(resetFriendsFeedAction());
-	await dispatch(loadMoreFriendsPosts());
-};
-
-const getPostsByUsernameAction: ActionCreator<IGetPostsByUsernameAction> = (
-	getPostsByUsernameInput: IUsernameInput,
-) => ({
-	type: ActionTypes.GET_POSTS_BY_USER,
-	payload: getPostsByUsernameInput,
-});
-
-const syncGetPostsByUsernameAction: ActionCreator<ISyncGetPostsByUserAction> = (
-	posts: IPostArrayData,
-) => ({
-	type: ActionTypes.SYNC_GET_POSTS_BY_USER,
-	payload: posts,
-});
-
-export const getPostsByUsername = (getPostsByUsernameInput: IUsernameInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
-	try {
-		dispatch(getPostsByUsernameAction(getPostsByUsernameInput));
-		await dispatch(
-			beginActivity({
-				type: ActionTypes.GET_POSTS_BY_USER,
-				uuid: activityId,
-			}),
-		);
-		const { dataApi } = context;
-		const posts = await dataApi.posts.getPostsByUser(getPostsByUsernameInput);
-		await dispatch(setGlobal({ skeletonPost: null }));
-		dispatch(syncGetPostsByUsernameAction(posts));
-		await dispatch(getProfilesByPosts(posts));
-		await dispatch(getUserPosts(getPostsByUsernameInput));
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.GET_POSTS_BY_USER,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	} finally {
-		await dispatch(
-			endActivity({
-				uuid: activityId,
-			}),
-		);
-	}
-};
+/**
+ * 	Retrieves a post, given the id
+ */
 
 const getPostByIdAction: ActionCreator<IGetPostByIdAction> = (getPostByIdInput: IPostIdInput) => ({
 	type: ActionTypes.GET_POST_BY_ID,
@@ -129,25 +57,22 @@ const syncGetPostByIdAction: ActionCreator<ISyncGetPostByIdAction> = (post: IPos
 	payload: post,
 });
 
-export const getPostById = (getPostByIdInput: IPostIdInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
+export const getPostById = (input: IPostIdInput): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
+
 	try {
-		dispatch(getPostByIdAction(getPostByIdInput));
+		dispatch(getPostByIdAction(input));
 		await dispatch(beginActivity({ type: ActionTypes.GET_POST_BY_ID, uuid: activityId }));
-		const { dataApi } = context;
-		const post = await dataApi.posts.getPostById(getPostByIdInput);
+
+		const post = await context.dataApi.posts.getPostById(input);
 		dispatch(syncGetPostByIdAction(post));
-		await dispatch(getProfilesByPosts([post]));
+		dispatch(addPostsToProfile({ alias: post.owner.alias, postIds: [post.postId] }));
 	} catch (e) {
 		await dispatch(
 			setError({
 				type: ActionTypes.SYNC_GET_POST_BY_ID,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	} finally {
@@ -174,7 +99,7 @@ export const getPostByPath = (getPostPathInput: IPostPathInput): IThunk => async
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 	try {
 		dispatch(getPostByPathAction(getPostPathInput));
 		await dispatch(
@@ -192,7 +117,7 @@ export const getPostByPath = (getPostPathInput: IPostPathInput): IThunk => async
 			setError({
 				type: ActionTypes.GET_POST_BY_PATH,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	} finally {
@@ -200,21 +125,23 @@ export const getPostByPath = (getPostPathInput: IPostPathInput): IThunk => async
 	}
 };
 
+/**
+ * 	Retrieves a number of posts for the global feed
+ */
+
 const loadMorePostsAction: ActionCreator<ILoadMorePostsAction> = () => ({
 	type: ActionTypes.LOAD_MORE_POSTS,
 });
 
-const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (data: {
-	posts: IPostArrayData;
-	canLoadMore: boolean;
-	nextToken: string;
-}) => ({
+const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (
+	input: ISyncLoadMoreInput,
+) => ({
 	type: ActionTypes.SYNC_LOAD_MORE_POSTS,
-	payload: data,
+	payload: input,
 });
 
 export const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 
 	try {
 		const {
@@ -228,10 +155,10 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 		);
 		dispatch(loadMorePostsAction());
 
-		const { dataApi } = context;
-		console.log('current Token', { nextToken });
-		const data = await dataApi.posts.loadMorePosts({ nextToken, limit: 5 });
+		const data = await context.dataApi.posts.loadMorePosts({ nextToken, limit: 5 });
 		await dispatch(getProfilesByPosts(data.posts));
+
+		dispatch(loadCommentsAction(data.posts));
 		dispatch(syncLoadMorePostsAction(data));
 	} catch (e) {
 		await dispatch(
@@ -246,21 +173,23 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 	}
 };
 
+/**
+ * 	Retrieves a number of posts for the friends feed
+ */
+
 const loadMoreFriendsPostsAction: ActionCreator<ILoadMoreFriendsPostsAction> = () => ({
 	type: ActionTypes.LOAD_MORE_FRIENDS_POSTS,
 });
 
-const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAction> = (data: {
-	posts: IPostArrayData;
-	canLoadMore: boolean;
-	nextToken: string;
-}) => ({
+const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAction> = (
+	input: ISyncLoadMoreInput,
+) => ({
 	type: ActionTypes.SYNC_LOAD_MORE_FRIENDS_POSTS,
-	payload: data,
+	payload: input,
 });
 
 export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 
 	try {
 		const {
@@ -274,9 +203,10 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 		);
 		dispatch(loadMoreFriendsPostsAction());
 
-		const { dataApi } = context;
-		const data = await dataApi.posts.loadMoreFriendsPosts({ nextToken, limit: 5 });
+		const data = await context.dataApi.posts.loadMoreFriendsPosts({ nextToken, limit: 5 });
 		await dispatch(getProfilesByPosts(data.posts));
+
+		dispatch(loadCommentsAction(data.posts));
 		dispatch(syncLoadMoreFriendsPostsAction(data));
 	} catch (e) {
 		await dispatch(
@@ -291,191 +221,177 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 	}
 };
 
-const getPublicPostsByDateAction: ActionCreator<IGetPublicPostsByDateAction> = (
-	getPostByDateInput: IDateInput,
-) => ({
-	type: ActionTypes.GET_PUBLIC_POSTS_BY_DATE,
-	payload: getPostByDateInput,
+/**
+ * 	Retrieves all the posts of a user, given his alias, adds
+ * 	them to the store and dispatches an action to update
+ * 	the profile with an array of post ids
+ */
+
+export const getUserPostsAction: ActionCreator<IGetUserPostsAction> = (alias: string) => ({
+	type: ActionTypes.GET_USER_POSTS,
+	payload: alias,
 });
 
-const syncGetPublicPostsByDateAction: ActionCreator<ISyncGetPublicPostsByDateAction> = (
-	posts: IPostArrayData,
+export const syncGetUserPostsAction: ActionCreator<ISyncGetUserPostsAction> = (
+	posts: IPostReturnData[],
 ) => ({
-	type: ActionTypes.SYNC_GET_PUBLIC_POSTS_BY_DATE,
+	type: ActionTypes.SYNC_GET_USER_POSTS,
 	payload: posts,
 });
 
-export const getPublicPostsByDate = (getPostByDateInput: IDateInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	//
+export const getUserPosts = (alias: string): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
+
+	try {
+		dispatch(getUserPostsAction(alias));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.GET_USER_POSTS,
+				uuid: activityId,
+			}),
+		);
+		const posts = await context.dataApi.posts.getPostsByUser({ username: alias });
+		const postIds = posts.sort((x, y) => y.timestamp - x.timestamp).map((post) => post.postId);
+
+		await dispatch(getProfilesByPosts(posts));
+		dispatch(syncGetUserPostsAction(posts));
+		dispatch(addPostsToProfile({ alias, postIds }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.SYNC_GET_USER_POSTS,
+				error: e.message,
+				uuid: activityId,
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
 };
 
-const createPostAction: ActionCreator<ICreatePostAction> = (createPostInput: ICreatePostInput) => ({
-	type: ActionTypes.CREATE_POST,
-	payload: createPostInput,
-});
+/**
+ * 	Uploads the media to the IPFS, creates the post
+ * 	and fetches it based on the id
+ */
 
-// TODO @Jake move this
-interface IUploadResponse {
-	uploadId: string;
-	responseBody: string;
-}
+const createPostAction: ActionCreator<ICreatePostAction> = (input: ICreatePostInput) => ({
+	type: ActionTypes.CREATE_POST,
+	payload: input,
+});
 
 export const createPost = (
-	createPostInput: ICreatePostInput & { media: IWallPostPhotoOptimized[] },
+	input: ICreatePostInput & { media: IOptimizedMedia[] },
 ): IThunk => async (dispatch, getState, context) => {
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(createPostAction(createPostInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.CREATE_POST,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi, storageApi } = context;
+	const activityId = uuid();
 
-			if (createPostInput.media && createPostInput.media.length > 0) {
-				const { media, ...postRest } = createPostInput;
-				console.log('Media', media);
+	try {
+		dispatch(createPostAction(input));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.CREATE_POST,
+				uuid: activityId,
+			}),
+		);
+		const { dataApi, storageApi } = context;
 
-				const bootstrapStatus = async (uploadIdStarted: string) => {
-					await dispatch(
-						setUploadStatus({
-							path: '',
-							uploadId: uploadIdStarted,
-							progress: 0,
-							aborting: false,
-							done: false,
-							hash: '',
-						}),
-					);
-				};
+		let postId;
+		if (input.media && input.media.length > 0) {
+			const { media, ...postRest } = input;
 
-				const updateStatus = async ({
-					uploadId: uploadIdUpdated,
-					progress,
-				}: any & { uploadId: string }) => {
-					await dispatch(
-						setUploadStatus({
-							uploadId: uploadIdUpdated,
-							progress,
-							path: '',
-							aborting: false,
-							done: false,
-							hash: '',
-						}),
-					);
-				};
-
-				const uploadedFiles = await Promise.all(
-					// TODO: fix the media type
-					media.map((obj: IWallPostPhotoOptimized | any) =>
-						storageApi.uploadFile(
-							obj.type.includes('gif') || obj.type.includes('video')
-								? obj.sourceURL
-								: obj.contentOptimizedPath,
-							obj.type,
-							bootstrapStatus,
-							updateStatus,
-						),
-					),
+			const bootstrapStatus = async (uploadIdStarted: string) => {
+				await dispatch(
+					setUploadStatus({
+						path: '',
+						uploadId: uploadIdStarted,
+						progress: 0,
+						aborting: false,
+						done: false,
+						hash: '',
+					}),
 				);
+			};
 
-				uploadedFiles.forEach(async (resp) => {
-					await dispatch(
-						setUploadStatus({
-							uploadId: '',
-							progress: 100,
-							path: '',
-							aborting: false,
-							done: true,
-							hash: resp.Hash,
-						}),
-					);
-				});
+			const updateStatus = async ({
+				uploadId: uploadIdUpdated,
+				progress,
+			}: any & { uploadId: string }) => {
+				await dispatch(
+					setUploadStatus({
+						uploadId: uploadIdUpdated,
+						progress,
+						path: '',
+						aborting: false,
+						done: false,
+						hash: '',
+					}),
+				);
+			};
 
-				const finalMedia = uploadedFiles.map((resp, index) => ({
-					hash: resp.Hash,
-					extension: media[index].type,
-					size: media[index].size,
-					type: {
-						key: media[index].type,
-						name: media[index].type.indexOf('image') < 0 ? 'Video' : 'Photo',
-						category: 'Photography',
-					},
-				}));
-
-				const finalInput = { ...postRest, media: finalMedia };
-				await dataApi.posts.createPost(finalInput as any);
-			} else {
-				await dataApi.posts.createPost(createPostInput);
-			}
-
-			await dispatch(getPostsByUsername({ username: auth.alias }));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.CREATE_POST,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
+			const uploadedFiles = await Promise.all(
+				// TODO: fix the media type
+				media.map((obj: IOptimizedMedia | any) =>
+					storageApi.uploadFile(
+						obj.type.includes('gif') || obj.type.includes('video')
+							? obj.sourceURL
+							: obj.contentOptimizedPath,
+						obj.type,
+						bootstrapStatus,
+						updateStatus,
+					),
+				),
 			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
+
+			uploadedFiles.forEach(async (resp) => {
+				await dispatch(
+					setUploadStatus({
+						uploadId: '',
+						progress: 100,
+						path: '',
+						aborting: false,
+						done: true,
+						hash: resp.Hash,
+					}),
+				);
+			});
+
+			const finalMedia = uploadedFiles.map((resp, index) => ({
+				hash: resp.Hash,
+				extension: media[index].type,
+				size: media[index].size,
+				type: {
+					key: media[index].type,
+					name: media[index].type.indexOf('image') < 0 ? 'Video' : 'Photo',
+					category: media[index].type.indexOf('image') < 0 ? 'Videos' : 'Photography',
+				},
+			}));
+
+			const finalInput = { ...postRest, media: finalMedia };
+			postId = await dataApi.posts.createPost(finalInput as any);
+		} else {
+			postId = await dataApi.posts.createPost(input);
 		}
+		await dispatch(getPostById({ postId }));
+		await dispatch(setGlobal({ placeholderPost: null }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.CREATE_POST,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
-const likePostAction: ActionCreator<ILikePostAction> = (likePostInput: IPostIdInput) => ({
-	type: ActionTypes.LIKE_POST,
-	payload: likePostInput,
-});
+/**
+ * 	Deletes a post, given the id
+ */
 
-export const likePost = (likePostInput: IPostIdInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(likePostAction(likePostInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.LIKE_POST,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.posts.likePost(likePostInput);
-			await dispatch(getPostById(likePostInput));
-			await dispatch(getCurrentProfile());
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.LIKE_POST,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
-
-const removePostAction: ActionCreator<IRemovePostAction> = (removePostInput: IRemovePostInput) => ({
+const removePostAction: ActionCreator<IRemovePostAction> = (postId: string) => ({
 	type: ActionTypes.REMOVE_POST,
-	payload: removePostInput,
+	payload: postId,
 });
 
 const syncRemovePostAction: ActionCreator<ISyncRemovePostAction> = (postId: string) => ({
@@ -483,33 +399,30 @@ const syncRemovePostAction: ActionCreator<ISyncRemovePostAction> = (postId: stri
 	payload: postId,
 });
 
-export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
+export const removePost = (postId: string): IThunk => async (dispatch, getState, context) => {
+	const store = getState();
+	const auth = store.auth.database.gun;
+	const activityId = uuid();
+
+	if (auth) {
 		try {
-			dispatch(removePostAction(removePostInput));
+			dispatch(removePostAction(postId));
 			await dispatch(
 				beginActivity({
 					type: ActionTypes.REMOVE_POST,
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			await dataApi.posts.removePost(removePostInput);
-			dispatch(syncRemovePostAction(removePostInput.postId));
-			await dispatch(getUserPosts({ username: auth.alias }));
+
+			await context.dataApi.posts.removePost({ postId });
+			dispatch(removePostFromProfile({ postId, alias: auth.alias }));
+			dispatch(syncRemovePostAction(postId));
 		} catch (e) {
 			await dispatch(
 				setError({
 					type: ActionTypes.REMOVE_POST,
 					error: e.message,
-					uuid: uuidv4(),
+					uuid: uuid(),
 				}),
 			);
 		} finally {
@@ -518,254 +431,203 @@ export const removePost = (removePostInput: IRemovePostInput): IThunk => async (
 	}
 };
 
-const unlikePostAction: ActionCreator<IUnlikePostAction> = (unlikePostInput: IUnlikePostInput) => ({
+/**
+ * 	Optimistically creates a like, given the id of the post
+ * 	and the alias of the user, reverting the action if gun
+ * 	throws an error
+ */
+
+const likePostAction: ActionCreator<ILikePostAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.LIKE_POST,
+	payload: input,
+});
+
+const likePostErrorAction: ActionCreator<ILikePostErrorAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.LIKE_POST_ERROR,
+	payload: input,
+});
+
+export const likePost = (input: IPostLikeInput): IThunk => async (dispatch, getState, context) => {
+	const { postId } = input;
+
+	try {
+		dispatch(likePostAction(input));
+		await context.dataApi.posts.likePost({ postId });
+	} catch (e) {
+		dispatch(likePostErrorAction(input));
+		await dispatch(
+			setError({
+				type: ActionTypes.LIKE_POST,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	}
+};
+
+/**
+ * 	Optimistically removes a like, given the id of the post
+ * 	and the alias of the user, reverting the action if gun
+ * 	throws an error
+ */
+
+const unlikePostAction: ActionCreator<IUnlikePostAction> = (input: IPostLikeInput) => ({
 	type: ActionTypes.UNLIKE_POST,
-	payload: unlikePostInput,
+	payload: input,
 });
 
-export const unlikePost = (unlikePostInput: IUnlikePostInput): IThunk => async (
+const unlikePostErrorAction: ActionCreator<IUnlikePostErrorAction> = (input: IPostLikeInput) => ({
+	type: ActionTypes.UNLIKE_POST_ERROR,
+	payload: input,
+});
+
+export const unlikePost = (input: IPostLikeInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(unlikePostAction(unlikePostInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.UNLIKE_POST,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.posts.unlikePost(unlikePostInput);
-			await dispatch(getPostById(unlikePostInput));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.UNLIKE_POST,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+	const { postId } = input;
+
+	try {
+		dispatch(unlikePostAction(input));
+		await context.dataApi.posts.unlikePost({ postId });
+	} catch (e) {
+		dispatch(unlikePostErrorAction(input));
+		await dispatch(
+			setError({
+				type: ActionTypes.UNLIKE_POST,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
 	}
 };
 
-// <================= comments =================>
-const createCommentAction: ActionCreator<ICreateCommentAction> = (
-	createCommentInput: ICreateCommentInput,
+/**
+ * 	Called when pulling the global feed to refresh,
+ *  gets a new batch of posts and updates the store
+ */
+
+const refreshGlobalPostsAction: ActionCreator<IRefreshGlobalPostsAction> = () => ({
+	type: ActionTypes.REFRESH_GLOBAL_POSTS,
+});
+
+const syncRefreshGlobalPostsAction: ActionCreator<ISyncRefreshGlobalPostsAction> = (
+	input: ISyncLoadMoreInput,
 ) => ({
-	type: ActionTypes.CREATE_COMMENT,
-	payload: createCommentInput,
+	type: ActionTypes.SYNC_REFRESH_GLOBAL_POSTS,
+	payload: input,
 });
 
-export const createComment = (createCommentInput: ICreateCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(createCommentAction(createCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.CREATE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.createComment(createCommentInput);
-			await dispatch(getPostById({ postId: createCommentInput.postId }));
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.CREATE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+export const refreshGlobalPosts = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
+
+	try {
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.REFRESH_GLOBAL_POSTS,
+				uuid: activityId,
+			}),
+		);
+		dispatch(refreshGlobalPostsAction());
+
+		const data = await context.dataApi.posts.loadMorePosts({ limit: 5 });
+		await dispatch(getProfilesByPosts(data.posts));
+
+		dispatch(loadCommentsAction(data.posts));
+		dispatch(syncRefreshGlobalPostsAction(data));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.REFRESH_GLOBAL_POSTS,
+				error: e.message,
+				uuid: activityId,
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
-const likeCommentAction: ActionCreator<ILikeCommentAction> = (
-	likeCommentInput: ICommentIdInput,
+/**
+ * 	Called when pulling the friends feed to refresh,
+ *  gets a new batch of posts and updates the store
+ */
+
+const refreshFriendsPostsAction: ActionCreator<IRefreshFriendsPostsAction> = () => ({
+	type: ActionTypes.REFRESH_FRIENDS_POSTS,
+});
+
+const syncRefreshFriendsPostsAction: ActionCreator<ISyncRefreshFriendsPostsAction> = (
+	input: ISyncLoadMoreInput,
 ) => ({
-	type: ActionTypes.LIKE_COMMENT,
-	payload: likeCommentInput,
+	type: ActionTypes.SYNC_REFRESH_FRIENDS_POSTS,
+	payload: input,
 });
 
-export const likeComment = (likeCommentInput: ICommentIdInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const { commentId } = likeCommentInput;
+export const refreshFriendsPosts = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
 
-	const storeState = getState();
-	const parentGlobalPost = storeState.data.posts.global.posts.find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const parentFriendPost = storeState.data.posts.friends.posts.find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(likeCommentAction(likeCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.LIKE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.likeComment(likeCommentInput);
-			await dispatch(
-				getPostById({
-					postId: parentGlobalPost
-						? parentGlobalPost.postId
-						: parentFriendPost
-						? parentFriendPost.postId
-						: '',
-				}),
-			);
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.LIKE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+	try {
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.REFRESH_FRIENDS_POSTS,
+				uuid: activityId,
+			}),
+		);
+		dispatch(refreshFriendsPostsAction());
+
+		const data = await context.dataApi.posts.loadMoreFriendsPosts({ limit: 5 });
+		await dispatch(getProfilesByPosts(data.posts));
+
+		dispatch(loadCommentsAction(data.posts));
+		dispatch(syncRefreshFriendsPostsAction(data));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.REFRESH_FRIENDS_POSTS,
+				error: e.message,
+				uuid: activityId,
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
-const removeCommentAction: ActionCreator<IRemoveCommentAction> = (
-	removeCommentInput: IRemoveCommentInput,
+/**
+ * 	Called when creating a comment, adds the id to the
+ * 	comments array of the post
+ */
+
+export const addCommentToPostAction: ActionCreator<IAddCommentAction> = (
+	input: ICommentToPostInput,
+) => ({
+	type: ActionTypes.ADD_COMMENT,
+	payload: input,
+});
+
+/**
+ * 	Called when creating a comment, replaces the frontend
+ * 	generated comment id with the proper one generated
+ *  on the backend
+ */
+
+export const replaceCommentOnPostAction: ActionCreator<IReplaceCommentAction> = (
+	input: IReplaceCommentInput,
+) => ({
+	type: ActionTypes.REPLACE_COMMENT,
+	payload: input,
+});
+
+/**
+ * 	Called when deleting a comment, removes the id
+ *  from the comments array of the post
+ */
+
+export const removeCommentFromPostAction: ActionCreator<IRemoveCommentAction> = (
+	input: ICommentToPostInput,
 ) => ({
 	type: ActionTypes.REMOVE_COMMENT,
-	payload: removeCommentInput,
+	payload: input,
 });
-
-export const removeComment = (removeCommentInput: IRemoveCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const { commentId } = removeCommentInput;
-
-	const storeState = getState();
-	const parentGlobalPost = [...storeState.data.posts.global.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const parentFriendPost = [...storeState.data.posts.friends.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(removeCommentAction(removeCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.REMOVE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.removeComment(removeCommentInput);
-			await dispatch(
-				getPostById({
-					postId: parentGlobalPost
-						? parentGlobalPost.postId
-						: parentFriendPost
-						? parentFriendPost.postId
-						: '',
-				}),
-			);
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.REMOVE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};
-
-const unlikeCommentAction: ActionCreator<IUnlikeCommentAction> = (
-	unlikeCommentInput: IUnlikeCommentInput,
-) => ({
-	type: ActionTypes.UNLIKE_COMMENT,
-	payload: unlikeCommentInput,
-});
-
-export const unlikeComment = (unlikeCommentInput: IUnlikeCommentInput): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	const { commentId } = unlikeCommentInput;
-
-	const storeState = getState();
-	const parentGlobalPost = [...storeState.data.posts.global.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const parentFriendsPost = [...storeState.data.posts.friends.posts].find((post) =>
-		post.comments.find((comment) => comment.commentId === commentId) ? true : false,
-	);
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		const activityId = uuidv4();
-		try {
-			dispatch(unlikeCommentAction(unlikeCommentInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.UNLIKE_COMMENT,
-					uuid: activityId,
-				}),
-			);
-			const { dataApi } = context;
-			await dataApi.comments.unlikeComment(unlikeCommentInput);
-			await dispatch(
-				getPostById({
-					postId: parentGlobalPost
-						? parentGlobalPost.postId
-						: parentFriendsPost
-						? parentFriendsPost.postId
-						: '',
-				}),
-			);
-		} catch (e) {
-			await dispatch(
-				setError({
-					type: ActionTypes.UNLIKE_COMMENT,
-					error: e.message,
-					uuid: uuidv4(),
-				}),
-			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
-	}
-};

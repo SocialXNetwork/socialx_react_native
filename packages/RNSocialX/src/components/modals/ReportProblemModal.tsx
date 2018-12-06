@@ -13,9 +13,10 @@ import Modal from 'react-native-modal';
 import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import { PrimaryTextInput } from '..';
 import { OS_TYPES } from '../../environment/consts';
-import { ApplicationStyles, Colors, Icons } from '../../environment/theme';
+import { ApplicationStyles, Colors } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
+
 import style from './ReportProblemModal.style';
 
 interface IReportProblemModalProps extends ITranslatedProps {
