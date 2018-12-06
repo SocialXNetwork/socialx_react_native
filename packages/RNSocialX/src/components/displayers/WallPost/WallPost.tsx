@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
 	Animated,
 	Clipboard,
+	Dimensions,
 	Keyboard,
 	KeyboardAvoidingView,
 	Platform,
@@ -169,6 +170,8 @@ class Component extends React.Component<IProps, IState> {
 			send: sendCommentIconPosition,
 		};
 
+		const isPhoneXOrAbove = Platform.OS === OS_TYPES.IOS && Dimensions.get('screen').height > 800;
+
 		if (shapedPost || placeholderPost) {
 			return (
 				<View style={[styles.container, { opacity: creatingPost ? 0.5 : 1 }]}>
@@ -260,7 +263,7 @@ class Component extends React.Component<IProps, IState> {
 							</ScrollView>
 							<KeyboardAvoidingView
 								behavior="padding"
-								keyboardVerticalOffset={50}
+								keyboardVerticalOffset={isPhoneXOrAbove ? 50 : 30}
 								enabled={Platform.OS === OS_TYPES.IOS}
 							>
 								<CommentInput

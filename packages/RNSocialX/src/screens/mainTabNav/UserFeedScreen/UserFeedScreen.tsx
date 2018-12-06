@@ -12,9 +12,6 @@ import {
 	IWithUserFeedEnhancedData,
 } from '../../../enhancers/screens';
 
-const AVAILABLE_SCREEN_HEIGHT = Dimensions.get('window').height;
-const TOTAL_SCREEN_HEIGHT = Dimensions.get('screen').height;
-
 export interface IFeedProps {
 	shareMessage: string;
 	feedType: FEED_TYPES;

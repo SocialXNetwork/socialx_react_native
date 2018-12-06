@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
 import { OS_TYPES } from '../../../environment/consts';
-import { Sizes } from '../../../environment/theme';
 import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './UserFeedScreen.style';
@@ -39,12 +38,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 
 		const data = placeholderPostId ? [placeholderPostId, ...postIds] : postIds;
 		const isPhoneXOrAbove = Platform.OS === OS_TYPES.IOS && Dimensions.get('screen').height > 800;
-		const scrollOffset =
-			Platform.OS === OS_TYPES.Android
-				? Sizes.smartVerticalScale(-30)
-				: isPhoneXOrAbove
-				? Sizes.smartVerticalScale(70)
-				: Sizes.smartVerticalScale(50);
+		const scrollOffset = Platform.OS === OS_TYPES.Android ? -30 : isPhoneXOrAbove ? 70 : 50;
 
 		return (
 			<KeyboardAwareScrollView
