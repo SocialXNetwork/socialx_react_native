@@ -10,6 +10,7 @@ import {
 	FriendResponses,
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendRequestInput,
 	IClearFriendResponseInput,
 	ICreateProfileInput,
 	IRemoveFriendInput,
@@ -112,15 +113,15 @@ export const updateProfile = (
 /**
  * check if the current user is already friends with the targeted user
  */
-const checkIfProfileExists = (context: IContext, username: string) => {
+const checkIfUserFriendExists = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
 		profileHandles
 			.currentProfileFriendByUsername(context, username)
 			.once((currentFriendCallback: any) => {
 				if (currentFriendCallback) {
-					rej(new ApiError(`profile already exists`));
+					res(true);
 				}
-				res();
+				res(false);
 			}),
 	);
 };
@@ -165,9 +166,6 @@ const checkIfFriendResponseExists = (context: IContext, from: string) => {
 		profileHandles
 			.publicCurrentFriendResponseFrom(context, from)
 			.once((currentResponseCallback: any) => {
-				if (currentResponseCallback.err) {
-					res(false);
-				}
 				if (currentResponseCallback) {
 					res(true);
 				}
@@ -177,7 +175,42 @@ const checkIfFriendResponseExists = (context: IContext, from: string) => {
 };
 
 /**
+ * check if a user has a friend response from the current user
+ */
+const checkIfUserFriendResponseExists = (context: IContext, to: string) => {
+	const { owner } = getContextMeta(context);
+	return new Promise((res, rej) =>
+		profileHandles
+			.publicFriendResponseToFrom(context, to, owner)
+			.once((currentResponseCallback: any) => {
+				if (currentResponseCallback) {
+					res(true);
+				}
+				res(false);
+			}),
+	);
+};
+
+/**
+ * check if current user has friend requests from a user
+ */
+const checkIfUserHasRequest = (context: IContext, from: string) => {
+	const { owner } = getContextMeta(context);
+	return new Promise((res, rej) =>
+		profileHandles
+			.publicFriendRequestToFrom(context, owner, from)
+			.once((friendRequestCallback: any) => {
+				if (friendRequestCallback) {
+					res(true);
+				}
+				res(false);
+			}),
+	);
+};
+
+/**
  * check if the targeted user exists and get his profile reference then pass it to create profile
+ * @param username string containing the targeted user
  */
 const getTargetedUserAndCreateRequest = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
@@ -192,20 +225,22 @@ const getTargetedUserAndCreateRequest = (context: IContext, username: string) =>
 
 /**
  * create a friend record on the current user's private scope and put the friend's entire profile reference
- * @param
+ * @param username string containing the targeted user
  */
 const createFriendPrivateRecord = (context: IContext, username: string) => {
 	return new Promise((res, rej) => {
 		const { gun } = context;
 		const ref = gun.get(TABLES.PROFILES).get(username);
-		profileHandles
-			.currentProfileFriendByUsername(context, username)
-			.put(ref, (friendCreationCallback) => {
-				if (friendCreationCallback.err) {
-					rej(new ApiError(`something went wrong on creating the friend!`));
-				}
-				res();
-			});
+		profileHandles.currentProfileFriendByUsername(context, username).put({}, () => {
+			profileHandles
+				.currentProfileFriendByUsername(context, username)
+				.put(ref, (friendCreationCallback) => {
+					if (friendCreationCallback.err) {
+						rej(new ApiError(`something went wrong on creating the friend!`));
+					}
+					res();
+				});
+		});
 	});
 };
 
@@ -253,6 +288,23 @@ const removeFriendResponse = (context: IContext, username: string) => {
 			.erase(username, (removeResponseCallback) => {
 				if (removeResponseCallback.err) {
 					rej(new ApiError(`cannot remove friend response`));
+				}
+				res();
+			}),
+	);
+};
+
+/**
+ * remove a friend request from the targeted user from the current user
+ */
+const removeFriendRequest = (context: IContext, username: string) => {
+	const { owner } = getContextMeta(context);
+	return new Promise((res, rej) =>
+		profileHandles
+			.publicUserFriendRequests(context, username)
+			.erase(owner, (removeFriendRequestCallback) => {
+				if (removeFriendRequestCallback.err) {
+					rej(new ApiError('cannot remove friend request'));
 				}
 				res();
 			}),
@@ -368,8 +420,11 @@ export const addFriend = async (
 			);
 		}
 
-		await checkIfProfileExists(context, username);
-		console.log('current profile exists');
+		const friendExists = await checkIfUserFriendExists(context, username);
+		if (friendExists) {
+			return callback(new ApiError('friend already exists on the user friends'));
+		}
+
 		const friendRequestExists = await checkIfFriendRequestExists(
 			context,
 			username,
@@ -378,10 +433,17 @@ export const addFriend = async (
 		if (friendRequestExists) {
 			return callback(new ApiError('friend request already exists'));
 		}
+
+		const userHasRequest = await checkIfUserHasRequest(context, username);
+		if (userHasRequest) {
+			return callback(new ApiError('user has already sent current user a friend request'));
+		}
+
 		const alreadyFriends = await checkIfAlreadyFriends(context, username);
 		if (alreadyFriends) {
 			return callback(new ApiError('friend already exists'));
 		}
+
 		await getTargetedUserAndCreateRequest(context, username);
 		preLoadFriendRequests(context.gun, async () => {
 			await createFriendPrivateRecord(context, username);
@@ -450,8 +512,9 @@ export const acceptFriend = async (
 		if (!friendRequestExists) {
 			return callback(new ApiError('friend request does not exist'));
 		}
-		await checkIfProfileExists(context, username);
+
 		await removePendingAndProceed(context, username);
+
 		const profile: any = await getCurrentUserProfile(context);
 		await createFriendRequestResponse(
 			context,
@@ -461,6 +524,12 @@ export const acceptFriend = async (
 			profile.fullName,
 			profile.avatar,
 		);
+
+		const friendExists = await checkIfUserFriendExists(context, username);
+		if (friendExists) {
+			return callback(null);
+		}
+
 		await createFriendPrivateRecord(context, username);
 		callback(null);
 	} catch (e) {
@@ -508,11 +577,12 @@ export const rejectFriend = async (
 
 export const clearFriendResponse = async (
 	context: IContext,
-	{ username }: IClearFriendResponseInput,
+	args: IClearFriendResponseInput,
 	callback: IGunCallback<null>,
 ) => {
 	try {
 		const { account } = context;
+		const { username } = args;
 		if (!account.is) {
 			return callback(
 				new ApiError('no user logged in', {
@@ -524,8 +594,38 @@ export const clearFriendResponse = async (
 		if (!friendResponseExists) {
 			return callback(new ApiError('friend response does not exist'));
 		}
-		await checkIfProfileExists(context, username);
+
 		await removeFriendResponse(context, username);
+		callback(null);
+	} catch (e) {
+		callback(e);
+	}
+};
+
+export const clearFriendRequest = async (
+	context: IContext,
+	args: IClearFriendRequestInput,
+	callback: IGunCallback<null>,
+) => {
+	try {
+		const { owner } = getContextMeta(context);
+		const { account } = context;
+		const { username } = args;
+
+		if (!account.is) {
+			return callback(
+				new ApiError('no user logged in', {
+					initialRequestBody: { username },
+				}),
+			);
+		}
+		const friendRequestExists = await checkIfFriendRequestExists(context, username, owner);
+		if (!friendRequestExists) {
+			return callback(new ApiError('friend request does not exist to remove'));
+		}
+
+		await removeFriendRequest(context, username);
+		await removeFriendFromPrivateRecord(context, username);
 		callback(null);
 	} catch (e) {
 		callback(e);
@@ -540,4 +640,5 @@ export default {
 	acceptFriend,
 	rejectFriend,
 	clearFriendResponse,
+	clearFriendRequest,
 };

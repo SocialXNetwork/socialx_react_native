@@ -1,5 +1,5 @@
 export { default as reducer } from './reducer';
-export { IState, IAction, IProfiles, IFriends, IProfile, ISearchInput } from './Types';
+export { IState, IAction, IProfiles, IFriends, IProfile, ISearchInput, IAliasInput } from './Types';
 
 export {
 	IAcceptFriendInput,
@@ -11,6 +11,7 @@ export {
 	IUpdateProfileInput,
 	IRejectFriendInput,
 	IClearFriendResponseInput,
+	IClearFriendRequestInput,
 } from '@socialx/api-data';
 
 export {
@@ -27,4 +28,5 @@ export {
 	addPostsToProfile,
 	removePostFromProfile,
 	searchForProfiles,
+	undoRequest,
 } from './actions';

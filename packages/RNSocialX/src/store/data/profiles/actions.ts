@@ -21,7 +21,9 @@ import {
 	IAddFriendAction,
 	IAddPostsToProfileAction,
 	IAddPostsToProfileInput,
+	IAliasInput,
 	IClearFriendResponseAction,
+	IFriendInput,
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
 	IGetProfileByAliasAction,
@@ -40,6 +42,8 @@ import {
 	ISyncGetProfilesByPostsAction,
 	ISyncSearchForProfilesAction,
 	ISyncSearchInput,
+	ISyncUndoRequestAction,
+	IUndoRequestAction,
 	IUpdateProfileAction,
 } from './Types';
 
@@ -554,6 +558,44 @@ export const clearFriendResponse = (
 	}
 };
 
+const undoRequestAction: ActionCreator<IUndoRequestAction> = (input: IAliasInput) => ({
+	type: ActionTypes.UNDO_REQUEST,
+	payload: input,
+});
+
+const syncUndoRequestAction: ActionCreator<ISyncUndoRequestAction> = (input: IFriendInput) => ({
+	type: ActionTypes.SYNC_UNDO_REQUEST,
+	payload: input,
+});
+
+export const undoRequest = (input: IAliasInput): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+	const { alias: currentUserAlias } = getState().auth.database.gun!;
+
+	try {
+		dispatch(undoRequestAction(input));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.UNDO_REQUEST,
+				uuid: activityId,
+			}),
+		);
+
+		await context.dataApi.profiles.clearFriendRequest(input);
+		dispatch(syncUndoRequestAction({ currentUserAlias, alias: input.username }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.UNDO_REQUEST,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
+};
+
 /**
  * 	Dispatched when we create a new post or we fetch
  * 	some posts, adds it/them to the profile of the owner.
@@ -628,10 +670,7 @@ export const searchForProfiles = (input: ISearchInput): IThunk => async (
 				}),
 			);
 
-			const profiles = await context.dataApi.profiles.searchByFullName({
-				textSearch: input.term,
-				maxResults: input.limit,
-			});
+			const profiles = await context.dataApi.profiles.searchByFullName(input);
 			const aliases = profiles.map((profile) => profile.alias);
 
 			dispatch(syncSearchForProfilesAction({ profiles, aliases }));

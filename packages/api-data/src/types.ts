@@ -104,7 +104,7 @@ export interface IGunInstance {
 	encrypt: (data: IGunInstance | object, callback?: (data: IGunSetterCallback) => void) => void;
 	erase: (path: string, callback?: (data: IGunSetterCallback) => void) => IGunInstance;
 	open: <T>(callback: (data: T) => void, opts?: any) => IGunInstance;
-	find: <T>(query: object, callback: (data: T, key: string) => void) => IGunInstance;
+	find: <T>(term: string, callback: (data: T, key: string) => void) => void;
 	findFriendsSuggestions: <T>(
 		username: string,
 		friendsArray: object,

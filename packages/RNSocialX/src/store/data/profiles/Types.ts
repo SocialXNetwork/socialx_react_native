@@ -1,6 +1,7 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendRequestInput,
 	IClearFriendResponseInput,
 	IFriendData,
 	IPostArrayData,
@@ -52,21 +53,36 @@ export interface ISyncSearchInput {
 	aliases: string[];
 }
 
+export interface IAliasInput {
+	username: string;
+}
+
+export interface IFriendInput {
+	currentUserAlias: string;
+	alias: string;
+}
+
 export const enum ActionTypes {
-	GET_CURRENT_PROFILE = 'data/profiles/GET_CURRENT_PROFILE',
-	SYNC_GET_CURRENT_PROFILE = 'data/profiles/SYNC_GET_CURRENT_PROFILE',
 	GET_PROFILE_BY_ALIAS = 'data/profiles/GET_PROFILE_BY_ALIAS',
 	SYNC_GET_PROFILE_BY_ALIAS = 'data/profiles/SYNC_GET_PROFILE_BY_ALIAS',
-	GET_PROFILES_BY_POSTS = 'data/profiles/GET_PROFILES_BY_POSTS',
-	SYNC_GET_PROFILES_BY_POSTS = 'data/profiles/SYNC_GET_PROFILES_BY_POSTS',
-	GET_CURRENT_FRIENDS = 'data/profiles/GET_CURRENT_FRIENDS',
-	SYNC_GET_CURRENT_FRIENDS = 'data/profiles/SYNC_GET_CURRENT_FRIENDS',
-	UPDATE_PROFILE = 'data/profiles/UPDATE_PROFILE',
-	ADD_FRIEND = 'data/profiles/ADD_FRIEND',
-	REMOVE_FRIEND = 'data/profiles/REMOVE_FRIEND',
-	ACCEPT_FRIEND = 'data/profiles/ACCEPT_FRIEND',
-	REJECT_FRIEND = 'data/profiles/REJECT_FRIEND',
-	CLEAR_FRIEND_RESPONSE = 'data/profiles/CLEAR_FRIEND_RESPONSE',
+	GET_PROFILE_BY_USERNAME = 'app/data/profiles/GET_PROFILE_BY_USERNAME',
+	SYNC_GET_PROFILE_BY_USERNAME = 'app/data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
+	GET_PROFILES_BY_USERNAMES = 'app/data/profiles/GET_PROFILES_BY_USERNAMES',
+	SYNC_GET_PROFILES_BY_USERNAMES = 'app/data/profiles/SYNC_GET_PROFILES_BY_USERNAMES',
+	GET_CURRENT_PROFILE = 'app/data/profiles/GET_CURRENT_PROFILE',
+	SYNC_GET_CURRENT_PROFILE = 'app/data/profiles/SYNC_GET_CURRENT_PROFILE',
+	UPDATE_PROFILE = 'app/data/profiles/UPDATE_PROFILE',
+	GET_PROFILES_BY_POSTS = 'app/data/profiles/GET_PROFILES_BY_POSTS',
+	SYNC_GET_PROFILES_BY_POSTS = 'app/data/profiles/SYNC_GET_PROFILES_BY_POSTS',
+	GET_CURRENT_FRIENDS = 'app/data/profiles/GET_CURRENT_FRIENDS',
+	SYNC_GET_CURRENT_FRIENDS = 'app/data/profiles/SYNC_GET_CURRENT_FRIENDS',
+	ADD_FRIEND = 'app/data/profiles/ADD_FRIEND',
+	REMOVE_FRIEND = 'app/data/profiles/REMOVE_FRIEND',
+	ACCEPT_FRIEND = 'app/data/profiles/ACCEPT_FRIEND',
+	REJECT_FRIEND = 'app/data/profiles/REJECT_FRIEND',
+	CLEAR_FRIEND_RESPONSE = 'app/data/profiles/CLEAR_FRIEND_RESPONSE',
+	UNDO_REQUEST = 'app/data/profiles/UNDO_REQUEST',
+	SYNC_UNDO_REQUEST = 'app/data/profiles/SYNC_UNDO_REQUEST',
 	ADD_POSTS_TO_PROFILE = 'data/profiles/ADD_POSTS_TO_PROFILE',
 	REMOVE_POST_FROM_PROFILE = 'data/profiles/REMOVE_POST_FROM_PROFILE',
 	SEARCH_FOR_PROFILES = 'data/profiles/SEARCH_FOR_PROFILES',
@@ -161,9 +177,20 @@ export interface ISyncSearchForProfilesAction extends Action {
 	payload: ISyncSearchInput;
 }
 
+export interface IUndoRequestAction extends Action {
+	type: ActionTypes.UNDO_REQUEST;
+	payload: IAliasInput;
+}
+
+export interface ISyncUndoRequestAction extends Action {
+	type: ActionTypes.SYNC_UNDO_REQUEST;
+	payload: IFriendInput;
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
+
 export type IAction =
 	| IResetStoreAction
 	| IGetProfileByAliasAction
@@ -180,6 +207,8 @@ export type IAction =
 	| IAcceptFriendAction
 	| IRejectFriendAction
 	| IClearFriendResponseAction
+	| IUndoRequestAction
+	| ISyncUndoRequestAction
 	| IAddPostsToProfileAction
 	| IRemovePostFromProfileAction
 	| ISearchForProfilesAction

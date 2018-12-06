@@ -186,7 +186,7 @@ export default function(context: IContext) {
 				canLoadMore: boolean;
 			}>((resolve, reject) => {
 				getters.getPostsTimestampIds(context, loadMorePostsInput, async (err, res) => {
-					if (res) {
+					if (res && res.postIds.length > 0) {
 						const { nextToken, postIds, canLoadMore } = res;
 
 						const posts = await Promise.all(postIds.map((postId) => this.getPostById({ postId })));
@@ -210,7 +210,7 @@ export default function(context: IContext) {
 				canLoadMore: boolean;
 			}>((resolve, reject) => {
 				getters.getFriendsPostsTimestampIds(context, loadMorePostsInput, async (err, res) => {
-					if (res) {
+					if (res && res.postIds.length > 0) {
 						const { nextToken, postIds, canLoadMore } = res;
 
 						const posts = await Promise.all(postIds.map((postId) => this.getPostById({ postId })));

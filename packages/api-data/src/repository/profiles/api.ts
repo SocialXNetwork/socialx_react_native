@@ -6,6 +6,7 @@ import setters from './setters';
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendRequestInput,
 	IClearFriendResponseInput,
 	ICreateProfileInput,
 	IFindFriendsSuggestionsInput,
@@ -265,8 +266,13 @@ export default (context: IContext) => ({
 			);
 		});
 	},
+	clearFriendRequest: async (clearRequestInput: IClearFriendRequestInput) => {
+		return new Promise<null>((resolve, reject) => {
+			setters.clearFriendRequest(context, clearRequestInput, resolveCallback(resolve, reject));
+		});
+	},
 	getCurrentProfileFriends: (): Promise<IFriendData[]> =>
-		new Promise((resolve, reject) => {
+		new Promise((resolve) => {
 			getters.getCurrentProfileFriends(context, async (err, friends) => {
 				if (friends) {
 					const finalFriends = await Promise.all(
@@ -279,14 +285,14 @@ export default (context: IContext) => ({
 			});
 		}),
 	searchByFullName: ({
-		textSearch,
-		maxResults = 10,
+		term,
+		limit = 10,
 	}: ISearchProfilesByFullNameInput): Promise<IProfileData[]> =>
-		new Promise((resolve, reject) => {
-			if (!textSearch || !textSearch.length || typeof textSearch !== 'string') {
+		new Promise((resolve) => {
+			if (!term || !term.length || typeof term !== 'string') {
 				resolve([]);
 			}
-			getters.findProfilesByFullName(context, { textSearch, maxResults }, async (err, result) => {
+			getters.findProfilesByFullName(context, { term, limit }, async (err, result) => {
 				if (result) {
 					const finalProfiles = await Promise.all(
 						result.map((user) => getters.asyncFriendWithMutualStatus(context, user, true)),
@@ -297,10 +303,8 @@ export default (context: IContext) => ({
 				}
 			});
 		}),
-	findFriendsSuggestions: ({
-		maxResults = 10,
-	}: IFindFriendsSuggestionsInput): Promise<IProfileData[]> =>
+	findFriendsSuggestions: ({ limit = 10 }: IFindFriendsSuggestionsInput): Promise<IProfileData[]> =>
 		new Promise((resolve, reject) =>
-			getters.findFriendsSuggestions(context, { maxResults }, resolveCallback(resolve, reject)),
+			getters.findFriendsSuggestions(context, { limit }, resolveCallback(resolve, reject)),
 		),
 });

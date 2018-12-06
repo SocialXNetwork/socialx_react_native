@@ -76,8 +76,13 @@ export const currentUserOnPrivateProfilesFriends = (context: IContext, userObjec
 // friend requests records
 
 export const publicFriendRequestToFrom = (context: IContext, to: string, from: string) => {
-	const { gun, account } = context;
+	const { gun } = context;
 	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${to}.${from}`);
+};
+
+export const publicUserFriendRequests = (context: IContext, username: string) => {
+	const { gun } = context;
+	return gun.path(`${TABLES.NOTIFICATIONS}.${TABLE_ENUMS.FRIEND_REQUESTS}.${username}`);
 };
 
 export const publicCurrentFriendRequestFromUsername = (context: IContext, username: string) => {

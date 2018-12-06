@@ -1,3 +1,4 @@
+import { FRIEND_TYPES } from '@socialx/api-data';
 import { assertNever } from '../../helpers';
 import initialState from './initialState';
 import { ActionTypes, IAction, IState } from './Types';
@@ -123,6 +124,29 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 		case ActionTypes.REJECT_FRIEND: {
 			return state;
+		}
+
+		case ActionTypes.UNDO_REQUEST: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_UNDO_REQUEST: {
+			const { currentUserAlias, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						status: FRIEND_TYPES.NOT_FRIEND,
+					},
+				},
+				friends: {
+					...state.friends,
+					[currentUserAlias]: state.friends[currentUserAlias].filter((friend) => friend !== alias),
+				},
+			};
 		}
 
 		case ActionTypes.CLEAR_FRIEND_RESPONSE: {

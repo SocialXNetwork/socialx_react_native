@@ -26,12 +26,12 @@ export interface IProfileData {
 }
 
 export interface ISearchProfilesByFullNameInput {
-	textSearch: string;
-	maxResults?: number;
+	term: string;
+	limit?: number;
 }
 
 export interface IFindFriendsSuggestionsInput {
-	maxResults?: number;
+	limit?: number;
 }
 
 export interface ICreateProfileInput {
@@ -73,6 +73,10 @@ export interface IAcceptFriendInput {
 }
 
 export interface IClearFriendResponseInput {
+	username: string;
+}
+
+export interface IClearFriendRequestInput {
 	username: string;
 }
 

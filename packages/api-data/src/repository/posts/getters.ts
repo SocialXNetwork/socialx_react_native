@@ -231,7 +231,7 @@ export const getPostById = (
 
 			getPostByPath(context, { postPath }, callback);
 		},
-		{ wait: 500 },
+		{ wait: 1000 },
 	);
 };
 
@@ -254,7 +254,7 @@ const getPostsTimestampIds = (
 	const mainRunner = () => {
 		postHandles.postMetaByIdTimestampRecord(context).once(
 			(itemsCallback: { [prop: string]: any }) => {
-				if (!itemsCallback) {
+				if (!itemsCallback || Object.keys(itemsCallback).length < 2) {
 					return callback(null, undefined);
 				}
 				const { _, ...rest } = itemsCallback;
@@ -347,7 +347,7 @@ const getFriendsPostsTimestampIds = (
 	const loadLimitedPosts = (friends: string[]) => {
 		postHandles.postMetaByIdTimestampRecord(context).once(
 			(itemsCallback: { [prop: string]: any }) => {
-				if (!itemsCallback) {
+				if (!itemsCallback || Object.keys(itemsCallback).length < 2) {
 					return callback(null, undefined);
 				}
 				const { _, ...rest } = itemsCallback;

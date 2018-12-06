@@ -11,7 +11,7 @@ import {
 	getProfileByAlias,
 	IAcceptFriendInput,
 	IAddFriendInput,
-	IClearFriendResponseInput,
+	IAliasInput,
 	IFriends,
 	IProfiles,
 	IRejectFriendInput,
@@ -21,6 +21,7 @@ import {
 	rejectFriend,
 	removeFriend,
 	searchForProfiles,
+	undoRequest,
 	updateCurrentProfile,
 } from '../../../store/data/profiles';
 import { IThunkDispatch } from '../../../store/types';
@@ -40,7 +41,7 @@ interface IActionProps {
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
-	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) => void;
+	undoRequest: (input: IAliasInput) => void;
 	searchForProfiles: (input: ISearchInput) => void;
 }
 
@@ -82,17 +83,13 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
 	getCurrentFriends: () => dispatch(getCurrentFriends()),
 	getProfileByAlias: (alias: string) => dispatch(getProfileByAlias(alias)),
-	addFriend: (addFriendInput: IAddFriendInput) => dispatch(addFriend(addFriendInput)),
-	removeFriend: (removeFriendInput: IRemoveFriendInput) =>
-		dispatch(removeFriend(removeFriendInput)),
-	acceptFriend: (acceptFriendInput: IAcceptFriendInput) =>
-		dispatch(acceptFriend(acceptFriendInput)),
-	rejectFriend: (rejectFriendInput: IRejectFriendInput) =>
-		dispatch(rejectFriend(rejectFriendInput)),
-	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) =>
-		dispatch(updateCurrentProfile(updateProfileInput)),
-	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) =>
-		dispatch(clearFriendResponse(clearFriendResponseInput)),
+	updateCurrentProfile: (input: IUpdateProfileInput) => dispatch(updateCurrentProfile(input)),
+	addFriend: (input: IAddFriendInput) => dispatch(addFriend(input)),
+	removeFriend: (input: IRemoveFriendInput) => dispatch(removeFriend(input)),
+	acceptFriend: (input: IAcceptFriendInput) => dispatch(acceptFriend(input)),
+	rejectFriend: (input: IRejectFriendInput) => dispatch(rejectFriend(input)),
+	clearFriendResponse: (input: IAliasInput) => dispatch(clearFriendResponse(input)),
+	undoRequest: (input: IAliasInput) => dispatch(undoRequest(input)),
 	searchForProfiles: (input: ISearchInput) => dispatch(searchForProfiles(input)),
 });
 
