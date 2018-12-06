@@ -1,36 +1,24 @@
-/**
- * TODO list:
- * 1. Props data: results, topSuggestions, hasMoreResults
- * 2. Props actions: searchForMoreResults
- * 3. LATER - add more enhancers to support other tabs: People, Tags, Places
- * 4. Talk with Jake to simplify this
- */
-
+import { sampleSize } from 'lodash';
 import * as React from 'react';
 
-import { ITranslatedProps, IUserEntry, SearchTabs } from '../../../types';
+import { ITranslatedProps, SearchTabs } from '../../../types';
 
-import { IPostReturnData } from '../../../store/aggregations/posts';
-import { ActionTypes } from '../../../store/aggregations/profiles/Types';
-import { WithAggregations } from '../../connectors/aggregations/WithAggregations';
-import { WithConfig } from '../../connectors/app/WithConfig';
+import { ActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { getActivity } from '../../helpers';
+import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithSearchEnhancedData {
-	results: IUserEntry[];
-	suggestions: IUserEntry[];
+	results: string[];
+	suggestions: string[];
 	searching: boolean;
 	hasMoreResults: boolean;
-	userPosts: { [owner: string]: IPostReturnData[] };
 }
 
 export interface IWithSearchEnhancedActions extends ITranslatedProps {
 	search: (term: string, tab: SearchTabs) => void;
-	searchForMoreResults: () => void;
-	findFriendsSuggestions: () => void;
-	getPostsForUser: (userName: string) => void;
 }
 
 interface IWithSearchEnhancedProps {
@@ -47,74 +35,43 @@ interface IWithSearchState {}
 export class WithSearch extends React.Component<IWithSearchProps, IWithSearchState> {
 	render() {
 		return (
-			<WithConfig>
-				{({ appConfig }) => (
-					<WithI18n>
-						{({ getText }) => (
-							<WithActivities>
-								{({ activities }) => (
-									<WithAggregations>
-										{(aggregations) =>
-											this.props.children({
+			<WithI18n>
+				{({ getText }) => (
+					<WithActivities>
+						{({ activities }) => (
+							<WithProfiles>
+								{({ profiles, results, searchForProfiles }) => (
+									<WithCurrentUser>
+										{({ currentUser }) => {
+											const aliases = Object.keys(profiles).filter(
+												(key) => key !== currentUser.userName,
+											);
+
+											return this.props.children({
 												data: {
 													hasMoreResults: false,
-													searching: getActivity(
-														activities,
-														ActionTypes.SEARCH_PROFILES_BY_FULLNAME,
-													),
-													results: aggregations.searchResults.map((profile) => ({
-														userId: profile.alias,
-														fullName: profile.fullName,
-														userName: profile.alias,
-														location: '',
-														avatar:
-															profile.avatar.length > 0
-																			? appConfig.ipfsConfig.ipfs_URL +
-																		  profile.avatar  // tslint:disable-line
-																: '',
-														relationship: profile.status,
-													})),
-													suggestions: aggregations.friendsSuggestions.map((profile) => ({
-														userId: profile.alias,
-														fullName: profile.fullName,
-														userName: profile.alias,
-														location: '',
-														avatar:
-															profile.avatar.length > 0
-																			? appConfig.ipfsConfig.ipfs_URL +
-																			  profile.avatar // tslint:disable-line
-																: '',
-														relationship: profile.status,
-													})),
-													userPosts: aggregations.userPosts,
+													searching: getActivity(activities, ActionTypes.SEARCH_FOR_PROFILES),
+													results,
+													suggestions: sampleSize(aliases, 5),
 												},
 												actions: {
-													search: async (term: string, tab: SearchTabs) => {
-														await aggregations.searchProfilesByFullName({
+													search: async (term: string) => {
+														await searchForProfiles({
 															term,
-															maxResults: 10,
+															limit: 10,
 														});
 													},
-													findFriendsSuggestions: async () => {
-														await aggregations.findFriendsSuggestions({
-															maxResults: 10,
-														});
-													},
-													getPostsForUser: async (username: string) => {
-														await aggregations.getUserPosts({ username });
-													},
-													searchForMoreResults: () => undefined,
 													getText,
 												},
-											})
-										}
-									</WithAggregations>
+											});
+										}}
+									</WithCurrentUser>
 								)}
-							</WithActivities>
+							</WithProfiles>
 						)}
-					</WithI18n>
+					</WithActivities>
 				)}
-			</WithConfig>
+			</WithI18n>
 		);
 	}
 }

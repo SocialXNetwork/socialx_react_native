@@ -1,5 +1,5 @@
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { debounce } from 'throttle-debounce';
 
 import {
 	IWithWalletAccountEnhancedActions,
@@ -10,7 +10,7 @@ import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { WalletAccountScreenView } from './WalletAccount.view';
 
-const SEARCH_DEBOUNCE_TIME_MS = 300;
+const SEARCH_DEBOUNCE_TIME = 500;
 
 type IWalletAccountScreenProps = INavigationProps &
 	IWithWalletAccountEnhancedActions &
@@ -25,9 +25,9 @@ class Screen extends React.Component<IWalletAccountScreenProps, IWalletAccountSc
 		accountName: '',
 	};
 
-	private checkInputForValidity = debounce(SEARCH_DEBOUNCE_TIME_MS, (accountName: string) => {
+	private checkInputForValidity = debounce((accountName: string) => {
 		this.props.checkForValidInput(accountName);
-	});
+	}, SEARCH_DEBOUNCE_TIME);
 
 	public render() {
 		return (

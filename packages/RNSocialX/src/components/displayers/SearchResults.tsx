@@ -7,44 +7,55 @@ import { ITranslatedProps } from '../../types';
 import styles from './SearchResults.style';
 
 interface ISearchResultsProps extends ITranslatedProps {
+	term: string;
+	results: string[];
 	searching: boolean;
-	searchResults: string[];
-	onResultPress: () => void;
-	onLoadMore: () => void;
 	hasMore: boolean;
+	onResultPress: (alias: string) => void;
+	onLoadMore: () => void;
 }
 
-const SearchingLoader: React.SFC<ITranslatedProps> = ({ getText }) => (
+interface ISearchIndicator extends ITranslatedProps {
+	term: string;
+}
+
+const SearchIndicator: React.SFC<ISearchIndicator> = ({ term, getText }) => (
 	<View style={styles.searchContainer}>
 		<ActivityIndicator size="small" style={styles.spinner} />
-		<Text style={styles.text}>{getText('search.loader.text')}</Text>
+		<Text style={styles.text}>{`${getText('search.indicator')} "${term}"`}</Text>
 	</View>
 );
 
-const SearchNoResults: React.SFC<ITranslatedProps> = ({ getText }) => (
+const NoResults: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.textContainer}>
-		<Text style={styles.text}>{getText('search.no.results.text')}</Text>
+		<Text style={styles.text}>{getText('search.no.results')}</Text>
 	</View>
 );
 
 export const SearchResults: React.SFC<ISearchResultsProps> = ({
+	term,
 	searching,
-	searchResults,
+	results,
 	onResultPress,
 	onLoadMore,
 	hasMore,
 	getText,
-}) => (
-	<View style={styles.container}>
-		{searching && <SearchingLoader getText={getText} />}
-		{!searching && searchResults.length === 0 && <SearchNoResults getText={getText} />}
-		{!searching && searchResults.length > 0 && (
-			<UserEntries
-				entryIds={searchResults}
-				onEntryPress={onResultPress}
-				onLoadMore={onLoadMore}
-				hasMore={hasMore}
-			/>
-		)}
-	</View>
-);
+}) => {
+	const empty = !searching && term.length > 0 && results.length === 0;
+	const found = !searching && results.length > 0;
+
+	return (
+		<View style={styles.container}>
+			{searching && <SearchIndicator term={term} getText={getText} />}
+			{empty && <NoResults getText={getText} />}
+			{found && (
+				<UserEntries
+					aliases={results}
+					onEntryPress={onResultPress}
+					onLoadMore={onLoadMore}
+					hasMore={hasMore}
+				/>
+			)}
+		</View>
+	);
+};

@@ -462,22 +462,24 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onShowCommentOptionsHandler = (comment: IComment) => {
-		const { post, showOptionsMenu, onRemoveComment, getText } = this.props;
+		const { post, currentUser, showOptionsMenu, onRemoveComment, getText } = this.props;
 
-		const menuItems = [
+		const baseItems = [
 			{
 				label: getText('comments.screen.advanced.menu.copy'),
 				icon: 'ios-copy',
 				actionHandler: () => Clipboard.setString(comment.text),
 			},
-			{
-				label: getText('comments.screen.advanced.menu.delete'),
-				icon: 'ios-trash',
-				actionHandler: () => onRemoveComment(comment.commentId, post.postId),
-			},
 		];
+		const deleteItem = {
+			label: getText('comments.screen.advanced.menu.delete'),
+			icon: 'ios-trash',
+			actionHandler: () => onRemoveComment(comment.commentId, post.postId),
+		};
 
-		showOptionsMenu(menuItems);
+		const items =
+			comment.user.userId === currentUser.userId ? [...baseItems, deleteItem] : baseItems;
+		showOptionsMenu(items);
 	};
 
 	private onReportAProblemHandler = async (

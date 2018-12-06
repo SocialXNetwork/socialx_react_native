@@ -16,9 +16,11 @@ import {
 	IProfiles,
 	IRejectFriendInput,
 	IRemoveFriendInput,
+	ISearchInput,
 	IUpdateProfileInput,
 	rejectFriend,
 	removeFriend,
+	searchForProfiles,
 	updateCurrentProfile,
 } from '../../../store/data/profiles';
 import { IThunkDispatch } from '../../../store/types';
@@ -26,6 +28,7 @@ import { IThunkDispatch } from '../../../store/types';
 interface IDataProps {
 	profiles: IProfiles;
 	friends: IFriends;
+	results: string[];
 }
 
 interface IActionProps {
@@ -38,6 +41,7 @@ interface IActionProps {
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
 	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) => void;
+	searchForProfiles: (input: ISearchInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -63,9 +67,15 @@ const selectFriends = createSelector(
 	(friends) => friends,
 );
 
+const selectResults = createSelector(
+	(state: IApplicationState) => state.data.profiles.results,
+	(results) => results,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
 	friends: selectFriends(state),
+	results: selectResults(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -83,6 +93,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(updateCurrentProfile(updateProfileInput)),
 	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) =>
 		dispatch(clearFriendResponse(clearFriendResponseInput)),
+	searchForProfiles: (input: ISearchInput) => dispatch(searchForProfiles(input)),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(

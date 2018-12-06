@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { debounce } from 'throttle-debounce';
 
 import { getTextMock } from '../../../../src/mocks';
 import { WalletAccountScreenView } from '../../../../src/screens/walletStack/WalletAccount.view';
@@ -12,14 +12,14 @@ class WalletAccountStory extends React.Component {
 		isValid: undefined,
 	};
 
-	private checkInputForValidity = debounce(300, (accountName: string) => {
+	private checkInputForValidity = debounce((accountName: string) => {
 		// Action to check for validity
 		if (accountName === 'validaccount') {
 			this.setState({ isValid: true });
 		} else {
 			this.setState({ isValid: false });
 		}
-	});
+	}, 500);
 
 	public render() {
 		return (

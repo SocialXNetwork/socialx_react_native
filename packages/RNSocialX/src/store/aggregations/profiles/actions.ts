@@ -1,4 +1,4 @@
-import { IFindFriendsSuggestionsInput, IProfileData } from '@socialx/api-data';
+import { IFindFriendsSuggestionsInput, IFriendData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
@@ -25,7 +25,7 @@ export const searchProfilesByFullNameAction: ActionCreator<ISearchProfilesByFull
 
 export const syncSearchProfilesByFullNameAction: ActionCreator<
 	ISyncSearchProfilesByFullNameAction
-> = (profiles: IProfileData[]) => ({
+> = (profiles: IFriendData[]) => ({
 	type: ActionTypes.SYNC_SEARCH_PROFILES_BY_FULLNAME,
 	payload: profiles,
 });

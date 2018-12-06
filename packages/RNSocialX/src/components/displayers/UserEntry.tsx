@@ -17,58 +17,64 @@ import { IApplicationState, selectProfile } from '../../store/selectors';
 import styles from './UserEntry.style';
 
 interface IUserEntryProps {
-	id: string;
-	currentUserId: string;
-	profile: IProfile;
-	onPress: (alias: string) => void;
+	alias: string;
+	onPress: () => void;
 }
 
-type IProps = IUserEntryProps & IWithFriendsEnhancedData;
+interface IProps extends IUserEntryProps, IWithFriendsEnhancedData {
+	profile: IProfile;
+	currentUserAlias: string;
+}
 
-const Component: React.SFC<IProps> = ({ profile, status, currentUserId, onPress }) => (
-	<TouchableOpacity activeOpacity={1} onPress={() => onPress(profile.alias)} style={styles.card}>
-		<View style={styles.details}>
-			<AvatarImage image={profile.avatar} style={styles.avatar} />
-			<View style={styles.textContainer}>
-				<Text style={styles.name}>{profile.fullName}</Text>
-				<Text style={styles.userName}>@{profile.alias}</Text>
-			</View>
-		</View>
-		{currentUserId !== profile.alias && (
-			<View style={styles.button}>
-				{status.relationship === FRIEND_TYPES.NOT_FRIEND ? (
-					<PrimaryButton
-						label={status.text}
-						size={ButtonSizes.Small}
-						disabled={status.disabled}
-						loading={status.disabled}
-						borderColor={Colors.pink}
-						textColor={Colors.white}
-						containerStyle={styles.primary}
-						onPress={() => status.actionHandler(profile.alias)}
-					/>
-				) : (
-					<PrimaryButton
-						label={status.text}
-						size={ButtonSizes.Small}
-						disabled={status.disabled}
-						loading={status.disabled}
-						borderColor={Colors.pink}
-						textColor={Colors.pink}
-						containerStyle={styles.secondary}
-						onPress={() => status.actionHandler(profile.alias)}
-					/>
+const Component: React.SFC<IProps> = ({ profile, status, currentUserAlias, onPress }) => {
+	if (profile) {
+		return (
+			<TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.card}>
+				<View style={styles.details}>
+					<AvatarImage image={profile.avatar} style={styles.avatar} />
+					<View style={styles.textContainer}>
+						<Text style={styles.name}>{profile.fullName}</Text>
+						<Text style={styles.userName}>@{profile.alias}</Text>
+					</View>
+				</View>
+				{currentUserAlias !== profile.alias && (
+					<View style={styles.button}>
+						{status.relationship === FRIEND_TYPES.NOT_FRIEND ? (
+							<PrimaryButton
+								label={status.text}
+								size={ButtonSizes.Small}
+								disabled={status.disabled}
+								loading={status.disabled}
+								borderColor={Colors.pink}
+								textColor={Colors.white}
+								containerStyle={styles.primary}
+								onPress={() => status.actionHandler(profile.alias)}
+							/>
+						) : (
+							<PrimaryButton
+								label={status.text}
+								size={ButtonSizes.Small}
+								disabled={status.disabled}
+								loading={status.disabled}
+								borderColor={Colors.pink}
+								textColor={Colors.pink}
+								containerStyle={styles.secondary}
+								onPress={() => status.actionHandler(profile.alias)}
+							/>
+						)}
+					</View>
 				)}
-			</View>
-		)}
-	</TouchableOpacity>
-);
+			</TouchableOpacity>
+		);
+	}
 
-const EnhancedComponent: React.SFC<IUserEntryProps> = (props) => (
+	return null;
+};
+const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithCurrentUser>
 		{({ currentUser }) => (
-			<WithFriends relationship={props.profile.status}>
-				{({ data }) => <Component {...props} {...data} currentUserId={currentUser.userId} />}
+			<WithFriends relationship={props.profile ? props.profile.status : undefined}>
+				{({ data }) => <Component {...props} {...data} currentUserAlias={currentUser.userName} />}
 			</WithFriends>
 		)}
 	</WithCurrentUser>
@@ -78,4 +84,4 @@ const mapStateToProps = (state: IApplicationState, props: IUserEntryProps) => ({
 	profile: selectProfile(state, props),
 });
 
-export const UserEntry = connect(mapStateToProps)(EnhancedComponent as any) as any;
+export const UserEntry = connect(mapStateToProps)(EnhancedComponent as any);

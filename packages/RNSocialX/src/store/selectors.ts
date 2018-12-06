@@ -10,7 +10,7 @@ export const selectComment = createSelector(
 );
 
 export const selectProfile = createSelector(
-	(state: IApplicationState, props: { id: string }) => state.data.profiles.profiles[props.id],
+	(state: IApplicationState, props: { alias: string }) => state.data.profiles.profiles[props.alias],
 	(profile) => profile,
 );
 

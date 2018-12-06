@@ -68,32 +68,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
-		case ActionTypes.GET_PROFILES_BY_USERNAMES: {
-			return state;
-		}
-
-		case ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES: {
-			const profiles = { ...state.profiles };
-
-			for (const profile of action.payload) {
-				if (profile !== profiles[profile.alias]) {
-					profiles[profile.alias] = {
-						...state.profiles[profile.alias],
-						...profile,
-						posts:
-							profiles[profile.alias] && profiles[profile.alias].posts
-								? profiles[profile.alias].posts
-								: [],
-					};
-				}
-			}
-
-			return {
-				...state,
-				profiles,
-			};
-		}
-
 		case ActionTypes.GET_CURRENT_FRIENDS: {
 			return state;
 		}
@@ -189,6 +163,45 @@ export default (state: IState = initialState, action: IAction): IState => {
 						posts: state.profiles[alias].posts.filter((id) => id !== postId),
 					},
 				},
+			};
+		}
+
+		case ActionTypes.SEARCH_FOR_PROFILES: {
+			let profiles = { ...state.profiles };
+			for (const alias of action.payload) {
+				const {
+					[alias]: {},
+					...updatedProfiles
+				} = state.profiles;
+				profiles = updatedProfiles;
+			}
+
+			return {
+				...state,
+				profiles,
+			};
+		}
+
+		case ActionTypes.SYNC_SEARCH_FOR_PROFILES: {
+			const profiles = { ...state.profiles };
+
+			for (const profile of action.payload.profiles) {
+				if (profile !== profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...state.profiles[profile.alias],
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
+				}
+			}
+
+			return {
+				...state,
+				profiles,
+				results: action.payload.aliases,
 			};
 		}
 

@@ -314,9 +314,9 @@ export default {
 	'search.screen.results.tab.places.title': 'Places',
 	'search.screen.results.coming.soon':
 		'Stay close, this feature is coming soon!',
-	'search.loader.text': 'Searching',
+	'search.indicator': 'Searching for',
 	'search.suggested': 'Suggested',
-	'search.no.results.text': 'No results found',
+	'search.no.results': 'No results found',
 	'new.ad.setup.post.screen.title': 'Create Ad',
 	'new.ad.setup.post.header.title': 'Create a post',
 	'new.ad.setup.post.header.headline.input.placeholder': 'Headline',

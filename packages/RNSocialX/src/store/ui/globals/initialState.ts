@@ -14,6 +14,7 @@ const initialState: IState = {
 	},
 	placeholderPost: null,
 	postingCommentId: '',
+	aliasesToRemove: [],
 };
 
 export default initialState;

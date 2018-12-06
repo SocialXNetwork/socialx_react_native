@@ -3,10 +3,7 @@ import { Keyboard, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
 import { OS_TYPES, SCREENS } from '../../environment/consts';
@@ -14,26 +11,30 @@ import { OS_TYPES, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import styles, { colors } from './SearchHeader.style';
 
-interface ISearchHeaderProps extends INavigationProps, IWithNavigationHandlersEnhancedActions {
+interface ISearchHeaderProps extends INavigationProps {
 	cancel: boolean;
-	onSearchTermChange?: (term: string) => void;
-	searchTermValue?: string;
+	term?: string;
 	autoFocus?: boolean;
+	onSearchTermChange?: (term: string) => void;
 }
 
-interface ISearchHeaderState {
-	searchTerm: string;
+interface IProps extends ISearchHeaderProps {
+	onGoBack: () => void;
+}
+
+interface IState {
+	term: string;
 	navigatedFromTrending: boolean;
 }
 
-class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> {
+class Component extends React.Component<IProps, IState> {
 	public static defaultProps = {
 		cancel: false,
 		autoFocus: false,
 	};
 
 	public state = {
-		searchTerm: '',
+		term: '',
 		navigatedFromTrending: false,
 	};
 
@@ -62,10 +63,8 @@ class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> 
 					<View style={{ flex: 1 }}>
 						<PrimaryTextInput
 							ref={this.inputRef}
-							value={
-								this.props.searchTermValue ? this.props.searchTermValue : this.state.searchTerm
-							}
-							onChangeText={this.searchInputUpdated}
+							value={this.props.term ? this.props.term : this.state.term}
+							onChangeText={this.onChangeTextHandler}
 							onSubmitPressed={Keyboard.dismiss}
 							placeholder="Search"
 							icon="ios-search"
@@ -83,7 +82,7 @@ class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> 
 						{!this.props.cancel ? (
 							<TouchableOpacity
 								activeOpacity={1}
-								onPress={this.onPressInput}
+								onPress={this.onInputPressHandler}
 								style={styles.inputOverlay}
 							/>
 						) : null}
@@ -93,17 +92,17 @@ class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> 
 		);
 	}
 
-	private searchInputUpdated = (term: string) => {
+	private onChangeTextHandler = (term: string) => {
 		if (this.props.onSearchTermChange) {
 			this.props.onSearchTermChange(term);
 		} else {
 			this.setState({
-				searchTerm: term,
+				term,
 			});
 		}
 	};
 
-	private onPressInput = () => {
+	private onInputPressHandler = () => {
 		const { navigation } = this.props;
 
 		if (navigation.state.routeName === SCREENS.Trending) {
@@ -112,7 +111,7 @@ class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> 
 	};
 
 	private onBackHandler = () => {
-		this.setState({ searchTerm: '' }, () => {
+		this.setState({ term: '' }, () => {
 			this.props.onGoBack();
 		});
 	};
@@ -120,6 +119,6 @@ class Component extends React.Component<ISearchHeaderProps, ISearchHeaderState> 
 
 export const SearchHeader: React.SFC<ISearchHeaderProps> = (props) => (
 	<WithNavigationHandlers navigation={props.navigation}>
-		{({ actions }) => <Component {...props} {...actions} />}
+		{({ actions }) => <Component {...props} onGoBack={actions.onGoBack} />}
 	</WithNavigationHandlers>
 );

@@ -23,7 +23,7 @@ export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.container}>
-			<UserEntries entryIds={likeIds} onEntryPress={onViewUserProfile} />
+			<UserEntries aliases={likeIds} onEntryPress={onViewUserProfile} />
 		</View>
 	</View>
 );

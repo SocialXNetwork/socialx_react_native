@@ -116,12 +116,10 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	};
 
 	private onRefreshHandler = async () => {
-		const { visitedUser, loadingProfile, loadingPosts, getUserPosts, getUserProfile } = this.props;
+		const { visitedUser, loadingProfile, loadingPosts, getUserProfile } = this.props;
 
 		if (!loadingProfile && !loadingPosts) {
-			const userId = visitedUser.userId;
-			await getUserProfile(userId);
-			await getUserPosts(userId);
+			await getUserProfile(visitedUser.userId);
 		}
 	};
 

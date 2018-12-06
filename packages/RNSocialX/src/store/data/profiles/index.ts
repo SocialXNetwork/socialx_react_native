@@ -1,5 +1,5 @@
 export { default as reducer } from './reducer';
-export { IState, IAction, IProfiles, IFriends, IProfile } from './Types';
+export { IState, IAction, IProfiles, IFriends, IProfile, ISearchInput } from './Types';
 
 export {
 	IAcceptFriendInput,
@@ -21,10 +21,10 @@ export {
 	updateCurrentProfile,
 	getProfilesByPosts,
 	removeFriend,
-	getProfilesByUsernames,
 	rejectFriend,
 	clearFriendResponse,
 	getCurrentFriends,
 	addPostsToProfile,
 	removePostFromProfile,
+	searchForProfiles,
 } from './actions';

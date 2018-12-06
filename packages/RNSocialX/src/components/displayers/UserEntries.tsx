@@ -6,17 +6,17 @@ import { Loader, UserEntry } from '../../components';
 import styles from './UserEntries.style';
 
 interface IUserEntriesProps {
-	entryIds: string[];
+	aliases: string[];
+	hasMore?: boolean;
 	onEntryPress: (alias: string) => void;
 	onLoadMore?: () => void;
-	hasMore?: boolean;
 }
 
-export const UserEntries: React.SFC<IUserEntriesProps> = ({ entryIds, onEntryPress, hasMore }) => (
+export const UserEntries: React.SFC<IUserEntriesProps> = ({ aliases, onEntryPress, hasMore }) => (
 	<View style={styles.container}>
 		<FlatList
-			data={entryIds}
-			renderItem={({ item }) => <UserEntry id={item} onPress={onEntryPress} />}
+			data={aliases}
+			renderItem={({ item }) => <UserEntry alias={item} onPress={() => onEntryPress(item)} />}
 			keyboardShouldPersistTaps="handled"
 			keyExtractor={(item: string) => item}
 			showsVerticalScrollIndicator={false}

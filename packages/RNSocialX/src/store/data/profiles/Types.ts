@@ -24,11 +24,8 @@ export interface IFriends {
 export type IState = DeepReadonly<{
 	profiles: IProfiles;
 	friends: IFriends;
+	results: string[];
 }>;
-
-export interface IUsernamesInput {
-	usernames: string[];
-}
 
 export interface ISyncFriendsInput {
 	alias: string;
@@ -45,13 +42,21 @@ export interface IRemovePostFromProfileInput {
 	postId: string;
 }
 
+export interface ISearchInput {
+	term: string;
+	limit: number;
+}
+
+export interface ISyncSearchInput {
+	profiles: IProfile[];
+	aliases: string[];
+}
+
 export const enum ActionTypes {
-	GET_PROFILE_BY_ALIAS = 'data/profiles/GET_PROFILE_BY_ALIAS',
-	SYNC_GET_PROFILE_BY_ALIAS = 'data/profiles/SYNC_GET_PROFILE_BY_ALIAS',
-	GET_PROFILES_BY_USERNAMES = 'data/profiles/GET_PROFILES_BY_USERNAMES',
-	SYNC_GET_PROFILES_BY_USERNAMES = 'data/profiles/SYNC_GET_PROFILES_BY_USERNAMES',
 	GET_CURRENT_PROFILE = 'data/profiles/GET_CURRENT_PROFILE',
 	SYNC_GET_CURRENT_PROFILE = 'data/profiles/SYNC_GET_CURRENT_PROFILE',
+	GET_PROFILE_BY_ALIAS = 'data/profiles/GET_PROFILE_BY_ALIAS',
+	SYNC_GET_PROFILE_BY_ALIAS = 'data/profiles/SYNC_GET_PROFILE_BY_ALIAS',
 	GET_PROFILES_BY_POSTS = 'data/profiles/GET_PROFILES_BY_POSTS',
 	SYNC_GET_PROFILES_BY_POSTS = 'data/profiles/SYNC_GET_PROFILES_BY_POSTS',
 	GET_CURRENT_FRIENDS = 'data/profiles/GET_CURRENT_FRIENDS',
@@ -64,6 +69,8 @@ export const enum ActionTypes {
 	CLEAR_FRIEND_RESPONSE = 'data/profiles/CLEAR_FRIEND_RESPONSE',
 	ADD_POSTS_TO_PROFILE = 'data/profiles/ADD_POSTS_TO_PROFILE',
 	REMOVE_POST_FROM_PROFILE = 'data/profiles/REMOVE_POST_FROM_PROFILE',
+	SEARCH_FOR_PROFILES = 'data/profiles/SEARCH_FOR_PROFILES',
+	SYNC_SEARCH_FOR_PROFILES = 'data/profiles/SYNC_SEARCH_FOR_PROFILES',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -84,16 +91,6 @@ export interface IGetProfileByAliasAction extends Action {
 export interface ISyncGetProfileByAliasAction extends Action {
 	type: ActionTypes.SYNC_GET_PROFILE_BY_ALIAS;
 	payload: IProfile;
-}
-
-export interface IGetProfilesByUsernamesAction extends Action {
-	type: ActionTypes.GET_PROFILES_BY_USERNAMES;
-	payload: IUsernamesInput;
-}
-
-export interface ISyncGetProfilesByUsernamesAction extends Action {
-	type: ActionTypes.SYNC_GET_PROFILES_BY_USERNAMES;
-	payload: IProfile[];
 }
 
 export interface IGetCurrentProfileAction extends Action {
@@ -154,6 +151,16 @@ export interface IRemovePostFromProfileAction extends Action {
 	payload: IRemovePostFromProfileInput;
 }
 
+export interface ISearchForProfilesAction extends Action {
+	type: ActionTypes.SEARCH_FOR_PROFILES;
+	payload: string[];
+}
+
+export interface ISyncSearchForProfilesAction extends Action {
+	type: ActionTypes.SYNC_SEARCH_FOR_PROFILES;
+	payload: ISyncSearchInput;
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
@@ -161,8 +168,6 @@ export type IAction =
 	| IResetStoreAction
 	| IGetProfileByAliasAction
 	| ISyncGetProfileByAliasAction
-	| IGetProfilesByUsernamesAction
-	| ISyncGetProfilesByUsernamesAction
 	| IGetCurrentProfileAction
 	| ISyncGetCurrentProfileAction
 	| IGetCurrentFriendsAction
@@ -176,4 +181,6 @@ export type IAction =
 	| IRejectFriendAction
 	| IClearFriendResponseAction
 	| IAddPostsToProfileAction
-	| IRemovePostFromProfileAction;
+	| IRemovePostFromProfileAction
+	| ISearchForProfilesAction
+	| ISyncSearchForProfilesAction;

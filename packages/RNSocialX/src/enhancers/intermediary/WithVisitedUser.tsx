@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { SCREENS, TABS } from '../../environment/consts';
+import { SCREENS } from '../../environment/consts';
 import { IVisitedUser } from '../../types';
 
-import { WithAggregations } from '../connectors/aggregations/WithAggregations';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
 import { WithProfiles } from '../connectors/data/WithProfiles';
 
@@ -19,42 +18,29 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 			<WithNavigationParams>
 				{({ navigationParams }) => (
 					<WithProfiles>
-						{({ profiles }) => (
-							<WithAggregations>
-								{({ searchResults }) => {
-									const { user, origin } = navigationParams[SCREENS.UserProfile];
+						{({ profiles }) => {
+							const { user } = navigationParams[SCREENS.UserProfile];
+							const profile = profiles[user];
 
-									let foundProfile;
-									if (origin === TABS.Feed) {
-										foundProfile = profiles[user];
-									} else if (origin === TABS.Search) {
-										foundProfile = searchResults.find((profile) => profile.alias === user);
-									}
+							const visitedUser = {
+								userId: profile.alias,
+								fullName: profile.fullName,
+								userName: profile.alias,
+								avatar: profile.avatar,
+								description: profile.aboutMeText,
+								numberOfFriends: profile.numberOfFriends,
+								numberOfLikes: 0,
+								numberOfPhotos: 0,
+								numberOfComments: 0,
+								media: [],
+								postIds: [],
+								relationship: profile.status,
+							};
 
-									let visitedUser: IVisitedUser;
-									if (foundProfile) {
-										visitedUser = {
-											userId: foundProfile.alias,
-											fullName: foundProfile.fullName,
-											userName: foundProfile.alias,
-											avatar: foundProfile.avatar,
-											description: foundProfile.aboutMeText,
-											numberOfFriends: foundProfile.numberOfFriends,
-											numberOfLikes: 0,
-											numberOfPhotos: 0,
-											numberOfComments: 0,
-											media: [],
-											postIds: [],
-											relationship: foundProfile.status,
-										};
-									}
-
-									return this.props.children({
-										visitedUser: visitedUser!,
-									});
-								}}
-							</WithAggregations>
-						)}
+							return this.props.children({
+								visitedUser,
+							});
+						}}
 					</WithProfiles>
 				)}
 			</WithNavigationParams>

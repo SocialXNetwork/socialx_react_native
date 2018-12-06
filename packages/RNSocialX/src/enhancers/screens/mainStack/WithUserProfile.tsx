@@ -11,7 +11,6 @@ import { IOptionsMenuProps, ITranslatedProps, IVisitedUser } from '../../../type
 import { getActivity } from '../../helpers';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
-import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
@@ -25,7 +24,6 @@ export interface IWithUserProfileEnhancedData {
 
 export interface IWithUserProfileEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getUserProfile: (alias: string) => void;
-	getUserPosts: (alias: string) => void;
 	addFriend: (userId: string) => void;
 }
 
@@ -51,45 +49,35 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 								{({ addFriend, getProfileByAlias }) => (
 									<WithActivities>
 										{({ activities }) => (
-											<WithPosts>
-												{({ getUserPosts }) => (
-													<WithVisitedUserContent>
-														{({ visitedUser }) =>
-															this.props.children({
-																data: {
-																	visitedUser: visitedUser!,
-																	loadingProfile: getActivity(
-																		activities,
-																		ProfileActionTypes.GET_PROFILE_BY_ALIAS,
-																	),
-																	loadingPosts: getActivity(
-																		activities,
-																		PostActionTypes.GET_USER_POSTS,
-																	),
-																},
-																actions: {
-																	getUserProfile: async (alias: string) => {
-																		await getProfileByAlias(alias);
-																	},
-																	getUserPosts: async (alias: string) => {
-																		await getUserPosts(alias);
-																	},
-																	addFriend: async (username) => {
-																		await addFriend({
-																			username,
-																		});
-																	},
-																	showOptionsMenu: (items) =>
-																		showOptionsMenu({
-																			items,
-																		}),
-																	getText,
-																},
-															})
-														}
-													</WithVisitedUserContent>
-												)}
-											</WithPosts>
+											<WithVisitedUserContent>
+												{({ visitedUser }) =>
+													this.props.children({
+														data: {
+															visitedUser: visitedUser!,
+															loadingProfile: getActivity(
+																activities,
+																ProfileActionTypes.GET_PROFILE_BY_ALIAS,
+															),
+															loadingPosts: getActivity(activities, PostActionTypes.GET_USER_POSTS),
+														},
+														actions: {
+															getUserProfile: async (alias: string) => {
+																await getProfileByAlias(alias);
+															},
+															addFriend: async (username) => {
+																await addFriend({
+																	username,
+																});
+															},
+															showOptionsMenu: (items) =>
+																showOptionsMenu({
+																	items,
+																}),
+															getText,
+														},
+													})
+												}
+											</WithVisitedUserContent>
 										)}
 									</WithActivities>
 								)}

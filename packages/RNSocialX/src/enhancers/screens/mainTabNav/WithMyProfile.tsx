@@ -8,7 +8,6 @@ import { getActivity, resetNavigationToRoute } from '../../helpers';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
-import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
@@ -23,7 +22,6 @@ export interface IWithMyProfileEnhancedData {
 
 export interface IWithMyProfileEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getUserProfile: () => void;
-	getUserPosts: (alias: string) => void;
 	logout: () => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	setGlobal: (input: IGlobal) => void;
@@ -55,40 +53,33 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 												{({ activities }) => (
 													<WithProfiles>
 														{({ getCurrentProfile }) => (
-															<WithPosts>
-																{({ getUserPosts }) => (
-																	<WithCurrentUserContent>
-																		{({ currentUser }) =>
-																			this.props.children({
-																				data: {
-																					currentUser: currentUser!,
-																					loadingProfile: getActivity(
-																						activities,
-																						ProfileActionTypes.GET_CURRENT_PROFILE,
-																					),
-																					loadingPosts: getActivity(
-																						activities,
-																						PostActionTypes.GET_USER_POSTS,
-																					),
-																				},
-																				actions: {
-																					getUserProfile: async () => {
-																						await getCurrentProfile();
-																					},
-																					getUserPosts: async (alias: string) => {
-																						await getUserPosts(alias);
-																					},
-																					showOptionsMenu: (items) => showOptionsMenu({ items }),
-																					logout,
-																					resetNavigationToRoute,
-																					setGlobal,
-																					getText,
-																				},
-																			})
-																		}
-																	</WithCurrentUserContent>
-																)}
-															</WithPosts>
+															<WithCurrentUserContent>
+																{({ currentUser }) =>
+																	this.props.children({
+																		data: {
+																			currentUser: currentUser!,
+																			loadingProfile: getActivity(
+																				activities,
+																				ProfileActionTypes.GET_CURRENT_PROFILE,
+																			),
+																			loadingPosts: getActivity(
+																				activities,
+																				PostActionTypes.GET_USER_POSTS,
+																			),
+																		},
+																		actions: {
+																			getUserProfile: async () => {
+																				await getCurrentProfile();
+																			},
+																			showOptionsMenu: (items) => showOptionsMenu({ items }),
+																			logout,
+																			resetNavigationToRoute,
+																			setGlobal,
+																			getText,
+																		},
+																	})
+																}
+															</WithCurrentUserContent>
 														)}
 													</WithProfiles>
 												)}

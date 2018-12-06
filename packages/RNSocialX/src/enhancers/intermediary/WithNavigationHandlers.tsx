@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 
-import { SCREENS, TABS } from '../../environment/consts';
+import { SCREENS } from '../../environment/consts';
 import { IMedia, INavigationProps } from '../../types';
 
 import { IProfile } from '../../store/data/profiles';
@@ -11,7 +11,7 @@ import { WithProfiles } from '../connectors/data/WithProfiles';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithNavigationHandlersEnhancedActions {
-	onViewUserProfile: (visitedUserId: string, origin?: TABS) => void;
+	onViewUserProfile: (alias: string) => void;
 	onViewLikes: (likeIds: string[]) => void;
 	onViewComments: (postId: string, keyboardRaised: boolean) => void;
 	onViewImage: (media: IMedia[], startIndex: number, postId?: string) => void;
@@ -52,12 +52,11 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 
 											return this.props.children({
 												actions: {
-													onViewUserProfile: (visitedUserId, origin) =>
+													onViewUserProfile: (visitedUser) =>
 														this.onViewUserProfileHandler(
 															currentUser.userId,
 															profiles,
-															visitedUserId,
-															origin,
+															visitedUser,
 														),
 													onViewLikes: this.onViewLikesHandler,
 													onViewComments: this.onViewCommentsHandler,
@@ -85,7 +84,6 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		currentUser: string,
 		profiles: { [alias: string]: IProfile },
 		visitedUser: string,
-		origin?: TABS,
 	) => {
 		if (visitedUser === currentUser) {
 			this.props.navigation.navigate(SCREENS.MyProfile);
@@ -96,7 +94,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 
 			this.actions.setNavigationParams({
 				screenName: SCREENS.UserProfile,
-				params: { user: visitedUser, origin: origin ? origin : TABS.Feed },
+				params: { user: visitedUser },
 			});
 			this.props.navigation.navigate(SCREENS.UserProfile);
 		}
