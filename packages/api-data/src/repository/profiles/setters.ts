@@ -115,14 +115,15 @@ export const updateProfile = (
  */
 const checkIfUserFriendExists = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
-		profileHandles
-			.currentProfileFriendByUsername(context, username)
-			.once((currentFriendCallback: any) => {
+		profileHandles.currentProfileFriendByUsername(context, username).once(
+			(currentFriendCallback: any) => {
 				if (currentFriendCallback) {
 					res(true);
 				}
 				res(false);
-			}),
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
@@ -131,14 +132,15 @@ const checkIfUserFriendExists = (context: IContext, username: string) => {
  */
 const checkIfFriendRequestExists = (context: IContext, to: string, from: string) => {
 	return new Promise((res, rej) =>
-		profileHandles
-			.publicFriendRequestToFrom(context, to, from)
-			.once((currentRequestCallback: any) => {
+		profileHandles.publicFriendRequestToFrom(context, to, from).once(
+			(currentRequestCallback: any) => {
 				if (currentRequestCallback) {
 					res(true);
 				}
 				res(false);
-			}),
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
@@ -147,14 +149,15 @@ const checkIfFriendRequestExists = (context: IContext, to: string, from: string)
  */
 const checkIfAlreadyFriends = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
-		profileHandles
-			.currentProfileFriendByUsername(context, username)
-			.once((currentTargetedFriend: any) => {
+		profileHandles.currentProfileFriendByUsername(context, username).once(
+			(currentTargetedFriend: any) => {
 				if (currentTargetedFriend) {
 					res(true);
 				}
 				res(false);
-			}),
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
@@ -163,14 +166,15 @@ const checkIfAlreadyFriends = (context: IContext, username: string) => {
  */
 const checkIfFriendResponseExists = (context: IContext, from: string) => {
 	return new Promise((res, rej) =>
-		profileHandles
-			.publicCurrentFriendResponseFrom(context, from)
-			.once((currentResponseCallback: any) => {
+		profileHandles.publicCurrentFriendResponseFrom(context, from).once(
+			(currentResponseCallback: any) => {
 				if (currentResponseCallback) {
 					res(true);
 				}
 				res(false);
-			}),
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
@@ -180,14 +184,15 @@ const checkIfFriendResponseExists = (context: IContext, from: string) => {
 const checkIfUserFriendResponseExists = (context: IContext, to: string) => {
 	const { owner } = getContextMeta(context);
 	return new Promise((res, rej) =>
-		profileHandles
-			.publicFriendResponseToFrom(context, to, owner)
-			.once((currentResponseCallback: any) => {
+		profileHandles.publicFriendResponseToFrom(context, to, owner).once(
+			(currentResponseCallback: any) => {
 				if (currentResponseCallback) {
 					res(true);
 				}
 				res(false);
-			}),
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
@@ -197,14 +202,15 @@ const checkIfUserFriendResponseExists = (context: IContext, to: string) => {
 const checkIfUserHasRequest = (context: IContext, from: string) => {
 	const { owner } = getContextMeta(context);
 	return new Promise((res, rej) =>
-		profileHandles
-			.publicFriendRequestToFrom(context, owner, from)
-			.once((friendRequestCallback: any) => {
+		profileHandles.publicFriendRequestToFrom(context, owner, from).once(
+			(friendRequestCallback: any) => {
 				if (friendRequestCallback) {
 					res(true);
 				}
 				res(false);
-			}),
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
@@ -214,12 +220,15 @@ const checkIfUserHasRequest = (context: IContext, from: string) => {
  */
 const getTargetedUserAndCreateRequest = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
-		profileHandles.publicProfileByUsername(context, username).once((userProfileCallback: any) => {
-			if (!userProfileCallback) {
-				rej(new ApiError(`user does not exist!`));
-			}
-			res();
-		}),
+		profileHandles.publicProfileByUsername(context, username).once(
+			(userProfileCallback: any) => {
+				if (!userProfileCallback) {
+					rej(new ApiError(`user does not exist!`));
+				}
+				res();
+			},
+			{ wait: 500 },
+		),
 	);
 };
 
