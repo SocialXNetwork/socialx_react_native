@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Animated, FlatList, View } from 'react-native';
+import { Animated, FlatList, Platform, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AnimatedValue } from 'react-navigation';
 
 import {
@@ -9,6 +10,8 @@ import {
 	SuggestionsCarousel,
 	WallPost,
 } from '../../../components';
+import { OS_TYPES } from '../../../environment/consts';
+import { Sizes } from '../../../environment/theme';
 import { IError, INavigationProps, ITranslatedProps, IWallPostData } from '../../../types';
 
 import styles from './UserFeedScreen.style';
@@ -51,36 +54,48 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		const allPosts = skeletonPost ? [skeletonPost, ...posts] : posts;
 
 		return (
-			<View style={styles.container}>
-				{posts.length === 0 ? (
-					<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
-				) : (
-					<FlatList
-						ref={scrollRef}
-						windowSize={10}
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-						data={allPosts}
-						keyExtractor={(item: IWallPostData) => item.postId}
-						renderItem={(data) => this.renderWallPosts(data)}
-						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
-						onEndReachedThreshold={0.5}
-						keyboardShouldPersistTaps="handled"
-						ListHeaderComponent={
-							<ShareSection
-								avatarImage={avatarImage}
-								onCreateWallPost={onCreateWallPost}
-								sharePlaceholder={shareSectionPlaceholder}
-							/>
-						}
-						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-						onScrollToIndexFailed={() => undefined}
-						onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
-						scrollEventThrottle={16}
-						showsVerticalScrollIndicator={false}
-					/>
-				)}
-			</View>
+			<KeyboardAwareScrollView
+				alwaysBounceVertical={false}
+				enableOnAndroid={true}
+				keyboardShouldPersistTaps="handled"
+				enableResetScrollToCoords={false}
+				extraScrollHeight={
+					Platform.OS === OS_TYPES.IOS
+						? Sizes.smartVerticalScale(70)
+						: Sizes.smartVerticalScale(-30)
+				}
+			>
+				<View style={styles.container}>
+					{posts.length === 0 ? (
+						<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
+					) : (
+						<FlatList
+							ref={scrollRef}
+							windowSize={10}
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+							data={allPosts}
+							keyExtractor={(item: IWallPostData) => item.postId}
+							renderItem={(data) => this.renderWallPosts(data)}
+							onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
+							onEndReachedThreshold={0.5}
+							keyboardShouldPersistTaps="handled"
+							ListHeaderComponent={
+								<ShareSection
+									avatarImage={avatarImage}
+									onCreateWallPost={onCreateWallPost}
+									sharePlaceholder={shareSectionPlaceholder}
+								/>
+							}
+							ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
+							onScrollToIndexFailed={() => undefined}
+							onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }])}
+							scrollEventThrottle={16}
+							showsVerticalScrollIndicator={false}
+						/>
+					)}
+				</View>
+			</KeyboardAwareScrollView>
 		);
 	}
 

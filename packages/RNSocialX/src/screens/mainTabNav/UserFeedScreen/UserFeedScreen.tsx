@@ -32,12 +32,6 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 
 	public componentDidMount() {
 		if (Platform.OS === OS_TYPES.Android) {
-			AndroidKeyboardAdjust.setAdjustNothing();
-		}
-	}
-
-	public componentWillUnmount() {
-		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustPan();
 		}
 	}
@@ -131,19 +125,19 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	};
 
 	private onAddCommentPressHandler = (index: number, cardHeight: number) => {
-		if (
-			!this.props.refreshingFeed &&
-			!this.props.loadingMoreFriendsPosts &&
-			!this.props.loadingMoreGlobalPosts &&
-			this.scrollRef.current
-		) {
-			this.scrollRef.current.scrollToIndex({
-				animated: true,
-				index,
-				viewOffset: this.calculateScrollOffset(cardHeight, index),
-				viewPosition: 0,
-			});
-		}
+		// if (
+		// 	!this.props.refreshingFeed &&
+		// 	!this.props.loadingMoreFriendsPosts &&
+		// 	!this.props.loadingMoreGlobalPosts &&
+		// 	this.scrollRef.current
+		// ) {
+		// 	this.scrollRef.current.scrollToIndex({
+		// 		animated: true,
+		// 		index,
+		// 		viewOffset: this.calculateScrollOffset(cardHeight, index),
+		// 		viewPosition: 0,
+		// 	});
+		// }
 	};
 
 	private calculateScrollOffset = (cardHeight: number, index: number) => {
