@@ -2,14 +2,16 @@ import { IContext, IGunCallback, IMetasTypeCallback, TABLE_ENUMS, TABLES } from 
 import * as profileHandles from './handles';
 
 import { ApiError } from '../../utils/errors';
-import { cleanGunMetaFromObject, convertGunSetToArray } from '../../utils/helpers';
+import { cleanGunMetaFromObject, convertGunSetToArray, getContextMeta } from '../../utils/helpers';
 import {
 	FRIEND_TYPES,
+	IFindFriendsSuggestionsInput,
 	IFriendData,
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
 	IProfileCallbackData,
 	IProfileData,
+	ISearchProfilesByFullNameInput,
 	IUserObject,
 } from './types';
 
@@ -34,7 +36,7 @@ const getProfileNumberOfFriends = (
 			const num = convertGunSetToArray(rest).filter((friend) => friend !== null).length - 1;
 			callback(num);
 		},
-		{ wait: 500 },
+		{ wait: 1000 },
 	);
 };
 
@@ -57,6 +59,7 @@ const asyncFriendWithMutualStatus = (
 			} else {
 				profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
 					(currentUserProfile: IProfileData | undefined) => {
+						console.log(`friendChecks of ${alias}`, { currentUserProfile });
 						if (!currentUserProfile) {
 							getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
 								res({
@@ -75,23 +78,27 @@ const asyncFriendWithMutualStatus = (
 							});
 						}
 					},
-					{ wait: 300 },
+					{ wait: 1000 },
 				);
 			}
 		};
-		if (check) {
-			profileHandles
-				.currentProfileFriendByUsername(context, alias)
-				.once((friendDataCallback: IProfileData) => {
-					if (!friendDataCallback) {
-						dataResolver(true);
-					} else {
-						dataResolver(false);
-					}
-				});
-		} else {
-			dataResolver(false);
-		}
+		const mainCheck = () => {
+			if (check) {
+				profileHandles.currentProfileFriendByUsername(context, alias).once(
+					(friendDataCallback: IProfileData) => {
+						if (!friendDataCallback) {
+							dataResolver(true);
+						} else {
+							dataResolver(false);
+						}
+					},
+					{ wait: 500 },
+				);
+			} else {
+				dataResolver(false);
+			}
+		};
+		mainCheck();
 	});
 
 const friendWithMutualStatus = (
@@ -170,7 +177,7 @@ export const getProfileByUsername = (
 					});
 				}
 			},
-			{ wait: 400 },
+			{ wait: 500 },
 		);
 	};
 	const fetchPublicUser = () => {
@@ -194,7 +201,7 @@ export const getProfileByUsername = (
 					});
 				});
 			},
-			{ wait: 400 },
+			{ wait: 500 },
 		);
 	};
 	mainRunner();
@@ -217,7 +224,7 @@ export const getProfileByUserObject = (
 					});
 				}
 			},
-			{ wait: 400 },
+			{ wait: 500 },
 		);
 	};
 	const fetchPublicUser = () => {
@@ -232,7 +239,7 @@ export const getProfileByUserObject = (
 					});
 				});
 			},
-			{ off: 1 },
+			{ off: 1, wait: 500 },
 		);
 	};
 	mainRunner();
@@ -242,55 +249,63 @@ export const getCurrentProfileFriends = async (
 	context: IContext,
 	callback: IGunCallback<IProfileData[]>,
 ) => {
-	profileHandles.currentProfileFriendsRecord(context).once((data: any) => {
+	profileHandles.currentProfileFriendsRecord(context).once(
+		(data: any) => {
+			if (!data) {
+				return callback(null, []);
+			}
+
+			profileHandles.currentProfileFriendsRecord(context).open(
+				(friendsRecordCallback: IFriendsCallbackData) => {
+					if (!Object.keys(friendsRecordCallback).length) {
+						// no friends, sadlife
+						return callback(null, []);
+					}
+
+					// convert to array, and filter out the user removed friends
+					const sanitizedFriendsArray: IProfileData[] = convertGunSetToArray(
+						friendsRecordCallback,
+					).filter((friend) => friend !== null);
+
+					setTimeout(() => {
+						return callback(null, sanitizedFriendsArray);
+					}, 500);
+				},
+				{ wait: 500, off: 1 },
+			);
+		},
+		{ wait: 500 },
+	);
+};
+
+export const findProfilesByFullName = (
+	context: IContext,
+	args: ISearchProfilesByFullNameInput,
+	callback: IGunCallback<any[]>,
+) => {
+	const { owner } = getContextMeta(context);
+	const { term, limit } = args;
+
+	profileHandles.publicProfilesRecord(context).find(term, (data: any) => {
 		if (!data) {
 			return callback(null, []);
 		}
 
-		profileHandles.currentProfileFriendsRecord(context).open(
-			(friendsRecordCallback: IFriendsCallbackData) => {
-				if (!Object.keys(friendsRecordCallback).length) {
-					// no friends, sadlife
-					return callback(null, []);
-				}
+		const profilesReturned = data.filter((profile: any) => profile.alias !== owner);
 
-				// convert to array, and filter out the user removed friends
-				const sanitizedFriendsArray: IProfileData[] = convertGunSetToArray(
-					friendsRecordCallback,
-				).filter((friend) => friend !== null);
-
-				return callback(null, sanitizedFriendsArray);
-			},
-			{ wait: 400, off: 1 },
-		);
+		if (profilesReturned.length <= 0) {
+			return callback(null, []);
+		}
+		if (term) {
+			return callback(null, profilesReturned.slice(0, limit));
+		}
+		return callback(null, profilesReturned);
 	});
-};
-
-// ? needs review
-export const findProfilesByFullName = (
-	context: IContext,
-	{ textSearch, maxResults }: { textSearch: string; maxResults?: number },
-	callback: IGunCallback<any[]>,
-) => {
-	const currentAlias = context.account.is.alias;
-	profileHandles
-		.publicProfilesRecord(context)
-		.find({ fullName: new RegExp(textSearch, 'i') }, (data: any) => {
-			const profilesReturned = data
-				.map((profile: any) => ({
-					...profile,
-				}))
-				.filter((profile: any) => profile.alias !== currentAlias);
-			if (maxResults) {
-				return callback(null, profilesReturned.slice(0, maxResults));
-			}
-			return callback(null, profilesReturned);
-		});
 };
 
 export const findFriendsSuggestions = (
 	context: IContext,
-	{ maxResults }: { maxResults?: number },
+	args: IFindFriendsSuggestionsInput,
 	callback: IGunCallback<any[]>,
 ) => {
 	// OUTDATED!!

@@ -12,6 +12,7 @@ export {
 	IPostArrayData,
 	IRejectFriendInput,
 	IClearFriendResponseInput,
+	IClearFriendRequestInput,
 } from '@socialx/api-data';
 export {
 	getCurrentProfile,
@@ -25,4 +26,5 @@ export {
 	rejectFriend,
 	clearFriendResponse,
 	getCurrentFriends,
+	clearFriendRequest,
 } from './actions';

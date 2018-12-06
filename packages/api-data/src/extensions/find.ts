@@ -28,17 +28,63 @@ const docMatchesQuery = (query: object) => ([key, doc]: [string, any]) => {
   return undefined;
 };
 
-Gun.chain.find = function(
-  query: object = {},
-	cb: (data: object | undefined) => IGunInstance,
-) {
-  this.docLoad((data: any[]) => {
-    const filteredData = Object.entries(data)
-      .map(docMatchesQuery(query))
-      .filter((v) => v);
+const searchQ = (data: any, term: string) => {
+  if (!data) {
+    return undefined;
+  }
 
-    return cb(filteredData);
-  });
+  const profiles = Object.entries(data).map(([key, value]) => value);
+    const res = profiles.filter((profile: any) => {
+        if (!Object.keys(profile).length) {
+            return false;
+        } else {
+            return ~profile.alias.search(term) || ~profile.fullName.search(term);
+        }
+    });
+
+    return res;
+}
+
+// from general to profiles specific
+Gun.chain.find = function(
+  term: string,
+	cb: (data: any) => void,
+) {
+  this.once((d: any) => {
+    if (!d) {
+      return cb(undefined);
+    }
+    if (!term) {
+      return cb(undefined);
+    }
+    if (term.length < 3) {
+      return cb(undefined);
+    }
+    let tries = 0;
+
+    const querySearch = () => {
+      this.open((data: any) => {
+        const res = searchQ(data, term);
+        if (!res || res.length === 0) {
+          tries += 1;
+          if (tries > 2) {
+            return cb([]);
+          }
+          return querySearch();
+        }
+        return cb(res);
+      }, {off: 1, wait: 100});
+    
+    }
+    querySearch();
+  }, { wait: 500 });
+  // this.docLoad((data: any[]) => {
+  //   const filteredData = Object.entries(data)
+  //     .map(docMatchesQuery(query))
+  //     .filter((v) => v);
+
+  //   return cb(filteredData);
+  // });
 };
 
 const byCommonFriends = function(a: any, b: any) {

@@ -145,7 +145,8 @@ export const removeComment = (
 	const eraseCommentNode = (postPath: string) => {
 		commentHandles
 			.commentsByPostPath(context, postPath)
-			.erase(commentId, (removeCommentCallback) => {
+			.get(commentId)
+			.put(null, (removeCommentCallback) => {
 				if (removeCommentCallback.err) {
 					return callback(
 						new ApiError(

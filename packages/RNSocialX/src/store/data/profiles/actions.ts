@@ -1,6 +1,7 @@
 import {
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendRequestInput,
 	IClearFriendResponseInput,
 	IFriendData,
 	IPostArrayData,
@@ -19,6 +20,7 @@ import {
 	ActionTypes,
 	IAcceptFriendAction,
 	IAddFriendAction,
+	IClearFriendRequestAction,
 	IClearFriendResponseAction,
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
@@ -565,6 +567,44 @@ export const clearFriendResponse = (
 			await dispatch(
 				setError({
 					type: ActionTypes.CLEAR_FRIEND_RESPONSE,
+					error: e.message,
+					uuid: uuidv4(),
+				}),
+			);
+		} finally {
+			await dispatch(endActivity({ uuid: activityId }));
+		}
+	}
+};
+
+const clearFriendRequestAction: ActionCreator<IClearFriendRequestAction> = (
+	clearFriendRequestInput: IClearFriendRequestInput,
+) => ({
+	type: ActionTypes.CLEAR_FRIEND_REQUEST,
+	payload: clearFriendRequestInput,
+});
+
+export const clearFriendRequest = (
+	clearFriendRequestInput: IClearFriendRequestInput,
+): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuidv4();
+	const storeState = getState();
+	const auth = storeState.auth.database.gun;
+	if (auth && auth.alias) {
+		try {
+			dispatch(clearFriendRequestAction(clearFriendRequestInput));
+			await dispatch(
+				beginActivity({
+					type: ActionTypes.CLEAR_FRIEND_REQUEST,
+					uuid: activityId,
+				}),
+			);
+			const { dataApi } = context;
+			await dataApi.profiles.clearFriendRequest(clearFriendRequestInput);
+		} catch (e) {
+			await dispatch(
+				setError({
+					type: ActionTypes.CLEAR_FRIEND_REQUEST,
 					error: e.message,
 					uuid: uuidv4(),
 				}),

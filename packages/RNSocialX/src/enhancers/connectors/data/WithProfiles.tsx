@@ -5,12 +5,14 @@ import { IApplicationState } from '../../../store';
 import {
 	acceptFriend,
 	addFriend,
+	clearFriendRequest,
 	clearFriendResponse,
 	getCurrentFriends,
 	getCurrentProfile,
 	getProfileByUsername,
 	IAcceptFriendInput,
 	IAddFriendInput,
+	IClearFriendRequestInput,
 	IClearFriendResponseInput,
 	IFriendData,
 	IRejectFriendInput,
@@ -38,6 +40,7 @@ interface IActionProps {
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
 	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
 	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) => void;
+	clearFriendRequest: (clearFriendRequestInput: IClearFriendRequestInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -84,6 +87,8 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 		dispatch(updateCurrentProfile(updateProfileInput)),
 	clearFriendResponse: (clearFriendResponseInput: IClearFriendResponseInput) =>
 		dispatch(clearFriendResponse(clearFriendResponseInput)),
+	clearFriendRequest: (clearFriendRequestInput: IClearFriendRequestInput) =>
+		dispatch(clearFriendRequest(clearFriendRequestInput)),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(

@@ -88,12 +88,12 @@ export const createPost = (
 	const mainRunner = () => {
 		gun
 			.get(TABLES.POSTS)
-			.path(publicPath)
-			.once(
+			.path(datePath)
+			.docLoad(
 				() => {
 					addPostAndPass();
 				},
-				{ wait: 400 },
+				{ wait: 1000, timeout: 2000 },
 			);
 	};
 	const addPostAndPass = () => {
@@ -289,19 +289,21 @@ export const removePost = (
 		);
 	};
 	const erasePostNode = (postPath: string) => {
-		postHandles.postsRecordByPostPath(context, postPath).erase(postId, (postRemoveCallback) => {
-			if (postRemoveCallback.err) {
-				return callback(
-					new ApiError(`${errPrefix}, error removing post ${postRemoveCallback.err}`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
-			erasePostMetaNodeById();
-		});
+		postHandles
+			.postsRecordByPostPath(context, postPath)
+			.put({ [postId]: null }, (postRemoveCallback) => {
+				if (postRemoveCallback.err) {
+					return callback(
+						new ApiError(`${errPrefix}, error removing post ${postRemoveCallback.err}`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
+				erasePostMetaNodeById();
+			});
 	};
 	const erasePostMetaNodeById = () => {
-		postHandles.postMetaIdsRecord(context).erase(postId, (metaRemoveCallback) => {
+		postHandles.postMetaIdsRecord(context).put({ [postId]: null }, (metaRemoveCallback) => {
 			if (metaRemoveCallback.err) {
 				return callback(
 					new ApiError(`${errPrefix}, error removing post meta ${metaRemoveCallback.err}`, {
@@ -313,16 +315,18 @@ export const removePost = (
 		});
 	};
 	const erasePostMetaNodeByUser = () => {
-		postHandles.postMetasByCurrentUser(context).erase(postId, (postMetasRemoveCallback) => {
-			if (postMetasRemoveCallback.err) {
-				return callback(
-					new ApiError(`${errPrefix}, error removing post meta ${postMetasRemoveCallback.err}`, {
-						initialRequestBody: { postId },
-					}),
-				);
-			}
-			erasePostMetaNodeByIdTimestamp();
-		});
+		postHandles
+			.postMetasByCurrentUser(context)
+			.put({ [postId]: null }, (postMetasRemoveCallback) => {
+				if (postMetasRemoveCallback.err) {
+					return callback(
+						new ApiError(`${errPrefix}, error removing post meta ${postMetasRemoveCallback.err}`, {
+							initialRequestBody: { postId },
+						}),
+					);
+				}
+				erasePostMetaNodeByIdTimestamp();
+			});
 	};
 	const erasePostMetaNodeByIdTimestamp = () => {
 		postHandles.postMetaByIdTimestampRecord(context).put(
@@ -339,7 +343,7 @@ export const removePost = (
 	};
 	postHandles.postMetaById(context, postId).once(
 		(data: any) => {
-			if (!data) {
+			if (!data && Object.keys(data).length === 1) {
 				return callback(new ApiError('failed to find the post by this id'));
 			}
 			loadAllMetasAndPass(gun, mainRunner);
