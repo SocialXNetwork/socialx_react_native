@@ -1,4 +1,4 @@
-import { Formik, FormikErrors, FormikProps } from 'formik';
+import { Formik, FormikErrors } from 'formik';
 import * as React from 'react';
 import { Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -17,7 +17,7 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { IOptionsMenuProps, ITranslatedProps } from '../../types';
+import { ICurrentUser, IOptionsMenuProps, ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './SettingsScreen.style';
 
@@ -32,21 +32,15 @@ export interface ISettingsData {
 	avatar: string;
 }
 
-interface ISettingsScreenViewProps extends ISettingsData, ITranslatedProps, IOptionsMenuProps {
-	userName: string;
+interface ISettingsScreenViewProps extends ITranslatedProps, IOptionsMenuProps {
+	currentUser: ICurrentUser;
 	onSaveChanges: (values: ISettingsData) => void;
 	onEditNodes: () => void;
 	onGoBack: () => void;
 }
 
 export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
-	userName,
-	description,
-	fullName,
-	email,
-	avatar,
-	miningEnabled,
-	shareDataEnabled,
+	currentUser,
 	onSaveChanges,
 	onGoBack,
 	showOptionsMenu,
@@ -55,48 +49,30 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 }) => (
 	<Formik
 		initialValues={{
-			description,
-			fullName,
-			email,
-			avatar,
-			miningEnabled,
-			shareDataEnabled,
+			description: currentUser.description,
+			fullName: currentUser.fullName,
+			email: currentUser.email,
+			avatar: currentUser.avatar,
+			miningEnabled: currentUser.miningEnabled,
+			shareDataEnabled: currentUser.shareDataEnabled,
 		}}
-		validate={({
-			fullName: nameValue,
-			email: emailValue,
-			description: descriptionValue,
-		}: ISettingsData) => {
+		validate={({ fullName, email, description }: ISettingsData) => {
 			const errors: FormikErrors<ISettingsData> = {};
-			if (!emailValue) {
+			if (!email) {
 				errors.email = getText('settings.screen.email.required');
 			} else if (!EMAIL_SCHEMA.isValidSync(email)) {
 				errors.email = getText('settings.screen.email.invalid');
 			}
-			if (!nameValue) {
+			if (!fullName) {
 				errors.fullName = getText('settings.screen.name.required');
 			}
-			if (!descriptionValue) {
+			if (!description) {
 				errors.description = getText('settings.screen.description.required');
 			}
 			return errors;
 		}}
 		onSubmit={(values: ISettingsData) => onSaveChanges(values)}
-		render={({
-			values: {
-				description: descriptionValue,
-				fullName: nameValue,
-				email: emailValue,
-				avatar: avatarValue,
-				miningEnabled: miningEnabledValue,
-				shareDataEnabled: shareDataEnabledValue,
-			},
-			errors,
-			handleBlur,
-			handleSubmit,
-			isValid,
-			setFieldValue,
-		}: FormikProps<ISettingsData>) => (
+		render={({ values, errors, handleBlur, handleSubmit, isValid, setFieldValue }) => (
 			<View style={{ flex: 1 }}>
 				{
 					<Header
@@ -113,19 +89,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 				>
 					<View style={styles.picker}>
 						<AvatarPicker
-							local={avatarValue}
-							hash={avatarValue === avatar}
+							image={values.avatar}
+							hash={values.avatar === currentUser.avatar}
 							afterImagePick={(path: string) => setFieldValue('avatar', path, false)}
 							showOptionsMenu={showOptionsMenu}
 							getText={getText}
 						/>
 					</View>
-					<AvatarName
-						fullName={fullName}
-						userName={userName}
-						fullNameColor={defaultStyles.avatarFullNameColor}
-						userNameColor={defaultStyles.avatarUserNameColor}
-					/>
+					<AvatarName fullName={currentUser.fullName} userName={currentUser.userName} />
 					<View style={styles.editNodesButton}>
 						<PrimaryButton
 							label={getText('settings.screen.nodes.button')}
@@ -141,7 +112,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="words"
-									value={nameValue}
+									value={values.fullName}
 									placeholder={getText('settings.screen.name.placeholder')}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									size={InputSizes.Small}
@@ -163,7 +134,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="words"
-									value={emailValue}
+									value={values.email}
 									placeholder={getText('settings.screen.email.placeholder')}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									borderColor={defaultStyles.userDataInputBorderColor}
@@ -188,7 +159,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="sentences"
-									value={descriptionValue}
+									value={values.description}
 									placeholder={getText('settings.screen.description.placeholder')}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									borderColor={defaultStyles.userDataInputBorderColor}
@@ -206,15 +177,15 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						<Checkbox
 							title={getText('settings.screen.mining.title')}
 							description={getText('settings.screen.mining.description')}
-							value={miningEnabledValue}
-							onValueUpdated={() => setFieldValue('miningEnabled', !miningEnabledValue, false)}
+							value={values.miningEnabled}
+							onValueUpdated={() => setFieldValue('miningEnabled', !values.miningEnabled, false)}
 						/>
 						<Checkbox
 							title={getText('settings.screen.sharedata.title')}
 							description={getText('settings.screen.sharedata.description')}
-							value={shareDataEnabledValue}
+							value={values.shareDataEnabled}
 							onValueUpdated={() =>
-								setFieldValue('shareDataEnabled', !shareDataEnabledValue, false)
+								setFieldValue('shareDataEnabled', !values.shareDataEnabled, false)
 							}
 						/>
 					</View>

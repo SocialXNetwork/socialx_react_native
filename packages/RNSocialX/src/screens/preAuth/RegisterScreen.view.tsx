@@ -142,7 +142,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					<React.Fragment>
 						<View style={style.avatarPickerContainer}>
 							<AvatarPicker
-								local={avatar.uri}
+								image={avatar.uri}
 								afterImagePick={(path: string) => setFieldValue('avatar', { uri: path }, false)}
 								showOptionsMenu={showOptionsMenu}
 								getText={getText}

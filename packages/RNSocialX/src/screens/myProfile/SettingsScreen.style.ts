@@ -60,8 +60,6 @@ const styles: any = {
 export default StyleSheet.create(styles);
 
 export const defaultStyles = {
-	avatarFullNameColor: Colors.cloudBurst,
-	avatarUserNameColor: Colors.pink,
 	descriptionBorderColor: Colors.dustWhite,
 	userDataInputPlaceholderColor: Colors.paleSky,
 	userDataInputBorderColor: Colors.transparent,

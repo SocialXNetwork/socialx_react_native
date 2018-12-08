@@ -62,6 +62,15 @@ export interface IFriendInput {
 	alias: string;
 }
 
+export interface IUpdateProfileInput {
+	description: string;
+	fullName: string;
+	email: string;
+	miningEnabled: boolean;
+	shareDataEnabled: boolean;
+	avatar: string;
+}
+
 export const enum ActionTypes {
 	GET_PROFILE_BY_ALIAS = 'data/profiles/GET_PROFILE_BY_ALIAS',
 	SYNC_GET_PROFILE_BY_ALIAS = 'data/profiles/SYNC_GET_PROFILE_BY_ALIAS',

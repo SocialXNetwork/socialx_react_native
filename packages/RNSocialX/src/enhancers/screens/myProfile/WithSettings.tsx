@@ -45,13 +45,10 @@ export class WithSettings extends React.Component<IWithSettingsProps, IWithSetti
 											<WithProfiles>
 												{({ updateCurrentProfile }) => (
 													<WithCurrentUser>
-														{(currUser) =>
+														{({ currentUser }) =>
 															this.props.children({
 																data: {
-																	currentUser: {
-																		shareDataEnabled: false,
-																		...currUser.currentUser!,
-																	},
+																	currentUser,
 																},
 																actions: {
 																	updateUserProfile: (user) =>

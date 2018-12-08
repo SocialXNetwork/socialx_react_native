@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { AvatarImage, ButtonSizes, PrimaryButton } from '../../';
+import { AvatarImage, AvatarName, ButtonSizes, PrimaryButton } from '../../';
 import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
 import { FRIEND_TYPES, ITranslatedProps } from '../../../types';
 import { Statistics, Tabs } from './';
@@ -76,8 +76,7 @@ const Component: React.SFC<IProps> = ({
 			</View>
 		</View>
 		<View style={styles.textContainer}>
-			<Text style={styles.name}>{fullName}</Text>
-			<Text style={styles.userName}>@{userName}</Text>
+			<AvatarName fullName={fullName} userName={userName} />
 			{description.length > 0 && <Text style={styles.about}>{description}</Text>}
 		</View>
 		<View style={styles.buttons}>

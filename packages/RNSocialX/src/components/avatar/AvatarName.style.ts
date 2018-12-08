@@ -1,12 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-export const CONTAINER_HEIGHT_FULL = Sizes.smartHorizontalScale(60);
-export const CONTAINER_HEIGHT_NAME_ONLY = Sizes.smartHorizontalScale(40);
-
 const style: any = {
 	container: {
-		height: CONTAINER_HEIGHT_FULL,
+		height: Sizes.smartHorizontalScale(60),
 		paddingVertical: Sizes.smartVerticalScale(10),
 		justifyContent: 'space-between',
 	},
@@ -15,15 +12,17 @@ const style: any = {
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(20),
 		textAlign: 'center',
+		color: Colors.cloudBurst,
+		paddingBottom: Sizes.smartVerticalScale(5),
 	},
 	userName: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		lineHeight: Sizes.smartHorizontalScale(17),
+		lineHeight: Sizes.smartHorizontalScale(20),
 		textAlign: 'center',
+		color: Colors.pink,
+		paddingBottom: Sizes.smartVerticalScale(5),
 	},
 };
 
-export const fullNameDefaultColor = Colors.userAvatarFullName;
-export const userNameDefaultColor = Colors.paleSky;
-export const styles = StyleSheet.create(style);
+export default StyleSheet.create(style);

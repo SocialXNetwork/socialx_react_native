@@ -20,18 +20,12 @@ class Screen extends React.Component<ISettingsScreenProps> {
 
 		return (
 			<SettingsScreenView
-				description={currentUser.description}
-				fullName={currentUser.fullName}
-				email={currentUser.email}
-				miningEnabled={currentUser.miningEnabled}
-				shareDataEnabled={currentUser.shareDataEnabled}
-				avatar={currentUser.avatar}
-				userName={currentUser.userName}
+				currentUser={currentUser}
 				onSaveChanges={this.onSaveChangesHandler}
 				onGoBack={() => this.onGoBackHandler(navigation)}
+				onEditNodes={() => this.onEditNodesHandler(navigation)}
 				showOptionsMenu={showOptionsMenu}
 				getText={getText}
-				onEditNodes={() => this.onEditNodesHandler(navigation)}
 			/>
 		);
 	}

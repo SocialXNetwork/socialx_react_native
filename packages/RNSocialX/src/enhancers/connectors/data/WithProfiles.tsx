@@ -36,7 +36,7 @@ interface IActionProps {
 	getCurrentProfile: () => void;
 	getCurrentFriends: () => void;
 	getProfileByAlias: (alias: string) => void;
-	updateCurrentProfile: (updateProfileInput: IUpdateProfileInput) => void;
+	updateCurrentProfile: (input: IUpdateProfileInput) => void;
 	addFriend: (addFriendInput: IAddFriendInput) => void;
 	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
 	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;

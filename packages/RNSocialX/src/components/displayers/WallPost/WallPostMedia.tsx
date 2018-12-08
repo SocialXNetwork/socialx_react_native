@@ -1,16 +1,10 @@
 import * as React from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import { IMedia, IOptimizedMedia, ITranslatedProps } from '../../../types';
+import { IMedia, ITranslatedProps } from '../../../types';
 import { MediaObjectViewer } from '../MediaObjectViewer';
 
 import styles from './WallPostMedia.style';
-
-const Loader: React.SFC<{ style?: object }> = ({ style }) => (
-	<View style={[styles.creating, style]}>
-		<ActivityIndicator size="large" color="white" />
-	</View>
-);
 
 interface ISingleMediaPostProps extends ITranslatedProps {
 	media: IMedia;
@@ -54,38 +48,32 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 	getText,
 }) => (
 	<View style={styles.postMediaContainerFullWidth}>
-		{!creating ? (
-			<React.Fragment>
-				<View style={styles.fullHeightHalfWidth}>
-					<MediaObjectViewer
-						onPress={() => onMediaObjectView(0)}
-						thumbOnly={true}
-						hash={!creating ? media[0].hash : undefined}
-						// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
-						// @ts-ignore
-						path={creating ? media[0].path : undefined}
-						style={styles.fullWidthHeight}
-						extension={media[0].extension}
-						getText={getText}
-					/>
-				</View>
-				<View style={styles.fullHeightHalfWidth}>
-					<MediaObjectViewer
-						onPress={() => onMediaObjectView(1)}
-						thumbOnly={true}
-						hash={!creating ? media[1].hash : undefined}
-						// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
-						// @ts-ignore
-						path={creating ? media[1].path : undefined}
-						style={styles.fullWidthHeight}
-						extension={media[1].extension}
-						getText={getText}
-					/>
-				</View>
-			</React.Fragment>
-		) : (
-			<Loader />
-		)}
+		<View style={styles.fullHeightHalfWidth}>
+			<MediaObjectViewer
+				onPress={() => onMediaObjectView(0)}
+				thumbOnly={true}
+				hash={!creating ? media[0].hash : undefined}
+				// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
+				// @ts-ignore
+				path={creating ? media[0].path : undefined}
+				style={styles.fullWidthHeight}
+				extension={media[0].extension}
+				getText={getText}
+			/>
+		</View>
+		<View style={styles.fullHeightHalfWidth}>
+			<MediaObjectViewer
+				onPress={() => onMediaObjectView(1)}
+				thumbOnly={true}
+				hash={!creating ? media[1].hash : undefined}
+				// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
+				// @ts-ignore
+				path={creating ? media[1].path : undefined}
+				style={styles.fullWidthHeight}
+				extension={media[1].extension}
+				getText={getText}
+			/>
+		</View>
 	</View>
 );
 
@@ -105,61 +93,55 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 
 	return (
 		<View style={styles.postMediaContainerFullWidth}>
-			{!creating ? (
-				<React.Fragment>
-					<View style={styles.fullHeightHalfWidth}>
-						<MediaObjectViewer
-							onPress={() => onMediaObjectView(0)}
-							thumbOnly={true}
-							hash={!creating ? media[0].hash : undefined}
-							// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
-							// @ts-ignore
-							path={creating ? media[0].path : undefined}
-							style={styles.fullWidthHeight}
-							extension={media[0].extension}
-							getText={getText}
-						/>
-					</View>
-					<View style={styles.fullHeightHalfWidth}>
-						<View style={styles.fullWidthHalfHeight}>
-							<MediaObjectViewer
-								onPress={() => onMediaObjectView(1)}
-								thumbOnly={true}
-								hash={!creating ? media[1].hash : undefined}
-								// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
-								// @ts-ignore
-								path={creating ? media[1].path : undefined}
-								extension={media[1].extension}
-								getText={getText}
-							/>
-						</View>
-						<TouchableOpacity
-							style={styles.fullWidthHalfHeight}
-							activeOpacity={1}
-							onPress={() => onMediaObjectView(2)}
-						>
-							<MediaObjectViewer
-								thumbOnly={true}
-								hash={!creating ? media[2].hash : undefined}
-								// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
-								// @ts-ignore
-								path={creating ? media[2].path : undefined}
-								style={styles.fullWidthHeight}
-								extension={media[2].extension}
-								getText={getText}
-							/>
+			<View style={styles.fullHeightHalfWidth}>
+				<MediaObjectViewer
+					onPress={() => onMediaObjectView(0)}
+					thumbOnly={true}
+					hash={!creating ? media[0].hash : undefined}
+					// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
+					// @ts-ignore
+					path={creating ? media[0].path : undefined}
+					style={styles.fullWidthHeight}
+					extension={media[0].extension}
+					getText={getText}
+				/>
+			</View>
+			<View style={styles.fullHeightHalfWidth}>
+				<View style={styles.fullWidthHalfHeight}>
+					<MediaObjectViewer
+						onPress={() => onMediaObjectView(1)}
+						thumbOnly={true}
+						hash={!creating ? media[1].hash : undefined}
+						// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
+						// @ts-ignore
+						path={creating ? media[1].path : undefined}
+						extension={media[1].extension}
+						getText={getText}
+					/>
+				</View>
+				<TouchableOpacity
+					style={styles.fullWidthHalfHeight}
+					activeOpacity={1}
+					onPress={() => onMediaObjectView(2)}
+				>
+					<MediaObjectViewer
+						thumbOnly={true}
+						hash={!creating ? media[2].hash : undefined}
+						// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
+						// @ts-ignore
+						path={creating ? media[2].path : undefined}
+						style={styles.fullWidthHeight}
+						extension={media[2].extension}
+						getText={getText}
+					/>
 
-							{remainingMedia > 0 && (
-								<View style={styles.moreOverlay}>
-									<Text style={styles.moreText}>{`+${remainingMedia} more`}</Text>
-								</View>
-							)}
-						</TouchableOpacity>
-					</View>
-				</React.Fragment>
-			) : (
-				<Loader />
-			)}
+					{remainingMedia > 0 && (
+						<View style={styles.moreOverlay}>
+							<Text style={styles.moreText}>{`+${remainingMedia} more`}</Text>
+						</View>
+					)}
+				</TouchableOpacity>
+			</View>
 		</View>
 	);
 };

@@ -51,22 +51,6 @@ const styles: any = {
 		marginBottom: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(64),
 	},
-	name: {
-		...Fonts.centuryGothicBold,
-		fontSize: Sizes.smartHorizontalScale(16),
-		lineHeight: Sizes.smartHorizontalScale(20),
-		color: Colors.cloudBurst,
-		textAlign: 'center',
-		paddingBottom: Sizes.smartVerticalScale(5),
-	},
-	userName: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(14),
-		lineHeight: Sizes.smartHorizontalScale(20),
-		color: Colors.pink,
-		textAlign: 'center',
-		paddingBottom: Sizes.smartVerticalScale(5),
-	},
 	about: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),

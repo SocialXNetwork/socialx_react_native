@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ImageStyle, StyleProp, StyleSheet } from 'react-native';
+import { Image, ImageStyle, StyleProp, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
@@ -29,7 +29,7 @@ export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 				source = Images.user_avatar_placeholder;
 			}
 
-			return <FastImage source={source} resizeMode="cover" style={style} />;
+			return <Image source={source} resizeMode="cover" style={style} />;
 		}}
 	</WithConfig>
 );

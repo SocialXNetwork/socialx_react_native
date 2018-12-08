@@ -31,21 +31,21 @@ const AVATAR_CAMERA_OPTIONS = {
 };
 
 interface IAvatarPickerProps extends ITranslatedProps, IOptionsMenuProps {
-	local: string;
+	image: string;
 	hash?: boolean;
 	afterImagePick: (image: string) => void;
 }
 
 export class AvatarPicker extends React.Component<IAvatarPickerProps> {
 	public render() {
-		const { local, hash, afterImagePick, showOptionsMenu, getText } = this.props;
+		const { image, hash, afterImagePick, showOptionsMenu, getText } = this.props;
 
 		return (
 			<TouchableOpacity
-				onPress={() => this.onAvatarPick(local, afterImagePick, showOptionsMenu, getText)}
+				onPress={() => this.onAvatarPick(image, afterImagePick, showOptionsMenu, getText)}
 			>
-				{hash && <AvatarImage image={local} style={styles.avatar} />}
-				{!hash && <AvatarImage local={local} style={styles.avatar} />}
+				{hash && <AvatarImage image={image} style={styles.avatar} />}
+				{!hash && <AvatarImage local={image} style={styles.avatar} />}
 				<View style={styles.editIcon}>
 					<Icon name="camera" size={17.5} color={Colors.cloudBurst} />
 				</View>
@@ -100,9 +100,9 @@ export class AvatarPicker extends React.Component<IAvatarPickerProps> {
 
 const styles: any = StyleSheet.create({
 	avatar: {
-		width: Sizes.smartHorizontalScale(80),
-		height: Sizes.smartHorizontalScale(80),
-		borderRadius: Sizes.smartHorizontalScale(80) / 2,
+		width: Sizes.smartHorizontalScale(100),
+		height: Sizes.smartHorizontalScale(100),
+		borderRadius: Sizes.smartHorizontalScale(100) / 2,
 	},
 	editIcon: {
 		backgroundColor: Colors.white,

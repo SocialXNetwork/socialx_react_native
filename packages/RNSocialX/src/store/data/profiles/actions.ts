@@ -45,6 +45,7 @@ import {
 	ISyncUndoRequestAction,
 	IUndoRequestAction,
 	IUpdateProfileAction,
+	IUpdateProfileInput as ISettingsInput,
 } from './Types';
 
 /**
@@ -254,7 +255,7 @@ const updateCurrentProfileAction: ActionCreator<IUpdateProfileAction> = (
 	payload: updateProfileInput,
 });
 
-export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): IThunk => async (
+export const updateCurrentProfile = (input: ISettingsInput): IThunk => async (
 	dispatch,
 	getState,
 	context,
@@ -262,96 +263,90 @@ export const updateCurrentProfile = (updateProfileInput: IUpdateProfileInput): I
 	const { dataApi, storageApi } = context;
 
 	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(updateCurrentProfileAction(updateProfileInput));
-			await dispatch(
-				beginActivity({
-					type: ActionTypes.UPDATE_PROFILE,
-					uuid: activityId,
-				}),
-			);
+	try {
+		dispatch(updateCurrentProfileAction(input));
+		await dispatch(
+			beginActivity({
+				type: ActionTypes.UPDATE_PROFILE,
+				uuid: activityId,
+			}),
+		);
 
-			const { avatar, ...profileRest } = updateProfileInput;
+		const { avatar, ...profileWithoutAvatar } = input;
 
-			if (avatar!.length > 0 && avatar && avatar.indexOf('http') < 0) {
-				const bootstrapStatus = async (uploadIdStarted: string) => {
-					await dispatch(
-						setUploadStatus({
-							path: avatar,
-							uploadId: uploadIdStarted,
-							progress: 0,
-							aborting: false,
-							done: false,
-							hash: '',
-						}),
-					);
-				};
-
-				const updateStatus = async ({
-					uploadId: uploadIdUpdated,
-					progress,
-				}: any & { uploadId: string }) => {
-					await dispatch(
-						setUploadStatus({
-							uploadId: uploadIdUpdated,
-							progress,
-							path: avatar,
-							aborting: false,
-							done: false,
-							hash: '',
-						}),
-					);
-				};
-
-				const { Hash: hash } = await storageApi.uploadFile(
-					avatar,
-					// ? TODO: should we also pass in the extension here? (jpeg/png)
-					'image/jpeg',
-					bootstrapStatus,
-					updateStatus,
-				);
-
+		if (avatar.length > 0 && avatar.indexOf('Q') < 0) {
+			const bootstrapStatus = async (uploadIdStarted: string) => {
 				await dispatch(
 					setUploadStatus({
-						uploadId: '',
-						progress: 100,
 						path: avatar,
+						uploadId: uploadIdStarted,
+						progress: 0,
 						aborting: false,
-						done: true,
-						hash,
+						done: false,
+						hash: '',
 					}),
 				);
+			};
 
-				const updateProfileFinal = {
-					...profileRest,
-					avatar: hash,
-				};
+			const updateStatus = async ({
+				uploadId: uploadIdUpdated,
+				progress,
+			}: any & { uploadId: string }) => {
+				await dispatch(
+					setUploadStatus({
+						uploadId: uploadIdUpdated,
+						progress,
+						path: avatar,
+						aborting: false,
+						done: false,
+						hash: '',
+					}),
+				);
+			};
 
-				console.log('*** upload completed', { hash });
+			const { Hash: hash } = await storageApi.uploadFile(
+				avatar,
+				// ? TODO: should we also pass in the extension here? (jpeg/png)
+				'image/jpeg',
+				bootstrapStatus,
+				updateStatus,
+			);
 
-				await dataApi.profiles.updateProfile(updateProfileFinal);
-			} else {
-				if (avatar && avatar.indexOf('http') >= 0) {
-					await dataApi.profiles.updateProfile(profileRest);
-				} else {
-					await dataApi.profiles.updateProfile(updateProfileInput);
-				}
-			}
-			await dispatch(getCurrentProfile());
-		} catch (e) {
 			await dispatch(
-				setError({
-					type: ActionTypes.UPDATE_PROFILE,
-					error: e.message,
-					uuid: uuidv4(),
+				setUploadStatus({
+					uploadId: '',
+					progress: 100,
+					path: avatar,
+					aborting: false,
+					done: true,
+					hash,
 				}),
 			);
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
+
+			const profile = {
+				...profileWithoutAvatar,
+				avatar: hash,
+			};
+
+			await dataApi.profiles.updateProfile(profile);
+		} else {
+			if (avatar && avatar.indexOf('Q') >= 0) {
+				await dataApi.profiles.updateProfile(profileWithoutAvatar);
+			} else {
+				await dataApi.profiles.updateProfile(input);
+			}
 		}
+		await dispatch(getCurrentProfile());
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.UPDATE_PROFILE,
+				error: e.message,
+				uuid: uuidv4(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
