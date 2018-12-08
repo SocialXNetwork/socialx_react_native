@@ -199,7 +199,7 @@ export const getPostByPath = (
 				};
 				return callback(null, post);
 			},
-			{ off: 1, wait: 500 },
+			{ off: 1, wait: 1000 },
 		);
 	};
 	postHandles.postByPath(context, postPath).once(
@@ -220,7 +220,7 @@ export const getPostById = (
 ) => {
 	postHandles.postMetaById(context, postId).once(
 		(postMeta: IPostMetasCallback) => {
-			if (!postMeta || !Object.keys(postMeta).length) {
+			if (!postMeta || Object.keys(postMeta).length < 2) {
 				return callback(
 					new ApiError('failed, no post was found with this id', {
 						initialRequestBody: { postId },

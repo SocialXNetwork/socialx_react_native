@@ -32,13 +32,13 @@ const searchQ = (data: any, term: string) => {
   if (!data) {
     return undefined;
   }
-
+  const t = term.toLowerCase();
   const profiles = Object.entries(data).map(([key, value]) => value);
     const res = profiles.filter((profile: any) => {
         if (!Object.keys(profile).length) {
             return false;
         } else {
-            return ~profile.alias.search(term) || ~profile.fullName.search(term);
+            return ~profile.alias.toLowerCase().search(term) || ~profile.fullName.toLowerCase().search(term);
         }
     });
 
@@ -64,7 +64,7 @@ Gun.chain.find = function(
 
     const querySearch = () => {
       this.open((data: any) => {
-        const res = searchQ(data, term);
+        const res = searchQ(data, term.toLowerCase());
         if (!res || res.length === 0) {
           tries += 1;
           if (tries > 2) {
