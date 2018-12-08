@@ -90,7 +90,7 @@ export class WithDataShape extends React.Component<IWithDataShapeProps> {
 				topCommentIds:
 					post.comments.length > 0
 						? post.comments.length > 1
-							? [post.comments[0], post.comments[1]]
+							? [post.comments[post.comments.length - 2], post.comments[post.comments.length - 1]]
 							: [post.comments[0]]
 						: [],
 				// TODO: add this later when data is available
