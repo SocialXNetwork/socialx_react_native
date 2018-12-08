@@ -41,9 +41,7 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 					thumbOnly={true}
 					style={[
 						style.media,
-						{
-							width: hashes.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
-						},
+						{ width: hashes.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8 },
 					]}
 					getText={getText}
 				/>
@@ -63,7 +61,6 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 					getText={getText}
 				/>
 			))}
-		}
 	</ScrollView>
 );
 

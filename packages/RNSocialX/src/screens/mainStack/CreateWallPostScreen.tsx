@@ -74,16 +74,16 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {
-		let selectedmedia: IPickerImageMultiple = [];
+		let selectedMedia: IPickerImageMultiple = [];
 		if (source === IMAGE_PICKER_TYPES.Gallery) {
-			selectedmedia = await getGalleryMediaObjectMultiple();
+			selectedMedia = await getGalleryMediaObjectMultiple();
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
-			selectedmedia = await getCameraMediaObjectMultiple();
+			selectedMedia = await getCameraMediaObjectMultiple();
 		}
 
-		if (selectedmedia.length > 0) {
+		if (selectedMedia.length > 0) {
 			const optimizedmedia = await Promise.all(
-				selectedmedia.map(async (obj) => getOptimizedMediaObject(obj)),
+				selectedMedia.map(async (obj) => getOptimizedMediaObject(obj)),
 			);
 
 			this.setState({
