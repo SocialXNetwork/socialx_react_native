@@ -24,7 +24,7 @@ import { api as postsApi } from './repository/posts';
 import { api as profilesApi } from './repository/profiles';
 import { hooks as reactiveHooks } from './repository/reactive';
 
-import { IContext, IGunInstance } from './types';
+import { IContext, IGunInstance, TABLES } from './types';
 
 // this should be extracted to its own library in order to make this
 // more easily testable and also importable into the server for api reuse
@@ -63,9 +63,11 @@ export const dataApiFactory = (config: IApiOptions) => {
 
 	const gun = rootGun.get(rootdb);
 	// preload the database while the app is starting by simulating it with open
-	// gun.get('posts').open(() => {
-	// 	console.log('*** database updated');
-	// });
+	Object.entries(TABLES).forEach(([k, v]) => {
+		gun.get(v).open(() => {
+			console.log(`*** ${k}: updated`);
+		});
+	});
 	// setTimeout(() => {
 	// 	gun.get('posts').off();
 	// }, 4000);
