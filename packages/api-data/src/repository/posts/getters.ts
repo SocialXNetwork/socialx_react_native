@@ -209,7 +209,7 @@ export const getPostByPath = (
 			}
 			mainGetter();
 		},
-		{ wait: 500 },
+		{ wait: 1000 },
 	);
 };
 
