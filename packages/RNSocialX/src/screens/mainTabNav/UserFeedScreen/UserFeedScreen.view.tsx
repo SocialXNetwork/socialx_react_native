@@ -44,6 +44,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 			<KeyboardAwareScrollView
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 				alwaysBounceVertical={false}
+				keyboardShouldPersistTaps="handled"
 				enableOnAndroid={true}
 				enableResetScrollToCoords={false}
 				extraScrollHeight={scrollOffset}
