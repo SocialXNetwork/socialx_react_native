@@ -54,6 +54,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 					<FlatList
 						windowSize={10}
 						data={data}
+						keyboardShouldPersistTaps="handled"
 						keyExtractor={(id) => id}
 						renderItem={this.renderItem}
 						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
