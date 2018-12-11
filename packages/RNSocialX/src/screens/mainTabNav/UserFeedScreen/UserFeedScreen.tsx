@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Dimensions, FlatList, Keyboard, Platform } from 'react-native';
-import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
