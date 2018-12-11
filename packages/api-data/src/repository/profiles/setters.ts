@@ -110,6 +110,22 @@ export const updateProfile = (
 	mainRunner();
 };
 
+const flagFriendRequest = (context: IContext, username: string) =>
+	new Promise((resolve) => {
+		profileHandles
+			.publicCurrentFriendRequestFromUsername(context, username)
+			.put({ read: true }, () => {
+				resolve();
+			});
+	});
+
+const flagFriendResponse = (context: IContext, username: string) =>
+	new Promise((resolve) => {
+		profileHandles.publicCurrentFriendResponseFrom(context, username).put({ read: true }, () => {
+			resolve();
+		});
+	});
+
 /**
  * check if the current user is already friends with the targeted user
  */
@@ -358,6 +374,7 @@ const createFriendRequestNotification = (
 					pub: ownerPub,
 				},
 				timestamp,
+				read: false,
 			},
 			(friendRequestCreationCallback) => {
 				if (friendRequestCreationCallback.err) {
@@ -390,6 +407,7 @@ const createFriendRequestResponse = (
 				},
 				timestamp,
 				type: response,
+				read: false,
 			},
 			(friendResponseCallback) => {
 				if (friendResponseCallback.err) {
@@ -641,6 +659,89 @@ export const clearFriendRequest = async (
 	}
 };
 
+export const readFriendRequests = async (
+	context: IContext,
+	args: IClearFriendRequestInput[],
+	callback: IGunCallback<null>,
+) => {
+	const { owner } = getContextMeta(context);
+	const { account } = context;
+
+	if (!account.is) {
+		return callback(
+			new ApiError('no user logged in', {
+				initialRequestBody: { args },
+			}),
+		);
+	}
+
+	const errs: ApiError[] = [];
+
+	// ts bug
+	// tslint:disable-next-line
+	for (const arg in args) {
+		// @ts-ignore
+		const { username } = arg;
+		const friendRequestExists = await checkIfFriendRequestExists(context, owner, username);
+		if (!friendRequestExists) {
+			errs.push(new ApiError(`friend request does not exist to remove on ${username}`));
+		} else {
+			await flagFriendRequest(context, username);
+		}
+	}
+
+	if (errs.length > 0) {
+		callback(
+			new ApiError('failed to read some notifications', {
+				initialRequestBody: errs,
+			}),
+		);
+	} else {
+		callback(null);
+	}
+};
+
+export const readFriendResponses = async (
+	context: IContext,
+	args: IClearFriendResponseInput[],
+	callback: IGunCallback<null>,
+) => {
+	const { account } = context;
+
+	if (!account.is) {
+		return callback(
+			new ApiError('no user logged in', {
+				initialRequestBody: { args },
+			}),
+		);
+	}
+
+	const errs: ApiError[] = [];
+
+	// ts bug
+	// tslint:disable-next-line
+	for (const arg in args) {
+		// @ts-ignore
+		const { username } = arg;
+		const friendResponseExists = await checkIfFriendResponseExists(context, username);
+		if (!friendResponseExists) {
+			errs.push(new ApiError(`friend response does not exist to remove on ${username}`));
+		} else {
+			await flagFriendResponse(context, username);
+		}
+	}
+
+	if (errs.length > 0) {
+		callback(
+			new ApiError('failed to read some notifications', {
+				initialRequestBody: errs,
+			}),
+		);
+	} else {
+		callback(null);
+	}
+};
+
 export default {
 	createProfile,
 	updateProfile,
@@ -650,4 +751,6 @@ export default {
 	rejectFriend,
 	clearFriendResponse,
 	clearFriendRequest,
+	readFriendRequests,
+	readFriendResponses,
 };

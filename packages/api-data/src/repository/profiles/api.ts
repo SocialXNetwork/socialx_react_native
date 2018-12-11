@@ -246,29 +246,23 @@ export default (context: IContext) => ({
 		});
 	},
 	clearFriendResponse: async (clearResponseInput: IClearFriendResponseInput) => {
-		let validatedInput: any;
-		try {
-			// same check
-			validatedInput = await schemas.acceptFriend.validate(clearResponseInput, {
-				stripUnknown: true,
-			});
-		} catch (e) {
-			throw new ValidationError(typeof e.errors === 'string' ? e.errors : e.errors.join(), {
-				validationInput: clearResponseInput,
-			});
-		}
-
 		return new Promise<null>((resolve, reject) => {
-			setters.clearFriendResponse(
-				context,
-				validatedInput as IClearFriendResponseInput,
-				resolveCallback(resolve, reject),
-			);
+			setters.clearFriendResponse(context, clearResponseInput, resolveCallback(resolve, reject));
 		});
 	},
 	clearFriendRequest: async (clearRequestInput: IClearFriendRequestInput) => {
 		return new Promise<null>((resolve, reject) => {
 			setters.clearFriendRequest(context, clearRequestInput, resolveCallback(resolve, reject));
+		});
+	},
+	readFriendRequests: async (input: IClearFriendRequestInput[]) => {
+		return new Promise<null>((resolve, reject) => {
+			setters.readFriendRequests(context, input, resolveCallback(resolve, reject));
+		});
+	},
+	readFriendResponses: async (input: IClearFriendResponseInput[]) => {
+		return new Promise<null>((resolve, reject) => {
+			setters.readFriendResponses(context, input, resolveCallback(resolve, reject));
 		});
 	},
 	getCurrentProfileFriends: (): Promise<IFriendData[]> =>
