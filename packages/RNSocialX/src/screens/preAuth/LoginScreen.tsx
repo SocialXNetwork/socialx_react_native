@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Keyboard } from 'react-native';
+import { AsyncStorage, Keyboard } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { IError, INavigationProps } from '../../types';
@@ -39,6 +39,16 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 		errors: [],
 	};
 
+	private keyboardDidShowListener: any;
+
+	public componentDidMount() {
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+	}
+
+	public componentWillUnmount() {
+		this.keyboardDidShowListener.remove();
+	}
+
 	public render() {
 		return (
 			<LoginScreenView
@@ -52,6 +62,13 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 			/>
 		);
 	}
+
+	private keyboardDidShow = async (e: any) => {
+		const keyboardHeight = await AsyncStorage.getItem('KEYBOARD_HEIGHT');
+		if (!keyboardHeight) {
+			await AsyncStorage.setItem('KEYBOARD_HEIGHT', e.endCoordinates.height.toString());
+		}
+	};
 
 	private onLoginHandler = async (userName: string, password: string) => {
 		const { login, loadPosts, resetNavigationToRoute, navigation } = this.props;

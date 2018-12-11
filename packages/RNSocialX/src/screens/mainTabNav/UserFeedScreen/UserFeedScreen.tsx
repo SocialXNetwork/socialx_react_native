@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Dimensions, FlatList, Keyboard, Platform } from 'react-native';
+import { AsyncStorage, Dimensions, FlatList } from 'react-native';
 
-import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
+import { FEED_TYPES, SCREENS } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
@@ -27,18 +27,11 @@ type IUserFeedScreenProps = INavigationProps &
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
 	private listRef: React.RefObject<FlatList<string>> = React.createRef();
-	private keyboardWillShowListener: any;
-	private keyboardDidShowListener: any;
 	private keyboardHeight: number = 0;
 
-	public componentDidMount() {
-		this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-	}
-
-	public componentWillUnmount() {
-		this.keyboardWillShowListener.remove();
-		this.keyboardDidShowListener.remove();
+	public async componentDidMount() {
+		const keyboardHeight = await AsyncStorage.getItem('KEYBOARD_HEIGHT');
+		this.keyboardHeight = keyboardHeight ? +keyboardHeight : BASELINE_KEYBOARD_HEIGHT;
 	}
 
 	public render() {
@@ -73,19 +66,6 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 			/>
 		);
 	}
-
-	private keyboardWillShow = (e: any) => {
-		if (this.keyboardHeight === 0) {
-			this.setState({ keyboardHeight: e.endCoordinates.height });
-			this.keyboardHeight = e.endCoordinates.height;
-			console.log('keyboardWillShow');
-			console.log(this.keyboardHeight);
-		}
-	};
-
-	private keyboardDidShow = (e: any) => {
-		console.log('keyboard shown');
-	};
 
 	private onLoadMorePostsHandler = async () => {
 		const { refreshingFeed, loadingMorePosts, loadMorePosts } = this.props;
@@ -126,8 +106,6 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	};
 
 	private computeScrollOffset = (y: number, height: number, first: boolean) => {
-		console.log('computeScrollOffset');
-		console.log({ y, height });
 		if (first && y * 3 > height) {
 			return 0;
 		}
@@ -135,7 +113,7 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 		const offsetPredictor = -0.99969 * height + 346.07015;
 		const screenPredictor = 0.78309 * SCREEN_HEIGHT - 526.08524;
 		const keyboardHeightDifference = this.keyboardHeight - BASELINE_KEYBOARD_HEIGHT;
-		// console.log(y - offsetPredictor - (screenPredictor - Math.abs(keyboardHeightDifference)));
+
 		if (SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT) {
 			return y - offsetPredictor - (screenPredictor - Math.abs(keyboardHeightDifference));
 		} else {
