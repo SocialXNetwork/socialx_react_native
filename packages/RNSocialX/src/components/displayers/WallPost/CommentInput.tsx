@@ -22,6 +22,7 @@ interface ICommentInputProps extends ITranslatedProps {
 	autoFocus?: boolean;
 	commentInputRef?: React.RefObject<PrimaryTextInput>;
 	onCommentInputPress?: () => void;
+	onCommentInputBlur?: () => void;
 	onCommentInputChange: (comment: string) => void;
 	onSubmitComment: () => void;
 }
@@ -40,6 +41,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	onCommentInputChange,
 	onCommentInputPress,
 	onSubmitComment,
+	onCommentInputBlur,
 	getText,
 }) => (
 	<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
@@ -58,6 +60,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						blurOnSubmit={true}
 						multiline={true}
 						disabled={disabled}
+						onBlur={onCommentInputBlur}
 						onSetFocus={onCommentInputPress}
 						onChangeText={onCommentInputChange}
 						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}

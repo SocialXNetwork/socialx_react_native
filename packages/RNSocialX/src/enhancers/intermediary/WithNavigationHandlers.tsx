@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Keyboard, StatusBar } from 'react-native';
+import { Keyboard } from 'react-native';
 
 import { SCREENS } from '../../environment/consts';
 import { IMedia, INavigationProps } from '../../types';
@@ -76,12 +76,6 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 	}
 
 	private onGoBackHandler = () => {
-		if (this.props.navigation.state.routeName === SCREENS.Comments) {
-			StatusBar.setBarStyle('light-content', true);
-		} else if (this.props.navigation.state.routeName === SCREENS.UserProfile) {
-			StatusBar.setBarStyle('dark-content', true);
-		}
-
 		Keyboard.dismiss();
 		this.props.navigation.goBack(null);
 	};
@@ -91,10 +85,6 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		profiles: { [alias: string]: IProfile },
 		visitedUser: string,
 	) => {
-		if (this.props.navigation.state.routeName === SCREENS.Comments) {
-			StatusBar.setBarStyle('light-content', true);
-		}
-
 		if (visitedUser === currentUser) {
 			this.props.navigation.navigate(SCREENS.MyProfile);
 		} else {
@@ -120,7 +110,6 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 
 	private onViewCommentsHandler = (postId: string, keyboardRaised: boolean) => {
 		if (postId) {
-			StatusBar.setBarStyle('dark-content', true);
 			this.actions.setNavigationParams({
 				screenName: SCREENS.Comments,
 				params: { postId, keyboardRaised },

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { AsyncStorage, Dimensions, FlatList, Platform } from 'react-native';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
@@ -30,6 +31,10 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	private keyboardHeight: number = 0;
 
 	public async componentDidMount() {
+		if (Platform.OS === OS_TYPES.Android) {
+			AndroidKeyboardAdjust.setAdjustNothing();
+		}
+
 		const keyboardHeight = await AsyncStorage.getItem('KEYBOARD_HEIGHT');
 		this.keyboardHeight = keyboardHeight ? +keyboardHeight : BASELINE_KEYBOARD_HEIGHT;
 	}
@@ -106,19 +111,26 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 	};
 
 	private computeScrollOffset = (y: number, height: number, first: boolean) => {
-		if (first && y * 3 > height) {
+		const offsetPredictor = -0.99969 * height + 346.07015;
+		const iosScreenPredictor = 0.82685 * SCREEN_HEIGHT - 563.20304;
+		const androidScreenPredictor = 0.70444 * SCREEN_HEIGHT - 561.82132;
+		const keyboardHeightDifference = this.keyboardHeight - BASELINE_KEYBOARD_HEIGHT;
+
+		const iosOffset =
+			SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT
+				? y - offsetPredictor - (iosScreenPredictor - Math.abs(keyboardHeightDifference))
+				: y - offsetPredictor;
+
+		const androidOffset =
+			SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT
+				? y - offsetPredictor - (androidScreenPredictor + Math.abs(keyboardHeightDifference))
+				: y - offsetPredictor;
+
+		const offset = Platform.OS === OS_TYPES.Android ? androidOffset : iosOffset;
+		if (first && offset < 0) {
 			return 0;
 		}
 
-		const offsetPredictor = -0.99969 * height + 346.07015;
-		const screenPredictor = 0.78309 * SCREEN_HEIGHT - 526.08524;
-		const keyboardHeightDifference = this.keyboardHeight - BASELINE_KEYBOARD_HEIGHT;
-
-		const offset =
-			SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT
-				? y - offsetPredictor - (screenPredictor - Math.abs(keyboardHeightDifference))
-				: y - offsetPredictor;
-
-		return Platform.OS === OS_TYPES.Android ? offset - 20 : offset;
+		return offset;
 	};
 }

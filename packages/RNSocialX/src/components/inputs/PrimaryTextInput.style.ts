@@ -30,21 +30,21 @@ const style: any = {
 		flex: 1,
 	},
 	multilineTextInput: {
-		paddingVertical: Sizes.smartVerticalScale(7),
+		paddingVertical: Sizes.smartVerticalScale(7.5),
 	},
 	textInputNormal: {
 		paddingVertical:
 			Platform.OS === OS_TYPES.Android
-				? Sizes.smartHorizontalScale(10)
-				: Sizes.smartHorizontalScale(16),
+				? Sizes.smartVerticalScale(10)
+				: Sizes.smartVerticalScale(16),
 	},
 	textInputSmall: {
 		paddingVertical: 0,
-		height: Sizes.smartHorizontalScale(30),
+		height: Sizes.smartVerticalScale(30),
 	},
 	textInputLarge: {
 		paddingVertical: 0,
-		height: Sizes.smartHorizontalScale(60),
+		height: Sizes.smartVerticalScale(60),
 	},
 	iconContainer: {
 		justifyContent: 'center',

@@ -92,14 +92,9 @@ class Component extends React.Component<IProps, IState> {
 		reportAProblem: false,
 	};
 
-	private keyboardDidHideListener: any;
 	private scrollRef: React.RefObject<ScrollView> = React.createRef();
 	private commentInputRef: React.RefObject<PrimaryTextInput> = React.createRef();
 	private postRef: React.RefObject<View> = React.createRef();
-
-	public componentDidMount() {
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-	}
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
@@ -112,10 +107,6 @@ class Component extends React.Component<IProps, IState> {
 			this.props.heartAnimation !== nextProps.heartAnimation ||
 			this.props.animationProgress !== nextProps.animationProgress
 		);
-	}
-
-	public componentWillUnmount() {
-		this.keyboardDidHideListener.remove();
 	}
 
 	public render() {
@@ -182,8 +173,10 @@ class Component extends React.Component<IProps, IState> {
 			return (
 				<View
 					ref={this.postRef}
-					renderToHardwareTextureAndroid={true}
-					style={[styles.container, { opacity: creatingPost ? 0.5 : 1 }]}
+					style={[
+						styles.container,
+						{ opacity: creatingPost ? 0.5 : 1, paddingBottom: isCommentsScreen ? 10 : 16 },
+					]}
 				>
 					{isPlaceholderPost && <View style={styles.overlay} />}
 					<UserDetails
@@ -356,6 +349,7 @@ class Component extends React.Component<IProps, IState> {
 									animationValues={animationValues}
 									onCommentInputChange={this.onCommentInputChangeHandler}
 									onCommentInputPress={this.onCommentInputPressHandler}
+									onCommentInputBlur={this.onCommentInputBlur}
 									onSubmitComment={this.onSubmitCommentHandler}
 									getText={getText}
 								/>
@@ -369,7 +363,7 @@ class Component extends React.Component<IProps, IState> {
 		return null;
 	}
 
-	private keyboardDidHide = () => {
+	private onCommentInputBlur = () => {
 		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
 
 		if (commentInputFocused) {
