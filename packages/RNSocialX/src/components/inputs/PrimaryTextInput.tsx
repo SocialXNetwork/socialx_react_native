@@ -50,12 +50,11 @@ interface IPrimaryTextInputProps {
 	size: InputSizes;
 	borderWidth: number;
 	multiline: boolean;
-	focusUpdateHandler: (hasFocus: boolean) => void;
+	onSetFocus: (hasFocus: boolean) => void;
 	autoCorrect: boolean;
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
 	onPressCancel: () => void;
-	getRef: (ref: React.RefObject<TextInput>) => void;
 }
 
 interface IPrimaryTextInputState {
@@ -134,10 +133,9 @@ export class PrimaryTextInput extends React.Component<
 		autoCorrect: false,
 		autoCapitalize: 'none',
 		persistCancel: false,
-		focusUpdateHandler: (hasFocus: boolean) => undefined,
+		onSetFocus: (hasFocus: boolean) => undefined,
 		onPressCancel: () => undefined,
 		onSubmitPressed: (event: any) => undefined,
-		getRef: () => undefined,
 	};
 
 	public state = {
@@ -146,10 +144,6 @@ export class PrimaryTextInput extends React.Component<
 	};
 
 	private inputRef: React.RefObject<TextInput> = React.createRef();
-
-	public componentDidMount() {
-		this.props.getRef(this.inputRef);
-	}
 
 	public render() {
 		const {
@@ -203,8 +197,8 @@ export class PrimaryTextInput extends React.Component<
 							Keyboard.dismiss();
 						}}
 						ref={this.inputRef}
-						onFocus={() => this.updateFocusHandler(true)}
-						onBlur={() => this.updateFocusHandler(false)}
+						onFocus={() => this.setFocusHandler(true)}
+						onBlur={() => this.setFocusHandler(false)}
 						returnKeyType={returnKeyType}
 						editable={!disabled}
 						secureTextEntry={isPassword}
@@ -238,11 +232,11 @@ export class PrimaryTextInput extends React.Component<
 		}
 	};
 
-	private updateFocusHandler = (value: boolean) => {
+	private setFocusHandler = (value: boolean) => {
 		this.setState({
 			hasFocus: value,
 			iconColor: value ? defaultStyles.defaultIconActiveColor : this.props.iconColor,
 		});
-		this.props.focusUpdateHandler(value);
+		this.props.onSetFocus(value);
 	};
 }

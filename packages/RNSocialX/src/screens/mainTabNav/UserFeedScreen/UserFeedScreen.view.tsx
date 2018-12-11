@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Dimensions, FlatList, Platform, RefreshControl, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { FlatList, View } from 'react-native';
 
 import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
-import { OS_TYPES } from '../../../environment/consts';
 import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './UserFeedScreen.style';
@@ -16,12 +14,16 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	shareMessage: string;
 	loadingMorePosts: boolean;
 	canLoadMorePosts: boolean;
+	listRef: React.RefObject<FlatList<string>>;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
+	onCommentInputPress: (y: number, height: number, first: boolean) => void;
 }
 
 export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps> {
+	private containerRef: React.RefObject<View> = React.createRef();
+
 	public render() {
 		const {
 			postIds,
@@ -30,6 +32,7 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 			canLoadMorePosts,
 			shareMessage,
 			placeholderPostId,
+			listRef,
 			onRefresh,
 			onLoadMorePosts,
 			onCreateWallPost,
@@ -37,49 +40,46 @@ export class UserFeedScreenView extends React.Component<IUserFeedScreenViewProps
 		} = this.props;
 
 		const data = placeholderPostId ? [placeholderPostId, ...postIds] : postIds;
-		const isPhoneXOrAbove = Platform.OS === OS_TYPES.IOS && Dimensions.get('screen').height > 800;
-		const scrollOffset = Platform.OS === OS_TYPES.Android ? -30 : isPhoneXOrAbove ? 70 : 50;
 
 		return (
-			<KeyboardAwareScrollView
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-				alwaysBounceVertical={false}
-				keyboardShouldPersistTaps="handled"
-				enableOnAndroid={true}
-				enableResetScrollToCoords={false}
-				extraScrollHeight={scrollOffset}
-				style={styles.container}
-			>
-				<View style={styles.container}>
-					<FlatList
-						windowSize={10}
-						data={data}
-						keyboardShouldPersistTaps="handled"
-						keyExtractor={(id) => id}
-						renderItem={this.renderItem}
-						onEndReached={canLoadMorePosts ? onLoadMorePosts : null}
-						onEndReachedThreshold={2}
-						ListHeaderComponent={
-							<ShareSection
-								avatar={avatar}
-								message={shareMessage}
-								onCreateWallPost={onCreateWallPost}
-							/>
-						}
-						ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-						ListEmptyComponent={
-							<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
-						}
-						showsVerticalScrollIndicator={false}
-					/>
-				</View>
-			</KeyboardAwareScrollView>
+			<View ref={this.containerRef} style={styles.container}>
+				<FlatList
+					ref={listRef}
+					windowSize={10}
+					data={data}
+					refreshing={refreshing}
+					keyExtractor={(id) => id}
+					renderItem={this.renderItem}
+					ListHeaderComponent={
+						<ShareSection
+							avatar={avatar}
+							message={shareMessage}
+							onCreateWallPost={onCreateWallPost}
+						/>
+					}
+					ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
+					ListEmptyComponent={
+						<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
+					}
+					keyboardShouldPersistTaps="handled"
+					showsVerticalScrollIndicator={false}
+					onRefresh={onRefresh}
+					onEndReached={canLoadMorePosts && !refreshing ? onLoadMorePosts : null}
+					onEndReachedThreshold={0.5}
+				/>
+			</View>
 		);
 	}
 
 	private renderItem = (data: { item: string; index: number }) => (
 		<View style={styles.post}>
-			<WallPost postId={data.item} commentInput={true} navigation={this.props.navigation} />
+			<WallPost
+				postId={data.item}
+				commentInput={true}
+				containerRef={this.containerRef}
+				onCommentInputPress={(y, h) => this.props.onCommentInputPress(y, h, data.index === 0)}
+				navigation={this.props.navigation}
+			/>
 		</View>
 	);
 }

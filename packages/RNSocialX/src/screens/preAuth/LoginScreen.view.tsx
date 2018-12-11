@@ -72,7 +72,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 						setFieldValue('userName', value);
 						setFieldTouched('userName');
 					}}
-					focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('userName')}
+					onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('userName')}
 					onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
 					ref={usernameRef}
 				/>
@@ -93,7 +93,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 							setFieldValue('password', value);
 							setFieldTouched('password');
 						}}
-						focusUpdateHandler={(hasFocus) => !hasFocus && setFieldTouched('password')}
+						onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('password')}
 						ref={passwordRef}
 					/>
 					{touched.password && errors.password && (

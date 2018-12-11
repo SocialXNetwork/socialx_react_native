@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import {
@@ -19,14 +19,12 @@ type ICommentsScreenProps = INavigationProps &
 
 class Screen extends Component<ICommentsScreenProps> {
 	public componentDidMount() {
-		StatusBar.setBarStyle('dark-content', true);
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustResize();
 		}
 	}
 
 	public componentWillUnmount() {
-		StatusBar.setBarStyle('light-content', true);
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustPan();
 		}

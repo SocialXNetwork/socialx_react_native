@@ -120,7 +120,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
 									onChangeText={(value: string) => setFieldValue('fullName', value)}
-									focusUpdateHandler={(value) => !value && handleBlur('fullName')}
+									onSetFocus={(value) => !value && handleBlur('fullName')}
 								/>
 							</View>
 						</View>
@@ -143,7 +143,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
 									onChangeText={(value: string) => setFieldValue('email', value)}
-									focusUpdateHandler={(value) => !value && handleBlur('email')}
+									onSetFocus={(value) => !value && handleBlur('email')}
 								/>
 							</View>
 						</View>
@@ -167,7 +167,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
 									onChangeText={(value: string) => setFieldValue('description', value)}
-									focusUpdateHandler={(value) => !value && handleBlur('description')}
+									onSetFocus={(value) => !value && handleBlur('description')}
 								/>
 							</View>
 						</View>

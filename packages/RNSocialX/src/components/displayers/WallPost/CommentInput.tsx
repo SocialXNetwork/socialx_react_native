@@ -20,8 +20,9 @@ interface ICommentInputProps extends ITranslatedProps {
 	animationValues?: IAnimationValues;
 	disabled?: boolean;
 	autoFocus?: boolean;
+	commentInputRef?: React.RefObject<PrimaryTextInput>;
+	onCommentInputPress?: () => void;
 	onCommentInputChange: (comment: string) => void;
-	onCommentInputPress: () => void;
 	onSubmitComment: () => void;
 }
 
@@ -35,6 +36,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	},
 	disabled = false,
 	autoFocus = false,
+	commentInputRef,
 	onCommentInputChange,
 	onCommentInputPress,
 	onSubmitComment,
@@ -52,13 +54,13 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						value={comment}
 						autoCorrect={false}
 						autoFocus={autoFocus}
-						onChangeText={onCommentInputChange}
-						focusUpdateHandler={onCommentInputPress}
 						returnKeyType={TRKeyboardKeys.send}
-						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
 						blurOnSubmit={true}
 						multiline={true}
 						disabled={disabled}
+						onSetFocus={onCommentInputPress}
+						onChangeText={onCommentInputChange}
+						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
 					/>
 				</Animated.View>
 				<Animated.View style={[styles.send, { transform: [{ translateX: animationValues.send }] }]}>
@@ -79,19 +81,19 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 			<React.Fragment>
 				<View style={styles.inputContainer}>
 					<PrimaryTextInput
+						ref={commentInputRef}
 						borderWidth={0}
 						size={InputSizes.Small}
 						placeholder={getText('comments.screen.comment.input.placeholder')}
 						value={comment}
 						autoCorrect={false}
 						autoFocus={autoFocus}
-						onChangeText={onCommentInputChange}
-						focusUpdateHandler={onCommentInputPress}
 						returnKeyType={TRKeyboardKeys.send}
-						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
 						blurOnSubmit={true}
 						multiline={true}
 						disabled={disabled}
+						onChangeText={onCommentInputChange}
+						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
 					/>
 				</View>
 				<View style={styles.send}>
