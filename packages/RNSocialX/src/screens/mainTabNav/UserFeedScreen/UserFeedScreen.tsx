@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { AsyncStorage, Dimensions, FlatList } from 'react-native';
+import { AsyncStorage, Dimensions, FlatList, Platform } from 'react-native';
 
-import { FEED_TYPES, SCREENS } from '../../../environment/consts';
+import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
 
 import { UserFeedScreenView } from './UserFeedScreen.view';
@@ -114,10 +114,11 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 		const screenPredictor = 0.78309 * SCREEN_HEIGHT - 526.08524;
 		const keyboardHeightDifference = this.keyboardHeight - BASELINE_KEYBOARD_HEIGHT;
 
-		if (SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT) {
-			return y - offsetPredictor - (screenPredictor - Math.abs(keyboardHeightDifference));
-		} else {
-			return y - offsetPredictor;
-		}
+		const offset =
+			SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT
+				? y - offsetPredictor - (screenPredictor - Math.abs(keyboardHeightDifference))
+				: y - offsetPredictor;
+
+		return Platform.OS === OS_TYPES.Android ? offset - 20 : offset;
 	};
 }
