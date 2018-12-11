@@ -186,13 +186,25 @@ export default function(context: IContext) {
 				canLoadMore: boolean;
 			}>((resolve, reject) => {
 				getters.getPostsTimestampIds(context, loadMorePostsInput, async (err, res) => {
-					if (res && res.postIds.length > 0) {
-						const { nextToken, postIds, canLoadMore } = res;
+					try {
+						if (res && res.postIds.length > 0) {
+							const { nextToken, postIds, canLoadMore } = res;
 
-						const posts = await Promise.all(postIds.map((postId) => this.getPostById({ postId })));
-						resolve({ posts, nextToken, canLoadMore });
-					} else {
-						resolve({ posts: [], nextToken: '', canLoadMore: false });
+							const posts = await Promise.all(
+								postIds.map((postId) => this.getPostById({ postId })),
+							);
+							resolve({ posts, nextToken, canLoadMore });
+						} else {
+							resolve({ posts: [], nextToken: '', canLoadMore: false });
+						}
+					} catch {
+						resolve(
+							Promise.resolve<any>({
+								posts: [],
+								nextToken: loadMorePostsInput.nextToken,
+								canLoadMore: true,
+							}),
+						);
 					}
 				});
 			});
@@ -210,13 +222,25 @@ export default function(context: IContext) {
 				canLoadMore: boolean;
 			}>((resolve, reject) => {
 				getters.getFriendsPostsTimestampIds(context, loadMorePostsInput, async (err, res) => {
-					if (res && res.postIds.length > 0) {
-						const { nextToken, postIds, canLoadMore } = res;
+					try {
+						if (res && res.postIds.length > 0) {
+							const { nextToken, postIds, canLoadMore } = res;
 
-						const posts = await Promise.all(postIds.map((postId) => this.getPostById({ postId })));
-						resolve({ posts, nextToken, canLoadMore });
-					} else {
-						resolve({ posts: [], nextToken: '', canLoadMore: false });
+							const posts = await Promise.all(
+								postIds.map((postId) => this.getPostById({ postId })),
+							);
+							resolve({ posts, nextToken, canLoadMore });
+						} else {
+							resolve({ posts: [], nextToken: '', canLoadMore: false });
+						}
+					} catch {
+						resolve(
+							Promise.resolve<any>({
+								posts: [],
+								nextToken: loadMorePostsInput.nextToken,
+								canLoadMore: true,
+							}),
+						);
 					}
 				});
 			});
