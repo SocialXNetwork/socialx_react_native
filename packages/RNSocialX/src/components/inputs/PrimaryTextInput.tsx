@@ -39,8 +39,6 @@ interface IPrimaryTextInputProps {
 	returnKeyType: TRKeyboardKeys;
 	cancelButtonTextColor: string;
 	canCancel: boolean;
-	onSubmitPressed: (event: any) => void;
-	onChangeText: (value: string) => void;
 	hasFocus: boolean;
 	blurOnSubmit: boolean;
 	borderColor: string;
@@ -50,12 +48,14 @@ interface IPrimaryTextInputProps {
 	size: InputSizes;
 	borderWidth: number;
 	multiline: boolean;
-	focusUpdateHandler: (hasFocus: boolean) => void;
 	autoCorrect: boolean;
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
+	onSubmitPressed: (event: any) => void;
+	onChangeText: (value: string) => void;
+	onSetFocus: (hasFocus: boolean) => void;
 	onPressCancel: () => void;
-	getRef: (ref: React.RefObject<TextInput>) => void;
+	onBlur?: () => void;
 }
 
 interface IPrimaryTextInputState {
@@ -69,11 +69,13 @@ const InputIcon: React.SFC<{
 	iconColor: string;
 }> = ({ size, icon, iconColor }) => {
 	let iconHeight = defaultStyles.iconHeightNormal;
+
 	if (size === InputSizes.Small) {
 		iconHeight = defaultStyles.iconHeightSmall;
 	} else if (size === InputSizes.Large) {
 		iconHeight = defaultStyles.iconHeightLarge;
 	}
+
 	return (
 		<View style={[style.iconContainer, style['iconContainer' + size]]}>
 			<Icon name={icon} size={iconHeight} color={iconColor} />
@@ -113,7 +115,6 @@ export class PrimaryTextInput extends React.Component<
 		width: 0,
 		icon: '',
 		value: '',
-		onChangeText: () => undefined,
 		iconColor: defaultStyles.defaultIconColor,
 		placeholder: '',
 		placeholderColor: defaultStyles.defaultPlaceholderColor,
@@ -134,10 +135,11 @@ export class PrimaryTextInput extends React.Component<
 		autoCorrect: false,
 		autoCapitalize: 'none',
 		persistCancel: false,
-		focusUpdateHandler: (hasFocus: boolean) => undefined,
+		onSetFocus: (hasFocus: boolean) => undefined,
 		onPressCancel: () => undefined,
+		onChangeText: () => undefined,
 		onSubmitPressed: (event: any) => undefined,
-		getRef: () => undefined,
+		onBlur: () => undefined,
 	};
 
 	public state = {
@@ -146,10 +148,6 @@ export class PrimaryTextInput extends React.Component<
 	};
 
 	private inputRef: React.RefObject<TextInput> = React.createRef();
-
-	public componentDidMount() {
-		this.props.getRef(this.inputRef);
-	}
 
 	public render() {
 		const {
@@ -177,6 +175,7 @@ export class PrimaryTextInput extends React.Component<
 			value,
 			borderColor,
 			borderWidth,
+			onBlur,
 		} = this.props;
 		const { hasFocus } = this.state;
 
@@ -185,9 +184,8 @@ export class PrimaryTextInput extends React.Component<
 		const textInputStyles = [
 			style.textInput,
 			style['textInput' + size],
-			...(isMultiLine ? [style.multilineTextInput] : []),
-			isMultiLine && { height: 'auto' },
-		] as any;
+			...(isMultiLine ? [style.multilineTextInput, { height: 'auto' }] : []),
+		];
 
 		return (
 			<View style={[style.container, width ? { width } : {}, disabled ? style.disabledInput : {}]}>
@@ -203,8 +201,13 @@ export class PrimaryTextInput extends React.Component<
 							Keyboard.dismiss();
 						}}
 						ref={this.inputRef}
-						onFocus={() => this.updateFocusHandler(true)}
-						onBlur={() => this.updateFocusHandler(false)}
+						onFocus={() => this.setFocusHandler(true)}
+						onBlur={() => {
+							this.setFocusHandler(false);
+							if (onBlur) {
+								onBlur();
+							}
+						}}
 						returnKeyType={returnKeyType}
 						editable={!disabled}
 						secureTextEntry={isPassword}
@@ -238,11 +241,11 @@ export class PrimaryTextInput extends React.Component<
 		}
 	};
 
-	private updateFocusHandler = (value: boolean) => {
+	private setFocusHandler = (value: boolean) => {
 		this.setState({
 			hasFocus: value,
 			iconColor: value ? defaultStyles.defaultIconActiveColor : this.props.iconColor,
 		});
-		this.props.focusUpdateHandler(value);
+		this.props.onSetFocus(value);
 	};
 }

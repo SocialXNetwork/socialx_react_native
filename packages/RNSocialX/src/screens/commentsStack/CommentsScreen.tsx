@@ -19,16 +19,18 @@ type ICommentsScreenProps = INavigationProps &
 
 class Screen extends Component<ICommentsScreenProps> {
 	public componentDidMount() {
-		StatusBar.setBarStyle('dark-content', true);
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustResize();
+		} else {
+			StatusBar.setBarStyle('dark-content', true);
 		}
 	}
 
 	public componentWillUnmount() {
-		StatusBar.setBarStyle('light-content', true);
 		if (Platform.OS === OS_TYPES.Android) {
-			AndroidKeyboardAdjust.setAdjustPan();
+			AndroidKeyboardAdjust.setAdjustNothing();
+		} else {
+			StatusBar.setBarStyle('light-content', true);
 		}
 	}
 

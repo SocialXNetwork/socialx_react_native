@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, Platform } from 'react-native';
+import { AsyncStorage, Dimensions, FlatList, Platform } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
@@ -12,6 +12,10 @@ import {
 	IWithUserFeedEnhancedData,
 } from '../../../enhancers/screens';
 
+const SCREEN_HEIGHT = Dimensions.get('screen').height;
+const BASELINE_SCREEN_HEIGHT = 667;
+const BASELINE_KEYBOARD_HEIGHT = 226;
+
 export interface IFeedProps {
 	shareMessage: string;
 	feedType: FEED_TYPES;
@@ -23,10 +27,16 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedActions;
 
 export class Screen extends React.Component<IUserFeedScreenProps> {
-	public componentDidMount() {
+	private listRef: React.RefObject<FlatList<string>> = React.createRef();
+	private keyboardHeight: number = 0;
+
+	public async componentDidMount() {
 		if (Platform.OS === OS_TYPES.Android) {
-			AndroidKeyboardAdjust.setAdjustPan();
+			AndroidKeyboardAdjust.setAdjustNothing();
 		}
+
+		const keyboardHeight = await AsyncStorage.getItem('KEYBOARD_HEIGHT');
+		this.keyboardHeight = keyboardHeight ? +keyboardHeight : BASELINE_KEYBOARD_HEIGHT;
 	}
 
 	public render() {
@@ -51,9 +61,11 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 				canLoadMorePosts={canLoadMore}
 				loadingMorePosts={loadingMorePosts}
 				shareMessage={shareMessage}
+				listRef={this.listRef}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}
+				onCommentInputPress={this.onCommentInputPressHandler}
 				navigation={navigation}
 				getText={getText}
 			/>
@@ -87,5 +99,38 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 			},
 		});
 		navigation.navigate(SCREENS.CreateWallPost);
+	};
+
+	private onCommentInputPressHandler = (y: number, height: number, first: boolean) => {
+		if (this.listRef.current) {
+			this.listRef.current.scrollToOffset({
+				animated: true,
+				offset: this.computeScrollOffset(y, height, first),
+			});
+		}
+	};
+
+	private computeScrollOffset = (y: number, height: number, first: boolean) => {
+		const offsetPredictor = -0.99969 * height + 346.07015;
+		const iosScreenPredictor = 0.82685 * SCREEN_HEIGHT - 563.20304;
+		const androidScreenPredictor = 0.70444 * SCREEN_HEIGHT - 561.82132;
+		const keyboardHeightDifference = this.keyboardHeight - BASELINE_KEYBOARD_HEIGHT;
+
+		const iosOffset =
+			SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT
+				? y - offsetPredictor - (iosScreenPredictor - Math.abs(keyboardHeightDifference))
+				: y - offsetPredictor;
+
+		const androidOffset =
+			SCREEN_HEIGHT !== BASELINE_SCREEN_HEIGHT
+				? y - offsetPredictor - (androidScreenPredictor + Math.abs(keyboardHeightDifference))
+				: y - offsetPredictor;
+
+		const offset = Platform.OS === OS_TYPES.Android ? androidOffset : iosOffset;
+		if (first && offset < 0) {
+			return 0;
+		}
+
+		return offset;
 	};
 }

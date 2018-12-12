@@ -1,7 +1,3 @@
-/*
- * Temporary enhancer to shape the data while we normalize the Redux state
- */
-
 import * as React from 'react';
 
 import { IComment as IStateComment } from '../../store/data/comments';

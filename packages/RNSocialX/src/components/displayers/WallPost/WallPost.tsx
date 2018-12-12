@@ -3,6 +3,7 @@ import {
 	Animated,
 	Clipboard,
 	Dimensions,
+	findNodeHandle,
 	Keyboard,
 	KeyboardAvoidingView,
 	Platform,
@@ -46,6 +47,7 @@ import { IApplicationState, selectPost } from '../../../store/selectors';
 import { IComment, INavigationProps } from '../../../types';
 import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
+import { PrimaryTextInput } from '../../inputs/PrimaryTextInput';
 import styles, { SCREEN_WIDTH } from './WallPost.style';
 
 interface IWallPostProps extends INavigationProps {
@@ -53,6 +55,8 @@ interface IWallPostProps extends INavigationProps {
 	commentInput?: boolean;
 	isCommentsScreen?: boolean;
 	keyboardRaised?: boolean;
+	containerRef?: React.RefObject<View>;
+	onCommentInputPress?: (y: number, h: number) => void;
 }
 
 interface IProps
@@ -88,12 +92,9 @@ class Component extends React.Component<IProps, IState> {
 		reportAProblem: false,
 	};
 
-	private keyboardDidHideListener: any;
 	private scrollRef: React.RefObject<ScrollView> = React.createRef();
-
-	public componentDidMount() {
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-	}
+	private commentInputRef: React.RefObject<PrimaryTextInput> = React.createRef();
+	private postRef: React.RefObject<View> = React.createRef();
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
@@ -106,10 +107,6 @@ class Component extends React.Component<IProps, IState> {
 			this.props.heartAnimation !== nextProps.heartAnimation ||
 			this.props.animationProgress !== nextProps.animationProgress
 		);
-	}
-
-	public componentWillUnmount() {
-		this.keyboardDidHideListener.remove();
 	}
 
 	public render() {
@@ -174,7 +171,13 @@ class Component extends React.Component<IProps, IState> {
 
 		if (shapedPost || placeholderPost) {
 			return (
-				<View style={[styles.container, { opacity: creatingPost ? 0.5 : 1 }]}>
+				<View
+					ref={this.postRef}
+					style={[
+						styles.container,
+						{ opacity: creatingPost ? 0.5 : 1, paddingBottom: isCommentsScreen ? 10 : 16 },
+					]}
+				>
 					{isPlaceholderPost && <View style={styles.overlay} />}
 					<UserDetails
 						canBack={isCommentsScreen!}
@@ -232,7 +235,9 @@ class Component extends React.Component<IProps, IState> {
 									numberOfSuperLikes={numberOfSuperLikes}
 									numberOfWalletCoins={numberOfWalletCoins}
 									onLikePost={() => onLikePost(postId)}
-									onCommentPress={() => onViewComments(postId, true)}
+									onCommentPress={() =>
+										this.commentInputRef.current && this.commentInputRef.current.focusInput()
+									}
 									onSuperLikePress={() => undefined}
 									onWalletCoinsPress={() => undefined}
 								/>
@@ -267,10 +272,10 @@ class Component extends React.Component<IProps, IState> {
 								enabled={Platform.OS === OS_TYPES.IOS}
 							>
 								<CommentInput
+									commentInputRef={this.commentInputRef}
 									comment={comment}
 									autoFocus={keyboardRaised}
 									onCommentInputChange={this.onCommentInputChangeHandler}
-									onCommentInputPress={() => undefined}
 									onSubmitComment={this.onSubmitCommentHandler}
 									getText={getText}
 								/>
@@ -344,6 +349,7 @@ class Component extends React.Component<IProps, IState> {
 									animationValues={animationValues}
 									onCommentInputChange={this.onCommentInputChangeHandler}
 									onCommentInputPress={this.onCommentInputPressHandler}
+									onCommentInputBlur={this.onCommentInputBlur}
 									onSubmitComment={this.onSubmitCommentHandler}
 									getText={getText}
 								/>
@@ -357,7 +363,7 @@ class Component extends React.Component<IProps, IState> {
 		return null;
 	}
 
-	private keyboardDidHide = () => {
+	private onCommentInputBlur = () => {
 		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
 
 		if (commentInputFocused) {
@@ -376,23 +382,31 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onCommentInputPressHandler = () => {
-		const { shapedPost } = this.props;
+		const { onCommentInputPress, containerRef } = this.props;
 		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
 
-		if (shapedPost) {
-			if (!commentInputFocused) {
-				Animated.parallel([
-					Animated.timing(commentInputWidth, {
-						toValue: SCREEN_WIDTH - Sizes.smartHorizontalScale(115),
-						duration: 250,
-					}),
-					Animated.timing(sendCommentIconPosition, {
-						toValue: 0,
-						duration: 250,
-					}),
-				]).start();
-				this.setState({ commentInputFocused: true });
+		if (!commentInputFocused) {
+			if (onCommentInputPress && this.postRef.current && containerRef) {
+				this.postRef.current.measureLayout(
+					findNodeHandle(containerRef.current) as number,
+					(x, y, w, h) => {
+						onCommentInputPress(y, h);
+					},
+					() => undefined,
+				);
 			}
+
+			Animated.parallel([
+				Animated.timing(commentInputWidth, {
+					toValue: SCREEN_WIDTH - Sizes.smartHorizontalScale(115),
+					duration: 250,
+				}),
+				Animated.timing(sendCommentIconPosition, {
+					toValue: 0,
+					duration: 250,
+				}),
+			]).start();
+			this.setState({ commentInputFocused: true });
 		}
 	};
 
