@@ -27,7 +27,7 @@ export const configureStore = (
 ) => {
 	const persistedReducer = persistReducer(persistConfig, rootReducer);
 	const dataApi = dataApiFactory({
-		peers: depsConfig.dataApi.peers,
+		peers: depsConfig.dataApi.peers.map((peer: string) => `http://${peer}:8765/gun`),
 		rootdb: depsConfig.dataApi.rootdb,
 	});
 

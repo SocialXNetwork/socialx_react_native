@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-export ANDROID_VERSION_STRING="0.3.4"
-export ANDROID_VERSION_CODE=34
+export ANDROID_VERSION_STRING="0.3.5"
+export ANDROID_VERSION_CODE=35
 
 export $(egrep -v '^#' .env | xargs)
 
