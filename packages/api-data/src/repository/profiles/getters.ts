@@ -26,7 +26,7 @@ const getProfileNumberOfFriends = (
 	profile: IProfileData,
 	callback: (numberOfFriends: number) => void,
 ) => {
-	profileHandles.privateUserFriendsRecordByPub(context, profile.pub).once(
+	profileHandles.privateUserFriendsByAlias(context, profile.alias).once(
 		(friendsRecord: IMetasTypeCallback<IProfileData>) => {
 			if (!friendsRecord) {
 				return callback(0);
@@ -47,6 +47,7 @@ const asyncFriendWithMutualStatus = (
 ) =>
 	new Promise<IFriendData>((res) => {
 		const { pub, alias } = friend;
+		const { owner } = getContextMeta(context);
 		const dataResolver = (noStatusCheck?: boolean) => {
 			if (noStatusCheck) {
 				getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
@@ -58,7 +59,7 @@ const asyncFriendWithMutualStatus = (
 					});
 				});
 			} else {
-				profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
+				profileHandles.privateMutualUserFriends(context, alias, owner).once(
 					(currentUserProfile: IProfileData | undefined) => {
 						if (!currentUserProfile) {
 							getProfileNumberOfFriends(context, friend, (numberOfFriends) => {
@@ -109,8 +110,9 @@ const friendWithMutualStatus = (
 	callback: (friend: IFriendData) => void,
 ) => {
 	const { pub, alias } = friend;
+	const { owner } = getContextMeta(context);
 	const mainRunner = () => {
-		profileHandles.currentUserOnPrivateProfilesFriends(context, { pub, alias }).once(
+		profileHandles.privateMutualUserFriends(context, alias, owner).once(
 			(currentUserProfile: IProfileData | undefined) => {
 				if (!currentUserProfile) {
 					getFriendProfile(FRIEND_TYPES.PENDING);
@@ -252,13 +254,13 @@ export const getCurrentProfileFriends = async (
 	context: IContext,
 	callback: IGunCallback<IProfileData[]>,
 ) => {
-	profileHandles.currentProfileFriendsRecord(context).once(
+	profileHandles.privateUserFriendsRecord(context).once(
 		(data: any) => {
 			if (!data) {
 				return callback(null, []);
 			}
 
-			profileHandles.currentProfileFriendsRecord(context).open(
+			profileHandles.privateUserFriendsRecord(context).open(
 				(friendsRecordCallback: IFriendsCallbackData) => {
 					if (!Object.keys(friendsRecordCallback).length) {
 						// no friends, sadlife

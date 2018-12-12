@@ -51,23 +51,55 @@ export const privateUserProfileByPub = (context: IContext, pub: string) => {
 
 // User friendship records
 
+export const privateUserFriendsRecord = (context: IContext) => {
+	const { gun, account } = context;
+	return gun
+		.back(-1)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(account.is.alias);
+};
+
+export const privateUserFriendsByAlias = (context: IContext, alias: string) => {
+	const { gun } = context;
+	return gun
+		.back(-1)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(alias);
+};
+
+export const privateMutualUserFriends = (context: IContext, user: string, target: string) => {
+	const { gun } = context;
+	return gun
+		.back(-1)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(user)
+		.get(target);
+};
+
 export const currentProfileFriendsRecord = (context: IContext) => {
-	const { account } = context;
-	return account.get(TABLE_ENUMS.FRIENDS);
+	const { gun, account } = context;
+	return gun
+		.back(-1)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(account.is.alias);
 };
 
 export const currentProfileFriendByUsername = (context: IContext, username: string) => {
-	const { account } = context;
-	return account.get(TABLE_ENUMS.FRIENDS).get(username);
+	const { gun, account } = context;
+	return gun
+		.back(-1)
+		.get(TABLE_ENUMS.FRIENDS)
+		.get(account.is.alias)
+		.get(username);
 };
 
 export const currentUserOnPrivateProfilesFriends = (context: IContext, userObject: IUserObject) => {
 	const { gun, account } = context;
-	const { pub } = userObject;
+	const { alias } = userObject;
 	return gun
 		.back(-1)
-		.get(`~${pub}`)
 		.get(TABLE_ENUMS.FRIENDS)
+		.get(alias)
 		.get(account.is.alias);
 };
 
