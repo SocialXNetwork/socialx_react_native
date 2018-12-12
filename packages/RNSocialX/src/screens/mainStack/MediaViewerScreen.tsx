@@ -70,7 +70,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				activeSlide={activeSlide}
 				viewport={viewport}
 				infoVisible={infoVisible}
-				canReact={post ? true : false}
+				isPost={post !== null}
 				likedByCurrentUser={post ? post.likedByCurrentUser : false}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}

@@ -11,7 +11,6 @@ import styles from './MediaInteractionButtons.style';
 
 interface IMediaInteractionButtonsProps {
 	postId: string;
-	canReact: boolean | undefined;
 	likedByCurrentUser: boolean;
 	onCommentPress: () => void;
 	onLikePress: () => void;
@@ -23,7 +22,6 @@ interface IProps extends IMediaInteractionButtonsProps {
 
 const Component: React.SFC<IProps> = ({
 	post,
-	canReact = false,
 	likedByCurrentUser,
 	onLikePress,
 	onCommentPress,
@@ -33,30 +31,26 @@ const Component: React.SFC<IProps> = ({
 	const hasLikesOrComments = numberOfComments > 0 || numberOfLikes > 0;
 
 	return (
-		<React.Fragment>
-			{canReact && (
-				<View style={styles.actionButtons}>
-					<View style={styles.likesContainer}>
-						<LikeAnimatingButton
-							likedByCurrentUser={likedByCurrentUser}
-							secondary={true}
-							onLikePost={onLikePress}
-						/>
-						{hasLikesOrComments && numberOfLikes > 0 && (
-							<Text style={styles.infoText}>{numberOfLikes}</Text>
-						)}
-					</View>
-					<TouchableOpacity style={styles.commentsContainer} onPress={onCommentPress}>
-						<View style={styles.commentsIconContainer}>
-							<Icon name="comment-o" style={styles.iconStyle} />
-						</View>
-						{hasLikesOrComments && numberOfComments > 0 && (
-							<Text style={styles.infoText}>{numberOfComments}</Text>
-						)}
-					</TouchableOpacity>
+		<View style={styles.actionButtons}>
+			<View style={styles.likesContainer}>
+				<LikeAnimatingButton
+					likedByCurrentUser={likedByCurrentUser}
+					secondary={true}
+					onLikePost={onLikePress}
+				/>
+				{hasLikesOrComments && numberOfLikes > 0 && (
+					<Text style={styles.infoText}>{numberOfLikes}</Text>
+				)}
+			</View>
+			<TouchableOpacity style={styles.commentsContainer} onPress={onCommentPress}>
+				<View style={styles.commentsIconContainer}>
+					<Icon name="comment-o" style={styles.iconStyle} />
 				</View>
-			)}
-		</React.Fragment>
+				{hasLikesOrComments && numberOfComments > 0 && (
+					<Text style={styles.infoText}>{numberOfComments}</Text>
+				)}
+			</TouchableOpacity>
+		</View>
 	);
 };
 

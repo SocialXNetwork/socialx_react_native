@@ -380,6 +380,7 @@ export const createPost = (
 				uuid: uuid(),
 			}),
 		);
+		await dispatch(setGlobal({ placeholderPost: null }));
 	} finally {
 		await dispatch(endActivity({ uuid: activityId }));
 	}

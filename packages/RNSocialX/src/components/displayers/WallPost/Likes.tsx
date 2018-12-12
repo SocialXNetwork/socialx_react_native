@@ -1,5 +1,9 @@
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
+
+import { IProfile } from '../../../store/data/profiles';
+import { IApplicationState, selectProfile } from '../../../store/selectors';
 
 import { ITranslatedProps } from '../../../types';
 import styles from './Likes.style';
@@ -11,7 +15,12 @@ interface ILikesProps extends ITranslatedProps {
 	onViewLikes: () => void;
 }
 
-export const Likes: React.SFC<ILikesProps> = ({
+interface IProps extends ILikesProps {
+	profile: IProfile;
+}
+
+export const Component: React.SFC<IProps> = ({
+	profile,
 	alias,
 	total,
 	onUserPress,
@@ -25,7 +34,7 @@ export const Likes: React.SFC<ILikesProps> = ({
 			<View style={styles.wrapper}>
 				<Text style={styles.normal}>{getText('post.card.liked.by') + ' '}</Text>
 				<Text style={styles.bold} onPress={() => onUserPress(alias)}>
-					{alias}
+					{profile.fullName}
 				</Text>
 			</View>
 			{total > 1 && (
@@ -39,3 +48,9 @@ export const Likes: React.SFC<ILikesProps> = ({
 		</View>
 	);
 };
+
+const mapStateToProps = (state: IApplicationState, props: ILikesProps) => ({
+	profile: selectProfile(state, props),
+});
+
+export const Likes = connect(mapStateToProps)(Component as any);
