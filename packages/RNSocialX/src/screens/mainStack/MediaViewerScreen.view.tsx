@@ -66,7 +66,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 		width: number;
 	};
 	infoVisible: boolean;
-	canReact: boolean | undefined;
+	isPost: boolean;
 	likedByCurrentUser: boolean;
 	onChangeSlide: (index: number) => void;
 	onLayout: (event: any) => void;
@@ -86,7 +86,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	activeSlide,
 	onChangeSlide,
 	infoVisible,
-	canReact,
+	isPost,
 	likedByCurrentUser,
 	onLayout,
 	onShowInfo,
@@ -115,14 +115,12 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 				<View style={styles.carouselContainer} onLayout={onLayout}>
 					<Carousel
 						data={media}
-						renderItem={({ item, index }: { item: IMedia; index: number }) => (
+						renderItem={({ item }: { item: IMedia }) => (
 							<MediaObjectViewer
 								type={item.type}
-								paused={index !== activeSlide}
 								hash={item.hash}
 								style={[styles.carouselMediaObject, { width: viewport.width }]}
 								resizeMode="contain"
-								resizeToChangeAspectRatio={true}
 								canZoom={false}
 								getText={getText}
 								thumbOnly={false}
@@ -146,16 +144,17 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 						})}
 					/>
 					<CloseButton isPortrait={isPortrait} onExitFullScreen={onExitFullScreen} />
-					<View style={styles.screenFooter}>
-						<MediaInteractionButtons
-							postId={currentMedia.postId}
-							canReact={canReact}
-							likedByCurrentUser={likedByCurrentUser}
-							onCommentPress={onCommentPress}
-							onLikePress={onLikePress}
-						/>
-						<Pagination media={media} activeSlide={activeSlide} />
-					</View>
+					{isPost && (
+						<View style={styles.screenFooter}>
+							<MediaInteractionButtons
+								postId={currentMedia.postId}
+								likedByCurrentUser={likedByCurrentUser}
+								onCommentPress={onCommentPress}
+								onLikePress={onLikePress}
+							/>
+							<Pagination media={media} activeSlide={activeSlide} />
+						</View>
+					)}
 					<TouchableOpacity style={styles.infoButton} onPress={onShowInfo}>
 						<Icon name="ios-information-circle-outline" style={styles.infoIcon} />
 					</TouchableOpacity>

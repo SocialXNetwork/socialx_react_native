@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { RichText } from '../..';
 
+import { IWithDataShapeEnhancedProps, WithDataShape } from '../../../enhancers/intermediary';
 import { IComment } from '../../../store/data/comments';
 import { IApplicationState, selectComment } from '../../../store/selectors';
 
@@ -11,21 +12,24 @@ import styles from './Comment.style';
 
 interface ICommentProps {
 	commentId: string;
-	comment: IComment;
 	onUserPress: (userId: string) => void;
 	onCommentPress: () => void;
 }
 
-export const Component: React.SFC<ICommentProps> = ({ comment, onUserPress, onCommentPress }) => {
-	if (comment) {
+interface IProps extends ICommentProps, IWithDataShapeEnhancedProps {
+	comment: IComment;
+}
+
+export const Component: React.SFC<IProps> = ({ shapedComment, onUserPress, onCommentPress }) => {
+	if (shapedComment) {
 		return (
 			<Text style={styles.container} numberOfLines={2}>
 				<Text
 					style={styles.user}
-					onPress={() => onUserPress(comment.owner.alias)}
+					onPress={() => onUserPress(shapedComment.user.userId)}
 					suppressHighlighting={true}
 				>
-					{comment.owner.alias}
+					{shapedComment.user.fullName}
 				</Text>
 				<RichText
 					style={styles.text}
@@ -51,7 +55,7 @@ export const Component: React.SFC<ICommentProps> = ({ comment, onUserPress, onCo
 						},
 					]}
 				>
-					{'  ' + comment.text}
+					{'  ' + shapedComment.text}
 				</RichText>
 			</Text>
 		);
@@ -59,8 +63,15 @@ export const Component: React.SFC<ICommentProps> = ({ comment, onUserPress, onCo
 
 	return null;
 };
+
+const EnhancedComponent: React.SFC<IProps> = (props) => (
+	<WithDataShape comment={props.comment}>
+		{({ shapedComment }) => <Component {...props} shapedComment={shapedComment} />}
+	</WithDataShape>
+);
+
 const mapStateToProps = (state: IApplicationState, props: ICommentProps) => ({
 	comment: selectComment(state, props),
 });
 
-export const Comment = connect(mapStateToProps)(Component as any) as any;
+export const Comment = connect(mapStateToProps)(EnhancedComponent as any);
