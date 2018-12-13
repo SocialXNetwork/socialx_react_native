@@ -11,11 +11,10 @@ import {
 	WithSearch,
 } from '../../../enhancers/screens';
 
-import { INavigationProps, SearchTabs } from '../../../types';
+import { INavigationProps } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
 
-const SEARCH_DEBOUNCE_TIME = 500;
-const tabs = [SearchTabs.Top, SearchTabs.People, SearchTabs.Tags, SearchTabs.Places];
+const SEARCH_DEBOUNCE_TIME = 300;
 
 type ISearchScreenProps = INavigationProps &
 	IWithSearchEnhancedData &
@@ -37,8 +36,8 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		suggestions: [],
 	};
 
-	private debounceSearch = debounce((term: string) => {
-		this.props.search(term, tabs[this.state.selectedTab]);
+	private debouncedSearch = debounce((term: string) => {
+		this.props.search(term, 10);
 	}, SEARCH_DEBOUNCE_TIME);
 
 	public componentDidMount() {
@@ -48,7 +47,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	}
 
 	public render() {
-		const { navigation, results, suggestions, searching, hasMoreResults, getText } = this.props;
+		const { results, searching, clearSearchResults, navigation, getText } = this.props;
 		const { loadedTabs, term } = this.state;
 
 		return (
@@ -58,7 +57,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 				suggestions={this.state.suggestions}
 				loadedTabs={loadedTabs}
 				searching={searching}
-				hasMoreResults={hasMoreResults}
+				clearSearchResults={clearSearchResults}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
 				onResultPress={(alias) => this.props.onViewUserProfile(alias)}
@@ -78,11 +77,12 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	};
 
 	private onSearchTermChangeHandler = (term: string) => {
+		const { previousTerms, searchLocally } = this.props;
+
 		this.setState({ term });
-		if (term.length === 1) {
-			this.props.search(term, tabs[this.state.selectedTab]);
-		} else {
-			this.debounceSearch(term);
+		searchLocally(term);
+		if (term.length > 2 && !previousTerms[term]) {
+			this.debouncedSearch(term);
 		}
 	};
 }

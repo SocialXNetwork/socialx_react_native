@@ -9,20 +9,18 @@ import styles from './SuggestedSearches.style';
 interface ISuggestedProps extends ITranslatedProps {
 	suggestions: string[];
 	onResultPress: (alias: string) => void;
-	onLoadMore: () => void;
 }
 
 export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 	suggestions,
 	onResultPress,
-	onLoadMore,
 	getText,
 }) => {
 	if (suggestions && suggestions.length > 0) {
 		return (
 			<View style={styles.container}>
 				<Text style={styles.title}>{getText('search.suggested')}</Text>
-				<UserEntries aliases={suggestions} onEntryPress={onResultPress} onLoadMore={onLoadMore} />
+				<UserEntries aliases={suggestions} onEntryPress={onResultPress} />
 			</View>
 		);
 	}

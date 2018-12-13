@@ -3,7 +3,10 @@ import { IState } from './Types';
 const initialState: IState = {
 	profiles: {},
 	friends: {},
-	results: [],
+	search: {
+		results: [],
+		previousTerms: {},
+	},
 };
 
 export default initialState;

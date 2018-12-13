@@ -3,25 +3,22 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
 	container: {
-		flex: 1,
+		paddingHorizontal: Sizes.smartHorizontalScale(25),
+		paddingVertical: Sizes.smartVerticalScale(16),
 	},
 	searchContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: Sizes.smartVerticalScale(16),
-		marginLeft: Sizes.smartHorizontalScale(16),
+		marginTop: Sizes.smartVerticalScale(10),
 	},
 	spinner: {
-		paddingHorizontal: Sizes.smartHorizontalScale(10),
+		marginHorizontal: Sizes.smartHorizontalScale(15),
+		paddingRight: Sizes.smartHorizontalScale(15),
 	},
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		color: Colors.silverSand,
-	},
-	textContainer: {
-		paddingVertical: Sizes.smartVerticalScale(10),
-		paddingHorizontal: Sizes.smartHorizontalScale(15),
 	},
 };
 

@@ -14,13 +14,13 @@ export const FeedWithNoPosts: React.SFC<IFeedWithNoPosts> = ({ onCreateWallPost,
 	<View style={styles.container}>
 		<Icon name="md-film" size={Sizes.smartHorizontalScale(120)} color={Colors.geyser} />
 		<Text style={styles.text}>{getText('feed.screen.no.posts')}</Text>
-		<View style={styles.button}>
+		{/* <View style={styles.button}>
 			<PrimaryButton
 				label={getText('feed.screen.no.posts.create')}
 				size={ButtonSizes.Small}
 				onPress={onCreateWallPost}
 			/>
-		</View>
+		</View> */}
 	</View>
 );
 

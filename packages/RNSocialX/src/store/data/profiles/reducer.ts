@@ -16,10 +16,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				profiles: {
 					...state.profiles,
-					[profile.alias]: {
-						...state.profiles[profile.alias],
-						...profile,
-					},
+					[profile.alias]: profile,
 				},
 			};
 		}
@@ -32,15 +29,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const profiles = { ...state.profiles };
 
 			for (const profile of action.payload) {
-				if (profile !== profiles[profile.alias]) {
-					profiles[profile.alias] = {
-						...state.profiles[profile.alias],
-						...profile,
-						posts:
-							profiles[profile.alias] && profiles[profile.alias].posts
-								? profiles[profile.alias].posts
-								: [],
-					};
+				if (!profiles[profile.alias]) {
+					profiles[profile.alias] = profile;
 				}
 			}
 
@@ -61,10 +51,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				profiles: {
 					...state.profiles,
-					[profile.alias]: {
-						...state.profiles[profile.alias],
-						...profile,
-					},
+					[profile.alias]: profile,
 				},
 			};
 		}
@@ -80,15 +67,8 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const friendIds = [];
 
 			for (const friend of friends) {
-				if (friend !== profiles[friend.alias]) {
-					profiles[friend.alias] = {
-						...state.profiles[friend.alias],
-						...friend,
-						posts:
-							profiles[friend.alias] && profiles[friend.alias].posts
-								? profiles[friend.alias].posts
-								: [],
-					};
+				if (!profiles[friend.alias]) {
+					profiles[friend.alias] = friend;
 				}
 
 				if (friendIds.indexOf(friend.alias) === -1) {
@@ -114,6 +94,29 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return state;
 		}
 
+		case ActionTypes.SYNC_ADD_FRIEND: {
+			const { currentUserAlias, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						status: FRIEND_TYPES.PENDING,
+					},
+				},
+				friends: {
+					...state.friends,
+					[currentUserAlias]: [...state.friends[currentUserAlias], alias],
+				},
+			};
+		}
+
+		case ActionTypes.UNDO_REQUEST: {
+			return state;
+		}
+
 		case ActionTypes.REMOVE_FRIEND: {
 			return state;
 		}
@@ -123,10 +126,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.REJECT_FRIEND: {
-			return state;
-		}
-
-		case ActionTypes.UNDO_REQUEST: {
 			return state;
 		}
 
@@ -191,41 +190,80 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SEARCH_FOR_PROFILES: {
-			let profiles = { ...state.profiles };
-			for (const alias of action.payload) {
-				const {
-					[alias]: {},
-					...updatedProfiles
-				} = state.profiles;
-				profiles = updatedProfiles;
+			return state;
+		}
+
+		case ActionTypes.SYNC_SEARCH_FOR_PROFILES: {
+			const profiles = { ...state.profiles };
+			const results = [...state.search.results];
+			const previousTerms = { ...state.search.previousTerms };
+
+			for (const profile of action.payload.profiles) {
+				if (!profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...profile,
+						searched: true,
+					};
+				}
+
+				if (results.indexOf(profile.alias) === -1) {
+					results.push(profile.alias);
+				}
+			}
+
+			if (!previousTerms[action.payload.term]) {
+				previousTerms[action.payload.term] = true;
 			}
 
 			return {
 				...state,
 				profiles,
+				search: {
+					previousTerms,
+					results,
+				},
 			};
 		}
 
-		case ActionTypes.SYNC_SEARCH_FOR_PROFILES: {
-			const profiles = { ...state.profiles };
+		case ActionTypes.SEARCH_FOR_PROFILES_LOCALLY: {
+			const { alias: currentUserAlias, term } = action.payload;
 
-			for (const profile of action.payload.profiles) {
-				if (profile !== profiles[profile.alias]) {
-					profiles[profile.alias] = {
-						...state.profiles[profile.alias],
-						...profile,
-						posts:
-							profiles[profile.alias] && profiles[profile.alias].posts
-								? profiles[profile.alias].posts
-								: [],
-					};
+			const results = Object.keys(state.profiles).filter(
+				(alias) =>
+					alias !== currentUserAlias &&
+					(alias.toLowerCase().includes(term.toLowerCase()) ||
+						state.profiles[alias].fullName.toLowerCase().includes(term.toLowerCase())),
+			);
+
+			return {
+				...state,
+				search: {
+					...state.search,
+					results,
+				},
+			};
+		}
+
+		case ActionTypes.CLEAR_SEARCH_RESULTS: {
+			let profiles = { ...state.profiles };
+
+			for (const alias of Object.keys(profiles)) {
+				if (profiles[alias].searched) {
+					const {
+						[alias]: {},
+						...updatedProfiles
+					} = profiles;
+					profiles = updatedProfiles;
 				}
 			}
 
 			return {
 				...state,
 				profiles,
-				results: action.payload.aliases,
+				search: {
+					previousTerms: {},
+					results: [],
+				},
 			};
 		}
 

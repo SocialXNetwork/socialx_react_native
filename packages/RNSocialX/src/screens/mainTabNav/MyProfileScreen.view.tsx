@@ -20,7 +20,7 @@ import {
 	WallPost,
 } from '../../components';
 import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { ICurrentUser, INavigationProps, ITranslatedProps, IWallPost } from '../../types';
+import { ICurrentUser, INavigationProps, ITranslatedProps } from '../../types';
 
 import styles, { colors, icons, SCREEN_HEIGHT } from './MyProfileScreen.style';
 
@@ -127,7 +127,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
 					numberOfComments={numberOfComments}
-					relationship={null}
 					isCurrentUser={true}
 					tabs={true}
 					activeTab={activeTab}

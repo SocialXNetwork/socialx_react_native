@@ -260,7 +260,7 @@ export interface IVisitedUser {
 	numberOfComments: number;
 	media: IMedia[];
 	postIds: string[];
-	relationship: FRIEND_TYPES;
+	status: FRIEND_TYPES;
 }
 
 export interface IProfile {

@@ -6,6 +6,7 @@ import {
 	acceptFriend,
 	addFriend,
 	clearFriendResponse,
+	clearSearchResults,
 	getCurrentFriends,
 	getCurrentProfile,
 	getProfileByAlias,
@@ -21,15 +22,22 @@ import {
 	rejectFriend,
 	removeFriend,
 	searchForProfiles,
+	searchForProfilesLocally,
 	undoRequest,
 	updateCurrentProfile,
 } from '../../../store/data/profiles';
+import { ISearchWithAliasInput } from '../../../store/data/profiles/Types';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	profiles: IProfiles;
 	friends: IFriends;
-	results: string[];
+	search: {
+		results: string[];
+		previousTerms: {
+			[term: string]: boolean;
+		};
+	};
 }
 
 interface IActionProps {
@@ -43,6 +51,8 @@ interface IActionProps {
 	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
 	undoRequest: (input: IAliasInput) => void;
 	searchForProfiles: (input: ISearchInput) => void;
+	searchForProfilesLocally: (input: ISearchWithAliasInput) => void;
+	clearSearchResults: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -68,15 +78,15 @@ const selectFriends = createSelector(
 	(friends) => friends,
 );
 
-const selectResults = createSelector(
-	(state: IApplicationState) => state.data.profiles.results,
-	(results) => results,
+const selectSearch = createSelector(
+	(state: IApplicationState) => state.data.profiles.search,
+	(search) => search,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
 	friends: selectFriends(state),
-	results: selectResults(state),
+	search: selectSearch(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -91,6 +101,9 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	clearFriendResponse: (input: IAliasInput) => dispatch(clearFriendResponse(input)),
 	undoRequest: (input: IAliasInput) => dispatch(undoRequest(input)),
 	searchForProfiles: (input: ISearchInput) => dispatch(searchForProfiles(input)),
+	searchForProfilesLocally: (input: ISearchWithAliasInput) =>
+		dispatch(searchForProfilesLocally(input)),
+	clearSearchResults: () => dispatch(clearSearchResults()),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(

@@ -55,7 +55,7 @@ interface IWallPostProps extends INavigationProps {
 	commentInput?: boolean;
 	isCommentsScreen?: boolean;
 	keyboardRaised?: boolean;
-	containerRef?: React.RefObject<View>;
+	postContainerRef?: React.RefObject<View>;
 	onCommentInputPress?: (y: number, h: number) => void;
 }
 
@@ -382,13 +382,13 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onCommentInputPressHandler = () => {
-		const { onCommentInputPress, containerRef } = this.props;
+		const { onCommentInputPress, postContainerRef } = this.props;
 		const { commentInputFocused, commentInputWidth, sendCommentIconPosition } = this.state;
 
 		if (!commentInputFocused) {
-			if (onCommentInputPress && this.postRef.current && containerRef) {
+			if (onCommentInputPress && this.postRef.current && postContainerRef) {
 				this.postRef.current.measureLayout(
-					findNodeHandle(containerRef.current) as number,
+					findNodeHandle(postContainerRef.current) as number,
 					(x, y, w, h) => {
 						onCommentInputPress(y, h);
 					},

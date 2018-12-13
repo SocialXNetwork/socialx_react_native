@@ -26,7 +26,7 @@ interface IProps extends IUserEntryProps, IWithFriendsEnhancedData {
 	currentUserAlias: string;
 }
 
-const Component: React.SFC<IProps> = ({ profile, status, currentUserAlias, onPress }) => {
+const Component: React.SFC<IProps> = ({ profile, currentUserAlias, relationship, onPress }) => {
 	if (profile) {
 		return (
 			<TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.card}>
@@ -39,27 +39,25 @@ const Component: React.SFC<IProps> = ({ profile, status, currentUserAlias, onPre
 				</View>
 				{currentUserAlias !== profile.alias && (
 					<View style={styles.button}>
-						{status.relationship === FRIEND_TYPES.NOT_FRIEND ? (
+						{profile.status === FRIEND_TYPES.NOT_FRIEND ? (
 							<PrimaryButton
-								label={status.text}
+								label={relationship.action}
+								loading={relationship.loading}
 								size={ButtonSizes.Small}
-								disabled={status.disabled}
-								loading={status.disabled}
 								borderColor={Colors.pink}
 								textColor={Colors.white}
 								containerStyle={styles.primary}
-								onPress={() => status.actionHandler(profile.alias)}
+								onPress={() => relationship.onStatusAction(profile.alias)}
 							/>
 						) : (
 							<PrimaryButton
-								label={status.text}
+								label={relationship.action}
+								loading={relationship.loading}
 								size={ButtonSizes.Small}
-								disabled={status.disabled}
-								loading={status.disabled}
 								borderColor={Colors.pink}
 								textColor={Colors.pink}
 								containerStyle={styles.secondary}
-								onPress={() => status.actionHandler(profile.alias)}
+								onPress={() => relationship.onStatusAction(profile.alias)}
 							/>
 						)}
 					</View>
@@ -73,7 +71,7 @@ const Component: React.SFC<IProps> = ({ profile, status, currentUserAlias, onPre
 const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithCurrentUser>
 		{({ currentUser }) => (
-			<WithFriends relationship={props.profile ? props.profile.status : undefined}>
+			<WithFriends status={props.profile.status}>
 				{({ data }) => <Component {...props} {...data} currentUserAlias={currentUser.userName} />}
 			</WithFriends>
 		)}

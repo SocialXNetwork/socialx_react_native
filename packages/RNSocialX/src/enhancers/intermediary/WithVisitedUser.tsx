@@ -34,7 +34,7 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 								numberOfComments: 0,
 								media: [],
 								postIds: [],
-								relationship: profile.status,
+								status: profile.status,
 							};
 
 							return this.props.children({

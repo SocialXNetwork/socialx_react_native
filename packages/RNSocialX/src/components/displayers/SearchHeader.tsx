@@ -16,6 +16,7 @@ interface ISearchHeaderProps extends INavigationProps {
 	term?: string;
 	autoFocus?: boolean;
 	onSearchTermChange?: (term: string) => void;
+	onCancelSearch?: () => void;
 }
 
 interface IProps extends ISearchHeaderProps {
@@ -113,6 +114,9 @@ class Component extends React.Component<IProps, IState> {
 	private onBackHandler = () => {
 		this.setState({ term: '' }, () => {
 			this.props.onGoBack();
+			if (this.props.onCancelSearch) {
+				this.props.onCancelSearch();
+			}
 		});
 	};
 }

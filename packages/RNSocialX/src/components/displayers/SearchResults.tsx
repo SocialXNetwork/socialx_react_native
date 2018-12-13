@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 
 import { UserEntries } from '../../components';
 import { ITranslatedProps } from '../../types';
@@ -10,9 +10,7 @@ interface ISearchResultsProps extends ITranslatedProps {
 	term: string;
 	results: string[];
 	searching: boolean;
-	hasMore: boolean;
 	onResultPress: (alias: string) => void;
-	onLoadMore: () => void;
 }
 
 interface ISearchIndicator extends ITranslatedProps {
@@ -27,9 +25,7 @@ const SearchIndicator: React.SFC<ISearchIndicator> = ({ term, getText }) => (
 );
 
 const NoResults: React.SFC<ITranslatedProps> = ({ getText }) => (
-	<View style={styles.textContainer}>
-		<Text style={styles.text}>{getText('search.no.results')}</Text>
-	</View>
+	<Text style={styles.text}>{getText('search.no.results')}</Text>
 );
 
 export const SearchResults: React.SFC<ISearchResultsProps> = ({
@@ -37,25 +33,17 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 	searching,
 	results,
 	onResultPress,
-	onLoadMore,
-	hasMore,
 	getText,
 }) => {
 	const empty = !searching && term.length > 0 && results.length === 0;
-	const found = !searching && results.length > 0;
 
 	return (
-		<View style={styles.container}>
-			{searching && <SearchIndicator term={term} getText={getText} />}
+		<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
 			{empty && <NoResults getText={getText} />}
-			{found && (
-				<UserEntries
-					aliases={results}
-					onEntryPress={onResultPress}
-					onLoadMore={onLoadMore}
-					hasMore={hasMore}
-				/>
+			{results.length > 0 && (
+				<UserEntries aliases={results} scroll={false} onEntryPress={onResultPress} />
 			)}
-		</View>
+			{searching && <SearchIndicator term={term} getText={getText} />}
+		</ScrollView>
 	);
 };
