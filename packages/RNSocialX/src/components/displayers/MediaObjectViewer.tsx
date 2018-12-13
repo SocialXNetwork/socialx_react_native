@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Platform, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import * as mime from 'react-native-mime-types';
 import PhotoView from 'react-native-photo-view';
@@ -7,7 +7,6 @@ import PhotoView from 'react-native-photo-view';
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
-import { OS_TYPES } from '../../environment/consts';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
@@ -45,7 +44,7 @@ export const Component: React.SFC<IProps> = ({
 	hash,
 	path,
 	style: customStyle,
-	resizeMode = 'cover',
+	resizeMode,
 	extension,
 	type,
 	getText,

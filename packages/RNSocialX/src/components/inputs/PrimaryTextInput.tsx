@@ -98,7 +98,13 @@ const CancelButton: React.SFC<{
 		);
 	} else if (hasFocus && canCancel && Platform.OS === OS_TYPES.IOS) {
 		return (
-			<TouchableOpacity style={style.cancelButton} onPress={() => Keyboard.dismiss()}>
+			<TouchableOpacity
+				style={style.cancelButton}
+				onPress={() => {
+					Keyboard.dismiss();
+					onPressCancel();
+				}}
+			>
 				<Text style={[style.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
 			</TouchableOpacity>
 		);
