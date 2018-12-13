@@ -16,17 +16,23 @@ interface INotificationProps extends ITranslatedProps {
 	onShowOptions: (notificationId: string) => void;
 }
 
-type IProps = INotificationProps & IWithFriendsEnhancedActions;
+interface IProps extends INotificationProps, IWithFriendsEnhancedActions {
+	request: {
+		accepting: boolean;
+		rejecting: boolean;
+	};
+}
 
 const Component: React.SFC<IProps> = ({
 	notification,
+	request,
 	onViewUserProfile,
 	onShowOptions,
 	onAcceptFriendRequest,
 	onDeclineFriendRequest,
 	getText,
 }) => {
-	const { notificationId, userId, avatar, fullName, userName, type, timestamp } = notification;
+	const { id, userId, avatar, fullName, userName, type, timestamp } = notification;
 
 	let text = '';
 	let buttons = false;
@@ -40,8 +46,11 @@ const Component: React.SFC<IProps> = ({
 			text = getText('notifications.group.request.sent');
 			buttons = true;
 			break;
-		case NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE:
+		case NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED:
 			text = getText('notifications.friend.request.accepted');
+			break;
+		case NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED:
+			text = getText('notifications.friend.request.declined');
 			break;
 		case NOTIFICATION_TYPES.SUPER_LIKED:
 			text = getText('notifications.super.liked');
@@ -56,7 +65,7 @@ const Component: React.SFC<IProps> = ({
 	return (
 		<TouchableOpacity
 			onPress={() => onViewUserProfile(userId)}
-			onLongPress={() => onShowOptions(notificationId)}
+			onLongPress={() => onShowOptions(id)}
 			activeOpacity={1}
 			style={styles.container}
 		>
@@ -71,6 +80,7 @@ const Component: React.SFC<IProps> = ({
 						<PrimaryButton
 							autoWidth={true}
 							label={getText('button.accept')}
+							loading={request.accepting}
 							size={ButtonSizes.Small}
 							borderColor={colors.pink}
 							textColor={colors.white}
@@ -80,6 +90,7 @@ const Component: React.SFC<IProps> = ({
 						<PrimaryButton
 							autoWidth={true}
 							label={getText('button.decline')}
+							loading={request.rejecting}
 							size={ButtonSizes.Small}
 							borderColor={colors.pink}
 							textColor={colors.pink}
@@ -97,5 +108,7 @@ const Component: React.SFC<IProps> = ({
 };
 
 export const Notification: React.SFC<INotificationProps> = (props) => (
-	<WithFriends>{({ actions }) => <Component {...props} {...actions} />}</WithFriends>
+	<WithFriends>
+		{({ data, actions }) => <Component {...props} request={data.request} {...actions} />}
+	</WithFriends>
 );

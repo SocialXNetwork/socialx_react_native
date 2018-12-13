@@ -4,6 +4,7 @@ import { DeepReadonly } from 'utility-types-fixme-todo';
 export interface IActivity {
 	uuid: string;
 	type: string | null;
+	payload?: string;
 }
 
 export interface IError extends IActivity {

@@ -33,10 +33,10 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 		<Header title={getText('notifications.screen.title')} />
 		<FlatList
 			data={notifications}
-			keyExtractor={(item: INotificationData) => item.notificationId}
-			renderItem={(data) => (
+			keyExtractor={(item: INotificationData) => item.id}
+			renderItem={({ item }) => (
 				<Notification
-					notification={data.item}
+					notification={item}
 					onViewUserProfile={onViewUserProfile}
 					onShowOptions={onShowOptions}
 					getText={getText}

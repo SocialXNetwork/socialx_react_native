@@ -46,16 +46,14 @@ class Screen extends React.Component<INotificationsScreenProps> {
 		);
 	}
 
-	private onShowOptionsHandler = (notificationId: string) => {
-		const { removeNotification, showOptionsMenu, getText } = this.props;
+	private onShowOptionsHandler = (id: string) => {
+		const { showOptionsMenu, getText } = this.props;
 
 		const items = [
 			{
 				label: getText('comments.screen.advanced.menu.delete'),
 				icon: 'ios-trash',
-				actionHandler: async () => {
-					await removeNotification({ notificationId });
-				},
+				actionHandler: () => undefined,
 			},
 		];
 

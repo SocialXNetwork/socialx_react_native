@@ -42,7 +42,9 @@ const Component: React.SFC<IProps> = ({ profile, currentUserAlias, relationship,
 						{profile.status === FRIEND_TYPES.NOT_FRIEND ? (
 							<PrimaryButton
 								label={relationship.action}
-								loading={relationship.loading}
+								loading={
+									relationship.activity !== null && relationship.activity.payload === profile.alias
+								}
 								size={ButtonSizes.Small}
 								borderColor={Colors.pink}
 								textColor={Colors.white}
@@ -52,7 +54,9 @@ const Component: React.SFC<IProps> = ({ profile, currentUserAlias, relationship,
 						) : (
 							<PrimaryButton
 								label={relationship.action}
-								loading={relationship.loading}
+								loading={
+									relationship.activity !== null && relationship.activity.payload === profile.alias
+								}
 								size={ButtonSizes.Small}
 								borderColor={Colors.pink}
 								textColor={Colors.pink}

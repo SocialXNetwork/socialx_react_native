@@ -1,20 +1,24 @@
 import * as React from 'react';
 
 import { ActionTypes, IAliasInput } from '../../store/data/profiles/Types';
-import { FRIEND_TYPES, IError } from '../../types';
+import { FRIEND_TYPES } from '../../types';
 
 import { IActivity } from '../../store/ui/activities';
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithProfiles } from '../connectors/data/WithProfiles';
 import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
-import { getActivity } from '../helpers';
+import { getActivityForFriends } from '../helpers';
 
 export interface IWithFriendsEnhancedData {
 	relationship: {
 		action: string;
-		loading: boolean;
+		activity: IActivity | null;
 		onStatusAction: (alias: string) => void;
+	};
+	request: {
+		accepting: boolean;
+		rejecting: boolean;
 	};
 }
 
@@ -34,15 +38,19 @@ interface IWithFriendsProps {
 }
 
 interface IWithFriendsState {
-	loading: boolean;
+	request: {
+		accepting: boolean;
+		rejecting: boolean;
+	};
 }
 
 export class WithFriends extends React.Component<IWithFriendsProps, IWithFriendsState> {
 	public state = {
-		loading: false,
+		request: {
+			accepting: false,
+			rejecting: false,
+		},
 	};
-
-	private activities: IActivity[] = [];
 
 	private actions: {
 		addFriend: (input: IAliasInput) => void;
@@ -62,17 +70,6 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		getText: () => '',
 	};
 
-	public componentDidUpdate() {
-		const loading =
-			getActivity(this.activities, ActionTypes.ADD_FRIEND) ||
-			getActivity(this.activities, ActionTypes.REMOVE_FRIEND) ||
-			getActivity(this.activities, ActionTypes.UNDO_REQUEST);
-
-		if (loading) {
-			this.setState({ loading: true });
-		}
-	}
-
 	public render() {
 		return (
 			<WithI18n>
@@ -83,7 +80,6 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 								{({ activities }) => (
 									<WithProfiles>
 										{({ addFriend, removeFriend, acceptFriend, rejectFriend, undoRequest }) => {
-											this.activities = activities;
 											this.actions = {
 												addFriend,
 												removeFriend,
@@ -98,9 +94,10 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 												data: {
 													relationship: {
 														action: this.getAction(),
-														loading: this.state.loading,
+														activity: this.getActivity(activities),
 														onStatusAction: (alias) => this.getHandler(alias)(),
 													},
+													request: this.state.request,
 												},
 												actions: {
 													onAcceptFriendRequest: this.onAcceptFriendRequestHandler,
@@ -142,6 +139,29 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		return action;
 	};
 
+	private getActivity = (activities: IActivity[]) => {
+		let activity: IActivity | null = null;
+
+		if (this.props.status) {
+			switch (this.props.status) {
+				case FRIEND_TYPES.MUTUAL:
+					activity = getActivityForFriends(activities, ActionTypes.REMOVE_FRIEND);
+					break;
+				case FRIEND_TYPES.PENDING:
+					activity = getActivityForFriends(activities, ActionTypes.UNDO_REQUEST);
+					break;
+				case FRIEND_TYPES.NOT_FRIEND:
+					activity = getActivityForFriends(activities, ActionTypes.ADD_FRIEND);
+					break;
+				default:
+					activity = null;
+					break;
+			}
+		}
+
+		return activity;
+	};
+
 	private getHandler = (alias: string) => {
 		let handler: () => void = () => this.onAddFriendHandler(alias);
 
@@ -180,36 +200,46 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 	};
 
 	private onAddFriendHandler = async (alias: string) => {
-		this.toggleLoading(true);
 		await this.actions.addFriend({ username: alias });
-		this.toggleLoading(false);
 	};
 
 	private onRemoveFriendHandler = async (alias: string) => {
-		this.toggleLoading(true);
 		await this.actions.removeFriend({ username: alias });
-		this.toggleLoading(false);
 	};
 
 	private onUndoRequestHandler = async (alias: string) => {
-		this.toggleLoading(true);
 		await this.actions.undoRequest({ username: alias });
-		this.toggleLoading(false);
 	};
 
 	private onAcceptFriendRequestHandler = async (username: string) => {
-		this.toggleLoading(true);
+		this.setState((currentState) => ({
+			request: {
+				...currentState.request,
+				accepting: true,
+			},
+		}));
 		await this.actions.acceptFriend({ username });
-		this.toggleLoading(false);
+		this.setState((currentState) => ({
+			request: {
+				...currentState.request,
+				accepting: false,
+			},
+		}));
 	};
 
 	private onDeclineFriendRequestHandler = async (username: string) => {
-		this.toggleLoading(true);
+		this.setState((currentState) => ({
+			request: {
+				...currentState.request,
+				rejecting: true,
+			},
+		}));
 		await this.actions.rejectFriend({ username });
-		this.toggleLoading(false);
-	};
-
-	private toggleLoading = (state: boolean) => {
-		this.setState({ loading: state });
+		this.setState((currentState) => ({
+			request: {
+				...currentState.request,
+				rejecting: false,
+			},
+		}));
 	};
 }

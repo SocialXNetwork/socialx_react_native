@@ -47,7 +47,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	}
 
 	public render() {
-		const { results, searching, clearSearchResults, navigation, getText } = this.props;
+		const { results, searching, navigation, getText } = this.props;
 		const { loadedTabs, term } = this.state;
 
 		return (
@@ -57,7 +57,7 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 				suggestions={this.state.suggestions}
 				loadedTabs={loadedTabs}
 				searching={searching}
-				clearSearchResults={clearSearchResults}
+				onCancelSearch={this.onCancelSearchHandler}
 				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
 				onResultPress={(alias) => this.props.onViewUserProfile(alias)}
@@ -84,6 +84,10 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		if (term.length > 2 && !previousTerms[term]) {
 			this.debouncedSearch(term);
 		}
+	};
+
+	private onCancelSearchHandler = () => {
+		this.setState({ term: '' }, () => this.props.clearSearchResults());
 	};
 }
 

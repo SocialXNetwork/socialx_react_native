@@ -30,7 +30,7 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 									fullName: profile.fullName,
 									userName: profile.alias,
 									avatar: profile.avatar,
-									description: profile.aboutMeText,
+									description: profile.aboutMeText === 'about me text' ? '' : profile.aboutMeText,
 									numberOfFriends: profile.numberOfFriends,
 									numberOfLikes: 0,
 									numberOfPhotos: 0,

@@ -150,6 +150,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 										<WallPost postId={data.item} commentInput={false} navigation={navigation} />
 									</View>
 								)}
+								scrollEnabled={postIds.length > 0}
 								showsVerticalScrollIndicator={false}
 								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
 							/>

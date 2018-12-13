@@ -1,3 +1,4 @@
+import { delay } from 'lodash';
 import * as React from 'react';
 import { AsyncStorage, Dimensions, FlatList, Platform, View } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
@@ -26,7 +27,15 @@ type IUserFeedScreenProps = INavigationProps &
 	IWithUserFeedEnhancedData &
 	IWithUserFeedEnhancedActions;
 
-export class Screen extends React.Component<IUserFeedScreenProps> {
+interface IUserFeedScreenState {
+	loaded: boolean;
+}
+
+export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
+	public state = {
+		loaded: false,
+	};
+
 	private listRef: React.RefObject<FlatList<string>> = React.createRef();
 	private postContainerRef: React.RefObject<View> = React.createRef();
 	private keyboardHeight: number = 0;
@@ -38,6 +47,12 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 
 		const keyboardHeight = await AsyncStorage.getItem('KEYBOARD_HEIGHT');
 		this.keyboardHeight = keyboardHeight ? +keyboardHeight : BASELINE_KEYBOARD_HEIGHT;
+
+		delay(() => {
+			if (!this.state.loaded) {
+				this.setState({ loaded: true });
+			}
+		}, 200);
 	}
 
 	public render() {
@@ -64,6 +79,7 @@ export class Screen extends React.Component<IUserFeedScreenProps> {
 				shareMessage={shareMessage}
 				listRef={this.listRef}
 				postContainerRef={this.postContainerRef}
+				loaded={this.state.loaded}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePosts={this.onLoadMorePostsHandler}
 				onCreateWallPost={this.onCreateWallPostHandler}

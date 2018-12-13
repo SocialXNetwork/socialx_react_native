@@ -16,6 +16,7 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	canLoadMorePosts: boolean;
 	listRef: React.RefObject<FlatList<string>>;
 	postContainerRef: React.RefObject<View>;
+	loaded: boolean;
 	onRefresh: () => void;
 	onLoadMorePosts: () => void;
 	onCreateWallPost: () => void;
@@ -31,6 +32,7 @@ export const UserFeedScreenView: React.SFC<IUserFeedScreenViewProps> = ({
 	placeholderPostId,
 	listRef,
 	postContainerRef,
+	loaded,
 	onRefresh,
 	onLoadMorePosts,
 	onCreateWallPost,
@@ -73,8 +75,8 @@ export const UserFeedScreenView: React.SFC<IUserFeedScreenViewProps> = ({
 				keyboardShouldPersistTaps="handled"
 				showsVerticalScrollIndicator={false}
 				onRefresh={onRefresh}
-				onEndReached={canLoadMorePosts && !refreshing ? onLoadMorePosts : null}
-				onEndReachedThreshold={0.5}
+				onEndReached={canLoadMorePosts && loaded ? onLoadMorePosts : null}
+				onEndReachedThreshold={1}
 			/>
 		</View>
 	);

@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { IApplicationState } from '../../../store';
 import {
 	getNotifications,
 	IFriendRequest,
 	IFriendResponse,
-	IRemoveNotificationInput,
-	removeNotification,
 } from '../../../store/data/notifications';
 import { IThunkDispatch } from '../../../store/types';
 
@@ -17,7 +16,6 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	removeNotification: (removeNotificationInput: IRemoveNotificationInput) => void;
 	getNotifications: () => void;
 }
 
@@ -50,8 +48,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	removeNotification: (removeNotificationInput: IRemoveNotificationInput) =>
-		dispatch(removeNotification(removeNotificationInput)),
 	getNotifications: () => dispatch(getNotifications()),
 });
 

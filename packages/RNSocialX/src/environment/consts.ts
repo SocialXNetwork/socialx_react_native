@@ -69,7 +69,8 @@ export const PROFILE_TAB_ICON_TYPES = {
 export enum NOTIFICATION_TYPES {
 	RECENT_COMMENT = 'RECENT_COMMENT',
 	FRIEND_REQUEST = 'FRIEND_REQUEST',
-	FRIEND_REQUEST_RESPONSE = 'FRIEND_REQUEST_RESPONSE',
+	FRIEND_RESPONSE_ACCEPTED = 'FRIEND_RESPONSE_ACCEPTED',
+	FRIEND_RESPONSE_DECLINED = 'FRIEND_RESPONSE_DECLINED',
 	GROUP_REQUEST = 'GROUP_REQUEST',
 	SUPER_LIKED = 'SUPER_LIKED',
 }
@@ -108,7 +109,7 @@ export enum SCREENS {
 	UserProfile = 'UserProfileScreen',
 	WalletActivity = 'WalletActivityScreen',
 	ProfileAnalytics = 'ProfileAnalyticsScreen',
-	TabbedSearch = 'TabbedSearchScreen',
+	Search = 'SearchScreen',
 	Trending = 'TrendingScreen',
 	UserFeed = 'UserFeedTab',
 	WalletAccount = 'WalletAccountScreen',

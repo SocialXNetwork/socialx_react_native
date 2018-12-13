@@ -155,6 +155,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 									</View>
 								)}
 								showsVerticalScrollIndicator={false}
+								scrollEnabled={postIds.length > 0}
 								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
 							/>
 						</Animated.View>

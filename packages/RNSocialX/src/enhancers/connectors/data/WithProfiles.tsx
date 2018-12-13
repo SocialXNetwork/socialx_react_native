@@ -10,13 +10,9 @@ import {
 	getCurrentFriends,
 	getCurrentProfile,
 	getProfileByAlias,
-	IAcceptFriendInput,
-	IAddFriendInput,
 	IAliasInput,
 	IFriends,
 	IProfiles,
-	IRejectFriendInput,
-	IRemoveFriendInput,
 	ISearchInput,
 	IUpdateProfileInput,
 	rejectFriend,
@@ -45,10 +41,10 @@ interface IActionProps {
 	getCurrentFriends: () => void;
 	getProfileByAlias: (alias: string) => void;
 	updateCurrentProfile: (input: IUpdateProfileInput) => void;
-	addFriend: (addFriendInput: IAddFriendInput) => void;
-	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
-	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
-	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
+	addFriend: (input: IAliasInput) => void;
+	removeFriend: (input: IAliasInput) => void;
+	acceptFriend: (input: IAliasInput) => void;
+	rejectFriend: (input: IAliasInput) => void;
 	undoRequest: (input: IAliasInput) => void;
 	searchForProfiles: (input: ISearchInput) => void;
 	searchForProfilesLocally: (input: ISearchWithAliasInput) => void;
@@ -94,10 +90,10 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentFriends: () => dispatch(getCurrentFriends()),
 	getProfileByAlias: (alias: string) => dispatch(getProfileByAlias(alias)),
 	updateCurrentProfile: (input: IUpdateProfileInput) => dispatch(updateCurrentProfile(input)),
-	addFriend: (input: IAddFriendInput) => dispatch(addFriend(input)),
-	removeFriend: (input: IRemoveFriendInput) => dispatch(removeFriend(input)),
-	acceptFriend: (input: IAcceptFriendInput) => dispatch(acceptFriend(input)),
-	rejectFriend: (input: IRejectFriendInput) => dispatch(rejectFriend(input)),
+	addFriend: (input: IAliasInput) => dispatch(addFriend(input)),
+	removeFriend: (input: IAliasInput) => dispatch(removeFriend(input)),
+	acceptFriend: (input: IAliasInput) => dispatch(acceptFriend(input)),
+	rejectFriend: (input: IAliasInput) => dispatch(rejectFriend(input)),
 	clearFriendResponse: (input: IAliasInput) => dispatch(clearFriendResponse(input)),
 	undoRequest: (input: IAliasInput) => dispatch(undoRequest(input)),
 	searchForProfiles: (input: ISearchInput) => dispatch(searchForProfiles(input)),

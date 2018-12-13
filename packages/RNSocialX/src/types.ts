@@ -67,7 +67,7 @@ export interface IFriendshipInput {
 }
 
 export interface INotificationData {
-	notificationId: string;
+	id: string;
 	userId: string;
 	type: NOTIFICATION_TYPES;
 	fullName: string;
@@ -75,7 +75,7 @@ export interface INotificationData {
 	userName?: string;
 	timestamp?: Date;
 	groupName?: string;
-	seen: boolean;
+	read: boolean;
 }
 
 export interface IOptionsMenuItem {

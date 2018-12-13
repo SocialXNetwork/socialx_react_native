@@ -86,7 +86,7 @@ const Component: React.SFC<IProps> = ({
 					<PrimaryButton
 						width={buttonWidth}
 						label={relationship.action}
-						loading={relationship.loading}
+						loading={relationship.activity !== null && relationship.activity.payload === userId}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.white}
@@ -97,7 +97,7 @@ const Component: React.SFC<IProps> = ({
 					<PrimaryButton
 						width={buttonWidth}
 						label={relationship.action}
-						loading={relationship.loading}
+						loading={relationship.activity !== null && relationship.activity.payload === userId}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.pink}

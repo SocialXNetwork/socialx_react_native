@@ -54,8 +54,6 @@ export const Component: React.SFC<IProps> = ({
 	onDoublePress = () => undefined,
 }) => {
 	const uri = path ? path : IPFS_URL + hash;
-	const ImageComponent =
-		Platform.OS === OS_TYPES.Android && uri.startsWith('https://') ? FastImage : Image;
 	const mediaMimeType = getMimeType(uri, type, extension);
 
 	return (
@@ -81,13 +79,12 @@ export const Component: React.SFC<IProps> = ({
 						/>
 					)}
 					{!canZoom && (
-						<ImageComponent
+						<FastImage
 							source={{ uri }}
 							resizeMode={
 								resizeMode === 'contain' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover
 							}
 							style={styles.image}
-							resizeMethod="resize"
 						/>
 					)}
 				</TouchableWithDoublePress>

@@ -123,6 +123,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 						...state.profiles[alias],
 						status: FRIEND_TYPES.PENDING,
 					},
+					[currentUserAlias]: {
+						...state.profiles[currentUserAlias],
+						numberOfFriends: state.profiles[currentUserAlias].numberOfFriends + 1,
+					},
 				},
 				friends: {
 					...state.friends,
@@ -132,18 +136,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.UNDO_REQUEST: {
-			return state;
-		}
-
-		case ActionTypes.REMOVE_FRIEND: {
-			return state;
-		}
-
-		case ActionTypes.ACCEPT_FRIEND: {
-			return state;
-		}
-
-		case ActionTypes.REJECT_FRIEND: {
 			return state;
 		}
 
@@ -166,6 +158,79 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.REMOVE_FRIEND: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_REMOVE_FRIEND: {
+			const { currentUserAlias, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						status: FRIEND_TYPES.NOT_FRIEND,
+					},
+					[currentUserAlias]: {
+						...state.profiles[currentUserAlias],
+						numberOfFriends: state.profiles[currentUserAlias].numberOfFriends - 1,
+					},
+				},
+				friends: {
+					...state.friends,
+					[currentUserAlias]: state.friends[currentUserAlias].filter((id) => id !== alias),
+				},
+			};
+		}
+
+		case ActionTypes.ACCEPT_FRIEND: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_ACCEPT_FRIEND: {
+			const { currentUserAlias, alias } = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						status: FRIEND_TYPES.MUTUAL,
+					},
+					[currentUserAlias]: {
+						...state.profiles[currentUserAlias],
+						numberOfFriends: state.profiles[currentUserAlias].numberOfFriends + 1,
+					},
+				},
+				friends: {
+					...state.friends,
+					[currentUserAlias]: [...state.friends[currentUserAlias], alias],
+				},
+			};
+		}
+
+		case ActionTypes.REJECT_FRIEND: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_REJECT_FRIEND: {
+			const alias = action.payload;
+
+			return {
+				...state,
+				profiles: {
+					...state.profiles,
+					[alias]: {
+						...state.profiles[alias],
+						numberOfFriends: state.profiles[alias].numberOfFriends - 1,
+					},
+				},
+			};
+		}
+
 		case ActionTypes.CLEAR_FRIEND_RESPONSE: {
 			return state;
 		}
@@ -176,7 +241,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 			for (const postId of postIds) {
 				if (updatedPostIds.indexOf(postId) === -1) {
-					updatedPostIds.unshift(postId);
+					updatedPostIds.push(postId);
 				}
 			}
 

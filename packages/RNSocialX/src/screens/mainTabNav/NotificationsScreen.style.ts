@@ -4,11 +4,11 @@ import { Colors, Fonts, Icons, Sizes } from '../../environment/theme';
 const styles: any = {
 	container: {
 		flex: 1,
-		width: '100%',
 		backgroundColor: Colors.white,
 	},
 	list: {
-		paddingVertical: Sizes.smartVerticalScale(12),
+		paddingVertical: Sizes.smartVerticalScale(16),
+		paddingHorizontal: Sizes.smartHorizontalScale(25),
 	},
 	empty: {
 		flex: 1,

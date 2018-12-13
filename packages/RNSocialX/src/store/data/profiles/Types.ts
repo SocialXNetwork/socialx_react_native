@@ -3,8 +3,6 @@ import {
 	IClearFriendResponseInput,
 	IFriendData,
 	IPostArrayData,
-	IRejectFriendInput,
-	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
@@ -98,8 +96,11 @@ export const enum ActionTypes {
 	ADD_FRIEND = 'data/profiles/ADD_FRIEND',
 	SYNC_ADD_FRIEND = 'data/profiles/SYNC_ADD_FRIEND',
 	REMOVE_FRIEND = 'data/profiles/REMOVE_FRIEND',
+	SYNC_REMOVE_FRIEND = 'data/profiles/SYNC_REMOVE_FRIEND',
 	ACCEPT_FRIEND = 'data/profiles/ACCEPT_FRIEND',
+	SYNC_ACCEPT_FRIEND = 'data/profiles/SYNC_ACCEPT_FRIEND',
 	REJECT_FRIEND = 'data/profiles/REJECT_FRIEND',
+	SYNC_REJECT_FRIEND = 'data/profiles/SYNC_REJECT_FRIEND',
 	CLEAR_FRIEND_RESPONSE = 'data/profiles/CLEAR_FRIEND_RESPONSE',
 	UNDO_REQUEST = 'data/profiles/UNDO_REQUEST',
 	SYNC_UNDO_REQUEST = 'data/profiles/SYNC_UNDO_REQUEST',
@@ -174,22 +175,33 @@ export interface ISyncUndoRequestAction extends Action {
 
 export interface IRemoveFriendAction extends Action {
 	type: ActionTypes.REMOVE_FRIEND;
-	payload: IRemoveFriendInput;
+}
+
+export interface ISyncRemoveFriendAction extends Action {
+	type: ActionTypes.SYNC_REMOVE_FRIEND;
+	payload: IFriendInput;
 }
 
 export interface IAcceptFriendAction extends Action {
 	type: ActionTypes.ACCEPT_FRIEND;
-	payload: IAcceptFriendInput;
+}
+
+export interface ISyncAcceptFriendAction extends Action {
+	type: ActionTypes.SYNC_ACCEPT_FRIEND;
+	payload: IFriendInput;
 }
 
 export interface IRejectFriendAction extends Action {
 	type: ActionTypes.REJECT_FRIEND;
-	payload: IRejectFriendInput;
+}
+
+export interface ISyncRejectFriendAction extends Action {
+	type: ActionTypes.SYNC_REJECT_FRIEND;
+	payload: string;
 }
 
 export interface IClearFriendResponseAction extends Action {
 	type: ActionTypes.CLEAR_FRIEND_RESPONSE;
-	payload: IClearFriendResponseInput;
 }
 
 export interface IAddPostsToProfileAction extends Action {
@@ -238,8 +250,11 @@ export type IAction =
 	| IAddFriendAction
 	| ISyncAddFriendAction
 	| IRemoveFriendAction
+	| ISyncRemoveFriendAction
 	| IAcceptFriendAction
+	| ISyncAcceptFriendAction
 	| IRejectFriendAction
+	| ISyncRejectFriendAction
 	| IClearFriendResponseAction
 	| IUndoRequestAction
 	| ISyncUndoRequestAction
