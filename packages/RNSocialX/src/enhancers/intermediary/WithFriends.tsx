@@ -1,11 +1,14 @@
 import * as React from 'react';
 
-import { IAliasInput } from '../../store/data/profiles/Types';
-import { FRIEND_TYPES } from '../../types';
+import { ActionTypes, IAliasInput } from '../../store/data/profiles/Types';
+import { FRIEND_TYPES, IError } from '../../types';
 
+import { IActivity } from '../../store/ui/activities';
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithProfiles } from '../connectors/data/WithProfiles';
+import { WithActivities } from '../connectors/ui/WithActivities';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
+import { getActivity } from '../helpers';
 
 export interface IWithFriendsEnhancedData {
 	relationship: {
@@ -39,6 +42,8 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		loading: false,
 	};
 
+	private activities: IActivity[] = [];
+
 	private actions: {
 		addFriend: (input: IAliasInput) => void;
 		removeFriend: (input: IAliasInput) => void;
@@ -57,39 +62,55 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		getText: () => '',
 	};
 
+	public componentDidUpdate() {
+		const loading =
+			getActivity(this.activities, ActionTypes.ADD_FRIEND) ||
+			getActivity(this.activities, ActionTypes.REMOVE_FRIEND) ||
+			getActivity(this.activities, ActionTypes.UNDO_REQUEST);
+
+		if (loading) {
+			this.setState({ loading: true });
+		}
+	}
+
 	public render() {
 		return (
 			<WithI18n>
 				{({ getText }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
-							<WithProfiles>
-								{({ addFriend, removeFriend, acceptFriend, rejectFriend, undoRequest }) => {
-									this.actions = {
-										addFriend,
-										removeFriend,
-										acceptFriend,
-										rejectFriend,
-										undoRequest,
-										showOptionsMenu,
-										getText,
-									};
+							<WithActivities>
+								{({ activities }) => (
+									<WithProfiles>
+										{({ addFriend, removeFriend, acceptFriend, rejectFriend, undoRequest }) => {
+											this.activities = activities;
+											this.actions = {
+												addFriend,
+												removeFriend,
+												acceptFriend,
+												rejectFriend,
+												undoRequest,
+												showOptionsMenu,
+												getText,
+											};
 
-									return this.props.children({
-										data: {
-											relationship: {
-												action: this.getAction(),
-												loading: this.state.loading,
-												onStatusAction: (alias) => this.getHandler(alias)(),
-											},
-										},
-										actions: {
-											onAcceptFriendRequest: this.onAcceptFriendRequestHandler,
-											onDeclineFriendRequest: this.onDeclineFriendRequestHandler,
-										},
-									});
-								}}
-							</WithProfiles>
+											return this.props.children({
+												data: {
+													relationship: {
+														action: this.getAction(),
+														loading: this.state.loading,
+														onStatusAction: (alias) => this.getHandler(alias)(),
+													},
+												},
+												actions: {
+													onAcceptFriendRequest: this.onAcceptFriendRequestHandler,
+													onDeclineFriendRequest: this.onDeclineFriendRequestHandler,
+												},
+											});
+										}}
+									</WithProfiles>
+								)}
+							</WithActivities>
 						)}
 					</WithOverlays>
 				)}

@@ -30,7 +30,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 			for (const profile of action.payload) {
 				if (!profiles[profile.alias]) {
-					profiles[profile.alias] = profile;
+					profiles[profile.alias] = {
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
 				}
 			}
 
@@ -51,7 +57,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 				...state,
 				profiles: {
 					...state.profiles,
-					[profile.alias]: profile,
+					[profile.alias]: {
+						...profile,
+						posts:
+							state.profiles[profile.alias] && state.profiles[profile.alias].posts
+								? state.profiles[profile.alias].posts
+								: [],
+					},
 				},
 			};
 		}
@@ -68,7 +80,13 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 			for (const friend of friends) {
 				if (!profiles[friend.alias]) {
-					profiles[friend.alias] = friend;
+					profiles[friend.alias] = {
+						...friend,
+						posts:
+							profiles[friend.alias] && profiles[friend.alias].posts
+								? profiles[friend.alias].posts
+								: [],
+					};
 				}
 
 				if (friendIds.indexOf(friend.alias) === -1) {
