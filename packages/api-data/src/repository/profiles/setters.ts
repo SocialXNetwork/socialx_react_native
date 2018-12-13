@@ -4,7 +4,7 @@ import * as profileHandles from './handles';
 
 import uuidv4 from 'uuid/v4';
 
-import { getContextMeta } from '../../utils/helpers';
+import { cleanGunMetaFromObject, getContextMeta } from '../../utils/helpers';
 import {
 	FRIEND_TYPES,
 	FriendResponses,
@@ -168,7 +168,11 @@ const checkIfAlreadyFriends = (context: IContext, username: string) => {
 		profileHandles.currentProfileFriendByUsername(context, username).once(
 			(currentTargetedFriend: any) => {
 				if (currentTargetedFriend) {
-					res(true);
+					const currentFriend = cleanGunMetaFromObject(currentTargetedFriend);
+					if (Object.keys(currentFriend).length) {
+						res(true);
+					}
+					res(false);
 				}
 				res(false);
 			},
@@ -256,7 +260,7 @@ const createFriendPrivateRecord = (context: IContext, username: string) => {
 	return new Promise((res, rej) => {
 		const { gun } = context;
 		const ref = gun.get(TABLES.PROFILES).get(username);
-		profileHandles.currentProfileFriendByUsername(context, username).put({}, () => {
+		profileHandles.currentProfileFriendsRecord(context).erase(username, () => {
 			profileHandles
 				.currentProfileFriendByUsername(context, username)
 				.put(ref, (friendCreationCallback) => {
@@ -310,7 +314,7 @@ const removeFriendResponse = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
 		profileHandles
 			.publicCurrentFriendResponse(context)
-			.erase(username, (removeResponseCallback) => {
+			.put({ [username]: null }, (removeResponseCallback) => {
 				if (removeResponseCallback.err) {
 					rej(new ApiError(`cannot remove friend response`));
 				}
@@ -327,7 +331,7 @@ const removeFriendRequest = (context: IContext, username: string) => {
 	return new Promise((res, rej) =>
 		profileHandles
 			.publicUserFriendRequests(context, username)
-			.erase(owner, (removeFriendRequestCallback) => {
+			.put({ [owner]: null }, (removeFriendRequestCallback) => {
 				if (removeFriendRequestCallback.err) {
 					rej(new ApiError('cannot remove friend request'));
 				}
@@ -458,12 +462,16 @@ export const addFriend = async (
 			account.is.alias,
 		);
 		if (friendRequestExists) {
-			return callback(new ApiError('friend request already exists'));
+			await createFriendPrivateRecord(context, username);
+			return callback(null);
+			// return callback(new ApiError('friend request already exists'));
 		}
 
 		const userHasRequest = await checkIfUserHasRequest(context, username);
 		if (userHasRequest) {
-			return callback(new ApiError('user has already sent current user a friend request'));
+			await createFriendPrivateRecord(context, username);
+			return callback(null);
+			// return callback(new ApiError('user has already sent current user a friend request'));
 		}
 
 		const alreadyFriends = await checkIfAlreadyFriends(context, username);
@@ -540,9 +548,22 @@ export const acceptFriend = async (
 			return callback(new ApiError('friend request does not exist'));
 		}
 
-		await removePendingAndProceed(context, username);
-
 		const profile: any = await getCurrentUserProfile(context);
+
+		const alreadyFriends = await checkIfAlreadyFriends(context, username);
+		if (alreadyFriends) {
+			await createFriendRequestResponse(
+				context,
+				username,
+				FriendResponses.Accepted,
+				uuidv4(),
+				profile.fullName,
+				profile.avatar,
+			);
+			await removePendingAndProceed(context, username);
+			return callback(null);
+		}
+
 		await createFriendRequestResponse(
 			context,
 			username,
@@ -556,8 +577,8 @@ export const acceptFriend = async (
 		if (friendExists) {
 			return callback(null);
 		}
-
 		await createFriendPrivateRecord(context, username);
+		await removePendingAndProceed(context, username);
 		callback(null);
 	} catch (e) {
 		callback(e);
@@ -586,7 +607,7 @@ export const rejectFriend = async (
 		if (!friendRequestExists) {
 			return callback(new ApiError('friend request does not exist'));
 		}
-		await removePendingAndProceed(context, username);
+
 		const profile: any = await getCurrentUserProfile(context);
 		await createFriendRequestResponse(
 			context,
@@ -596,6 +617,7 @@ export const rejectFriend = async (
 			profile.fullName,
 			profile.avatar,
 		);
+		await removePendingAndProceed(context, username);
 		callback(null);
 	} catch (e) {
 		callback(e);

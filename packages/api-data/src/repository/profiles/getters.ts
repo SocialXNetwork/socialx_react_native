@@ -161,7 +161,7 @@ export const getCurrentProfile = (context: IContext, callback: IGunCallback<IPro
 				return callback(null, { ...sanitizedProfile, numberOfFriends, posts: [] });
 			});
 		},
-		{ wait: 1000 },
+		{ wait: 2000 },
 	);
 };
 
@@ -177,9 +177,13 @@ export const getProfileByUsername = (
 					fetchPublicUser();
 				} else {
 					const friendData = cleanGunMetaFromObject(checkFriendCallback);
-					friendWithMutualStatus(context, friendData, (friend) => {
-						callback(null, friend);
-					});
+					if (!Object.keys(friendData).length) {
+						fetchPublicUser();
+					} else {
+						friendWithMutualStatus(context, friendData, (friend) => {
+							callback(null, friend);
+						});
+					}
 				}
 			},
 			{ wait: 500 },
@@ -224,9 +228,13 @@ export const getProfileByUserObject = (
 					fetchPublicUser();
 				} else {
 					const friendData = cleanGunMetaFromObject(checkFriendCallback);
-					friendWithMutualStatus(context, friendData, (friend) => {
-						callback(null, friend);
-					});
+					if (!Object.keys(friendData).length) {
+						fetchPublicUser();
+					} else {
+						friendWithMutualStatus(context, friendData, (friend) => {
+							callback(null, friend);
+						});
+					}
 				}
 			},
 			{ wait: 500 },
@@ -270,7 +278,7 @@ export const getCurrentProfileFriends = async (
 					// convert to array, and filter out the user removed friends
 					const sanitizedFriendsArray: IProfileData[] = convertGunSetToArray(
 						friendsRecordCallback,
-					).filter((friend) => friend !== null);
+					).filter((friend) => friend !== null && !!Object.keys(friend).length);
 
 					setTimeout(() => {
 						return callback(null, sanitizedFriendsArray);

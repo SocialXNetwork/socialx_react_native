@@ -35,6 +35,9 @@ export const getContextMeta = (context: IContext) => ({
 
 export const cleanGunMetaFromObject = (args: any = {}) => {
 	const { _, ...rest } = args;
+	if (rest['#']) {
+		delete rest['#'];
+	}
 	return rest || {};
 };
 

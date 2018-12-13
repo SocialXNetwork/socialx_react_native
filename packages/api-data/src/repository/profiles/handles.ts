@@ -53,24 +53,17 @@ export const privateUserProfileByPub = (context: IContext, pub: string) => {
 
 export const privateUserFriendsRecord = (context: IContext) => {
 	const { gun, account } = context;
-	return gun
-		.back(-1)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(account.is.alias);
+	return gun.get(TABLE_ENUMS.FRIENDS).get(account.is.alias);
 };
 
 export const privateUserFriendsByAlias = (context: IContext, alias: string) => {
 	const { gun } = context;
-	return gun
-		.back(-1)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(alias);
+	return gun.get(TABLE_ENUMS.FRIENDS).get(alias);
 };
 
 export const privateMutualUserFriends = (context: IContext, user: string, target: string) => {
 	const { gun } = context;
 	return gun
-		.back(-1)
 		.get(TABLE_ENUMS.FRIENDS)
 		.get(user)
 		.get(target);
@@ -78,16 +71,12 @@ export const privateMutualUserFriends = (context: IContext, user: string, target
 
 export const currentProfileFriendsRecord = (context: IContext) => {
 	const { gun, account } = context;
-	return gun
-		.back(-1)
-		.get(TABLE_ENUMS.FRIENDS)
-		.get(account.is.alias);
+	return gun.get(TABLE_ENUMS.FRIENDS).get(account.is.alias);
 };
 
 export const currentProfileFriendByUsername = (context: IContext, username: string) => {
 	const { gun, account } = context;
 	return gun
-		.back(-1)
 		.get(TABLE_ENUMS.FRIENDS)
 		.get(account.is.alias)
 		.get(username);
@@ -97,7 +86,6 @@ export const currentUserOnPrivateProfilesFriends = (context: IContext, userObjec
 	const { gun, account } = context;
 	const { alias } = userObject;
 	return gun
-		.back(-1)
 		.get(TABLE_ENUMS.FRIENDS)
 		.get(alias)
 		.get(account.is.alias);
