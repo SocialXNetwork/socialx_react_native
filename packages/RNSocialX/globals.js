@@ -26,5 +26,4 @@ const { TextEncoder, TextDecoder } = require('text-encoding');
 
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
-require('./betterConsole');
 //console.log('test', {data: {test: true}, strings: '123', number: 123}, {another: {test: true}, what: undefined, or: null}, true);

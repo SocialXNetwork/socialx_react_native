@@ -3,10 +3,6 @@
 import * as Gun from 'gun';
 import { AsyncStorage } from 'react-native';
 
-const readNode = (key: string, cb: (err: any, result: any) => void) => {
-	AsyncStorage.getItem(key || '', cb);
-};
-
 const read = (request: any, db: any) => {
 	const { get } = request;
 
@@ -31,6 +27,7 @@ const read = (request: any, db: any) => {
 	};
 
 	const acknowledgeRet = (err: any, result: any) => {
+		// console.log('asyncAckno', { err, result, key });
 		if (err) {
 			done(err);
 		} else if (result === null) {
@@ -46,7 +43,12 @@ const read = (request: any, db: any) => {
 		}
 	};
 
-	readNode(key || '', acknowledgeRet);
+	AsyncStorage.getItem(key || '', (err, res) => {
+		if (err) {
+			return acknowledgeRet(true, null);
+		}
+		acknowledgeRet(false, res);
+	});
 };
 
 const write = (request: any, db: any) => {

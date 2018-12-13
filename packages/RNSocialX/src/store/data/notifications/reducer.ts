@@ -25,30 +25,16 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_FRIEND_REQUESTS: {
-			const updatedRequests = action.payload.reduce(
-				(requests, newRequest) => [
-					...requests.filter((oldRequest) => oldRequest.owner !== newRequest.owner),
-					newRequest,
-				],
-				[...state.friendRequests],
-			);
 			return {
 				...state,
-				friendRequests: updatedRequests,
+				friendRequests: action.payload,
 			};
 		}
 
 		case ActionTypes.SYNC_FRIEND_RESPONSES: {
-			const updatedResponses = action.payload.reduce(
-				(responses, newResponse) => [
-					...responses.filter((oldResponse) => oldResponse.owner !== newResponse.owner),
-					newResponse,
-				],
-				[...state.friendResponses],
-			);
 			return {
 				...state,
-				friendResponses: updatedResponses,
+				friendResponses: action.payload,
 			};
 		}
 
