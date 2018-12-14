@@ -3,6 +3,14 @@ import { ActionTypes as PostActionTypes } from '../../store/data/posts/Types';
 import { ActionTypes as ProfileActionTypes } from '../../store/data/profiles/Types';
 import { IActivity } from '../../store/ui/activities';
 
+export const getActivity = (activities: IActivity[], activityType: string | null) => {
+	return activities.filter((activity) => activity.type === activityType).length > 0;
+};
+
+export const getActivityForFriends = (activities: IActivity[], activityType: string | null) => {
+	return activities.find((activity) => activity.type === activityType) || null;
+};
+
 export const getActivitiesForIndicator = (activities: IActivity[]) => {
 	for (const activity of activities) {
 		if (

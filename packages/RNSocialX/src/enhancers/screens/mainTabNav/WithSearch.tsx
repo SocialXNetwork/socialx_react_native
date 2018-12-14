@@ -1,7 +1,7 @@
 import { sampleSize } from 'lodash';
 import * as React from 'react';
 
-import { ITranslatedProps, SearchTabs } from '../../../types';
+import { ITranslatedProps } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -12,13 +12,17 @@ import { WithCurrentUser } from '../../intermediary';
 
 export interface IWithSearchEnhancedData {
 	results: string[];
+	previousTerms: {
+		[term: string]: boolean;
+	};
 	suggestions: string[];
 	searching: boolean;
-	hasMoreResults: boolean;
 }
 
 export interface IWithSearchEnhancedActions extends ITranslatedProps {
-	search: (term: string, tab: SearchTabs) => void;
+	search: (term: string, limit: number) => void;
+	searchLocally: (term: string) => void;
+	clearSearchResults: () => void;
 }
 
 interface IWithSearchEnhancedProps {
@@ -40,27 +44,37 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 					<WithActivities>
 						{({ activities }) => (
 							<WithProfiles>
-								{({ profiles, results, searchForProfiles }) => (
+								{({
+									profiles,
+									search,
+									searchForProfiles,
+									searchForProfilesLocally,
+									clearSearchResults,
+								}) => (
 									<WithCurrentUser>
 										{({ currentUser }) => {
 											const aliases = Object.keys(profiles).filter(
 												(key) => key !== currentUser.userName,
 											);
+											const { results, previousTerms } = search;
 
 											return this.props.children({
 												data: {
-													hasMoreResults: false,
 													searching: getActivity(activities, ActionTypes.SEARCH_FOR_PROFILES),
 													results,
+													previousTerms,
 													suggestions: sampleSize(aliases, 5),
 												},
 												actions: {
-													search: async (term: string) => {
+													search: async (term, limit) => {
 														await searchForProfiles({
 															term,
-															limit: 10,
+															limit,
 														});
 													},
+													searchLocally: (term) =>
+														searchForProfilesLocally({ term, alias: currentUser.userName }),
+													clearSearchResults,
 													getText,
 												},
 											});

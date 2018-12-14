@@ -21,7 +21,7 @@ interface ISearchScreenViewProps extends INavigationProps, ITranslatedProps {
 	suggestions: string[];
 	loadedTabs: number[];
 	searching: boolean;
-	hasMoreResults: boolean;
+	onCancelSearch: () => void;
 	onTabIndexChanged: (value: { i: number }) => void;
 	onSearchTermChange: (value: string) => void;
 	onResultPress: (alias: string) => void;
@@ -33,7 +33,7 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 	suggestions,
 	loadedTabs,
 	searching,
-	hasMoreResults,
+	onCancelSearch,
 	onResultPress,
 	onTabIndexChanged,
 	onSearchTermChange,
@@ -44,9 +44,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 		<SearchHeader
 			term={term}
 			cancel={true}
-			autoFocus={true}
+			autoFocus={false}
 			navigation={navigation}
 			onSearchTermChange={onSearchTermChange}
+			onCancelSearch={onCancelSearch}
 		/>
 		<Tabs
 			locked={false}
@@ -66,7 +67,6 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 						results={results}
 						suggestions={suggestions}
 						searching={searching}
-						hasMoreResults={hasMoreResults}
 						onResultPress={onResultPress}
 						getText={getText}
 					/>

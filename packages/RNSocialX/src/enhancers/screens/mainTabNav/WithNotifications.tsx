@@ -12,16 +12,16 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { getActivity, mapRequestsToNotifications } from '../../helpers';
+import { getActivity, getUnreadNotifications, mapRequestsToNotifications } from '../../helpers';
 
 export interface IWithNotificationsEnhancedData {
 	notifications: INotificationData[];
+	unreadNotifications: number;
 	refreshing: boolean;
 }
 
 export interface IWithNotificationsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getNotifications: () => void;
-	removeNotification: (input: { notificationId: string }) => void;
 }
 
 interface IWithNotificationsEnhancedProps {
@@ -48,7 +48,7 @@ export class WithNotifications extends React.Component<
 							<WithActivities>
 								{({ activities }) => (
 									<WithNotificationsData>
-										{({ friendRequests, friendResponses, getNotifications, removeNotification }) =>
+										{({ friendRequests, friendResponses, getNotifications }) =>
 											this.props.children({
 												data: {
 													refreshing: getActivity(
@@ -59,10 +59,13 @@ export class WithNotifications extends React.Component<
 														friendRequests,
 														friendResponses,
 													),
+													unreadNotifications: getUnreadNotifications(
+														friendRequests,
+														friendResponses,
+													),
 												},
 												actions: {
 													getNotifications,
-													removeNotification,
 													showOptionsMenu: (items) => showOptionsMenu({ items }),
 													getText,
 												},

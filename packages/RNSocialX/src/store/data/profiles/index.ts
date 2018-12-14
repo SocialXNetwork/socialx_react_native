@@ -1,5 +1,14 @@
 export { default as reducer } from './reducer';
-export { IState, IAction, IProfiles, IFriends, IProfile, ISearchInput, IAliasInput } from './Types';
+export {
+	IState,
+	IAction,
+	IProfiles,
+	IFriends,
+	IProfile,
+	ISearchInput,
+	IAliasInput,
+	IUpdateProfileInput,
+} from './Types';
 
 export {
 	IAcceptFriendInput,
@@ -8,7 +17,6 @@ export {
 	IProfileData,
 	IRemoveFriendInput,
 	IFindFriendsSuggestionsInput,
-	IUpdateProfileInput,
 	IRejectFriendInput,
 	IClearFriendResponseInput,
 	IClearFriendRequestInput,
@@ -29,4 +37,6 @@ export {
 	removePostFromProfile,
 	searchForProfiles,
 	undoRequest,
+	clearSearchResults,
+	searchForProfilesLocally,
 } from './actions';

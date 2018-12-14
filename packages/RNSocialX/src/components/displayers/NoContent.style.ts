@@ -3,8 +3,6 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
 	container: {
-		flex: 1,
-		paddingTop: Sizes.smartVerticalScale(30),
 		alignItems: 'center',
 	},
 	icon: {

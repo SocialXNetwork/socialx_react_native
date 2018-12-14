@@ -8,6 +8,7 @@ export {
 	ICreateNotification,
 	IFriendRequest,
 	IFriendResponse,
+	FriendResponses,
 } from '@socialx/api-data';
 
-export { createNotification, getNotifications, removeNotification } from './actions';
+export { createNotification, getNotifications } from './actions';

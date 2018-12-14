@@ -16,6 +16,7 @@ interface ISearchHeaderProps extends INavigationProps {
 	term?: string;
 	autoFocus?: boolean;
 	onSearchTermChange?: (term: string) => void;
+	onCancelSearch?: () => void;
 }
 
 interface IProps extends ISearchHeaderProps {
@@ -23,7 +24,6 @@ interface IProps extends ISearchHeaderProps {
 }
 
 interface IState {
-	term: string;
 	navigatedFromTrending: boolean;
 }
 
@@ -34,22 +34,21 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	public state = {
-		term: '',
 		navigatedFromTrending: false,
 	};
 
 	private inputRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
-	public componentDidUpdate() {
-		if (this.inputRef.current && this.props.cancel && !this.state.navigatedFromTrending) {
-			this.inputRef.current.focusInput();
-			this.setState({ navigatedFromTrending: true });
-		}
+	// public componentDidUpdate() {
+	// 	if (this.inputRef.current && this.props.cancel && !this.state.navigatedFromTrending) {
+	// 		this.inputRef.current.focusInput();
+	// 		this.setState({ navigatedFromTrending: true });
+	// 	}
 
-		if (!this.props.cancel && this.state.navigatedFromTrending) {
-			this.setState({ navigatedFromTrending: false });
-		}
-	}
+	// 	if (!this.props.cancel && this.state.navigatedFromTrending) {
+	// 		this.setState({ navigatedFromTrending: false });
+	// 	}
+	// }
 
 	public render() {
 		return (
@@ -63,7 +62,7 @@ class Component extends React.Component<IProps, IState> {
 					<View style={{ flex: 1 }}>
 						<PrimaryTextInput
 							ref={this.inputRef}
-							value={this.props.term ? this.props.term : this.state.term}
+							value={this.props.term}
 							onChangeText={this.onChangeTextHandler}
 							onSubmitPressed={Keyboard.dismiss}
 							placeholder="Search"
@@ -73,7 +72,7 @@ class Component extends React.Component<IProps, IState> {
 							iconColor={colors.icon}
 							returnKeyType={TRKeyboardKeys.done}
 							canCancel={true}
-							persistCancel={this.props.cancel}
+							// persistCancel={this.props.cancel}
 							onPressCancel={this.onBackHandler}
 							cancelButtonTextColor={colors.iosInputCancel}
 							autoFocus={this.props.autoFocus}
@@ -95,10 +94,6 @@ class Component extends React.Component<IProps, IState> {
 	private onChangeTextHandler = (term: string) => {
 		if (this.props.onSearchTermChange) {
 			this.props.onSearchTermChange(term);
-		} else {
-			this.setState({
-				term,
-			});
 		}
 	};
 
@@ -106,14 +101,15 @@ class Component extends React.Component<IProps, IState> {
 		const { navigation } = this.props;
 
 		if (navigation.state.routeName === SCREENS.Trending) {
-			navigation.navigate(SCREENS.TabbedSearch);
+			navigation.navigate(SCREENS.Search);
 		}
 	};
 
 	private onBackHandler = () => {
-		this.setState({ term: '' }, () => {
-			this.props.onGoBack();
-		});
+		// this.props.onGoBack();
+		if (this.props.onCancelSearch) {
+			this.props.onCancelSearch();
+		}
 	};
 }
 

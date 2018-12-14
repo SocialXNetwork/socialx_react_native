@@ -27,14 +27,14 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 								fullName: profile.fullName,
 								userName: profile.alias,
 								avatar: profile.avatar,
-								description: profile.aboutMeText,
+								description: profile.aboutMeText === 'about me text' ? '' : profile.aboutMeText,
 								numberOfFriends: profile.numberOfFriends,
 								numberOfLikes: 0,
 								numberOfPhotos: 0,
 								numberOfComments: 0,
 								media: [],
 								postIds: [],
-								relationship: profile.status,
+								status: profile.status,
 							};
 
 							return this.props.children({

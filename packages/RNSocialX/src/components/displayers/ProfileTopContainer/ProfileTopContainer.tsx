@@ -26,7 +26,7 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	numberOfLikes: number;
 	numberOfFriends: number;
 	numberOfComments: number;
-	relationship: FRIEND_TYPES | null;
+	status?: FRIEND_TYPES;
 	isCurrentUser: boolean;
 	tabs?: boolean;
 	activeTab?: string;
@@ -54,6 +54,7 @@ const Component: React.SFC<IProps> = ({
 	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
 	status,
+	relationship,
 	onProfilePhotoPress,
 	onEditProfile = () => undefined,
 	onSendMessage = () => undefined,
@@ -81,29 +82,27 @@ const Component: React.SFC<IProps> = ({
 		</View>
 		<View style={styles.buttons}>
 			{!isCurrentUser &&
-				(status.relationship === FRIEND_TYPES.NOT_FRIEND ? (
+				(status === FRIEND_TYPES.NOT_FRIEND ? (
 					<PrimaryButton
 						width={buttonWidth}
-						label={status.text}
-						disabled={status.disabled}
-						loading={status.disabled}
+						label={relationship.action}
+						loading={relationship.activity !== null && relationship.activity.payload === userId}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.white}
 						containerStyle={styles.primary}
-						onPress={() => status.actionHandler(userId)}
+						onPress={() => relationship.onStatusAction(userId)}
 					/>
 				) : (
 					<PrimaryButton
 						width={buttonWidth}
-						label={status.text}
-						disabled={status.disabled}
-						loading={status.disabled}
+						label={relationship.action}
+						loading={relationship.activity !== null && relationship.activity.payload === userId}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.pink}
 						containerStyle={styles.secondary}
-						onPress={() => status.actionHandler(userId)}
+						onPress={() => relationship.onStatusAction(userId)}
 					/>
 				))}
 			{isCurrentUser && (
@@ -134,7 +133,7 @@ const Component: React.SFC<IProps> = ({
 );
 
 export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = (props) => (
-	<WithFriends relationship={props.relationship!}>
+	<WithFriends status={props.status}>
 		{({ data }) => <Component {...props} {...data} />}
 	</WithFriends>
 );

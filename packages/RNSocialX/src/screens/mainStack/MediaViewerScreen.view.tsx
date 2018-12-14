@@ -119,11 +119,11 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							<MediaObjectViewer
 								type={item.type}
 								hash={item.hash}
-								style={[styles.carouselMediaObject, { width: viewport.width }]}
 								resizeMode="contain"
 								canZoom={false}
-								getText={getText}
 								thumbOnly={false}
+								getText={getText}
+								style={[styles.carouselMediaObject, { width: viewport.width }]}
 							/>
 						)}
 						sliderWidth={viewport.width}
@@ -134,8 +134,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							android: {
 								windowSize: 5,
 								initialNumToRender: 5,
-								// layout: 'stack',
-								// useScrollView: true,
 							},
 							ios: {
 								windowSize: 3,

@@ -78,7 +78,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 		fullName,
 		userName,
 		description,
-		relationship,
+		status,
 	} = visitedUser;
 
 	const hasPhotos = numberOfPhotos > 0;
@@ -118,7 +118,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					fullName={fullName}
 					userName={userName}
 					description={description}
-					relationship={relationship}
+					status={status}
 					numberOfFriends={numberOfFriends}
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
@@ -150,6 +150,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 										<WallPost postId={data.item} commentInput={false} navigation={navigation} />
 									</View>
 								)}
+								scrollEnabled={postIds.length > 0}
 								showsVerticalScrollIndicator={false}
 								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
 							/>

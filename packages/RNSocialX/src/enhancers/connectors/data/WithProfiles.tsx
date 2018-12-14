@@ -6,30 +6,34 @@ import {
 	acceptFriend,
 	addFriend,
 	clearFriendResponse,
+	clearSearchResults,
 	getCurrentFriends,
 	getCurrentProfile,
 	getProfileByAlias,
-	IAcceptFriendInput,
-	IAddFriendInput,
 	IAliasInput,
 	IFriends,
 	IProfiles,
-	IRejectFriendInput,
-	IRemoveFriendInput,
 	ISearchInput,
 	IUpdateProfileInput,
 	rejectFriend,
 	removeFriend,
 	searchForProfiles,
+	searchForProfilesLocally,
 	undoRequest,
 	updateCurrentProfile,
 } from '../../../store/data/profiles';
+import { ISearchWithAliasInput } from '../../../store/data/profiles/Types';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
 	profiles: IProfiles;
 	friends: IFriends;
-	results: string[];
+	search: {
+		results: string[];
+		previousTerms: {
+			[term: string]: boolean;
+		};
+	};
 }
 
 interface IActionProps {
@@ -37,12 +41,14 @@ interface IActionProps {
 	getCurrentFriends: () => void;
 	getProfileByAlias: (alias: string) => void;
 	updateCurrentProfile: (input: IUpdateProfileInput) => void;
-	addFriend: (addFriendInput: IAddFriendInput) => void;
-	removeFriend: (removeFriendInput: IRemoveFriendInput) => void;
-	acceptFriend: (acceptFriendInput: IAcceptFriendInput) => void;
-	rejectFriend: (rejectFriendInput: IRejectFriendInput) => void;
+	addFriend: (input: IAliasInput) => void;
+	removeFriend: (input: IAliasInput) => void;
+	acceptFriend: (input: IAliasInput) => void;
+	rejectFriend: (input: IAliasInput) => void;
 	undoRequest: (input: IAliasInput) => void;
 	searchForProfiles: (input: ISearchInput) => void;
+	searchForProfilesLocally: (input: ISearchWithAliasInput) => void;
+	clearSearchResults: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -68,15 +74,15 @@ const selectFriends = createSelector(
 	(friends) => friends,
 );
 
-const selectResults = createSelector(
-	(state: IApplicationState) => state.data.profiles.results,
-	(results) => results,
+const selectSearch = createSelector(
+	(state: IApplicationState) => state.data.profiles.search,
+	(search) => search,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
 	profiles: selectProfiles(state),
 	friends: selectFriends(state),
-	results: selectResults(state),
+	search: selectSearch(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
@@ -84,13 +90,16 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentFriends: () => dispatch(getCurrentFriends()),
 	getProfileByAlias: (alias: string) => dispatch(getProfileByAlias(alias)),
 	updateCurrentProfile: (input: IUpdateProfileInput) => dispatch(updateCurrentProfile(input)),
-	addFriend: (input: IAddFriendInput) => dispatch(addFriend(input)),
-	removeFriend: (input: IRemoveFriendInput) => dispatch(removeFriend(input)),
-	acceptFriend: (input: IAcceptFriendInput) => dispatch(acceptFriend(input)),
-	rejectFriend: (input: IRejectFriendInput) => dispatch(rejectFriend(input)),
+	addFriend: (input: IAliasInput) => dispatch(addFriend(input)),
+	removeFriend: (input: IAliasInput) => dispatch(removeFriend(input)),
+	acceptFriend: (input: IAliasInput) => dispatch(acceptFriend(input)),
+	rejectFriend: (input: IAliasInput) => dispatch(rejectFriend(input)),
 	clearFriendResponse: (input: IAliasInput) => dispatch(clearFriendResponse(input)),
 	undoRequest: (input: IAliasInput) => dispatch(undoRequest(input)),
 	searchForProfiles: (input: ISearchInput) => dispatch(searchForProfiles(input)),
+	searchForProfilesLocally: (input: ISearchWithAliasInput) =>
+		dispatch(searchForProfilesLocally(input)),
+	clearSearchResults: () => dispatch(clearSearchResults()),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(

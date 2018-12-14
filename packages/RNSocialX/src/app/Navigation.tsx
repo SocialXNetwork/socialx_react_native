@@ -59,9 +59,9 @@ import {
 
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
-import { WithNotifications } from '../enhancers/connectors/data/WithNotifications';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
+import { WithNotifications } from '../enhancers/screens/mainTabNav/WithNotifications';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -149,10 +149,10 @@ const UserFeedStackNavigator = createStackNavigator(
 
 const UserSearchStackNavigator = createStackNavigator(
 	{
-		TrendingScreen: {
-			screen: TrendingScreen,
-		},
-		TabbedSearchScreen: {
+		// TrendingScreen: {
+		// 	screen: TrendingScreen,
+		// },
+		SearchScreen: {
 			screen: SearchScreen,
 		},
 	},
@@ -278,76 +278,76 @@ const AppNavigation = createStackNavigator(
 );
 
 const Navigation = () => (
-	<WithNotifications>
-		{({ friendRequests, friendResponses }) => (
-			<WithI18n>
-				{({ getText }) => (
-					<Root>
-						<WithNavigationParams>
-							{({ setNavigationParams }) => (
-								<WithOverlays>
-									{({ showOptionsMenu }) => (
+	<WithI18n>
+		{({ getText }) => (
+			<Root>
+				<WithNavigationParams>
+					{({ setNavigationParams }) => (
+						<WithOverlays>
+							{({ showOptionsMenu }) => (
+								<WithNotifications>
+									{({ data }) => (
 										<AppNavigation
 											screenProps={{
-												notifications: friendRequests.length + friendResponses.length,
+												notifications: data.unreadNotifications,
 												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
 												setNavigationParams,
 												getText,
 											}}
 										/>
 									)}
-								</WithOverlays>
+								</WithNotifications>
 							)}
-						</WithNavigationParams>
-						<WithGlobals>
-							{({ globals }) => (
-								<WithOverlays>
-									{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
-										<React.Fragment>
-											<TransparentOverlayModal
-												visible={globals.transparentOverlay.visible}
-												alpha={globals.transparentOverlay.alpha}
-												loader={globals.transparentOverlay.loader}
-											/>
-											<OfflineOverlayModal visible={!!globals.offline} getText={getText} />
-											<ActivityIndicatorModal
-												visible={globals.activity.visible}
-												title={globals.activity.title}
-												message={globals.activity.message}
-												getText={getText}
-											/>
-											<ConfirmationModal
-												title={confirmation && confirmation.title}
-												message={confirmation && confirmation.message}
-												confirmActive={!!confirmation}
-												confirmHandler={() => {
-													if (confirmation) {
-														confirmation.confirmHandler();
-													}
-													hideConfirmation();
-												}}
-												declineHandler={() => {
-													if (confirmation && confirmation.cancelHandler) {
-														confirmation.cancelHandler();
-													}
-													hideConfirmation();
-												}}
-											/>
-											<OptionsMenuModal
-												visible={!!optionsMenu}
-												items={(optionsMenu && optionsMenu.items) || []}
-												onBackdropPress={hideOptionsMenu}
-											/>
-										</React.Fragment>
-									)}
-								</WithOverlays>
+						</WithOverlays>
+					)}
+				</WithNavigationParams>
+				<WithGlobals>
+					{({ globals }) => (
+						<WithOverlays>
+							{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
+								<React.Fragment>
+									<TransparentOverlayModal
+										visible={globals.transparentOverlay.visible}
+										alpha={globals.transparentOverlay.alpha}
+										loader={globals.transparentOverlay.loader}
+									/>
+									<OfflineOverlayModal visible={!!globals.offline} getText={getText} />
+									<ActivityIndicatorModal
+										visible={globals.activity.visible}
+										title={globals.activity.title}
+										message={globals.activity.message}
+										getText={getText}
+									/>
+									<ConfirmationModal
+										title={confirmation && confirmation.title}
+										message={confirmation && confirmation.message}
+										confirmActive={!!confirmation}
+										confirmHandler={() => {
+											if (confirmation) {
+												confirmation.confirmHandler();
+											}
+											hideConfirmation();
+										}}
+										declineHandler={() => {
+											if (confirmation && confirmation.cancelHandler) {
+												confirmation.cancelHandler();
+											}
+											hideConfirmation();
+										}}
+									/>
+									<OptionsMenuModal
+										visible={!!optionsMenu}
+										items={(optionsMenu && optionsMenu.items) || []}
+										onBackdropPress={hideOptionsMenu}
+									/>
+								</React.Fragment>
 							)}
-						</WithGlobals>
-					</Root>
-				)}
-			</WithI18n>
+						</WithOverlays>
+					)}
+				</WithGlobals>
+			</Root>
 		)}
-	</WithNotifications>
+	</WithI18n>
 );
 
 export default Navigation;

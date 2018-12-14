@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const ICON_SIZE = Sizes.smartHorizontalScale(64);
+const ICON_SIZE = Sizes.smartHorizontalScale(50);
 
 const styles: any = {
 	container: {
-		flex: 1,
 		flexDirection: 'row',
-		paddingVertical: Sizes.smartVerticalScale(5),
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		alignItems: 'center',
+		marginVertical: Sizes.smartVerticalScale(5),
 	},
 	avatarImage: {
 		width: ICON_SIZE,

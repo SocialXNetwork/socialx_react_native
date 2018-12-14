@@ -30,7 +30,7 @@ export const TrendingScreenView: React.SFC<ITrendingScreenViewProps> = ({
 	getText,
 }) => (
 	<View style={{ flex: 1 }}>
-		<SearchHeader navigation={navigation} />
+		<SearchHeader cancel={false} navigation={navigation} />
 		<ComingSoon message={getText('search.screen.results.coming.soon')} />
 		{/* <TrendingCategoriesCarousel
 			items={trendingCategoriesItems}

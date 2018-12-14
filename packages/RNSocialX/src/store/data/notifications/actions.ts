@@ -3,18 +3,17 @@ import {
 	IFriendRequest,
 	IFriendResponse,
 	INotificationReturnData,
-	IRemoveNotificationInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
-import uuidv4 from 'uuid/v4';
+import uuid from 'uuid/v4';
+
 import { IThunk } from '../../types';
-import { beginActivity, endActivity } from '../../ui/activities';
+import { beginActivity, endActivity, setError } from '../../ui/activities';
 import {
 	ActionTypes,
 	ICreateNotificationAction,
 	IGetNotificationsAction,
 	IHookNotificationsAction,
-	IRemoveNotificationAction,
 	ISyncFriendRequestsAction,
 	ISyncFriendResponsesAction,
 	ISyncNotificationsAction,
@@ -32,7 +31,7 @@ export const createNotification = (createNotificationInput: ICreateNotification)
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -55,40 +54,6 @@ export const createNotification = (createNotificationInput: ICreateNotification)
 	}
 };
 
-const removeNotificationAction: ActionCreator<IRemoveNotificationAction> = (
-	removeNotificationInput: IRemoveNotificationInput,
-) => ({
-	type: ActionTypes.REMOVE_NOTIFICATION,
-	payload: removeNotificationInput,
-});
-
-// ! not in use
-export const removeNotification = (
-	removeNotificationInput: IRemoveNotificationInput,
-): IThunk => async (dispatch, getState, context) => {
-	// const activityId = uuidv4();
-	// const storeState = getState();
-	// const auth = storeState.auth.database.gun;
-	// if (auth && auth.alias) {
-	// 	try {
-	// 		dispatch(removeNotificationAction(removeNotificationInput));
-	// 		await dispatch(
-	// 			beginActivity({
-	// 				type: ActionTypes.REMOVE_NOTIFICATION,
-	// 				uuid: activityId,
-	// 			}),
-	// 		);
-	// 		const { dataApi } = context;
-	// 		await dataApi.notifications.removeNotification(removeNotificationInput);
-	// 		await dispatch(getNotifications());
-	// 	} catch (e) {
-	// 		/**/
-	// 	} finally {
-	// 		await dispatch(endActivity({ uuid: activityId }));
-	// 	}
-	// }
-};
-
 export const getNotificationsAction: ActionCreator<IGetNotificationsAction> = () => ({
 	type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
 });
@@ -101,26 +66,29 @@ export const syncNotificationsAction: ActionCreator<ISyncNotificationsAction> = 
 });
 
 export const getNotifications = (): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
-	if (auth && auth.alias) {
-		try {
-			dispatch(getNotificationsAction());
-			await dispatch(
-				beginActivity({
-					uuid: activityId,
-					type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
-				}),
-			);
-			const { dataApi } = context;
-			const notifications = await dataApi.notifications.getNotifications();
-			dispatch(syncNotificationsAction(notifications));
-		} catch (e) {
-			/**/
-		} finally {
-			await dispatch(endActivity({ uuid: activityId }));
-		}
+	const activityId = uuid();
+
+	try {
+		dispatch(getNotificationsAction());
+		await dispatch(
+			beginActivity({
+				uuid: activityId,
+				type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
+			}),
+		);
+
+		const notifications = await context.dataApi.notifications.getNotifications();
+		dispatch(syncNotificationsAction(notifications));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 
@@ -144,11 +112,11 @@ export const syncFriendResponsesAction: ActionCreator<ISyncFriendResponsesAction
 
 export const hookNotifications = (): IThunk => async (dispatch, getState, context) => {
 	dispatch(hookNotificationsAction());
-	const { dataApi } = context;
-	dataApi.hooks.hookFriendRequests((friendRequests) =>
+
+	context.dataApi.hooks.hookFriendRequests((friendRequests) =>
 		dispatch(syncFriendRequestsAction(friendRequests)),
 	);
-	dataApi.hooks.hookFriendResponses((friendResponses) =>
+	context.dataApi.hooks.hookFriendResponses((friendResponses) =>
 		dispatch(syncFriendResponsesAction(friendResponses)),
 	);
 };

@@ -12,7 +12,6 @@ interface ISearchTabResultsProps extends ITranslatedProps {
 	results: string[];
 	suggestions: string[];
 	searching: boolean;
-	hasMoreResults: boolean;
 	onResultPress: (alias: string) => void;
 }
 
@@ -21,7 +20,6 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 	results,
 	suggestions,
 	searching,
-	hasMoreResults,
 	onResultPress,
 	getText,
 }) => (
@@ -30,7 +28,6 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 			<SuggestedSearches
 				suggestions={suggestions}
 				onResultPress={onResultPress}
-				onLoadMore={() => undefined}
 				getText={getText}
 			/>
 		)}
@@ -39,8 +36,6 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 				term={term}
 				results={results}
 				searching={searching}
-				hasMore={hasMoreResults}
-				onLoadMore={() => undefined}
 				onResultPress={onResultPress}
 				getText={getText}
 			/>
