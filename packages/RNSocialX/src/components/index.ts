@@ -23,6 +23,7 @@ export { PeopleSearchResultEntry } from './displayers/PeopleSearchResultEntry';
 export { PhotoGrid } from './displayers/PhotoGrid';
 export { ProfilePhotoGrid } from './displayers/ProfilePhotoGrid';
 export { ProfileTopContainer } from './displayers/ProfileTopContainer';
+export { ProgressBar } from './displayers/ProgressBar';
 export {
 	SocialXAccountCurrencyItem,
 	IAccountCurrencyData,

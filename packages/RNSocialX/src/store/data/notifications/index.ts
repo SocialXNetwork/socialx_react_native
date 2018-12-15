@@ -11,4 +11,4 @@ export {
 	FriendResponses,
 } from '@socialx/api-data';
 
-export { createNotification, getNotifications } from './actions';
+export { createNotification, getNotifications, hookNotifications } from './actions';

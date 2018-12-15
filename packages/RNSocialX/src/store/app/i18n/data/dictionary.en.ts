@@ -363,5 +363,10 @@ export default {
 	'ad.statistics.amount.text': 'Total amount of SOCX',
 	'ad.statistics.chart.currentweek.text': 'CW',
 	'ad.management.editad.title': 'Ad Edit',
-	'ad.management.editad.adpreview': 'Ad Preview'
+	'ad.management.editad.adpreview': 'Ad Preview',
+	'loading.login': 'Signing you in',
+	'loading.profile': 'Syncing nodes and current profile',
+	'loading.friends': 'Syncing profiles and friends',
+	'loading.posts.global': 'Syncing global posts',
+	'loading.posts.friends': 'Syncing friends posts',
 };

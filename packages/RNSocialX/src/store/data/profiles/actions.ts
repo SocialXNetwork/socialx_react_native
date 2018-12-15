@@ -1,10 +1,11 @@
-import { IAcceptFriendInput, IPostReturnData, IUpdateProfileInput } from '@socialx/api-data';
+import { IPostReturnData, IUpdateProfileInput } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { setGlobal } from '../../ui/globals';
 import { getUserPosts } from '../posts';
 import {
 	ActionTypes,

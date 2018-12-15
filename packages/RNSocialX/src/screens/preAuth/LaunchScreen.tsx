@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { NetInfo, View } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
@@ -61,7 +61,7 @@ class Screen extends React.Component<ILaunchScreenProps> {
 			return <View />;
 		}
 		if (this.props.auth) {
-			return <LoadingScreen />;
+			return <LoadingScreen loading={this.props.globals.loading} getText={this.props.getText} />;
 		} else {
 			return (
 				<LaunchScreenView

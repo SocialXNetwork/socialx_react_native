@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(40);
 const SMALL_AVATAR_SIZE = Sizes.smartHorizontalScale(25);
@@ -10,24 +10,28 @@ const styles: any = {
 		flex: 1,
 		backgroundColor: Colors.white,
 	},
-	topTabs: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-around',
-		height: Sizes.smartVerticalScale(60),
-	},
-	topTab: {
-		width: '25%',
-		height: Sizes.smartHorizontalScale(15),
-		borderRadius: Sizes.smartHorizontalScale(4),
-		backgroundColor: Colors.geyser,
-	},
-	share: {
-		flexDirection: 'row',
-		alignItems: 'center',
+	top: {
+		justifyContent: 'center',
 		width: '100%',
-		height: Sizes.smartVerticalScale(50),
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
+		paddingTop: Sizes.smartVerticalScale(16),
+		paddingBottom: Sizes.smartVerticalScale(10),
+	},
+	textContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'flex-end',
+		marginBottom: Sizes.smartVerticalScale(10),
+	},
+	primaryText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(18),
+		color: Colors.shuttleGray,
+	},
+	secondaryText: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(14),
+		color: Colors.shuttleGray,
 	},
 	avatar: {
 		width: AVATAR_SIZE,
@@ -35,12 +39,6 @@ const styles: any = {
 		borderRadius: AVATAR_SIZE / 2,
 		backgroundColor: Colors.geyser,
 		marginRight: Sizes.smartHorizontalScale(15),
-	},
-	shareText: {
-		height: Sizes.smartHorizontalScale(20),
-		borderRadius: Sizes.smartHorizontalScale(3),
-		backgroundColor: Colors.geyser,
-		width: '80%',
 	},
 	separator: {
 		height: Sizes.smartHorizontalScale(8),

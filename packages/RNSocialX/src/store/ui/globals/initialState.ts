@@ -14,7 +14,10 @@ const initialState: IState = {
 	},
 	placeholderPost: null,
 	postingCommentId: '',
-	aliasesToRemove: [],
+	loading: {
+		progress: 0,
+		message: 'login',
+	},
 };
 
 export default initialState;
