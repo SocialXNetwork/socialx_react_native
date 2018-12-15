@@ -1,4 +1,4 @@
-import { FriendResponses } from '../profiles';
+import { FriendResponses, IFriendData } from '../profiles';
 
 export enum NotificationType {
 	FriendRequests,
@@ -46,4 +46,14 @@ export interface IFriendResponse {
 
 export interface IFriendResponses {
 	[alias: string]: IFriendResponse;
+}
+
+export interface IFriendRequestsCallback {
+	profiles: IFriendData[];
+	requests: IFriendRequests;
+}
+
+export interface IFriendResponsesCallback {
+	profiles: IFriendData[];
+	responses: IFriendResponses;
 }
