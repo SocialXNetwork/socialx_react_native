@@ -186,7 +186,7 @@ export const getProfileByUsername = (
 					}
 				}
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		);
 	};
 	const fetchPublicUser = () => {
@@ -210,7 +210,7 @@ export const getProfileByUsername = (
 					});
 				});
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		);
 	};
 	mainRunner();
