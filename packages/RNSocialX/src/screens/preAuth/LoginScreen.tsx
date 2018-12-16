@@ -50,6 +50,8 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	}
 
 	public render() {
+		const { getText } = this.props;
+
 		return (
 			<LoginScreenView
 				errors={this.state.errors}
@@ -58,7 +60,7 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
 				onNavigateToUploadKey={() => this.safeNavigateToScreen('UploadKeyScreen')}
 				onGoBack={this.onGoBackHandler}
-				getText={this.props.getText}
+				getText={getText}
 			/>
 		);
 	}
@@ -71,7 +73,7 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	};
 
 	private onLoginHandler = async (userName: string, password: string) => {
-		const { login, loadPosts, resetNavigationToRoute, navigation } = this.props;
+		const { login, loadFeed, resetNavigationToRoute, navigation } = this.props;
 
 		this.setState({ errors: [] });
 		this.switchActivityIndicator(true);
@@ -79,7 +81,7 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 		if (this.state.errors.length > 0) {
 			this.switchActivityIndicator(false);
 		} else {
-			await loadPosts();
+			await loadFeed();
 			this.switchActivityIndicator(false);
 			resetNavigationToRoute(NAVIGATION.Main, navigation);
 		}
@@ -105,6 +107,6 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	};
 }
 
-export const LoginScreen = (navProps: INavigationProps) => (
-	<WithLogin>{({ data, actions }) => <Screen {...navProps} {...data} {...actions} />}</WithLogin>
+export const LoginScreen = (props: INavigationProps) => (
+	<WithLogin>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithLogin>
 );

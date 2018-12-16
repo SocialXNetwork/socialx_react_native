@@ -1,10 +1,4 @@
-import {
-	IAcceptFriendInput,
-	IClearFriendResponseInput,
-	IFriendData,
-	IPostArrayData,
-	IUpdateProfileInput,
-} from '@socialx/api-data';
+import { IFriendData, IPostArrayData, IUpdateProfileInput } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
@@ -110,6 +104,7 @@ export const enum ActionTypes {
 	SYNC_SEARCH_FOR_PROFILES = 'data/profiles/SYNC_SEARCH_FOR_PROFILES',
 	SEARCH_FOR_PROFILES_LOCALLY = 'data/profiles/SEARCH_FOR_PROFILES_LOCALLY',
 	CLEAR_SEARCH_RESULTS = 'data/profiles/CLEAR_SEARCH_RESULTS',
+	SYNC_EXTERNAL_PROFILES = '/data/profiles/SYNC_EXTERNAL_PROFILES',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -228,8 +223,13 @@ export interface ISearchForProfilesLocallyAction extends Action {
 	payload: ISearchWithAliasInput;
 }
 
-export interface IClearSearchResultsActions extends Action {
+export interface IClearSearchResultsAction extends Action {
 	type: ActionTypes.CLEAR_SEARCH_RESULTS;
+}
+
+export interface ISyncExternalProfilesAction extends Action {
+	type: ActionTypes.SYNC_EXTERNAL_PROFILES;
+	payload: IProfile[];
 }
 
 interface IResetStoreAction {
@@ -263,4 +263,5 @@ export type IAction =
 	| ISearchForProfilesAction
 	| ISyncSearchForProfilesAction
 	| ISearchForProfilesLocallyAction
-	| IClearSearchResultsActions;
+	| IClearSearchResultsAction
+	| ISyncExternalProfilesAction;

@@ -1,47 +1,60 @@
 import { NOTIFICATION_TYPES } from '../../../src/environment/consts';
 
-import { FriendResponses, IFriendRequest, IFriendResponse } from '../../store/data/notifications';
+import { FriendResponses, IFriendRequests, IFriendResponses } from '../../store/data/notifications';
 
 export const mapRequestsToNotifications = (
-	requests: IFriendRequest[],
-	responses: IFriendResponse[],
+	requests: IFriendRequests,
+	responses: IFriendResponses,
 ) => {
-	const reqs = requests.map((req) => ({
-		id: req.id,
-		userId: req.owner.alias,
-		type: NOTIFICATION_TYPES.FRIEND_REQUEST,
-		fullName: req.fullName,
-		userName: req.owner.alias,
-		avatar: req.avatar,
-		timestamp: new Date(req.timestamp),
-		read: req.read,
-	}));
+	const reqs = Object.keys(requests).map((key) => {
+		const req = requests[key];
 
-	const resps = responses.map((res) => ({
-		id: res.id,
-		userId: res.owner.alias,
-		type:
-			res.type === FriendResponses.Accepted
-				? NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED
-				: NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED,
-		fullName: res.fullName,
-		userName: res.owner.alias,
-		avatar: res.avatar,
-		timestamp: new Date(res.timestamp),
-		read: res.read,
-	}));
+		return {
+			id: req.id,
+			type: NOTIFICATION_TYPES.FRIEND_REQUEST,
+			fullName: req.fullName,
+			alias: req.owner.alias,
+			avatar: req.avatar,
+			timestamp: new Date(req.timestamp),
+			read: req.read,
+		};
+	});
 
-	return reqs.concat(resps).sort((x, y) => y.timestamp.getTime() - x.timestamp.getTime());
-};
+	const resps = Object.keys(responses).map((key) => {
+		const res = responses[key];
 
-export const getUnreadNotifications = (
-	requests: IFriendRequest[],
-	responses: IFriendResponse[],
-) => {
-	return requests.concat(responses).reduce((acc, notification) => {
-		if (!notification.read) {
-			return acc + 1;
+		return {
+			id: res.id,
+			type:
+				res.type === FriendResponses.Accepted
+					? NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED
+					: NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED,
+			fullName: res.fullName,
+			alias: res.owner.alias,
+			avatar: res.avatar,
+			timestamp: new Date(res.timestamp),
+			read: res.read,
+		};
+	});
+
+	const unreadRequests = [];
+	const unreadResponses = [];
+
+	for (const req of reqs) {
+		if (!req.read) {
+			unreadRequests.push({ username: req.alias });
 		}
-		return acc;
-	}, 0);
+	}
+
+	for (const res of resps) {
+		if (!res.read) {
+			unreadResponses.push({ username: res.alias });
+		}
+	}
+
+	return {
+		all: reqs.concat(resps).sort((x, y) => y.timestamp.getTime() - x.timestamp.getTime()),
+		unreadRequests,
+		unreadResponses,
+	};
 };

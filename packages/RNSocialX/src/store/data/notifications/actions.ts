@@ -1,22 +1,22 @@
-import {
-	ICreateNotification,
-	IFriendRequest,
-	IFriendResponse,
-	INotificationReturnData,
-} from '@socialx/api-data';
+import { ICreateNotification, INotificationReturnData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { syncExternalProfiles } from '../profiles';
 import {
 	ActionTypes,
 	ICreateNotificationAction,
+	IFriendRequests,
+	IFriendResponses,
 	IGetNotificationsAction,
 	IHookNotificationsAction,
+	IMarkNotificationsAsReadAction,
 	ISyncFriendRequestsAction,
 	ISyncFriendResponsesAction,
 	ISyncNotificationsAction,
+	IUnreadNotificationsInput,
 } from './Types';
 
 const createNotificationAction: ActionCreator<ICreateNotificationAction> = (
@@ -97,26 +97,66 @@ export const hookNotificationsAction: ActionCreator<IHookNotificationsAction> = 
 });
 
 export const syncFriendRequestsAction: ActionCreator<ISyncFriendRequestsAction> = (
-	friendRequests: IFriendRequest[],
+	requests: IFriendRequests,
 ) => ({
 	type: ActionTypes.SYNC_FRIEND_REQUESTS,
-	payload: friendRequests,
+	payload: requests,
 });
 
 export const syncFriendResponsesAction: ActionCreator<ISyncFriendResponsesAction> = (
-	friendResponses: IFriendResponse[],
+	responses: IFriendResponses,
 ) => ({
 	type: ActionTypes.SYNC_FRIEND_RESPONSES,
-	payload: friendResponses,
+	payload: responses,
 });
 
 export const hookNotifications = (): IThunk => async (dispatch, getState, context) => {
 	dispatch(hookNotificationsAction());
 
-	context.dataApi.hooks.hookFriendRequests((friendRequests) =>
-		dispatch(syncFriendRequestsAction(friendRequests)),
-	);
-	context.dataApi.hooks.hookFriendResponses((friendResponses) =>
-		dispatch(syncFriendResponsesAction(friendResponses)),
-	);
+	context.dataApi.hooks.hookFriendRequests((friendRequests) => {
+		dispatch(syncFriendRequestsAction(friendRequests.requests));
+		dispatch(syncExternalProfiles(friendRequests.profiles));
+	});
+	context.dataApi.hooks.hookFriendResponses((friendResponses) => {
+		dispatch(syncFriendResponsesAction(friendResponses.responses));
+		dispatch(syncExternalProfiles(friendResponses.profiles));
+	});
+};
+
+const markNotificationsAsReadAction: ActionCreator<IMarkNotificationsAsReadAction> = (
+	input: IUnreadNotificationsInput,
+) => ({
+	type: ActionTypes.MARK_NOTIFICATIONS_AS_READ,
+	payload: input,
+});
+
+export const markNotificationsAsRead = (input: IUnreadNotificationsInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuid();
+
+	try {
+		dispatch(markNotificationsAsReadAction(input));
+		await dispatch(
+			beginActivity({
+				uuid: activityId,
+				type: ActionTypes.MARK_NOTIFICATIONS_AS_READ,
+			}),
+		);
+
+		await context.dataApi.profiles.readFriendRequests(input.unreadRequests);
+		await context.dataApi.profiles.readFriendRequests(input.unreadResponses);
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.MARK_NOTIFICATIONS_AS_READ,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
 };

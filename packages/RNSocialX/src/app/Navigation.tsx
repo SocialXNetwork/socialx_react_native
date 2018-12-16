@@ -289,7 +289,9 @@ const Navigation = () => (
 									{({ data }) => (
 										<AppNavigation
 											screenProps={{
-												notifications: data.unreadNotifications,
+												notifications:
+													data.notifications.unreadRequests.length +
+													data.notifications.unreadResponses.length,
 												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
 												setNavigationParams,
 												getText,

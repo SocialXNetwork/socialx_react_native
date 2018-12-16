@@ -31,8 +31,6 @@ interface ILoginScreenData {
 
 const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors }) => (
 	<Formik
-		// TODO: later remove isInitialValid + set initialValues to ''
-		isInitialValid={true}
 		initialValues={{
 			userName: '',
 			password: '',

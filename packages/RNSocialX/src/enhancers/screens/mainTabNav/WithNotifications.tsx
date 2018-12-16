@@ -5,23 +5,32 @@
 
 import * as React from 'react';
 
-import { INotificationData, IOptionsMenuProps, ITranslatedProps } from '../../../types';
+import { INotification, IOptionsMenuProps, ITranslatedProps } from '../../../types';
 
-import { ActionTypes } from '../../../store/data/notifications/Types';
+import {
+	ActionTypes,
+	IClearFriendRequestInput,
+	IClearFriendResponseInput,
+	IUnreadNotificationsInput,
+} from '../../../store/data/notifications';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { getActivity, getUnreadNotifications, mapRequestsToNotifications } from '../../helpers';
+import { getActivity, mapRequestsToNotifications } from '../../helpers';
 
 export interface IWithNotificationsEnhancedData {
-	notifications: INotificationData[];
-	unreadNotifications: number;
+	notifications: {
+		all: INotification[];
+		unreadRequests: IClearFriendRequestInput[];
+		unreadResponses: IClearFriendResponseInput[];
+	};
 	refreshing: boolean;
 }
 
 export interface IWithNotificationsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getNotifications: () => void;
+	markNotificationsAsRead: (input: IUnreadNotificationsInput) => void;
 }
 
 interface IWithNotificationsEnhancedProps {
@@ -48,7 +57,12 @@ export class WithNotifications extends React.Component<
 							<WithActivities>
 								{({ activities }) => (
 									<WithNotificationsData>
-										{({ friendRequests, friendResponses, getNotifications }) =>
+										{({
+											friendRequests,
+											friendResponses,
+											getNotifications,
+											markNotificationsAsRead,
+										}) =>
 											this.props.children({
 												data: {
 													refreshing: getActivity(
@@ -59,13 +73,10 @@ export class WithNotifications extends React.Component<
 														friendRequests,
 														friendResponses,
 													),
-													unreadNotifications: getUnreadNotifications(
-														friendRequests,
-														friendResponses,
-													),
 												},
 												actions: {
 													getNotifications,
+													markNotificationsAsRead,
 													showOptionsMenu: (items) => showOptionsMenu({ items }),
 													getText,
 												},

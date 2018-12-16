@@ -1,5 +1,12 @@
 export { default as reducer } from './reducer';
-export { IState, IAction } from './Types';
+export {
+	IState,
+	IAction,
+	IFriendRequests,
+	IFriendResponses,
+	ActionTypes,
+	IUnreadNotificationsInput,
+} from './Types';
 
 export {
 	INotificationData,
@@ -9,6 +16,13 @@ export {
 	IFriendRequest,
 	IFriendResponse,
 	FriendResponses,
+	IClearFriendRequestInput,
+	IClearFriendResponseInput,
 } from '@socialx/api-data';
 
-export { createNotification, getNotifications, hookNotifications } from './actions';
+export {
+	createNotification,
+	getNotifications,
+	hookNotifications,
+	markNotificationsAsRead,
+} from './actions';

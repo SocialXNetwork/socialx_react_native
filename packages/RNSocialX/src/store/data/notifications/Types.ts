@@ -1,5 +1,6 @@
 import {
-	FriendResponses,
+	IClearFriendRequestInput,
+	IClearFriendResponseInput,
 	IFriendRequest,
 	IFriendResponse,
 	INotificationData,
@@ -9,9 +10,17 @@ import {
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
+export interface IFriendRequests {
+	[alias: string]: IFriendRequest;
+}
+
+export interface IFriendResponses {
+	[alias: string]: IFriendResponse;
+}
+
 export type IState = DeepReadonly<{
-	friendRequests: IFriendRequest[];
-	friendResponses: IFriendResponse[];
+	friendRequests: IFriendRequests;
+	friendResponses: IFriendResponses;
 }>;
 
 export const enum ActionTypes {
@@ -19,10 +28,16 @@ export const enum ActionTypes {
 	REMOVE_NOTIFICATION = 'data/notifications/REMOVE_NOTIFICATION',
 	SYNC_CURRENT_NOTIFICATIONS = 'data/notifications/SYNC_CURRENT_NOTIFICATIONS',
 	GET_CURRENT_NOTIFICATIONS = 'data/notifications/GET_CURRENT_NOTIFICATIONS',
+	MARK_NOTIFICATIONS_AS_READ = 'data/notifications/MARK_NOTIFICATIONS_AS_READ',
 	// hooks
 	HOOK_NOTIFICATIONS = 'data/notifications/HOOK_NOTIFICATIONS',
 	SYNC_FRIEND_REQUESTS = 'data/notifications/SYNC_FRIEND_REQUESTS',
 	SYNC_FRIEND_RESPONSES = 'data/notifications/SYNC_FRIEND_RESPONSES',
+}
+
+export interface IUnreadNotificationsInput {
+	unreadRequests: IClearFriendRequestInput[];
+	unreadResponses: IClearFriendResponseInput[];
 }
 
 export interface ICreateNotificationAction extends Action {
@@ -50,12 +65,17 @@ export interface IHookNotificationsAction extends Action {
 
 export interface ISyncFriendRequestsAction extends Action {
 	type: ActionTypes.SYNC_FRIEND_REQUESTS;
-	payload: IFriendRequest[];
+	payload: IFriendRequests;
 }
 
 export interface ISyncFriendResponsesAction extends Action {
 	type: ActionTypes.SYNC_FRIEND_RESPONSES;
-	payload: IFriendResponse[];
+	payload: IFriendResponses;
+}
+
+export interface IMarkNotificationsAsReadAction extends Action {
+	type: ActionTypes.MARK_NOTIFICATIONS_AS_READ;
+	payload: IUnreadNotificationsInput;
 }
 
 interface IResetStoreAction {
@@ -69,4 +89,5 @@ export type IAction =
 	| ISyncNotificationsAction
 	| IHookNotificationsAction
 	| ISyncFriendRequestsAction
-	| ISyncFriendResponsesAction;
+	| ISyncFriendResponsesAction
+	| IMarkNotificationsAsReadAction;

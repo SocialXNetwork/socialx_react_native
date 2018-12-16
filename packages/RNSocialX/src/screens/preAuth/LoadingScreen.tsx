@@ -19,8 +19,8 @@ export const LoadingScreen: React.SFC<ILoadingScreenProps> = ({ loading, getText
 		<Header logo={true} />
 		<View style={styles.top}>
 			<View style={styles.textContainer}>
-				<Text style={styles.primaryText}>{getText(`loading.${loading.message}`)}</Text>
-				<Text style={styles.secondaryText}>{loading.progress}%</Text>
+				<Text style={styles.text}>{getText(`loading.${loading.message}`)}</Text>
+				<Text style={styles.text}>{loading.progress}%</Text>
 			</View>
 			<ProgressBar progress={loading.progress} />
 		</View>

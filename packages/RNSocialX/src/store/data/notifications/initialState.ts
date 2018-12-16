@@ -1,8 +1,8 @@
 import { IState } from './Types';
 
 const initialState: IState = {
-	friendRequests: [],
-	friendResponses: [],
+	friendRequests: {},
+	friendResponses: {},
 };
 
 export default initialState;

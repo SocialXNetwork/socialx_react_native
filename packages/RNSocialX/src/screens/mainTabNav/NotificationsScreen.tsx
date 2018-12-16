@@ -19,24 +19,34 @@ type INotificationsScreenProps = INavigationProps &
 	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<INotificationsScreenProps> {
-	private willFocusScreen: any;
+	// private willFocusScreen: any;
 
-	public componentDidMount() {
-		this.willFocusScreen = this.props.navigation.addListener('willFocus', (payload) => {
-			console.log('willFocus', payload);
-		});
-	}
+	// public componentDidMount() {
+	// 	const {
+	// 		navigation,
+	// 		notifications: { unreadRequests, unreadResponses },
+	// 		markNotificationsAsRead,
+	// 	} = this.props;
 
-	public componentWillUnmount() {
-		this.willFocusScreen.remove();
-	}
+	// 	this.willFocusScreen = navigation.addListener('willFocus', () => {
+	// 		console.log({ unreadRequests });
+	// 		console.log({ unreadResponses });
+	// 		if (unreadRequests.length > 0 || unreadResponses.length > 0) {
+	// 			markNotificationsAsRead({ unreadRequests, unreadResponses });
+	// 		}
+	// 	});
+	// }
+
+	// public componentWillUnmount() {
+	// 	this.willFocusScreen.remove();
+	// }
 
 	public render() {
 		const { notifications, refreshing, getNotifications, getText } = this.props;
 
 		return (
 			<NotificationsScreenView
-				notifications={notifications}
+				notifications={notifications.all}
 				refreshing={refreshing}
 				onRefresh={getNotifications}
 				onViewUserProfile={(userId) => this.props.onViewUserProfile(userId)}

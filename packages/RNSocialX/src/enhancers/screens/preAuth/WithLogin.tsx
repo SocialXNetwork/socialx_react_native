@@ -23,7 +23,7 @@ export interface IWithLoginEnhancedData {
 
 export interface IWithLoginEnhancedActions extends ITranslatedProps {
 	login: (userName: string, password: string) => void;
-	loadPosts: () => void;
+	loadFeed: () => void;
 	setGlobal: (global: IGlobal) => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 }
@@ -43,7 +43,7 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithGlobals>
 						{({ setGlobal }) => (
 							<WithActivities>
@@ -51,9 +51,9 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 									<WithAuth>
 										{({ auth }) => (
 											<WithPosts>
-												{(postProps) => (
+												{({ loadMorePosts, loadMoreFriendsPosts }) => (
 													<WithAccounts>
-														{(accountsProps) =>
+														{({ login }) =>
 															this.props.children({
 																data: {
 																	auth,
@@ -61,15 +61,30 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 																},
 																actions: {
 																	login: async (username: string, password: string) => {
-																		await accountsProps.login({
+																		await login({
 																			username,
 																			password,
 																		});
 																	},
-																	loadPosts: postProps.loadMorePosts,
+																	loadFeed: async () => {
+																		setGlobal({
+																			loading: {
+																				progress: 60,
+																				message: 'posts.global',
+																			},
+																		});
+																		await loadMorePosts();
+																		setGlobal({
+																			loading: {
+																				progress: 80,
+																				message: 'posts.friends',
+																			},
+																		});
+																		await loadMoreFriendsPosts();
+																	},
 																	setGlobal,
 																	resetNavigationToRoute,
-																	getText: i18nProps.getText,
+																	getText,
 																},
 															})
 														}

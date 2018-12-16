@@ -38,6 +38,25 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.MARK_NOTIFICATIONS_AS_READ: {
+			const { unreadRequests, unreadResponses } = action.payload;
+			const requests = { ...state.friendRequests };
+			const responses = { ...state.friendResponses };
+
+			for (const req of unreadRequests) {
+				requests[req.username].read = true;
+			}
+
+			for (const res of unreadResponses) {
+				responses[res.username].read = true;
+			}
+
+			return {
+				friendRequests: requests,
+				friendResponses: responses,
+			};
+		}
+
 		case 'RESET_STORE': {
 			return initialState;
 		}

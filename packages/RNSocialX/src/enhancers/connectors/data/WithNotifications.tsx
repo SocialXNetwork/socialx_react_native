@@ -5,18 +5,21 @@ import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
 import {
 	getNotifications,
-	IFriendRequest,
-	IFriendResponse,
+	IFriendRequests,
+	IFriendResponses,
+	IUnreadNotificationsInput,
+	markNotificationsAsRead,
 } from '../../../store/data/notifications';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	friendRequests: IFriendRequest[];
-	friendResponses: IFriendResponse[];
+	friendRequests: IFriendRequests;
+	friendResponses: IFriendResponses;
 }
 
 interface IActionProps {
 	getNotifications: () => void;
+	markNotificationsAsRead: (input: IUnreadNotificationsInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -49,6 +52,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getNotifications: () => dispatch(getNotifications()),
+	markNotificationsAsRead: (input: IUnreadNotificationsInput) =>
+		dispatch(markNotificationsAsRead(input)),
 });
 
 export const WithNotifications: ConnectedComponentClass<JSX.Element, IChildren> = connect(

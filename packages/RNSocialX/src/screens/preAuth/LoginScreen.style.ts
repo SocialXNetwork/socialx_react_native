@@ -79,6 +79,7 @@ const style: any = {
 	},
 	authErrorContainer: {
 		width: '100%',
+		height: Sizes.smartVerticalScale(15),
 		marginBottom: Sizes.smartVerticalScale(20),
 	},
 	authError: {

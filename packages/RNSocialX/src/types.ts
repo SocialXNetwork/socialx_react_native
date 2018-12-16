@@ -66,13 +66,12 @@ export interface IFriendshipInput {
 	username: string;
 }
 
-export interface INotificationData {
+export interface INotification {
 	id: string;
-	userId: string;
 	type: NOTIFICATION_TYPES;
 	fullName: string;
 	avatar: string;
-	userName?: string;
+	alias: string;
 	timestamp?: Date;
 	groupName?: string;
 	read: boolean;

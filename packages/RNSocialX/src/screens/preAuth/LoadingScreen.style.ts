@@ -23,12 +23,7 @@ const styles: any = {
 		alignItems: 'flex-end',
 		marginBottom: Sizes.smartVerticalScale(10),
 	},
-	primaryText: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(18),
-		color: Colors.shuttleGray,
-	},
-	secondaryText: {
+	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		color: Colors.shuttleGray,

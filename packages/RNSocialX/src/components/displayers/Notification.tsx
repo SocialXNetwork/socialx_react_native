@@ -4,14 +4,14 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import { AvatarImage, ButtonSizes, PrimaryButton } from '../../components';
 import { NOTIFICATION_TYPES } from '../../environment/consts';
-import { INotificationData, ITranslatedProps } from '../../types';
+import { INotification, ITranslatedProps } from '../../types';
 
 import { IWithFriendsEnhancedActions, WithFriends } from '../../enhancers/intermediary';
 
 import styles, { colors } from './Notification.style';
 
 interface INotificationProps extends ITranslatedProps {
-	notification: INotificationData;
+	notification: INotification;
 	onViewUserProfile: (userId: string) => void;
 	onShowOptions: (notificationId: string) => void;
 }
@@ -32,7 +32,7 @@ const Component: React.SFC<IProps> = ({
 	onDeclineFriendRequest,
 	getText,
 }) => {
-	const { id, userId, avatar, fullName, userName, type, timestamp } = notification;
+	const { id, avatar, fullName, alias, type, timestamp } = notification;
 
 	let text = '';
 	let buttons = false;
@@ -64,7 +64,7 @@ const Component: React.SFC<IProps> = ({
 
 	return (
 		<TouchableOpacity
-			onPress={() => onViewUserProfile(userId)}
+			onPress={() => onViewUserProfile(alias)}
 			onLongPress={() => onShowOptions(id)}
 			activeOpacity={1}
 			style={styles.container}
@@ -85,7 +85,7 @@ const Component: React.SFC<IProps> = ({
 							borderColor={colors.pink}
 							textColor={colors.white}
 							containerStyle={styles.button}
-							onPress={() => onAcceptFriendRequest(userName!)}
+							onPress={() => onAcceptFriendRequest(alias!)}
 						/>
 						<PrimaryButton
 							autoWidth={true}
@@ -95,7 +95,7 @@ const Component: React.SFC<IProps> = ({
 							borderColor={colors.pink}
 							textColor={colors.pink}
 							containerStyle={styles.ghostButton}
-							onPress={() => onDeclineFriendRequest(userName!)}
+							onPress={() => onDeclineFriendRequest(alias!)}
 						/>
 					</View>
 				)}
