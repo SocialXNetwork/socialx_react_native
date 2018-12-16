@@ -43,6 +43,8 @@ import {
 	IUnlikePostErrorAction,
 } from './Types';
 
+import { sleep } from '../../../utilities';
+
 /**
  * 	Retrieves a post, given the id
  */
@@ -297,6 +299,7 @@ export const createPost = (
 		let postId;
 		if (input.media && input.media.length > 0) {
 			const { media, ...postRest } = input;
+			console.log('media', input.media);
 
 			const bootstrapStatus = async (uploadIdStarted: string) => {
 				await dispatch(
@@ -329,16 +332,18 @@ export const createPost = (
 
 			const uploadedFiles = await Promise.all(
 				// TODO: fix the media type
-				media.map((obj: IOptimizedMedia | any) =>
-					storageApi.uploadFile(
-						obj.type.includes('gif') || obj.type.includes('video')
-							? obj.sourceURL
-							: obj.contentOptimizedPath,
-						obj.type,
-						bootstrapStatus,
-						updateStatus,
-					),
-				),
+				media.map((obj: IOptimizedMedia | any) => {
+					const path = () => {
+						if (obj.type.includes('image') && obj.contentOptimizedPath) {
+							return obj.contentOptimizedPath;
+						} else if ((obj.type.includes('gif') || obj.type.includes('video')) && obj.sourceURL) {
+							return obj.sourceURL;
+						} else {
+							return obj.path;
+						}
+					};
+					return storageApi.uploadFile(path(), obj.type, bootstrapStatus, updateStatus);
+				}),
 			);
 
 			uploadedFiles.forEach(async (resp) => {
