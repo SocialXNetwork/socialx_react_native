@@ -51,7 +51,7 @@ export default (context: IContext) => ({
 		}),
 	async getProfilesByUsernames(getProfilesByUsernamesInput: {
 		usernames: string[];
-	}): Promise<IProfileData[]> {
+	}): Promise<IFriendData[]> {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfilesByUsernames.validate(getProfilesByUsernamesInput, {
