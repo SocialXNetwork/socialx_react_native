@@ -6,6 +6,7 @@ import PhotoView from 'react-native-photo-view';
 
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
 
+import Video from 'react-native-video';
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
@@ -65,7 +66,7 @@ export const Component: React.SFC<IProps> = ({
 					disabled={!onPress && !onDoublePress}
 					style={customStyle}
 				>
-					{canZoom && (
+					{/* {canZoom && (
 						<PhotoView
 							source={{ uri }}
 							style={styles.image}
@@ -76,10 +77,10 @@ export const Component: React.SFC<IProps> = ({
 							showsVerticalScrollIndicator={false}
 							androidZoomTransitionDuration={200}
 						/>
-					)}
+					)} */}
 					{!canZoom && (
 						<FastImage
-							source={{ uri }}
+							source={{ uri, priority: FastImage.priority.normal }}
 							resizeMode={
 								resizeMode === 'contain' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover
 							}
