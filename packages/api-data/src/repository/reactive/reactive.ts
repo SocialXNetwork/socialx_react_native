@@ -4,6 +4,8 @@ import { IFriendRequestsCallback, IFriendResponsesCallback, NotificationType } f
 
 import { api as profilesApi, IFriendData } from '../profiles';
 
+import { NOTIFICATION_TYPES } from '../notifications';
+
 // TODO: handle errors in an optimistic manner
 export default (context: IContext) => ({
 	hookFriendRequests: (callback: (result: IFriendRequestsCallback) => void) => {
@@ -17,6 +19,11 @@ export default (context: IContext) => ({
 					const profiles = await profilesApi(context).getProfilesByUsernames({
 						usernames: Object.keys(res),
 					});
+
+					// tslint:disable-next-line
+					for (const noti in res) {
+						res[noti].type = NOTIFICATION_TYPES.FRIEND_REQUEST;
+					}
 					callback({ profiles, requests: res });
 				}
 			},

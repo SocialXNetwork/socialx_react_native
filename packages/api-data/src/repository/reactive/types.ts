@@ -26,6 +26,7 @@ export interface IFriendRequest {
 		pub: string;
 	};
 	timestamp: number;
+	type: string;
 	read: boolean;
 }
 
