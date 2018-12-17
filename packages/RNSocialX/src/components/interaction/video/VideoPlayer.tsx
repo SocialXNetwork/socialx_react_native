@@ -66,8 +66,8 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	private playerRef: React.RefObject<Video> = React.createRef();
 
 	public render() {
-		const { thumbOnly, containerStyle, replayVideoText, videoURL } = this.props;
-		const { fullScreen, resizeMode, playReady, muted, paused, replayVideo } = this.state;
+		const { thumbOnly, containerStyle, replayVideoText, videoURL, resizeMode } = this.props;
+		const { fullScreen, playReady, muted, paused, replayVideo } = this.state;
 
 		const showPlayButton = paused;
 
@@ -75,52 +75,52 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 			<VisibleViewPort
 				onChange={(isVisible: boolean) => this.checkViewPortVisibleHandler(isVisible)}
 			>
-				<TouchableWithoutFeedback onPress={this.onPauseVideoHandler}>
-					<View style={containerStyle}>
-						<Video
-							onReadyForDisplay={this.onVideoReadyHandler}
-							source={{ uri: videoURL }}
-							resizeMode={resizeMode}
-							paused={paused}
-							muted={muted}
-							onEnd={this.onVideoEndHandler}
-							playInBackground={false}
-							playWhenInactive={false}
-							style={styles.videoObject}
-							fullscreen={fullScreen}
-							ref={this.playerRef}
-							onFullscreenPlayerDidDismiss={this.onExitFullScreenHandler}
-							onFullscreenPlayerWillPresent={this.onFullScreenPresentHandler}
-							useTextureView={true}
-						/>
-						<VideoControls
-							showPlayButton={showPlayButton}
-							muted={muted}
-							replayVideo={replayVideo}
-							replayVideoText={replayVideoText}
-							resizeToChangeAspectRatio={true}
-							playReady={playReady}
-							thumbOnly={thumbOnly}
-							onVideoPlayStart={this.onVideoPlayStartHandler}
-							onVideoMuteToggle={this.onVideoMuteToggleHandler}
-							onVideoEnterFullScreen={this.onVideoEnterFullScreenHandler}
-							onVideoReplay={this.onVideoReplayHandler}
-						/>
-					</View>
-				</TouchableWithoutFeedback>
-			</VisibleViewPort>
+			<TouchableWithoutFeedback onPress={this.onPauseVideoHandler}>
+				<View style={containerStyle}>
+					<Video
+						onReadyForDisplay={this.onVideoReadyHandler}
+						source={{ uri: videoURL }}
+						resizeMode={resizeMode}
+						paused={paused}
+						muted={muted}
+						onEnd={this.onVideoEndHandler}
+						playInBackground={false}
+						playWhenInactive={false}
+						style={styles.videoObject}
+						fullscreen={fullScreen}
+						ref={this.playerRef}
+						onFullscreenPlayerDidDismiss={this.onExitFullScreenHandler}
+						onFullscreenPlayerWillPresent={this.onFullScreenPresentHandler}
+						useTextureView={true}
+					/>
+					<VideoControls
+						showPlayButton={showPlayButton}
+						muted={muted}
+						replayVideo={replayVideo}
+						replayVideoText={replayVideoText}
+						resizeToChangeAspectRatio={true}
+						playReady={playReady}
+						thumbOnly={thumbOnly}
+						onVideoPlayStart={this.onVideoPlayStartHandler}
+						onVideoMuteToggle={this.onVideoMuteToggleHandler}
+						onVideoEnterFullScreen={this.onVideoEnterFullScreenHandler}
+						onVideoReplay={this.onVideoReplayHandler}
+					/>
+				</View>
+			</TouchableWithoutFeedback>
+			// </VisibleViewPort>
 		);
 	}
 
 	private checkViewPortVisibleHandler = (isVisible: boolean) => {
-		const { visibleView } = this.state;
+		const { visibleView, replayVideo } = this.state;
 
 		if (isVisible) {
-			if (!visibleView) {
+			if (!visibleView && !replayVideo) {
 				this.setState({ paused: false, visibleView: true });
 			}
 		} else {
-			if (visibleView) {
+			if (visibleView && !replayVideo) {
 				this.setState({ paused: true, visibleView: false });
 			}
 		}

@@ -22,6 +22,7 @@ const styles: any = {
 		color: Colors.white,
 	},
 	darkBackground: {
+		position: 'absolute',
 		height: '100%',
 		width: '100%',
 		justifyContent: 'center',

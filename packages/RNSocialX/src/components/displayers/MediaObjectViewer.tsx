@@ -95,6 +95,7 @@ export const Component: React.SFC<IProps> = ({
 					containerStyle={customStyle}
 					replayVideoText={getText('media.types.video.replay')}
 					thumbOnly={false}
+					resizeMode={resizeMode}
 				/>
 			)}
 		</View>
