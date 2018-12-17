@@ -1,43 +1,29 @@
 import {
-	IClearFriendRequestInput,
-	IClearFriendResponseInput,
 	IFriendRequest,
 	IFriendResponse,
 	INotificationData,
-	INotificationReturnData,
 	IRemoveNotificationInput,
 } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
-export interface IFriendRequests {
-	[alias: string]: IFriendRequest;
-}
-
-export interface IFriendResponses {
-	[alias: string]: IFriendResponse;
+export interface INotifications {
+	[alias: string]: IFriendRequest | IFriendResponse;
 }
 
 export type IState = DeepReadonly<{
-	friendRequests: IFriendRequests;
-	friendResponses: IFriendResponses;
+	all: INotifications;
+	ids: string[];
+	unread: string[];
 }>;
 
 export const enum ActionTypes {
 	CREATE_NOTIFICATION = 'data/notifications/CREATE_NOTIFICATION',
 	REMOVE_NOTIFICATION = 'data/notifications/REMOVE_NOTIFICATION',
-	SYNC_CURRENT_NOTIFICATIONS = 'data/notifications/SYNC_CURRENT_NOTIFICATIONS',
-	GET_CURRENT_NOTIFICATIONS = 'data/notifications/GET_CURRENT_NOTIFICATIONS',
+	SYNC_NOTIFICATIONS = 'data/notifications/SYNC_NOTIFICATIONS',
+	GET_NOTIFICATIONS = 'data/notifications/GET_NOTIFICATIONS',
 	MARK_NOTIFICATIONS_AS_READ = 'data/notifications/MARK_NOTIFICATIONS_AS_READ',
-	// hooks
 	HOOK_NOTIFICATIONS = 'data/notifications/HOOK_NOTIFICATIONS',
-	SYNC_FRIEND_REQUESTS = 'data/notifications/SYNC_FRIEND_REQUESTS',
-	SYNC_FRIEND_RESPONSES = 'data/notifications/SYNC_FRIEND_RESPONSES',
-}
-
-export interface IUnreadNotificationsInput {
-	unreadRequests: IClearFriendRequestInput[];
-	unreadResponses: IClearFriendResponseInput[];
 }
 
 export interface ICreateNotificationAction extends Action {
@@ -51,31 +37,20 @@ export interface IRemoveNotificationAction extends Action {
 }
 
 export interface IGetNotificationsAction extends Action {
-	type: ActionTypes.GET_CURRENT_NOTIFICATIONS;
+	type: ActionTypes.GET_NOTIFICATIONS;
 }
 
 export interface ISyncNotificationsAction extends Action {
-	type: ActionTypes.SYNC_CURRENT_NOTIFICATIONS;
-	payload: INotificationReturnData[];
+	type: ActionTypes.SYNC_NOTIFICATIONS;
+	payload: INotifications;
 }
 
 export interface IHookNotificationsAction extends Action {
 	type: ActionTypes.HOOK_NOTIFICATIONS;
 }
 
-export interface ISyncFriendRequestsAction extends Action {
-	type: ActionTypes.SYNC_FRIEND_REQUESTS;
-	payload: IFriendRequests;
-}
-
-export interface ISyncFriendResponsesAction extends Action {
-	type: ActionTypes.SYNC_FRIEND_RESPONSES;
-	payload: IFriendResponses;
-}
-
 export interface IMarkNotificationsAsReadAction extends Action {
 	type: ActionTypes.MARK_NOTIFICATIONS_AS_READ;
-	payload: IUnreadNotificationsInput;
 }
 
 interface IResetStoreAction {
@@ -88,6 +63,4 @@ export type IAction =
 	| IGetNotificationsAction
 	| ISyncNotificationsAction
 	| IHookNotificationsAction
-	| ISyncFriendRequestsAction
-	| ISyncFriendResponsesAction
 	| IMarkNotificationsAsReadAction;

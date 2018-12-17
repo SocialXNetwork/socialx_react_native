@@ -8,11 +8,7 @@ interface IScreenCloseButtonProps {
 	onClose: () => void;
 }
 
-export const CloseButton: React.SFC<IScreenCloseButtonProps> = ({
-	onClose = () => {
-		/**/
-	},
-}) => (
+export const CloseButton: React.SFC<IScreenCloseButtonProps> = ({ onClose = () => undefined }) => (
 	<TouchableOpacity
 		onPress={() => {
 			Keyboard.dismiss();

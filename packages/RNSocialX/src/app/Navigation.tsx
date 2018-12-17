@@ -11,13 +11,13 @@ import {
 import { Root } from 'native-base';
 
 import {
-	ActivityIndicatorModal,
-	ConfirmationModal,
+	ActivityIndicator,
+	Confirmation,
 	Header,
-	OfflineOverlayModal,
-	OptionsMenuModal,
+	OfflineOverlay,
+	OptionsMenu,
 	TabIcon,
-	TransparentOverlayModal,
+	TransparentOverlay,
 } from '../components';
 import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
@@ -59,9 +59,9 @@ import {
 
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
+import { WithNotifications } from '../enhancers/connectors/data/WithNotifications';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
-import { WithNotifications } from '../enhancers/screens/mainTabNav/WithNotifications';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -286,12 +286,10 @@ const Navigation = () => (
 						<WithOverlays>
 							{({ showOptionsMenu }) => (
 								<WithNotifications>
-									{({ data }) => (
+									{({ unread }) => (
 										<AppNavigation
 											screenProps={{
-												notifications:
-													data.notifications.unreadRequests.length +
-													data.notifications.unreadResponses.length,
+												notifications: unread.length,
 												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
 												setNavigationParams,
 												getText,
@@ -308,36 +306,36 @@ const Navigation = () => (
 						<WithOverlays>
 							{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
 								<React.Fragment>
-									<TransparentOverlayModal
+									<TransparentOverlay
 										visible={globals.transparentOverlay.visible}
 										alpha={globals.transparentOverlay.alpha}
 										loader={globals.transparentOverlay.loader}
 									/>
-									<OfflineOverlayModal visible={!!globals.offline} getText={getText} />
-									<ActivityIndicatorModal
+									<OfflineOverlay visible={!!globals.offline} getText={getText} />
+									<ActivityIndicator
 										visible={globals.activity.visible}
 										title={globals.activity.title}
 										message={globals.activity.message}
 										getText={getText}
 									/>
-									<ConfirmationModal
+									<Confirmation
 										title={confirmation && confirmation.title}
 										message={confirmation && confirmation.message}
 										confirmActive={!!confirmation}
-										confirmHandler={() => {
+										onConfirm={() => {
 											if (confirmation) {
 												confirmation.confirmHandler();
 											}
 											hideConfirmation();
 										}}
-										declineHandler={() => {
+										onDecline={() => {
 											if (confirmation && confirmation.cancelHandler) {
 												confirmation.cancelHandler();
 											}
 											hideConfirmation();
 										}}
 									/>
-									<OptionsMenuModal
+									<OptionsMenu
 										visible={!!optionsMenu}
 										items={(optionsMenu && optionsMenu.items) || []}
 										onBackdropPress={hideOptionsMenu}

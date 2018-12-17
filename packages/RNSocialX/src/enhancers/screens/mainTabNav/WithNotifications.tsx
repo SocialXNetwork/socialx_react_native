@@ -5,32 +5,24 @@
 
 import * as React from 'react';
 
-import { INotification, IOptionsMenuProps, ITranslatedProps } from '../../../types';
+import { IOptionsMenuProps, ITranslatedProps } from '../../../types';
 
-import {
-	ActionTypes,
-	IClearFriendRequestInput,
-	IClearFriendResponseInput,
-	IUnreadNotificationsInput,
-} from '../../../store/data/notifications';
+import { ActionTypes } from '../../../store/data/notifications';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNotifications as WithNotificationsData } from '../../connectors/data/WithNotifications';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
-import { getActivity, mapRequestsToNotifications } from '../../helpers';
+import { getActivity } from '../../helpers';
 
 export interface IWithNotificationsEnhancedData {
-	notifications: {
-		all: INotification[];
-		unreadRequests: IClearFriendRequestInput[];
-		unreadResponses: IClearFriendResponseInput[];
-	};
+	notificationIds: string[];
+	unread: boolean;
 	refreshing: boolean;
 }
 
 export interface IWithNotificationsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getNotifications: () => void;
-	markNotificationsAsRead: (input: IUnreadNotificationsInput) => void;
+	markNotificationsAsRead: () => void;
 }
 
 interface IWithNotificationsEnhancedProps {
@@ -57,22 +49,12 @@ export class WithNotifications extends React.Component<
 							<WithActivities>
 								{({ activities }) => (
 									<WithNotificationsData>
-										{({
-											friendRequests,
-											friendResponses,
-											getNotifications,
-											markNotificationsAsRead,
-										}) =>
+										{({ ids, unread, getNotifications, markNotificationsAsRead }) =>
 											this.props.children({
 												data: {
-													refreshing: getActivity(
-														activities,
-														ActionTypes.GET_CURRENT_NOTIFICATIONS,
-													),
-													notifications: mapRequestsToNotifications(
-														friendRequests,
-														friendResponses,
-													),
+													refreshing: getActivity(activities, ActionTypes.GET_NOTIFICATIONS),
+													notificationIds: ids,
+													unread: unread.length > 0,
 												},
 												actions: {
 													getNotifications,

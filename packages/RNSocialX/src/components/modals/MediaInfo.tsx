@@ -1,14 +1,14 @@
 import numeral from 'numeral';
 import * as React from 'react';
-import { Alert, Linking, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { IMediaTypes, ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
-import styles from './MediaInfoModal.style';
+import styles from './MediaInfo.style';
 
-interface IMediaInfoModalProps extends ITranslatedProps {
+interface IProps extends ITranslatedProps {
 	visible: boolean;
 	hash: string;
 	size: number;
@@ -16,20 +16,7 @@ interface IMediaInfoModalProps extends ITranslatedProps {
 	onCloseHandler: () => void;
 }
 
-const openURL = async (url: string, errorText: string) => {
-	try {
-		const supported = await Linking.canOpenURL(url);
-		if (!supported) {
-			Alert.alert(`${errorText}: ${url}`);
-		} else {
-			return Linking.openURL(url);
-		}
-	} catch (ex) {
-		console.log(ex);
-	}
-};
-
-export const MediaInfoModal: React.SFC<IMediaInfoModalProps> = ({
+export const MediaInfo: React.SFC<IProps> = ({
 	visible,
 	hash,
 	size,

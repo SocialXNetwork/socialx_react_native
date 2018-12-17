@@ -17,21 +17,21 @@ import { ApplicationStyles, Colors } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
-import style from './ReportProblemModal.style';
+import style from './ReportProblem.style';
 
-interface IReportProblemModalProps extends ITranslatedProps {
+interface IReportProblemProps extends ITranslatedProps {
 	visible: boolean;
-	confirmHandler: (subject: string, description: string) => void;
-	declineHandler: () => void;
+	onConfirm: (subject: string, description: string) => void;
+	onDecline: () => void;
 }
 
-interface IReportProblemModalComponentProps extends IReportProblemModalProps {
+interface IProps extends IReportProblemProps {
 	subject: string;
 	description: string;
 }
 
-const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComponentProps>> = ({
-	values: { visible, declineHandler, getText, description, subject },
+const Component: React.SFC<FormikProps<IProps>> = ({
+	values: { visible, onDecline, getText, description, subject },
 	isValid,
 	handleSubmit,
 	errors,
@@ -51,7 +51,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 				style={style.container}
 			>
 				{Platform.OS === OS_TYPES.IOS && (
-					<TouchableWithoutFeedback onPress={declineHandler}>
+					<TouchableWithoutFeedback onPress={onDecline}>
 						<BlurView style={style.blurView} blurType="dark" blurAmount={2} />
 					</TouchableWithoutFeedback>
 				)}
@@ -106,7 +106,7 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 							</View>
 						</View>
 						<View style={style.buttonsContainer}>
-							<TouchableOpacity style={[style.button, style.leftButton]} onPress={declineHandler}>
+							<TouchableOpacity style={[style.button, style.leftButton]} onPress={onDecline}>
 								<Text style={[style.buttonText, style.buttonTextCancel]}>
 									{getText('button.cancel')}
 								</Text>
@@ -129,13 +129,13 @@ const ReportProblemModalComponent: React.SFC<FormikProps<IReportProblemModalComp
 );
 
 const formikSettings = {
-	mapPropsToValues: (props: IReportProblemModalProps) => ({
+	mapPropsToValues: (props: IReportProblemProps) => ({
 		...props,
 		subject: '',
 		description: '',
 	}),
-	validate: ({ subject, description }: IReportProblemModalComponentProps) => {
-		const errors: FormikErrors<IReportProblemModalComponentProps> = {};
+	validate: ({ subject, description }: IProps) => {
+		const errors: FormikErrors<IProps> = {};
 		if (!subject) {
 			errors.subject = 'modal.report.subject.required';
 		}
@@ -146,10 +146,10 @@ const formikSettings = {
 		return errors;
 	},
 	handleSubmit: (
-		{ subject, description }: IReportProblemModalComponentProps,
-		{ props }: FormikBag<IReportProblemModalProps, IReportProblemModalComponentProps>,
-	) => props.confirmHandler(subject, description),
+		{ subject, description }: IProps,
+		{ props }: FormikBag<IReportProblemProps, IProps>,
+	) => props.onConfirm(subject, description),
 	enableReinitialize: true,
 };
 
-export const ReportProblemModal = withFormik(formikSettings)(ReportProblemModalComponent as any);
+export const ReportProblem = withFormik(formikSettings)(Component as any);

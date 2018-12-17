@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Header, HeaderButton, UserEntries } from '../../components';
-import { Colors } from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 
 interface ILikesScreenViewProps extends ITranslatedProps {
@@ -17,12 +17,12 @@ export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
 	onGoBack,
 	getText,
 }) => (
-	<View style={{ flex: 1, backgroundColor: 'white' }}>
+	<View style={styles.container}>
 		<Header
 			title={getText('likes.screen.title')}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
-		<View style={styles.container}>
+		<View style={styles.list}>
 			<UserEntries aliases={likeIds} onEntryPress={onViewUserProfile} />
 		</View>
 	</View>
@@ -32,5 +32,9 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white,
+	},
+	list: {
+		paddingVertical: Sizes.smartVerticalScale(16),
+		paddingHorizontal: Sizes.smartHorizontalScale(25),
 	},
 });

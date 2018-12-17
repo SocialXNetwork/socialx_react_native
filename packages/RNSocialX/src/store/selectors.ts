@@ -18,3 +18,8 @@ export const selectPost = createSelector(
 	(state: IApplicationState, props: { postId: string }) => state.data.posts.all[props.postId],
 	(post) => post,
 );
+
+export const selectNotification = createSelector(
+	(state: IApplicationState, props: { id: string }) => state.data.notifications.all[props.id],
+	(notification) => notification,
+);

@@ -139,7 +139,7 @@ export default {
 		'Friend request could not be declined at this time. Try again later..',
 	'notifications.friend.request.accepted': 'accepted your friend request.',
 	'notifications.friend.request.declined': 'declined your friend request.',
-	'notifications.friend.request.sent': 'sent you a friend request.',
+	'notifications.friend.request': 'sent you a friend request.',
 	'notifications.empty.list': 'You have no notifications!',
 	'notifications.recent.comment': 'commented on your post.',
 	'notifications.super.liked': 'superliked your post,',

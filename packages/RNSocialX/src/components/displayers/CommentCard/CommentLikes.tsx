@@ -1,24 +1,24 @@
 import * as React from 'react';
-import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './CommentLikes.style';
 
 interface ICommentLikesProps {
 	numberOfLikes: number;
-	commentLikesPosition: StyleProp<ViewStyle>;
+	altPosition: boolean;
 	onViewLikes: () => void;
 }
 
 export const CommentLikes: React.SFC<ICommentLikesProps> = ({
 	numberOfLikes,
-	commentLikesPosition,
+	altPosition,
 	onViewLikes,
 }) => (
 	<TouchableOpacity
 		activeOpacity={1}
 		onPress={onViewLikes}
-		style={[styles.container, commentLikesPosition]}
+		style={[styles.container, altPosition ? styles.altLikesPosition : styles.defaultLikesPosition]}
 	>
 		<View style={styles.iconContainer}>
 			<Icon name="md-thumbs-up" style={styles.icon} />

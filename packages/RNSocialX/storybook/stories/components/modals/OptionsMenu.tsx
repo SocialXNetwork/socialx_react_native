@@ -3,11 +3,11 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { OptionsMenuModal } from '../../../../src/components';
+import { OptionsMenu } from '../../../../src/components';
 
 storiesOf('Components/modals', module)
 	.addDecorator(withKnobs)
-	.add('OptionsMenuModal', () => {
+	.add('OptionsMenu', () => {
 		const visible = boolean('visible', true);
 		const menuItems = [
 			{
@@ -27,7 +27,7 @@ storiesOf('Components/modals', module)
 			},
 		];
 		return (
-			<OptionsMenuModal
+			<OptionsMenu
 				visible={visible}
 				items={menuItems}
 				onBackdropPress={action('onBackdropPress')}

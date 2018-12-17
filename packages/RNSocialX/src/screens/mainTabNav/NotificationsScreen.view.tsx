@@ -2,16 +2,16 @@ import * as React from 'react';
 import { FlatList, Image, Text, View } from 'react-native';
 
 import { Header, Notification } from '../../components';
-import { INotification, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 
 import styles, { Icon } from './NotificationsScreen.style';
 
 interface INotificationsScreenViewProps extends ITranslatedProps {
-	notifications: INotification[];
+	ids: string[];
 	refreshing: boolean;
 	onRefresh: () => void;
 	onViewUserProfile: (alias: string) => void;
-	onShowOptions: (notificationId: string) => void;
+	onShowOptions: (id: string) => void;
 }
 
 const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
@@ -22,7 +22,7 @@ const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
 );
 
 export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> = ({
-	notifications,
+	ids,
 	refreshing,
 	onRefresh,
 	onViewUserProfile,
@@ -32,11 +32,11 @@ export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> =
 	<View style={styles.container}>
 		<Header title={getText('notifications.screen.title')} />
 		<FlatList
-			data={notifications}
-			keyExtractor={(item: INotification) => item.id}
+			data={ids}
+			keyExtractor={(id) => id}
 			renderItem={({ item }) => (
 				<Notification
-					notification={item}
+					id={item}
 					onViewUserProfile={onViewUserProfile}
 					onShowOptions={onShowOptions}
 					getText={getText}

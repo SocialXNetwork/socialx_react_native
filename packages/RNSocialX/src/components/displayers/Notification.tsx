@@ -1,22 +1,25 @@
 import moment from 'moment';
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 
 import { AvatarImage, ButtonSizes, PrimaryButton } from '../../components';
 import { NOTIFICATION_TYPES } from '../../environment/consts';
 import { INotification, ITranslatedProps } from '../../types';
 
 import { IWithFriendsEnhancedActions, WithFriends } from '../../enhancers/intermediary';
+import { IApplicationState, selectNotification } from '../../store/selectors';
 
 import styles, { colors } from './Notification.style';
 
 interface INotificationProps extends ITranslatedProps {
-	notification: INotification;
-	onViewUserProfile: (userId: string) => void;
-	onShowOptions: (notificationId: string) => void;
+	id: string;
+	onViewUserProfile: (alias: string) => void;
+	onShowOptions: (id: string) => void;
 }
 
 interface IProps extends INotificationProps, IWithFriendsEnhancedActions {
+	notification: INotification;
 	request: {
 		accepting: boolean;
 		rejecting: boolean;
@@ -32,18 +35,21 @@ const Component: React.SFC<IProps> = ({
 	onDeclineFriendRequest,
 	getText,
 }) => {
-	const { id, avatar, fullName, alias, type, timestamp } = notification;
+	const {
+		id,
+		avatar,
+		fullName,
+		owner: { alias },
+		timestamp,
+		type,
+	} = notification;
 
 	let text = '';
 	let buttons = false;
 
 	switch (type) {
 		case NOTIFICATION_TYPES.FRIEND_REQUEST:
-			text = getText('notifications.friend.request.sent');
-			buttons = true;
-			break;
-		case NOTIFICATION_TYPES.GROUP_REQUEST:
-			text = getText('notifications.group.request.sent');
+			text = getText('notifications.friend.request');
 			buttons = true;
 			break;
 		case NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED:
@@ -51,12 +57,6 @@ const Component: React.SFC<IProps> = ({
 			break;
 		case NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED:
 			text = getText('notifications.friend.request.declined');
-			break;
-		case NOTIFICATION_TYPES.SUPER_LIKED:
-			text = getText('notifications.super.liked');
-			break;
-		case NOTIFICATION_TYPES.RECENT_COMMENT:
-			text = getText('notifications.recent.comment');
 			break;
 		default:
 			break;
@@ -107,8 +107,14 @@ const Component: React.SFC<IProps> = ({
 	);
 };
 
-export const Notification: React.SFC<INotificationProps> = (props) => (
+export const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithFriends>
 		{({ data, actions }) => <Component {...props} request={data.request} {...actions} />}
 	</WithFriends>
 );
+
+const mapStateToProps = (state: IApplicationState, props: INotificationProps) => ({
+	notification: selectNotification(state, props),
+});
+
+export const Notification = connect(mapStateToProps)(EnhancedComponent as any);

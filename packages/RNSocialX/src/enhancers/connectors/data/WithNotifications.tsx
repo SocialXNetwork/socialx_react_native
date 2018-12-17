@@ -3,23 +3,17 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { IApplicationState } from '../../../store';
-import {
-	getNotifications,
-	IFriendRequests,
-	IFriendResponses,
-	IUnreadNotificationsInput,
-	markNotificationsAsRead,
-} from '../../../store/data/notifications';
+import { getNotifications, markNotificationsAsRead } from '../../../store/data/notifications';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	friendRequests: IFriendRequests;
-	friendResponses: IFriendResponses;
+	ids: string[];
+	unread: string[];
 }
 
 interface IActionProps {
 	getNotifications: () => void;
-	markNotificationsAsRead: (input: IUnreadNotificationsInput) => void;
+	markNotificationsAsRead: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -35,25 +29,24 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectFriendRequests = createSelector(
-	(state: IApplicationState) => state.data.notifications.friendRequests,
-	(friendRequests) => friendRequests,
+const selectIds = createSelector(
+	(state: IApplicationState) => state.data.notifications.ids,
+	(ids) => ids,
 );
 
-const selectFriendResponses = createSelector(
-	(state: IApplicationState) => state.data.notifications.friendResponses,
-	(friendResponses) => friendResponses,
+const selectUnread = createSelector(
+	(state: IApplicationState) => state.data.notifications.unread,
+	(unread) => unread,
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
-	friendRequests: selectFriendRequests(state),
-	friendResponses: selectFriendResponses(state),
+	ids: selectIds(state),
+	unread: selectUnread(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getNotifications: () => dispatch(getNotifications()),
-	markNotificationsAsRead: (input: IUnreadNotificationsInput) =>
-		dispatch(markNotificationsAsRead(input)),
+	markNotificationsAsRead: () => dispatch(markNotificationsAsRead()),
 });
 
 export const WithNotifications: ConnectedComponentClass<JSX.Element, IChildren> = connect(

@@ -72,15 +72,15 @@ export { IVideoOptions, VideoPlayer } from './interaction/video';
 
 export { WithManagedTransitions, ModalManager, IManagedModal } from './managedTransitions';
 
-export { ActivityIndicatorModal } from './modals/ActivityIndicatorModal';
-export { ConfirmationModal } from './modals/ConfirmationModal';
+export { ActivityIndicator } from './modals/ActivityIndicator';
+export { Confirmation } from './modals/Confirmation';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';
-export { MediaInfoModal } from './modals/MediaInfoModal';
-export { OfflineOverlayModal } from './modals/OfflineOverlayModal';
-export { OptionsMenuModal } from './modals/OptionsMenuModal';
-export { ReportProblemModal } from './modals/ReportProblemModal';
+export { MediaInfo } from './modals/MediaInfo';
+export { OfflineOverlay } from './modals/OfflineOverlay';
+export { OptionsMenu } from './modals/OptionsMenu';
+export { ReportProblem } from './modals/ReportProblem';
 export { TagFriendsModal } from './modals/TagFriendsModal';
-export { TransparentOverlayModal } from './modals/TransparentOverlayModal';
+export { TransparentOverlay } from './modals/TransparentOverlay';
 export { WalletModal } from './modals/WalletModal';
 
 export { HeaderLogo } from './navigation/HeaderLogo';

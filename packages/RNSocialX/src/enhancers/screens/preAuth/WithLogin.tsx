@@ -67,19 +67,7 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 																		});
 																	},
 																	loadFeed: async () => {
-																		setGlobal({
-																			loading: {
-																				progress: 60,
-																				message: 'posts.global',
-																			},
-																		});
 																		await loadMorePosts();
-																		setGlobal({
-																			loading: {
-																				progress: 80,
-																				message: 'posts.friends',
-																			},
-																		});
 																		await loadMoreFriendsPosts();
 																	},
 																	setGlobal,

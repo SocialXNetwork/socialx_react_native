@@ -24,7 +24,7 @@ storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.add('AddFriendsList', () => (
 		<AddFriendsList
-			showTagFriendsModal={action('showTagFriendsModal')}
 			taggedFriends={taggedFriends}
+			onShowTagFriends={action('showTagFriendsModal')}
 		/>
 	));

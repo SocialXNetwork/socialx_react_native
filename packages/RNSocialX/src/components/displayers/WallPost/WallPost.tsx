@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { CommentCard, HeartAnimation } from '../../';
+import { CommentCard, HeartAnimation, ReportProblem } from '../../';
 import {
 	CommentInput,
 	Likes,
@@ -45,7 +45,6 @@ import { Sizes } from '../../../environment/theme';
 import { IPost } from '../../../store/data/posts/Types';
 import { IApplicationState, selectPost } from '../../../store/selectors';
 import { IComment, INavigationProps } from '../../../types';
-import { ReportProblemModal } from '../../modals/ReportProblemModal';
 
 import { PrimaryTextInput } from '../../inputs/PrimaryTextInput';
 import styles, { SCREEN_WIDTH } from './WallPost.style';
@@ -190,12 +189,12 @@ class Component extends React.Component<IProps, IState> {
 						onGoBack={onGoBack}
 						getText={getText}
 					/>
-					<ReportProblemModal
+					<ReportProblem
 						visible={reportAProblem}
-						confirmHandler={(subject, description) =>
+						onConfirm={(subject: string, description: string) =>
 							this.onReportAProblemHandler(true, subject, description)
 						}
-						declineHandler={() => this.onReportAProblemHandler(false)}
+						onDecline={() => this.onReportAProblemHandler(false)}
 						getText={getText}
 					/>
 					{isCommentsScreen && (

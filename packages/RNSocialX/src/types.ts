@@ -9,6 +9,7 @@ import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 import { IAccountCurrencyData } from './components';
 import { CoinSymbol, NOTIFICATION_TYPES } from './environment/consts';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
+import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 
 export interface IFriendsSearchResult {
 	id: string;
@@ -66,16 +67,7 @@ export interface IFriendshipInput {
 	username: string;
 }
 
-export interface INotification {
-	id: string;
-	type: NOTIFICATION_TYPES;
-	fullName: string;
-	avatar: string;
-	alias: string;
-	timestamp?: Date;
-	groupName?: string;
-	read: boolean;
-}
+export type INotification = IFriendRequest | IFriendResponse;
 
 export interface IOptionsMenuItem {
 	label: string;

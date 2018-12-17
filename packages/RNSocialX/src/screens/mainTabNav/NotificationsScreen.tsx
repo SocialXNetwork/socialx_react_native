@@ -3,58 +3,57 @@ import * as React from 'react';
 import { INavigationProps } from '../../types';
 import { NotificationsScreenView } from './NotificationsScreen.view';
 
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 	WithNotifications,
 } from '../../enhancers/screens';
 
-type INotificationsScreenProps = INavigationProps &
-	IWithNotificationsEnhancedData &
-	IWithNotificationsEnhancedActions &
-	IWithNavigationHandlersEnhancedActions;
+interface INotificationsScreenProps
+	extends INavigationProps,
+		IWithNotificationsEnhancedData,
+		IWithNotificationsEnhancedActions {
+	onViewUserProfile: (alias: string) => void;
+}
 
 class Screen extends React.Component<INotificationsScreenProps> {
-	// private willFocusScreen: any;
+	private willFocusScreen: any;
 
-	// public componentDidMount() {
-	// 	const {
-	// 		navigation,
-	// 		notifications: { unreadRequests, unreadResponses },
-	// 		markNotificationsAsRead,
-	// 	} = this.props;
+	public componentDidMount() {
+		this.willFocusScreen = this.props.navigation.addListener('willFocus', this.onWillFocusScreen);
+	}
 
-	// 	this.willFocusScreen = navigation.addListener('willFocus', () => {
-	// 		console.log({ unreadRequests });
-	// 		console.log({ unreadResponses });
-	// 		if (unreadRequests.length > 0 || unreadResponses.length > 0) {
-	// 			markNotificationsAsRead({ unreadRequests, unreadResponses });
-	// 		}
-	// 	});
-	// }
-
-	// public componentWillUnmount() {
-	// 	this.willFocusScreen.remove();
-	// }
+	public componentWillUnmount() {
+		this.willFocusScreen.remove();
+	}
 
 	public render() {
-		const { notifications, refreshing, getNotifications, getText } = this.props;
+		const {
+			notificationIds,
+			refreshing,
+			getNotifications,
+			onViewUserProfile,
+			getText,
+		} = this.props;
 
 		return (
 			<NotificationsScreenView
-				notifications={notifications.all}
+				ids={notificationIds}
 				refreshing={refreshing}
 				onRefresh={getNotifications}
-				onViewUserProfile={(userId) => this.props.onViewUserProfile(userId)}
+				onViewUserProfile={onViewUserProfile}
 				onShowOptions={this.onShowOptionsHandler}
 				getText={getText}
 			/>
 		);
 	}
+
+	private onWillFocusScreen = () => {
+		if (this.props.unread) {
+			this.props.markNotificationsAsRead();
+		}
+	};
 
 	private onShowOptionsHandler = (id: string) => {
 		const { showOptionsMenu, getText } = this.props;
@@ -76,7 +75,12 @@ export const NotificationsScreen = (props: INavigationProps) => (
 		{(nav) => (
 			<WithNotifications>
 				{(notifications) => (
-					<Screen {...props} {...notifications.data} {...notifications.actions} {...nav.actions} />
+					<Screen
+						{...props}
+						{...notifications.data}
+						{...notifications.actions}
+						onViewUserProfile={nav.actions.onViewUserProfile}
+					/>
 				)}
 			</WithNotifications>
 		)}

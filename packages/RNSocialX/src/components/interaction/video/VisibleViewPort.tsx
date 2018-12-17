@@ -56,13 +56,15 @@ export class VisibleViewPort extends React.Component<IInViewPortProps, IInViewPo
 			if (!this.viewRef) {
 				return;
 			}
-			this.viewRef.measure((x, y, width, height, pageX, pageY) => {
-				this.setState({
-					rectTop: pageY,
-					rectBottom: pageY + height,
-					rectWidth: pageX + width,
-				});
-			});
+			this.viewRef.measure(
+				(x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+					this.setState({
+						rectTop: pageY,
+						rectBottom: pageY + height,
+						rectWidth: pageX + width,
+					});
+				},
+			);
 			this.isInViewPort();
 		}, this.props.delay || 100);
 	}
