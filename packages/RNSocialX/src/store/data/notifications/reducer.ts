@@ -29,11 +29,12 @@ export default (state: IState = initialState, action: IAction): IState => {
 				if (!all[key]) {
 					all[current.id] = {
 						...current,
-						type: !current.type
-							? NOTIFICATION_TYPES.FRIEND_REQUEST
-							: current.type === FriendResponses.Accepted
-							? NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED
-							: NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED,
+						type:
+							current.type === FriendResponses.Accepted
+								? NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED
+								: current.type === FriendResponses.Rejected
+								? NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED
+								: NOTIFICATION_TYPES.FRIEND_REQUEST,
 					};
 				}
 

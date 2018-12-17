@@ -49,6 +49,13 @@ const styles: any = {
 		flexDirection: 'row',
 	},
 	column: { flex: 1 },
+	image: {
+		width: '100%',
+		height: Sizes.smartHorizontalScale(200),
+		borderRadius: Sizes.smartHorizontalScale(5),
+		backgroundColor: Colors.geyser,
+		marginBottom: Sizes.smartVerticalScale(10),
+	},
 	name: {
 		height: Sizes.smartHorizontalScale(15),
 		borderRadius: Sizes.smartHorizontalScale(5),
@@ -101,7 +108,7 @@ const styles: any = {
 		backgroundColor: Colors.geyser,
 		width: '25%',
 	},
-	bottomTabs: {
+	tabs: {
 		paddingVertical: Sizes.smartVerticalScale(12),
 		width: '100%',
 		backgroundColor: Colors.alabaster,
@@ -110,7 +117,7 @@ const styles: any = {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 	},
-	bottomTab: {
+	tab: {
 		height: Sizes.smartHorizontalScale(25),
 		width: Sizes.smartHorizontalScale(25),
 		borderRadius: Sizes.smartHorizontalScale(3),

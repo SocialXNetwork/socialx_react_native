@@ -119,9 +119,9 @@ export const markNotificationsAsRead = (): IThunk => async (dispatch, getState, 
 
 	for (const id of unread) {
 		if (all[id].type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
-			unreadReqs.push({ username: all[id].owner.alias });
+			unreadReqs.push(all[id].owner.alias);
 		} else {
-			unreadResps.push({ username: all[id].owner.alias });
+			unreadResps.push(all[id].owner.alias);
 		}
 	}
 
@@ -134,8 +134,8 @@ export const markNotificationsAsRead = (): IThunk => async (dispatch, getState, 
 			}),
 		);
 
-		await context.dataApi.profiles.readFriendRequests(unreadReqs);
-		await context.dataApi.profiles.readFriendRequests(unreadResps);
+		await context.dataApi.profiles.readFriendRequests({ usernames: unreadReqs });
+		await context.dataApi.profiles.readFriendRequests({ usernames: unreadResps });
 	} catch (e) {
 		await dispatch(
 			setError({

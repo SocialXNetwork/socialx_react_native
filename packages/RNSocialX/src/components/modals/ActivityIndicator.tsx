@@ -2,10 +2,11 @@ import * as React from 'react';
 import { ActivityIndicator as Loader, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { Colors } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
-import style, { customStyleProps } from './ActivityIndicator.style';
+import style from './ActivityIndicator.style';
 
 interface IProps extends ITranslatedProps {
 	title: string;
@@ -33,7 +34,7 @@ export const ActivityIndicator: React.SFC<IProps> = ({
 				<View style={style.boxContainer}>
 					<Text style={style.title}>{title || getText('please.wait')}</Text>
 					{message && <Text style={style.message}>{message}</Text>}
-					<Loader size="large" color={customStyleProps.activityIndicatorColor} />
+					<Loader size="large" color={Colors.pink} />
 				</View>
 			</Modal>
 		)}
