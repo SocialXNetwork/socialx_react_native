@@ -80,6 +80,10 @@ export interface IClearFriendRequestInput {
 	username: string;
 }
 
+export interface IReadFriendRequestInput {
+	usernames: string[];
+}
+
 export enum FRIEND_TYPES {
 	PENDING = 'pending',
 	MUTUAL = 'mutual',
