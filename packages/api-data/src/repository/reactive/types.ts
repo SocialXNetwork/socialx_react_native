@@ -26,6 +26,7 @@ export interface IFriendRequest {
 		pub: string;
 	};
 	timestamp: number;
+	read: boolean;
 }
 
 export interface IFriendRequests {
@@ -42,6 +43,7 @@ export interface IFriendResponse {
 	};
 	timestamp: number;
 	type: FriendResponses;
+	read: boolean;
 }
 
 export interface IFriendResponses {
