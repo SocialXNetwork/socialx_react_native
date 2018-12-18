@@ -43,8 +43,6 @@ import {
 	IUnlikePostErrorAction,
 } from './Types';
 
-import { sleep } from '../../../utilities';
-
 /**
  * 	Retrieves a post, given the id
  */

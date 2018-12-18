@@ -1,33 +1,64 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+const getMargin = () => {
+	const model = DeviceInfo.getModel();
+	if (
+		model === 'iPhone X' ||
+		model === 'iPhone XR' ||
+		model === 'iPhone XS' ||
+		model === 'iPhone XS Max'
+	) {
+		return Sizes.smartVerticalScale(75);
+	}
+
+	return Sizes.smartVerticalScale(50);
+};
+
+const styles: any = {
+	outer: {
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+	},
 	container: {
+		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
+		width: '100%',
+		backgroundColor: Colors.white,
+		borderRadius: Sizes.smartHorizontalScale(5),
+		marginBottom: getMargin(),
+		paddingHorizontal: Sizes.smartHorizontalScale(10),
+		paddingVertical: Sizes.smartVerticalScale(10),
+		...Platform.select({
+			ios: {
+				shadowOpacity: 0.75,
+				shadowRadius: 5,
+				shadowColor: Colors.gray,
+				shadowOffset: { height: 2, width: 0 },
+			},
+			android: {
+				borderWidth: StyleSheet.hairlineWidth,
+				borderColor: Colors.wildSand,
+				elevation: 4,
+				width: '98%',
+			},
+		}),
 	},
-	boxContainer: {
-		maxWidth: 400,
-		backgroundColor: Colors.blackWithAlpha(0.7),
-		paddingVertical: Sizes.smartHorizontalScale(20),
-		paddingHorizontal: Sizes.smartHorizontalScale(20),
-		borderRadius: Sizes.smartHorizontalScale(10),
-		alignItems: 'center',
+	textContainer: {
+		flexShrink: 1,
 	},
-	title: {
+	text: {
 		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(20),
-		color: Colors.white,
-		paddingBottom: Sizes.smartHorizontalScale(20),
-		textAlign: 'center',
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.cloudBurst,
 	},
-	message: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.white,
-		paddingBottom: Sizes.smartHorizontalScale(20),
-		textAlign: 'center',
+	icon: {
+		fontSize: Sizes.smartHorizontalScale(25),
+		color: Colors.ceriseRed,
+		marginRight: Sizes.smartHorizontalScale(10),
 	},
 };
 
-export default StyleSheet.create(style);
+export default StyleSheet.create(styles);

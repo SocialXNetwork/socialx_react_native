@@ -12,7 +12,7 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { IError, ITranslatedProps } from '../../types';
+import { ITranslatedProps } from '../../types';
 
 import style, { customStyleProps } from './LoginScreen.style';
 
@@ -20,7 +20,6 @@ const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 interface ILoginFormProps extends ITranslatedProps {
-	authErrors: IError[];
 	onLogin: (userName: string, password: string) => void;
 }
 
@@ -29,7 +28,7 @@ interface ILoginScreenData {
 	password: string;
 }
 
-const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors }) => (
+const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 	<Formik
 		initialValues={{
 			userName: '',
@@ -66,6 +65,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 					returnKeyType={TRKeyboardKeys.next}
 					keyboardType={TKeyboardKeys.emailAddress}
 					value={userName}
+					persistKeyboard={true}
 					onChangeText={(value: string) => {
 						setFieldValue('userName', value);
 						setFieldTouched('userName');
@@ -83,7 +83,6 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 						placeholder={getText('login.password.input')}
 						placeholderColor={customStyleProps.inputPlaceholderColor}
 						returnKeyType={TRKeyboardKeys.go}
-						onSubmitPressed={handleSubmit}
 						isPassword={true}
 						blurOnSubmit={true}
 						value={password}
@@ -92,18 +91,12 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 							setFieldTouched('password');
 						}}
 						onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('password')}
+						onSubmitPressed={handleSubmit}
 						ref={passwordRef}
 					/>
 					{touched.password && errors.password && (
 						<Text style={style.errorText}>{errors.password}</Text>
 					)}
-				</View>
-				<View style={style.authErrorContainer}>
-					{authErrors.map((error) => (
-						<Text style={style.authError} key={error.uuid}>
-							{getText(`error.${error.type}`)}
-						</Text>
-					))}
 				</View>
 				<View style={style.fullWidth}>
 					<PrimaryButton
@@ -119,7 +112,6 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin, authErrors })
 );
 
 interface ILoginScreenViewProps extends ITranslatedProps {
-	errors: IError[];
 	onLogin: (userName: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
@@ -128,7 +120,6 @@ interface ILoginScreenViewProps extends ITranslatedProps {
 }
 
 export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
-	errors,
 	onLogin,
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
@@ -152,7 +143,7 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			keyboardShouldPersistTaps="handled"
 		>
 			<Text style={style.welcomeText}>{getText('login.welcome.message')}</Text>
-			<LoginForm authErrors={errors} getText={getText} onLogin={onLogin} />
+			<LoginForm onLogin={onLogin} getText={getText} />
 			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={style.forgotPassword}>
 				<Text style={style.forgotPasswordText}>{getText('login.forgot.password')}</Text>
 			</TouchableOpacity>

@@ -72,6 +72,7 @@ export { IVideoOptions, VideoPlayer } from './interaction/video';
 
 export { WithManagedTransitions, ModalManager, IManagedModal } from './managedTransitions';
 
+export { Alert } from './modals/Alert';
 export { ActivityIndicator } from './modals/ActivityIndicator';
 export { Confirmation } from './modals/Confirmation';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';

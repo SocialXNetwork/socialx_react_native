@@ -19,7 +19,7 @@ const styles: any = {
 		width: '100%',
 		height: '50%',
 	},
-	moreOverlay: {
+	overlay: {
 		position: 'absolute',
 		width: '100%',
 		height: '100%',
@@ -27,9 +27,9 @@ const styles: any = {
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	moreText: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(20),
+	text: {
+		...Fonts.centuryGothicBold,
+		fontSize: Sizes.smartHorizontalScale(24),
 		color: Colors.white,
 	},
 	placeholder: {
@@ -38,6 +38,22 @@ const styles: any = {
 		height: '100%',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	rightBorder: {
+		borderRightWidth: 1,
+		borderColor: Colors.white,
+	},
+	leftBorder: {
+		borderLeftWidth: 1,
+		borderColor: Colors.white,
+	},
+	topBorder: {
+		borderTopWidth: 1,
+		borderColor: Colors.white,
+	},
+	bottomBorder: {
+		borderBottomWidth: 1,
+		borderColor: Colors.white,
 	},
 };
 

@@ -374,6 +374,7 @@ class Component extends React.Component<IProps, IState> {
 				Animated.timing(sendCommentIconPosition, {
 					toValue: 100,
 					duration: 250,
+					useNativeDriver: true,
 				}),
 			]).start();
 			this.setState({ commentInputFocused: false });
@@ -403,6 +404,7 @@ class Component extends React.Component<IProps, IState> {
 				Animated.timing(sendCommentIconPosition, {
 					toValue: 0,
 					duration: 250,
+					useNativeDriver: true,
 				}),
 			]).start();
 			this.setState({ commentInputFocused: true });

@@ -7,7 +7,7 @@ import { Image as PickerImage } from 'react-native-image-crop-picker';
 import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 
 import { IAccountCurrencyData } from './components';
-import { CoinSymbol, NOTIFICATION_TYPES } from './environment/consts';
+import { CoinSymbol } from './environment/consts';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 

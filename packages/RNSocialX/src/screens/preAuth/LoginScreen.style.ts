@@ -77,18 +77,6 @@ const style: any = {
 		alignSelf: 'flex-start',
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
-	authErrorContainer: {
-		width: '100%',
-		height: Sizes.smartVerticalScale(15),
-		marginBottom: Sizes.smartVerticalScale(20),
-	},
-	authError: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
-		lineHeight: Sizes.smartHorizontalScale(16),
-		color: Colors.monza,
-		textAlign: 'center',
-	},
 };
 
 export default StyleSheet.create(style);

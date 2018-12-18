@@ -129,6 +129,7 @@ export enum NAVIGATION {
 export enum TABS {
 	Feed = 'UserFeedTab',
 	Search = 'SearchTab',
+	Photo = 'PhotoTab',
 	Notifications = 'NotificationsTab',
 	Profile = 'MyProfileTab',
 }

@@ -10,12 +10,6 @@ const styles: any = {
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	button: {
-		width: '100%',
-		height: '100%',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
 	icon: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,

@@ -73,7 +73,7 @@ export const PostText: React.SFC<IPostTextProps> = ({
 						},
 					]}
 				>
-					<Text>{textToRender}</Text>
+					{textToRender}
 				</RichText>
 				{!!hasMore && (
 					<Text style={styles.showMoreText} onPress={onShowFullText}>

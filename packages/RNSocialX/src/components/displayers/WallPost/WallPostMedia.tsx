@@ -56,7 +56,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 				// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 				// @ts-ignore
 				path={creating ? media[0].path : undefined}
-				style={styles.fullWidthHeight}
+				style={[styles.fullWidthHeight, styles.rightBorder]}
 				extension={media[0].extension}
 				getText={getText}
 			/>
@@ -69,7 +69,7 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 				// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 				// @ts-ignore
 				path={creating ? media[1].path : undefined}
-				style={styles.fullWidthHeight}
+				style={[styles.fullWidthHeight, styles.leftBorder]}
 				extension={media[1].extension}
 				getText={getText}
 			/>
@@ -101,13 +101,13 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 					// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 					// @ts-ignore
 					path={creating ? media[0].path : undefined}
-					style={styles.fullWidthHeight}
+					style={[styles.fullWidthHeight, styles.rightBorder]}
 					extension={media[0].extension}
 					getText={getText}
 				/>
 			</View>
-			<View style={styles.fullHeightHalfWidth}>
-				<View style={styles.fullWidthHalfHeight}>
+			<View style={[styles.fullHeightHalfWidth, styles.leftBorder]}>
+				<View style={[styles.fullWidthHalfHeight, styles.bottomBorder]}>
 					<MediaObjectViewer
 						onPress={() => onMediaObjectView(1)}
 						thumbOnly={true}
@@ -120,7 +120,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 					/>
 				</View>
 				<TouchableOpacity
-					style={styles.fullWidthHalfHeight}
+					style={[styles.fullWidthHalfHeight, styles.topBorder]}
 					activeOpacity={1}
 					onPress={() => onMediaObjectView(2)}
 				>
@@ -134,10 +134,9 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						extension={media[2].extension}
 						getText={getText}
 					/>
-
 					{remainingMedia > 0 && (
-						<View style={styles.moreOverlay}>
-							<Text style={styles.moreText}>{`+${remainingMedia} more`}</Text>
+						<View style={styles.overlay}>
+							<Text style={styles.text}>{`+ ${remainingMedia}`}</Text>
 						</View>
 					)}
 				</TouchableOpacity>

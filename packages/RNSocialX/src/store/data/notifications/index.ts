@@ -7,6 +7,8 @@ export {
 	IRemoveNotificationInput,
 	ICreateNotification,
 	FriendResponses,
+	IFriendRequest,
+	IFriendResponse,
 } from '@socialx/api-data';
 
 export {

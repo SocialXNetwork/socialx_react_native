@@ -9,7 +9,7 @@ import * as React from 'react';
 import { AsyncStorage, Keyboard } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { IError, INavigationProps } from '../../types';
+import { INavigationProps } from '../../types';
 import { LoginScreenView } from './LoginScreen.view';
 
 import {
@@ -18,25 +18,15 @@ import {
 	WithLogin,
 } from '../../enhancers/screens';
 
-type ILoginScreenProps = INavigationProps & IWithLoginEnhancedData & IWithLoginEnhancedActions;
+type IProps = INavigationProps & IWithLoginEnhancedData & IWithLoginEnhancedActions;
 
-interface ILoginScreenState {
-	errors: IError[];
+interface IState {
+	error: boolean;
 }
 
-class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
-	public static getDerivedStateFromProps(nextProps: ILoginScreenProps) {
-		if (nextProps.errors.length > 0) {
-			return {
-				errors: nextProps.errors,
-			};
-		}
-
-		return null;
-	}
-
+class Screen extends React.Component<IProps, IState> {
 	public state = {
-		errors: [],
+		error: false,
 	};
 
 	private keyboardDidShowListener: any;
@@ -45,22 +35,25 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
 	}
 
+	public componentDidUpdate() {
+		if (!this.state.error && this.props.errors.length > 0) {
+			this.setState({ error: true });
+		}
+	}
+
 	public componentWillUnmount() {
 		this.keyboardDidShowListener.remove();
 	}
 
 	public render() {
-		const { getText } = this.props;
-
 		return (
 			<LoginScreenView
-				errors={this.state.errors}
 				onLogin={this.onLoginHandler}
 				onNavigateToPasswordForgot={() => this.safeNavigateToScreen(SCREENS.ForgotPassword)}
 				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
 				onNavigateToUploadKey={() => this.safeNavigateToScreen('UploadKeyScreen')}
 				onGoBack={this.onGoBackHandler}
-				getText={getText}
+				getText={this.props.getText}
 			/>
 		);
 	}
@@ -75,16 +68,17 @@ class Screen extends React.Component<ILoginScreenProps, ILoginScreenState> {
 	private onLoginHandler = async (userName: string, password: string) => {
 		const { login, loadFeed, resetNavigationToRoute, navigation } = this.props;
 
-		this.setState({ errors: [] });
+		this.setState({ error: false });
 		this.switchActivityIndicator(true);
 		await login(userName, password);
-		if (this.state.errors.length > 0) {
-			this.switchActivityIndicator(false);
-		} else {
+
+		if (!this.state.error) {
 			await loadFeed();
 			this.switchActivityIndicator(false);
 			resetNavigationToRoute(NAVIGATION.Main, navigation);
 		}
+
+		this.switchActivityIndicator(false);
 	};
 
 	private safeNavigateToScreen = (screenName: string) => {
