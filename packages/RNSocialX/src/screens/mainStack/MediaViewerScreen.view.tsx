@@ -120,7 +120,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 								type={item.type}
 								hash={item.hash}
 								resizeMode="contain"
-								canZoom={false}
 								thumbOnly={false}
 								getText={getText}
 								style={[styles.carouselMediaObject, { width: viewport.width }]}

@@ -1,25 +1,22 @@
-/**
- * TODO list:
- * 1. @Ionut, mute and resize icons on the right side of the video don't show on Android!
- */
 import * as React from 'react';
-import { ActivityIndicator, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import { ITranslatedProps } from '../../../types';
 
 import styles, { defaultColor } from './VideoControls.style';
 
-interface IVideoControlsProps {
+interface IVideoControlsProps extends ITranslatedProps {
 	showPlayButton: boolean;
 	muted: boolean;
-	resizeToChangeAspectRatio?: boolean;
 	playReady: boolean;
 	thumbOnly: boolean;
 	replayVideo: boolean;
+	resizeToChangeAspectRatio?: boolean;
 	onVideoPlayStart: () => void;
 	onVideoMuteToggle: () => void;
 	onVideoEnterFullScreen: () => void;
 	onVideoReplay: () => void;
-	replayVideoText: string;
 }
 
 export const VideoControls: React.SFC<IVideoControlsProps> = ({
@@ -33,7 +30,7 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 	onVideoMuteToggle,
 	onVideoEnterFullScreen,
 	onVideoReplay,
-	replayVideoText,
+	getText,
 }) => (
 	<React.Fragment>
 		{playReady && !thumbOnly && (
@@ -57,7 +54,7 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 					<View style={styles.darkBackground}>
 						<TouchableOpacity onPress={onVideoReplay}>
 							<Icon name="md-refresh-circle" style={styles.replayIcon} />
-							<Text style={styles.replayVideoText}>{replayVideoText}</Text>
+							<Text style={styles.replayVideoText}>{getText('media.types.video.replay')}</Text>
 						</TouchableOpacity>
 					</View>
 				)}

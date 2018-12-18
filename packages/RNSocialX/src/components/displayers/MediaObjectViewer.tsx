@@ -2,11 +2,9 @@ import * as React from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import * as mime from 'react-native-mime-types';
-import PhotoView from 'react-native-photo-view';
 
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
 
-import Video from 'react-native-video';
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
 import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
 
@@ -15,7 +13,6 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	path?: string;
 	extension?: string;
 	type?: IMediaTypes;
-	canZoom?: boolean;
 	resizeMode?: 'cover' | 'contain' | 'stretch';
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
@@ -48,10 +45,9 @@ export const Component: React.SFC<IProps> = ({
 	resizeMode,
 	extension,
 	type,
-	getText,
-	canZoom = false,
 	onPress = () => undefined,
 	onDoublePress = () => undefined,
+	getText,
 }) => {
 	const uri = path ? path : IPFS_URL + hash;
 	const mediaMimeType = getMimeType(uri, type, extension);
@@ -59,43 +55,28 @@ export const Component: React.SFC<IProps> = ({
 	return (
 		<View>
 			{!mediaMimeType && <Text>{getText('message.media.not.supported')}</Text>}
-			{!!mediaMimeType && mediaMimeType.startsWith(MediaTypeImage.key) && (
+			{mediaMimeType && mediaMimeType.startsWith(MediaTypeImage.key) && (
 				<TouchableWithDoublePress
 					onSinglePress={onPress}
 					onDoublePress={onDoublePress}
 					disabled={!onPress && !onDoublePress}
 					style={customStyle}
 				>
-					{/* {canZoom && (
-						<PhotoView
-							source={{ uri }}
-							style={styles.image}
-							minimumZoomScale={1}
-							maximumZoomScale={3}
-							androidScaleType="center"
-							showsHorizontalScrollIndicator={false}
-							showsVerticalScrollIndicator={false}
-							androidZoomTransitionDuration={200}
-						/>
-					)} */}
-					{!canZoom && (
-						<FastImage
-							source={{ uri, priority: FastImage.priority.normal }}
-							resizeMode={
-								resizeMode === 'contain' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover
-							}
-							style={styles.image}
-						/>
-					)}
+					<FastImage
+						source={{ uri, priority: FastImage.priority.normal }}
+						resizeMode={
+							resizeMode === 'contain' ? FastImage.resizeMode.contain : FastImage.resizeMode.cover
+						}
+						style={styles.image}
+					/>
 				</TouchableWithDoublePress>
 			)}
 			{mediaMimeType && mediaMimeType.startsWith(MediaTypeVideo.key) && (
 				<VideoPlayer
-					videoURL={uri}
-					containerStyle={customStyle}
-					replayVideoText={getText('media.types.video.replay')}
-					thumbOnly={false}
+					uri={uri}
 					resizeMode={resizeMode}
+					containerStyle={customStyle}
+					getText={getText}
 				/>
 			)}
 		</View>
