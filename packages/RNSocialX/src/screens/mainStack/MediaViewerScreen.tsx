@@ -48,18 +48,14 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	private timeout: NodeJS.Timer = setTimeout(() => undefined, 0);
 
 	public componentDidMount() {
-		// due to Android problems with Carousel on orientation change enable tilt only on iOS
-		if (Platform.OS === OS_TYPES.IOS) {
-			Orientation.unlockAllOrientations();
-			Orientation.addOrientationListener(this.onOrientationChangeHandler);
-		}
+		Orientation.unlockAllOrientations();
+		Orientation.addOrientationListener(this.onOrientationChangeHandler);
 	}
 
 	public componentWillUnmount() {
-		if (Platform.OS === OS_TYPES.IOS) {
-			Orientation.lockToPortrait();
-			Orientation.removeOrientationListener(this.onOrientationChangeHandler);
-		}
+		Orientation.lockToPortrait();
+		Orientation.removeOrientationListener(this.onOrientationChangeHandler);
+
 		clearTimeout(this.timeout);
 	}
 
