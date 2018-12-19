@@ -26,8 +26,13 @@ If applicable, add screenshots to help explain your problem.
 
 **Smartphone (please complete the following information):**
  - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1 , Android ]
+ - OS: [e.g. iOS8.1 , Android]
  - Version [e.g. 22]
+
+**Additional Information (App related):**
+ - Username: [e.g. mrBeans]
+ - Network type: [e.g. Wifi]
+ - Version [e.g. 3.5]
 
 **Additional context**
 Add any other context about the problem here.
