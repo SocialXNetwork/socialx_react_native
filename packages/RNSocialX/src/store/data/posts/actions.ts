@@ -362,7 +362,7 @@ export const createPost = (
 				extension: media[index].type,
 				size: media[index].size,
 				type: {
-					key: media[index].type,
+					key: media[index].type.indexOf('image') < 0 ? 'video' : 'image',
 					name: media[index].type.indexOf('image') < 0 ? 'Video' : 'Photo',
 					category: media[index].type.indexOf('image') < 0 ? 'Videos' : 'Photography',
 				},

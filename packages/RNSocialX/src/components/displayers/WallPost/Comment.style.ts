@@ -6,7 +6,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 		color: Colors.cloudBurst,
-		paddingBottom: Sizes.smartVerticalScale(5),
+		paddingVertical: Sizes.smartVerticalScale(2),
 	},
 	user: {
 		...Fonts.centuryGothicBold,

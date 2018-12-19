@@ -18,7 +18,7 @@ export const TopComments: React.SFC<ITopCommentsProps> = ({
 	<React.Fragment>
 		{commentIds.length > 0 && (
 			<View style={styles.container}>
-				{commentIds.map((id: string) => (
+				{commentIds.map((id) => (
 					<Comment
 						commentId={id}
 						onUserPress={onUserPress}

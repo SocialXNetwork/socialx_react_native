@@ -157,8 +157,8 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 	media,
 	noInteraction = false,
 	creating = false,
-	onMediaObjectView = () => undefined,
-	onDoublePress = () => undefined,
+	onMediaObjectView,
+	onDoublePress,
 	getText,
 }) => {
 	return (

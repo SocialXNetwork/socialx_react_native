@@ -3,10 +3,9 @@ import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const styles: any = {
 	container: {
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		flexDirection: 'row',
-		marginTop: Sizes.smartVerticalScale(5),
-		marginBottom: Sizes.smartVerticalScale(5),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		paddingTop: Sizes.smartVerticalScale(5),
 	},
 	wrapper: {
 		flexDirection: 'row',

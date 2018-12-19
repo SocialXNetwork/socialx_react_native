@@ -37,13 +37,6 @@ interface IProps extends IMediaObjectViewerProps {
 	IPFS_URL: string;
 }
 
-// interface IState {
-// 	image: {
-// 		width: number;
-// 		height: number;
-// 	};
-// }
-
 class Component extends React.Component<IProps> {
 	private uri: string = '';
 	private mimeType: string = '';
@@ -86,6 +79,7 @@ class Component extends React.Component<IProps> {
 								imageWidth={this.image.width}
 								imageHeight={this.image.height * heightRatio}
 								onMove={onMove}
+								onClick={onPress}
 							>
 								<FastImage
 									source={{ uri: this.uri, priority: FastImage.priority.normal }}
