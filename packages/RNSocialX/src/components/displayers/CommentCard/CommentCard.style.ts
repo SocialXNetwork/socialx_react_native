@@ -69,7 +69,7 @@ const styles: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
 	},
 	hashtag: {
-		color: Colors.pink,
+		...Fonts.centuryGothicBold,
 	},
 	tag: {
 		color: Colors.pink,

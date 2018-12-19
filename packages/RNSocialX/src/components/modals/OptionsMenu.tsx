@@ -1,5 +1,3 @@
-// TODO: consider adding a title here for this menu.
-
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
@@ -9,19 +7,15 @@ import { SafeAreaView } from 'react-navigation';
 import { IOptionsMenuItem } from '../../types';
 import { ModalManager, WithManagedTransitions } from '../managedTransitions';
 
-import styles from './OptionsMenuModal.style';
+import styles from './OptionsMenu.style';
 
-interface IOptionsMenuModalProps {
+interface IProps {
 	visible: boolean;
 	items: IOptionsMenuItem[];
 	onBackdropPress: () => void;
 }
 
-export const OptionsMenuModal: React.SFC<IOptionsMenuModalProps> = ({
-	visible,
-	items,
-	onBackdropPress,
-}) => (
+export const OptionsMenu: React.SFC<IProps> = ({ visible, items, onBackdropPress }) => (
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal

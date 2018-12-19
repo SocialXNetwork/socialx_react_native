@@ -17,7 +17,7 @@ const styles: any = {
 		paddingLeft: Sizes.smartHorizontalScale(5),
 	},
 	hashtag: {
-		color: Colors.pink,
+		...Fonts.centuryGothicBold,
 	},
 	tag: {
 		color: Colors.pink,

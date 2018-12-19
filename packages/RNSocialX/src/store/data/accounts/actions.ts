@@ -7,14 +7,14 @@ import {
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
-import { getCurrentProfile } from '../profiles';
 
 import { clearGunAuth, setGunAuth } from '../../auth/gun';
 import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
-import { hookNotifications } from '../notifications/actions';
-import { getCurrentFriends } from '../profiles/actions';
+import { setGlobal } from '../../ui/globals';
+import { hookNotifications } from '../notifications';
+import { getCurrentFriends, getCurrentProfile } from '../profiles';
 import {
 	ActionTypes,
 	IChangePasswordAction,
@@ -235,6 +235,7 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 	const state = getState();
 	const auth = state.auth.database.gun;
 	const activityId = uuidv4();
+
 	try {
 		dispatch(loginAction(credentials));
 		await dispatch(
@@ -243,15 +244,34 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 				uuid: activityId,
 			}),
 		);
-		const { dataApi } = context;
-		await dataApi.accounts.login(credentials);
+		await context.dataApi.accounts.login(credentials);
 		await dispatch(
 			setGunAuth({
 				password: credentials.password,
 				alias: credentials.username,
 			}),
 		);
+
+		await dispatch(
+			setGlobal({
+				loading: {
+					progress: 20,
+					message: 'profile',
+				},
+			}),
+		);
+
 		await dispatch(getCurrentAccount());
+
+		await dispatch(
+			setGlobal({
+				loading: {
+					progress: 40,
+					message: 'friends',
+				},
+			}),
+		);
+
 		await dispatch(getCurrentFriends());
 		await dispatch(endActivity({ uuid: activityId }));
 		// debounce hook

@@ -31,7 +31,3 @@ const style: any = {
 };
 
 export default StyleSheet.create(style);
-
-export const customStyleProps = {
-	activityIndicatorColor: Colors.pink,
-};

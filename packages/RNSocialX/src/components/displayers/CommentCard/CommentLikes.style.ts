@@ -32,6 +32,14 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(14),
 		color: Colors.white,
 	},
+	defaultLikesPosition: {
+		bottom: -18,
+		right: 0,
+	},
+	altLikesPosition: {
+		bottom: 10,
+		right: -30,
+	},
 };
 
 export default StyleSheet.create(styles);

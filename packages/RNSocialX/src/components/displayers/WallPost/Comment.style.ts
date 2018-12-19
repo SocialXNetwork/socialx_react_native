@@ -11,12 +11,12 @@ const styles: any = {
 	user: {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(15),
-	} as any,
+	},
 	text: {
 		fontSize: Sizes.smartHorizontalScale(15),
 	},
 	hashtag: {
-		color: Colors.pink,
+		...Fonts.centuryGothicBold,
 	},
 	tag: {
 		color: Colors.pink,

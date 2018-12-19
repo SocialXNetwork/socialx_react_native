@@ -3,7 +3,8 @@ import { ImageStyle, StyleProp, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
-import { Images, Sizes } from '../../environment/theme';
+import { USER_AVATAR_PLACEHOLDER } from '../../environment/consts';
+import { Sizes } from '../../environment/theme';
 
 interface IAvatarImageProps {
 	image?: string;
@@ -26,7 +27,7 @@ export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 			} else if (image && image.length > 0) {
 				source = { uri: IPFS_URL + image };
 			} else {
-				source = Images.user_avatar_placeholder;
+				source = { uri: IPFS_URL + USER_AVATAR_PLACEHOLDER };
 			}
 
 			return <FastImage source={source} resizeMode={FastImage.resizeMode.cover} style={style} />;

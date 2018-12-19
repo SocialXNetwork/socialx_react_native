@@ -1,3 +1,4 @@
+import { Root } from 'native-base';
 import React from 'react';
 import { Animated, Easing } from 'react-native';
 import {
@@ -8,17 +9,17 @@ import {
 	TransitionConfig,
 } from 'react-navigation';
 
-import { Root } from 'native-base';
-
 import {
-	ActivityIndicatorModal,
-	ConfirmationModal,
+	ActivityIndicator,
+	Alert,
+	Confirmation,
 	Header,
-	OfflineOverlayModal,
-	OptionsMenuModal,
+	OfflineOverlay,
+	OptionsMenu,
 	TabIcon,
-	TransparentOverlayModal,
+	TransparentOverlay,
 } from '../components';
+import { TABS } from '../environment/consts';
 import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
 import styles, { tabStyles } from './Navigation.style';
@@ -59,9 +60,10 @@ import {
 
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
+import { WithNotifications } from '../enhancers/connectors/data/WithNotifications';
+import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
-import { WithNotifications } from '../enhancers/screens/mainTabNav/WithNotifications';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -178,8 +180,8 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 			tabBarIcon: ({ focused }) => {
 				return (
 					<TabIcon
-						navigation={props.navigation}
 						focused={focused}
+						navigation={props.navigation}
 						notifications={props.screenProps.notifications}
 						setNavigationParams={props.screenProps.setNavigationParams}
 						showOptionsMenu={props.screenProps.showOptionsMenu}
@@ -188,7 +190,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 				);
 			},
 			tabBarOnPress: ({ navigation, defaultHandler }) => {
-				if (navigation.state.routeName !== 'PhotoTab') {
+				if (navigation.state.routeName !== TABS.Photo) {
 					defaultHandler();
 				}
 			},
@@ -286,10 +288,10 @@ const Navigation = () => (
 						<WithOverlays>
 							{({ showOptionsMenu }) => (
 								<WithNotifications>
-									{({ data }) => (
+									{({ unread }) => (
 										<AppNavigation
 											screenProps={{
-												notifications: data.unreadNotifications,
+												notifications: unread.length,
 												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
 												setNavigationParams,
 												getText,
@@ -305,42 +307,47 @@ const Navigation = () => (
 					{({ globals }) => (
 						<WithOverlays>
 							{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
-								<React.Fragment>
-									<TransparentOverlayModal
-										visible={globals.transparentOverlay.visible}
-										alpha={globals.transparentOverlay.alpha}
-										loader={globals.transparentOverlay.loader}
-									/>
-									<OfflineOverlayModal visible={!!globals.offline} getText={getText} />
-									<ActivityIndicatorModal
-										visible={globals.activity.visible}
-										title={globals.activity.title}
-										message={globals.activity.message}
-										getText={getText}
-									/>
-									<ConfirmationModal
-										title={confirmation && confirmation.title}
-										message={confirmation && confirmation.message}
-										confirmActive={!!confirmation}
-										confirmHandler={() => {
-											if (confirmation) {
-												confirmation.confirmHandler();
-											}
-											hideConfirmation();
-										}}
-										declineHandler={() => {
-											if (confirmation && confirmation.cancelHandler) {
-												confirmation.cancelHandler();
-											}
-											hideConfirmation();
-										}}
-									/>
-									<OptionsMenuModal
-										visible={!!optionsMenu}
-										items={(optionsMenu && optionsMenu.items) || []}
-										onBackdropPress={hideOptionsMenu}
-									/>
-								</React.Fragment>
+								<WithActivities>
+									{({ errors }) => (
+										<React.Fragment>
+											<Alert errors={errors} getText={getText} />
+											<TransparentOverlay
+												visible={globals.transparentOverlay.visible}
+												alpha={globals.transparentOverlay.alpha}
+												loader={globals.transparentOverlay.loader}
+											/>
+											<OfflineOverlay visible={!!globals.offline} getText={getText} />
+											<ActivityIndicator
+												visible={globals.activity.visible}
+												title={globals.activity.title}
+												message={globals.activity.message}
+												getText={getText}
+											/>
+											<Confirmation
+												title={confirmation && confirmation.title}
+												message={confirmation && confirmation.message}
+												confirmActive={!!confirmation}
+												onConfirm={() => {
+													if (confirmation) {
+														confirmation.confirmHandler();
+													}
+													hideConfirmation();
+												}}
+												onDecline={() => {
+													if (confirmation && confirmation.cancelHandler) {
+														confirmation.cancelHandler();
+													}
+													hideConfirmation();
+												}}
+											/>
+											<OptionsMenu
+												visible={!!optionsMenu}
+												items={(optionsMenu && optionsMenu.items) || []}
+												onBackdropPress={hideOptionsMenu}
+											/>
+										</React.Fragment>
+									)}
+								</WithActivities>
 							)}
 						</WithOverlays>
 					)}

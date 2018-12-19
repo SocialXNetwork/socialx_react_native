@@ -14,6 +14,7 @@ import {
 	IFriendsCallbackData,
 	IGetPublicKeyInput,
 	IProfileData,
+	IReadFriendRequestInput,
 	IRejectFriendInput,
 	IRemoveFriendInput,
 	ISearchProfilesByFullNameInput,
@@ -51,7 +52,7 @@ export default (context: IContext) => ({
 		}),
 	async getProfilesByUsernames(getProfilesByUsernamesInput: {
 		usernames: string[];
-	}): Promise<IProfileData[]> {
+	}): Promise<IFriendData[]> {
 		let validatedInput: any;
 		try {
 			validatedInput = await schemas.getProfilesByUsernames.validate(getProfilesByUsernamesInput, {
@@ -255,12 +256,12 @@ export default (context: IContext) => ({
 			setters.clearFriendRequest(context, clearRequestInput, resolveCallback(resolve, reject));
 		});
 	},
-	readFriendRequests: async (input: IClearFriendRequestInput[]) => {
+	readFriendRequests: async (input: IReadFriendRequestInput) => {
 		return new Promise<null>((resolve, reject) => {
 			setters.readFriendRequests(context, input, resolveCallback(resolve, reject));
 		});
 	},
-	readFriendResponses: async (input: IClearFriendResponseInput[]) => {
+	readFriendResponses: async (input: IReadFriendRequestInput) => {
 		return new Promise<null>((resolve, reject) => {
 			setters.readFriendResponses(context, input, resolveCallback(resolve, reject));
 		});

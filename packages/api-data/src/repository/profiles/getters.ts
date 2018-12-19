@@ -237,22 +237,54 @@ export const getProfileByUserObject = (
 					}
 				}
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		);
 	};
 	const fetchPublicUser = () => {
-		profileHandles.privateUserProfileByUserObj(context, userObject).open(
-			(profileDataCallback: IProfileData) => {
-				const profileData = cleanGunMetaFromObject(profileDataCallback);
-				getProfileNumberOfFriends(context, profileData, (numberOfFriends) => {
-					return callback(null, {
-						...profileData,
-						status: FRIEND_TYPES.NOT_FRIEND,
-						numberOfFriends,
-					});
+		profileHandles.privateUserProfileByUserObj(context, userObject).once(
+			(data: any) => {
+				// very rare case
+				if (!data) {
+					fetchPublicUserRecord();
+				} else {
+					profileHandles.privateUserProfileByUserObj(context, userObject).open(
+						(profileDataCallback: IProfileData) => {
+							const profileData = cleanGunMetaFromObject(profileDataCallback);
+							getProfileNumberOfFriends(context, profileData, (numberOfFriends) => {
+								return callback(null, {
+									...profileData,
+									status: FRIEND_TYPES.NOT_FRIEND,
+									numberOfFriends,
+								});
+							});
+						},
+						{ off: 1, wait: 1000 },
+					);
+				}
+			},
+			{ wait: 2000 },
+		);
+	};
+
+	const fetchPublicUserRecord = () => {
+		profileHandles.publicProfileByUsername(context, userObject.alias).once(
+			(publicUserProfileCallback: IProfileData) => {
+				const profileData = cleanGunMetaFromObject(publicUserProfileCallback);
+				return callback(null, {
+					...profileData,
+					alias: userObject.alias,
+					fullName: 'sketchy',
+					avatar: '',
+					status: FRIEND_TYPES.NOT_FRIEND,
+					numberOfFriends: 0,
+					sketchyProfile: true,
+					aboutMeText: 'about me text',
+					email: '',
+					pub: 'sketchy0xA9ECF',
+					miningEnabled: true,
 				});
 			},
-			{ off: 1, wait: 500 },
+			{ wait: 1000 },
 		);
 	};
 	mainRunner();

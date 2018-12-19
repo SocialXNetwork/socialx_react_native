@@ -1,6 +1,6 @@
 import moment from 'moment';
 import * as React from 'react';
-import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
@@ -35,29 +35,7 @@ interface IProps extends ICommentCardProps, IWithDataShapeEnhancedProps {
 	onViewLikes: (likeIds: string[]) => void;
 }
 
-interface IState {
-	commentLikesPosition: StyleProp<ViewStyle>;
-}
-
-class Component extends React.Component<IProps, IState> {
-	public state = {
-		commentLikesPosition: {
-			bottom: -18,
-			right: 0,
-		},
-	};
-
-	public componentDidMount() {
-		if (this.props.shapedComment && this.props.shapedComment.text.length < TEXT_LENGTH_TRESHOLD) {
-			this.setState({
-				commentLikesPosition: {
-					bottom: 10,
-					right: -30,
-				},
-			});
-		}
-	}
-
+class Component extends React.Component<IProps> {
 	public render() {
 		const {
 			commentId,
@@ -116,7 +94,7 @@ class Component extends React.Component<IProps, IState> {
 							{likeIds.length > 0 && (
 								<CommentLikes
 									numberOfLikes={likeIds.length}
-									commentLikesPosition={this.state.commentLikesPosition}
+									altPosition={shapedComment.text.length < TEXT_LENGTH_TRESHOLD}
 									onViewLikes={() => onViewLikes(likeIds)}
 								/>
 							)}

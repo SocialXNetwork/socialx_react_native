@@ -39,4 +39,5 @@ export {
 	undoRequest,
 	clearSearchResults,
 	searchForProfilesLocally,
+	syncExternalProfiles,
 } from './actions';

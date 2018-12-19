@@ -3,28 +3,25 @@ import * as React from 'react';
 import { INavigationProps } from '../../types';
 import { NotificationsScreenView } from './NotificationsScreen.view';
 
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
 	WithNotifications,
 } from '../../enhancers/screens';
 
-type INotificationsScreenProps = INavigationProps &
-	IWithNotificationsEnhancedData &
-	IWithNotificationsEnhancedActions &
-	IWithNavigationHandlersEnhancedActions;
+interface INotificationsScreenProps
+	extends INavigationProps,
+		IWithNotificationsEnhancedData,
+		IWithNotificationsEnhancedActions {
+	onViewUserProfile: (alias: string) => void;
+}
 
 class Screen extends React.Component<INotificationsScreenProps> {
 	private willFocusScreen: any;
 
 	public componentDidMount() {
-		this.willFocusScreen = this.props.navigation.addListener('willFocus', (payload) => {
-			console.log('willFocus', payload);
-		});
+		this.willFocusScreen = this.props.navigation.addListener('willFocus', this.onWillFocusScreen);
 	}
 
 	public componentWillUnmount() {
@@ -32,19 +29,31 @@ class Screen extends React.Component<INotificationsScreenProps> {
 	}
 
 	public render() {
-		const { notifications, refreshing, getNotifications, getText } = this.props;
+		const {
+			notificationIds,
+			refreshing,
+			getNotifications,
+			onViewUserProfile,
+			getText,
+		} = this.props;
 
 		return (
 			<NotificationsScreenView
-				notifications={notifications}
+				ids={notificationIds}
 				refreshing={refreshing}
 				onRefresh={getNotifications}
-				onViewUserProfile={(userId) => this.props.onViewUserProfile(userId)}
+				onViewUserProfile={onViewUserProfile}
 				onShowOptions={this.onShowOptionsHandler}
 				getText={getText}
 			/>
 		);
 	}
+
+	private onWillFocusScreen = () => {
+		if (this.props.unread) {
+			this.props.markNotificationsAsRead();
+		}
+	};
 
 	private onShowOptionsHandler = (id: string) => {
 		const { showOptionsMenu, getText } = this.props;
@@ -66,7 +75,12 @@ export const NotificationsScreen = (props: INavigationProps) => (
 		{(nav) => (
 			<WithNotifications>
 				{(notifications) => (
-					<Screen {...props} {...notifications.data} {...notifications.actions} {...nav.actions} />
+					<Screen
+						{...props}
+						{...notifications.data}
+						{...notifications.actions}
+						onViewUserProfile={nav.actions.onViewUserProfile}
+					/>
 				)}
 			</WithNotifications>
 		)}

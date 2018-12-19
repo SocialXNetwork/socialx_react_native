@@ -6,7 +6,7 @@ import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './UserFeedScreen.style';
 
-interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
+interface IProps extends INavigationProps, ITranslatedProps {
 	avatar: string;
 	postIds: string[];
 	placeholderPostId: string | null;
@@ -23,7 +23,7 @@ interface IUserFeedScreenViewProps extends INavigationProps, ITranslatedProps {
 	onCommentInputPress: (y: number, height: number, first: boolean) => void;
 }
 
-export const UserFeedScreenView: React.SFC<IUserFeedScreenViewProps> = ({
+export const UserFeedScreenView: React.SFC<IProps> = ({
 	postIds,
 	avatar,
 	refreshing,

@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-navigation';
 import {
 	CloseButton as CloseModal,
 	Header,
-	MediaInfoModal,
+	MediaInfo,
 	MediaInteractionButtons,
 	MediaObjectViewer,
 } from '../../components';
@@ -103,7 +103,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	return (
 		<View style={styles.container}>
 			{isPortrait && <Header left={<CloseModal onClose={onClose} />} />}
-			<MediaInfoModal
+			<MediaInfo
 				visible={infoVisible}
 				hash={currentMedia.hash}
 				size={currentMedia.size}
@@ -120,7 +120,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 								type={item.type}
 								hash={item.hash}
 								resizeMode="contain"
-								canZoom={false}
 								thumbOnly={false}
 								getText={getText}
 								style={[styles.carouselMediaObject, { width: viewport.width }]}

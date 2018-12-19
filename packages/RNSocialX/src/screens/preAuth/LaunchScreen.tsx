@@ -60,8 +60,8 @@ class Screen extends React.Component<ILaunchScreenProps> {
 		if (!window.crypto.loaded) {
 			return <View />;
 		}
-		if (this.props.auth) {
-			return <LoadingScreen />;
+		if (this.props.auth && !this.props.globals.logout) {
+			return <LoadingScreen loading={this.props.globals.loading} getText={this.props.getText} />;
 		} else {
 			return (
 				<LaunchScreenView

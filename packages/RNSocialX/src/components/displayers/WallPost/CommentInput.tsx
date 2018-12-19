@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Animated, Dimensions, Keyboard, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Animated, Keyboard, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AvatarImage, InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
-import { Colors, Sizes } from '../../../environment/theme';
+import { Colors } from '../../../environment/theme';
 import { ITranslatedProps } from '../../../types';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import styles from './CommentInput.style';
 
 interface IAnimationValues {
 	width: Animated.Value;
@@ -115,35 +115,3 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		)}
 	</TouchableOpacity>
 );
-
-const styles: any = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
-		marginTop: Sizes.smartVerticalScale(5),
-	},
-	inputContainer: {
-		borderWidth: Sizes.smartHorizontalScale(1),
-		borderRadius: Sizes.smartHorizontalScale(6),
-		borderColor: Colors.grayText,
-		width: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
-		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
-	},
-	avatar: {
-		width: Sizes.smartHorizontalScale(35),
-		height: Sizes.smartHorizontalScale(35),
-		borderRadius: Sizes.smartHorizontalScale(35) / 2,
-		marginRight: Sizes.smartHorizontalScale(10),
-	},
-	send: {
-		flex: 1,
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		marginLeft: Sizes.smartHorizontalScale(5),
-	},
-	icon: {
-		fontSize: Sizes.smartHorizontalScale(30),
-		transform: [{ translateY: 2 }],
-	},
-});

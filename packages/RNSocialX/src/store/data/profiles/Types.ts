@@ -1,10 +1,4 @@
-import {
-	IAcceptFriendInput,
-	IClearFriendResponseInput,
-	IFriendData,
-	IPostArrayData,
-	IUpdateProfileInput,
-} from '@socialx/api-data';
+import { IFriendData, IPostArrayData, IUpdateProfileInput } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
@@ -82,10 +76,6 @@ export interface IUpdateProfileInput {
 export const enum ActionTypes {
 	GET_PROFILE_BY_ALIAS = 'data/profiles/GET_PROFILE_BY_ALIAS',
 	SYNC_GET_PROFILE_BY_ALIAS = 'data/profiles/SYNC_GET_PROFILE_BY_ALIAS',
-	GET_PROFILE_BY_USERNAME = 'data/profiles/GET_PROFILE_BY_USERNAME',
-	SYNC_GET_PROFILE_BY_USERNAME = 'data/profiles/SYNC_GET_PROFILE_BY_USERNAME',
-	GET_PROFILES_BY_USERNAMES = 'data/profiles/GET_PROFILES_BY_USERNAMES',
-	SYNC_GET_PROFILES_BY_USERNAMES = 'data/profiles/SYNC_GET_PROFILES_BY_USERNAMES',
 	GET_CURRENT_PROFILE = 'data/profiles/GET_CURRENT_PROFILE',
 	SYNC_GET_CURRENT_PROFILE = 'data/profiles/SYNC_GET_CURRENT_PROFILE',
 	UPDATE_PROFILE = 'data/profiles/UPDATE_PROFILE',
@@ -110,6 +100,7 @@ export const enum ActionTypes {
 	SYNC_SEARCH_FOR_PROFILES = 'data/profiles/SYNC_SEARCH_FOR_PROFILES',
 	SEARCH_FOR_PROFILES_LOCALLY = 'data/profiles/SEARCH_FOR_PROFILES_LOCALLY',
 	CLEAR_SEARCH_RESULTS = 'data/profiles/CLEAR_SEARCH_RESULTS',
+	SYNC_EXTERNAL_PROFILES = '/data/profiles/SYNC_EXTERNAL_PROFILES',
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -228,8 +219,13 @@ export interface ISearchForProfilesLocallyAction extends Action {
 	payload: ISearchWithAliasInput;
 }
 
-export interface IClearSearchResultsActions extends Action {
+export interface IClearSearchResultsAction extends Action {
 	type: ActionTypes.CLEAR_SEARCH_RESULTS;
+}
+
+export interface ISyncExternalProfilesAction extends Action {
+	type: ActionTypes.SYNC_EXTERNAL_PROFILES;
+	payload: IProfile[];
 }
 
 interface IResetStoreAction {
@@ -263,4 +259,5 @@ export type IAction =
 	| ISearchForProfilesAction
 	| ISyncSearchForProfilesAction
 	| ISearchForProfilesLocallyAction
-	| IClearSearchResultsActions;
+	| IClearSearchResultsAction
+	| ISyncExternalProfilesAction;

@@ -51,6 +51,7 @@ interface IPrimaryTextInputProps {
 	autoCorrect: boolean;
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
+	persistKeyboard: boolean;
 	onSubmitPressed: (event: any) => void;
 	onChangeText: (value: string) => void;
 	onSetFocus: (hasFocus: boolean) => void;
@@ -141,10 +142,11 @@ export class PrimaryTextInput extends React.Component<
 		autoCorrect: false,
 		autoCapitalize: 'none',
 		persistCancel: false,
-		onSetFocus: (hasFocus: boolean) => undefined,
+		persistKeyboard: false,
+		onSetFocus: () => undefined,
 		onPressCancel: () => undefined,
 		onChangeText: () => undefined,
-		onSubmitPressed: (event: any) => undefined,
+		onSubmitPressed: () => undefined,
 		onBlur: () => undefined,
 	};
 
@@ -166,8 +168,6 @@ export class PrimaryTextInput extends React.Component<
 			onPressCancel,
 			persistCancel,
 			autoFocus,
-			onChangeText,
-			onSubmitPressed,
 			returnKeyType,
 			isPassword,
 			keyboardType,
@@ -181,7 +181,10 @@ export class PrimaryTextInput extends React.Component<
 			value,
 			borderColor,
 			borderWidth,
+			persistKeyboard,
 			onBlur,
+			onChangeText,
+			onSubmitPressed,
 		} = this.props;
 		const { hasFocus } = this.state;
 
@@ -204,7 +207,9 @@ export class PrimaryTextInput extends React.Component<
 						onChangeText={onChangeText}
 						onSubmitEditing={(event) => {
 							onSubmitPressed(event);
-							Keyboard.dismiss();
+							if (!persistKeyboard) {
+								Keyboard.dismiss();
+							}
 						}}
 						ref={this.inputRef}
 						onFocus={() => this.setFocusHandler(true)}

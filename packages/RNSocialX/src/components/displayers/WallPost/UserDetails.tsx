@@ -1,7 +1,6 @@
 import moment from 'moment';
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AvatarImage, OptionsMenuButton } from '../../';

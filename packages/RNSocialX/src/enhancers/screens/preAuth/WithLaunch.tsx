@@ -24,9 +24,9 @@ export interface IWithLaunchEnhancedData {
 }
 
 export interface IWithLaunchEnhancedActions extends ITranslatedProps {
-	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	loadFeed: () => void;
 	login: (creds: ICredentials) => void;
+	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	setGlobal: (global: IGlobal) => void;
 }
 
@@ -61,12 +61,24 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 															auth,
 														},
 														actions: {
-															resetNavigationToRoute,
 															loadFeed: async () => {
+																setGlobal({
+																	loading: {
+																		progress: 60,
+																		message: 'posts.global',
+																	},
+																});
 																await loadMorePosts();
+																setGlobal({
+																	loading: {
+																		progress: 80,
+																		message: 'posts.friends',
+																	},
+																});
 																await loadMoreFriendsPosts();
 															},
 															login,
+															resetNavigationToRoute,
 															setGlobal,
 															getText,
 														},

@@ -4,13 +4,14 @@ import Modal from 'react-native-modal';
 
 import { WithManagedTransitions } from '..';
 import { ITranslatedProps } from '../../types';
-import styles, { defaultColor } from './OfflineOverlayModal.style';
 
-interface IOfflineOverlayModalProps extends ITranslatedProps {
+import styles, { defaultColor } from './OfflineOverlay.style';
+
+interface IProps extends ITranslatedProps {
 	visible: boolean;
 }
 
-export const OfflineOverlayModal: React.SFC<IOfflineOverlayModalProps> = ({ visible, getText }) => (
+export const OfflineOverlay: React.SFC<IProps> = ({ visible, getText }) => (
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onDismiss, onModalHide }) => (
 			<Modal

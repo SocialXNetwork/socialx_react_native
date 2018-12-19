@@ -1,12 +1,12 @@
 import { Tab, Tabs } from 'native-base';
 import * as React from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
 	AdPreview,
 	ChartAccountPerformance,
-	CloseButton as CloseModal,
+	CloseButton,
 	Header,
 	PrimaryButton,
 } from '../../components';
@@ -45,7 +45,7 @@ export const AdsManagementOverviewScreenView: React.SFC<IAdsManagementOverviewSc
 		<View style={styles.container}>
 			<Header
 				title={getText('ad.management.overview.screen.title')}
-				left={<CloseModal onClose={onClose} />}
+				left={<CloseButton onClose={onClose} />}
 				right={<Icon name="ios-add" onPress={onCreateAd} style={styles.icon} />}
 			/>
 			<ScrollView style={styles.content}>

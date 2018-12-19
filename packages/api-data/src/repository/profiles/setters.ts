@@ -13,6 +13,7 @@ import {
 	IClearFriendRequestInput,
 	IClearFriendResponseInput,
 	ICreateProfileInput,
+	IReadFriendRequestInput,
 	IRemoveFriendInput,
 	IUpdateProfileInput,
 } from './types';
@@ -138,7 +139,7 @@ const checkIfUserFriendExists = (context: IContext, username: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -155,7 +156,7 @@ const checkIfFriendRequestExists = (context: IContext, to: string, from: string)
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -176,7 +177,7 @@ const checkIfAlreadyFriends = (context: IContext, username: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -193,7 +194,7 @@ const checkIfFriendResponseExists = (context: IContext, from: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -229,7 +230,7 @@ const checkIfUserHasRequest = (context: IContext, from: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -247,7 +248,7 @@ const getTargetedUserAndCreateRequest = (context: IContext, username: string) =>
 				}
 				res();
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -683,7 +684,7 @@ export const clearFriendRequest = async (
 
 export const readFriendRequests = async (
 	context: IContext,
-	args: IClearFriendRequestInput[],
+	args: IReadFriendRequestInput,
 	callback: IGunCallback<null>,
 ) => {
 	const { owner } = getContextMeta(context);
@@ -698,12 +699,11 @@ export const readFriendRequests = async (
 	}
 
 	const errs: ApiError[] = [];
+	const { usernames } = args;
 
-	// ts bug
 	// tslint:disable-next-line
-	for (const arg in args) {
-		// @ts-ignore
-		const { username } = arg;
+	for (let i = 0; i < usernames.length; i++) {
+		const username = usernames[i];
 		const friendRequestExists = await checkIfFriendRequestExists(context, owner, username);
 		if (!friendRequestExists) {
 			errs.push(new ApiError(`friend request does not exist to remove on ${username}`));
@@ -725,7 +725,7 @@ export const readFriendRequests = async (
 
 export const readFriendResponses = async (
 	context: IContext,
-	args: IClearFriendResponseInput[],
+	args: IReadFriendRequestInput,
 	callback: IGunCallback<null>,
 ) => {
 	const { account } = context;
@@ -739,12 +739,11 @@ export const readFriendResponses = async (
 	}
 
 	const errs: ApiError[] = [];
+	const { usernames } = args;
 
-	// ts bug
 	// tslint:disable-next-line
-	for (const arg in args) {
-		// @ts-ignore
-		const { username } = arg;
+	for (let i = 0; i < usernames.length; i++) {
+		const username = usernames[i];
 		const friendResponseExists = await checkIfFriendResponseExists(context, username);
 		if (!friendResponseExists) {
 			errs.push(new ApiError(`friend response does not exist to remove on ${username}`));

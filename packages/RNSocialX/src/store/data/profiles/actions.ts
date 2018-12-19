@@ -1,4 +1,4 @@
-import { IAcceptFriendInput, IPostReturnData, IUpdateProfileInput } from '@socialx/api-data';
+import { IPostReturnData, IUpdateProfileInput } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
@@ -14,7 +14,7 @@ import {
 	IAddPostsToProfileInput,
 	IAliasInput,
 	IClearFriendResponseAction,
-	IClearSearchResultsActions,
+	IClearSearchResultsAction,
 	IFriendInput,
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
@@ -32,6 +32,7 @@ import {
 	ISearchWithProfilesInput,
 	ISyncAcceptFriendAction,
 	ISyncAddFriendAction,
+	ISyncExternalProfilesAction,
 	ISyncFriendsInput,
 	ISyncGetCurrentFriendsAction,
 	ISyncGetCurrentProfileAction,
@@ -687,6 +688,18 @@ export const searchForProfiles = (input: ISearchInput): IThunk => async (
  * 	Removes the previously searched profiles from the store
  */
 
-export const clearSearchResults: ActionCreator<IClearSearchResultsActions> = () => ({
+export const clearSearchResults: ActionCreator<IClearSearchResultsAction> = () => ({
 	type: ActionTypes.CLEAR_SEARCH_RESULTS,
+});
+
+/**
+ * 	Syncs the store with the profiles received from notifications
+ *  @param profiles an array of the profiles to be synced with the store
+ */
+
+export const syncExternalProfiles: ActionCreator<ISyncExternalProfilesAction> = (
+	profiles: IProfile[],
+) => ({
+	type: ActionTypes.SYNC_EXTERNAL_PROFILES,
+	payload: profiles,
 });

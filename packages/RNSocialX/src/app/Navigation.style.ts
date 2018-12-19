@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import { OS_TYPES } from '../environment/consts';
-import { Colors } from '../environment/theme';
+import { Colors, Sizes } from '../environment/theme';
 
 const styles: any = {
 	activeTintColor: Colors.pink,

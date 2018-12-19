@@ -350,6 +350,27 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.SYNC_EXTERNAL_PROFILES: {
+			const profiles = { ...state.profiles };
+
+			for (const profile of action.payload) {
+				if (!profiles[profile.alias]) {
+					profiles[profile.alias] = {
+						...profile,
+						posts:
+							profiles[profile.alias] && profiles[profile.alias].posts
+								? profiles[profile.alias].posts
+								: [],
+					};
+				}
+			}
+
+			return {
+				...state,
+				profiles,
+			};
+		}
+
 		case 'RESET_STORE': {
 			return initialState;
 		}

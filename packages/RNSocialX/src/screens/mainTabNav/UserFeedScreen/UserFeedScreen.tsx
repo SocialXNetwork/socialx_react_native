@@ -22,18 +22,20 @@ export interface IFeedProps {
 	feedType: FEED_TYPES;
 }
 
-type IUserFeedScreenProps = INavigationProps &
+type IProps = INavigationProps &
 	IFeedProps &
 	IWithUserFeedEnhancedData &
 	IWithUserFeedEnhancedActions;
 
-interface IUserFeedScreenState {
+interface IState {
 	loaded: boolean;
+	scrollY: number;
 }
 
-export class Screen extends React.Component<IUserFeedScreenProps, IUserFeedScreenState> {
+export class Screen extends React.Component<IProps, IState> {
 	public state = {
 		loaded: false,
+		scrollY: 0,
 	};
 
 	private listRef: React.RefObject<FlatList<string>> = React.createRef();

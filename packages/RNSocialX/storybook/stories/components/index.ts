@@ -1,5 +1,3 @@
-import './modals/WalletModal';
-
 import './avatar/AvatarImage';
 import './avatar/AvatarName';
 import './avatar/AvatarPicker';
@@ -54,14 +52,15 @@ import './interaction/TrendingCategoriesCarousel';
 import './interaction/TrendingContentCarousel';
 import './interaction/VideoPlayer';
 
-import './modals/ActivityIndicatorModal';
-import './modals/ConfirmationModal';
+import './modals/ActivityIndicator';
+import './modals/Confirmation';
 import './modals/InputSMSCodeModal';
-import './modals/MediaInfoModal';
-import './modals/OfflineOverlayModal';
-import './modals/OptionsMenuModal';
-import './modals/ReportProblemModal';
+import './modals/MediaInfo';
+import './modals/OfflineOverlay';
+import './modals/OptionsMenu';
+import './modals/ReportProblem';
 import './modals/TagFriendsModal';
+import './modals/WalletModal';
 
 import './navigation/HeaderButton';
 import './navigation/HeaderLogo';

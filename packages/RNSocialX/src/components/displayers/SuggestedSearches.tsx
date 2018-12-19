@@ -20,7 +20,7 @@ export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 		return (
 			<View style={styles.container}>
 				<Text style={styles.title}>{getText('search.suggested')}</Text>
-				<UserEntries aliases={suggestions} onEntryPress={onResultPress} />
+				<UserEntries aliases={suggestions} scroll={false} onEntryPress={onResultPress} />
 			</View>
 		);
 	}

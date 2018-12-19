@@ -129,6 +129,7 @@ export enum NAVIGATION {
 export enum TABS {
 	Feed = 'UserFeedTab',
 	Search = 'SearchTab',
+	Photo = 'PhotoTab',
 	Notifications = 'NotificationsTab',
 	Profile = 'MyProfileTab',
 }
@@ -139,3 +140,4 @@ export enum IMAGE_PICKER_TYPES {
 }
 
 export const HEART_ANIMATION_TIME = 1000;
+export const USER_AVATAR_PLACEHOLDER = 'QmZgsU2Syps515N6xYFcLoL6u9pyqcvzNdz5xUtZQM7oV9';

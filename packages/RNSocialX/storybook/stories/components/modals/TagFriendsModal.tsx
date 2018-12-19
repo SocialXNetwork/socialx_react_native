@@ -67,7 +67,6 @@ storiesOf('Components/modals', module)
 				selectTagUserInModal={action('SelectTagUserInModal')}
 				onDismiss={action('onDismiss')}
 				onModalHide={action('onModalHide')}
-				marginBottom={125}
 				getText={getTextMock}
 			/>
 		);

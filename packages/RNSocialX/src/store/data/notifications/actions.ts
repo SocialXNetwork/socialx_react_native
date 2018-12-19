@@ -1,21 +1,18 @@
-import {
-	ICreateNotification,
-	IFriendRequest,
-	IFriendResponse,
-	INotificationReturnData,
-} from '@socialx/api-data';
+import { ICreateNotification } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
+import { NOTIFICATION_TYPES } from '../../../environment/consts';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { syncExternalProfiles } from '../profiles';
 import {
 	ActionTypes,
 	ICreateNotificationAction,
 	IGetNotificationsAction,
 	IHookNotificationsAction,
-	ISyncFriendRequestsAction,
-	ISyncFriendResponsesAction,
+	IMarkNotificationsAsReadAction,
+	INotifications,
 	ISyncNotificationsAction,
 } from './Types';
 
@@ -55,13 +52,13 @@ export const createNotification = (createNotificationInput: ICreateNotification)
 };
 
 export const getNotificationsAction: ActionCreator<IGetNotificationsAction> = () => ({
-	type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
+	type: ActionTypes.GET_NOTIFICATIONS,
 });
 
 export const syncNotificationsAction: ActionCreator<ISyncNotificationsAction> = (
-	notifications: INotificationReturnData[],
+	notifications: INotifications,
 ) => ({
-	type: ActionTypes.SYNC_CURRENT_NOTIFICATIONS,
+	type: ActionTypes.SYNC_NOTIFICATIONS,
 	payload: notifications,
 });
 
@@ -73,7 +70,7 @@ export const getNotifications = (): IThunk => async (dispatch, getState, context
 		await dispatch(
 			beginActivity({
 				uuid: activityId,
-				type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
+				type: ActionTypes.GET_NOTIFICATIONS,
 			}),
 		);
 
@@ -82,7 +79,7 @@ export const getNotifications = (): IThunk => async (dispatch, getState, context
 	} catch (e) {
 		await dispatch(
 			setError({
-				type: ActionTypes.GET_CURRENT_NOTIFICATIONS,
+				type: ActionTypes.GET_NOTIFICATIONS,
 				error: e.message,
 				uuid: uuid(),
 			}),
@@ -96,27 +93,58 @@ export const hookNotificationsAction: ActionCreator<IHookNotificationsAction> = 
 	type: ActionTypes.HOOK_NOTIFICATIONS,
 });
 
-export const syncFriendRequestsAction: ActionCreator<ISyncFriendRequestsAction> = (
-	friendRequests: IFriendRequest[],
-) => ({
-	type: ActionTypes.SYNC_FRIEND_REQUESTS,
-	payload: friendRequests,
-});
-
-export const syncFriendResponsesAction: ActionCreator<ISyncFriendResponsesAction> = (
-	friendResponses: IFriendResponse[],
-) => ({
-	type: ActionTypes.SYNC_FRIEND_RESPONSES,
-	payload: friendResponses,
-});
-
 export const hookNotifications = (): IThunk => async (dispatch, getState, context) => {
 	dispatch(hookNotificationsAction());
 
-	context.dataApi.hooks.hookFriendRequests((friendRequests) =>
-		dispatch(syncFriendRequestsAction(friendRequests)),
-	);
-	context.dataApi.hooks.hookFriendResponses((friendResponses) =>
-		dispatch(syncFriendResponsesAction(friendResponses)),
-	);
+	await context.dataApi.hooks.hookFriendRequests((friendRequests) => {
+		dispatch(syncNotificationsAction(friendRequests.requests));
+		dispatch(syncExternalProfiles(friendRequests.profiles));
+	});
+	await context.dataApi.hooks.hookFriendResponses((friendResponses) => {
+		dispatch(syncNotificationsAction(friendResponses.responses));
+		dispatch(syncExternalProfiles(friendResponses.profiles));
+	});
+};
+
+const markNotificationsAsReadAction: ActionCreator<IMarkNotificationsAsReadAction> = () => ({
+	type: ActionTypes.MARK_NOTIFICATIONS_AS_READ,
+});
+
+export const markNotificationsAsRead = (): IThunk => async (dispatch, getState, context) => {
+	const activityId = uuid();
+	const { all, unread } = getState().data.notifications;
+
+	const unreadReqs = [];
+	const unreadResps = [];
+
+	for (const id of unread) {
+		if (all[id].type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
+			unreadReqs.push(all[id].owner.alias);
+		} else {
+			unreadResps.push(all[id].owner.alias);
+		}
+	}
+
+	try {
+		dispatch(markNotificationsAsReadAction());
+		await dispatch(
+			beginActivity({
+				uuid: activityId,
+				type: ActionTypes.MARK_NOTIFICATIONS_AS_READ,
+			}),
+		);
+
+		await context.dataApi.profiles.readFriendRequests({ usernames: unreadReqs });
+		await context.dataApi.profiles.readFriendRequests({ usernames: unreadResps });
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.MARK_NOTIFICATIONS_AS_READ,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
+	}
 };

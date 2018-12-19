@@ -3,20 +3,17 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { Colors, colorWithAlpha } from '../../environment/theme';
 
-interface IActivityIndicatorModalProps {
+interface IProps {
 	visible: boolean;
 	alpha: number;
 	loader?: boolean;
 }
 
-export const TransparentOverlayModal: React.SFC<IActivityIndicatorModalProps> = ({
-	visible,
-	alpha,
-	loader,
-}) => (
+export const TransparentOverlay: React.SFC<IProps> = ({ visible, alpha, loader }) => (
 	<View
 		pointerEvents={visible ? 'auto' : 'none'}
 		style={[
+			StyleSheet.absoluteFill,
 			styles.container,
 			{
 				backgroundColor: visible ? colorWithAlpha(Colors.black, alpha) : Colors.transparent,
@@ -29,36 +26,9 @@ export const TransparentOverlayModal: React.SFC<IActivityIndicatorModalProps> = 
 
 const styles = StyleSheet.create({
 	container: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		bottom: 0,
-		right: 0,
 		width: '100%',
 		height: '100%',
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
 });
-
-/**
- * Sample usage below:
- */
-
-// private showAndHideTransparentOverlay = () => {
-//   this.props.setGlobal({
-//     transparentOverlay: {
-//       visible: true,
-//       alpha: 0.5,
-//     },
-//   });
-//   setTimeout(
-//     () =>
-//       this.props.setGlobal({
-//         transparentOverlay: {
-//           visible: false,
-//         },
-//       }),
-//     2000,
-//   );
-// };

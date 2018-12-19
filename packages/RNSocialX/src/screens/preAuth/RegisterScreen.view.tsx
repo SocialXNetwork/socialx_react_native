@@ -155,13 +155,14 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								placeholderColor={colors.paleSky}
 								borderColor={colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
+								keyboardType={TKeyboardKeys.emailAddress}
 								value={email}
+								persistKeyboard={true}
 								onChangeText={(value: string) => {
 									setFieldValue('email', value);
 									setFieldTouched('email');
 								}}
 								onSubmitPressed={() => nameRef.current && nameRef.current.focusInput()}
-								keyboardType={TKeyboardKeys.emailAddress}
 							/>
 							<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
 						</View>
@@ -175,6 +176,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								returnKeyType={TRKeyboardKeys.next}
 								value={name}
 								ref={nameRef}
+								persistKeyboard={true}
 								onChangeText={(value: string) => {
 									setFieldValue('name', value);
 									setFieldTouched('name');
@@ -192,6 +194,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								returnKeyType={TRKeyboardKeys.next}
 								value={userName}
 								ref={usernameRef}
+								persistKeyboard={true}
 								onChangeText={(value: string) => {
 									setFieldValue('userName', value);
 									setFieldTouched('userName');
@@ -213,6 +216,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								returnKeyType={TRKeyboardKeys.next}
 								value={password}
 								ref={passwordRef}
+								persistKeyboard={true}
 								onChangeText={(value: string) => {
 									setFieldValue('password', value);
 									setFieldTouched('password');
@@ -236,11 +240,11 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								returnKeyType={TRKeyboardKeys.done}
 								value={confirmPassword}
 								ref={confirmPasswordRef}
+								blurOnSubmit={true}
 								onChangeText={(value: string) => {
 									setFieldValue('confirmPassword', value);
 									setFieldTouched('confirmPassword');
 								}}
-								blurOnSubmit={true}
 							/>
 							<ErrorMessage
 								text={errors.confirmPassword}

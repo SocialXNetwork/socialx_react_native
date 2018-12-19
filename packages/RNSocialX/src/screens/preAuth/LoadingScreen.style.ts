@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(40);
 const SMALL_AVATAR_SIZE = Sizes.smartHorizontalScale(25);
@@ -10,24 +10,23 @@ const styles: any = {
 		flex: 1,
 		backgroundColor: Colors.white,
 	},
-	topTabs: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-around',
-		height: Sizes.smartVerticalScale(60),
-	},
-	topTab: {
-		width: '25%',
-		height: Sizes.smartHorizontalScale(15),
-		borderRadius: Sizes.smartHorizontalScale(4),
-		backgroundColor: Colors.geyser,
-	},
-	share: {
-		flexDirection: 'row',
-		alignItems: 'center',
+	top: {
+		justifyContent: 'center',
 		width: '100%',
-		height: Sizes.smartVerticalScale(50),
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
+		paddingTop: Sizes.smartVerticalScale(16),
+		paddingBottom: Sizes.smartVerticalScale(10),
+	},
+	textContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'flex-end',
+		marginBottom: Sizes.smartVerticalScale(10),
+	},
+	text: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(14),
+		color: Colors.shuttleGray,
 	},
 	avatar: {
 		width: AVATAR_SIZE,
@@ -35,12 +34,6 @@ const styles: any = {
 		borderRadius: AVATAR_SIZE / 2,
 		backgroundColor: Colors.geyser,
 		marginRight: Sizes.smartHorizontalScale(15),
-	},
-	shareText: {
-		height: Sizes.smartHorizontalScale(20),
-		borderRadius: Sizes.smartHorizontalScale(3),
-		backgroundColor: Colors.geyser,
-		width: '80%',
 	},
 	separator: {
 		height: Sizes.smartHorizontalScale(8),
@@ -56,6 +49,13 @@ const styles: any = {
 		flexDirection: 'row',
 	},
 	column: { flex: 1 },
+	image: {
+		width: '100%',
+		height: Sizes.smartHorizontalScale(200),
+		borderRadius: Sizes.smartHorizontalScale(5),
+		backgroundColor: Colors.geyser,
+		marginBottom: Sizes.smartVerticalScale(10),
+	},
 	name: {
 		height: Sizes.smartHorizontalScale(15),
 		borderRadius: Sizes.smartHorizontalScale(5),
@@ -108,7 +108,7 @@ const styles: any = {
 		backgroundColor: Colors.geyser,
 		width: '25%',
 	},
-	bottomTabs: {
+	tabs: {
 		paddingVertical: Sizes.smartVerticalScale(12),
 		width: '100%',
 		backgroundColor: Colors.alabaster,
@@ -117,7 +117,7 @@ const styles: any = {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 	},
-	bottomTab: {
+	tab: {
 		height: Sizes.smartHorizontalScale(25),
 		width: Sizes.smartHorizontalScale(25),
 		borderRadius: Sizes.smartHorizontalScale(3),
