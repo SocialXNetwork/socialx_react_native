@@ -20,7 +20,7 @@ export const publicProfilesRecord = (context: IContext) => {
 
 export const publicProfileByUsername = (context: IContext, username: string) => {
 	const { gun } = context;
-	return gun.path(`${TABLES.PROFILES}.${username}`);
+	return gun.get(TABLES.PROFILES).get(username);
 };
 
 export const privateUserProfileByUserObj = (context: IContext, userObject: IUserObject) => {

@@ -139,7 +139,7 @@ const checkIfUserFriendExists = (context: IContext, username: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -156,7 +156,7 @@ const checkIfFriendRequestExists = (context: IContext, to: string, from: string)
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -177,7 +177,7 @@ const checkIfAlreadyFriends = (context: IContext, username: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -194,7 +194,7 @@ const checkIfFriendResponseExists = (context: IContext, from: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -230,7 +230,7 @@ const checkIfUserHasRequest = (context: IContext, from: string) => {
 				}
 				res(false);
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
@@ -248,7 +248,7 @@ const getTargetedUserAndCreateRequest = (context: IContext, username: string) =>
 				}
 				res();
 			},
-			{ wait: 500 },
+			{ wait: 1000 },
 		),
 	);
 };
