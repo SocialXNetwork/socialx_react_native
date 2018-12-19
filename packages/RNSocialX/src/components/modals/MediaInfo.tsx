@@ -13,17 +13,10 @@ interface IProps extends ITranslatedProps {
 	hash: string;
 	size: number;
 	type: IMediaTypes;
-	onCloseHandler: () => void;
+	onClose: () => void;
 }
 
-export const MediaInfo: React.SFC<IProps> = ({
-	visible,
-	hash,
-	size,
-	type,
-	onCloseHandler,
-	getText,
-}) => (
+export const MediaInfo: React.SFC<IProps> = ({ visible, hash, size, type, onClose, getText }) => (
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onModalHide, onDismiss }) => (
 			<Modal
@@ -33,8 +26,8 @@ export const MediaInfo: React.SFC<IProps> = ({
 				backdropOpacity={0.5}
 				animationIn="zoomIn"
 				animationOut="zoomOut"
-				onBackButtonPress={onCloseHandler}
-				onBackdropPress={onCloseHandler}
+				onBackButtonPress={onClose}
+				onBackdropPress={onClose}
 				style={styles.container}
 			>
 				<View style={styles.boxContainer}>

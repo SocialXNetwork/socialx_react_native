@@ -19,6 +19,18 @@ export const selectPost = createSelector(
 	(post) => post,
 );
 
+export const selectNumberOfPostLikes = createSelector(
+	(state: IApplicationState, props: { postId: string }) =>
+		state.data.posts.all[props.postId].likes.ids.length,
+	(likes) => likes,
+);
+
+export const selectNumberOfPostComments = createSelector(
+	(state: IApplicationState, props: { postId: string }) =>
+		state.data.posts.all[props.postId].comments.length,
+	(comments) => comments,
+);
+
 export const selectNotification = createSelector(
 	(state: IApplicationState, props: { id: string }) => state.data.notifications.all[props.id],
 	(notification) => notification,

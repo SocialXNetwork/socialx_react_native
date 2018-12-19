@@ -3,8 +3,11 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
-import { IPost } from '../../store/data/posts';
-import { IApplicationState, selectPost } from '../../store/selectors';
+import {
+	IApplicationState,
+	selectNumberOfPostComments,
+	selectNumberOfPostLikes,
+} from '../../store/selectors';
 
 import { LikeAnimatingButton } from './LikeAnimatingButton';
 import styles from './MediaInteractionButtons.style';
@@ -12,50 +15,44 @@ import styles from './MediaInteractionButtons.style';
 interface IMediaInteractionButtonsProps {
 	postId: string;
 	likedByCurrentUser: boolean;
+	disabled?: boolean;
 	onCommentPress: () => void;
 	onLikePress: () => void;
 }
 
 interface IProps extends IMediaInteractionButtonsProps {
-	post: IPost;
+	likes: number;
+	comments: number;
 }
 
 const Component: React.SFC<IProps> = ({
-	post,
+	likes,
+	comments,
 	likedByCurrentUser,
+	disabled,
 	onLikePress,
 	onCommentPress,
-}) => {
-	const numberOfLikes = post.likes.ids.length || 0;
-	const numberOfComments = post.comments.length || 0;
-	const hasLikesOrComments = numberOfComments > 0 || numberOfLikes > 0;
-
-	return (
-		<View style={styles.actionButtons}>
-			<View style={styles.likesContainer}>
-				<LikeAnimatingButton
-					likedByCurrentUser={likedByCurrentUser}
-					secondary={true}
-					onLikePost={onLikePress}
-				/>
-				{hasLikesOrComments && numberOfLikes > 0 && (
-					<Text style={styles.infoText}>{numberOfLikes}</Text>
-				)}
-			</View>
-			<TouchableOpacity style={styles.commentsContainer} onPress={onCommentPress}>
-				<View style={styles.commentsIconContainer}>
-					<Icon name="comment-o" style={styles.iconStyle} />
-				</View>
-				{hasLikesOrComments && numberOfComments > 0 && (
-					<Text style={styles.infoText}>{numberOfComments}</Text>
-				)}
-			</TouchableOpacity>
+}) => (
+	<View style={styles.container}>
+		<View style={styles.likes}>
+			<LikeAnimatingButton
+				likedByCurrentUser={likedByCurrentUser}
+				secondary={true}
+				disabled={disabled}
+				onLikePost={onLikePress}
+			/>
+			{likes > 0 && <Text style={styles.text}>{likes}</Text>}
 		</View>
-	);
-};
+		<TouchableOpacity disabled={disabled} onPress={onCommentPress} style={styles.comments}>
+			<Icon name="comment-o" style={styles.icon} />
+			{comments > 0 && <Text style={styles.text}>{comments}</Text>}
+		</TouchableOpacity>
+	</View>
+);
 
 const mapStateToProps = (state: IApplicationState, props: IMediaInteractionButtonsProps) => ({
-	post: selectPost(state, props),
+	likes: selectNumberOfPostLikes(state, props),
+	comments: selectNumberOfPostComments(state, props),
 });
 
-export const MediaInteractionButtons = connect(mapStateToProps)(Component as any) as any;
+export const MediaInteractionButtons = connect(mapStateToProps)(Component as any);

@@ -32,7 +32,8 @@ export const ViewAllComments: React.SFC<IViewAllCommentsProps> = ({
 const style: any = {
 	container: {
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
-		paddingBottom: Sizes.smartVerticalScale(5),
+		paddingTop: Sizes.smartVerticalScale(5),
+		paddingBottom: Sizes.smartVerticalScale(2.5),
 	},
 	text: {
 		...Fonts.centuryGothic,

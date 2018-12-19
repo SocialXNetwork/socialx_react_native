@@ -1,55 +1,52 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 
 const INFO_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
 const styles: any = {
 	container: {
+		flex: 1,
 		backgroundColor: Colors.black,
-		flex: 1,
 	},
-	carouselContainer: {
-		flex: 1,
+	controls: {
+		position: 'absolute',
+		top: 0,
 		width: '100%',
-	},
-	carouselMediaObject: {
-		height: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	screenFooter: {
+		paddingTop: Sizes.smartVerticalScale(20),
 		zIndex: 2,
+	},
+	interaction: {
 		position: 'absolute',
 		width: '100%',
 		bottom: 0,
+		paddingBottom: Sizes.smartVerticalScale(20),
+		zIndex: 2,
 	},
-	paginationContainer: {
-		alignItems: 'center',
+	buttons: {
 		width: '100%',
-		paddingBottom: Sizes.smartVerticalScale(10),
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		paddingVertical: Sizes.smartVerticalScale(10),
 	},
-	paginationText: {
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.dustWhite,
+	button: {
+		width: INFO_BUTTON_SIZE,
+		height: INFO_BUTTON_SIZE,
+		justifyContent: 'center',
 	},
-	infoIcon: {
+	right: {
+		alignItems: 'flex-end',
+	},
+	icon: {
 		color: Colors.white,
 		fontSize: Sizes.smartHorizontalScale(30),
 	},
-	infoButton: {
-		position: 'absolute',
-		right: 0,
-		width: INFO_BUTTON_SIZE,
-		height: INFO_BUTTON_SIZE,
-		alignItems: 'center',
-		justifyContent: 'center',
+	carousel: {
+		flex: 1,
+		width: '100%',
 	},
-	closeButton: {
-		position: 'absolute',
-		right: 0,
-		width: INFO_BUTTON_SIZE,
-		height: INFO_BUTTON_SIZE,
+	media: {
+		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

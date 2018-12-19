@@ -7,7 +7,7 @@ const styles: any = {
 		height: Sizes.smartVerticalScale(45),
 		justifyContent: 'center',
 		flexDirection: 'row',
-		paddingHorizontal: Sizes.horizontalScale(15),
+		paddingHorizontal: Sizes.smartVerticalScale(16),
 	},
 	left: {
 		flex: 1,

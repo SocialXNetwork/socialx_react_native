@@ -10,7 +10,6 @@ import com.beefe.picker.PickerViewPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import com.bugsnag.BugsnagReactNative;
-import com.reactnative.photoview.PhotoViewPackage;
 import com.horcrux.svg.SvgPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -52,7 +51,6 @@ public class MainApplication extends Application implements ReactApplication {
             new OrientationPackage(),
             new RCTSplashScreenPackage(),
             BugsnagReactNative.getPackage(),
-            new PhotoViewPackage(),
             new SvgPackage(),
             new ReactVideoPackage(),
             new RNDeviceInfo(),

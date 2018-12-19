@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Dimensions, Platform } from 'react-native';
-import Orientation, { orientation as ORIENTATION_TYPES } from 'react-native-orientation';
+import { Animated, Dimensions, LayoutChangeEvent } from 'react-native';
 
-import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
-import { INavigationProps } from '../../types';
+import { INavigationProps, IOnMove } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 import {
@@ -18,84 +16,93 @@ import {
 	WithMediaViewer,
 } from '../../enhancers/screens';
 
-interface IMediaViewerScreenState {
-	orientation: string;
-	activeSlide: number;
-	viewport: {
-		width: number;
-	};
-	infoVisible: boolean;
-}
+const VIEWPORT = Dimensions.get('window');
 
-type IMediaViewerScreenProps = INavigationProps &
+type IProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions &
 	IWithLikingEnhancedActions &
 	IWithNavigationHandlersEnhancedActions;
 
-class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreenState> {
+interface IState {
+	activeSlide: number;
+	viewport: {
+		width: number;
+	};
+	isOverlayVisible: boolean;
+	isInfoVisible: boolean;
+	scrollable: boolean;
+}
+
+class Screen extends React.Component<IProps, IState> {
 	public state = {
-		orientation: DeviceOrientations.Portrait,
 		activeSlide: this.props.startIndex,
-		viewport: {
-			width: Dimensions.get('window').width,
-		},
-		infoVisible: false,
+		viewport: VIEWPORT,
+		isOverlayVisible: true,
+		isInfoVisible: false,
+		scrollable: true,
 	};
 
-	public componentDidMount() {
-		// due to Android problems with Carousel on orientation change enable tilt only on iOS
-		if (Platform.OS === OS_TYPES.IOS) {
-			Orientation.unlockAllOrientations();
-			Orientation.addOrientationListener(this.onOrientationChangeHandler);
-		}
-	}
+	private opacity = new Animated.Value(1);
 
-	public componentWillUnmount() {
-		if (Platform.OS === OS_TYPES.IOS) {
-			Orientation.lockToPortrait();
-			Orientation.removeOrientationListener(this.onOrientationChangeHandler);
-		}
+	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
+		return (
+			this.props.post !== nextProps.post ||
+			this.state.activeSlide !== nextState.activeSlide ||
+			this.state.viewport !== nextState.viewport ||
+			this.state.isInfoVisible !== nextState.isInfoVisible ||
+			this.state.scrollable !== nextState.scrollable
+		);
 	}
 
 	public render() {
 		const { media, startIndex, post, onLikePost, onViewComments, onGoBack, getText } = this.props;
-		const { orientation, activeSlide, viewport, infoVisible } = this.state;
+		const { activeSlide, viewport, isInfoVisible, isOverlayVisible, scrollable } = this.state;
 
 		return (
 			<MediaViewerScreenView
 				media={media}
 				startIndex={startIndex}
-				orientation={orientation}
 				activeSlide={activeSlide}
 				viewport={viewport}
-				infoVisible={infoVisible}
-				isPost={post !== null}
+				isInfoVisible={isInfoVisible}
+				isOverlayVisible={isOverlayVisible}
 				likedByCurrentUser={post ? post.likedByCurrentUser : false}
+				scrollable={scrollable}
+				opacity={this.opacity}
+				toggleOverlay={this.toggleOverlay}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
 				onLayout={this.onLayoutHandler}
-				onExitFullScreen={this.onExitFullScreenHandler}
 				onLikePress={() => onLikePost(post!.postId)}
 				onCommentPress={() => onViewComments(post!.postId, false)}
-				onClose={onGoBack}
+				onMove={this.onMoveHandler}
+				onExit={onGoBack}
 				getText={getText}
 			/>
 		);
 	}
 
-	private onOrientationChangeHandler = (orientation: ORIENTATION_TYPES) => {
-		this.setState({ orientation });
+	private onMoveHandler = (position?: IOnMove) => {
+		if (position) {
+			const { scale } = position;
+
+			if (scale === 1 && !this.state.scrollable) {
+				this.toggleOverlay();
+				this.setState({ scrollable: true });
+			} else if (scale !== 1 && this.state.scrollable) {
+				this.toggleOverlay();
+				this.setState({ scrollable: false });
+			}
+		}
 	};
 
 	private onChangeSlideHandler = (index: number) => {
 		this.setState({ activeSlide: index });
 	};
 
-	private onLayoutHandler = (event: {
-		nativeEvent: { layout: { width: number; height: number } };
-	}) => {
+	private onLayoutHandler = (event: LayoutChangeEvent) => {
 		this.setState({
 			viewport: {
 				width: event.nativeEvent.layout.width,
@@ -103,24 +110,34 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 		});
 	};
 
-	private onExitFullScreenHandler = () => {
-		const timeoutBeforeAllowAgainAllOrientation = Platform.OS === OS_TYPES.IOS ? 100 : 5000;
-		Orientation.lockToPortrait();
-		setTimeout(() => {
-			Orientation.unlockAllOrientations();
-		}, timeoutBeforeAllowAgainAllOrientation);
-	};
-
 	private onShowInfoHandler = () => {
 		this.setState({
-			infoVisible: true,
+			isInfoVisible: true,
 		});
 	};
 
 	private onCloseInfoHandler = () => {
 		this.setState({
-			infoVisible: false,
+			isInfoVisible: false,
 		});
+	};
+
+	private toggleOverlay = () => {
+		if (this.state.isOverlayVisible) {
+			this.setState({ isOverlayVisible: false });
+			Animated.timing(this.opacity, {
+				toValue: 0,
+				duration: 250,
+				useNativeDriver: true,
+			}).start();
+		} else {
+			this.setState({ isOverlayVisible: true });
+			Animated.timing(this.opacity, {
+				toValue: 1,
+				duration: 250,
+				useNativeDriver: true,
+			}).start();
+		}
 	};
 }
 

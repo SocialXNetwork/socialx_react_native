@@ -1,5 +1,7 @@
 import * as React from 'react';
+import { Platform, StatusBar } from 'react-native';
 
+import { OS_TYPES } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { LikesScreenView } from './LikesScreen.view';
 
@@ -19,7 +21,13 @@ type ILikesScreenProps = INavigationProps &
 	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<ILikesScreenProps> {
-	render() {
+	public componentDidMount() {
+		if (Platform.OS === OS_TYPES.IOS) {
+			StatusBar.setBarStyle('light-content', true);
+		}
+	}
+
+	public render() {
 		return (
 			<LikesScreenView
 				likeIds={this.props.likeIds}

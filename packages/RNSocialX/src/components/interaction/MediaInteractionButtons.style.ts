@@ -1,51 +1,36 @@
 import { StyleSheet } from 'react-native';
-import { Colors, colorWithAlpha, Fonts, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
-	mediaInfoSection: {
-		width: '100%',
-		paddingBottom: Sizes.smartVerticalScale(10),
-		paddingHorizontal: Sizes.smartHorizontalScale(15),
+	container: {
 		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginHorizontal: Sizes.smartHorizontalScale(16),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		paddingTop: Sizes.smartVerticalScale(10),
+		borderTopColor: Colors.white,
+		borderTopWidth: Sizes.smartVerticalScale(1),
 	},
-	infoText: {
+	text: {
 		...Fonts.centuryGothic,
 		color: Colors.white,
 		fontSize: Sizes.smartHorizontalScale(16),
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
-	actionButtons: {
-		flex: 1,
-		paddingTop: Sizes.smartVerticalScale(5),
-		marginHorizontal: Sizes.smartHorizontalScale(10),
+	likes: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		borderTopColor: colorWithAlpha(Colors.white, 0.5),
-		borderTopWidth: Sizes.smartVerticalScale(1),
-	},
-	likesContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
 		justifyContent: 'center',
-	},
-	commentsContainer: {
-		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
-		marginRight: Sizes.smartHorizontalScale(5),
 	},
-	commentsIconContainer: {
+	comments: {
 		flexDirection: 'row',
-		paddingHorizontal: Sizes.smartHorizontalScale(5),
-		marginRight: Sizes.smartHorizontalScale(5),
-		marginBottom: Sizes.smartVerticalScale(2),
-		paddingVertical: Sizes.smartVerticalScale(5),
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
-	iconStyle: {
-		fontSize: Sizes.smartHorizontalScale(26),
+	icon: {
+		fontSize: Sizes.smartHorizontalScale(24),
 		color: Colors.white,
-	},
-	textStyle: {
-		color: Colors.white,
+		transform: [{ translateY: -2 }],
 	},
 };
 

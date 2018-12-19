@@ -23,7 +23,7 @@ const styles: any = {
 		position: 'absolute',
 		width: '100%',
 		height: '100%',
-		backgroundColor: colorWithAlpha(Colors.black, 0.5),
+		backgroundColor: colorWithAlpha(Colors.black, 0.75),
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
