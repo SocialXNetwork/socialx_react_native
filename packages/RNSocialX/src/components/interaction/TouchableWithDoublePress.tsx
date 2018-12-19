@@ -2,8 +2,8 @@ import * as React from 'react';
 import { StyleProp, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
 interface ITouchableWithDoublePressProps extends TouchableOpacityProps {
-	onSinglePress: () => void;
-	onDoublePress: () => void;
+	onSinglePress?: () => void;
+	onDoublePress?: () => void;
 	disabled: boolean;
 	style: StyleProp<ViewStyle>;
 }

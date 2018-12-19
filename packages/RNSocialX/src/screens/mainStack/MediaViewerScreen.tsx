@@ -25,6 +25,7 @@ interface IMediaViewerScreenState {
 		width: number;
 	};
 	infoVisible: boolean;
+	scrollable: boolean;
 }
 
 type IMediaViewerScreenProps = INavigationProps &
@@ -41,6 +42,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 			width: Dimensions.get('window').width,
 		},
 		infoVisible: false,
+		scrollable: true,
 	};
 
 	public componentDidMount() {
@@ -60,7 +62,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 
 	public render() {
 		const { media, startIndex, post, onLikePost, onViewComments, onGoBack, getText } = this.props;
-		const { orientation, activeSlide, viewport, infoVisible } = this.state;
+		const { orientation, activeSlide, viewport, infoVisible, scrollable } = this.state;
 
 		return (
 			<MediaViewerScreenView
@@ -80,10 +82,20 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				onLikePress={() => onLikePost(post!.postId)}
 				onCommentPress={() => onViewComments(post!.postId, false)}
 				onClose={onGoBack}
+				onMove={this.onMoveHandler}
+				onZoomScroll={scrollable}
 				getText={getText}
 			/>
 		);
 	}
+
+	private onMoveHandler = ({ scale }: { scale: number }) => {
+		if (scale === 2 && this.state.scrollable) {
+			this.setState({ scrollable: false });
+		} else if (scale === 1 && !this.state.scrollable) {
+			this.setState({ scrollable: true });
+		}
+	};
 
 	private onOrientationChangeHandler = (orientation: ORIENTATION_TYPES) => {
 		this.setState({ orientation });

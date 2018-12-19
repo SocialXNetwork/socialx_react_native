@@ -67,6 +67,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	};
 	infoVisible: boolean;
 	isPost: boolean;
+	onZoomScroll: boolean;
 	likedByCurrentUser: boolean;
 	onChangeSlide: (index: number) => void;
 	onLayout: (event: any) => void;
@@ -76,6 +77,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	onClose: () => void;
 	onCommentPress: () => void;
 	onLikePress: () => void;
+	onMove: ({ scale }: { scale: number }) => void;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
@@ -86,6 +88,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	activeSlide,
 	onChangeSlide,
 	infoVisible,
+	onZoomScroll,
 	isPost,
 	likedByCurrentUser,
 	onLayout,
@@ -95,6 +98,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	onClose,
 	onCommentPress,
 	onLikePress,
+	onMove,
 	getText,
 }) => {
 	const currentMedia = media[activeSlide];
@@ -123,11 +127,14 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 								thumbOnly={false}
 								getText={getText}
 								style={[styles.carouselMediaObject, { width: viewport.width }]}
+								fullscreen={true}
+								onMove={onMove}
 							/>
 						)}
 						sliderWidth={viewport.width}
 						itemWidth={viewport.width}
 						firstItem={startIndex}
+						scrollEnabled={onZoomScroll}
 						onSnapToItem={onChangeSlide}
 						{...Platform.select({
 							android: {
