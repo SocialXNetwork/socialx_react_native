@@ -9,8 +9,8 @@ import * as React from 'react';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import { SafeAreaView } from 'react-navigation';
+
 import {
 	CloseButton as CloseModal,
 	Header,
@@ -19,7 +19,7 @@ import {
 	MediaObjectViewer,
 } from '../../components';
 import { DeviceOrientations } from '../../environment/consts';
-import { IMedia, ITranslatedProps } from '../../types';
+import { IMedia, IOnMove, ITranslatedProps } from '../../types';
 
 import styles from './MediaViewerScreen.style';
 
@@ -67,8 +67,8 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	};
 	infoVisible: boolean;
 	isPost: boolean;
-	onZoomScroll: boolean;
 	likedByCurrentUser: boolean;
+	scrollable: boolean;
 	onChangeSlide: (index: number) => void;
 	onLayout: (event: any) => void;
 	onShowInfo: () => void;
@@ -77,7 +77,7 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	onClose: () => void;
 	onCommentPress: () => void;
 	onLikePress: () => void;
-	onMove: ({ scale }: { scale: number }) => void;
+	onMove: (position?: IOnMove) => void;
 }
 
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
@@ -88,9 +88,9 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	activeSlide,
 	onChangeSlide,
 	infoVisible,
-	onZoomScroll,
 	isPost,
 	likedByCurrentUser,
+	scrollable,
 	onLayout,
 	onShowInfo,
 	onCloseInfo,
@@ -124,17 +124,16 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 								type={item.type}
 								hash={item.hash}
 								resizeMode="contain"
-								thumbOnly={false}
-								getText={getText}
-								style={[styles.carouselMediaObject, { width: viewport.width }]}
 								fullscreen={true}
 								onMove={onMove}
+								style={[styles.carouselMediaObject, { width: viewport.width }]}
+								getText={getText}
 							/>
 						)}
 						sliderWidth={viewport.width}
 						itemWidth={viewport.width}
 						firstItem={startIndex}
-						scrollEnabled={onZoomScroll}
+						scrollEnabled={scrollable}
 						onSnapToItem={onChangeSlide}
 						{...Platform.select({
 							android: {

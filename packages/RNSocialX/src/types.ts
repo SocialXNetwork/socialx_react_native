@@ -119,6 +119,14 @@ export const MediaTypeVideo: IMediaTypes = {
 	category: 'Videos',
 };
 
+export interface IOnMove {
+	type: string;
+	positionX: number;
+	positionY: number;
+	scale: number;
+	zoomCurrentDistance: number;
+}
+
 export interface IMedia {
 	hash: string;
 	type: IMediaTypes;

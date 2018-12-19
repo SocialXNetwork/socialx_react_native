@@ -38,7 +38,6 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 				<MediaObjectViewer
 					key={hash}
 					hash={hash}
-					thumbOnly={true}
 					style={[
 						style.media,
 						{ width: hashes.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8 },
@@ -51,7 +50,6 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 				<MediaObjectViewer
 					key={path}
 					path={path}
-					thumbOnly={true}
 					style={[
 						style.media,
 						{

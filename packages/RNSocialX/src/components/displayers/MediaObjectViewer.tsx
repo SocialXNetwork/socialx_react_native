@@ -4,12 +4,21 @@ import FastImage from 'react-native-fast-image';
 import ImageZoom from 'react-native-image-pan-zoom';
 import * as mime from 'react-native-mime-types';
 
-import styles from './MediaObjectViewer.style';
-
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
-import { IMediaTypes, ITranslatedProps, MediaTypeImage, MediaTypeVideo } from '../../types';
+import {
+	IMediaTypes,
+	IOnMove,
+	ITranslatedProps,
+	MediaTypeImage,
+	MediaTypeVideo,
+} from '../../types';
+
+import styles from './MediaObjectViewer.style';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	hash?: string;
@@ -21,89 +30,65 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
 	onDoublePress?: () => void;
-	onMove?: ({ scale }: { scale: number }) => void;
+	onMove?: (position?: IOnMove) => void;
 }
 
 interface IProps extends IMediaObjectViewerProps {
 	IPFS_URL: string;
 }
 
-interface IState {
-	imageWidth: number;
-	imageHeight: number;
-}
+// interface IState {
+// 	image: {
+// 		width: number;
+// 		height: number;
+// 	};
+// }
 
-const getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: string) => {
-	if (type) {
-		return type.key;
-	} else if (extension) {
-		if (mime.extensions[extension]) {
-			return extension;
+class Component extends React.Component<IProps> {
+	private uri: string = '';
+	private mimeType: string = '';
+	private image: { width: number; height: number } = { width: 200, height: 200 };
+
+	constructor(props: IProps) {
+		super(props);
+
+		const { hash, path, type, extension, IPFS_URL } = props;
+		this.uri = path ? path : IPFS_URL + hash;
+		this.mimeType = this.getMimeType(this.uri, type, extension);
+
+		if (hash && this.mimeType.startsWith(MediaTypeImage.key)) {
+			Image.getSize(
+				this.uri,
+				(width, height) => (this.image = { width, height }),
+				(e) => console.log(e),
+			);
 		}
-
-		return mime.lookup('.' + extension);
 	}
 
-	return mime.lookup(uri);
-};
-
-const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
-
-export class Component extends React.Component<IProps, IState> {
-	public state = {
-		imageWidth: 200,
-		imageHeight: 200,
-	};
-
-	private pathToMedia = this.props.path ? this.props.path : this.props.IPFS_URL + this.props.hash;
-
-	componentDidMount() {
-		Image.getSize(
-			this.pathToMedia,
-			(width, height) => this.setState({ imageHeight: height, imageWidth: width }),
-			(e) => console.log(e),
-		);
-	}
-
-	render() {
-		const {
-			type,
-			extension,
-			onPress,
-			onDoublePress,
-			fullscreen,
-			resizeMode,
-			getText,
-			style,
-			onMove,
-		} = this.props;
-
-		const mediaMimeType = getMimeType(this.pathToMedia, type, extension);
-		const heightRatio = windowWidth / this.state.imageWidth;
+	public render() {
+		const { fullscreen, resizeMode, style, onPress, onDoublePress, onMove, getText } = this.props;
+		const heightRatio = SCREEN_WIDTH / this.image.width;
 
 		return (
 			<View>
-				{!mediaMimeType && <Text>{getText('message.media.not.supported')}</Text>}
-				{mediaMimeType && mediaMimeType.startsWith(MediaTypeImage.key) && (
+				{!this.mimeType && <Text>{getText('message.media.not.supported')}</Text>}
+				{this.mimeType && this.mimeType.startsWith(MediaTypeImage.key) && (
 					<TouchableWithDoublePress
+						style={style}
+						disabled={!onPress && !onDoublePress}
 						onSinglePress={onPress}
 						onDoublePress={onDoublePress}
-						disabled={!onPress && !onDoublePress}
-						style={style}
 					>
 						{fullscreen && (
 							<ImageZoom
-								cropWidth={windowWidth}
-								cropHeight={windowHeight}
-								imageWidth={this.state.imageWidth}
-								imageHeight={this.state.imageHeight * heightRatio}
-								enableCenterFocus={false}
-								horizontalOuterRangeOffset={() => undefined}
+								cropWidth={SCREEN_WIDTH}
+								cropHeight={SCREEN_HEIGHT}
+								imageWidth={this.image.width}
+								imageHeight={this.image.height * heightRatio}
 								onMove={onMove}
 							>
 								<FastImage
-									source={{ uri: this.pathToMedia, priority: FastImage.priority.normal }}
+									source={{ uri: this.uri, priority: FastImage.priority.normal }}
 									resizeMode={
 										resizeMode === 'contain'
 											? FastImage.resizeMode.contain
@@ -115,7 +100,7 @@ export class Component extends React.Component<IProps, IState> {
 						)}
 						{!fullscreen && (
 							<FastImage
-								source={{ uri: this.pathToMedia, priority: FastImage.priority.normal }}
+								source={{ uri: this.uri, priority: FastImage.priority.normal }}
 								resizeMode={
 									resizeMode === 'contain'
 										? FastImage.resizeMode.contain
@@ -126,9 +111,9 @@ export class Component extends React.Component<IProps, IState> {
 						)}
 					</TouchableWithDoublePress>
 				)}
-				{mediaMimeType && mediaMimeType.startsWith(MediaTypeVideo.key) && (
+				{this.mimeType && this.mimeType.startsWith(MediaTypeVideo.key) && (
 					<VideoPlayer
-						uri={this.pathToMedia}
+						uri={this.uri}
 						resizeMode={resizeMode}
 						containerStyle={style}
 						getText={getText}
@@ -137,6 +122,20 @@ export class Component extends React.Component<IProps, IState> {
 			</View>
 		);
 	}
+
+	private getMimeType = (uri: string, type: IMediaTypes | undefined, extension?: string) => {
+		if (type) {
+			return type.key;
+		} else if (extension) {
+			if (mime.extensions[extension]) {
+				return extension;
+			}
+
+			return mime.lookup('.' + extension);
+		}
+
+		return mime.lookup(uri);
+	};
 }
 
 export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = (props) => (

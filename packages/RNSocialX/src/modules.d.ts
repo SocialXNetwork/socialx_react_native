@@ -4,21 +4,15 @@ declare module 'hex-rgb' {
 	): { red: number; green: number; blue: number };
 }
 
-declare module 'react-native-swipeable';
-
 declare module 'react-native-spinkit';
 
 declare module 'react-native-android-keyboard-adjust';
-
-declare module 'react-native-modal-dropdown';
 
 declare module 'react-native-smart-splash-screen';
 
 declare module 'react-native-svg-charts';
 
 declare module 'react-native-app-intro-slider';
-
-declare module 'react-native-country-picker-modal';
 
 // declare module 'react-native-image-crop-picker';
 

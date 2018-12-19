@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, LayoutChangeEvent, Platform } from 'react-native';
 import Orientation, { orientation as ORIENTATION_TYPES } from 'react-native-orientation';
 
 import { DeviceOrientations, OS_TYPES } from '../../environment/consts';
-import { INavigationProps } from '../../types';
+import { INavigationProps, IOnMove } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
 
 import {
@@ -17,6 +17,8 @@ import {
 	IWithMediaViewerEnhancedData,
 	WithMediaViewer,
 } from '../../enhancers/screens';
+
+const VIEWPORT = Dimensions.get('window');
 
 interface IMediaViewerScreenState {
 	orientation: string;
@@ -38,12 +40,12 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	public state = {
 		orientation: DeviceOrientations.Portrait,
 		activeSlide: this.props.startIndex,
-		viewport: {
-			width: Dimensions.get('window').width,
-		},
+		viewport: VIEWPORT,
 		infoVisible: false,
 		scrollable: true,
 	};
+
+	private timeout: NodeJS.Timer = setTimeout(() => undefined, 0);
 
 	public componentDidMount() {
 		// due to Android problems with Carousel on orientation change enable tilt only on iOS
@@ -58,6 +60,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 			Orientation.lockToPortrait();
 			Orientation.removeOrientationListener(this.onOrientationChangeHandler);
 		}
+		clearTimeout(this.timeout);
 	}
 
 	public render() {
@@ -74,6 +77,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				infoVisible={infoVisible}
 				isPost={post !== null}
 				likedByCurrentUser={post ? post.likedByCurrentUser : false}
+				scrollable={scrollable}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
@@ -81,19 +85,22 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 				onExitFullScreen={this.onExitFullScreenHandler}
 				onLikePress={() => onLikePost(post!.postId)}
 				onCommentPress={() => onViewComments(post!.postId, false)}
-				onClose={onGoBack}
 				onMove={this.onMoveHandler}
-				onZoomScroll={scrollable}
+				onClose={onGoBack}
 				getText={getText}
 			/>
 		);
 	}
 
-	private onMoveHandler = ({ scale }: { scale: number }) => {
-		if (scale === 2 && this.state.scrollable) {
-			this.setState({ scrollable: false });
-		} else if (scale === 1 && !this.state.scrollable) {
-			this.setState({ scrollable: true });
+	private onMoveHandler = (position?: IOnMove) => {
+		if (position) {
+			const { scale } = position;
+
+			if (scale === 1 && !this.state.scrollable) {
+				this.setState({ scrollable: true });
+			} else if (scale !== 1 && this.state.scrollable) {
+				this.setState({ scrollable: false });
+			}
 		}
 	};
 
@@ -105,9 +112,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 		this.setState({ activeSlide: index });
 	};
 
-	private onLayoutHandler = (event: {
-		nativeEvent: { layout: { width: number; height: number } };
-	}) => {
+	private onLayoutHandler = (event: LayoutChangeEvent) => {
 		this.setState({
 			viewport: {
 				width: event.nativeEvent.layout.width,
@@ -118,7 +123,7 @@ class Screen extends React.Component<IMediaViewerScreenProps, IMediaViewerScreen
 	private onExitFullScreenHandler = () => {
 		const timeoutBeforeAllowAgainAllOrientation = Platform.OS === OS_TYPES.IOS ? 100 : 5000;
 		Orientation.lockToPortrait();
-		setTimeout(() => {
+		this.timeout = setTimeout(() => {
 			Orientation.unlockAllOrientations();
 		}, timeoutBeforeAllowAgainAllOrientation);
 	};
