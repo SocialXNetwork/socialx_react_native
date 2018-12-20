@@ -8,7 +8,7 @@ export { CreateAdSteps } from './displayers/Ads/CreateAdSteps';
 export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
-export { CommentCard } from './displayers/CommentCard';
+export { CommentCard, CommentLikes } from './displayers/CommentCard';
 export { Header } from './displayers/Header';
 export { HeartAnimation } from './displayers/HeartAnimation';
 export { IntroFirstSlide } from './displayers/IntroFirstSlide';
