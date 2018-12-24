@@ -38,3 +38,5 @@ export { MaintenanceScreen } from './primaryNav/MaintenanceScreen';
 
 export { WalletAccountScreen } from './walletStack/WalletAccount';
 export { WalletKeysScreen } from './walletStack/WalletKeys';
+
+export { RewardsScreen } from './walletStack/RewardsScreen';

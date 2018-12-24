@@ -49,6 +49,7 @@ import {
 	ReferralScreen,
 	RegisterScreen,
 	ResetPasswordScreen,
+	RewardsScreen,
 	SearchScreen,
 	SettingsScreen,
 	SocialXAccountScreen,
@@ -254,12 +255,13 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
+		RewardsScreen: { screen: RewardsScreen },
+		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 		NewAdSliderScreen: { screen: NewAdSliderScreen },
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
 		ManageCountriesScreen: { screen: ManageCountriesScreen },
 		AdsManagementScreen: { screen: AdsManagementScreen },
 		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
-		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 	},
 	{
 		headerMode: 'none',

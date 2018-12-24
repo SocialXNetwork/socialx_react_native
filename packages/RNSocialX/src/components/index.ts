@@ -2,6 +2,7 @@ export { AvatarImage } from './avatar/AvatarImage';
 export { AvatarName } from './avatar/AvatarName';
 export { AvatarPicker } from './avatar/AvatarPicker';
 
+export { AnimatedBar } from './displayers/AnimatedBar';
 export { AdPreview } from './displayers/Ads/AdPreview';
 export { ChartAccountPerformance } from './displayers/Ads/ChartAccountPerformance';
 export { CreateAdSteps } from './displayers/Ads/CreateAdSteps';
