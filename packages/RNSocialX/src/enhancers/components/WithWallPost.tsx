@@ -20,7 +20,11 @@ import { WithOverlays } from '../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWallPostEnhancedData {
-	currentUser: ICurrentUser;
+	currentUser: {
+		alias: string;
+		pub: string;
+		avatar: string;
+	};
 	postingCommentId: string;
 	placeholderPost?: IWallPost;
 	commentInput?: boolean;
@@ -90,7 +94,11 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 
 															return this.props.children({
 																data: {
-																	currentUser,
+																	currentUser: {
+																		alias: currentUser.alias,
+																		pub: currentUser.pub,
+																		avatar: currentUser.avatar,
+																	},
 																	postingCommentId: globals.postingCommentId,
 																	placeholderPost: globals.placeholderPost,
 																},

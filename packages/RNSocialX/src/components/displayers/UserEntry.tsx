@@ -83,7 +83,7 @@ const EnhancedComponent: React.SFC<IProps> = (props) => (
 );
 
 const mapStateToProps = (state: IApplicationState, props: IUserEntryProps) => ({
-	profile: selectProfile(state, props),
+	profile: selectProfile(state.data.profiles, props.alias),
 });
 
 export const UserEntry = connect(mapStateToProps)(EnhancedComponent as any);

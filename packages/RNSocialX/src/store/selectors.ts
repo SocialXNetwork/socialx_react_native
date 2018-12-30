@@ -1,37 +1,38 @@
 import { createSelector } from 'reselect';
 
-import { IApplicationState } from './rootReducer';
 export { IApplicationState } from './rootReducer';
 
-export const selectComment = createSelector(
-	(state: IApplicationState, props: { commentId: string }) =>
-		state.data.comments.comments[props.commentId],
-	(comment) => comment,
-);
+import { IState as IComments } from './data/comments';
+import { IState as INotifications } from './data/notifications';
+import { IState as IPosts } from './data/posts';
+import { IState as IProfiles } from './data/profiles';
 
 export const selectProfile = createSelector(
-	(state: IApplicationState, props: { alias: string }) => state.data.profiles.profiles[props.alias],
+	(state: IProfiles, alias: string) => state.profiles[alias],
 	(profile) => profile,
 );
 
 export const selectPost = createSelector(
-	(state: IApplicationState, props: { postId: string }) => state.data.posts.all[props.postId],
+	(state: IPosts, id: string) => state.all[id],
 	(post) => post,
 );
 
+export const selectComment = createSelector(
+	(state: IComments, id: string) => state.comments[id],
+	(comment) => comment,
+);
+
+export const selectNotification = createSelector(
+	(state: INotifications, id: string) => state.all[id],
+	(notification) => notification,
+);
+
 export const selectNumberOfPostLikes = createSelector(
-	(state: IApplicationState, props: { postId: string }) =>
-		state.data.posts.all[props.postId].likes.ids.length,
+	(state: IPosts, postId: string) => state.all[postId].likes.ids.length,
 	(likes) => likes,
 );
 
 export const selectNumberOfPostComments = createSelector(
-	(state: IApplicationState, props: { postId: string }) =>
-		state.data.posts.all[props.postId].comments.length,
+	(state: IPosts, postId: string) => state.all[postId].comments.length,
 	(comments) => comments,
-);
-
-export const selectNotification = createSelector(
-	(state: IApplicationState, props: { id: string }) => state.data.notifications.all[props.id],
-	(notification) => notification,
 );

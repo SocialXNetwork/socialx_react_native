@@ -51,8 +51,8 @@ const Component: React.SFC<IProps> = ({
 );
 
 const mapStateToProps = (state: IApplicationState, props: IMediaInteractionButtonsProps) => ({
-	likes: selectNumberOfPostLikes(state, props),
-	comments: selectNumberOfPostComments(state, props),
+	likes: selectNumberOfPostLikes(state.data.posts, props.postId),
+	comments: selectNumberOfPostComments(state.data.posts, props.postId),
 });
 
 export const MediaInteractionButtons = connect(mapStateToProps)(Component as any);

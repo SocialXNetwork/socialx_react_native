@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 import { RichText } from '../..';
 
-import { IWithDataShapeEnhancedProps, WithDataShape } from '../../../enhancers/intermediary';
-import { IComment } from '../../../store/data/comments';
-import { IApplicationState, selectComment } from '../../../store/selectors';
+import { shapeComment } from '../../../enhancers/helpers';
+import { IComment } from '../../../types';
+
+import { IApplicationState, selectComment, selectProfile } from '../../../store/selectors';
 
 import styles from './Comment.style';
 
@@ -16,20 +17,20 @@ interface ICommentProps {
 	onCommentPress: () => void;
 }
 
-interface IProps extends ICommentProps, IWithDataShapeEnhancedProps {
+interface IProps extends ICommentProps {
 	comment: IComment;
 }
 
-export const Component: React.SFC<IProps> = ({ shapedComment, onUserPress, onCommentPress }) => {
-	if (shapedComment) {
+export const Component: React.SFC<IProps> = ({ comment, onUserPress, onCommentPress }) => {
+	if (comment) {
 		return (
 			<Text style={styles.container} numberOfLines={2}>
 				<Text
 					style={styles.user}
-					onPress={() => onUserPress(shapedComment.user.userId)}
+					onPress={() => onUserPress(comment.owner.alias)}
 					suppressHighlighting={true}
 				>
-					{shapedComment.user.fullName}
+					{comment.owner.fullName}
 				</Text>
 				<RichText
 					style={styles.text}
@@ -55,7 +56,7 @@ export const Component: React.SFC<IProps> = ({ shapedComment, onUserPress, onCom
 						},
 					]}
 				>
-					{'  ' + shapedComment.text}
+					{'  ' + comment.text}
 				</RichText>
 			</Text>
 		);
@@ -64,14 +65,17 @@ export const Component: React.SFC<IProps> = ({ shapedComment, onUserPress, onCom
 	return null;
 };
 
-const EnhancedComponent: React.SFC<IProps> = (props) => (
-	<WithDataShape comment={props.comment}>
-		{({ shapedComment }) => <Component {...props} shapedComment={shapedComment} />}
-	</WithDataShape>
-);
+const mapStateToProps = (state: IApplicationState, props: ICommentProps) => {
+	const storeComment = selectComment(state.data.comments, props.commentId);
 
-const mapStateToProps = (state: IApplicationState, props: ICommentProps) => ({
-	comment: selectComment(state, props),
-});
+	if (storeComment) {
+		const profile = selectProfile(state.data.profiles, storeComment.owner.alias);
+		const currentUserAlias = state.auth.database.gun!.alias!;
 
-export const Comment = connect(mapStateToProps)(EnhancedComponent as any);
+		return {
+			comment: shapeComment(storeComment, profile, currentUserAlias),
+		};
+	}
+};
+
+export const Comment = connect(mapStateToProps)(Component);

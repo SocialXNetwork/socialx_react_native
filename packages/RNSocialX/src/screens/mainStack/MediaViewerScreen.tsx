@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Dimensions, LayoutChangeEvent } from 'react-native';
+import { Animated } from 'react-native';
 
 import { INavigationProps, IOnMove } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
@@ -16,8 +16,6 @@ import {
 	WithMediaViewer,
 } from '../../enhancers/screens';
 
-const VIEWPORT = Dimensions.get('window');
-
 type IProps = INavigationProps &
 	IWithMediaViewerEnhancedData &
 	IWithMediaViewerEnhancedActions &
@@ -26,9 +24,6 @@ type IProps = INavigationProps &
 
 interface IState {
 	activeSlide: number;
-	viewport: {
-		width: number;
-	};
 	isOverlayVisible: boolean;
 	isInfoVisible: boolean;
 	scrollable: boolean;
@@ -37,7 +32,6 @@ interface IState {
 class Screen extends React.Component<IProps, IState> {
 	public state = {
 		activeSlide: this.props.startIndex,
-		viewport: VIEWPORT,
 		isOverlayVisible: true,
 		isInfoVisible: false,
 		scrollable: true,
@@ -47,36 +41,42 @@ class Screen extends React.Component<IProps, IState> {
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
-			this.props.post !== nextProps.post ||
+			this.props.postId !== nextProps.postId ||
 			this.state.activeSlide !== nextState.activeSlide ||
-			this.state.viewport !== nextState.viewport ||
 			this.state.isInfoVisible !== nextState.isInfoVisible ||
 			this.state.scrollable !== nextState.scrollable
 		);
 	}
 
 	public render() {
-		const { media, startIndex, post, onLikePost, onViewComments, onGoBack, getText } = this.props;
-		const { activeSlide, viewport, isInfoVisible, isOverlayVisible, scrollable } = this.state;
+		const {
+			media,
+			startIndex,
+			postId,
+			likedByCurrentUser,
+			onLikePost,
+			onViewComments,
+			onGoBack,
+			getText,
+		} = this.props;
+		const { activeSlide, isInfoVisible, isOverlayVisible, scrollable } = this.state;
 
 		return (
 			<MediaViewerScreenView
 				media={media}
 				startIndex={startIndex}
 				activeSlide={activeSlide}
-				viewport={viewport}
 				isInfoVisible={isInfoVisible}
 				isOverlayVisible={isOverlayVisible}
-				likedByCurrentUser={post ? post.likedByCurrentUser : false}
+				likedByCurrentUser={likedByCurrentUser}
 				scrollable={scrollable}
 				opacity={this.opacity}
 				toggleOverlay={this.toggleOverlay}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
-				onLayout={this.onLayoutHandler}
-				onLikePress={() => onLikePost(post!.postId)}
-				onCommentPress={() => onViewComments(post!.postId, false)}
+				onLikePress={() => onLikePost(postId!)}
+				onCommentPress={() => onViewComments(postId!, false)}
 				onMove={this.onMoveHandler}
 				onExit={onGoBack}
 				getText={getText}
@@ -100,14 +100,6 @@ class Screen extends React.Component<IProps, IState> {
 
 	private onChangeSlideHandler = (index: number) => {
 		this.setState({ activeSlide: index });
-	};
-
-	private onLayoutHandler = (event: LayoutChangeEvent) => {
-		this.setState({
-			viewport: {
-				width: event.nativeEvent.layout.width,
-			},
-		});
 	};
 
 	private onShowInfoHandler = () => {
@@ -144,7 +136,7 @@ class Screen extends React.Component<IProps, IState> {
 export const MediaViewerScreen = (props: INavigationProps) => (
 	<WithMediaViewer>
 		{(media) => (
-			<WithLiking likedByCurrentUser={media.data.post ? media.data.post.likedByCurrentUser : false}>
+			<WithLiking likedByCurrentUser={media.data.likedByCurrentUser || false}>
 				{(likes) => (
 					<WithNavigationHandlers navigation={props.navigation}>
 						{(nav) => (
