@@ -163,3 +163,8 @@ export {
 	IWithWalletKeysEnhancedActions,
 	IWithWalletKeysEnhancedData,
 } from './walletStack/WithWalletKeys';
+export {
+	WithTransactionHistory,
+	IWithTransactionHistoryEnhancedActions,
+	IWithTransactionHistoryEnhancedData,
+} from './walletStack/WithTransactionHistory';

@@ -53,6 +53,7 @@ import {
 	SettingsScreen,
 	SocialXAccountScreen,
 	TermsAndConditionsScreen,
+	TransactionHistoryScreen,
 	TrendingScreen,
 	UserProfileScreen,
 	WalletActivityScreen,
@@ -254,6 +255,8 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
+		TransactionHistoryScreen: { screen: TransactionHistoryScreen },
+		WalletActivityScreen: { screen: WalletActivityScreen },
 		NewAdSliderScreen: { screen: NewAdSliderScreen },
 		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
 		ManageCountriesScreen: { screen: ManageCountriesScreen },
@@ -268,7 +271,7 @@ const HomelessNavigator = createStackNavigator(
 
 const AppNavigation = createStackNavigator(
 	{
-		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
+		HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthNavigator },
 		Intro: { screen: IntroScreen },
 		Main: { screen: MainScreens },

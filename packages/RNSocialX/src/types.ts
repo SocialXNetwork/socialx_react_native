@@ -220,6 +220,12 @@ export interface IWallet {
 	refreshing: boolean;
 }
 
+export interface IRewardsTransactionHistory {
+	coins: string;
+	transactions: ITransactionData[];
+	isRefreshing: boolean;
+}
+
 export interface ISearchTabResultsProps {
 	navigation: NavigationScreenProp<any>;
 	searchTermValue: string;
