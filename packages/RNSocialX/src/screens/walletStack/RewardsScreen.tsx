@@ -18,22 +18,17 @@ type IRewardsScreenProps = INavigationProps &
 
 interface IRewardsScreenState {
 	selectedDateButton: IRewardsDate;
-	viewport: {
-		width: number;
-	};
-	translateX: Animated.Value;
 }
 
-const VIEWPORT = Dimensions.get('window');
+const VIEWPORT_DIMENSIONS = Dimensions.get('window');
 
 class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 	public state = {
 		selectedDateButton: IRewardsDate.daily,
-		viewport: VIEWPORT,
-		translateX: new Animated.Value(0),
 	};
 
-	private slideWidth = 0;
+	private sliderWidth = 0;
+	private translateX = new Animated.Value(0);
 
 	public render() {
 		const {
@@ -44,7 +39,6 @@ class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 			dailyHistory,
 			monthlyHistory,
 		} = this.props;
-		const { translateX, selectedDateButton } = this.state;
 
 		const totalAmountSOCXFormatted = numeral(totalAmountSOCX).format('0.000a');
 
@@ -56,7 +50,7 @@ class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 			<RewardsScreenView
 				onGoBack={this.onGoBackHandler}
 				getText={this.props.getText}
-				selectedDateButton={selectedDateButton}
+				selectedDateButton={this.state.selectedDateButton}
 				handleDateChange={this.handleDatChangeHandler}
 				totalAmountSOCX={totalAmountSOCXFormatted}
 				referralsAmount={referrals}
@@ -67,8 +61,8 @@ class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 				bntsBarWidth={bntsBarWidth}
 				dailyHistory={dailyHistory}
 				monthlyHistory={monthlyHistory}
-				translateXValue={translateX}
-				viewport={VIEWPORT}
+				translateXValue={this.translateX}
+				viewportWidth={VIEWPORT_DIMENSIONS.width}
 				startDailyIndex={this.onSearchCurrentDay()}
 				startMonthlyIndex={this.onSearchCurrentMonth()}
 				dailyCarouselOnLayout={this.onDailyLayout}
@@ -77,7 +71,7 @@ class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 	}
 
 	private onDailyLayout = (event: LayoutChangeEvent) => {
-		this.slideWidth = event.nativeEvent.layout.width;
+		this.sliderWidth = event.nativeEvent.layout.width;
 	};
 
 	private onSearchCurrentDay = () => {
@@ -110,9 +104,9 @@ class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 	};
 
 	private runSlideTransition = (tab: IRewardsDate) => {
-		const slideValue = tab === IRewardsDate.monthly ? -this.slideWidth : -0;
+		const slideValue = tab === IRewardsDate.monthly ? -this.sliderWidth : -0;
 
-		Animated.timing(this.state.translateX, {
+		Animated.timing(this.translateX, {
 			toValue: slideValue,
 			easing: Easing.linear,
 			duration: 300,

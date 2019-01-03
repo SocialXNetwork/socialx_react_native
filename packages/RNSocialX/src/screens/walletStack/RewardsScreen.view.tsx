@@ -24,9 +24,7 @@ interface IRewardsScreenViewProps extends ITranslatedProps {
 	bntsBarWidth: Animated.Value;
 	startDailyIndex: number;
 	startMonthlyIndex: number;
-	viewport: {
-		width: number;
-	};
+	viewportWidth: number;
 	handleDateChange: (text: IRewardsDate) => void;
 	onGoBack: () => void;
 	dailyCarouselOnLayout: (event: LayoutChangeEvent) => void;
@@ -48,7 +46,7 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 	monthlyHistory,
 	startDailyIndex,
 	startMonthlyIndex,
-	viewport,
+	viewportWidth,
 	dailyCarouselOnLayout,
 	onGoBack,
 	getText,
@@ -186,7 +184,7 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 								</Card>
 							)}
 							firstItem={startDailyIndex}
-							sliderWidth={viewport.width}
+							sliderWidth={viewportWidth}
 							itemWidth={CARD_WIDTH}
 							removeClippedSubviews={false}
 							inactiveSlideOpacity={0.6}
@@ -204,7 +202,7 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 								</Card>
 							)}
 							firstItem={startMonthlyIndex}
-							sliderWidth={viewport.width}
+							sliderWidth={viewportWidth}
 							itemWidth={CARD_WIDTH}
 							removeClippedSubviews={false}
 							inactiveSlideOpacity={0.6}
