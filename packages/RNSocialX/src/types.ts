@@ -195,6 +195,9 @@ export interface ICreateWallPost {
 export enum TransactionType {
 	Sold = 'Sold',
 	Bought = 'Bought',
+	Received = 'Received',
+	Sent = 'Sent',
+	Converted = 'Converted',
 }
 
 export enum TrendOptions {
@@ -209,6 +212,7 @@ export interface ITransactionData {
 	firstCoin: CoinSymbol;
 	secondAmount: number;
 	secondCoin: CoinSymbol;
+	from?: string;
 	date: Date;
 }
 
@@ -222,7 +226,7 @@ export interface IWallet {
 
 export interface IRewardsTransactionHistory {
 	coins: string;
-	transactions: ITransactionData[];
+	rewardsTransactions: ITransactionData[];
 	isRefreshing: boolean;
 }
 

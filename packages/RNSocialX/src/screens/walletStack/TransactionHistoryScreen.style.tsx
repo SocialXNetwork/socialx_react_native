@@ -79,7 +79,6 @@ const styles: any = {
 		backgroundColor: Colors.white,
 		marginTop: Sizes.smartVerticalScale(10),
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
-		// paddingVertical: Sizes.smartVerticalScale(10),
 	},
 };
 

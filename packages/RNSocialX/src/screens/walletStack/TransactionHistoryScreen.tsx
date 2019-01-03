@@ -27,7 +27,7 @@ class Screen extends React.Component<ITransactionHistoryScreenProps> {
 				refreshing={wallet.isRefreshing}
 				onRefresh={this.onRefreshHandler}
 				onEndReached={this.onEndReachedHandler}
-				transactions={wallet.transactions}
+				transactions={wallet.rewardsTransactions}
 			/>
 		);
 	}

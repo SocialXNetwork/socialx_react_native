@@ -6,7 +6,7 @@ import {
 	Header,
 	HeaderButton,
 	PrimaryButton,
-	TransactionItem,
+	RewardsTransactionItem,
 } from '../../components';
 import { CoinFullName } from '../../environment/consts';
 import { ITransactionData, ITranslatedProps } from '../../types';
@@ -75,10 +75,11 @@ export const TransactionHistoryScreenView: React.SFC<ITransactionHistoryViewProp
 			<FlatList
 				refreshing={refreshing}
 				onRefresh={onRefresh}
+				showsVerticalScrollIndicator={false}
 				onEndReached={onEndReached}
 				data={transactions}
 				renderItem={(data: { item: ITransactionData; index: number }) => (
-					<TransactionItem {...data.item} />
+					<RewardsTransactionItem {...data.item} />
 				)}
 				keyExtractor={(item: ITransactionData) => item.id}
 			/>

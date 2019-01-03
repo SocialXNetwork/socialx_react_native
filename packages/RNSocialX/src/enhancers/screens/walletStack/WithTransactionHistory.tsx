@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { transactions } from '../../../mocks';
+import { rewardsTransactions } from '../../../mocks';
 import { IRewardsTransactionHistory, ITranslatedProps } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
@@ -13,7 +13,7 @@ const mock: IWithTransactionHistoryEnhancedProps = {
 	data: {
 		wallet: {
 			coins: '53,680',
-			transactions,
+			rewardsTransactions,
 			isRefreshing: false,
 		},
 	},
