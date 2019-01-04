@@ -117,4 +117,4 @@ const mapStateToProps = (state: IApplicationState, props: INotificationProps) =>
 	notification: selectNotification(state.data.notifications, props.id),
 });
 
-export const Notification = connect(mapStateToProps)(EnhancedComponent);
+export const Notification = connect(mapStateToProps)(EnhancedComponent as any);

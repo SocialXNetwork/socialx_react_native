@@ -26,7 +26,7 @@ export class WithVisitedUserContent extends React.Component<
 							<WithVisitedUser>
 								{({ visitedUser }) => {
 									if (visitedUser) {
-										const postIds = profiles[visitedUser.userId].posts;
+										const postIds = profiles[visitedUser.alias].posts;
 										const posts = [];
 
 										for (const id of postIds) {

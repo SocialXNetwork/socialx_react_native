@@ -53,11 +53,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 											return this.props.children({
 												actions: {
 													onViewUserProfile: (visitedUser) =>
-														this.onViewUserProfileHandler(
-															currentUser.userId,
-															profiles,
-															visitedUser,
-														),
+														this.onViewUserProfileHandler(currentUser.alias, profiles, visitedUser),
 													onViewLikes: this.onViewLikesHandler,
 													onViewComments: this.onViewCommentsHandler,
 													onViewImage: this.onViewImageHandler,

@@ -18,11 +18,10 @@ const TEXT_LENGTH_TRESHOLD = 15;
 
 interface ICommentCardProps extends INavigationProps, ITranslatedProps {
 	commentId: string;
-	postingCommentId: string;
 	alias: string;
 	pub: string;
 	onLikeComment: (alias: string, pub: string, liked: boolean, commentId: string) => void;
-	onUserPress: (userId: string) => void;
+	onUserPress: (alias: string) => void;
 	onShowOptionsMenu: (comment: IComment) => void;
 }
 
@@ -33,85 +32,79 @@ interface IProps extends ICommentCardProps {
 
 class Component extends React.Component<IProps> {
 	public render() {
-		const {
-			commentId,
-			comment,
-			postingCommentId,
-			onUserPress,
-			onViewLikes,
-			onShowOptionsMenu,
-			getText,
-		} = this.props;
+		if (this.props.comment) {
+			const { comment, onUserPress, onViewLikes, onShowOptionsMenu, getText } = this.props;
+			const { text, owner, timestamp, likeIds, likedByCurrentUser, posting } = comment;
+			const commentTimestamp = moment(timestamp).fromNow();
 
-		const { text, owner, timestamp, likeIds, likedByCurrentUser } = comment;
-		console.log(comment);
-		const commentTimestamp = moment(timestamp).fromNow();
-
-		return (
-			<View style={styles.container}>
-				<TouchableOpacity onPress={() => onUserPress(owner.alias)}>
-					<AvatarImage image={owner.avatar} style={styles.avatarImage} />
-				</TouchableOpacity>
-				<View style={styles.rightContainer}>
-					<View>
-						<TouchableOpacity
-							style={styles.commentBackground}
-							onPress={() => onShowOptionsMenu(comment)}
-						>
-							<Text style={styles.userFullName} suppressHighlighting={true}>
-								{owner.fullName}
-							</Text>
-							<RichText
-								style={styles.commentText}
-								childrenProps={{
-									suppressHighlighting: true,
-								}}
-								parse={[
-									{
-										type: 'hashtag',
-										style: styles.hashtag,
-										onPress: () => undefined,
-									},
-									{
-										type: 'tags',
-										style: styles.tag,
-										onPress: () => undefined,
-									},
-									{
-										type: 'url',
-										style: styles.url,
-										onPress: () => undefined,
-									},
-								]}
+			return (
+				<View style={styles.container}>
+					<TouchableOpacity onPress={() => onUserPress(owner.alias)}>
+						<AvatarImage image={owner.avatar} style={styles.avatarImage} />
+					</TouchableOpacity>
+					<View style={styles.rightContainer}>
+						<View>
+							<TouchableOpacity
+								style={styles.commentBackground}
+								onPress={() => onShowOptionsMenu(comment)}
 							>
-								{text}
-							</RichText>
-						</TouchableOpacity>
-						{likeIds.length > 0 && (
-							<CommentLikes
-								numberOfLikes={likeIds.length}
-								altPosition={comment.text.length < TEXT_LENGTH_TRESHOLD}
-								onViewLikes={() => onViewLikes(likeIds)}
-							/>
+								<Text style={styles.userFullName} suppressHighlighting={true}>
+									{owner.fullName}
+								</Text>
+								<RichText
+									style={styles.commentText}
+									childrenProps={{
+										suppressHighlighting: true,
+									}}
+									parse={[
+										{
+											type: 'hashtag',
+											style: styles.hashtag,
+											onPress: () => undefined,
+										},
+										{
+											type: 'tags',
+											style: styles.tag,
+											onPress: () => undefined,
+										},
+										{
+											type: 'url',
+											style: styles.url,
+											onPress: () => undefined,
+										},
+									]}
+								>
+									{text}
+								</RichText>
+							</TouchableOpacity>
+							{likeIds.length > 0 && (
+								<CommentLikes
+									numberOfLikes={likeIds.length}
+									altPosition={text.length < TEXT_LENGTH_TRESHOLD}
+									onViewLikes={() => onViewLikes(likeIds)}
+								/>
+							)}
+						</View>
+						{posting ? (
+							<Text style={styles.timestamp}>{getText('post.card.creating')}</Text>
+						) : (
+							<View style={styles.actionsContainer}>
+								<Text style={styles.timestamp}>{commentTimestamp}</Text>
+								<TouchableOpacity onPress={this.onCommentLikeHandler}>
+									<Text style={styles.actionButtonText}>
+										{likedByCurrentUser
+											? getText('comments.screen.actions.unlike')
+											: getText('comments.screen.actions.like')}
+									</Text>
+								</TouchableOpacity>
+							</View>
 						)}
 					</View>
-					{postingCommentId === commentId ? (
-						<Text style={styles.timestamp}>{getText('post.card.creating')}</Text>
-					) : (
-						<View style={styles.actionsContainer}>
-							<Text style={styles.timestamp}>{commentTimestamp}</Text>
-							<TouchableOpacity onPress={this.onCommentLikeHandler}>
-								<Text style={styles.actionButtonText}>
-									{likedByCurrentUser
-										? getText('comments.screen.actions.unlike')
-										: getText('comments.screen.actions.like')}
-								</Text>
-							</TouchableOpacity>
-						</View>
-					)}
 				</View>
-			</View>
-		);
+			);
+		}
+
+		return null;
 	}
 
 	private onCommentLikeHandler = () => {
@@ -130,12 +123,15 @@ const EnhancedComponent: React.SFC<IProps> = (props) => (
 
 const mapStateToProps = (state: IApplicationState, props: ICommentCardProps) => {
 	const storeComment = selectComment(state.data.comments, props.commentId);
-	const profile = selectProfile(state.data.profiles, storeComment.owner.alias);
-	const currentUserAlias = state.auth.database.gun!.alias!;
 
-	return {
-		comment: shapeComment(storeComment, profile, currentUserAlias),
-	};
+	if (storeComment) {
+		const profile = selectProfile(state.data.profiles, storeComment.owner.alias);
+		const currentUserAlias = state.auth.database.gun!.alias!;
+
+		return {
+			comment: shapeComment(storeComment, profile, currentUserAlias),
+		};
+	}
 };
 
 export const CommentCard = connect(mapStateToProps)(EnhancedComponent as any);

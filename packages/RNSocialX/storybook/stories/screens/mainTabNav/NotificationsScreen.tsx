@@ -10,7 +10,7 @@ import { NotificationsScreenView } from '../../../../src/screens/mainTabNav/Noti
 const NOTIFICATION_CARDS = [
 	{
 		notificationId: 'id1',
-		userId: 'userId',
+		alias: 'alias',
 		type: NOTIFICATION_TYPES.RECENT_COMMENT,
 		avatar: 'https://placeimg.com/150/150/tech',
 		fullName: 'Seth Saunders',
@@ -19,7 +19,7 @@ const NOTIFICATION_CARDS = [
 	},
 	{
 		notificationId: 'id1',
-		userId: 'userId',
+		alias: 'alias',
 		type: NOTIFICATION_TYPES.FRIEND_REQUEST,
 		avatar: 'https://placeimg.com/151/151/people',
 		fullName: 'Teresa Lamb',
@@ -27,29 +27,27 @@ const NOTIFICATION_CARDS = [
 	},
 	{
 		notificationId: 'id1',
-		userId: 'userId',
-		type: NOTIFICATION_TYPES.FRIEND_REQUEST_RESPONSE,
+		alias: 'alias',
+		type: NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED,
 		avatar: 'https://placeimg.com/160/160/people',
 		fullName: 'Teresa Lamb',
 		seen: false,
 	},
 	{
 		notificationId: 'id1',
-		userId: 'userId',
-		type: NOTIFICATION_TYPES.SUPER_LIKED,
+		alias: 'alias',
+		type: NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED,
 		avatar: 'https://placeimg.com/152/152/tech',
 		fullName: 'Cory Maxwell',
 		timestamp: new Date(2018, 1, 24, 8, 23, 12),
-		seen: false,
 	},
 	{
 		notificationId: 'id1',
-		userId: 'userId',
+		alias: 'alias',
 		type: NOTIFICATION_TYPES.GROUP_REQUEST,
 		avatar: 'https://placeimg.com/150/150/tech',
 		fullName: 'Claudia Kulmitzer',
 		groupName: 'MfMJAkkAs2jLISYyv',
-		seen: false,
 	},
 ];
 
@@ -59,7 +57,7 @@ storiesOf('Screens/mainTabNav', module)
 		const refreshing = boolean('refreshing', false);
 		return (
 			<NotificationsScreenView
-				notifications={NOTIFICATION_CARDS}
+				ids={[]}
 				refreshing={refreshing}
 				onRefresh={action('onRefresh')}
 				onViewUserProfile={action('onViewUserProfile')}

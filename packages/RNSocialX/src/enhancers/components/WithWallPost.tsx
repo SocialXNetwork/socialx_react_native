@@ -10,7 +10,7 @@ import {
 	ILikeCommentInput,
 	IRemoveCommentInput,
 } from '../../store/data/comments';
-import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps, IWallPost } from '../../types';
+import { IGlobal, IOptionsMenuProps, ITranslatedProps, IWallPost } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithComments } from '../connectors/data/WithComments';
@@ -25,7 +25,6 @@ export interface IWallPostEnhancedData {
 		pub: string;
 		avatar: string;
 	};
-	postingCommentId: string;
 	placeholderPost?: IWallPost;
 	commentInput?: boolean;
 	keyboardRaised?: boolean;
@@ -36,7 +35,7 @@ export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenu
 	onSubmitComment: (text: string, alias: string, pub: string, postId: string) => void;
 	onLikeComment: (alias: string, pub: string, liked: boolean, commentId: string) => void;
 	onRemoveComment: (commentId: string, postId: string) => void;
-	onBlockUser: (userId: string) => void;
+	onBlockUser: (alias: string) => void;
 	onReportProblem: (subject: string, description: string) => void;
 	onAddComment?: (cardHeight: number) => void;
 }
@@ -99,7 +98,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																		pub: currentUser.pub,
 																		avatar: currentUser.avatar,
 																	},
-																	postingCommentId: globals.postingCommentId,
 																	placeholderPost: globals.placeholderPost,
 																},
 																actions: {

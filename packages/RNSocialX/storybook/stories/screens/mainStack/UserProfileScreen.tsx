@@ -14,18 +14,17 @@ storiesOf('Screens/mainStack', module)
 	.addDecorator(withKnobs)
 	.add('UserProfileScreen', () => {
 		const visitedUser = {
-			userId: 'username',
+			alias: 'username',
 			avatar: 'https://www.w3schools.com/w3css/img_lights.jpg',
 			fullName: 'Alex',
-			userName: 'username',
 			description: 'Bio',
 			numberOfLikes: 65,
 			numberOfPhotos: 2,
 			numberOfFriends: 78,
 			numberOfComments: 100,
 			media: [],
-			recentPosts: [],
-			relationship: select(
+			postIds: [],
+			status: select(
 				'relationship',
 				{
 					friend: FRIEND_TYPES.MUTUAL,

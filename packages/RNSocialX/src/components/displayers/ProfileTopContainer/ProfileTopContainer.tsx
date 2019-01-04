@@ -17,10 +17,9 @@ import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/interm
 import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
 
 interface IProfileTopContainerProps extends ITranslatedProps {
-	userId: string;
+	alias: string;
 	avatar: string;
 	fullName: string;
-	userName: string;
 	description: string;
 	numberOfPhotos: number;
 	numberOfLikes: number;
@@ -41,10 +40,9 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 type IProps = IProfileTopContainerProps & IWithFriendsEnhancedData;
 
 const Component: React.SFC<IProps> = ({
-	userId,
+	alias,
 	avatar,
 	fullName,
-	userName,
 	description,
 	numberOfPhotos,
 	numberOfLikes,
@@ -77,7 +75,7 @@ const Component: React.SFC<IProps> = ({
 			</View>
 		</View>
 		<View style={styles.textContainer}>
-			<AvatarName fullName={fullName} userName={userName} />
+			<AvatarName fullName={fullName} userName={alias} />
 			{description.length > 0 && <Text style={styles.about}>{description}</Text>}
 		</View>
 		<View style={styles.buttons}>
@@ -86,23 +84,23 @@ const Component: React.SFC<IProps> = ({
 					<PrimaryButton
 						width={buttonWidth}
 						label={relationship.action}
-						loading={relationship.activity !== null && relationship.activity.payload === userId}
+						loading={relationship.activity !== null && relationship.activity.payload === alias}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.white}
 						containerStyle={styles.primary}
-						onPress={() => relationship.onStatusAction(userId)}
+						onPress={() => relationship.onStatusAction(alias)}
 					/>
 				) : (
 					<PrimaryButton
 						width={buttonWidth}
 						label={relationship.action}
-						loading={relationship.activity !== null && relationship.activity.payload === userId}
+						loading={relationship.activity !== null && relationship.activity.payload === alias}
 						size={ButtonSizes.Small}
 						borderColor={colors.pink}
 						textColor={colors.pink}
 						containerStyle={styles.secondary}
-						onPress={() => relationship.onStatusAction(userId)}
+						onPress={() => relationship.onStatusAction(alias)}
 					/>
 				))}
 			{isCurrentUser && (

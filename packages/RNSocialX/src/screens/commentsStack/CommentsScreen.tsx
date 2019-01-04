@@ -13,11 +13,9 @@ import { INavigationProps } from '../../types';
 
 import { CommentsScreenView } from './CommentsScreen.view';
 
-type ICommentsScreenProps = INavigationProps &
-	IWithCommentsEnhancedData &
-	IWithCommentsEnhancedActions;
+type IProps = INavigationProps & IWithCommentsEnhancedData & IWithCommentsEnhancedActions;
 
-class Screen extends Component<ICommentsScreenProps> {
+class Screen extends Component<IProps> {
 	public componentDidMount() {
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustResize();

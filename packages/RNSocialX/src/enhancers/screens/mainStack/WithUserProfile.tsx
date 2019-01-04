@@ -24,7 +24,7 @@ export interface IWithUserProfileEnhancedData {
 
 export interface IWithUserProfileEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
 	getUserProfile: (alias: string) => void;
-	addFriend: (userId: string) => void;
+	addFriend: (alias: string) => void;
 }
 
 interface IUserProfileEnhancedProps {

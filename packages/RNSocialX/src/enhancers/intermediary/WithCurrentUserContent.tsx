@@ -26,7 +26,7 @@ export class WithCurrentUserContent extends React.Component<
 							<WithCurrentUser>
 								{({ currentUser }) => {
 									if (currentUser) {
-										const postIds = profiles[currentUser.userId].posts;
+										const postIds = profiles[currentUser.alias].posts;
 										const posts = [];
 
 										for (const id of postIds) {

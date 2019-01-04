@@ -13,7 +13,7 @@ import styles from './Comment.style';
 
 interface ICommentProps {
 	commentId: string;
-	onUserPress: (userId: string) => void;
+	onUserPress: (alias: string) => void;
 	onCommentPress: () => void;
 }
 

@@ -42,6 +42,7 @@ class Screen extends React.Component<IProps, IState> {
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
 			this.props.postId !== nextProps.postId ||
+			this.props.likedByCurrentUser !== nextProps.likedByCurrentUser ||
 			this.state.activeSlide !== nextState.activeSlide ||
 			this.state.isInfoVisible !== nextState.isInfoVisible ||
 			this.state.scrollable !== nextState.scrollable

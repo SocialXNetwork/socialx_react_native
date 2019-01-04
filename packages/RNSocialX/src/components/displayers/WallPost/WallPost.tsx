@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import * as React from 'react';
 import {
 	Animated,
@@ -95,26 +96,16 @@ class Component extends React.Component<IProps, IState> {
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
 			this.state !== nextState ||
-			this.props.post.likedByCurrentUser !== nextProps.post.likedByCurrentUser ||
-			this.props.post.likeIds !== nextProps.post.likeIds ||
-			// this.props.post.topCommentIds !== nextProps.post.topCommentIds ||
-			this.props.post.numberOfComments !== nextProps.post.numberOfComments ||
-			// this.props.placeholderPost !== nextProps.placeholderPost ||
-			// this.props.postingCommentId !== nextProps.postingCommentId ||
 			this.props.heartAnimation !== nextProps.heartAnimation ||
-			this.props.animationProgress !== nextProps.animationProgress
+			this.props.animationProgress !== nextProps.animationProgress ||
+			!isEqual(this.props.post, nextProps.post)
 		);
-	}
-
-	public componentDidUpdate() {
-		console.log('--- cdu', this.props.postId);
 	}
 
 	public render() {
 		const {
 			post,
 			placeholderPost,
-			postingCommentId,
 			currentUser,
 			commentInput,
 			isCommentsScreen,
@@ -258,7 +249,6 @@ class Component extends React.Component<IProps, IState> {
 											commentId={id}
 											alias={currentUser.alias}
 											pub={currentUser.pub}
-											postingCommentId={postingCommentId}
 											onLikeComment={onLikeComment}
 											onUserPress={onViewUserProfile}
 											onShowOptionsMenu={this.onShowCommentOptionsHandler}

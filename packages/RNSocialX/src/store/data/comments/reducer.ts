@@ -58,6 +58,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 					[commentId]: {
 						...comment,
 						commentId,
+						posting: false,
 					},
 				},
 			};

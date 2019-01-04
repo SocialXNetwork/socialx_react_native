@@ -32,7 +32,7 @@ export enum SearchTabs {
 }
 
 export interface IUserEntry {
-	userId: string;
+	alias: string;
 	fullName: string;
 	userName: string;
 	avatar: string;
@@ -160,6 +160,7 @@ export interface IComment {
 	timestamp: Date;
 	likeIds: string[];
 	likedByCurrentUser: boolean;
+	posting: boolean;
 }
 
 export interface IWallPost {
@@ -244,8 +245,6 @@ export interface ICurrentUser {
 	postIds: string[];
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
-	userId: string; // to be replaced by alias
-	userName: string; // to be replaced by alias
 }
 
 export interface IVisitedUser {
@@ -260,8 +259,6 @@ export interface IVisitedUser {
 	media: IMedia[];
 	postIds: string[];
 	status: FRIEND_TYPES;
-	userId: string; // to be replaced by alias
-	userName: string; // to be replaced by alias
 }
 
 export interface IProfile {

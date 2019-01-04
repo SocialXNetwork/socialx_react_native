@@ -6,7 +6,7 @@ import { Comment } from './';
 
 interface ITopCommentsProps {
 	commentIds: string[];
-	onUserPress: (userId: string) => void;
+	onUserPress: (alias: string) => void;
 	onCommentPress: () => void;
 }
 

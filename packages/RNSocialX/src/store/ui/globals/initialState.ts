@@ -13,7 +13,6 @@ const initialState: IState = {
 		loader: false,
 	},
 	placeholderPost: null,
-	postingCommentId: '',
 	loading: {
 		progress: 0,
 		message: 'login',

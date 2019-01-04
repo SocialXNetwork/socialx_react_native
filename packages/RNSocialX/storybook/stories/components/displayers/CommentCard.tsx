@@ -17,23 +17,22 @@ const TEXT_LENGTH_TRESHOLD = 15;
 
 interface ICommentCardProps extends ITranslatedProps {
 	comment: IComment;
-	postingCommentId: string;
 }
 
-const CommentCard: React.SFC<ICommentCardProps> = ({ comment, postingCommentId, getText }) => {
-	const { commentId, text, user, timestamp, likeIds, likedByCurrentUser } = comment;
+const CommentCard: React.SFC<ICommentCardProps> = ({ comment, getText }) => {
+	const { text, owner, timestamp, likeIds, likedByCurrentUser, posting } = comment;
 	const commentTimestamp = moment(timestamp).fromNow();
 
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={() => undefined}>
-				<AvatarImage image={user.avatar} style={styles.avatarImage} />
+				<AvatarImage image={owner.avatar} style={styles.avatarImage} />
 			</TouchableOpacity>
 			<View style={styles.rightContainer}>
 				<View>
 					<TouchableOpacity style={styles.commentBackground} onPress={() => undefined}>
 						<Text style={styles.userFullName} suppressHighlighting={true}>
-							{user.fullName}
+							{owner.fullName}
 						</Text>
 						<RichText
 							style={styles.commentText}
@@ -69,7 +68,7 @@ const CommentCard: React.SFC<ICommentCardProps> = ({ comment, postingCommentId, 
 						/>
 					)}
 				</View>
-				{postingCommentId === commentId ? (
+				{posting ? (
 					<Text style={styles.timestamp}>{getText('post.card.creating')}</Text>
 				) : (
 					<View style={styles.actionsContainer}>
@@ -101,22 +100,21 @@ storiesOf('Components/displayers', module)
 		const timestamp = date('timestamp', new Date('February 23, 2018 09:45:00'));
 		const avatar = string('avatar', 'QmeRnhzwARzbdU8bHXMvsbHuV4Jhs6HBBvAUdjCMQMup1m');
 		const fullName = string('name', 'Sharell Watchman');
-		const userId = string('userId', 'sw');
+		const alias = string('alias', 'sw');
 
 		const comment = {
 			commentId: 'commentId',
 			text,
-			user: {
-				userId,
+			owner: {
+				alias,
 				avatar,
 				fullName,
 			},
 			timestamp,
 			likeIds: ['likeId1', 'likeId2'],
 			likedByCurrentUser,
+			posting: false,
 		};
 
-		return (
-			<CommentCard comment={comment} postingCommentId="postingCommentId" getText={getTextMock} />
-		);
+		return <CommentCard comment={comment} getText={getTextMock} />;
 	});

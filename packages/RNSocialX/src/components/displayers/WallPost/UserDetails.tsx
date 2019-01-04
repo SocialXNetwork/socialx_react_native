@@ -16,7 +16,7 @@ interface IUserDetailsProps extends ITranslatedProps {
 	disableNavigation?: boolean;
 	taggedFriends?: Array<{ fullName: string }>;
 	location?: string;
-	onUserPress: (userId: string) => void;
+	onUserPress: (alias: string) => void;
 	onGoBack: () => void;
 	onShowOptions: () => void;
 }

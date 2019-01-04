@@ -80,14 +80,12 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 			}),
 		);
 		dispatch(addCommentToPostAction({ postId, commentId: comment.commentId, error: false }));
-		// await dispatch(setGlobal({ postingCommentId: comment.commentId }));
 		const id = await context.dataApi.comments.createComment({ text, postId });
 
 		dispatch(syncCreateCommentAction({ previousCommentId: comment.commentId, commentId: id }));
 		dispatch(
 			replaceCommentOnPostAction({ postId, previousCommentId: comment.commentId, commentId: id }),
 		);
-		// await dispatch(setGlobal({ postingCommentId: '' }));
 	} catch (e) {
 		dispatch(createCommentErrorAction(comment.commentId));
 		dispatch(addCommentToPostAction({ postId, commentId: comment.commentId, error: true }));
