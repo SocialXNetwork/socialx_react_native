@@ -18,12 +18,6 @@ const mock: IWithTransactionHistoryEnhancedProps = {
 		},
 	},
 	actions: {
-		onSendHandler: () => {
-			/**/
-		},
-		onConvertHandler: () => {
-			/**/
-		},
 		loadMoreTransactions: () => {
 			/**/
 		},
@@ -39,8 +33,6 @@ export interface IWithTransactionHistoryEnhancedData {
 }
 
 export interface IWithTransactionHistoryEnhancedActions extends ITranslatedProps {
-	onSendHandler: () => void;
-	onConvertHandler: () => void;
 	loadMoreTransactions: () => void;
 	refreshTransactions: () => void;
 }

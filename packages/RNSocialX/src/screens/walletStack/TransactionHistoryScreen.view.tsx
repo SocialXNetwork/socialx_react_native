@@ -22,6 +22,7 @@ interface ITransactionHistoryViewProps extends ITranslatedProps {
 	refreshing: boolean;
 	onRefresh: () => void;
 	onEndReached: () => void;
+	onViewUserProfile: (username: string) => void;
 	transactions: ITransactionData[];
 }
 
@@ -35,6 +36,7 @@ export const TransactionHistoryScreenView: React.SFC<ITransactionHistoryViewProp
 	onEndReached,
 	transactions,
 	getText,
+	onViewUserProfile,
 	coins,
 }) => (
 	<View style={styles.container}>
@@ -79,7 +81,7 @@ export const TransactionHistoryScreenView: React.SFC<ITransactionHistoryViewProp
 				onEndReached={onEndReached}
 				data={transactions}
 				renderItem={(data: { item: ITransactionData; index: number }) => (
-					<RewardsTransactionItem {...data.item} />
+					<RewardsTransactionItem {...data.item} onViewUserProfile={onViewUserProfile} />
 				)}
 				keyExtractor={(item: ITransactionData) => item.id}
 			/>

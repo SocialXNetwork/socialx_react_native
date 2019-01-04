@@ -7,7 +7,7 @@ import { Image as PickerImage } from 'react-native-image-crop-picker';
 import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 
 import { IAccountCurrencyData } from './components';
-import { CoinSymbol } from './environment/consts';
+import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environment/consts';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 
@@ -209,11 +209,14 @@ export interface ITransactionData {
 	id: string;
 	type: TransactionType;
 	firstAmount: number;
+	transactionIcon?: TransactionSymbol;
 	firstCoin: CoinSymbol;
-	secondAmount: number;
-	secondCoin: CoinSymbol;
+	secondAmount?: number;
+	secondCoin?: CoinSymbol;
+	fromType?: TransactionFromType;
 	from?: string;
 	date: Date;
+	onViewUserProfile?: (username: string) => void;
 }
 
 export interface IWallet {

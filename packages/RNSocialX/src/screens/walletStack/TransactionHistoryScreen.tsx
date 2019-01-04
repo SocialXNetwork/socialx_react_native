@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Alert } from 'react-native';
 
 import {
 	IWithTransactionHistoryEnhancedActions,
@@ -14,27 +15,40 @@ type ITransactionHistoryScreenProps = INavigationProps &
 
 class Screen extends React.Component<ITransactionHistoryScreenProps> {
 	public render() {
-		const { onSendHandler, onConvertHandler, getText, wallet } = this.props;
+		const { getText, wallet } = this.props;
 
 		return (
 			<TransactionHistoryScreenView
 				coins={wallet.coins}
 				onViewAccount={this.onViewAccountHandler}
 				onGoBack={this.onGoBackHandler}
-				onSend={onSendHandler}
-				onConvert={onConvertHandler}
+				onSend={this.onSendHandler}
+				onConvert={this.onConvertHandler}
 				getText={getText}
 				refreshing={wallet.isRefreshing}
 				onRefresh={this.onRefreshHandler}
 				onEndReached={this.onEndReachedHandler}
 				transactions={wallet.rewardsTransactions}
+				onViewUserProfile={this.onViewUserProfileHandler}
 			/>
 		);
 	}
 
 	private onViewAccountHandler = () => {
 		// this.props.navigation.navigate('SocialXAccountScreen');
-		console.log('View Account Button');
+		Alert.alert('Navigate to SocialXAccountScreen');
+	};
+
+	private onSendHandler = () => {
+		Alert.alert('onSendHandler');
+	};
+
+	private onConvertHandler = () => {
+		Alert.alert('onConvertHandler');
+	};
+
+	private onViewUserProfileHandler = (username: string) => {
+		Alert.alert(`Navigate to ${username} Profile`);
 	};
 
 	private onRefreshHandler = () => {
