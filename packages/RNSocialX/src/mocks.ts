@@ -11,7 +11,7 @@ import {
 	TransactionType,
 } from './types';
 
-import { CoinSymbol } from './environment/consts';
+import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environment/consts';
 
 import dictionary from './store/app/i18n/data/dictionary.en';
 import { getText } from './store/app/i18n/helpers';
@@ -448,5 +448,66 @@ export const transactions: ITransactionData[] = [
 		secondAmount: 23,
 		secondCoin: CoinSymbol.SOCX,
 		date: new Date(2018, 11, 12),
+	},
+];
+
+export const rewardsTransactions: ITransactionData[] = [
+	{
+		id: '1',
+		type: TransactionType.Received,
+		firstAmount: 23,
+		firstCoin: CoinSymbol.SOCX,
+		secondAmount: 0.2,
+		secondCoin: CoinSymbol.ETH,
+		fromType: TransactionFromType.POOL,
+		date: new Date(2018, 2, 13),
+	},
+	{
+		id: '2',
+		type: TransactionType.Received,
+		firstAmount: 0.2,
+		firstCoin: CoinSymbol.ETH,
+		fromType: TransactionFromType.USER,
+		from: 'Snowman',
+		secondAmount: 23,
+		secondCoin: CoinSymbol.SOCX,
+		date: new Date(2018, 1, 17),
+	},
+	{
+		id: '3',
+		type: TransactionType.Received,
+		firstAmount: +23,
+		firstCoin: CoinSymbol.SOCX,
+		secondAmount: +0.2,
+		secondCoin: CoinSymbol.ETH,
+		date: new Date(2018, 4, 8),
+	},
+	{
+		id: '4',
+		type: TransactionType.Sent,
+		firstAmount: -0.2,
+		firstCoin: CoinSymbol.ETH,
+		transactionIcon: TransactionSymbol.SENT,
+		date: new Date(2018, 5, 1),
+	},
+	{
+		id: '5',
+		type: TransactionType.Converted,
+		firstAmount: 0.2,
+		firstCoin: CoinSymbol.ETH,
+		transactionIcon: TransactionSymbol.CONVERTED,
+		secondAmount: -23,
+		secondCoin: CoinSymbol.SOCX,
+		date: new Date(2018, 11, 12),
+	},
+	{
+		id: '6',
+		type: TransactionType.Converted,
+		firstAmount: 11.2,
+		firstCoin: CoinSymbol.SOCX,
+		transactionIcon: TransactionSymbol.CONVERTED,
+		secondAmount: -40,
+		secondCoin: CoinSymbol.ETH,
+		date: new Date(2018, 12, 25),
 	},
 ];

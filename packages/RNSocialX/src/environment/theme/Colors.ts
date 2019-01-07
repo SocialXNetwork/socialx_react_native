@@ -47,6 +47,7 @@ export const Colors = {
 	blueGem: '#4813A0',
 	wildSand: '#F6F6F6',
 	gray: '#808080',
+	charade: '#2E333D',
 };
 
 export const colorWithAlpha = (color: string, alpha: number) => {

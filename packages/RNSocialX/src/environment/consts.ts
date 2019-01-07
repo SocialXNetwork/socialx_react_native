@@ -1,3 +1,8 @@
+/*
+ *	TODO:
+ *	1. Alex C: Replace icons from TransactionIcons with ones provided by @Dunja
+ */
+
 import * as React from 'react';
 // DO NOT SHORTEN THIS IMPORT! For some reason, RN/Typescript cannot import the icons like that
 import { Icons } from './theme/Icons';
@@ -34,6 +39,22 @@ export enum CoinIcons {
 export enum CoinFullName {
 	SOCX = 'SOCX',
 	ETH = 'Ethereum',
+}
+
+export enum TransactionIcons {
+	CONVERTED = Icons.socxCoinIcon,
+	SENT = Icons.ethCoinIcon,
+}
+
+export enum TransactionSymbol {
+	// If the Transaction is RECEIVED then the Transaction Icon will be taken from CoinIcons
+	CONVERTED = 'CONVERTED',
+	SENT = 'SENT',
+}
+
+export enum TransactionFromType {
+	POOL = 'REWARD POOL',
+	USER = 'USER',
 }
 
 export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
@@ -117,6 +138,8 @@ export enum SCREENS {
 	AdsManagement = 'AdsManagementScreen',
 	Likes = 'LikesScreen',
 	ManageCountries = 'ManageCountriesScreen',
+	Rewards = 'RewardsScreen',
+	RewardsTransactionHistory = 'TransactionHistoryScreen',
 }
 
 export enum NAVIGATION {

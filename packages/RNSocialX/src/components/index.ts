@@ -39,6 +39,7 @@ export { SearchTabResults } from './displayers/SearchTabResults';
 export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
+export { RewardsTransactionItem } from './displayers/RewardsTransactionItem';
 export { TransactionItem } from './displayers/TransactionItem';
 export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
 

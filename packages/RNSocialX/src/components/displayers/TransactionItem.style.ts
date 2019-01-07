@@ -29,7 +29,7 @@ const styles: any = {
 	lineText: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(20),
-		lineHeight: Sizes.smartHorizontalScale(35),
+		lineHeight: Sizes.smartHorizontalScale(29),
 		color: Colors.cloudBurst,
 	},
 	grayText: {
