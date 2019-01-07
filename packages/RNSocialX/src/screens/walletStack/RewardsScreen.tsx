@@ -1,7 +1,7 @@
 import moment from 'moment';
 import numeral from 'numeral';
 import * as React from 'react';
-import { Animated, Dimensions, Easing, LayoutChangeEvent } from 'react-native';
+import { Animated, Easing, LayoutChangeEvent } from 'react-native';
 
 import {
 	IWithRewardsEnhancedActions,
@@ -19,8 +19,6 @@ type IRewardsScreenProps = INavigationProps &
 interface IRewardsScreenState {
 	selectedDateButton: IRewardsDate;
 }
-
-const VIEWPORT_DIMENSIONS = Dimensions.get('window');
 
 class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 	public state = {
@@ -62,7 +60,6 @@ class Screen extends React.Component<IRewardsScreenProps, IRewardsScreenState> {
 				dailyHistory={dailyHistory}
 				monthlyHistory={monthlyHistory}
 				translateXValue={this.translateX}
-				viewportWidth={VIEWPORT_DIMENSIONS.width}
 				startDailyIndex={this.onSearchCurrentDay()}
 				startMonthlyIndex={this.onSearchCurrentMonth()}
 				dailyCarouselOnLayout={this.onDailyLayout}

@@ -1,6 +1,6 @@
 import { Button, Card, Segment, Text } from 'native-base';
 import * as React from 'react';
-import { Animated, LayoutChangeEvent, Platform, View } from 'react-native';
+import { Animated, Dimensions, LayoutChangeEvent, Platform, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-navigation';
 
@@ -9,6 +9,7 @@ import { IRewardsDate, IRewardsHistoryData, OS_TYPES } from '../../environment/c
 import { ITranslatedProps } from '../../types';
 
 import styles, { BARS_HEIGHT, CARD_WIDTH, customStyles } from './RewardsScreen.style';
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface IRewardsScreenViewProps extends ITranslatedProps {
 	dailyHistory: IRewardsHistoryData[];
@@ -24,10 +25,9 @@ interface IRewardsScreenViewProps extends ITranslatedProps {
 	bntsBarWidth: Animated.Value;
 	startDailyIndex: number;
 	startMonthlyIndex: number;
-	viewportWidth: number;
 	handleDateChange: (text: IRewardsDate) => void;
-	onGoBack: () => void;
 	dailyCarouselOnLayout: (event: LayoutChangeEvent) => void;
+	onGoBack: () => void;
 }
 
 const REWARDS_DATE_BUTTONS = [
@@ -46,7 +46,6 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 	monthlyHistory,
 	startDailyIndex,
 	startMonthlyIndex,
-	viewportWidth,
 	dailyCarouselOnLayout,
 	onGoBack,
 	getText,
@@ -184,7 +183,7 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 								</Card>
 							)}
 							firstItem={startDailyIndex}
-							sliderWidth={viewportWidth}
+							sliderWidth={SCREEN_WIDTH}
 							itemWidth={CARD_WIDTH}
 							removeClippedSubviews={false}
 							inactiveSlideOpacity={0.6}
@@ -202,7 +201,7 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 								</Card>
 							)}
 							firstItem={startMonthlyIndex}
-							sliderWidth={viewportWidth}
+							sliderWidth={SCREEN_WIDTH}
 							itemWidth={CARD_WIDTH}
 							removeClippedSubviews={false}
 							inactiveSlideOpacity={0.6}

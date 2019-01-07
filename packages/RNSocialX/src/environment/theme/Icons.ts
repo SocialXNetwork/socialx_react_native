@@ -1,4 +1,3 @@
-// leave off @2x/@3x
 export const Icons = {
 	envelope: require('./assets/icons/envelope_icon.png'),
 	likeIconBlueOutline: require('./assets/icons/like_blue_outline.png'),
@@ -42,7 +41,6 @@ export const Icons = {
 	tagFriendSmall: require('./assets/icons/tag_friend_small.png'),
 	iconDots: require('./assets/icons/dots.png'),
 	iconDelete: require('./assets/icons/delete.png'),
-	iconReport: require('./assets/icons/report.png'),
 	iconDropDown: require('./assets/icons/drop_down.png'),
 	iconProfileAnalytics: require('./assets/icons/profile_analytics.png'),
 	iconSettingsGear: require('./assets/icons/settings_gear.png'),

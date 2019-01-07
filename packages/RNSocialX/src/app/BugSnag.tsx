@@ -6,33 +6,34 @@ import { OS_TYPES } from '../environment/consts';
 
 const BUGSNAG_API_KEY = '73245fce110f157e3c5ba0c2ac7154ae';
 
-export default class BugSnap extends React.Component<{
-	// children: (bugsnag: Client | null) => JSX.Element;
-	children: any;
-}> {
-	private BugSnag: Client | null;
+interface IBugSnagProps {
+	children: (bugSnag: Client | null) => JSX.Element;
+}
 
-	constructor(props: any) {
+export default class BugSnag extends React.Component<IBugSnagProps> {
+	private client: Client | null;
+
+	constructor(props: IBugSnagProps) {
 		super(props);
-		// setup bugsnag
 		const packageVersion = DeviceInfo.getVersion();
 		const computedVersion = parseInt(packageVersion.replace(/\D/g, ''), 10);
 		const computedAppVersion =
 			Platform.OS === OS_TYPES.Android ? computedVersion * 10 + 2 : computedVersion * 10 + 1;
 
 		if (!__DEV__) {
-			const bugSnagConf = new Configuration(BUGSNAG_API_KEY);
-			bugSnagConf.appVersion = computedAppVersion.toString();
-			bugSnagConf.autoCaptureSessions = false;
-			const BugSnag = new Client(bugSnagConf);
-			BugSnag.startSession();
-			this.BugSnag = BugSnag;
+			const config = new Configuration(BUGSNAG_API_KEY);
+			config.appVersion = computedAppVersion.toString();
+			config.autoCaptureSessions = false;
+
+			const client = new Client(config);
+			client.startSession();
+			this.client = client;
 		} else {
-			this.BugSnag = null;
+			this.client = null;
 		}
 	}
 
 	render() {
-		return this.props.children(this.BugSnag);
+		return this.props.children(this.client);
 	}
 }

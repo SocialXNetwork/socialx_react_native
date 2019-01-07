@@ -1,3 +1,4 @@
+import { Client } from 'bugsnag-react-native';
 import * as React from 'react';
 
 import BugSnag from './BugSnag';
@@ -17,11 +18,11 @@ export default class App extends React.Component<{}> {
 		return (
 			<ErrorBoundary>
 				<BugSnag>
-					{(bugsnag: any) => (
+					{(client: Client | null) => (
 						<Init>
 							<Splash>
 								<PolyfillCrypto />
-								<Store bugsnag={bugsnag}>
+								<Store bugSnag={client}>
 									<React.Fragment>
 										<StatusBar />
 										<OfflineHandler>
