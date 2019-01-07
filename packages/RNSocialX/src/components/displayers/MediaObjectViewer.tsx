@@ -17,8 +17,7 @@ import {
 
 import styles from './MediaObjectViewer.style';
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	hash?: string;
@@ -26,6 +25,7 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	extension?: string;
 	fullscreen?: boolean;
 	type?: IMediaTypes;
+	defaultScale?: boolean;
 	resizeMode?: 'cover' | 'contain' | 'stretch';
 	style?: StyleProp<ViewStyle>;
 	onPress?: () => void;
@@ -37,10 +37,18 @@ interface IProps extends IMediaObjectViewerProps {
 	IPFS_URL: string;
 }
 
-class Component extends React.Component<IProps> {
+interface IState {
+	image: { width: number; height: number };
+}
+
+class Component extends React.Component<IProps, IState> {
+	public state = {
+		image: { width: 0, height: 0 },
+	};
+
 	private uri: string = '';
 	private mimeType: string = '';
-	private image: { width: number; height: number } = { width: 200, height: 200 };
+	private ref = React.createRef<ImageZoom>();
 
 	constructor(props: IProps) {
 		super(props);
@@ -48,19 +56,30 @@ class Component extends React.Component<IProps> {
 		const { hash, path, type, extension, IPFS_URL } = props;
 		this.uri = path ? path : IPFS_URL + hash;
 		this.mimeType = this.getMimeType(this.uri, type, extension);
+	}
 
-		if (hash && this.mimeType.startsWith(MediaTypeImage.key)) {
+	public componentDidMount() {
+		if (this.props.hash && this.mimeType.startsWith(MediaTypeImage.key)) {
 			Image.getSize(
 				this.uri,
-				(width, height) => (this.image = { width, height }),
+				(width, height) => this.setState({ image: { width, height } }),
 				(e) => console.log(e),
 			);
 		}
 	}
 
 	public render() {
-		const { fullscreen, resizeMode, style, onPress, onDoublePress, onMove, getText } = this.props;
-		const heightRatio = SCREEN_WIDTH / this.image.width;
+		const {
+			fullscreen,
+			defaultScale,
+			resizeMode,
+			style,
+			onPress,
+			onDoublePress,
+			onMove,
+			getText,
+		} = this.props;
+		const heightRatio = SCREEN_WIDTH / this.state.image.width;
 
 		return (
 			<View>
@@ -74,12 +93,14 @@ class Component extends React.Component<IProps> {
 					>
 						{fullscreen && (
 							<ImageZoom
+								ref={this.ref}
+								panToMove={defaultScale ? false : true}
 								cropWidth={SCREEN_WIDTH}
 								cropHeight={SCREEN_HEIGHT}
-								imageWidth={this.image.width}
-								imageHeight={this.image.height * heightRatio}
+								imageWidth={SCREEN_WIDTH}
+								imageHeight={this.state.image.height * heightRatio}
 								onMove={onMove}
-								onClick={onPress}
+								onClick={this.onResetHandler}
 							>
 								<FastImage
 									source={{ uri: this.uri, priority: FastImage.priority.normal }}
@@ -88,7 +109,10 @@ class Component extends React.Component<IProps> {
 											? FastImage.resizeMode.contain
 											: FastImage.resizeMode.cover
 									}
-									style={styles.image}
+									style={{
+										width: SCREEN_WIDTH,
+										height: this.state.image.height * heightRatio,
+									}}
 								/>
 							</ImageZoom>
 						)}
@@ -129,6 +153,13 @@ class Component extends React.Component<IProps> {
 		}
 
 		return mime.lookup(uri);
+	};
+
+	private onResetHandler = () => {
+		if (this.props.onPress && this.ref.current) {
+			this.ref.current.reset();
+			this.props.onPress();
+		}
 	};
 }
 

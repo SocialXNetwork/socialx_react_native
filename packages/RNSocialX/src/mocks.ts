@@ -11,7 +11,12 @@ import {
 	TransactionType,
 } from './types';
 
-import { CoinSymbol, TransactionFromType, TransactionSymbol, IRewardsHistoryData } from './environment/consts';
+import {
+	CoinSymbol,
+	IRewardsHistoryData,
+	TransactionFromType,
+	TransactionSymbol,
+} from './environment/consts';
 
 import dictionary from './store/app/i18n/data/dictionary.en';
 import { getText } from './store/app/i18n/helpers';

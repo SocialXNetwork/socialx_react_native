@@ -1,8 +1,11 @@
+import { throttle } from 'lodash';
 import * as React from 'react';
 import { Animated } from 'react-native';
 
 import { INavigationProps, IOnMove } from '../../types';
 import { MediaViewerScreenView } from './MediaViewerScreen.view';
+
+const THROTTLE_TIME = 300;
 
 import {
 	IWithLikingEnhancedActions,
@@ -26,7 +29,7 @@ interface IState {
 	activeSlide: number;
 	isOverlayVisible: boolean;
 	isInfoVisible: boolean;
-	scrollable: boolean;
+	defaultScale: boolean;
 }
 
 class Screen extends React.Component<IProps, IState> {
@@ -34,18 +37,21 @@ class Screen extends React.Component<IProps, IState> {
 		activeSlide: this.props.startIndex,
 		isOverlayVisible: true,
 		isInfoVisible: false,
-		scrollable: true,
+		defaultScale: true,
 	};
 
 	private opacity = new Animated.Value(1);
+	private toggleOverlay = throttle((state: boolean) => {
+		this.onOverlayToggleHandler(state);
+	}, THROTTLE_TIME);
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
-			this.props.postId !== nextProps.postId ||
 			this.props.likedByCurrentUser !== nextProps.likedByCurrentUser ||
 			this.state.activeSlide !== nextState.activeSlide ||
 			this.state.isInfoVisible !== nextState.isInfoVisible ||
-			this.state.scrollable !== nextState.scrollable
+			this.state.isOverlayVisible !== nextState.isOverlayVisible ||
+			this.state.defaultScale !== nextState.defaultScale
 		);
 	}
 
@@ -60,7 +66,7 @@ class Screen extends React.Component<IProps, IState> {
 			onGoBack,
 			getText,
 		} = this.props;
-		const { activeSlide, isInfoVisible, isOverlayVisible, scrollable } = this.state;
+		const { activeSlide, isInfoVisible, isOverlayVisible, defaultScale } = this.state;
 
 		return (
 			<MediaViewerScreenView
@@ -70,9 +76,9 @@ class Screen extends React.Component<IProps, IState> {
 				isInfoVisible={isInfoVisible}
 				isOverlayVisible={isOverlayVisible}
 				likedByCurrentUser={likedByCurrentUser}
-				scrollable={scrollable}
+				defaultScale={defaultScale}
 				opacity={this.opacity}
-				toggleOverlay={this.toggleOverlay}
+				onImagePress={this.onImagePressHandler}
 				onChangeSlide={this.onChangeSlideHandler}
 				onShowInfo={this.onShowInfoHandler}
 				onCloseInfo={this.onCloseInfoHandler}
@@ -89,12 +95,25 @@ class Screen extends React.Component<IProps, IState> {
 		if (position) {
 			const { scale } = position;
 
-			if (scale === 1 && !this.state.scrollable) {
-				this.toggleOverlay();
-				this.setState({ scrollable: true });
-			} else if (scale !== 1 && this.state.scrollable) {
-				this.toggleOverlay();
-				this.setState({ scrollable: false });
+			if (scale === 1 && !this.state.defaultScale) {
+				this.setState({ defaultScale: true });
+				this.toggleOverlay(true);
+			} else if (scale !== 1 && this.state.defaultScale) {
+				this.setState({ defaultScale: false });
+				this.toggleOverlay(false);
+			}
+		}
+	};
+
+	private onImagePressHandler = () => {
+		if (!this.state.defaultScale) {
+			this.toggleOverlay(true);
+			this.setState({ defaultScale: true });
+		} else {
+			if (this.state.isOverlayVisible) {
+				this.toggleOverlay(false);
+			} else {
+				this.toggleOverlay(true);
 			}
 		}
 	};
@@ -115,22 +134,13 @@ class Screen extends React.Component<IProps, IState> {
 		});
 	};
 
-	private toggleOverlay = () => {
-		if (this.state.isOverlayVisible) {
-			this.setState({ isOverlayVisible: false });
-			Animated.timing(this.opacity, {
-				toValue: 0,
-				duration: 250,
-				useNativeDriver: true,
-			}).start();
-		} else {
-			this.setState({ isOverlayVisible: true });
-			Animated.timing(this.opacity, {
-				toValue: 1,
-				duration: 250,
-				useNativeDriver: true,
-			}).start();
-		}
+	private onOverlayToggleHandler = (state: boolean) => {
+		this.setState({ isOverlayVisible: state });
+		Animated.timing(this.opacity, {
+			toValue: state ? 1 : 0,
+			duration: THROTTLE_TIME - 50,
+			useNativeDriver: true,
+		}).start();
 	};
 }
 

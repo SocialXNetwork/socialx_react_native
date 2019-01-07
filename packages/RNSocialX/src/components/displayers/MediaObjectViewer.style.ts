@@ -1,8 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
-
-const styles: any = {
+const styles = {
 	image: {
 		width: '100%',
 		height: '100%',

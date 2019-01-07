@@ -18,9 +18,9 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	isInfoVisible: boolean;
 	isOverlayVisible: boolean;
 	likedByCurrentUser: boolean;
-	scrollable: boolean;
+	defaultScale: boolean;
 	opacity: AnimatedValue;
-	toggleOverlay: () => void;
+	onImagePress: () => void;
 	onChangeSlide: (index: number) => void;
 	onShowInfo: () => void;
 	onCloseInfo: () => void;
@@ -34,12 +34,12 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	media,
 	startIndex,
 	activeSlide,
-	opacity,
 	isInfoVisible,
 	isOverlayVisible,
 	likedByCurrentUser,
-	scrollable,
-	toggleOverlay,
+	defaultScale,
+	opacity,
+	onImagePress,
 	onChangeSlide,
 	onShowInfo,
 	onCloseInfo,
@@ -87,38 +87,55 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					/>
 				</Animated.View>
 			)}
-			<View style={styles.carousel}>
-				<Carousel
-					data={data}
-					renderItem={({ item }) => (
-						<MediaObjectViewer
-							type={item.type}
-							hash={item.hash}
-							resizeMode="contain"
-							fullscreen={true}
-							onMove={onMove}
-							onPress={toggleOverlay}
-							style={[styles.media, { width: SCREEN_WIDTH }]}
-							getText={getText}
-						/>
-					)}
-					sliderWidth={SCREEN_WIDTH}
-					itemWidth={SCREEN_WIDTH}
-					firstItem={startIndex}
-					scrollEnabled={scrollable}
-					onSnapToItem={onChangeSlide}
-					{...Platform.select({
-						android: {
-							windowSize: 5,
-							initialNumToRender: 5,
-						},
-						ios: {
-							windowSize: 3,
-							initialNumToRender: 3,
-						},
-					})}
+			{data.length === 1 && (
+				<MediaObjectViewer
+					type={data[0].type}
+					hash={data[0].hash}
+					resizeMode="contain"
+					fullscreen={true}
+					defaultScale={defaultScale}
+					onMove={onMove}
+					onPress={onImagePress}
+					style={[styles.media, { width: SCREEN_WIDTH }]}
+					getText={getText}
 				/>
-			</View>
+			)}
+			{data.length > 1 && (
+				<View style={styles.carousel}>
+					<Carousel
+						data={data}
+						renderItem={({ item }) => (
+							<MediaObjectViewer
+								type={item.type}
+								hash={item.hash}
+								resizeMode="contain"
+								fullscreen={true}
+								defaultScale={defaultScale}
+								onMove={onMove}
+								onPress={onImagePress}
+								style={[styles.media, { width: SCREEN_WIDTH }]}
+								getText={getText}
+							/>
+						)}
+						sliderWidth={SCREEN_WIDTH}
+						itemWidth={SCREEN_WIDTH}
+						firstItem={startIndex}
+						scrollEnabled={defaultScale}
+						lockScrollWhileSnapping={true}
+						onSnapToItem={onChangeSlide}
+						{...Platform.select({
+							android: {
+								windowSize: 5,
+								initialNumToRender: 5,
+							},
+							ios: {
+								windowSize: 3,
+								initialNumToRender: 3,
+							},
+						})}
+					/>
+				</View>
+			)}
 		</SafeAreaView>
 	);
 };

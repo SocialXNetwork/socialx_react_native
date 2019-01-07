@@ -257,7 +257,6 @@ const PreAuthNavigator = createStackNavigator(
 
 const HomelessNavigator = createStackNavigator(
 	{
-
 		RewardsScreen: { screen: RewardsScreen },
 		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
 		TransactionHistoryScreen: { screen: TransactionHistoryScreen },
