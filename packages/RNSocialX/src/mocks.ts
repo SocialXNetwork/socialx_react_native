@@ -11,7 +11,7 @@ import {
 	TransactionType,
 } from './types';
 
-import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environment/consts';
+import { CoinSymbol, TransactionFromType, TransactionSymbol, IRewardsHistoryData } from './environment/consts';
 
 import dictionary from './store/app/i18n/data/dictionary.en';
 import { getText } from './store/app/i18n/helpers';
@@ -27,14 +27,14 @@ const topCommentIds = ['topCommentId1', 'topCommentId2'];
 
 export const suggestedItems: IUserEntry[] = [
 	{
-		userId: '101',
+		alias: '101',
 		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
 		userName: 'sethsaunders',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
-		userId: '102',
+		alias: '102',
 		avatar:
 			'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
 		fullName: 'Teresa Lamb',
@@ -42,7 +42,7 @@ export const suggestedItems: IUserEntry[] = [
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
-		userId: '103',
+		alias: '103',
 		avatar:
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhxxOvVEmfKWgIxdz1Xvd0zTKY4oHlC8E709FF91o5FMTirI2T',
 		fullName: 'Sophie Smith',
@@ -50,7 +50,7 @@ export const suggestedItems: IUserEntry[] = [
 		relationship: FRIEND_TYPES.MUTUAL,
 	},
 	{
-		userId: '104',
+		alias: '104',
 		avatar:
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlhQDjvfpOkYBNz_sFX6egUWv-tKgr9iwb9S0ECK5Ll8C-I9Oj',
 		fullName: 'Cory Maxwell',
@@ -58,7 +58,7 @@ export const suggestedItems: IUserEntry[] = [
 		relationship: FRIEND_TYPES.PENDING,
 	},
 	{
-		userId: '105',
+		alias: '105',
 		avatar:
 			'https://yt3.ggpht.com/a-/AN66SAyxvKvpstRZN6-LzcuggRm6kEQs-lKW5cOg6g=s900-mo-c-c0xffffffff-rj-k-no',
 		fullName: 'Claudia Kulmitzer',
@@ -75,7 +75,7 @@ export const posts: IWallPost[] = [
 		taggedFriends: [{ fullName: 'Lorem' }, { fullName: 'Ipsum' }],
 		timestamp: new Date(Date.now()),
 		owner: {
-			userId: 'testgggg',
+			alias: 'testgggg',
 			fullName: 'Test GGGG',
 			avatar,
 		},
@@ -84,21 +84,19 @@ export const posts: IWallPost[] = [
 		numberOfWalletCoins: 0,
 		likedByCurrentUser: false,
 		removable: false,
-		media: {
-			objects: [
-				{
-					hash: '131289fsdf03yr9hehdiwb32',
-					type: MediaTypeVideo,
-					extension: 'mp4',
-					size: 51231,
-				},
-			],
-			postId: '1',
-		},
+		media: [
+			{
+				hash: '131289fsdf03yr9hehdiwb32',
+				type: MediaTypeVideo,
+				extension: 'mp4',
+				size: 51231,
+				postId: '1',
+			},
+		],
+
 		likeIds: ['likeId1', 'likeId2'],
 		commentIds: [],
 		topCommentIds,
-		loading: false,
 		suggested: undefined,
 		offensiveContent: false,
 	},
@@ -109,7 +107,7 @@ export const posts: IWallPost[] = [
 		taggedFriends: [{ fullName: 'Lorem' }, { fullName: 'Ipsum' }],
 		timestamp: new Date(Date.now()),
 		owner: {
-			userId: 'testgggg',
+			alias: 'testgggg',
 			fullName: 'Test GGGG',
 			avatar,
 		},
@@ -118,21 +116,19 @@ export const posts: IWallPost[] = [
 		numberOfWalletCoins: 0,
 		likedByCurrentUser: false,
 		removable: false,
-		media: {
-			objects: [
-				{
-					hash: '131289fsdf03yr9hehdiwb32',
-					type: MediaTypeVideo,
-					extension: 'mp4',
-					size: 51231,
-				},
-			],
-			postId: '2',
-		},
+		media: [
+			{
+				hash: '131289fsdf03yr9hehdiwb32',
+				type: MediaTypeVideo,
+				extension: 'mp4',
+				size: 51231,
+				postId: '2',
+			},
+		],
+
 		likeIds: ['likeId1', 'likeId2'],
 		commentIds: [],
 		topCommentIds,
-		loading: false,
 		suggested: suggestedItems,
 		offensiveContent: true,
 	},
@@ -143,7 +139,7 @@ export const posts: IWallPost[] = [
 		taggedFriends: [{ fullName: 'Lorem' }, { fullName: 'Ipsum' }],
 		timestamp: new Date(Date.now()),
 		owner: {
-			userId: 'testgggg',
+			alias: 'testgggg',
 			fullName: 'Test GGGG',
 			avatar,
 		},
@@ -152,31 +148,28 @@ export const posts: IWallPost[] = [
 		numberOfWalletCoins: 0,
 		likedByCurrentUser: false,
 		removable: false,
-		media: {
-			objects: [
-				{
-					hash: '131289fsdf03yr9hehdiwb32',
-					type: MediaTypeVideo,
-					extension: 'mp4',
-					size: 51231,
-				},
-			],
-			postId: '3',
-		},
+		media: [
+			{
+				hash: '131289fsdf03yr9hehdiwb32',
+				type: MediaTypeVideo,
+				extension: 'mp4',
+				size: 51231,
+				postId: '3',
+			},
+		],
+
 		likeIds: ['likeId1', 'likeId2'],
 		commentIds: [],
 		topCommentIds,
-		loading: false,
 		suggested: undefined,
 		offensiveContent: false,
 	},
 ];
 
 export const currentUser: ICurrentUser = {
-	userId: '999',
+	alias: 'testggg',
 	avatar,
 	fullName: 'Test GGGG',
-	userName: 'testgggg',
 	email: 'testgggg@test.com',
 	description: 'Lorem ipsum dolor sit amet',
 	pub: 'rPZqFYcR01E81UiAtzkY0tV2LmxnNHtQG-UwqfvxLyQ.4Xc5xwCqzFaEOJpu7ftadiXXQLE7sbm7ETs23lzC96E',
@@ -186,18 +179,16 @@ export const currentUser: ICurrentUser = {
 	numberOfPhotos: 1,
 	numberOfFriends: 2,
 	numberOfComments: 87,
-	media: {
-		objects: [
-			{
-				hash: '131289fsdf03yr9hehdiwb32',
-				type: MediaTypeVideo,
-				extension: 'mp4',
-				size: 51231,
-			},
-		],
-		postId: '3',
-	},
-	recentPosts: posts,
+	media: [
+		{
+			hash: '131289fsdf03yr9hehdiwb32',
+			type: MediaTypeVideo,
+			extension: 'mp4',
+			size: 51231,
+			postId: '3',
+		},
+	],
+	postIds: ['1', '2'],
 };
 
 const CATEGORY_IMAGE_URL =
@@ -400,6 +391,227 @@ export const trendingContentItems: ITrendingContentItem[] = [
 			{ type: 'Image', url: CONTENT_IMAGE_URL, postId: '1875', middle: true },
 			{ type: 'Image', url: CONTENT_IMAGE_URL, postId: '1875' },
 		],
+	},
+];
+
+export const dailyHistory: IRewardsHistoryData[] = [
+	{
+		date: '1st',
+		amount: 39,
+		currency: 'SOCX',
+	},
+	{
+		date: '2nd',
+		amount: 12,
+		currency: 'SOCX',
+	},
+	{
+		date: '3rd',
+		amount: 43,
+		currency: 'SOCX',
+	},
+	{
+		date: '4th',
+		amount: 17,
+		currency: 'SOCX',
+	},
+	{
+		date: '5th',
+		amount: 39,
+		currency: 'SOCX',
+	},
+	{
+		date: '6th',
+		amount: 67,
+		currency: 'SOCX',
+	},
+	{
+		date: '7th',
+		amount: 50,
+		currency: 'SOCX',
+	},
+	{
+		date: '8th',
+		amount: 32,
+		currency: 'SOCX',
+	},
+	{
+		date: '9th',
+		amount: 10,
+		currency: 'SOCX',
+	},
+	{
+		date: '10th',
+		amount: 27,
+		currency: 'SOCX',
+	},
+	{
+		date: '11st',
+		amount: 78,
+		currency: 'SOCX',
+	},
+	{
+		date: '12nd',
+		amount: 87,
+		currency: 'SOCX',
+	},
+	{
+		date: '13rd',
+		amount: 39,
+		currency: 'SOCX',
+	},
+	{
+		date: '14th',
+		amount: 12,
+		currency: 'SOCX',
+	},
+	{
+		date: '15th',
+		amount: 43,
+		currency: 'SOCX',
+	},
+	{
+		date: '16th',
+		amount: 17,
+		currency: 'SOCX',
+	},
+	{
+		date: '17th',
+		amount: 39,
+		currency: 'SOCX',
+	},
+	{
+		date: '18th',
+		amount: 67,
+		currency: 'SOCX',
+	},
+	{
+		date: '19th',
+		amount: 50,
+		currency: 'SOCX',
+	},
+	{
+		date: '20th',
+		amount: 32,
+		currency: 'SOCX',
+	},
+	{
+		date: '21st',
+		amount: 10,
+		currency: 'SOCX',
+	},
+	{
+		date: '22nd',
+		amount: 27,
+		currency: 'SOCX',
+	},
+	{
+		date: '23rd',
+		amount: 78,
+		currency: 'SOCX',
+	},
+	{
+		date: '24th',
+		amount: 87,
+		currency: 'SOCX',
+	},
+	{
+		date: '25th',
+		amount: 67,
+		currency: 'SOCX',
+	},
+	{
+		date: '26th',
+		amount: 50,
+		currency: 'SOCX',
+	},
+	{
+		date: '27th',
+		amount: 32,
+		currency: 'SOCX',
+	},
+	{
+		date: '28th',
+		amount: 10,
+		currency: 'SOCX',
+	},
+	{
+		date: '29th',
+		amount: 27,
+		currency: 'SOCX',
+	},
+	{
+		date: '30th',
+		amount: 78,
+		currency: 'SOCX',
+	},
+	{
+		date: '31st',
+		amount: 87,
+		currency: 'SOCX',
+	},
+];
+
+export const monthlyHistory: IRewardsHistoryData[] = [
+	{
+		date: 'Jan',
+		amount: 39,
+		currency: 'SOCX',
+	},
+	{
+		date: 'Feb',
+		amount: 12,
+		currency: 'SOCX',
+	},
+	{
+		date: 'March',
+		amount: 43,
+		currency: 'SOCX',
+	},
+	{
+		date: 'April',
+		amount: 17,
+		currency: 'SOCX',
+	},
+	{
+		date: 'May',
+		amount: 39,
+		currency: 'SOCX',
+	},
+	{
+		date: 'June',
+		amount: 67,
+		currency: 'SOCX',
+	},
+	{
+		date: 'July',
+		amount: 50,
+		currency: 'SOCX',
+	},
+	{
+		date: 'Aug',
+		amount: 32,
+		currency: 'SOCX',
+	},
+	{
+		date: 'Sep',
+		amount: 10,
+		currency: 'SOCX',
+	},
+	{
+		date: 'Oct',
+		amount: 27,
+		currency: 'SOCX',
+	},
+	{
+		date: 'Nov',
+		amount: 78,
+		currency: 'SOCX',
+	},
+	{
+		date: 'Dec',
+		amount: 87,
+		currency: 'SOCX',
 	},
 ];
 

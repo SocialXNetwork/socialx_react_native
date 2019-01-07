@@ -51,12 +51,12 @@ export const IconButton: React.SFC<IIconButtonProps> = ({
 	}
 
 	return (
-		<React.Fragment>
+		<TouchableOpacity style={containerStyle} disabled={!onPress} onPress={onPress}>
 			{iconType === 'image' && (
 				<Image source={iconSource as ImageRequireSource} style={iconStyle} resizeMode="contain" />
 			)}
 			{iconType === 'io' && <Ionicon name={iconSource as string} style={iconStyle} />}
 			{iconType === 'fa' && <FontAwesome name={iconSource as string} style={iconStyle} />}
-		</React.Fragment>
+		</TouchableOpacity>
 	);
 };

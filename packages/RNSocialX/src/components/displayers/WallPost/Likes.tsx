@@ -50,7 +50,7 @@ export const Component: React.SFC<IProps> = ({
 };
 
 const mapStateToProps = (state: IApplicationState, props: ILikesProps) => ({
-	profile: selectProfile(state, props),
+	profile: selectProfile(state.data.profiles, props.alias),
 });
 
 export const Likes = connect(mapStateToProps)(Component as any);

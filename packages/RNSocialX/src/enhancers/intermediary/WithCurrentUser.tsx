@@ -24,11 +24,10 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 								const profile = profiles[auth.alias!];
 
 								currentUser = {
-									userId: profile.alias,
+									alias: profile.alias,
 									email: profile.email,
 									pub: profile.pub,
 									fullName: profile.fullName,
-									userName: profile.alias,
 									avatar: profile.avatar,
 									description: profile.aboutMeText === 'about me text' ? '' : profile.aboutMeText,
 									numberOfFriends: profile.numberOfFriends,

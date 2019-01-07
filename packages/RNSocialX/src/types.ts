@@ -32,7 +32,7 @@ export enum SearchTabs {
 }
 
 export interface IUserEntry {
-	userId: string;
+	alias: string;
 	fullName: string;
 	userName: string;
 	avatar: string;
@@ -148,7 +148,7 @@ export interface IGridMedia {
 }
 
 export interface IPostOwner {
-	userId: string;
+	alias: string;
 	fullName: string;
 	avatar: string;
 }
@@ -156,10 +156,11 @@ export interface IPostOwner {
 export interface IComment {
 	commentId: string;
 	text: string;
-	user: IPostOwner;
+	owner: IPostOwner;
 	timestamp: Date;
 	likeIds: string[];
 	likedByCurrentUser: boolean;
+	posting: boolean;
 }
 
 export interface IWallPost {
@@ -243,12 +244,11 @@ export interface ISearchTabResultsProps {
 // =====================================================
 
 export interface ICurrentUser {
-	userId: string;
+	alias: string;
+	pub: string;
 	avatar: string;
 	email: string;
-	pub: string;
 	fullName: string;
-	userName: string;
 	description: string;
 	numberOfLikes: number;
 	numberOfPhotos: number;
@@ -261,10 +261,9 @@ export interface ICurrentUser {
 }
 
 export interface IVisitedUser {
-	userId: string;
+	alias: string;
 	avatar: string;
 	fullName: string;
-	userName: string;
 	description: string;
 	numberOfLikes: number;
 	numberOfPhotos: number;

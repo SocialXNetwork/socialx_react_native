@@ -12,10 +12,9 @@ const image = 'https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_
 storiesOf('Components/displayers', module).add('ProfileTopContainer', () => (
 	<View style={{ flex: 1 }}>
 		<ProfileTopContainer
-			userId="alexsirbu"
+			alias="alexsirbu"
 			avatar={image}
 			fullName="Alex Sirbu"
-			userName="alexsirbu"
 			numberOfPhotos={58}
 			numberOfLikes={2569}
 			numberOfFriends={794}

@@ -16,7 +16,7 @@ interface IUserDetailsProps extends ITranslatedProps {
 	disableNavigation?: boolean;
 	taggedFriends?: Array<{ fullName: string }>;
 	location?: string;
-	onUserPress: (userId: string) => void;
+	onUserPress: (alias: string) => void;
 	onGoBack: () => void;
 	onShowOptions: () => void;
 }
@@ -44,14 +44,14 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 				</TouchableOpacity>
 			)}
 			<TouchableOpacity
-				onPress={() => onUserPress(user.userId)}
+				onPress={() => onUserPress(user.alias)}
 				disabled={disableNavigation}
 				style={{ flex: 2 }}
 			>
 				<AvatarImage image={user.avatar} style={styles.avatar} />
 			</TouchableOpacity>
 			<View style={[styles.details, !canBack ? { flex: 9 } : { flex: 8 }]}>
-				<Text style={styles.fullName} onPress={() => onUserPress(user.userId)}>
+				<Text style={styles.fullName} onPress={() => onUserPress(user.alias)}>
 					{user.fullName}
 					<TaggedFriends friends={taggedFriends || []} getText={getText} />
 					<Location location={location} getText={getText} />

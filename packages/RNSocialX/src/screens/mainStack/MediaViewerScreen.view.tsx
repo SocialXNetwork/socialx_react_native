@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-	Animated,
-	LayoutChangeEvent,
-	Platform,
-	SafeAreaView,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Animated, Dimensions, Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AnimatedValue } from 'react-navigation';
@@ -16,13 +9,12 @@ import { IMedia, IOnMove, ITranslatedProps, MediaTypeImage } from '../../types';
 
 import styles from './MediaViewerScreen.style';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
 interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	media: IMedia[];
 	startIndex: number;
 	activeSlide: number;
-	viewport: {
-		width: number;
-	};
 	isInfoVisible: boolean;
 	isOverlayVisible: boolean;
 	likedByCurrentUser: boolean;
@@ -30,7 +22,6 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 	opacity: AnimatedValue;
 	toggleOverlay: () => void;
 	onChangeSlide: (index: number) => void;
-	onLayout: (event: LayoutChangeEvent) => void;
 	onShowInfo: () => void;
 	onCloseInfo: () => void;
 	onCommentPress: () => void;
@@ -42,7 +33,6 @@ interface IMediaViewerScreenViewProps extends ITranslatedProps {
 export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	media,
 	startIndex,
-	viewport,
 	activeSlide,
 	opacity,
 	isInfoVisible,
@@ -51,7 +41,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 	scrollable,
 	toggleOverlay,
 	onChangeSlide,
-	onLayout,
 	onShowInfo,
 	onCloseInfo,
 	onCommentPress,
@@ -98,7 +87,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					/>
 				</Animated.View>
 			)}
-			<View style={styles.carousel} onLayout={onLayout}>
+			<View style={styles.carousel}>
 				<Carousel
 					data={data}
 					renderItem={({ item }) => (
@@ -109,12 +98,12 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 							fullscreen={true}
 							onMove={onMove}
 							onPress={toggleOverlay}
-							style={[styles.media, { width: viewport.width }]}
+							style={[styles.media, { width: SCREEN_WIDTH }]}
 							getText={getText}
 						/>
 					)}
-					sliderWidth={viewport.width}
-					itemWidth={viewport.width}
+					sliderWidth={SCREEN_WIDTH}
+					itemWidth={SCREEN_WIDTH}
 					firstItem={startIndex}
 					scrollEnabled={scrollable}
 					onSnapToItem={onChangeSlide}

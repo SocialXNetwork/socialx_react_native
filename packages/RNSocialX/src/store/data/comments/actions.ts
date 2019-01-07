@@ -1,4 +1,4 @@
-import { ICommentsReturnData, IPostArrayData } from '@socialx/api-data';
+import { IPostArrayData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
@@ -12,6 +12,7 @@ import {
 } from '../posts';
 import {
 	ActionTypes,
+	IComment,
 	ICreateCommentAction,
 	ICreateCommentErrorAction,
 	ICreateCommentInput,
@@ -33,9 +34,7 @@ export const loadCommentsAction: ActionCreator<ILoadCommentsAction> = (posts: IP
 	payload: posts,
 });
 
-const createCommentAction: ActionCreator<ICreateCommentAction> = (
-	comment: ICommentsReturnData,
-) => ({
+const createCommentAction: ActionCreator<ICreateCommentAction> = (comment: IComment) => ({
 	type: ActionTypes.CREATE_COMMENT,
 	payload: comment,
 });
@@ -69,6 +68,7 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 		},
 		timestamp: Number(new Date(Date.now())),
 		likes: [],
+		posting: true,
 	};
 
 	try {
@@ -80,14 +80,12 @@ export const createComment = (createCommentInput: ICreateCommentInput): IThunk =
 			}),
 		);
 		dispatch(addCommentToPostAction({ postId, commentId: comment.commentId, error: false }));
-		await dispatch(setGlobal({ postingCommentId: comment.commentId }));
 		const id = await context.dataApi.comments.createComment({ text, postId });
 
 		dispatch(syncCreateCommentAction({ previousCommentId: comment.commentId, commentId: id }));
 		dispatch(
 			replaceCommentOnPostAction({ postId, previousCommentId: comment.commentId, commentId: id }),
 		);
-		await dispatch(setGlobal({ postingCommentId: '' }));
 	} catch (e) {
 		dispatch(createCommentErrorAction(comment.commentId));
 		dispatch(addCommentToPostAction({ postId, commentId: comment.commentId, error: true }));

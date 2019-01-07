@@ -139,7 +139,7 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
-					userId: currentUser.userId,
+					alias: currentUser.alias,
 					fullName: currentUser.fullName,
 					avatar: currentUser.avatar,
 				},

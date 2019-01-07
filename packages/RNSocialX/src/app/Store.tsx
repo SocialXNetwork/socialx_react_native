@@ -1,25 +1,26 @@
+import { Client } from 'bugsnag-react-native';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { Persistor, persistStore } from 'redux-persist';
+
 // tslint:disable-next-line:no-submodule-imports
 import { PersistGate } from 'redux-persist/integration/react';
 import { configureStore } from '../store';
 
 import appConfig from './app.config.json';
 
-export default class Store extends React.Component<
-	{
-		// bugsnag: Client | null;
-		bugsnag: any;
-	},
-	{}
-> {
+interface IStoreProps {
+	bugSnag: Client | null;
+}
+
+export default class Store extends React.Component<IStoreProps> {
 	private store: any;
 	private persistor: Persistor;
 
-	constructor(props: any) {
+	constructor(props: IStoreProps) {
 		super(props);
-		const { bugsnag } = props;
+		const { bugSnag } = props;
+
 		this.store = configureStore(
 			{
 				dataApi: {
@@ -28,7 +29,7 @@ export default class Store extends React.Component<
 				},
 			},
 			appConfig,
-			bugsnag,
+			bugSnag!,
 		);
 
 		this.persistor = persistStore(this.store);

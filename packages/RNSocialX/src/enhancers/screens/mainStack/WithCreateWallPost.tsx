@@ -66,9 +66,9 @@ export class WithCreateWallPost extends React.Component<
 																			postText: post.text,
 																			location: post.location,
 																			taggedFriends: post.taggedFriends,
-																			media: post.media,
+																			media: post.media as any,
 																			privatePost: false,
-																		} as any);
+																		});
 																	},
 																	showOptionsMenu: (items) =>
 																		showOptionsMenu({

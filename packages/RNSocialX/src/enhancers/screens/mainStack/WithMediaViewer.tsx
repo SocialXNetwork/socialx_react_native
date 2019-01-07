@@ -1,16 +1,18 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IMedia, ITranslatedProps, IWallPost } from '../../../types';
+import { IMedia, ITranslatedProps } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithPosts } from '../../connectors/data/WithPosts';
-import { WithDataShape } from '../../intermediary';
 
 export interface IWithMediaViewerEnhancedData {
 	media: IMedia[];
 	startIndex: number;
-	post: IWallPost | null;
+	likedByCurrentUser: boolean;
+	postId?: string;
 }
 
 export interface IWithMediaViewerEnhancedActions extends ITranslatedProps {}
@@ -33,28 +35,33 @@ export class WithMediaViewer extends React.Component<IWithMediaViewerProps, IWit
 				{({ getText }) => (
 					<WithNavigationParams>
 						{({ navigationParams }) => (
-							<WithPosts>
-								{({ all }) => {
-									const { media, startIndex, postId } = navigationParams[SCREENS.MediaViewer];
+							<WithAuth>
+								{({ auth }) => (
+									<WithPosts>
+										{({ all }) => {
+											const { media, startIndex, postId } = navigationParams[SCREENS.MediaViewer];
 
-									return (
-										<WithDataShape post={all[postId]}>
-											{({ shapedPost }) =>
-												this.props.children({
-													data: {
-														media,
-														startIndex,
-														post: shapedPost,
-													},
-													actions: {
-														getText,
-													},
-												})
+											let likedByCurrentUser = false;
+											if (postId && auth && auth.alias) {
+												const post = all[postId];
+												likedByCurrentUser = !!post.likes.byId[auth.alias];
 											}
-										</WithDataShape>
-									);
-								}}
-							</WithPosts>
+
+											return this.props.children({
+												data: {
+													media,
+													startIndex,
+													likedByCurrentUser,
+													postId,
+												},
+												actions: {
+													getText,
+												},
+											});
+										}}
+									</WithPosts>
+								)}
+							</WithAuth>
 						)}
 					</WithNavigationParams>
 				)}

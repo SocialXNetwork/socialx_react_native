@@ -23,9 +23,8 @@ export class WithVisitedUser extends React.Component<IWithVisitedUserProps, IWit
 							const profile = profiles[user];
 
 							const visitedUser = {
-								userId: profile.alias,
+								alias: profile.alias,
 								fullName: profile.fullName,
-								userName: profile.alias,
 								avatar: profile.avatar,
 								description: profile.aboutMeText === 'about me text' ? '' : profile.aboutMeText,
 								numberOfFriends: profile.numberOfFriends,

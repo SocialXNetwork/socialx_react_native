@@ -18,7 +18,7 @@ export enum ButtonSizes {
 
 export interface IPrimaryButtonProps {
 	label: string;
-	width?: number;
+	width?: number | string;
 	disabled?: boolean;
 	onPress: () => void;
 	size?: ButtonSizes;

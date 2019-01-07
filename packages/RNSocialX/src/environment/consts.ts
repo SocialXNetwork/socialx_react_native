@@ -61,6 +61,12 @@ export const Currencies = ['SOCX', 'BITCOIN', 'USD', 'EUR'];
 
 export const AdsInitialBudgetValue = '458';
 
+export interface IRewardsHistoryData {
+	date: string;
+	amount: number;
+	currency: string;
+}
+
 export interface IWeeklyBarChartData {
 	value: number;
 	label: string;
@@ -73,6 +79,11 @@ export interface IMonthlyBarChartData {
 
 export enum ISpentTillNow {
 	weekly = 'weekly',
+	monthly = 'monthly',
+}
+
+export enum IRewardsDate {
+	daily = 'daily',
 	monthly = 'monthly',
 }
 
@@ -135,6 +146,7 @@ export enum SCREENS {
 	UserFeed = 'UserFeedTab',
 	WalletAccount = 'WalletAccountScreen',
 	WalletKeys = 'WalletKeysScreen',
+	RewardsScreen = 'RewardsScreen',
 	AdsManagement = 'AdsManagementScreen',
 	Likes = 'LikesScreen',
 	ManageCountries = 'ManageCountriesScreen',

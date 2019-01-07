@@ -125,12 +125,12 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 		const { visitedUser, loadingProfile, loadingPosts, getUserProfile } = this.props;
 
 		if (!loadingProfile && !loadingPosts) {
-			await getUserProfile(visitedUser.userId);
+			await getUserProfile(visitedUser.alias);
 		}
 	};
 
 	private onAddFriendHandler = () => {
-		this.props.addFriend(this.props.visitedUser.userId);
+		this.props.addFriend(this.props.visitedUser.alias);
 	};
 
 	private onProfilePhotoPressHandler = () => {

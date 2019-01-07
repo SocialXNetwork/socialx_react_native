@@ -67,9 +67,9 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 											heartAnimation: this.state.heartAnimation,
 										},
 										actions: {
-											onLikePost: (postId) => this.onLikePostHandler(postId, currentUser.userName),
+											onLikePost: (postId) => this.onLikePostHandler(postId, currentUser.alias),
 											onDoubleTapLikePost: (postId) =>
-												this.onDoubleTapLikeHandler(postId, currentUser.userName),
+												this.onDoubleTapLikeHandler(postId, currentUser.alias),
 											getText,
 										},
 									});

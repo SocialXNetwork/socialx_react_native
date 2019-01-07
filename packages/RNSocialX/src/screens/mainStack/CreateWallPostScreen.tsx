@@ -104,7 +104,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				taggedFriends: undefined,
 				timestamp: new Date(Date.now()),
 				owner: {
-					userId: currentUser.userId,
+					alias: currentUser.alias,
 					fullName: currentUser.fullName,
 					avatar: currentUser.avatar,
 				},

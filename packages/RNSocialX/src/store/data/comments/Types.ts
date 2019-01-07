@@ -2,10 +2,12 @@ import { ICommentsReturnData, IPostArrayData } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
-export interface IComment extends ICommentsReturnData {}
+export interface IComment extends ICommentsReturnData {
+	posting?: boolean;
+}
 
 export interface IComments {
-	[commentId: string]: ICommentsReturnData;
+	[commentId: string]: IComment;
 }
 
 export type IState = DeepReadonly<{
@@ -55,7 +57,7 @@ export interface ILoadCommentsAction extends Action {
 
 export interface ICreateCommentAction extends Action {
 	type: ActionTypes.CREATE_COMMENT;
-	payload: ICommentsReturnData;
+	payload: IComment;
 }
 export interface ICreateCommentErrorAction extends Action {
 	type: ActionTypes.CREATE_COMMENT_ERROR;
