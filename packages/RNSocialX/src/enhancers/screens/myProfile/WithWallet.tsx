@@ -48,9 +48,7 @@ interface IWithWalletProps {
 	children(props: IWithWalletEnhancedProps): JSX.Element;
 }
 
-interface IWithWalletState {}
-
-export class WithWallet extends React.Component<IWithWalletProps, IWithWalletState> {
+export class WithWallet extends React.Component<IWithWalletProps> {
 	render() {
 		return (
 			<WithI18n>

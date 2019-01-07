@@ -112,11 +112,11 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			// 	icon: 'ios-analytics',
 			// 	actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
 			// },
-			// {
-			// 	label: getText('my.profile.screen.menu.wallet'),
-			// 	icon: 'ios-wallet',
-			// 	actionHandler: () => navigation.navigate(SCREENS.WalletActivity),
-			// },
+			{
+				label: getText('my.profile.screen.menu.wallet'),
+				icon: 'ios-wallet',
+				actionHandler: () => navigation.navigate(SCREENS.WalletActivity),
+			},
 			{
 				label: getText('my.profile.screen.menu.settings'),
 				icon: 'ios-settings',

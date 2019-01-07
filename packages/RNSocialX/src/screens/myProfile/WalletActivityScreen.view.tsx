@@ -47,6 +47,7 @@ export const WalletActivityScreenView: React.SFC<IWalletActivityScreenViewProps>
 			<View style={styles.activity}>
 				<Text style={styles.heading}>{getText('wallet.activity.screen.heading')}</Text>
 				<FlatList
+					showsVerticalScrollIndicator={false}
 					refreshing={refreshing}
 					onRefresh={onRefresh}
 					onEndReached={onEndReached}

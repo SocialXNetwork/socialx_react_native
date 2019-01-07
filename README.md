@@ -5,8 +5,7 @@ SocialX is a community-driven social media platform allowing users to publish ev
 
 ### Releases
 
-coming very soon.
-
+https://github.com/SocialXNetwork/socialx_react_native/releases
 
 ### Core Features of the SocialX-App:
  

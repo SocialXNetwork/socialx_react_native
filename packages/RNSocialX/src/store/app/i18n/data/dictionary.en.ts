@@ -402,4 +402,10 @@ export default {
 	'loading.friends': 'Syncing profiles and friends',
 	'loading.posts.global': 'Syncing global posts',
 	'loading.posts.friends': 'Syncing friends posts',
+	'transaction.history.title': 'Transaction History',
+	'transaction.history.balance': 'Balance',
+	'transaction.history.button.account': 'View account',
+	'transaction.history.button.send': 'Send',
+	'transaction.history.button.convert': 'Convert',
+	'transaction.history.activity': 'Activity',
 };

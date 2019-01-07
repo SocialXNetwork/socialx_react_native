@@ -169,3 +169,9 @@ export {
 	IWithRewardsEnhancedActions,
 	IWithRewardsEnhancedData,
 } from './walletStack/WithRewards';
+
+export {
+	WithTransactionHistory,
+	IWithTransactionHistoryEnhancedActions,
+	IWithTransactionHistoryEnhancedData,
+} from './walletStack/WithTransactionHistory';
