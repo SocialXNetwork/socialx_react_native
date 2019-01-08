@@ -6,7 +6,7 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 const mock: IWithAdsManagementEnhancedProps = {
 	data: {
 		fullName: 'Alex Sirbu',
-		userName: 'alexsirbu',
+		alias: 'alexsirbu',
 		avatar: 'https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png',
 	},
 	actions: {
@@ -16,7 +16,7 @@ const mock: IWithAdsManagementEnhancedProps = {
 
 export interface IWithAdsManagementEnhancedData {
 	fullName: string;
-	userName: string;
+	alias: string;
 	avatar: string;
 }
 

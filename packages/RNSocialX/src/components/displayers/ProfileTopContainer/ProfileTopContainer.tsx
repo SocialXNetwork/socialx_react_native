@@ -75,7 +75,7 @@ const Component: React.SFC<IProps> = ({
 			</View>
 		</View>
 		<View style={styles.textContainer}>
-			<AvatarName fullName={fullName} userName={alias} />
+			<AvatarName fullName={fullName} alias={alias} />
 			{description.length > 0 && <Text style={styles.about}>{description}</Text>}
 		</View>
 		<View style={styles.buttons}>

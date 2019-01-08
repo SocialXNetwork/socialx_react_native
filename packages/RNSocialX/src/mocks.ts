@@ -32,42 +32,37 @@ const topCommentIds = ['topCommentId1', 'topCommentId2'];
 
 export const suggestedItems: IUserEntry[] = [
 	{
-		alias: '101',
 		avatar: 'https://lifehacks.io/wp-content/uploads/21-Questions-to-ask-a-guy.jpg',
 		fullName: 'Seth Saunders',
-		userName: 'sethsaunders',
+		alias: 'sethsaunders',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
-		alias: '102',
 		avatar:
 			'https://static1.squarespace.com/static/5717fbc72eeb81a7600203c4/t/57361baa45bf2122c02109d3/1463163822530/teresa-ting-104-WEB.jpg',
 		fullName: 'Teresa Lamb',
-		userName: 'terlamb',
+		alias: 'terlamb',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 	{
-		alias: '103',
 		avatar:
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhxxOvVEmfKWgIxdz1Xvd0zTKY4oHlC8E709FF91o5FMTirI2T',
 		fullName: 'Sophie Smith',
-		userName: 'sophsmt',
+		alias: 'sophsmt',
 		relationship: FRIEND_TYPES.MUTUAL,
 	},
 	{
-		alias: '104',
 		avatar:
 			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlhQDjvfpOkYBNz_sFX6egUWv-tKgr9iwb9S0ECK5Ll8C-I9Oj',
 		fullName: 'Cory Maxwell',
-		userName: 'corymaxwell',
+		alias: 'corymaxwell',
 		relationship: FRIEND_TYPES.PENDING,
 	},
 	{
-		alias: '105',
 		avatar:
 			'https://yt3.ggpht.com/a-/AN66SAyxvKvpstRZN6-LzcuggRm6kEQs-lKW5cOg6g=s900-mo-c-c0xffffffff-rj-k-no',
 		fullName: 'Claudia Kulmitzer',
-		userName: 'claudiam',
+		alias: 'claudiam',
 		relationship: FRIEND_TYPES.NOT_FRIEND,
 	},
 ];

@@ -96,7 +96,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							getText={getText}
 						/>
 					</View>
-					<AvatarName fullName={currentUser.fullName} userName={currentUser.userName} />
+					<AvatarName fullName={currentUser.fullName} alias={currentUser.alias} />
 					<View style={styles.editNodesButton}>
 						<PrimaryButton
 							label={getText('settings.screen.nodes.button')}

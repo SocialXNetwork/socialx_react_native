@@ -21,7 +21,7 @@ import style, { colors } from './RegisterScreen.style';
 export interface IRegisterData {
 	email: string;
 	name: string;
-	userName: string;
+	alias: string;
 	password: string;
 	avatar: {
 		uri: string;
@@ -79,7 +79,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 				initialValues={{
 					email: '',
 					name: '',
-					userName: '',
+					alias: '',
 					password: '',
 					confirmPassword: '',
 					avatar: {
@@ -90,7 +90,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 				validate={({
 					email,
 					name,
-					userName,
+					alias,
 					password,
 					confirmPassword,
 					termsAccepted,
@@ -106,10 +106,10 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					} else if (name.length < 4) {
 						errors.name = getText('register.screen.name.length');
 					}
-					if (!userName) {
-						errors.userName = getText('register.screen.username.required');
-					} else if (userName.length < 6) {
-						errors.userName = getText('register.screen.username.length');
+					if (!alias) {
+						errors.alias = getText('register.screen.username.required');
+					} else if (alias.length < 6) {
+						errors.alias = getText('register.screen.username.length');
 					}
 					if (!password) {
 						errors.password = getText('register.screen.password.required');
@@ -131,7 +131,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					Keyboard.dismiss();
 				}}
 				render={({
-					values: { email, name, userName, password, confirmPassword, termsAccepted, avatar },
+					values: { email, name, alias, password, confirmPassword, termsAccepted, avatar },
 					errors,
 					handleSubmit,
 					isValid,
@@ -192,19 +192,16 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								placeholderColor={colors.paleSky}
 								borderColor={colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
-								value={userName}
+								value={alias}
 								ref={usernameRef}
 								persistKeyboard={true}
 								onChangeText={(value: string) => {
-									setFieldValue('userName', value);
-									setFieldTouched('userName');
+									setFieldValue('alias', value);
+									setFieldTouched('alias');
 								}}
 								onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
 							/>
-							<ErrorMessage
-								text={errors.userName}
-								visible={!!touched.userName && !!errors.userName}
-							/>
+							<ErrorMessage text={errors.alias} visible={!!touched.alias && !!errors.alias} />
 						</View>
 						<View style={style.textInputContainer}>
 							<PrimaryTextInput

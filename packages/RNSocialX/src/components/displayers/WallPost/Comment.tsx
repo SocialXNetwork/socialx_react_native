@@ -76,6 +76,10 @@ const mapStateToProps = (state: IApplicationState, props: ICommentProps) => {
 			comment: shapeComment(storeComment, profile, currentUserAlias),
 		};
 	}
+
+	return {
+		comment: undefined,
+	};
 };
 
-export const Comment = connect(mapStateToProps)(Component);
+export const Comment = connect(mapStateToProps)(Component as any);

@@ -10,14 +10,14 @@ import styles, { BUTTON_WIDTH } from './AdsManagementScreen.style';
 interface IAdsManagementScreenViewProps extends ITranslatedProps, IHeaderProps {
 	avatar: string;
 	fullName: string;
-	userName: string;
+	alias: string;
 }
 
 export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> = ({
 	onGoBack,
 	avatar,
 	fullName,
-	userName,
+	alias,
 	getText,
 }) => (
 	<View style={styles.container}>
@@ -29,7 +29,7 @@ export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> =
 			<AvatarImage image={avatar} style={styles.avatar} />
 		</View>
 		<Text style={styles.name}>{fullName}</Text>
-		{userName && <Text style={styles.userName}>@{userName}</Text>}
+		{alias && <Text style={styles.alias}>@{alias}</Text>}
 		<View style={styles.separator} />
 		<Option
 			type="image"

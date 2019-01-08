@@ -54,7 +54,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 									<WithCurrentUser>
 										{({ currentUser }) => {
 											const aliases = Object.keys(profiles).filter(
-												(key) => key !== currentUser.userName,
+												(key) => key !== currentUser.alias,
 											);
 											const { results, previousTerms } = search;
 
@@ -73,7 +73,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 														});
 													},
 													searchLocally: (term) =>
-														searchForProfilesLocally({ term, alias: currentUser.userName }),
+														searchForProfilesLocally({ term, alias: currentUser.alias }),
 													clearSearchResults,
 													getText,
 												},

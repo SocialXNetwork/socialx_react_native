@@ -10,22 +10,20 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithResetPasswordEnhancedProps = {
 	data: {
-		userName: 'test.user.1',
+		alias: 'test.user.1',
 	},
 	actions: {
-		resetPassword: (userName: string, resetCode: string, password: string) => {
-			/**/
-		},
+		resetPassword: (alias: string, resetCode: string, password: string) => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
 
 export interface IWithResetPasswordEnhancedData {
-	userName: string;
+	alias: string;
 }
 
 export interface IWithResetPasswordEnhancedActions extends ITranslatedProps {
-	resetPassword: (userName: string, resetCode: string, password: string) => void;
+	resetPassword: (alias: string, resetCode: string, password: string) => void;
 }
 
 interface IWithResetPasswordEnhancedProps {

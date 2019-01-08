@@ -65,12 +65,12 @@ class Screen extends React.Component<IProps, IState> {
 		}
 	};
 
-	private onLoginHandler = async (userName: string, password: string) => {
+	private onLoginHandler = async (alias: string, password: string) => {
 		const { login, loadFeed, resetNavigationToRoute, navigation } = this.props;
 
 		this.setState({ error: false });
 		this.switchActivityIndicator(true);
-		await login(userName, password);
+		await login(alias, password);
 
 		if (!this.state.error) {
 			await loadFeed();

@@ -34,7 +34,7 @@ const Component: React.SFC<IProps> = ({ profile, currentUserAlias, relationship,
 					<AvatarImage image={profile.avatar} style={styles.avatar} />
 					<View style={styles.textContainer}>
 						<Text style={styles.name}>{profile.fullName}</Text>
-						<Text style={styles.userName}>@{profile.alias}</Text>
+						<Text style={styles.alias}>@{profile.alias}</Text>
 					</View>
 				</View>
 				{currentUserAlias !== profile.alias && (
@@ -76,7 +76,7 @@ const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithCurrentUser>
 		{({ currentUser }) => (
 			<WithFriends status={props.profile.status}>
-				{({ data }) => <Component {...props} {...data} currentUserAlias={currentUser.userName} />}
+				{({ data }) => <Component {...props} {...data} currentUserAlias={currentUser.alias} />}
 			</WithFriends>
 		)}
 	</WithCurrentUser>

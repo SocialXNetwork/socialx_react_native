@@ -323,7 +323,7 @@ class Component extends React.Component<IProps, IState> {
 								/>
 							)}
 							<ViewAllComments
-								numberOfComments={numberOfComments}
+								commentIds={commentIds}
 								onCommentPress={() => onViewComments(postId, false)}
 								getText={getText}
 							/>

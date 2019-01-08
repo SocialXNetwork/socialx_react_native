@@ -32,7 +32,7 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(13),
 		color: Colors.grayText,
 	},
-	userName: {
+	alias: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(13),
 		color: Colors.pink,

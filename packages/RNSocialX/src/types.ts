@@ -34,7 +34,6 @@ export enum SearchTabs {
 export interface IUserEntry {
 	alias: string;
 	fullName: string;
-	userName: string;
 	avatar: string;
 	relationship: FRIEND_TYPES;
 }

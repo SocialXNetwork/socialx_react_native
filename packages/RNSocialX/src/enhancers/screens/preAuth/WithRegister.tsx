@@ -70,7 +70,7 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 																				question2: 'questions2',
 																				reminder: 'password',
 																			},
-																			username: registerData.userName,
+																			username: registerData.alias,
 																			password: registerData.password,
 																			email: registerData.email,
 																			avatar: registerData.avatar,

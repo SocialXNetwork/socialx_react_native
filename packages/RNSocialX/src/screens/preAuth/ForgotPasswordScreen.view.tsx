@@ -13,12 +13,12 @@ import { ITranslatedProps } from '../../types';
 import style, { customStyleProps } from './ForgotPasswordScreen.style';
 
 interface IForgotPasswordScreenViewProps extends ITranslatedProps {
-	onSendResetCode: (userName: string) => void;
+	onSendResetCode: (alias: string) => void;
 	onGoBack: () => void;
 }
 
 interface IForgotPasswordData {
-	userName: string;
+	alias: string;
 }
 
 export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps> = ({
@@ -28,18 +28,18 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 }) => (
 	<Formik
 		initialValues={{
-			userName: '',
+			alias: '',
 		}}
-		validate={({ userName }: IForgotPasswordData) => {
+		validate={({ alias }: IForgotPasswordData) => {
 			const errors: FormikErrors<IForgotPasswordData> = {};
-			if (!userName) {
-				errors.userName = getText('forgot.password.userName.required');
+			if (!alias) {
+				errors.alias = getText('forgot.password.userName.required');
 			}
 			return errors;
 		}}
-		onSubmit={(values: IForgotPasswordData) => onSendResetCode(values.userName)}
+		onSubmit={(values: IForgotPasswordData) => onSendResetCode(values.alias)}
 		render={({
-			values: { userName },
+			values: { alias },
 			errors,
 			handleBlur,
 			handleSubmit,
@@ -64,13 +64,13 @@ export const ForgotPasswordScreenView: React.SFC<IForgotPasswordScreenViewProps>
 							icon="md-person"
 							blurOnSubmit={true}
 							returnKeyType={TRKeyboardKeys.go}
-							value={userName}
+							value={alias}
 							onSubmitPressed={handleSubmit}
 							onChangeText={(value: string) => {
-								setFieldValue('userName', value);
+								setFieldValue('alias', value);
 							}}
 						/>
-						{errors.userName && <Text style={style.errorText}>{errors.userName}</Text>}
+						{errors.alias && <Text style={style.errorText}>{errors.alias}</Text>}
 					</View>
 					<PrimaryButton
 						disabled={!isValid}

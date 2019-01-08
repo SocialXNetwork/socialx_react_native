@@ -15,7 +15,7 @@ const style: any = {
 		color: Colors.cloudBurst,
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
-	userName: {
+	alias: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
 		lineHeight: Sizes.smartHorizontalScale(20),

@@ -27,7 +27,7 @@ const styles: any = {
 		textAlign: 'center',
 		paddingBottom: Sizes.smartVerticalScale(5),
 	},
-	userName: {
+	alias: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(20),

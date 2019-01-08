@@ -23,8 +23,8 @@ export interface IWithFriendsEnhancedData {
 }
 
 export interface IWithFriendsEnhancedActions {
-	onAcceptFriendRequest: (userName: string) => void;
-	onDeclineFriendRequest: (userName: string) => void;
+	onAcceptFriendRequest: (alias: string) => void;
+	onDeclineFriendRequest: (alias: string) => void;
 }
 
 interface IWithFriendstEnhancedProps {

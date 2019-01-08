@@ -11,7 +11,7 @@ storiesOf('Screens/adsManagementStack', module).add('AdsManagementScreen', () =>
 			onGoBack={action('onGoBack')}
 			avatar="https://www.seoclerk.com/pics/319222-1IvI0s1421931178.png"
 			fullName="Alex Sirbu"
-			userName="alexsirbu"
+			alias="alexsirbu"
 			getText={getTextMock}
 		/>
 	);

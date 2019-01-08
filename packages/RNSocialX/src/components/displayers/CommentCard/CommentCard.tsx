@@ -132,6 +132,10 @@ const mapStateToProps = (state: IApplicationState, props: ICommentCardProps) => 
 			comment: shapeComment(storeComment, profile, currentUserAlias),
 		};
 	}
+
+	return {
+		comment: undefined,
+	};
 };
 
 export const CommentCard = connect(mapStateToProps)(EnhancedComponent as any);

@@ -26,12 +26,12 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	}
 
 	private setNewPasswordHandler = async (resetCode: string, password: string) => {
-		const { resetPassword, getText, userName } = this.props;
+		const { resetPassword, getText, alias } = this.props;
 
-		if (!userName) {
+		if (!alias) {
 			Alert.alert(getText('general.error.message'));
 		} else {
-			resetPassword(userName, resetCode, password);
+			resetPassword(alias, resetCode, password);
 		}
 	};
 

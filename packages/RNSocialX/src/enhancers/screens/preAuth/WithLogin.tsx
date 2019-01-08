@@ -22,7 +22,7 @@ export interface IWithLoginEnhancedData {
 }
 
 export interface IWithLoginEnhancedActions extends ITranslatedProps {
-	login: (userName: string, password: string) => void;
+	login: (alias: string, password: string) => void;
 	loadFeed: () => void;
 	setGlobal: (global: IGlobal) => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
@@ -60,9 +60,9 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 																	errors,
 																},
 																actions: {
-																	login: async (username: string, password: string) => {
+																	login: async (alias: string, password: string) => {
 																		await login({
-																			username,
+																			username: alias,
 																			password,
 																		});
 																	},

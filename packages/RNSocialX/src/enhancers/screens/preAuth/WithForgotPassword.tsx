@@ -11,10 +11,7 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 const mock: IWithForgotPasswordEnhancedProps = {
 	data: {},
 	actions: {
-		sendResetCode: (userName: string) => {
-			/**/
-		},
-		// This is now implemented with the WithI18n connector enhancer
+		sendResetCode: (alias: string) => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -22,7 +19,7 @@ const mock: IWithForgotPasswordEnhancedProps = {
 export interface IWithForgotPasswordEnhancedData {}
 
 export interface IWithForgotPasswordEnhancedActions extends ITranslatedProps {
-	sendResetCode: (userName: string) => void;
+	sendResetCode: (alias: string) => void;
 }
 
 interface IWithForgotPasswordEnhancedProps {

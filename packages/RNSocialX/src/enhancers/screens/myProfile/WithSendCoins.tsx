@@ -14,9 +14,7 @@ const mock: IWithSendCoinsEnhancedProps = {
 		coins: 53680,
 	},
 	actions: {
-		sendCoins: () => {
-			/**/
-		},
+		sendCoins: () => undefined,
 		getText: (value: string, ...args: any[]) => value,
 	},
 };
@@ -26,7 +24,7 @@ export interface IWithSendCoinsEnhancedData {
 }
 
 export interface IWithSendCoinsEnhancedActions extends ITranslatedProps {
-	sendCoins: (userName: string, transferAmount: number, coin: CoinSymbol) => void;
+	sendCoins: (alias: string, transferAmount: number, coin: CoinSymbol) => void;
 }
 
 interface IWithSendCoinsEnhancedProps {

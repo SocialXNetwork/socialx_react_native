@@ -17,27 +17,27 @@ import { ITranslatedProps } from '../../types';
 import style, { customStyleProps } from './LoginScreen.style';
 
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
-const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
+const aliasRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 interface ILoginFormProps extends ITranslatedProps {
-	onLogin: (userName: string, password: string) => void;
+	onLogin: (alias: string, password: string) => void;
 }
 
 interface ILoginScreenData {
-	userName: string;
+	alias: string;
 	password: string;
 }
 
 const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 	<Formik
 		initialValues={{
-			userName: '',
+			alias: '',
 			password: '',
 		}}
-		validate={({ userName, password }: ILoginScreenData) => {
+		validate={({ alias, password }: ILoginScreenData) => {
 			const errors: FormikErrors<ILoginScreenData> = {};
-			if (!userName) {
-				errors.userName = getText('login.username.required');
+			if (!alias) {
+				errors.alias = getText('login.alias.required');
 			}
 			if (!password) {
 				errors.password = getText('login.password.required');
@@ -45,11 +45,11 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 			return errors;
 		}}
 		onSubmit={(values: ILoginScreenData) => {
-			onLogin(values.userName, values.password);
+			onLogin(values.alias, values.password);
 			Keyboard.dismiss();
 		}}
 		render={({
-			values: { userName, password },
+			values: { alias, password },
 			errors,
 			handleSubmit,
 			touched,
@@ -64,19 +64,17 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 					placeholderColor={customStyleProps.inputPlaceholderColor}
 					returnKeyType={TRKeyboardKeys.next}
 					keyboardType={TKeyboardKeys.emailAddress}
-					value={userName}
+					value={alias}
 					persistKeyboard={true}
 					onChangeText={(value: string) => {
-						setFieldValue('userName', value);
-						setFieldTouched('userName');
+						setFieldValue('alias', value);
+						setFieldTouched('alias');
 					}}
-					onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('userName')}
+					onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('alias')}
 					onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
-					ref={usernameRef}
+					ref={aliasRef}
 				/>
-				{touched.userName && errors.userName && (
-					<Text style={style.errorText}>{errors.userName}</Text>
-				)}
+				{touched.alias && errors.alias && <Text style={style.errorText}>{errors.alias}</Text>}
 				<View style={style.passwordContainer}>
 					<PrimaryTextInput
 						icon="ios-lock"
@@ -112,7 +110,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 );
 
 interface ILoginScreenViewProps extends ITranslatedProps {
-	onLogin: (userName: string, password: string) => void;
+	onLogin: (alias: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onNavigateToUploadKey: () => void;
