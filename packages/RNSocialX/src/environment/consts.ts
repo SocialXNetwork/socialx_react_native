@@ -152,6 +152,7 @@ export enum SCREENS {
 	ManageCountries = 'ManageCountriesScreen',
 	Rewards = 'RewardsScreen',
 	RewardsTransactionHistory = 'TransactionHistoryScreen',
+	FriendsList = 'FriendsListScreen',
 }
 
 export enum NAVIGATION {

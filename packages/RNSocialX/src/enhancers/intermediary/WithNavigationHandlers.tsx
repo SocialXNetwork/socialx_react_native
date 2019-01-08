@@ -15,6 +15,7 @@ export interface IWithNavigationHandlersEnhancedActions {
 	onViewLikes: (likeIds: string[]) => void;
 	onViewComments: (postId: string, keyboardRaised: boolean) => void;
 	onViewImage: (media: IMedia[], startIndex: number, postId?: string) => void;
+	onViewFriends: (alias: string) => void;
 	onGoBack: () => void;
 }
 
@@ -57,6 +58,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 													onViewLikes: this.onViewLikesHandler,
 													onViewComments: this.onViewCommentsHandler,
 													onViewImage: this.onViewImageHandler,
+													onViewFriends: this.onViewFriendsHandler,
 													onGoBack: this.onGoBackHandler,
 												},
 											});
@@ -124,5 +126,15 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 			},
 		});
 		this.props.navigation.navigate(SCREENS.MediaViewer);
+	};
+
+	private onViewFriendsHandler = (alias: string) => {
+		this.actions.setNavigationParams({
+			screenName: SCREENS.FriendsList,
+			params: {
+				alias,
+			},
+		});
+		this.props.navigation.navigate(SCREENS.FriendsList);
 	};
 }

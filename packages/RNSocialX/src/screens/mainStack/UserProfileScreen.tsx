@@ -60,7 +60,15 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const { visitedUser, loadingProfile, loadingPosts, onGoBack, navigation, getText } = this.props;
+		const {
+			visitedUser,
+			loadingProfile,
+			loadingPosts,
+			onViewFriends,
+			onGoBack,
+			navigation,
+			getText,
+		} = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -81,6 +89,7 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onViewMedia={this.onViewMediaHandler}
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
+				onViewFriends={onViewFriends}
 				onGoBack={onGoBack}
 				navigation={navigation}
 				getText={getText}

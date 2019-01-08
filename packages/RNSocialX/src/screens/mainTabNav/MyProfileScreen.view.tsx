@@ -42,6 +42,7 @@ interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 	onShowOptionsMenu: () => void;
 	onIconPress: (tab: string) => void;
 	onLayoutChange: (height: number) => void;
+	onViewFriends: (alias: string) => void;
 }
 
 export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
@@ -62,6 +63,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	onEditProfile,
 	onSharePress,
 	onShowOptionsMenu,
+	onViewFriends,
 	navigation,
 	getText,
 }) => {
@@ -121,6 +123,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					avatar={avatar}
 					fullName={fullName}
 					description={description}
+					numberOfPosts={postIds.length}
 					numberOfFriends={numberOfFriends}
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
@@ -132,6 +135,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					onAddFriend={() => undefined}
 					onEditProfile={onEditProfile}
 					onIconPress={onIconPress}
+					onViewFriends={onViewFriends}
 					getText={getText}
 				/>
 				{loadingPosts ? (

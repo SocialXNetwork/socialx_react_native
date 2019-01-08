@@ -8,12 +8,16 @@ const styles: any = {
 		marginHorizontal: Sizes.smartHorizontalScale(10),
 		height: Sizes.smartVerticalScale(50),
 	},
+	text: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(16),
+		color: Colors.white,
+	},
 	value: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		color: Colors.pink,
 	},
-
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(20),
 		color: Colors.white,

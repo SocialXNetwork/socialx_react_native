@@ -76,7 +76,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const { friends, alias } = action.payload;
 
 			const profiles = { ...state.profiles };
-			const friendIds = [];
+			let friendIds = [];
 
 			for (const friend of friends) {
 				if (!profiles[friend.alias]) {
@@ -92,6 +92,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 				if (friendIds.indexOf(friend.alias) === -1) {
 					friendIds.push(friend.alias);
 				}
+			}
+
+			if (friendIds.length === 0) {
+				friendIds = ['raven.laurel', 'will2k', 'letsgheek'];
 			}
 
 			return {

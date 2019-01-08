@@ -119,6 +119,11 @@ export {
 	IWithWalletEnhancedActions,
 	IWithWalletEnhancedData,
 } from './myProfile/WithWallet';
+export {
+	WithFriendsList,
+	IWithFriendsListEnhancedActions,
+	IWithFriendsListEnhancedData,
+} from './myProfile/WithFriendsList';
 
 export {
 	WithForgotPassword,

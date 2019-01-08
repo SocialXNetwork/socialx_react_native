@@ -44,6 +44,7 @@ interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps
 	onViewMedia: (index: number) => void;
 	onIconPress: (tab: string) => void;
 	onLayoutChange: (height: number) => void;
+	onViewFriends: (alias: string) => void;
 }
 
 export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
@@ -63,6 +64,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onLoadMorePhotos,
 	onIconPress,
 	onLayoutChange,
+	onViewFriends,
 	onGoBack,
 	navigation,
 	getText,
@@ -117,6 +119,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					fullName={fullName}
 					description={description}
 					status={status}
+					numberOfPosts={postIds.length}
 					numberOfFriends={numberOfFriends}
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
@@ -128,6 +131,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					onAddFriend={onAddFriend}
 					onShowFriendshipOptions={onShowFriendshipOptions}
 					onIconPress={onIconPress}
+					onViewFriends={onViewFriends}
 					getText={getText}
 				/>
 				{loadingPosts ? (

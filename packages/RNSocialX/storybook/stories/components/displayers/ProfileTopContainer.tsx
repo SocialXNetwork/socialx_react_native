@@ -15,6 +15,7 @@ storiesOf('Components/displayers', module).add('ProfileTopContainer', () => (
 			alias="alexsirbu"
 			avatar={image}
 			fullName="Alex Sirbu"
+			numberOfPosts={21}
 			numberOfPhotos={58}
 			numberOfLikes={2569}
 			numberOfFriends={794}

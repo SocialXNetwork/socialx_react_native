@@ -61,7 +61,14 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public render() {
-		const { currentUser, loadingProfile, loadingPosts, navigation, getText } = this.props;
+		const {
+			currentUser,
+			loadingProfile,
+			loadingPosts,
+			navigation,
+			onViewFriends,
+			getText,
+		} = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
@@ -83,6 +90,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				onSharePress={this.onSharePressHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
+				onViewFriends={onViewFriends}
 				navigation={navigation}
 				getText={getText}
 			/>
@@ -107,11 +115,6 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			getText,
 		} = this.props;
 		const menuItems = [
-			// {
-			// 	label: getText('my.profile.screen.menu.profile.analytics'),
-			// 	icon: 'ios-analytics',
-			// 	actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
-			// },
 			{
 				label: getText('my.profile.screen.menu.wallet'),
 				icon: 'ios-wallet',

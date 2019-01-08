@@ -5,13 +5,12 @@ const styles: any = {
 	container: {
 		backgroundColor: Colors.pink,
 	},
-	headerContainer: {
-		height: Sizes.smartVerticalScale(45),
-		paddingBottom: Sizes.smartVerticalScale(7),
-		paddingTop: Sizes.smartVerticalScale(3),
-		width: '100%',
-		paddingHorizontal: Sizes.smartHorizontalScale(8),
+	inputContainer: {
 		flexDirection: 'row',
+		height: Sizes.smartVerticalScale(45),
+		width: '100%',
+		paddingVertical: Sizes.smartVerticalScale(2.5),
+		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	backIcon: {
 		fontSize: Sizes.smartHorizontalScale(30),

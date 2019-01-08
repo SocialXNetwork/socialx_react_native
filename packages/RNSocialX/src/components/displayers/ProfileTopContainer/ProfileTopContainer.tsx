@@ -21,10 +21,11 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	avatar: string;
 	fullName: string;
 	description: string;
-	numberOfPhotos: number;
-	numberOfLikes: number;
+	numberOfPosts: number;
 	numberOfFriends: number;
-	numberOfComments: number;
+	numberOfPhotos?: number;
+	numberOfLikes?: number;
+	numberOfComments?: number;
 	status?: FRIEND_TYPES;
 	isCurrentUser: boolean;
 	tabs?: boolean;
@@ -32,6 +33,7 @@ interface IProfileTopContainerProps extends ITranslatedProps {
 	onAddFriend: () => void;
 	onShowFriendshipOptions?: () => void;
 	onProfilePhotoPress: () => void;
+	onViewFriends: (alias: string) => void;
 	onEditProfile?: () => void;
 	onSendMessage?: () => void;
 	onIconPress?: (tab: string) => void;
@@ -44,9 +46,10 @@ const Component: React.SFC<IProps> = ({
 	avatar,
 	fullName,
 	description,
+	numberOfPosts,
+	numberOfFriends,
 	numberOfPhotos,
 	numberOfLikes,
-	numberOfFriends,
 	numberOfComments,
 	isCurrentUser,
 	tabs,
@@ -54,6 +57,7 @@ const Component: React.SFC<IProps> = ({
 	status,
 	relationship,
 	onProfilePhotoPress,
+	onViewFriends,
 	onEditProfile = () => undefined,
 	onSendMessage = () => undefined,
 	onIconPress = () => undefined,
@@ -65,14 +69,23 @@ const Component: React.SFC<IProps> = ({
 			<AvatarImage image={avatar} style={styles.avatar} />
 		</TouchableOpacity>
 		<View style={styles.statisticsContainer}>
-			<View style={styles.leftStatistics}>
-				<Statistics icon="image" value={numberOfPhotos} />
-				<Statistics icon="heart" value={numberOfLikes} />
-			</View>
-			<View style={styles.rightStatistics}>
-				<Statistics icon="users" value={numberOfFriends} />
-				<Statistics icon="comments" value={numberOfComments} />
-			</View>
+			<TouchableOpacity activeOpacity={1} style={styles.leftStatistics}>
+				<Statistics text={getText('my.profile.screen.statistics.posts')} value={numberOfPosts} />
+				{/* <Statistics icon="image" value={numberOfPhotos} />
+				<Statistics icon="heart" value={numberOfLikes} /> */}
+			</TouchableOpacity>
+			<TouchableOpacity
+				activeOpacity={1}
+				onPress={() => onViewFriends(alias)}
+				style={styles.rightStatistics}
+			>
+				<Statistics
+					text={getText('my.profile.screen.statistics.friends')}
+					value={numberOfFriends}
+				/>
+				{/* <Statistics icon="users" value={numberOfFriends} />
+				<Statistics icon="comments" value={numberOfComments} /> */}
+			</TouchableOpacity>
 		</View>
 		<View style={styles.textContainer}>
 			<AvatarName fullName={fullName} alias={alias} />

@@ -32,6 +32,7 @@ import {
 	CommentsScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,
+	FriendsListScreen,
 	FriendsUserFeed,
 	GlobalUserFeed,
 	IntroScreen,
@@ -120,6 +121,7 @@ const MyProfileStackNavigator = createStackNavigator(
 		ReferralScreen: { screen: ReferralScreen },
 		WalletActivityScreen: { screen: WalletActivityScreen },
 		TransactionHistoryScreen: { screen: TransactionHistoryScreen },
+		FriendsListScreen: { screen: FriendsListScreen },
 	},
 	defaultConfig,
 );
