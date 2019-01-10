@@ -26,6 +26,7 @@ export { SettingsScreen } from './myProfile/SettingsScreen';
 export { NodesScreen } from './myProfile/NodesScreen';
 export { SocialXAccountScreen } from './myProfile/SocialXAccountScreen';
 export { WalletActivityScreen } from './myProfile/WalletActivityScreen';
+export { FriendsListScreen } from './myProfile/FriendsListScreen';
 
 export { ForgotPasswordScreen } from './preAuth/ForgotPasswordScreen';
 export { LaunchScreen } from './preAuth/LaunchScreen';

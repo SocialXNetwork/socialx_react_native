@@ -1,7 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
-
-import { Sizes } from '../../environment/theme';
+import { ActivityIndicator } from 'react-native';
 
 interface ILoaderProps {
 	visible: boolean;
@@ -10,18 +8,8 @@ interface ILoaderProps {
 
 export const Loader: React.SFC<ILoaderProps> = ({ visible, small }) => {
 	if (visible) {
-		return (
-			<View style={styles.container}>
-				<ActivityIndicator size={small ? 'small' : 'large'} />
-			</View>
-		);
+		return <ActivityIndicator size={small ? 'small' : 'large'} />;
 	}
 
 	return null;
 };
-
-const styles = StyleSheet.create({
-	container: {
-		paddingVertical: Sizes.smartVerticalScale(20),
-	},
-});

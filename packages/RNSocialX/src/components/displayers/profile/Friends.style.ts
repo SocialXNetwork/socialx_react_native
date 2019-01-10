@@ -3,20 +3,21 @@ import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const styles: any = {
 	container: {
-		justifyContent: 'space-between',
+		flexDirection: 'row',
+		width: '100%',
+		justifyContent: 'center',
 		alignItems: 'center',
-		marginHorizontal: Sizes.smartHorizontalScale(10),
-		height: Sizes.smartVerticalScale(50),
+		borderTopWidth: 1,
+		borderColor: Colors.gallery,
+		paddingVertical: Sizes.smartVerticalScale(10),
 	},
-	value: {
+	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
-		color: Colors.pink,
 	},
-
-	icon: {
-		fontSize: Sizes.smartHorizontalScale(20),
-		color: Colors.white,
+	friends: {
+		flexDirection: 'row',
+		transform: [{ translateX: 15 }],
 	},
 };
 

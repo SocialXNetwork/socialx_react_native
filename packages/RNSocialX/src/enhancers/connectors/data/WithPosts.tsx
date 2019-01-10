@@ -7,7 +7,6 @@ import {
 	createPost,
 	getPostByPath,
 	getUserPosts,
-	ICreatePostInput,
 	IPost,
 	IPostLikeInput,
 	IPostPathInput,
@@ -40,7 +39,7 @@ interface IActionProps {
 	loadMoreFriendsPosts: () => void;
 	getUserPosts: (alias: string) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
-	createPost: (createPostInput: ICreatePostInput) => void;
+	createPost: (post: IPost) => void;
 	removePost: (postId: string) => void;
 	likePost: (input: IPostLikeInput) => void;
 	unlikePost: (input: IPostLikeInput) => void;
@@ -103,7 +102,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
 	getUserPosts: (alias: string) => dispatch(getUserPosts(alias)),
 	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
-	createPost: (createPostInput: ICreatePostInput) => dispatch(createPost(createPostInput as any)),
+	createPost: (post: IPost) => dispatch(createPost(post as any)),
 	removePost: (postId: string) => dispatch(removePost(postId)),
 	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
 	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),

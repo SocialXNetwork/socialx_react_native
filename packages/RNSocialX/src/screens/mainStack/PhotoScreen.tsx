@@ -116,51 +116,40 @@ class Screen extends React.Component<IPhotoScreenProps, IPhotoScreenState> {
 		} else if (source === IMAGE_PICKER_TYPES.Camera) {
 			selectedMedia = await getCameraMediaObjectMultiple();
 		}
+
 		if (selectedMedia.length > 0) {
-			const optimizedMedia = await Promise.all(
-				selectedMedia.map(async (m) => getOptimizedMediaObject(m)),
+			const media = await Promise.all(
+				selectedMedia.map(async (obj) => getOptimizedMediaObject(obj)),
 			);
 
 			this.setState({
-				media: [...this.state.media, ...optimizedMedia],
+				media,
 			});
+
+			console.log(this.state.media);
 		}
 	};
 
 	private onCreatePostHandler = () => {
 		const { media, caption } = this.state;
-		const { currentUser, createPost, setGlobal } = this.props;
-
-		setGlobal({
-			placeholderPost: {
-				postId: uuid(),
-				postText: caption,
-				location: undefined,
-				taggedFriends: undefined,
-				timestamp: new Date(Date.now()),
-				owner: {
-					alias: currentUser.alias,
-					fullName: currentUser.fullName,
-					avatar: currentUser.avatar,
-				},
-				likedByCurrentUser: false,
-				removable: false,
-				media,
-				likeIds: [],
-				commentIds: [],
-				topCommentIds: [],
-				numberOfSuperLikes: 0,
-				numberOfComments: 0,
-				numberOfWalletCoins: 0,
-				currentUserAvatar: currentUser.avatar,
-				suggested: undefined,
-				creatingPost: true,
-			},
-		});
+		const { currentUser, createPost } = this.props;
 
 		createPost({
-			text: caption,
+			postId: uuid(),
+			postText: caption,
+			owner: {
+				alias: currentUser.alias,
+				pub: '',
+			},
+			timestamp: Number(new Date(Date.now())),
+			likes: {
+				ids: [],
+				byId: {},
+			},
+			comments: [],
 			media,
+			privatePost: false,
+			creating: true,
 		});
 		this.onCloseHandler();
 	};

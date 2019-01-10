@@ -60,13 +60,23 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 	}
 
 	public render() {
-		const { visitedUser, loadingProfile, loadingPosts, onGoBack, navigation, getText } = this.props;
+		const {
+			visitedUser,
+			hasFriends,
+			loadingProfile,
+			loadingPosts,
+			onViewFriends,
+			onGoBack,
+			navigation,
+			getText,
+		} = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
 		return (
 			<UserProfileScreenView
 				visitedUser={visitedUser}
-				refreshing={loadingProfile && loadingPosts}
+				hasFriends={hasFriends}
+				loadingProfile={loadingProfile}
 				loadingPosts={loadingPosts}
 				dataProvider={dataProvider}
 				listTranslate={listTranslate}
@@ -81,12 +91,21 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				onViewMedia={this.onViewMediaHandler}
 				onIconPress={this.onIconPressHandler}
 				onLayoutChange={this.onLayoutChangeHandler}
+				onViewFriends={onViewFriends}
 				onGoBack={onGoBack}
 				navigation={navigation}
 				getText={getText}
 			/>
 		);
 	}
+
+	private onRefreshHandler = async () => {
+		const { visitedUser, loadingProfile, loadingPosts, getUserProfile } = this.props;
+
+		if (!loadingProfile && !loadingPosts) {
+			await getUserProfile(visitedUser.alias);
+		}
+	};
 
 	// Improve this when we have lazy loading
 	private onLoadMorePhotosHandler = () => {
@@ -118,14 +137,6 @@ class Screen extends React.Component<IUserProfileScreenProps, IUserProfileScreen
 				dataProvider: dataProvider.cloneWithRows(allMedia),
 			});
 			this.lastLoadedPhotoIndex = allMedia.length - 1;
-		}
-	};
-
-	private onRefreshHandler = async () => {
-		const { visitedUser, loadingProfile, loadingPosts, getUserProfile } = this.props;
-
-		if (!loadingProfile && !loadingPosts) {
-			await getUserProfile(visitedUser.alias);
 		}
 	};
 

@@ -23,7 +23,7 @@ export { OptionsMenuButton } from './displayers/OptionsMenuButton';
 export { PeopleSearchResultEntry } from './displayers/PeopleSearchResultEntry';
 export { PhotoGrid } from './displayers/PhotoGrid';
 export { ProfilePhotoGrid } from './displayers/ProfilePhotoGrid';
-export { ProfileTopContainer } from './displayers/ProfileTopContainer';
+export { Profile } from './displayers/profile';
 export { ProgressBar } from './displayers/ProgressBar';
 export {
 	SocialXAccountCurrencyItem,
@@ -43,6 +43,8 @@ export { TextGradient } from './displayers/TextGradient';
 export { RewardsTransactionItem } from './displayers/RewardsTransactionItem';
 export { TransactionItem } from './displayers/TransactionItem';
 export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
+export { Container as ReferralContainer } from './displayers/referral/Container';
+export { Row as ReferralRow } from './displayers/referral/Row';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';
@@ -58,6 +60,7 @@ export {
 	TRKeyboardKeys,
 	InputSizes,
 } from './inputs/PrimaryTextInput';
+export { SearchInput } from './inputs/SearchInput';
 
 export { CloseButton } from './interaction/CloseButton';
 export { GradientButton } from './interaction/GradientButton';
@@ -89,8 +92,5 @@ export { WalletModal } from './modals/WalletModal';
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';
 export { TabIcon } from './navigation/TabIcon';
-
-export { Container as ReferralContainer } from './referral/Container';
-export { Row as ReferralRow } from './referral/Row';
 
 export { WithModalForAddFriends } from './WithModalForAddFriends';

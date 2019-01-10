@@ -27,7 +27,7 @@ storiesOf('Screens/mainTabNav', module)
 				scrollRef={React.createRef()}
 				scrollY={new Animated.Value(0)}
 				likeFailed={false}
-				creatingPost={false}
+				creating={false}
 				skeletonPost={posts[0]}
 				onRefresh={action('onRefresh')}
 				onLoadMorePosts={action('onLoadMorePosts')}

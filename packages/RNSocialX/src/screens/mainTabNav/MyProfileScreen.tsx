@@ -36,7 +36,6 @@ interface IMyProfileScreenState {
 
 class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
 	private lastLoadedPhotoIndex = 0;
-
 	private readonly dataProvider: DataProvider;
 
 	constructor(props: IMyProfileScreenProps) {
@@ -61,13 +60,29 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	}
 
 	public render() {
-		const { currentUser, loadingProfile, loadingPosts, navigation, getText } = this.props;
-		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
+		const {
+			currentUser,
+			hasFriends,
+			loadingProfile,
+			loadingPosts,
+			navigation,
+			onViewFriends,
+			getText,
+		} = this.props;
+		const {
+			activeTab,
+			listTranslate,
+			gridTranslate,
+			containerHeight,
+
+			dataProvider,
+		} = this.state;
 
 		return (
 			<MyProfileScreenView
 				currentUser={currentUser}
-				refreshing={loadingProfile && loadingPosts}
+				hasFriends={hasFriends}
+				loadingProfile={loadingProfile}
 				loadingPosts={loadingPosts}
 				dataProvider={dataProvider}
 				listTranslate={listTranslate}
@@ -83,6 +98,7 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 				onSharePress={this.onSharePressHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
+				onViewFriends={onViewFriends}
 				navigation={navigation}
 				getText={getText}
 			/>
@@ -107,11 +123,6 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 			getText,
 		} = this.props;
 		const menuItems = [
-			// {
-			// 	label: getText('my.profile.screen.menu.profile.analytics'),
-			// 	icon: 'ios-analytics',
-			// 	actionHandler: () => navigation.navigate(SCREENS.ProfileAnalytics),
-			// },
 			{
 				label: getText('my.profile.screen.menu.wallet'),
 				icon: 'ios-wallet',

@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { Keyboard, Platform, TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 
-import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
+import { PrimaryTextInput, SearchInput } from '../';
 import { OS_TYPES, SCREENS } from '../../environment/consts';
-
 import { INavigationProps } from '../../types';
-import styles, { colors } from './SearchHeader.style';
+import styles from './SearchHeader.style';
 
 interface ISearchHeaderProps extends INavigationProps {
 	cancel: boolean;
@@ -59,25 +58,17 @@ class Component extends React.Component<IProps, IState> {
 							<Icon name="md-arrow-back" style={styles.backIcon} />
 						</TouchableOpacity>
 					)}
-					<View style={{ flex: 1 }}>
-						<PrimaryTextInput
-							ref={this.inputRef}
-							value={this.props.term}
-							onChangeText={this.onChangeTextHandler}
-							onSubmitPressed={Keyboard.dismiss}
-							placeholder="Search"
-							icon="ios-search"
-							size={InputSizes.Small}
-							borderColor={colors.border}
-							iconColor={colors.icon}
-							returnKeyType={TRKeyboardKeys.done}
-							canCancel={true}
-							// persistCancel={this.props.cancel}
-							onPressCancel={this.onBackHandler}
-							cancelButtonTextColor={colors.iosInputCancel}
-							autoFocus={this.props.autoFocus}
-						/>
-
+					<View style={styles.inputContainer}>
+						<View style={{ flex: 1 }}>
+							<SearchInput
+								cancel={false}
+								term={this.props.term}
+								autoFocus={this.props.autoFocus}
+								reference={this.inputRef}
+								onChangeText={this.onChangeTextHandler}
+								onPressCancel={this.onBackHandler}
+							/>
+						</View>
 						{!this.props.cancel ? (
 							<TouchableOpacity
 								activeOpacity={1}

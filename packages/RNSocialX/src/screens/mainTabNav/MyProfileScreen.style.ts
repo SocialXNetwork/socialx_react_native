@@ -1,8 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { Colors, Icons, Sizes } from '../../environment/theme';
+import { Colors, Sizes } from '../../environment/theme';
 
-export const SCREEN_HEIGHT = Dimensions.get('window').height;
-export const SCREEN_WIDTH = Dimensions.get('window').width;
+export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const ICON_SIZE = Sizes.smartHorizontalScale(20);
 
 const styles: any = {
@@ -36,20 +35,6 @@ const styles: any = {
 		minHeight: 1,
 		width: '100%',
 	},
-	whiteBottomView: {
-		position: 'absolute',
-		backgroundColor: Colors.white,
-		width: '100%',
-		height: SCREEN_HEIGHT / 2,
-		bottom: 0,
-	},
-	loading: {
-		flex: 1,
-		alignItems: 'center',
-		paddingTop: Sizes.smartVerticalScale(30),
-	},
 };
 
 export default StyleSheet.create(styles);
-export const colors = { white: Colors.white };
-export const icons = Icons;

@@ -9,13 +9,13 @@ import { Sizes } from '../../environment/theme';
 interface IAvatarImageProps {
 	image?: string;
 	local?: string;
-	style: StyleProp<ImageStyle>;
+	style?: StyleProp<ImageStyle>;
 }
 
 export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 	image,
 	local,
-	style = styles.avatarImage,
+	style = styles.image,
 }) => (
 	<WithConfig>
 		{({ appConfig }) => {
@@ -38,7 +38,7 @@ export const AvatarImage: React.SFC<IAvatarImageProps> = ({
 const AVATAR_SIZE = Sizes.smartHorizontalScale(90);
 
 const styles = StyleSheet.create({
-	avatarImage: {
+	image: {
 		width: AVATAR_SIZE,
 		height: AVATAR_SIZE,
 		borderRadius: AVATAR_SIZE / 2,

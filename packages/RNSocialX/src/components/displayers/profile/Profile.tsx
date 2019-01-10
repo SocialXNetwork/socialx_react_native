@@ -10,60 +10,67 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { AvatarImage, AvatarName, ButtonSizes, PrimaryButton } from '../../';
 import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
 import { FRIEND_TYPES, ITranslatedProps } from '../../../types';
-import { Statistics, Tabs } from './';
+import { Friends, Statistics, Tabs } from './';
 
 import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/intermediary';
 
-import styles, { buttonWidth, colors } from './ProfileTopContainer.style';
+import styles, { buttonWidth, colors } from './Profile.style';
 
-interface IProfileTopContainerProps extends ITranslatedProps {
+interface IProfileProps extends ITranslatedProps {
 	alias: string;
 	avatar: string;
 	fullName: string;
 	description: string;
+	numberOfFriends: number;
 	numberOfPhotos: number;
 	numberOfLikes: number;
-	numberOfFriends: number;
 	numberOfComments: number;
 	status?: FRIEND_TYPES;
 	isCurrentUser: boolean;
 	tabs?: boolean;
 	activeTab?: string;
+	friends?: boolean;
 	onAddFriend: () => void;
 	onShowFriendshipOptions?: () => void;
 	onProfilePhotoPress: () => void;
+	onViewFriends: (alias: string) => void;
 	onEditProfile?: () => void;
 	onSendMessage?: () => void;
 	onIconPress?: (tab: string) => void;
 }
 
-type IProps = IProfileTopContainerProps & IWithFriendsEnhancedData;
+type IProps = IProfileProps & IWithFriendsEnhancedData;
 
 const Component: React.SFC<IProps> = ({
 	alias,
 	avatar,
 	fullName,
 	description,
+	numberOfFriends,
 	numberOfPhotos,
 	numberOfLikes,
-	numberOfFriends,
 	numberOfComments,
 	isCurrentUser,
-	tabs,
 	activeTab = PROFILE_TAB_ICON_TYPES.LIST,
+	tabs,
 	status,
 	relationship,
+	friends,
 	onProfilePhotoPress,
+	onViewFriends,
 	onEditProfile = () => undefined,
 	onSendMessage = () => undefined,
 	onIconPress = () => undefined,
 	getText,
 }) => (
 	<View style={styles.container}>
-		<View style={styles.background} />
-		<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
-			<AvatarImage image={avatar} style={styles.avatar} />
-		</TouchableOpacity>
+		<View style={styles.avatarBackground}>
+			<View style={styles.top} />
+			<View style={styles.bottom} />
+			<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
+				<AvatarImage image={avatar} style={styles.avatar} />
+			</TouchableOpacity>
+		</View>
 		<View style={styles.statisticsContainer}>
 			<View style={styles.leftStatistics}>
 				<Statistics icon="image" value={numberOfPhotos} />
@@ -126,11 +133,14 @@ const Component: React.SFC<IProps> = ({
 				/>
 			)}
 		</View>
+		{friends && (
+			<Friends alias={alias} tabs={tabs} onViewFriends={onViewFriends} getText={getText} />
+		)}
 		{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
 	</View>
 );
 
-export const ProfileTopContainer: React.SFC<IProfileTopContainerProps> = (props) => (
+export const Profile: React.SFC<IProfileProps> = (props) => (
 	<WithFriends status={props.status}>
 		{({ data }) => <Component {...props} {...data} />}
 	</WithFriends>

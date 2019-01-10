@@ -32,6 +32,7 @@ import {
 	CommentsScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,
+	FriendsListScreen,
 	FriendsUserFeed,
 	GlobalUserFeed,
 	IntroScreen,
@@ -237,6 +238,7 @@ const MainScreens = createStackNavigator(
 		UserProfileScreen: UserProfileStack,
 		CommentsScreen: { screen: CommentsScreen },
 		LikesScreen: { screen: LikesScreen },
+		FriendsListScreen: { screen: FriendsListScreen },
 	},
 	{
 		headerMode: 'none',

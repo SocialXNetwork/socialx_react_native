@@ -6,12 +6,7 @@
 import * as React from 'react';
 
 import { FEED_TYPES } from '../../../environment/consts';
-import {
-	ICurrentUser,
-	INavigationParamsActions,
-	ITranslatedProps,
-	IWallPost,
-} from '../../../types';
+import { ICurrentUser, INavigationParamsActions, ITranslatedProps } from '../../../types';
 import { getActivity } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
@@ -25,7 +20,6 @@ import { WithCurrentUser } from '../../intermediary';
 export interface IWithUserFeedEnhancedData {
 	currentUser: ICurrentUser;
 	postIds: string[];
-	placeholderPost: IWallPost;
 	refreshingFeed: boolean;
 	canLoadMore: boolean;
 	loadingMorePosts: boolean;
@@ -70,7 +64,6 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																	data: {
 																		currentUser,
 																		postIds: feed.global.posts,
-																		placeholderPost: globals.placeholderPost,
 																		canLoadMore: feed.global.canLoadMore,
 																		loadingMorePosts: getActivity(
 																			activities,
@@ -95,7 +88,6 @@ export class WithUserFeed extends React.Component<IWithUserFeedProps, IWithUserF
 																	data: {
 																		currentUser,
 																		postIds: feed.friends.posts,
-																		placeholderPost: globals.placeholderPost,
 																		canLoadMore: feed.friends.canLoadMore,
 																		loadingMorePosts: getActivity(
 																			activities,

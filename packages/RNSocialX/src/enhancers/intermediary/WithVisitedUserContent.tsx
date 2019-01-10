@@ -8,7 +8,7 @@ import { WithProfiles } from '../connectors/data/WithProfiles';
 import { WithVisitedUser } from './WithVisitedUser';
 
 interface IWithVisitedUserContentProps {
-	children({ visitedUser }: { visitedUser: IVisitedUser | undefined }): JSX.Element;
+	children({ visitedUser }: { visitedUser: IVisitedUser }): JSX.Element;
 }
 
 interface IWithVisitedUserContentState {}
