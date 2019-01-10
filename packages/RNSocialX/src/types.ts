@@ -135,9 +135,9 @@ export interface IMedia {
 }
 
 export interface IOptimizedMedia extends PickerImage {
-	contentOptimizedPath?: string;
 	type: string;
 	pathx: string;
+	contentOptimizedPath?: string;
 }
 
 export interface IGridMedia {
@@ -180,7 +180,7 @@ export interface IWallPost {
 	numberOfWalletCoins: number;
 	suggested: IUserEntry[] | undefined;
 	offensiveContent: boolean;
-	creatingPost?: boolean;
+	creating?: boolean;
 }
 
 export interface ICreateWallPost {

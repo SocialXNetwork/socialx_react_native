@@ -61,7 +61,6 @@ export class Screen extends React.Component<IProps, IState> {
 		const {
 			currentUser,
 			postIds,
-			placeholderPost,
 			shareMessage,
 			canLoadMore,
 			refreshingFeed,
@@ -73,7 +72,6 @@ export class Screen extends React.Component<IProps, IState> {
 		return (
 			<UserFeedScreenView
 				postIds={postIds}
-				placeholderPostId={placeholderPost ? placeholderPost.postId : null}
 				avatar={currentUser.avatar}
 				refreshing={refreshingFeed}
 				canLoadMorePosts={canLoadMore}

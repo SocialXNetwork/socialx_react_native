@@ -13,7 +13,7 @@ export const shapeComment = (
 	text: comment.text,
 	owner: {
 		alias: profile.alias,
-		fullName: profile.alias,
+		fullName: profile.fullName,
 		avatar: profile.avatar,
 	},
 	timestamp: new Date(comment.timestamp),
@@ -44,6 +44,7 @@ export const shapePost = (
 		},
 		likedByCurrentUser,
 		removable: alias === currentAlias,
+		// @ts-ignore
 		media: post.media.map((obj) => ({ ...obj, postId: post.postId })),
 		likeIds: post.likes.ids,
 		commentIds: post.comments,
@@ -60,5 +61,6 @@ export const shapePost = (
 		numberOfWalletCoins: 0,
 		suggested: undefined,
 		offensiveContent: false,
+		creating: post.creating,
 	};
 };

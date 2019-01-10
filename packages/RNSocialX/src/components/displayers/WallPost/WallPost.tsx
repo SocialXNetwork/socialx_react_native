@@ -50,6 +50,7 @@ import styles, { SCREEN_WIDTH } from './WallPost.style';
 
 interface IWallPostProps extends INavigationProps {
 	postId: string;
+	placeholderPostId?: string | null;
 	commentInput?: boolean;
 	isCommentsScreen?: boolean;
 	keyboardRaised?: boolean;
@@ -105,7 +106,6 @@ class Component extends React.Component<IProps, IState> {
 	public render() {
 		const {
 			post,
-			placeholderPost,
 			currentUser,
 			commentInput,
 			isCommentsScreen,
@@ -124,8 +124,6 @@ class Component extends React.Component<IProps, IState> {
 			navigation,
 		} = this.props;
 
-		const isPlaceholderPost = placeholderPost && placeholderPost.postId === this.props.postId;
-
 		const {
 			postId,
 			postText,
@@ -139,11 +137,10 @@ class Component extends React.Component<IProps, IState> {
 			topCommentIds,
 			likedByCurrentUser,
 			numberOfSuperLikes,
-			numberOfComments,
 			numberOfWalletCoins,
 			offensiveContent,
-			creatingPost,
-		} = isPlaceholderPost ? placeholderPost! : post;
+			creating,
+		} = post;
 
 		const {
 			viewOffensiveContent,
@@ -161,16 +158,16 @@ class Component extends React.Component<IProps, IState> {
 
 		const isPhoneXOrAbove = Platform.OS === OS_TYPES.IOS && Dimensions.get('screen').height > 800;
 
-		if (post || placeholderPost) {
+		if (post) {
 			return (
 				<View
 					ref={this.postRef}
 					style={[
 						styles.container,
-						{ opacity: creatingPost ? 0.5 : 1, paddingBottom: isCommentsScreen ? 10 : 16 },
+						{ opacity: creating ? 0.5 : 1, paddingBottom: isCommentsScreen ? 10 : 16 },
 					]}
 				>
-					{isPlaceholderPost && <View style={styles.overlay} />}
+					{post.creating && <View style={styles.overlay} />}
 					<UserDetails
 						canBack={isCommentsScreen!}
 						user={owner}
@@ -216,13 +213,13 @@ class Component extends React.Component<IProps, IState> {
 											media={media}
 											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 											onDoublePress={() => onDoubleTapLikePost(postId)}
-											creating={creatingPost}
+											creating={creating}
 											getText={getText}
 										/>
 									</View>
 								)}
 								<WallPostActions
-									creating={creatingPost}
+									creating={creating}
 									likedByCurrentUser={likedByCurrentUser}
 									numberOfSuperLikes={numberOfSuperLikes}
 									numberOfWalletCoins={numberOfWalletCoins}
@@ -292,7 +289,7 @@ class Component extends React.Component<IProps, IState> {
 											media={media}
 											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 											onDoublePress={() => onDoubleTapLikePost(post.postId)}
-											creating={creatingPost}
+											creating={creating}
 											getText={getText}
 										/>
 									)}
@@ -304,7 +301,7 @@ class Component extends React.Component<IProps, IState> {
 								</View>
 							)}
 							<WallPostActions
-								creating={creatingPost}
+								creating={creating}
 								likedByCurrentUser={likedByCurrentUser}
 								numberOfSuperLikes={numberOfSuperLikes}
 								numberOfWalletCoins={numberOfWalletCoins}
@@ -332,7 +329,7 @@ class Component extends React.Component<IProps, IState> {
 								onUserPress={onViewUserProfile}
 								onCommentPress={() => onViewComments(postId, false)}
 							/>
-							{!!commentInput && !creatingPost && (
+							{!!commentInput && !creating && (
 								<CommentInput
 									feed={true}
 									comment={comment}

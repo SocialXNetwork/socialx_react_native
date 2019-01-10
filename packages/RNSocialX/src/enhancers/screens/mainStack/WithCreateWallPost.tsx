@@ -1,9 +1,8 @@
 import * as React from 'react';
 
+import { IPost } from '../../../store/data/posts';
 import {
-	ICreateWallPost,
 	ICurrentUser,
-	IGlobal,
 	IOptionsMenuProps,
 	ITranslatedProps,
 	IUploadFileInput,
@@ -12,7 +11,6 @@ import {
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithFiles } from '../../connectors/storage/WithFiles';
-import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../../intermediary';
 
@@ -21,9 +19,8 @@ export interface IWithCreateWallPostEnhancedData {
 }
 
 export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: ICreateWallPost) => void;
+	createPost: (post: IPost) => void;
 	uploadFile: (input: IUploadFileInput) => void;
-	setGlobal: (global: IGlobal) => void;
 }
 
 interface IWithCreateWallPostEnhancedProps {
@@ -47,45 +44,32 @@ export class WithCreateWallPost extends React.Component<
 				{({ getText }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
-							<WithGlobals>
-								{({ setGlobal }) => (
-									<WithFiles>
-										{({ uploadFile }) => (
-											<WithCurrentUser>
-												{({ currentUser }) => (
-													<WithPosts>
-														{({ createPost }) =>
-															this.props.children({
-																data: {
-																	currentUser,
-																},
-																actions: {
-																	uploadFile,
-																	createPost: async (post: ICreateWallPost) => {
-																		await createPost({
-																			postText: post.text,
-																			location: post.location,
-																			taggedFriends: post.taggedFriends,
-																			media: post.media as any,
-																			privatePost: false,
-																		});
-																	},
-																	showOptionsMenu: (items) =>
-																		showOptionsMenu({
-																			items,
-																		}),
-																	setGlobal,
-																	getText,
-																},
-															})
-														}
-													</WithPosts>
-												)}
-											</WithCurrentUser>
+							<WithFiles>
+								{({ uploadFile }) => (
+									<WithCurrentUser>
+										{({ currentUser }) => (
+											<WithPosts>
+												{({ createPost }) =>
+													this.props.children({
+														data: {
+															currentUser,
+														},
+														actions: {
+															uploadFile,
+															createPost: (post: IPost) => createPost(post),
+															showOptionsMenu: (items) =>
+																showOptionsMenu({
+																	items,
+																}),
+															getText,
+														},
+													})
+												}
+											</WithPosts>
 										)}
-									</WithFiles>
+									</WithCurrentUser>
 								)}
-							</WithGlobals>
+							</WithFiles>
 						)}
 					</WithOverlays>
 				)}

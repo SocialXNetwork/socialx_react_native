@@ -60,6 +60,7 @@ class Screen extends React.Component<IProps, IState> {
 				term={this.state.term}
 				onChangeText={this.onChangeTextHandler}
 				onGoBack={this.props.onGoBack}
+				onViewUserProfile={this.props.onViewUserProfile}
 				getText={this.props.getText}
 			/>
 		);

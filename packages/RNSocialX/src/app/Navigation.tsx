@@ -121,7 +121,6 @@ const MyProfileStackNavigator = createStackNavigator(
 		ReferralScreen: { screen: ReferralScreen },
 		WalletActivityScreen: { screen: WalletActivityScreen },
 		TransactionHistoryScreen: { screen: TransactionHistoryScreen },
-		FriendsListScreen: { screen: FriendsListScreen },
 	},
 	defaultConfig,
 );
@@ -239,6 +238,7 @@ const MainScreens = createStackNavigator(
 		UserProfileScreen: UserProfileStack,
 		CommentsScreen: { screen: CommentsScreen },
 		LikesScreen: { screen: LikesScreen },
+		FriendsListScreen: { screen: FriendsListScreen },
 	},
 	{
 		headerMode: 'none',

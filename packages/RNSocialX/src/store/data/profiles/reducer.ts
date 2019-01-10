@@ -10,7 +10,14 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
-			const profile = action.payload;
+			let profile = action.payload;
+
+			if (state.profiles[profile.alias].posts.length > 0) {
+				profile = {
+					...profile,
+					posts: [...state.profiles[profile.alias].posts],
+				};
+			}
 
 			return {
 				...state,
@@ -76,7 +83,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			const { friends, alias } = action.payload;
 
 			const profiles = { ...state.profiles };
-			let friendIds = [];
+			const friendIds = [];
 
 			for (const friend of friends) {
 				if (!profiles[friend.alias]) {
@@ -92,10 +99,6 @@ export default (state: IState = initialState, action: IAction): IState => {
 				if (friendIds.indexOf(friend.alias) === -1) {
 					friendIds.push(friend.alias);
 				}
-			}
-
-			if (friendIds.length === 0) {
-				friendIds = ['raven.laurel', 'will2k', 'letsgheek'];
 			}
 
 			return {

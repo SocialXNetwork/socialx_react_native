@@ -1,18 +1,28 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
-const AVATAR_SIZE = Sizes.smartHorizontalScale(100);
-const AVATAR_CONTAINER_SIZE = Sizes.smartHorizontalScale(106);
+const AVATAR_SIZE = Sizes.smartHorizontalScale(120);
+const AVATAR_CONTAINER_SIZE = Sizes.smartHorizontalScale(126);
 
 const styles: any = {
 	container: {
 		backgroundColor: Colors.white,
 	},
-	background: {
-		backgroundColor: Colors.pink,
+	avatarBackground: {
 		width: '100%',
-		height: Sizes.smartVerticalScale(75),
-		marginBottom: Sizes.smartVerticalScale(60),
+		height: Sizes.smartVerticalScale(150),
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	top: {
+		height: '50%',
+		width: '100%',
+		backgroundColor: Colors.pink,
+	},
+	bottom: {
+		height: '50%',
+		width: '100%',
+		backgroundColor: Colors.white,
 	},
 	avatar: {
 		width: AVATAR_SIZE,
@@ -20,18 +30,15 @@ const styles: any = {
 		borderRadius: AVATAR_SIZE / 2,
 	},
 	avatarContainer: {
+		position: 'absolute',
 		width: AVATAR_CONTAINER_SIZE,
 		height: AVATAR_CONTAINER_SIZE,
-		position: 'absolute',
-		alignSelf: 'center',
-		top: Sizes.smartVerticalScale(20),
 		borderRadius: AVATAR_CONTAINER_SIZE / 2,
 		padding: 10,
 		backgroundColor: Colors.white,
 		borderColor: Colors.white,
 		justifyContent: 'center',
 		alignItems: 'center',
-		zIndex: 5,
 	},
 	statisticsContainer: {
 		position: 'absolute',

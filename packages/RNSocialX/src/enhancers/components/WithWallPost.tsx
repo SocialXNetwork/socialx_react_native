@@ -10,7 +10,7 @@ import {
 	ILikeCommentInput,
 	IRemoveCommentInput,
 } from '../../store/data/comments';
-import { IGlobal, IOptionsMenuProps, ITranslatedProps, IWallPost } from '../../types';
+import { IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithComments } from '../connectors/data/WithComments';
@@ -25,7 +25,6 @@ export interface IWallPostEnhancedData {
 		pub: string;
 		avatar: string;
 	};
-	placeholderPost?: IWallPost;
 	commentInput?: boolean;
 	keyboardRaised?: boolean;
 }
@@ -98,7 +97,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																		pub: currentUser.pub,
 																		avatar: currentUser.avatar,
 																	},
-																	placeholderPost: globals.placeholderPost,
 																},
 																actions: {
 																	onRemovePost: this.onRemovePostHandler,

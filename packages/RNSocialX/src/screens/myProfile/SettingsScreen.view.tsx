@@ -68,6 +68,8 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 			}
 			if (!description) {
 				errors.description = getText('settings.screen.description.required');
+			} else if (description.length < 10) {
+				errors.description = getText('settings.screen.description.length');
 			}
 			return errors;
 		}}

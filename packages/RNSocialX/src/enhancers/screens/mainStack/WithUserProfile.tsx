@@ -18,6 +18,7 @@ import { WithVisitedUserContent } from '../../intermediary';
 
 export interface IWithUserProfileEnhancedData {
 	visitedUser: IVisitedUser;
+	hasFriends: boolean;
 	loadingProfile: boolean;
 	loadingPosts: boolean;
 }
@@ -46,14 +47,16 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithProfiles>
-								{({ addFriend, getProfileByAlias }) => (
+								{({ friends, addFriend, getProfileByAlias }) => (
 									<WithActivities>
 										{({ activities }) => (
 											<WithVisitedUserContent>
 												{({ visitedUser }) =>
 													this.props.children({
 														data: {
-															visitedUser: visitedUser!,
+															visitedUser,
+															hasFriends:
+																friends[visitedUser.alias] && friends[visitedUser.alias].length > 0,
 															loadingProfile: getActivity(
 																activities,
 																ProfileActionTypes.GET_PROFILE_BY_ALIAS,

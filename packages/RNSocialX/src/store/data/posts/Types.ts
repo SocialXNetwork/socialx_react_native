@@ -1,6 +1,8 @@
-import { ICreatePostInput, IMedia, IPostReturnData } from '@socialx/api-data';
+import { IMedia, IPostReturnData } from '@socialx/api-data';
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
+
+import { IOptimizedMedia } from '../../../types';
 
 export interface IPost {
 	postId: string;
@@ -17,12 +19,13 @@ export interface IPost {
 		};
 	};
 	comments: string[];
-	media: IMedia[];
+	media: IMedia[] | IOptimizedMedia[];
 	privatePost: boolean;
 	location?: string;
 	taggedFriends?: Array<{
 		fullName: string;
 	}>;
+	creating?: boolean;
 }
 
 export type IState = DeepReadonly<{
@@ -92,6 +95,7 @@ export const enum ActionTypes {
 	LOAD_MORE_FRIENDS_POSTS = 'data/posts/LOAD_MORE_FRIENDS_POSTS',
 	SYNC_LOAD_MORE_FRIENDS_POSTS = 'data/posts/SYNC_LOAD_MORE_FRIENDS_POSTS',
 	CREATE_POST = 'data/posts/CREATE_POST',
+	SYNC_CREATE_POST = 'data/posts/SYNC_CREATE_POST',
 	REMOVE_POST = 'data/posts/REMOVE_POST',
 	SYNC_REMOVE_POST = 'data/posts/SYNC_REMOVE_POST',
 	LIKE_POST = 'data/posts/LIKE_POST',
@@ -176,7 +180,12 @@ export interface ISyncGetUserPostsAction extends Action {
 
 export interface ICreatePostAction extends Action {
 	type: ActionTypes.CREATE_POST;
-	payload: ICreatePostInput;
+	payload: IPost;
+}
+
+export interface ISyncCreatePostAction extends Action {
+	type: ActionTypes.SYNC_CREATE_POST;
+	payload: string;
 }
 
 export interface IRemovePostAction extends Action {
@@ -246,6 +255,7 @@ export type IAction =
 	| ISyncGetUserPostsAction
 	// setters
 	| ICreatePostAction
+	| ISyncCreatePostAction
 	| IRemovePostAction
 	| ISyncRemovePostAction
 	| ILikePostAction

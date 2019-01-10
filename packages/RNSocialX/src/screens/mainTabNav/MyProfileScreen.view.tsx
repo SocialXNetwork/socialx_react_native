@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {
-	ActivityIndicator,
 	Animated,
 	FlatList,
+	LayoutChangeEvent,
+	Platform,
 	RefreshControl,
 	ScrollView,
 	View,
@@ -15,18 +16,20 @@ import {
 	IconButton,
 	NoContent,
 	OptionsMenuButton,
+	Profile,
 	ProfilePhotoGrid,
-	ProfileTopContainer,
 	WallPost,
 } from '../../components';
-import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
+import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { ICurrentUser, INavigationProps, ITranslatedProps } from '../../types';
 
-import styles, { colors, icons, SCREEN_HEIGHT } from './MyProfileScreen.style';
+import { Colors, Icons } from '../../environment/theme';
+import styles, { SCREEN_HEIGHT } from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 	currentUser: ICurrentUser;
-	refreshing: boolean;
+	hasFriends: boolean;
+	loadingProfile: boolean;
 	loadingPosts: boolean;
 	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
@@ -47,7 +50,8 @@ interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 
 export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	currentUser,
-	refreshing,
+	hasFriends,
+	loadingProfile,
 	loadingPosts,
 	dataProvider,
 	listTranslate,
@@ -93,7 +97,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	}
 
 	const scrollContainerStyles =
-		hasPhotos || hasPosts ? styles.scrollContainer : [styles.scrollContainer, { flex: 1 }];
+		hasPhotos || hasPosts ? styles.scrollContainer : [styles.scrollContainer, { flexGrow: 1 }];
 
 	return (
 		<View style={styles.container}>
@@ -101,7 +105,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 				title={getText('my.profile.screen.title')}
 				left={
 					<IconButton
-						iconSource={icons.shareIconWhite}
+						iconSource={Icons.shareIconWhite}
 						iconType="image"
 						iconStyle={styles.icon}
 						onPress={onSharePress}
@@ -109,28 +113,32 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 				}
 				right={<OptionsMenuButton onPress={onShowOptionsMenu} />}
 			/>
-			<View style={styles.whiteBottomView} />
 			<ScrollView
 				contentContainerStyle={scrollContainerStyles}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.white} />
+					<RefreshControl
+						refreshing={loadingProfile}
+						onRefresh={onRefresh}
+						tintColor={Colors.white}
+						progressBackgroundColor={Colors.white}
+					/>
 				}
-				scrollEnabled={hasPhotos || hasPosts}
+				scrollEnabled={!loadingPosts}
 			>
-				<ProfileTopContainer
+				<Profile
 					alias={alias}
 					avatar={avatar}
 					fullName={fullName}
 					description={description}
-					numberOfPosts={postIds.length}
 					numberOfFriends={numberOfFriends}
 					numberOfLikes={numberOfLikes}
 					numberOfPhotos={numberOfPhotos}
 					numberOfComments={numberOfComments}
 					isCurrentUser={true}
-					tabs={true}
+					tabs={hasPosts}
 					activeTab={activeTab}
+					friends={hasFriends}
 					onProfilePhotoPress={onProfilePhotoPress}
 					onAddFriend={() => undefined}
 					onEditProfile={onEditProfile}
@@ -138,55 +146,73 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					onViewFriends={onViewFriends}
 					getText={getText}
 				/>
-				{loadingPosts ? (
-					<View style={styles.loading}>
-						<ActivityIndicator size="large" />
-					</View>
-				) : (
-					<View style={contentContainerStyle}>
-						<Animated.View
-							style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
-						>
-							<FlatList
-								windowSize={10}
-								data={postIds}
-								keyExtractor={(id) => id}
-								renderItem={(data) => (
-									<View style={styles.post}>
-										<WallPost postId={data.item} commentInput={false} navigation={navigation} />
-									</View>
-								)}
-								showsVerticalScrollIndicator={false}
-								scrollEnabled={postIds.length > 0}
-								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
-							/>
-						</Animated.View>
-						<Animated.View
-							onLayout={(event: any) => {
-								if (containerHeight !== event.nativeEvent.layout.height) {
-									onLayoutChange(event.nativeEvent.layout.height);
-								}
-							}}
-							style={[styles.gridContainer, { transform: [{ translateX: gridTranslate }] }]}
-						>
-							{hasPhotos ? (
-								<ProfilePhotoGrid
-									onLoadMorePhotos={onLoadMorePhotos}
-									dataProvider={dataProvider}
-									onViewMedia={onViewMedia}
-									header={{
-										element: <View style={{ width: 1, height: 1 }} />,
-										height: hasPhotos ? 1 : SCREEN_HEIGHT,
-									}}
-									disabled={hasPhotos}
-									getText={getText}
-								/>
-							) : (
-								<NoContent gallery={true} getText={getText} />
+				<View style={contentContainerStyle}>
+					<Animated.View
+						style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
+					>
+						<FlatList
+							windowSize={10}
+							data={postIds}
+							keyExtractor={(id) => id}
+							renderItem={(data) => (
+								<View style={styles.post}>
+									<WallPost postId={data.item} commentInput={false} navigation={navigation} />
+								</View>
 							)}
-						</Animated.View>
-					</View>
-				)}
+							showsVerticalScrollIndicator={false}
+							scrollEnabled={postIds.length > 0}
+							ListEmptyComponent={<NoContent posts={true} getText={getText} />}
+						/>
+						{Platform.OS === OS_TYPES.IOS && (
+							<View
+								style={{
+									backgroundColor: Colors.white,
+									height: SCREEN_HEIGHT / 2,
+									position: 'absolute',
+									bottom: -SCREEN_HEIGHT / 2,
+									left: 0,
+									right: 0,
+								}}
+							/>
+						)}
+					</Animated.View>
+					<Animated.View
+						onLayout={(event: LayoutChangeEvent) => {
+							if (containerHeight !== event.nativeEvent.layout.height) {
+								onLayoutChange(event.nativeEvent.layout.height);
+							}
+						}}
+						style={[styles.gridContainer, { transform: [{ translateX: gridTranslate }] }]}
+					>
+						{hasPhotos ? (
+							<ProfilePhotoGrid
+								onLoadMorePhotos={onLoadMorePhotos}
+								dataProvider={dataProvider}
+								onViewMedia={onViewMedia}
+								header={{
+									element: <View style={{ width: 1, height: 1 }} />,
+									height: 1,
+								}}
+								disabled={hasPhotos}
+								getText={getText}
+							/>
+						) : (
+							<NoContent gallery={true} getText={getText} />
+						)}
+						{Platform.OS === OS_TYPES.IOS && (
+							<View
+								style={{
+									backgroundColor: Colors.white,
+									height: SCREEN_HEIGHT / 2,
+									position: 'absolute',
+									bottom: -SCREEN_HEIGHT / 2,
+									left: 0,
+									right: 0,
+								}}
+							/>
+						)}
+					</Animated.View>
+				</View>
 			</ScrollView>
 		</View>
 	);

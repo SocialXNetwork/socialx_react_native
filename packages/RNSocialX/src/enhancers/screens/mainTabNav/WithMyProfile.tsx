@@ -16,6 +16,7 @@ import { WithCurrentUserContent } from '../../intermediary';
 
 export interface IWithMyProfileEnhancedData {
 	currentUser: ICurrentUser;
+	hasFriends: boolean;
 	loadingProfile: boolean;
 	loadingPosts: boolean;
 }
@@ -52,12 +53,15 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 											<WithActivities>
 												{({ activities }) => (
 													<WithProfiles>
-														{({ getCurrentProfile }) => (
+														{({ friends, getCurrentProfile }) => (
 															<WithCurrentUserContent>
 																{({ currentUser }) =>
 																	this.props.children({
 																		data: {
-																			currentUser: currentUser!,
+																			currentUser,
+																			hasFriends:
+																				friends[currentUser.alias] &&
+																				friends[currentUser.alias].length > 0,
 																			loadingProfile: getActivity(
 																				activities,
 																				ProfileActionTypes.GET_CURRENT_PROFILE,

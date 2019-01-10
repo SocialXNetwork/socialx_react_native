@@ -1,4 +1,4 @@
-import { ICreatePostInput, IPostReturnData } from '@socialx/api-data';
+import { IPostReturnData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
@@ -6,7 +6,6 @@ import { IOptimizedMedia } from '../../../types';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
-import { setGlobal } from '../../ui/globals';
 import { loadCommentsAction } from '../comments';
 import { addPostsToProfile, getProfilesByPosts, removePostFromProfile } from '../profiles';
 import {
@@ -21,6 +20,7 @@ import {
 	ILikePostErrorAction,
 	ILoadMoreFriendsPostsAction,
 	ILoadMorePostsAction,
+	IPost,
 	IPostIdInput,
 	IPostLikeInput,
 	IPostPathInput,
@@ -30,6 +30,7 @@ import {
 	IRemovePostAction,
 	IReplaceCommentAction,
 	IReplaceCommentInput,
+	ISyncCreatePostAction,
 	ISyncGetPostByIdAction,
 	ISyncGetPostByPathAction,
 	ISyncGetUserPostsAction,
@@ -274,18 +275,29 @@ export const getUserPosts = (alias: string): IThunk => async (dispatch, getState
  * 	and fetches it based on the id
  */
 
-const createPostAction: ActionCreator<ICreatePostAction> = (input: ICreatePostInput) => ({
+const createPostAction: ActionCreator<ICreatePostAction> = (post: IPost) => ({
 	type: ActionTypes.CREATE_POST,
-	payload: input,
+	payload: post,
 });
 
-export const createPost = (
-	input: ICreatePostInput & { media: IOptimizedMedia[] },
-): IThunk => async (dispatch, getState, context) => {
+/**
+ *  Removes the placeholder post from store
+ */
+
+const syncCreatePostAction: ActionCreator<ISyncCreatePostAction> = (postId: string) => ({
+	type: ActionTypes.SYNC_CREATE_POST,
+	payload: postId,
+});
+
+export const createPost = (post: IPost & { media: IOptimizedMedia[] }): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuid();
 
 	try {
-		dispatch(createPostAction(input));
+		dispatch(createPostAction(post));
 		await dispatch(
 			beginActivity({
 				type: ActionTypes.CREATE_POST,
@@ -295,9 +307,8 @@ export const createPost = (
 		const { dataApi, storageApi } = context;
 
 		let postId;
-		if (input.media && input.media.length > 0) {
-			const { media, ...postRest } = input;
-			console.log('media', input.media);
+		if (post.media && post.media.length > 0) {
+			const { media, ...postRest } = post;
 
 			const bootstrapStatus = async (uploadIdStarted: string) => {
 				await dispatch(
@@ -371,10 +382,10 @@ export const createPost = (
 			const finalInput = { ...postRest, media: finalMedia };
 			postId = await dataApi.posts.createPost(finalInput as any);
 		} else {
-			postId = await dataApi.posts.createPost(input);
+			postId = await dataApi.posts.createPost(post as any);
 		}
 		await dispatch(getPostById({ postId }));
-		await dispatch(setGlobal({ placeholderPost: null }));
+		dispatch(syncCreatePostAction(post.postId));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -383,7 +394,6 @@ export const createPost = (
 				uuid: uuid(),
 			}),
 		);
-		await dispatch(setGlobal({ placeholderPost: null }));
 	} finally {
 		await dispatch(endActivity({ uuid: activityId }));
 	}

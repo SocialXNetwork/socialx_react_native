@@ -3,7 +3,9 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
 	container: {
+		backgroundColor: Colors.white,
 		alignItems: 'center',
+		paddingVertical: Sizes.smartVerticalScale(15),
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(120),

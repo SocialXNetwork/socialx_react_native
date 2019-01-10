@@ -9,6 +9,7 @@ interface IFriendsListScreenViewProps extends ITranslatedProps {
 	aliases: string[];
 	term: string;
 	onChangeText: (term: string) => void;
+	onViewUserProfile: (alias: string) => void;
 	onGoBack: () => void;
 }
 
@@ -16,6 +17,7 @@ export const FriendsListScreenView: React.SFC<IFriendsListScreenViewProps> = ({
 	aliases,
 	term,
 	onChangeText,
+	onViewUserProfile,
 	onGoBack,
 	getText,
 }) => (
@@ -28,7 +30,7 @@ export const FriendsListScreenView: React.SFC<IFriendsListScreenViewProps> = ({
 			<SearchInput cancel={false} term={term} autoFocus={false} onChangeText={onChangeText} />
 		</View>
 		<View style={styles.friends}>
-			<UserEntries aliases={aliases} onEntryPress={() => undefined} />
+			<UserEntries aliases={aliases} onEntryPress={onViewUserProfile} />
 		</View>
 	</View>
 );

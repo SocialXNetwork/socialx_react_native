@@ -36,7 +36,6 @@ interface IMyProfileScreenState {
 
 class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenState> {
 	private lastLoadedPhotoIndex = 0;
-
 	private readonly dataProvider: DataProvider;
 
 	constructor(props: IMyProfileScreenProps) {
@@ -63,18 +62,27 @@ class Screen extends React.Component<IMyProfileScreenProps, IMyProfileScreenStat
 	public render() {
 		const {
 			currentUser,
+			hasFriends,
 			loadingProfile,
 			loadingPosts,
 			navigation,
 			onViewFriends,
 			getText,
 		} = this.props;
-		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
+		const {
+			activeTab,
+			listTranslate,
+			gridTranslate,
+			containerHeight,
+
+			dataProvider,
+		} = this.state;
 
 		return (
 			<MyProfileScreenView
 				currentUser={currentUser}
-				refreshing={loadingProfile && loadingPosts}
+				hasFriends={hasFriends}
+				loadingProfile={loadingProfile}
 				loadingPosts={loadingPosts}
 				dataProvider={dataProvider}
 				listTranslate={listTranslate}

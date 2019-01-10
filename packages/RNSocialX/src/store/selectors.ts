@@ -1,3 +1,4 @@
+import { sampleSize } from 'lodash';
 import { createSelector } from 'reselect';
 
 export { IApplicationState } from './rootReducer';
@@ -35,4 +36,14 @@ export const selectNumberOfPostLikes = createSelector(
 export const selectNumberOfPostComments = createSelector(
 	(state: IPosts, postId: string) => state.all[postId].comments.length,
 	(comments) => comments,
+);
+
+export const selectFriends = createSelector(
+	(state: IProfiles, alias: string) => state.friends[alias],
+	(friends) => sampleSize(friends, 3),
+);
+
+export const selectAvatar = createSelector(
+	(state: IProfiles, alias: string) => state.profiles[alias].avatar,
+	(avatar) => avatar,
 );

@@ -9,7 +9,6 @@ import styles from './UserFeedScreen.style';
 interface IProps extends INavigationProps, ITranslatedProps {
 	avatar: string;
 	postIds: string[];
-	placeholderPostId: string | null;
 	refreshing: boolean;
 	shareMessage: string;
 	loadingMorePosts: boolean;
@@ -29,7 +28,6 @@ export const UserFeedScreenView: React.SFC<IProps> = ({
 	refreshing,
 	canLoadMorePosts,
 	shareMessage,
-	placeholderPostId,
 	listRef,
 	postContainerRef,
 	loaded,
@@ -39,45 +37,35 @@ export const UserFeedScreenView: React.SFC<IProps> = ({
 	onCommentInputPress,
 	navigation,
 	getText,
-}) => {
-	const data = placeholderPostId ? [placeholderPostId, ...postIds] : postIds;
-
-	return (
-		<View ref={postContainerRef} style={styles.container}>
-			<FlatList
-				ref={listRef}
-				windowSize={10}
-				data={data}
-				refreshing={refreshing}
-				keyExtractor={(id) => id}
-				renderItem={({ item, index }) => (
-					<View style={styles.post}>
-						<WallPost
-							postId={item}
-							commentInput={true}
-							postContainerRef={postContainerRef}
-							onCommentInputPress={(y, h) => onCommentInputPress(y, h, index === 0)}
-							navigation={navigation}
-						/>
-					</View>
-				)}
-				ListHeaderComponent={
-					<ShareSection
-						avatar={avatar}
-						message={shareMessage}
-						onCreateWallPost={onCreateWallPost}
+}) => (
+	<View ref={postContainerRef} style={styles.container}>
+		<FlatList
+			ref={listRef}
+			windowSize={10}
+			data={postIds}
+			refreshing={refreshing}
+			keyExtractor={(id) => id}
+			renderItem={({ item, index }) => (
+				<View style={styles.post}>
+					<WallPost
+						postId={item}
+						commentInput={true}
+						postContainerRef={postContainerRef}
+						onCommentInputPress={(y, h) => onCommentInputPress(y, h, index === 0)}
+						navigation={navigation}
 					/>
-				}
-				ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-				ListEmptyComponent={
-					<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />
-				}
-				keyboardShouldPersistTaps="handled"
-				showsVerticalScrollIndicator={false}
-				onRefresh={onRefresh}
-				onEndReached={canLoadMorePosts && loaded ? onLoadMorePosts : null}
-				onEndReachedThreshold={1}
-			/>
-		</View>
-	);
-};
+				</View>
+			)}
+			ListHeaderComponent={
+				<ShareSection avatar={avatar} message={shareMessage} onCreateWallPost={onCreateWallPost} />
+			}
+			ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
+			ListEmptyComponent={<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />}
+			keyboardShouldPersistTaps="handled"
+			showsVerticalScrollIndicator={false}
+			onRefresh={onRefresh}
+			onEndReached={canLoadMorePosts && loaded ? onLoadMorePosts : null}
+			onEndReachedThreshold={1}
+		/>
+	</View>
+);

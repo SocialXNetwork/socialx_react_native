@@ -8,7 +8,7 @@ const styles: any = {
 		justifyContent: 'space-evenly',
 		borderTopWidth: 1,
 		borderBottomWidth: 1,
-		borderColor: Colors.wildSand,
+		borderColor: Colors.gallery,
 		paddingVertical: Sizes.smartVerticalScale(5),
 		marginBottom: Sizes.smartVerticalScale(15),
 	},

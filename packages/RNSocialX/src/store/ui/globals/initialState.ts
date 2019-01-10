@@ -12,7 +12,6 @@ const initialState: IState = {
 		alpha: 0,
 		loader: false,
 	},
-	placeholderPost: null,
 	loading: {
 		progress: 0,
 		message: 'login',

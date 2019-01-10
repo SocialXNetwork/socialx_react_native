@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../environment/theme';
-
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const styles: any = {
 	container: {
@@ -17,7 +15,6 @@ const styles: any = {
 		borderBottomWidth: Sizes.smartHorizontalScale(8),
 	},
 	contentContainer: {
-		flex: 1,
 		flexDirection: 'row',
 	},
 	postsContainer: {
@@ -30,21 +27,9 @@ const styles: any = {
 		minHeight: 1,
 		width: '100%',
 	},
-	whiteBottomView: {
-		position: 'absolute',
-		backgroundColor: Colors.white,
-		width: '100%',
-		height: SCREEN_HEIGHT / 2,
-		bottom: 0,
-	},
-	loading: {
-		flex: 1,
-		alignItems: 'center',
-		paddingTop: Sizes.smartVerticalScale(30),
+	loader: {
+		paddingTop: Sizes.smartVerticalScale(15),
 	},
 };
 
 export default StyleSheet.create(styles);
-export const colors = {
-	white: Colors.white,
-};

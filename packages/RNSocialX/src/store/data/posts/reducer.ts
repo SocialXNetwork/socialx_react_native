@@ -171,7 +171,41 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.CREATE_POST: {
-			return state;
+			return {
+				...state,
+				all: {
+					...state.all,
+					[action.payload.postId]: action.payload,
+				},
+				global: {
+					...state.global,
+					posts: [action.payload.postId, ...state.global.posts],
+				},
+				friends: {
+					...state.friends,
+					posts: [action.payload.postId, ...state.friends.posts],
+				},
+			};
+		}
+
+		case ActionTypes.SYNC_CREATE_POST: {
+			const {
+				[action.payload]: {},
+				...updatedPosts
+			} = state.all;
+
+			return {
+				...state,
+				all: updatedPosts,
+				global: {
+					...state.global,
+					posts: state.global.posts.filter((id) => id !== action.payload),
+				},
+				friends: {
+					...state.friends,
+					posts: state.friends.posts.filter((id) => id !== action.payload),
+				},
+			};
 		}
 
 		case ActionTypes.REMOVE_POST: {

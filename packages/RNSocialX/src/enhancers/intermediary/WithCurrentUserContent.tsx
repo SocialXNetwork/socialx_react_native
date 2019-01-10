@@ -8,7 +8,7 @@ import { WithProfiles } from '../connectors/data/WithProfiles';
 import { WithCurrentUser } from './WithCurrentUser';
 
 interface IWithCurrentUserContentProps {
-	children({ currentUser }: { currentUser: ICurrentUser | undefined }): JSX.Element;
+	children({ currentUser }: { currentUser: ICurrentUser }): JSX.Element;
 }
 
 interface IWithCurrentUserContentState {}
