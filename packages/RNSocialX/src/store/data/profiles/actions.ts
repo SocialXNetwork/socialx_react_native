@@ -163,7 +163,11 @@ const syncGetCurrentProfileAction: ActionCreator<ISyncGetCurrentProfileAction> =
 	payload: profile,
 });
 
-export const getCurrentProfile = (): IThunk => async (dispatch, getState, context) => {
+export const getCurrentProfile = (initial: boolean = true): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuid();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;

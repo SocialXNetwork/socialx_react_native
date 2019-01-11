@@ -316,10 +316,10 @@ export const getCurrentProfileFriends = async (
 						return callback(null, sanitizedFriendsArray);
 					}, 500);
 				},
-				{ wait: 500, off: 1 },
+				{ wait: 10000, off: 1 },
 			);
 		},
-		{ wait: 500 },
+		{ wait: 10000 },
 	);
 };
 
