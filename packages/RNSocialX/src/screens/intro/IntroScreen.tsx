@@ -18,8 +18,8 @@ type IIntroScreenProps = IWithIntroEnhancedData & IWithIntroEnhancedActions & IN
 
 const Screen: React.SFC<IIntroScreenProps> = ({ resetNavigationToRoute, navigation, getText }) => (
 	<IntroScreenView
-		doneButtonHandler={() => resetNavigationToRoute(NAVIGATION.Main, navigation)}
-		skipButtonHandler={() => resetNavigationToRoute(NAVIGATION.Main, navigation)}
+		doneButtonHandler={() => resetNavigationToRoute(NAVIGATION.Home, navigation)}
+		skipButtonHandler={() => resetNavigationToRoute(NAVIGATION.Home, navigation)}
 		getText={getText}
 	/>
 );

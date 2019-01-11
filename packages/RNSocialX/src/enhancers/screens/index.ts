@@ -2,92 +2,75 @@ export {
 	IWithAdsManagementEditAdEnhancedActions,
 	IWithAdsManagementEditAdEnhancedData,
 	WithAdsManagementEditAd,
-} from './adsManagementStack/WithAdsManagementEditAd';
+} from './ads/WithAdsManagementEditAd';
 export {
 	IWithAdsManagementEnhancedActions,
 	IWithAdsManagementEnhancedData,
 	WithAdsManagement,
-} from './adsManagementStack/WithAdsManagement';
+} from './ads/WithAdsManagement';
 export {
 	IWithAdsManagementOverviewEnhancedActions,
 	IWithAdsManagementOverviewEnhancedData,
 	WithAdsManagementOverview,
-} from './adsManagementStack/WithAdsManagementOverview';
+} from './ads/WithAdsManagementOverview';
 export {
 	IWithAdsStatisticsEnhancedActions,
 	IWithAdsStatisticsEnhancedData,
 	WithAdsStatistics,
-} from './adsManagementStack/WithAdsStatistics';
+} from './ads/WithAdsStatistics';
 export {
 	WithNewAdSlider,
 	IWithNewAdSliderEnhancedActions,
 	IWithNewAdSliderEnhancedData,
-} from './adsManagementStack/WithNewAdSlider';
+} from './ads/WithNewAdSlider';
 export {
 	WithManageCountries,
 	IWithManageCountriesEnhancedActions,
 	IWithManageCountriesEnhancedData,
-} from './adsManagementStack/WithManageCountries';
+} from './ads/WithManageCountries';
+
+export { WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData } from './intro/WithIntro';
 
 export {
 	WithComments,
 	IWithCommentsEnhancedData,
 	IWithCommentsEnhancedActions,
-} from './commentsStack/WithComments';
-
-export { WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData } from './intro/WithIntro';
-
+} from './home/WithComments';
 export {
 	WithCreateWallPost,
 	IWithCreateWallPostEnhancedActions,
 	IWithCreateWallPostEnhancedData,
-} from './mainStack/WithCreateWallPost';
-export {
-	IWithLikesEnhancedActions,
-	IWithLikesEnhancedData,
-	WithLikes,
-} from './mainStack/WithLikes';
+} from './home/WithCreateWallPost';
+export { IWithLikesEnhancedActions, IWithLikesEnhancedData, WithLikes } from './home/WithLikes';
 export {
 	WithMediaViewer,
 	IWithMediaViewerEnhancedData,
 	IWithMediaViewerEnhancedActions,
-} from './mainStack/WithMediaViewer';
-export {
-	WithPhoto,
-	IWithPhotoEnhancedActions,
-	IWithPhotoEnhancedData,
-} from './mainStack/WithPhoto';
+} from './home/WithMediaViewer';
+export { WithPhoto, IWithPhotoEnhancedActions, IWithPhotoEnhancedData } from './home/WithPhoto';
 export {
 	WithUserProfile,
 	IWithUserProfileEnhancedActions,
 	IWithUserProfileEnhancedData,
-} from './mainStack/WithUserProfile';
+} from './home/WithUserProfile';
 
 export {
 	WithMyProfile,
 	IWithMyProfileEnhancedActions,
 	IWithMyProfileEnhancedData,
-} from './mainTabNav/WithMyProfile';
+} from './tabs/WithMyProfile';
 export {
 	WithNotifications,
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
-} from './mainTabNav/WithNotifications';
-export {
-	WithSearch,
-	IWithSearchEnhancedActions,
-	IWithSearchEnhancedData,
-} from './mainTabNav/WithSearch';
+} from './tabs/WithNotifications';
+export { WithSearch, IWithSearchEnhancedActions, IWithSearchEnhancedData } from './tabs/WithSearch';
 export {
 	WithTrending,
 	IWithTrendingEnhancedData,
 	IWithTrendingEnhancedActions,
-} from './mainTabNav/WithTrending';
-export {
-	WithUserFeed,
-	IWithUserFeedEnhancedActions,
-	IWithUserFeedEnhancedData,
-} from './mainTabNav/WithUserFeed';
+} from './tabs/WithTrending';
+export { WithFeed, IWithFeedEnhancedActions, IWithFeedEnhancedData } from './tabs/WithFeed';
 
 export {
 	WithReferral,
@@ -156,27 +139,27 @@ export {
 	WithMaintenance,
 	IWithMaintenanceEnhancedData,
 	IWithMaintenanceEnhancedActions,
-} from './primaryNav/WithMaintenance';
+} from './maintenance/WithMaintenance';
 
 export {
 	WithWalletAccount,
 	IWithWalletAccountEnhancedActions,
 	IWithWalletAccountEnhancedData,
-} from './walletStack/WithWalletAccount';
+} from './wallet/WithWalletAccount';
 export {
 	WithWalletKeys,
 	IWithWalletKeysEnhancedActions,
 	IWithWalletKeysEnhancedData,
-} from './walletStack/WithWalletKeys';
+} from './wallet/WithWalletKeys';
 
 export {
 	WithRewards,
 	IWithRewardsEnhancedActions,
 	IWithRewardsEnhancedData,
-} from './walletStack/WithRewards';
+} from './wallet/WithRewards';
 
 export {
 	WithTransactionHistory,
 	IWithTransactionHistoryEnhancedActions,
 	IWithTransactionHistoryEnhancedData,
-} from './walletStack/WithTransactionHistory';
+} from './wallet/WithTransactionHistory';

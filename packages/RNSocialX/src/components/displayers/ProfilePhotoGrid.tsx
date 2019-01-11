@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { DataProvider } from 'recyclerlistview';
 
-import { IGridMedia, ITranslatedProps } from '../../types';
+import { IMedia, ITranslatedProps } from '../../types';
 import { MediaObjectViewer } from './MediaObjectViewer';
 import { PhotoGrid } from './PhotoGrid';
 
-import style, { USER_MEDIA_THUMB_SIZE } from './ProfilePhotoGrid.style';
+import styles from './ProfilePhotoGrid.style';
 
 interface IProfilePhotoGridProps extends ITranslatedProps {
 	dataProvider: DataProvider;
@@ -13,56 +13,60 @@ interface IProfilePhotoGridProps extends ITranslatedProps {
 		element: JSX.Element;
 		height: number;
 	};
-	disabled: boolean;
+	scrollEnabled?: boolean;
+	extendedState?: object;
 	onLoadMorePhotos: () => void;
 	onViewMedia: (index: number) => void;
 }
 
 interface IGridItemProps extends ITranslatedProps {
-	type: React.ReactText;
-	data: IGridMedia;
+	type: number | string;
+	data: IMedia;
+	index: number;
 	onViewMedia: (index: number) => void;
 }
 
-const GridItem: React.SFC<IGridItemProps> = ({ data, onViewMedia, getText }) => {
-	const styles =
-		(data.index! - 1) % 3 === 0
-			? [style.gridMediaThumb, style.centerGridItem]
-			: style.gridMediaThumb;
+const GridItem: React.SFC<IGridItemProps> = ({ data, index, onViewMedia, getText }) => {
+	const style = [styles.item];
+	if ((index + 1) % 3 === 0) {
+		style.push(styles.center);
+	}
+	if (index > 3) {
+		style.push(styles.border);
+	}
 
 	return (
 		<MediaObjectViewer
 			type={data.type}
 			hash={data.hash}
-			style={styles}
 			thumbOnly={true}
-			onPress={() => onViewMedia(data.index!)}
+			onPress={() => onViewMedia(index)}
 			getText={getText}
+			style={style}
 		/>
 	);
 };
 
 export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
-	onLoadMorePhotos,
 	dataProvider,
-	onViewMedia,
-	disabled,
 	header,
+	extendedState,
+	scrollEnabled = true,
+	onViewMedia,
+	onLoadMorePhotos,
 	getText,
 }) => (
 	<PhotoGrid
-		thumbWidth={USER_MEDIA_THUMB_SIZE}
-		thumbHeight={USER_MEDIA_THUMB_SIZE}
-		renderGridItem={(type: React.ReactText, data: IGridMedia) => (
-			<GridItem type={type} data={data} onViewMedia={onViewMedia} getText={getText} />
-		)}
-		onLoadMore={onLoadMorePhotos}
 		dataProvider={dataProvider}
 		header={header}
+		extendedState={extendedState}
 		scrollViewProps={{
-			bounces: true,
 			showsVerticalScrollIndicator: false,
-			scrollEnabled: !disabled,
+			scrollEnabled,
 		}}
+		renderGridItem={(type: number | string, data: IMedia, index: number) => (
+			<GridItem type={type} data={data} onViewMedia={onViewMedia} index={index} getText={getText} />
+		)}
+		onLoadMore={onLoadMorePhotos}
 	/>
 );

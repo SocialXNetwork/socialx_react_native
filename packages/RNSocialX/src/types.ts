@@ -143,7 +143,6 @@ export interface IOptimizedMedia extends PickerImage {
 export interface IGridMedia {
 	hash: string;
 	type: IMediaTypes;
-	index: number;
 }
 
 export interface IPostOwner {

@@ -249,7 +249,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 			for (const postId of postIds) {
 				if (updatedPostIds.indexOf(postId) === -1) {
-					updatedPostIds.push(postId);
+					updatedPostIds.unshift(postId);
 				}
 			}
 

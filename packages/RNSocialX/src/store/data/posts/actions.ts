@@ -252,7 +252,7 @@ export const getUserPosts = (alias: string): IThunk => async (dispatch, getState
 			}),
 		);
 		const posts = await context.dataApi.posts.getPostsByUser({ username: alias });
-		const postIds = posts.sort((x, y) => y.timestamp - x.timestamp).map((post) => post.postId);
+		const postIds = posts.sort((x, y) => x.timestamp - y.timestamp).map((post) => post.postId);
 
 		await dispatch(getProfilesByPosts(posts));
 		dispatch(syncGetUserPostsAction(posts));

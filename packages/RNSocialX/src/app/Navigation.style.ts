@@ -1,9 +1,8 @@
 import { Platform } from 'react-native';
-
 import { OS_TYPES } from '../environment/consts';
 import { Colors, Sizes } from '../environment/theme';
 
-const styles: any = {
+export default {
 	feed: {
 		activeTintColor: Colors.pink,
 		inactiveTintColor: Colors.background,
@@ -21,13 +20,11 @@ const styles: any = {
 			backgroundColor: Colors.white,
 		},
 	},
-	tabs: {
-		backgroundColor: Colors.alabaster,
-	},
 	chat: {
 		color: Colors.white,
 		fontSize: Sizes.smartHorizontalScale(25),
 	},
+	tabs: {
+		backgroundColor: Colors.alabaster,
+	},
 };
-
-export default styles;
