@@ -279,6 +279,19 @@ export default (context: IContext) => ({
 				}
 			});
 		}),
+	getProfileFriendsByAlias: ({ alias }: { alias: string }) =>
+		new Promise((resolve, reject) => {
+			getters.getProfileFriendsByAlias(context, { alias }, async (err, friends) => {
+				if (friends) {
+					const finalFriends = await Promise.all(
+						friends.map((friend) => getters.asyncFriendWithMutualStatus(context, friend)),
+					);
+					resolve(finalFriends);
+				} else {
+					resolve([]);
+				}
+			});
+		}),
 	searchByFullName: ({
 		term,
 		limit = 10,

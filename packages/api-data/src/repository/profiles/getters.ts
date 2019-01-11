@@ -316,10 +316,40 @@ export const getCurrentProfileFriends = async (
 						return callback(null, sanitizedFriendsArray);
 					}, 500);
 				},
-				{ wait: 10000, off: 1 },
+				{ wait: 300, off: 1 },
 			);
 		},
-		{ wait: 10000 },
+		{ wait: 1000 },
+	);
+};
+
+export const getProfileFriendsByAlias = async (
+	context: IContext,
+	{ alias }: { alias: string },
+	callback: IGunCallback<IProfileData[]>,
+) => {
+	profileHandles.privateUserFriendsByAlias(context, alias).once(
+		(data: any) => {
+			if (!data) {
+				return callback(null, []);
+			}
+
+			profileHandles.privateUserFriendsByAlias(context, alias).open(
+				(friendsDataCallback: IProfileCallbackData | any) => {
+					if (!Object.keys(friendsDataCallback).length) {
+						return callback(null, []);
+					}
+
+					const sanitizedFriendsArray = convertGunSetToArray(friendsDataCallback).filter(
+						(friend) => friend !== null && !!Object.keys(friend).length,
+					);
+
+					return callback(null, sanitizedFriendsArray);
+				},
+				{ wait: 300, off: 1 },
+			);
+		},
+		{ wait: 1000 },
 	);
 };
 
@@ -386,4 +416,5 @@ export default {
 	findFriendsSuggestions,
 	getProfileByUserObject,
 	asyncFriendWithMutualStatus,
+	getProfileFriendsByAlias,
 };
