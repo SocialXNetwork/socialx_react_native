@@ -316,7 +316,7 @@ export const getCurrentProfileFriends = async (
 						return callback(null, sanitizedFriendsArray);
 					}, 500);
 				},
-				{ wait: 300, off: 1 },
+				{ wait: 10000, off: 1 },
 			);
 		},
 		{ wait: 1000 },
@@ -346,7 +346,7 @@ export const getProfileFriendsByAlias = async (
 
 					return callback(null, sanitizedFriendsArray);
 				},
-				{ wait: 300, off: 1 },
+				{ wait: 10000, off: 1 },
 			);
 		},
 		{ wait: 1000 },
