@@ -10,14 +10,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
-			let profile = action.payload;
-
-			if (state.profiles[profile.alias].posts.length > 0) {
-				profile = {
-					...profile,
-					posts: [...state.profiles[profile.alias].posts],
-				};
-			}
+			const profile = action.payload;
 
 			return {
 				...state,
