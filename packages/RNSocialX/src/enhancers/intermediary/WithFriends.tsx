@@ -23,8 +23,8 @@ export interface IWithFriendsEnhancedData {
 }
 
 export interface IWithFriendsEnhancedActions {
-	onAcceptFriendRequest: (alias: string) => void;
-	onDeclineFriendRequest: (alias: string) => void;
+	onAcceptFriendRequest: (alias: string, id: string) => void;
+	onDeclineFriendRequest: (alias: string, id: string) => void;
 }
 
 interface IWithFriendstEnhancedProps {
@@ -199,26 +199,26 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		showOptionsMenu({ items });
 	};
 
-	private onAddFriendHandler = async (alias: string) => {
-		await this.actions.addFriend({ username: alias });
+	private onAddFriendHandler = async (username: string) => {
+		await this.actions.addFriend({ username });
 	};
 
-	private onRemoveFriendHandler = async (alias: string) => {
-		await this.actions.removeFriend({ username: alias });
+	private onRemoveFriendHandler = async (username: string) => {
+		await this.actions.removeFriend({ username });
 	};
 
-	private onUndoRequestHandler = async (alias: string) => {
-		await this.actions.undoRequest({ username: alias });
+	private onUndoRequestHandler = async (username: string) => {
+		await this.actions.undoRequest({ username });
 	};
 
-	private onAcceptFriendRequestHandler = async (username: string) => {
+	private onAcceptFriendRequestHandler = async (username: string, id: string) => {
 		this.setState((currentState) => ({
 			request: {
 				...currentState.request,
 				accepting: true,
 			},
 		}));
-		await this.actions.acceptFriend({ username });
+		await this.actions.acceptFriend({ username, id });
 		this.setState((currentState) => ({
 			request: {
 				...currentState.request,
@@ -227,14 +227,14 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		}));
 	};
 
-	private onDeclineFriendRequestHandler = async (username: string) => {
+	private onDeclineFriendRequestHandler = async (username: string, id: string) => {
 		this.setState((currentState) => ({
 			request: {
 				...currentState.request,
 				rejecting: true,
 			},
 		}));
-		await this.actions.rejectFriend({ username });
+		await this.actions.rejectFriend({ username, id });
 		this.setState((currentState) => ({
 			request: {
 				...currentState.request,

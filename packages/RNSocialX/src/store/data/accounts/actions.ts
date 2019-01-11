@@ -54,7 +54,7 @@ export const getCurrentAccount = (): IThunk => async (dispatch, getState, contex
 		const account = await dataApi.accounts.getCurrentAccount();
 		dispatch(syncGetCurrentAccountAction(account));
 		await dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
-		await dispatch(getCurrentProfile());
+		await dispatch(getCurrentProfile(true));
 		// if (bugsnag) {
 		// 	bugsnag.setUser(account.pub, account.alias, account.profile[account.alias].email);
 		// 	const accounts: any = { ...getState().data.accounts.accounts };

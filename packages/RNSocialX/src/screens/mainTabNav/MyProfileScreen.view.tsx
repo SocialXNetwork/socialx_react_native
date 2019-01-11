@@ -103,14 +103,14 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 		<View style={styles.container}>
 			<Header
 				title={getText('my.profile.screen.title')}
-				left={
-					<IconButton
-						iconSource={Icons.shareIconWhite}
-						iconType="image"
-						iconStyle={styles.icon}
-						onPress={onSharePress}
-					/>
-				}
+				// left={
+				// 	<IconButton
+				// 		iconSource={Icons.shareIconWhite}
+				// 		iconType="image"
+				// 		iconStyle={styles.icon}
+				// 		onPress={onSharePress}
+				// 	/>
+				// }
 				right={<OptionsMenuButton onPress={onShowOptionsMenu} />}
 			/>
 			<ScrollView

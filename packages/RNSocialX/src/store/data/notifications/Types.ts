@@ -24,6 +24,7 @@ export const enum ActionTypes {
 	GET_NOTIFICATIONS = 'data/notifications/GET_NOTIFICATIONS',
 	MARK_NOTIFICATIONS_AS_READ = 'data/notifications/MARK_NOTIFICATIONS_AS_READ',
 	HOOK_NOTIFICATIONS = 'data/notifications/HOOK_NOTIFICATIONS',
+	DELETE_NOTIFICATION = 'data/notifications/DELETE_NOTIFICATION',
 }
 
 export interface ICreateNotificationAction extends Action {
@@ -53,6 +54,13 @@ export interface IMarkNotificationsAsReadAction extends Action {
 	type: ActionTypes.MARK_NOTIFICATIONS_AS_READ;
 }
 
+export interface IDeleteNotificationAction extends Action {
+	type: ActionTypes.DELETE_NOTIFICATION;
+	payload: {
+		id: string;
+	};
+}
+
 interface IResetStoreAction {
 	type: 'RESET_STORE';
 }
@@ -63,4 +71,5 @@ export type IAction =
 	| IGetNotificationsAction
 	| ISyncNotificationsAction
 	| IHookNotificationsAction
-	| IMarkNotificationsAsReadAction;
+	| IMarkNotificationsAsReadAction
+	| IDeleteNotificationAction;

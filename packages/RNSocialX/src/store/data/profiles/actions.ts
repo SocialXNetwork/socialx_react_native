@@ -5,6 +5,7 @@ import uuid from 'uuid/v4';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { deleteNotification } from '../notifications';
 import { getUserPosts } from '../posts';
 import {
 	ActionTypes,
@@ -18,6 +19,7 @@ import {
 	IFriendInput,
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
+	IGetCurrentProfileInput,
 	IGetProfileByAliasAction,
 	IGetProfilesByPostsAction,
 	IProfile,
@@ -157,13 +159,13 @@ const getCurrentProfileAction: ActionCreator<IGetCurrentProfileAction> = () => (
 });
 
 const syncGetCurrentProfileAction: ActionCreator<ISyncGetCurrentProfileAction> = (
-	profile: IProfile,
+	input: IGetCurrentProfileInput,
 ) => ({
 	type: ActionTypes.SYNC_GET_CURRENT_PROFILE,
-	payload: profile,
+	payload: input,
 });
 
-export const getCurrentProfile = (initial: boolean = true): IThunk => async (
+export const getCurrentProfile = (initial: boolean = false): IThunk => async (
 	dispatch,
 	getState,
 	context,
@@ -183,7 +185,7 @@ export const getCurrentProfile = (initial: boolean = true): IThunk => async (
 			);
 
 			const profile = await context.dataApi.profiles.getCurrentProfile();
-			dispatch(syncGetCurrentProfileAction(profile));
+			dispatch(syncGetCurrentProfileAction({ profile, initial }));
 			await dispatch(getUserPosts(profile.alias));
 		} catch (e) {
 			console.log(e);
@@ -455,6 +457,7 @@ const syncAcceptFriendAction: ActionCreator<ISyncAcceptFriendAction> = (input: I
 export const acceptFriend = (input: IAliasInput): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuid();
 	const { alias: currentUserAlias } = getState().auth.database.gun!;
+	const {} = getState().data.notifications.all;
 
 	try {
 		dispatch(acceptFriendAction(input));
@@ -467,6 +470,7 @@ export const acceptFriend = (input: IAliasInput): IThunk => async (dispatch, get
 
 		await context.dataApi.profiles.acceptFriend(input);
 		dispatch(syncAcceptFriendAction({ currentUserAlias, alias: input.username }));
+		dispatch(deleteNotification(input.id));
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -503,6 +507,7 @@ export const rejectFriend = (input: IAliasInput): IThunk => async (dispatch, get
 
 		await context.dataApi.profiles.rejectFriend(input);
 		dispatch(syncRejectFriendAction(input.username));
+		dispatch(deleteNotification(input.id));
 	} catch (e) {
 		await dispatch(
 			setError({

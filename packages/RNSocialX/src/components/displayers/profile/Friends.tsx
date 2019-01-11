@@ -23,11 +23,25 @@ export const Component: React.SFC<IProps> = ({ friends, alias, tabs, onViewFrien
 		style={[styles.container, { borderBottomWidth: tabs ? 0 : 1 }]}
 		onPress={() => onViewFriends(alias)}
 	>
-		<View style={styles.friends}>
-			{friends.map((friend, index) => (
-				<Avatar alias={friend} index={index} key={friend} />
-			))}
-		</View>
+		{friends.length === 1 && (
+			<View style={styles.friends}>
+				<Avatar alias={friends[0]} />
+			</View>
+		)}
+		{friends.length === 2 && (
+			<View style={[styles.friends, styles.multiple]}>
+				{friends.map((friend, index) => (
+					<Avatar alias={friend} index={index} spacey={true} key={friend} />
+				))}
+			</View>
+		)}
+		{friends.length === 3 && (
+			<View style={[styles.friends, styles.multiple]}>
+				{friends.map((friend, index) => (
+					<Avatar alias={friend} index={index} key={friend} />
+				))}
+			</View>
+		)}
 		<Text style={styles.text}>{getText('user.profile.screen.friends')}</Text>
 	</TouchableOpacity>
 );

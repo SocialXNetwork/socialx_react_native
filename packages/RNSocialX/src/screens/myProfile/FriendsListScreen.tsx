@@ -45,14 +45,6 @@ class Screen extends React.Component<IProps, IState> {
 		DEBOUNCE_TIME,
 	);
 
-	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
-		return (
-			this.props.aliases !== nextProps.aliases ||
-			this.state.aliases !== nextState.aliases ||
-			this.state.term !== nextState.term
-		);
-	}
-
 	public render() {
 		return (
 			<FriendsListScreenView

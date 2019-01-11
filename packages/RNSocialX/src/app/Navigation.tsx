@@ -1,6 +1,7 @@
 import { Root } from 'native-base';
 import React from 'react';
 import { Animated, Easing } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
 	createBottomTabNavigator,
 	createMaterialTopTabNavigator,
@@ -22,7 +23,7 @@ import {
 import { TABS } from '../environment/consts';
 import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
-import styles, { tabStyles } from './Navigation.style';
+import styles from './Navigation.style';
 
 import {
 	AdsManagementEditAdScreen,
@@ -133,7 +134,7 @@ const TabbedFeedNavigator = createMaterialTopTabNavigator(
 	{
 		animationEnabled: true,
 		swipeEnabled: true,
-		tabBarOptions: styles,
+		tabBarOptions: styles.feed,
 	},
 );
 
@@ -142,7 +143,7 @@ const UserFeedStackNavigator = createStackNavigator(
 		TabbedFeedScreen: {
 			screen: TabbedFeedNavigator,
 			navigationOptions: () => ({
-				header: <Header logo={true} />,
+				header: <Header logo={true} right={<Icon name="ios-chatboxes" style={styles.chat} />} />,
 			}),
 		},
 	},
@@ -200,7 +201,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 			},
 			tabBarOptions: {
 				showLabel: false,
-				style: tabStyles,
+				style: styles.tabs,
 			},
 		}),
 	},
