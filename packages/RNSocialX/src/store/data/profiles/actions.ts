@@ -19,6 +19,7 @@ import {
 	IGetCurrentFriendsAction,
 	IGetCurrentProfileAction,
 	IGetProfileByAliasAction,
+	IGetProfileFriendsByAlias,
 	IGetProfilesByPostsAction,
 	IProfile,
 	IRejectFriendAction,
@@ -37,6 +38,7 @@ import {
 	ISyncGetCurrentFriendsAction,
 	ISyncGetCurrentProfileAction,
 	ISyncGetProfileByAliasAction,
+	ISyncGetProfileFriendsByAlias,
 	ISyncGetProfilesByPostsAction,
 	ISyncRejectFriendAction,
 	ISyncRemoveFriendAction,
@@ -197,6 +199,55 @@ export const getCurrentProfile = (initial: boolean = true): IThunk => async (
 		} finally {
 			await dispatch(endActivity({ uuid: activityId }));
 		}
+	}
+};
+
+const getProfileFriendsAction: ActionCreator<IGetProfileFriendsByAlias> = ({
+	alias,
+}: {
+	alias: string;
+}) => ({
+	type: ActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS,
+	payload: { alias },
+});
+
+const syncGetProfileFriendsAction: ActionCreator<ISyncGetProfileFriendsByAlias> = (data: {
+	friends: IProfile[];
+	alias: string;
+}) => ({
+	type: ActionTypes.SYNC_GET_PROFILE_FRIENDS_BY_ALIAS,
+	payload: data,
+});
+
+export const getProfileFriendsByAlias = ({ alias }: { alias: string }): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
+	const activityId = uuid();
+
+	try {
+		dispatch(getProfileFriendsAction({ alias }));
+
+		await dispatch(
+			beginActivity({
+				uuid: activityId,
+				type: ActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS,
+			}),
+		);
+
+		const friends = await context.dataApi.profiles.getProfileFriendsByAlias({ alias });
+		dispatch(syncGetProfileFriendsAction({ friends, alias }));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.GET_CURRENT_FRIENDS,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	} finally {
+		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
 

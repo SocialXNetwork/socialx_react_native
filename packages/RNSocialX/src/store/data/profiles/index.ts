@@ -40,4 +40,5 @@ export {
 	clearSearchResults,
 	searchForProfilesLocally,
 	syncExternalProfiles,
+	getProfileFriendsByAlias,
 } from './actions';

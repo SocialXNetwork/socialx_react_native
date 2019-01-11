@@ -101,6 +101,23 @@ export const enum ActionTypes {
 	SEARCH_FOR_PROFILES_LOCALLY = 'data/profiles/SEARCH_FOR_PROFILES_LOCALLY',
 	CLEAR_SEARCH_RESULTS = 'data/profiles/CLEAR_SEARCH_RESULTS',
 	SYNC_EXTERNAL_PROFILES = '/data/profiles/SYNC_EXTERNAL_PROFILES',
+	GET_PROFILE_FRIENDS_BY_ALIAS = '/data/profiles/GET_PROFILE_FRIENDS_BY_ALIAS',
+	SYNC_GET_PROFILE_FRIENDS_BY_ALIAS = '/data/profiles/SYNC_GET_PROFILE_FRIENDS_BY_ALIAS',
+}
+
+export interface IGetProfileFriendsByAlias extends Action {
+	type: ActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS;
+	payload: {
+		alias: string;
+	};
+}
+
+export interface ISyncGetProfileFriendsByAlias extends Action {
+	type: ActionTypes.SYNC_GET_PROFILE_FRIENDS_BY_ALIAS;
+	payload: {
+		friends: IProfile[];
+		alias: string;
+	};
 }
 
 export interface IGetProfilesByPostsAction extends Action {
@@ -260,4 +277,6 @@ export type IAction =
 	| ISyncSearchForProfilesAction
 	| ISearchForProfilesLocallyAction
 	| IClearSearchResultsAction
+	| IGetProfileFriendsByAlias
+	| ISyncGetProfileFriendsByAlias
 	| ISyncExternalProfilesAction;

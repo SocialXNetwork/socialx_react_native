@@ -21,6 +21,42 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS: {
+			return state;
+		}
+
+		case ActionTypes.SYNC_GET_PROFILE_FRIENDS_BY_ALIAS: {
+			const { friends, alias } = action.payload;
+
+			const profiles = { ...state.profiles };
+			const friendIds = [];
+
+			for (const friend of friends) {
+				if (!profiles[friend.alias]) {
+					profiles[friend.alias] = {
+						...friend,
+						posts:
+							profiles[friend.alias] && profiles[friend.alias].posts
+								? profiles[friend.alias].posts
+								: [],
+					};
+				}
+
+				if (friendIds.indexOf(friend.alias) === -1) {
+					friendIds.push(friend.alias);
+				}
+			}
+
+			return {
+				...state,
+				profiles,
+				friends: {
+					...state.friends,
+					[alias]: friendIds,
+				},
+			};
+		}
+
 		case ActionTypes.GET_PROFILES_BY_POSTS: {
 			return state;
 		}

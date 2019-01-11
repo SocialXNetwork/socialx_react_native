@@ -10,6 +10,7 @@ import {
 	getCurrentFriends,
 	getCurrentProfile,
 	getProfileByAlias,
+	getProfileFriendsByAlias,
 	IAliasInput,
 	IFriends,
 	IProfiles,
@@ -49,6 +50,7 @@ interface IActionProps {
 	searchForProfiles: (input: ISearchInput) => void;
 	searchForProfilesLocally: (input: ISearchWithAliasInput) => void;
 	clearSearchResults: () => void;
+	getProfileFriendsByAlias: (input: { alias: string }) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -100,6 +102,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	searchForProfilesLocally: (input: ISearchWithAliasInput) =>
 		dispatch(searchForProfilesLocally(input)),
 	clearSearchResults: () => dispatch(clearSearchResults()),
+	getProfileFriendsByAlias: (input: { alias: string }) => dispatch(getProfileFriendsByAlias(input)),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(
