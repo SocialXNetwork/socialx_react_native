@@ -3,6 +3,8 @@ import {
 	Animated,
 	FlatList,
 	LayoutChangeEvent,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
 	Platform,
 	RefreshControl,
 	ScrollView,
@@ -38,7 +40,7 @@ interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 	containerHeight: number;
 	onRefresh: () => void;
 	onProfilePhotoPress: () => void;
-	onLoadMorePhotos: () => void;
+	onLoadMorePhotos: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 	onViewMedia: (index: number) => void;
 	onEditProfile: () => void;
 	onSharePress: () => void;
@@ -186,7 +188,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 									height: 1,
 								}}
 								scrollEnabled={false}
-								onLoadMorePhotos={onLoadMorePhotos}
 								onViewMedia={onViewMedia}
 								getText={getText}
 							/>

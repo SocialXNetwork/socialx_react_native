@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash';
 import * as React from 'react';
-import { Animated } from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 import uuid from 'uuid/v4';
@@ -20,7 +20,8 @@ import { IMedia, INavigationProps, MediaTypeImage } from '../../types';
 import { MyProfileScreenView } from './MyProfileScreen.view';
 
 import { SCREEN_WIDTH } from './MyProfileScreen.style';
-const GRID_PAGE_SIZE = 20;
+const GRID_PAGE_SIZE = 21;
+const END_REACHED_OFFSET = 500;
 
 type IProps = INavigationProps &
 	IWithMyProfileEnhancedData &
@@ -58,7 +59,7 @@ class Screen extends React.Component<IProps, IState> {
 
 	// public componentDidMount() {
 	// 	const media = this.state.data.media.slice();
-	// 	for (let i = 0; i < 50; i++) {
+	// 	for (let i = 0; i < 100; i++) {
 	// 		media.push({
 	// 			size: 13855,
 	// 			hash: 'QmPKTuijqJFycUhk6Jca9heeJ5pe9M9R8rtbujBHumyQ6p',
@@ -79,6 +80,7 @@ class Screen extends React.Component<IProps, IState> {
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
 			this.state !== nextState ||
+			this.state.dataProvider.getSize() !== nextState.dataProvider.getSize() ||
 			this.props.hasFriends !== nextProps.hasFriends ||
 			this.props.loadingProfile !== nextProps.loadingProfile ||
 			this.props.loadingPosts !== nextProps.loadingPosts ||
@@ -87,14 +89,14 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate(prevProps: IProps, prevState: IState) {
-		if (prevProps.currentUser.media.length !== this.props.currentUser.media.length) {
-			this.onLoadMorePhotosHandler();
+		const loaded = this.state.dataProvider.getSize();
+		if (loaded === 0) {
+			this.initializeGrid();
 		}
+
 		// console.log(this.lastLoadedIndex);
-		// if (prevProps.currentUser.media.length !== this.props.currentUser.media.length) {
-		// }
-		// if (this.state.data.media.length > prevState.data.media.length) {
-		// 	this.onLoadMorePhotosHandler();
+		// if (this.state.data.media.length !== 0 && prevState.data.media.length === 0) {
+		// 	this.initializeGrid();
 		// }
 	}
 
@@ -179,8 +181,7 @@ class Screen extends React.Component<IProps, IState> {
 		showOptionsMenu(menuItems);
 	};
 
-	// Improve this when we have lazy loading
-	private onLoadMorePhotosHandler = () => {
+	private initializeGrid = () => {
 		const {
 			dataProvider,
 			// data: { media },
@@ -192,12 +193,39 @@ class Screen extends React.Component<IProps, IState> {
 			this.setState({
 				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
-		} else if (this.lastLoadedIndex < media.length) {
-			const loadedSize = dataProvider.getSize();
+		} else {
+			const newMedia = media.slice(0, media.length);
+			// const newMedia = media.slice(0, GRID_PAGE_SIZE).map((m, index) => ({
+			// 	...m,
+			// 	url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
+			// }));
+			const allMedia = [...headerElement, ...newMedia];
+
+			this.setState({
+				dataProvider: dataProvider.cloneWithRows(allMedia),
+			});
+			this.lastLoadedIndex = allMedia.length - 1;
+		}
+	};
+
+	// Improve this when we have lazy loading
+	private onLoadMorePhotosHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+		if (event.nativeEvent.contentOffset.y >= this.state.containerHeight - END_REACHED_OFFSET) {
+			console.log('trigger');
+			const {
+				dataProvider,
+				// data: { media },
+			} = this.state;
+			const { media } = this.props.currentUser;
+
 			const endIndex = this.lastLoadedIndex + GRID_PAGE_SIZE;
-			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
-			console.log(loadedMedia);
+			const loadedMedia = dataProvider.getAllData();
+			// console.log(loadedMedia);
 			const newMedia = media.slice(this.lastLoadedIndex, endIndex);
+			// const newMedia = media.slice(this.lastLoadedIndex, endIndex).map((m, index) => ({
+			// 	...m,
+			// 	url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
+			// }));
 
 			const allMedia = [...loadedMedia, ...newMedia];
 

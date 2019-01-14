@@ -15,7 +15,7 @@ interface IProfilePhotoGridProps extends ITranslatedProps {
 	};
 	scrollEnabled?: boolean;
 	extendedState?: object;
-	onLoadMorePhotos: () => void;
+	onLoadMorePhotos?: () => void;
 	onViewMedia: (index: number) => void;
 }
 
@@ -38,6 +38,7 @@ const GridItem: React.SFC<IGridItemProps> = ({ data, index, onViewMedia, getText
 	return (
 		<MediaObjectViewer
 			type={data.type}
+			// path={data.url}
 			hash={data.hash}
 			thumbOnly={true}
 			onPress={() => onViewMedia(index)}
@@ -53,7 +54,7 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 	extendedState,
 	scrollEnabled = true,
 	onViewMedia,
-	onLoadMorePhotos,
+	onLoadMorePhotos = () => undefined,
 	getText,
 }) => (
 	<PhotoGrid

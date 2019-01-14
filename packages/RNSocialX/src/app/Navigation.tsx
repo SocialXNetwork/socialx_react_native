@@ -148,14 +148,14 @@ const FeedStack = createStackNavigator(
 				header: (
 					<Header
 						logo={true}
-						right={
-							<IconButton
-								source="ios-chatboxes"
-								type="io"
-								iconStyle={styles.chat}
-								onPress={() => props.navigation.navigate(SCREENS.Chat)}
-							/>
-						}
+						// right={
+						// 	<IconButton
+						// 		source="ios-chatboxes"
+						// 		type="io"
+						// 		iconStyle={styles.chat}
+						// 		onPress={() => props.navigation.navigate(SCREENS.Chat)}
+						// 	/>
+						// }
 					/>
 				),
 			}),

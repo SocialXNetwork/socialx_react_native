@@ -11,13 +11,17 @@ interface ITabs {
 }
 
 export const Tabs: React.SFC<ITabs> = ({ onIconPress, activeTab }) => {
+	const containerStyle =
+		activeTab === PROFILE_TAB_ICON_TYPES.LIST
+			? [styles.container, styles.border]
+			: styles.container;
 	const listStyle =
 		activeTab === PROFILE_TAB_ICON_TYPES.LIST ? [styles.icon, styles.active] : styles.icon;
 	const gridStyle =
 		activeTab === PROFILE_TAB_ICON_TYPES.GRID ? [styles.icon, styles.active] : styles.icon;
 
 	return (
-		<View style={styles.container}>
+		<View style={containerStyle}>
 			<TouchableOpacity onPress={() => onIconPress(PROFILE_TAB_ICON_TYPES.LIST)}>
 				<Icon name="md-list-box" style={listStyle} />
 			</TouchableOpacity>
