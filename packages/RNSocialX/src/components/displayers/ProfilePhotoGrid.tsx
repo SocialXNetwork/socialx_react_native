@@ -38,8 +38,8 @@ const GridItem: React.SFC<IGridItemProps> = ({ data, index, onViewMedia, getText
 	return (
 		<MediaObjectViewer
 			type={data.type}
-			// path={data.url}
-			hash={data.hash}
+			path={data.url}
+			// hash={data.hash}
 			thumbOnly={true}
 			onPress={() => onViewMedia(index)}
 			getText={getText}

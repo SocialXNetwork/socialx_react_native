@@ -5,7 +5,7 @@ import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview
 import { Sizes } from '../../environment/theme';
 import { IMedia } from '../../types';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 enum ViewTypes {
 	ITEM_LAYOUT = 0,
@@ -96,10 +96,11 @@ export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 		rowRenderer={(type, data, index) =>
 			renderGridItemOrHeader(type, data, index, header, renderGridItem)
 		}
-		onEndReached={onLoadMore}
-		onEndReachedThreshold={100} // must be > 0 for Android
-		onScroll={onScroll}
+		canChangeSize={true}
 		extendedState={extendedState}
 		scrollViewProps={scrollViewProps}
+		onEndReached={onLoadMore}
+		onEndReachedThreshold={100}
+		onScroll={onScroll}
 	/>
 );

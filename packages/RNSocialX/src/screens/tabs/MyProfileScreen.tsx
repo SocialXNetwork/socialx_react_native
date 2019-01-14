@@ -57,25 +57,25 @@ class Screen extends React.Component<IProps, IState> {
 		};
 	}
 
-	// public componentDidMount() {
-	// 	const media = this.state.data.media.slice();
-	// 	for (let i = 0; i < 100; i++) {
-	// 		media.push({
-	// 			size: 13855,
-	// 			hash: 'QmPKTuijqJFycUhk6Jca9heeJ5pe9M9R8rtbujBHumyQ6p',
-	// 			type: {
-	// 				key: 'image',
-	// 				name: 'Photo',
-	// 				category: 'Photography',
-	// 			},
-	// 			extension: 'image/png',
-	// 		});
-	// 	}
+	public componentDidMount() {
+		const media = this.state.data.media.slice();
+		for (let i = 0; i < 1000; i++) {
+			media.push({
+				size: 13855,
+				hash: 'QmPKTuijqJFycUhk6Jca9heeJ5pe9M9R8rtbujBHumyQ6p',
+				type: {
+					key: 'image',
+					name: 'Photo',
+					category: 'Photography',
+				},
+				extension: 'image/png',
+			});
+		}
 
-	// 	this.setState({
-	// 		data: { media },
-	// 	});
-	// }
+		this.setState({
+			data: { media },
+		});
+	}
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
@@ -89,15 +89,15 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate(prevProps: IProps, prevState: IState) {
-		const loaded = this.state.dataProvider.getSize();
-		if (loaded === 0) {
-			this.initializeGrid();
-		}
-
-		// console.log(this.lastLoadedIndex);
-		// if (this.state.data.media.length !== 0 && prevState.data.media.length === 0) {
+		// const loaded = this.state.dataProvider.getSize();
+		// if (loaded === 0) {
 		// 	this.initializeGrid();
 		// }
+
+		console.log(this.lastLoadedIndex);
+		if (this.state.data.media.length !== 0 && prevState.data.media.length === 0) {
+			this.initializeGrid();
+		}
 	}
 
 	public render() {
@@ -184,9 +184,9 @@ class Screen extends React.Component<IProps, IState> {
 	private initializeGrid = () => {
 		const {
 			dataProvider,
-			// data: { media },
+			data: { media },
 		} = this.state;
-		const { media } = this.props.currentUser;
+		// const { media } = this.props.currentUser;
 		const headerElement = [{ index: uuid() }];
 
 		if (media.length === 0) {
@@ -194,11 +194,11 @@ class Screen extends React.Component<IProps, IState> {
 				dataProvider: dataProvider.cloneWithRows(headerElement),
 			});
 		} else {
-			const newMedia = media.slice(0, media.length);
-			// const newMedia = media.slice(0, GRID_PAGE_SIZE).map((m, index) => ({
-			// 	...m,
-			// 	url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
-			// }));
+			// const newMedia = media.slice(0, media.length);
+			const newMedia = media.slice(0, GRID_PAGE_SIZE).map((m, index) => ({
+				...m,
+				url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
+			}));
 			const allMedia = [...headerElement, ...newMedia];
 
 			this.setState({
@@ -214,18 +214,18 @@ class Screen extends React.Component<IProps, IState> {
 			console.log('trigger');
 			const {
 				dataProvider,
-				// data: { media },
+				data: { media },
 			} = this.state;
-			const { media } = this.props.currentUser;
+			// const { media } = this.props.currentUser;
 
 			const endIndex = this.lastLoadedIndex + GRID_PAGE_SIZE;
 			const loadedMedia = dataProvider.getAllData();
 			// console.log(loadedMedia);
-			const newMedia = media.slice(this.lastLoadedIndex, endIndex);
-			// const newMedia = media.slice(this.lastLoadedIndex, endIndex).map((m, index) => ({
-			// 	...m,
-			// 	url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
-			// }));
+			// const newMedia = media.slice(this.lastLoadedIndex, endIndex);
+			const newMedia = media.slice(this.lastLoadedIndex, endIndex).map((m, index) => ({
+				...m,
+				url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
+			}));
 
 			const allMedia = [...loadedMedia, ...newMedia];
 

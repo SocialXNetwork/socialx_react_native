@@ -36,6 +36,14 @@ const styles: any = {
 		minHeight: 1,
 		width: '100%',
 	},
+	spacer: {
+		backgroundColor: Colors.white,
+		height: SCREEN_HEIGHT,
+		position: 'absolute',
+		bottom: -SCREEN_HEIGHT,
+		left: 0,
+		right: 0,
+	},
 };
 
 export default StyleSheet.create(styles);

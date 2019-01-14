@@ -26,7 +26,7 @@ import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { ICurrentUser, INavigationProps, ITranslatedProps } from '../../types';
 
 import { Colors, Icons } from '../../environment/theme';
-import styles, { SCREEN_HEIGHT } from './MyProfileScreen.style';
+import styles from './MyProfileScreen.style';
 
 interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
 	currentUser: ICurrentUser;
@@ -119,8 +119,8 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					/>
 				}
 				scrollEnabled={!loadingPosts}
-				// scrollEventThrottle={50}
-				// onScroll={onLoadMorePhotos}
+				scrollEventThrottle={50}
+				onScroll={onLoadMorePhotos}
 			>
 				<Profile
 					alias={alias}
@@ -159,18 +159,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							scrollEnabled={false}
 							ListEmptyComponent={<NoContent posts={true} getText={getText} />}
 						/>
-						{Platform.OS === OS_TYPES.IOS && (
-							<View
-								style={{
-									backgroundColor: Colors.white,
-									height: SCREEN_HEIGHT / 2,
-									position: 'absolute',
-									bottom: -SCREEN_HEIGHT / 2,
-									left: 0,
-									right: 0,
-								}}
-							/>
-						)}
+						{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 					</Animated.View>
 					<Animated.View
 						onLayout={(event: LayoutChangeEvent) => {
@@ -181,30 +170,21 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						style={[styles.gridContainer, { transform: [{ translateX: gridTranslate }] }]}
 					>
 						{hasPhotos ? (
-							<ProfilePhotoGrid
-								dataProvider={dataProvider}
-								header={{
-									element: <View style={{ width: 1, height: 1 }} />,
-									height: 1,
-								}}
-								scrollEnabled={false}
-								onViewMedia={onViewMedia}
-								getText={getText}
-							/>
+							<View style={{ flex: 1 }}>
+								<ProfilePhotoGrid
+									dataProvider={dataProvider}
+									header={{
+										element: <View style={{ width: 1, height: 1 }} />,
+										height: 1,
+									}}
+									scrollEnabled={false}
+									onViewMedia={onViewMedia}
+									getText={getText}
+								/>
+								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
+							</View>
 						) : (
 							<NoContent gallery={true} getText={getText} />
-						)}
-						{Platform.OS === OS_TYPES.IOS && (
-							<View
-								style={{
-									backgroundColor: Colors.white,
-									height: SCREEN_HEIGHT / 2,
-									position: 'absolute',
-									bottom: -SCREEN_HEIGHT / 2,
-									left: 0,
-									right: 0,
-								}}
-							/>
 						)}
 					</Animated.View>
 				</View>
