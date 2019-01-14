@@ -75,7 +75,7 @@ class Screen extends React.Component<IProps, IState> {
 		if (!this.state.error) {
 			await loadFeed();
 			this.switchActivityIndicator(false);
-			resetNavigationToRoute(NAVIGATION.Main, navigation);
+			resetNavigationToRoute(NAVIGATION.Home, navigation);
 		}
 
 		this.switchActivityIndicator(false);

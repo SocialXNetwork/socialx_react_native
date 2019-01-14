@@ -3,8 +3,9 @@ import { Dimensions } from 'react-native';
 import { DataProvider, LayoutProvider, RecyclerListView } from 'recyclerlistview';
 
 import { Sizes } from '../../environment/theme';
+import { IMedia } from '../../types';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 enum ViewTypes {
 	ITEM_LAYOUT = 0,
@@ -17,21 +18,21 @@ interface IHeaderType {
 }
 
 interface IPhotoGridProps {
-	onLoadMore: () => void;
-	thumbWidth: number;
-	thumbHeight: number;
-	renderGridItem: (type: React.ReactText, data: any) => JSX.Element;
 	dataProvider: DataProvider;
 	scrollViewProps: object;
 	header: IHeaderType;
+	itemWidth?: number;
+	itemHeight?: number;
 	extendedState?: object;
+	renderGridItem: (type: number | string, data: IMedia, index: number) => JSX.Element;
+	onLoadMore: () => void;
 	onScroll?: (rawEvent: any, offsetX: number, offsetY: number) => void;
 }
 
 let lastKnownGridHeight: number = 0;
 let gridProviderInstance: LayoutProvider | null = null;
 
-const getGridProvider = (thumbWidth: number, thumbHeight: number, header: IHeaderType) => {
+const getGridProvider = (itemWidth: number, itemHeight: number, header: IHeaderType) => {
 	lastKnownGridHeight = header && header.height;
 	if (!gridProviderInstance) {
 		gridProviderInstance = new LayoutProvider(
@@ -41,13 +42,13 @@ const getGridProvider = (thumbWidth: number, thumbHeight: number, header: IHeade
 				}
 				return ViewTypes.ITEM_LAYOUT;
 			},
-			(type: React.ReactText, dim: any) => {
+			(type: React.ReactText, dim: { width: number; height: number }) => {
 				if (type === ViewTypes.HEADER_LAYOUT) {
 					dim.width = SCREEN_WIDTH;
 					dim.height = lastKnownGridHeight;
 				} else {
-					dim.width = thumbWidth;
-					dim.height = thumbHeight;
+					dim.width = itemWidth;
+					dim.height = itemHeight;
 				}
 			},
 		);
@@ -64,45 +65,42 @@ const getGridProvider = (thumbWidth: number, thumbHeight: number, header: IHeade
 };
 
 const renderGridItemOrHeader = (
-	type: React.ReactText,
-	data: any,
-	renderGridItem: (type: React.ReactText, data: any) => JSX.Element,
+	type: number | string,
+	data: IMedia,
+	index: number,
 	header: IHeaderType,
+	renderGridItem: (type: number | string, data: IMedia, index: number) => JSX.Element,
 ) => {
 	if (type === ViewTypes.HEADER_LAYOUT && header) {
 		return header.element;
 	}
-	return renderGridItem(type, data);
+
+	return renderGridItem(type, data, index);
 };
 
 export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 	dataProvider,
+	extendedState,
+	scrollViewProps,
+	itemWidth = Sizes.getThumbSize(),
+	itemHeight = Sizes.getThumbSize(),
+	header,
 	renderGridItem,
 	onLoadMore,
 	onScroll = () => undefined,
-	extendedState = {},
-	scrollViewProps = {},
-	thumbHeight = Sizes.getThumbSize(),
-	thumbWidth = Sizes.getThumbSize(),
-	header,
 }) => (
 	<RecyclerListView
 		renderAheadOffset={1500}
-		layoutProvider={getGridProvider(thumbWidth, thumbHeight, header)}
+		layoutProvider={getGridProvider(itemWidth, itemHeight, header)}
 		dataProvider={dataProvider}
-		rowRenderer={(...args) => renderGridItemOrHeader(args[0], args[1], renderGridItem, header)}
-		onEndReached={onLoadMore}
-		onEndReachedThreshold={100} // must be > 0 for Android
-		onScroll={onScroll}
+		rowRenderer={(type, data, index) =>
+			renderGridItemOrHeader(type, data, index, header, renderGridItem)
+		}
+		canChangeSize={true}
 		extendedState={extendedState}
 		scrollViewProps={scrollViewProps}
+		onEndReached={onLoadMore}
+		onEndReachedThreshold={100}
+		onScroll={onScroll}
 	/>
 );
-
-/**
- * TODO list:
- * 1. @Ionut: later revisit props 'extendedState' and 'onScroll' used in MediaLicenceScreenComponent
- * 2. @Serkan: any better options for a singleton with gridProviderInstance?.
- * 		This might even have some hidden issues, like gridProviderInstance show get initialized
- * 		once for each PhotoGrid instance. Should we make this a component and use componentDidMount?
- */

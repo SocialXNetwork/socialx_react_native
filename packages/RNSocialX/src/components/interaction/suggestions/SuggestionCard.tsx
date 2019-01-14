@@ -26,12 +26,7 @@ export const SuggestionCard: React.SFC<ISuggestionCardProps> = ({ item, deleteCa
 			}}
 		/>
 		<View style={styles.iconContainer}>
-			<IconButton
-				iconSource="ios-close"
-				iconType="io"
-				onPress={deleteCard}
-				iconStyle={styles.icon}
-			/>
+			<IconButton source="ios-close" type="io" onPress={deleteCard} iconStyle={styles.icon} />
 		</View>
 	</View>
 );

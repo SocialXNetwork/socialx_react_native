@@ -14,10 +14,13 @@ const styles: any = {
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 	friends: {
 		flexDirection: 'row',
-		transform: [{ translateX: 15 }],
+	},
+	multiple: {
+		transform: [{ translateX: Sizes.smartHorizontalScale(15) }],
 	},
 };
 

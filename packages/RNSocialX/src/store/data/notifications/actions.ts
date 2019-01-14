@@ -9,6 +9,7 @@ import { syncExternalProfiles } from '../profiles';
 import {
 	ActionTypes,
 	ICreateNotificationAction,
+	IDeleteNotificationAction,
 	IGetNotificationsAction,
 	IHookNotificationsAction,
 	IMarkNotificationsAsReadAction,
@@ -148,3 +149,13 @@ export const markNotificationsAsRead = (): IThunk => async (dispatch, getState, 
 		await dispatch(endActivity({ uuid: activityId }));
 	}
 };
+
+/**
+ * 	Deletes a notification from the store
+ *  @param id the id of the notification
+ */
+
+export const deleteNotification: ActionCreator<IDeleteNotificationAction> = (id: string) => ({
+	type: ActionTypes.DELETE_NOTIFICATION,
+	payload: { id },
+});

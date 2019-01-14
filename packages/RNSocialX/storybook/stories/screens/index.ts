@@ -1,21 +1,20 @@
-import './adsManagementStack/AdsManagementOverview';
-import './adsManagementStack/AdsManagementScreen';
-import './adsManagementStack/NewAdConfigBudgetScreen';
-
-import './commentsStack/CommentsScreen';
+import './ads/AdsManagementOverview';
+import './ads/AdsManagementScreen';
+import './ads/NewAdConfigBudgetScreen';
 
 import './intro/IntroScreen';
 
-import './mainStack/CreateWallPostScreen';
-import './mainStack/MediaViewerScreen';
-import './mainStack/PhotoScreen';
-import './mainStack/UserProfileScreen';
+import './home/CommentsScreen';
+import './home/CreateWallPostScreen';
+import './home/MediaViewerScreen';
+import './home/PhotoScreen';
+import './home/UserProfileScreen';
 
-import './mainTabNav/MyProfileScreen';
-import './mainTabNav/NotificationsScreen';
-import './mainTabNav/SearchScreen';
-import './mainTabNav/TrendingScreen';
-import './mainTabNav/UserFeedScreen';
+import './tabs/FeedScreen';
+import './tabs/MyProfileScreen';
+import './tabs/NotificationsScreen';
+import './tabs/SearchScreen';
+import './tabs/TrendingScreen';
 
 import './myProfile/ReferralScreen';
 import './myProfile/SendCoinsScreen';
@@ -30,7 +29,7 @@ import './preAuth/RegisterScreen';
 import './preAuth/ResetPasswordScreen';
 import './preAuth/TermsAndConditionsScreen';
 
-import './primaryNav/MaintenanceScreen';
+import './maintenance/MaintenanceScreen';
 
-import './walletStack/WalletAccountScreen';
-import './walletStack/WalletKeysScreen';
+import './wallet/WalletAccountScreen';
+import './wallet/WalletKeysScreen';

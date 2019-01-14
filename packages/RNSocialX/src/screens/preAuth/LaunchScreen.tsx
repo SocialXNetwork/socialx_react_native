@@ -41,12 +41,12 @@ class Screen extends React.Component<ILaunchScreenProps> {
 						await loadFeed();
 
 						if (__DEV__) {
-							resetNavigationToRoute(NAVIGATION.Main, navigation);
+							resetNavigationToRoute(NAVIGATION.Home, navigation);
 						} else {
 							if (applicationInMaintenanceMode) {
 								resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
 							} else {
-								resetNavigationToRoute(NAVIGATION.Main, navigation);
+								resetNavigationToRoute(NAVIGATION.Home, navigation);
 							}
 						}
 					}, 200);

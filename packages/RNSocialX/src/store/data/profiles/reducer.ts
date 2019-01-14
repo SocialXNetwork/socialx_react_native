@@ -10,7 +10,15 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
-			const profile = action.payload;
+			const { initial } = action.payload;
+			let { profile } = action.payload;
+
+			if (!initial && state.profiles[profile.alias].posts.length > 0) {
+				profile = {
+					...profile,
+					posts: [...state.profiles[profile.alias].posts],
+				};
+			}
 
 			return {
 				...state,
@@ -277,7 +285,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 
 			for (const postId of postIds) {
 				if (updatedPostIds.indexOf(postId) === -1) {
-					updatedPostIds.push(postId);
+					updatedPostIds.unshift(postId);
 				}
 			}
 

@@ -14,7 +14,9 @@ import { Friends, Statistics, Tabs } from './';
 
 import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/intermediary';
 
-import styles, { buttonWidth, colors } from './Profile.style';
+import { Colors, Sizes } from '../../../environment/theme';
+import styles from './Profile.style';
+export const BUTTON_WIDTH = Sizes.smartHorizontalScale(150);
 
 interface IProfileProps extends ITranslatedProps {
 	alias: string;
@@ -89,45 +91,45 @@ const Component: React.SFC<IProps> = ({
 			{!isCurrentUser &&
 				(status === FRIEND_TYPES.NOT_FRIEND ? (
 					<PrimaryButton
-						width={buttonWidth}
+						width={BUTTON_WIDTH}
 						label={relationship.action}
 						loading={relationship.activity !== null && relationship.activity.payload === alias}
 						size={ButtonSizes.Small}
-						borderColor={colors.pink}
-						textColor={colors.white}
+						borderColor={Colors.pink}
+						textColor={Colors.white}
 						containerStyle={styles.primary}
 						onPress={() => relationship.onStatusAction(alias)}
 					/>
 				) : (
 					<PrimaryButton
-						width={buttonWidth}
+						width={BUTTON_WIDTH}
 						label={relationship.action}
 						loading={relationship.activity !== null && relationship.activity.payload === alias}
 						size={ButtonSizes.Small}
-						borderColor={colors.pink}
-						textColor={colors.pink}
+						borderColor={Colors.pink}
+						textColor={Colors.pink}
 						containerStyle={styles.secondary}
 						onPress={() => relationship.onStatusAction(alias)}
 					/>
 				))}
 			{isCurrentUser && (
 				<PrimaryButton
-					width={buttonWidth}
+					width={BUTTON_WIDTH}
 					label={getText('button.edit.profile')}
 					size={ButtonSizes.Small}
-					borderColor={colors.pink}
-					textColor={colors.pink}
+					borderColor={Colors.pink}
+					textColor={Colors.pink}
 					containerStyle={styles.secondary}
 					onPress={onEditProfile}
 				/>
 			)}
 			{false && (
 				<PrimaryButton
-					width={buttonWidth}
+					width={BUTTON_WIDTH}
 					label={getText('button.message')}
 					size={ButtonSizes.Small}
-					borderColor={colors.pink}
-					textColor={colors.white}
+					borderColor={Colors.pink}
+					textColor={Colors.white}
 					containerStyle={styles.primary}
 					onPress={onSendMessage}
 				/>

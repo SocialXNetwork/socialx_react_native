@@ -85,7 +85,7 @@ const Component: React.SFC<IProps> = ({
 							borderColor={colors.pink}
 							textColor={colors.white}
 							containerStyle={styles.button}
-							onPress={() => onAcceptFriendRequest(alias!)}
+							onPress={() => onAcceptFriendRequest(alias, id)}
 						/>
 						<PrimaryButton
 							autoWidth={true}
@@ -95,7 +95,7 @@ const Component: React.SFC<IProps> = ({
 							borderColor={colors.pink}
 							textColor={colors.pink}
 							containerStyle={styles.ghostButton}
-							onPress={() => onDeclineFriendRequest(alias!)}
+							onPress={() => onDeclineFriendRequest(alias, id)}
 						/>
 					</View>
 				)}

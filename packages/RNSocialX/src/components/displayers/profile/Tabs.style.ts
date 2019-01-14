@@ -8,9 +8,12 @@ const styles: any = {
 		justifyContent: 'space-evenly',
 		borderTopWidth: 1,
 		borderBottomWidth: 1,
-		borderColor: Colors.gallery,
+		borderTopColor: Colors.gallery,
+		borderBottomColor: Colors.transparent,
 		paddingVertical: Sizes.smartVerticalScale(5),
-		marginBottom: Sizes.smartVerticalScale(15),
+	},
+	border: {
+		borderBottomColor: Colors.gallery,
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(30),

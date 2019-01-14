@@ -6,6 +6,7 @@ import {
 	createMaterialTopTabNavigator,
 	createStackNavigator,
 	NavigationSceneRendererProps,
+	NavigationScreenProps,
 	TransitionConfig,
 } from 'react-navigation';
 
@@ -14,27 +15,29 @@ import {
 	Alert,
 	Confirmation,
 	Header,
+	IconButton,
 	OfflineOverlay,
 	OptionsMenu,
 	TabIcon,
 	TransparentOverlay,
 } from '../components';
-import { TABS } from '../environment/consts';
+import { SCREENS, TABS } from '../environment/consts';
 import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
 
-import styles, { tabStyles } from './Navigation.style';
+import styles from './Navigation.style';
 
 import {
 	AdsManagementEditAdScreen,
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
+	ChatScreen,
 	CommentsScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,
+	FriendsFeed,
 	FriendsListScreen,
-	FriendsUserFeed,
-	GlobalUserFeed,
+	GlobalFeed,
 	IntroScreen,
 	LaunchScreen,
 	LikesScreen,
@@ -112,37 +115,49 @@ const fadeIn = (): TransitionConfig => ({
 	},
 });
 
-const MyProfileStackNavigator = createStackNavigator(
+const MyProfileStack = createStackNavigator(
 	{
-		MyProfileScreen: { screen: MyProfileScreen },
-		SettingsScreen: { screen: SettingsScreen },
-		NodesScreen: { screen: NodesScreen },
-		SocialXAccountScreen: { screen: SocialXAccountScreen },
-		ReferralScreen: { screen: ReferralScreen },
-		WalletActivityScreen: { screen: WalletActivityScreen },
-		TransactionHistoryScreen: { screen: TransactionHistoryScreen },
+		MyProfile: { screen: MyProfileScreen },
+		Settings: { screen: SettingsScreen },
+		Nodes: { screen: NodesScreen },
+		SocialXAccount: { screen: SocialXAccountScreen },
+		Referral: { screen: ReferralScreen },
+		WalletActivity: { screen: WalletActivityScreen },
+		TransactionHistory: { screen: TransactionHistoryScreen },
 	},
 	defaultConfig,
 );
 
-const TabbedFeedNavigator = createMaterialTopTabNavigator(
+const FeedTabs = createMaterialTopTabNavigator(
 	{
-		Global: GlobalUserFeed,
-		Friends: FriendsUserFeed,
+		Global: GlobalFeed,
+		Friends: FriendsFeed,
 	},
 	{
 		animationEnabled: true,
 		swipeEnabled: true,
-		tabBarOptions: styles,
+		tabBarOptions: styles.feed,
 	},
 );
 
-const UserFeedStackNavigator = createStackNavigator(
+const FeedStack = createStackNavigator(
 	{
-		TabbedFeedScreen: {
-			screen: TabbedFeedNavigator,
-			navigationOptions: () => ({
-				header: <Header logo={true} />,
+		Feed: {
+			screen: FeedTabs,
+			navigationOptions: (props: NavigationScreenProps) => ({
+				header: (
+					<Header
+						logo={true}
+						// right={
+						// 	<IconButton
+						// 		source="ios-chatboxes"
+						// 		type="io"
+						// 		iconStyle={styles.chat}
+						// 		onPress={() => props.navigation.navigate(SCREENS.Chat)}
+						// 	/>
+						// }
+					/>
+				),
 			}),
 		},
 	},
@@ -153,12 +168,12 @@ const UserFeedStackNavigator = createStackNavigator(
 	},
 );
 
-const UserSearchStackNavigator = createStackNavigator(
+const SearchStack = createStackNavigator(
 	{
-		// TrendingScreen: {
+		// Trending: {
 		// 	screen: TrendingScreen,
 		// },
-		SearchScreen: {
+		Search: {
 			screen: SearchScreen,
 		},
 	},
@@ -171,13 +186,13 @@ const UserSearchStackNavigator = createStackNavigator(
 	},
 );
 
-const MainScreenTabNavigation = createBottomTabNavigator(
+const HomeTabs = createBottomTabNavigator(
 	{
-		UserFeedTab: UserFeedStackNavigator,
-		SearchTab: UserSearchStackNavigator,
+		FeedTab: FeedStack,
+		SearchTab: SearchStack,
 		PhotoTab: () => null,
 		NotificationsTab: NotificationsScreen,
-		MyProfileTab: MyProfileStackNavigator,
+		ProfileTab: MyProfileStack,
 	},
 	{
 		navigationOptions: (props) => ({
@@ -200,7 +215,7 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 			},
 			tabBarOptions: {
 				showLabel: false,
-				style: tabStyles,
+				style: styles.tabs,
 			},
 		}),
 	},
@@ -208,8 +223,8 @@ const MainScreenTabNavigation = createBottomTabNavigator(
 
 const UserProfileStack = createStackNavigator(
 	{
-		UserProfileScreen: { screen: UserProfileScreen },
-		MediaViewerScreen: { screen: MediaViewerScreen },
+		UserProfile: { screen: UserProfileScreen },
+		MediaViewer: { screen: MediaViewerScreen },
 	},
 	{
 		headerMode: 'none',
@@ -217,12 +232,12 @@ const UserProfileStack = createStackNavigator(
 	},
 );
 
-const MainScreensWithModal = createStackNavigator(
+const HomeWithModalsStack = createStackNavigator(
 	{
-		MainScreenTabNavigation: { screen: MainScreenTabNavigation },
-		CreateWallPostScreen: { screen: CreateWallPostScreen },
-		PhotoScreen: { screen: PhotoScreen },
-		MediaViewerScreen: { screen: MediaViewerScreen },
+		HomeTabs: { screen: HomeTabs },
+		CreateWallPost: { screen: CreateWallPostScreen },
+		Photo: { screen: PhotoScreen },
+		MediaViewer: { screen: MediaViewerScreen },
 	},
 	{
 		headerMode: 'none',
@@ -230,56 +245,57 @@ const MainScreensWithModal = createStackNavigator(
 	},
 );
 
-const MainScreens = createStackNavigator(
+const HomeStack = createStackNavigator(
 	{
-		MainScreensWithModal: {
-			screen: MainScreensWithModal,
+		Home: {
+			screen: HomeWithModalsStack,
 		},
-		UserProfileScreen: UserProfileStack,
-		CommentsScreen: { screen: CommentsScreen },
-		LikesScreen: { screen: LikesScreen },
-		FriendsListScreen: { screen: FriendsListScreen },
+		UserProfile: UserProfileStack,
+		Comments: { screen: CommentsScreen },
+		Likes: { screen: LikesScreen },
+		FriendsList: { screen: FriendsListScreen },
+		Chat: { screen: ChatScreen },
 	},
 	{
 		headerMode: 'none',
 	},
 );
 
-const PreAuthNavigator = createStackNavigator(
+const PreAuthStack = createStackNavigator(
 	{
-		LaunchScreen: { screen: LaunchScreen },
-		LoginScreen: { screen: LoginScreen },
-		RegisterScreen: { screen: RegisterScreen },
-		ForgotPasswordScreen: { screen: ForgotPasswordScreen },
-		ResetPasswordScreen: { screen: ResetPasswordScreen },
-		TermsAndConditionsScreen: { screen: TermsAndConditionsScreen },
+		Launch: { screen: LaunchScreen },
+		Login: { screen: LoginScreen },
+		Register: { screen: RegisterScreen },
+		ForgotPassword: { screen: ForgotPasswordScreen },
+		ResetPassword: { screen: ResetPasswordScreen },
+		TermsAndConditions: { screen: TermsAndConditionsScreen },
 	},
 	defaultConfig,
 );
 
 const HomelessNavigator = createStackNavigator(
 	{
-		RewardsScreen: { screen: RewardsScreen },
-		AdsStatisticsScreen: { screen: AdsStatisticsScreen },
-		TransactionHistoryScreen: { screen: TransactionHistoryScreen },
-		WalletActivityScreen: { screen: WalletActivityScreen },
-		NewAdSliderScreen: { screen: NewAdSliderScreen },
-		AdsManagementOverviewScreen: { screen: AdsManagementOverviewScreen },
-		ManageCountriesScreen: { screen: ManageCountriesScreen },
-		AdsManagementScreen: { screen: AdsManagementScreen },
-		AdsManagementEditAdScreen: { screen: AdsManagementEditAdScreen },
+		Rewards: { screen: RewardsScreen },
+		AdsStatistics: { screen: AdsStatisticsScreen },
+		TransactionHistory: { screen: TransactionHistoryScreen },
+		WalletActivity: { screen: WalletActivityScreen },
+		NewAdSlider: { screen: NewAdSliderScreen },
+		AdsManagementOverview: { screen: AdsManagementOverviewScreen },
+		ManageCountries: { screen: ManageCountriesScreen },
+		AdsManagement: { screen: AdsManagementScreen },
+		AdsManagementEditAd: { screen: AdsManagementEditAdScreen },
 	},
 	{
 		headerMode: 'none',
 	},
 );
 
-const AppNavigation = createStackNavigator(
+const App = createStackNavigator(
 	{
 		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
-		PreAuth: { screen: PreAuthNavigator },
+		PreAuth: { screen: PreAuthStack },
 		Intro: { screen: IntroScreen },
-		Main: { screen: MainScreens },
+		Home: { screen: HomeStack },
 		Maintenance: { screen: MaintenanceScreen },
 	},
 	{
@@ -297,7 +313,7 @@ const Navigation = () => (
 							{({ showOptionsMenu }) => (
 								<WithNotifications>
 									{({ unread }) => (
-										<AppNavigation
+										<App
 											screenProps={{
 												notifications: unread.length,
 												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),

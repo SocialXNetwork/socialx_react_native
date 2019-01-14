@@ -15,23 +15,25 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import styles from './IconButton.style';
 
 interface IIconButtonProps {
+	source: ImageRequireSource | string; // use string for an Ionicon or FontAwesome source
+	type: 'io' | 'fa' | 'image';
 	label?: string;
-	iconSource: ImageRequireSource | string; // use string for an Ionicon or FontAwesome source
-	iconType: 'io' | 'fa' | 'image';
-	onPress: () => void;
-	iconStyle: StyleProp<ImageStyle>;
+	imageStyle?: StyleProp<ImageStyle>;
+	iconStyle?: StyleProp<TextStyle>;
 	textStyle?: StyleProp<TextStyle>;
 	containerStyle?: StyleProp<ViewStyle>;
+	onPress: () => void;
 }
 
 export const IconButton: React.SFC<IIconButtonProps> = ({
-	iconStyle,
+	imageStyle = {},
+	iconStyle = {},
 	textStyle = {},
 	containerStyle = {},
 	label,
-	iconSource,
+	source,
 	onPress,
-	iconType,
+	type,
 }) => {
 	if (label) {
 		return (
@@ -40,11 +42,11 @@ export const IconButton: React.SFC<IIconButtonProps> = ({
 				disabled={!onPress}
 				onPress={onPress}
 			>
-				{iconType === 'image' && (
-					<Image source={iconSource as ImageRequireSource} style={iconStyle} resizeMode="contain" />
+				{type === 'image' && (
+					<Image source={source as ImageRequireSource} style={imageStyle} resizeMode="contain" />
 				)}
-				{iconType === 'io' && <Ionicon name={iconSource as string} style={iconStyle} />}
-				{iconType === 'fa' && <FontAwesome name={iconSource as string} style={iconStyle} />}
+				{type === 'io' && <Ionicon name={source as string} style={iconStyle} />}
+				{type === 'fa' && <FontAwesome name={source as string} style={iconStyle} />}
 				<Text style={[styles.label, textStyle]}>{label}</Text>
 			</TouchableOpacity>
 		);
@@ -52,11 +54,11 @@ export const IconButton: React.SFC<IIconButtonProps> = ({
 
 	return (
 		<TouchableOpacity style={containerStyle} disabled={!onPress} onPress={onPress}>
-			{iconType === 'image' && (
-				<Image source={iconSource as ImageRequireSource} style={iconStyle} resizeMode="contain" />
+			{type === 'image' && (
+				<Image source={source as ImageRequireSource} style={imageStyle} resizeMode="contain" />
 			)}
-			{iconType === 'io' && <Ionicon name={iconSource as string} style={iconStyle} />}
-			{iconType === 'fa' && <FontAwesome name={iconSource as string} style={iconStyle} />}
+			{type === 'io' && <Ionicon name={source as string} style={iconStyle} />}
+			{type === 'fa' && <FontAwesome name={source as string} style={iconStyle} />}
 		</TouchableOpacity>
 	);
 };

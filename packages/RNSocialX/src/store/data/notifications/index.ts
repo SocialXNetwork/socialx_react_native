@@ -16,4 +16,5 @@ export {
 	getNotifications,
 	hookNotifications,
 	markNotificationsAsRead,
+	deleteNotification,
 } from './actions';

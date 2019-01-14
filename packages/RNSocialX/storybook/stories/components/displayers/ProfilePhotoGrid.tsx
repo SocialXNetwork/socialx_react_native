@@ -28,7 +28,6 @@ class GithubUsersPhotoGrid extends React.Component<any, { dataProvider: DataProv
 						element: <View style={{ width: 1, height: 1 }} />,
 						height: 1,
 					}}
-					disabled={false}
 					getText={getTextMock}
 				/>
 			</View>

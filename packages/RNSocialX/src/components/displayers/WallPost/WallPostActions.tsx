@@ -26,12 +26,7 @@ export const WallPostActions: React.SFC<IWallPostActions> = ({
 		return (
 			<View style={styles.container}>
 				<LikeAnimatingButton likedByCurrentUser={likedByCurrentUser} onLikePost={onLikePost} />
-				<IconButton
-					iconSource="comment-o"
-					iconType="fa"
-					onPress={onCommentPress}
-					iconStyle={styles.icon}
-				/>
+				<IconButton source="comment-o" type="fa" onPress={onCommentPress} iconStyle={styles.icon} />
 			</View>
 		);
 	}

@@ -77,6 +77,20 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
+		case ActionTypes.DELETE_NOTIFICATION: {
+			const { id } = action.payload;
+			const {
+				[id]: {},
+				...all
+			} = state.all;
+
+			return {
+				all,
+				ids: state.ids.filter((notif) => notif !== id),
+				unread: state.unread.filter((notif) => notif !== id),
+			};
+		}
+
 		case 'RESET_STORE': {
 			return initialState;
 		}

@@ -12,8 +12,8 @@ storiesOf('Components/interaction', module)
 		<IconButton
 			label="Button (Surprising, I know)"
 			onPress={action('Pressed!')}
-			iconType="io"
-			iconSource="ios-add-circle"
+			type="io"
+			source="ios-add-circle"
 			iconStyle={{ fontSize: 25, color: Colors.pink }}
 			textStyle={{ color: Colors.pink }}
 			containerStyle={{

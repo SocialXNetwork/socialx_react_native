@@ -57,6 +57,7 @@ export interface ISearchWithProfilesInput {
 
 export interface IAliasInput {
 	username: string;
+	id?: string;
 }
 
 export interface IFriendInput {
@@ -71,6 +72,11 @@ export interface IUpdateProfileInput {
 	miningEnabled: boolean;
 	shareDataEnabled: boolean;
 	avatar: string;
+}
+
+export interface IGetCurrentProfileInput {
+	profile: IFriendData;
+	initial: boolean;
 }
 
 export const enum ActionTypes {
@@ -146,7 +152,7 @@ export interface IGetCurrentProfileAction extends Action {
 
 export interface ISyncGetCurrentProfileAction extends Action {
 	type: ActionTypes.SYNC_GET_CURRENT_PROFILE;
-	payload: IFriendData;
+	payload: IGetCurrentProfileInput;
 }
 
 export interface IGetCurrentFriendsAction extends Action {

@@ -1,25 +1,26 @@
-export { AdsManagementEditAdScreen } from './adsManagementStack/AdsManagementEditAdScreen';
-export { AdsManagementOverviewScreen } from './adsManagementStack/AdsManagementOverviewScreen';
-export { AdsManagementScreen } from './adsManagementStack/AdsManagementScreen';
-export { AdsStatisticsScreen } from './adsManagementStack/AdsStatisticsScreen';
-export { NewAdSliderScreen } from './adsManagementStack/NewAdSliderScreen';
-export { ManageCountriesScreen } from './adsManagementStack/ManageCountriesScreen';
+export { AdsManagementEditAdScreen } from './ads/AdsManagementEditAdScreen';
+export { AdsManagementOverviewScreen } from './ads/AdsManagementOverviewScreen';
+export { AdsManagementScreen } from './ads/AdsManagementScreen';
+export { AdsStatisticsScreen } from './ads/AdsStatisticsScreen';
+export { NewAdSliderScreen } from './ads/NewAdSliderScreen';
+export { ManageCountriesScreen } from './ads/ManageCountriesScreen';
 
-export { CommentsScreen } from './commentsStack/CommentsScreen';
+export { ChatScreen } from './chat/ChatScreen';
 
 export { IntroScreen } from './intro/IntroScreen';
 
-export { CreateWallPostScreen } from './mainStack/CreateWallPostScreen';
-export { LikesScreen } from './mainStack/LikesScreen';
-export { MediaViewerScreen } from './mainStack/MediaViewerScreen';
-export { PhotoScreen } from './mainStack/PhotoScreen';
-export { UserProfileScreen } from './mainStack/UserProfileScreen';
+export { CreateWallPostScreen } from './home/CreateWallPostScreen';
+export { LikesScreen } from './home/LikesScreen';
+export { CommentsScreen } from './home/CommentsScreen';
+export { MediaViewerScreen } from './home/MediaViewerScreen';
+export { PhotoScreen } from './home/PhotoScreen';
+export { UserProfileScreen } from './home/UserProfileScreen';
 
-export { MyProfileScreen } from './mainTabNav/MyProfileScreen';
-export { TrendingScreen, SearchScreen } from './mainTabNav/SearchScreen';
-export { FriendsUserFeed } from './mainTabNav/UserFeedScreen/FriendsUserFeed';
-export { GlobalUserFeed } from './mainTabNav/UserFeedScreen/GlobalUserFeed';
-export { NotificationsScreen } from './mainTabNav/NotificationsScreen';
+export { MyProfileScreen } from './tabs/MyProfileScreen';
+export { TrendingScreen, SearchScreen } from './tabs/SearchScreen';
+export { NotificationsScreen } from './tabs/NotificationsScreen';
+export { FriendsFeed } from './tabs/FeedScreen/FriendsFeed';
+export { GlobalFeed } from './tabs/FeedScreen/GlobalFeed';
 
 export { ReferralScreen } from './myProfile/ReferralScreen';
 export { SettingsScreen } from './myProfile/SettingsScreen';
@@ -35,9 +36,9 @@ export { RegisterScreen } from './preAuth/RegisterScreen';
 export { ResetPasswordScreen } from './preAuth/ResetPasswordScreen';
 export { TermsAndConditionsScreen } from './preAuth/TermsAndConditionsScreen';
 
-export { MaintenanceScreen } from './primaryNav/MaintenanceScreen';
+export { MaintenanceScreen } from './maintenance/MaintenanceScreen';
 
-export { WalletAccountScreen } from './walletStack/WalletAccount';
-export { WalletKeysScreen } from './walletStack/WalletKeys';
-export { RewardsScreen } from './walletStack/RewardsScreen';
-export { TransactionHistoryScreen } from './walletStack/TransactionHistoryScreen';
+export { WalletAccountScreen } from './wallet/WalletAccount';
+export { WalletKeysScreen } from './wallet/WalletKeys';
+export { RewardsScreen } from './wallet/RewardsScreen';
+export { TransactionHistoryScreen } from './wallet/TransactionHistoryScreen';
