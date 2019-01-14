@@ -16,7 +16,7 @@ import {
 } from '../../enhancers/screens';
 
 import { NAVIGATION, PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
-import { IMedia, INavigationProps, MediaTypeImage } from '../../types';
+import { INavigationProps, MediaTypeImage } from '../../types';
 import { MyProfileScreenView } from './MyProfileScreen.view';
 
 import { SCREEN_WIDTH } from './MyProfileScreen.style';
@@ -29,7 +29,6 @@ type IProps = INavigationProps &
 	IWithNavigationHandlersEnhancedActions;
 
 interface IState {
-	data: { media: IMedia[] };
 	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
@@ -38,49 +37,27 @@ interface IState {
 }
 
 class Screen extends React.Component<IProps, IState> {
-	private readonly dataProvider: DataProvider;
+	public state = {
+		dataProvider: new DataProvider((r1, r2) => {
+			return r1 !== r2;
+		}),
+		listTranslate: new Animated.Value(0),
+		gridTranslate: new Animated.Value(SCREEN_WIDTH),
+		activeTab: PROFILE_TAB_ICON_TYPES.LIST,
+		containerHeight: 0,
+	};
 	private lastLoadedIndex: number = 0;
 
-	constructor(props: IProps) {
-		super(props);
-		this.dataProvider = new DataProvider((r1, r2) => {
-			return r1 !== r2;
-		});
-
-		this.state = {
-			data: { media: [] },
-			dataProvider: this.dataProvider,
-			listTranslate: new Animated.Value(0),
-			gridTranslate: new Animated.Value(SCREEN_WIDTH),
-			activeTab: PROFILE_TAB_ICON_TYPES.LIST,
-			containerHeight: 0,
-		};
-	}
-
 	public componentDidMount() {
-		const media = this.state.data.media.slice();
-		for (let i = 0; i < 1000; i++) {
-			media.push({
-				size: 13855,
-				hash: 'QmPKTuijqJFycUhk6Jca9heeJ5pe9M9R8rtbujBHumyQ6p',
-				type: {
-					key: 'image',
-					name: 'Photo',
-					category: 'Photography',
-				},
-				extension: 'image/png',
-			});
-		}
-
-		this.setState({
-			data: { media },
-		});
+		this.loadPhotos();
 	}
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
-			this.state !== nextState ||
 			this.state.dataProvider.getSize() !== nextState.dataProvider.getSize() ||
+			this.state.dataProvider.getAllData() !== nextState.dataProvider.getAllData() ||
+			this.state.activeTab !== nextState.activeTab ||
+			this.state.containerHeight !== nextState.containerHeight ||
 			this.props.hasFriends !== nextProps.hasFriends ||
 			this.props.loadingProfile !== nextProps.loadingProfile ||
 			this.props.loadingPosts !== nextProps.loadingPosts ||
@@ -88,15 +65,12 @@ class Screen extends React.Component<IProps, IState> {
 		);
 	}
 
-	public componentDidUpdate(prevProps: IProps, prevState: IState) {
-		// const loaded = this.state.dataProvider.getSize();
-		// if (loaded === 0) {
-		// 	this.initializeGrid();
-		// }
+	public componentDidUpdate(prevProps: IProps) {
+		// console.log('cdu');
 
-		console.log(this.lastLoadedIndex);
-		if (this.state.data.media.length !== 0 && prevState.data.media.length === 0) {
-			this.initializeGrid();
+		if (prevProps.currentUser.media.length !== this.props.currentUser.media.length) {
+			this.refreshGrid();
+			// console.log(this.props.currentUser.media);
 		}
 	}
 
@@ -110,7 +84,7 @@ class Screen extends React.Component<IProps, IState> {
 			onViewFriends,
 			getText,
 		} = this.props;
-		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
+		const { dataProvider, activeTab, listTranslate, gridTranslate, containerHeight } = this.state;
 
 		return (
 			<MyProfileScreenView
@@ -181,58 +155,13 @@ class Screen extends React.Component<IProps, IState> {
 		showOptionsMenu(menuItems);
 	};
 
-	private initializeGrid = () => {
-		const {
-			dataProvider,
-			data: { media },
-		} = this.state;
-		// const { media } = this.props.currentUser;
-		const headerElement = [{ index: uuid() }];
-
-		if (media.length === 0) {
-			this.setState({
-				dataProvider: dataProvider.cloneWithRows(headerElement),
-			});
-		} else {
-			// const newMedia = media.slice(0, media.length);
-			const newMedia = media.slice(0, GRID_PAGE_SIZE).map((m, index) => ({
-				...m,
-				url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
-			}));
-			const allMedia = [...headerElement, ...newMedia];
-
-			this.setState({
-				dataProvider: dataProvider.cloneWithRows(allMedia),
-			});
-			this.lastLoadedIndex = allMedia.length - 1;
-		}
-	};
-
-	// Improve this when we have lazy loading
 	private onLoadMorePhotosHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-		if (event.nativeEvent.contentOffset.y >= this.state.containerHeight - END_REACHED_OFFSET) {
-			console.log('trigger');
-			const {
-				dataProvider,
-				data: { media },
-			} = this.state;
-			// const { media } = this.props.currentUser;
-
-			const endIndex = this.lastLoadedIndex + GRID_PAGE_SIZE;
-			const loadedMedia = dataProvider.getAllData();
-			// console.log(loadedMedia);
-			// const newMedia = media.slice(this.lastLoadedIndex, endIndex);
-			const newMedia = media.slice(this.lastLoadedIndex, endIndex).map((m, index) => ({
-				...m,
-				url: 'https://avatars2.githubusercontent.com/u/' + (this.lastLoadedIndex + index),
-			}));
-
-			const allMedia = [...loadedMedia, ...newMedia];
-
-			this.setState({
-				dataProvider: dataProvider.cloneWithRows(allMedia),
-			});
-			this.lastLoadedIndex = allMedia.length - 1;
+		if (
+			event.nativeEvent.contentOffset.y >= this.state.containerHeight - END_REACHED_OFFSET &&
+			this.state.activeTab === PROFILE_TAB_ICON_TYPES.GRID &&
+			this.lastLoadedIndex < this.props.currentUser.media.length
+		) {
+			this.loadPhotos();
 		}
 	};
 
@@ -308,6 +237,44 @@ class Screen extends React.Component<IProps, IState> {
 
 	private onSharePressHandler = () => {
 		this.props.navigation.navigate(SCREENS.Referral);
+	};
+
+	private loadPhotos = () => {
+		// console.log('load');
+		const { dataProvider } = this.state;
+		const { media } = this.props.currentUser;
+		const headerElement = [{ index: uuid() }];
+
+		if (media.length === 0) {
+			this.setState({
+				dataProvider: dataProvider.cloneWithRows(headerElement),
+			});
+		} else if (this.lastLoadedIndex < media.length) {
+			const loadedSize = dataProvider.getSize();
+			const endIndex = this.lastLoadedIndex + GRID_PAGE_SIZE;
+
+			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
+			const newMedia = media.slice(this.lastLoadedIndex, endIndex);
+			const allMedia = [...loadedMedia, ...newMedia];
+
+			this.setState({
+				dataProvider: dataProvider.cloneWithRows(allMedia),
+			});
+			this.lastLoadedIndex = allMedia.length - 1;
+		}
+	};
+
+	private refreshGrid = () => {
+		// console.log('refresh');
+		const { dataProvider } = this.state;
+		const { media } = this.props.currentUser;
+		const headerElement = [{ index: uuid() }];
+
+		const allMedia = [...headerElement, ...media];
+
+		this.setState({
+			dataProvider: dataProvider.cloneWithRows(allMedia),
+		});
 	};
 }
 

@@ -80,8 +80,8 @@ const renderGridItemOrHeader = (
 
 export const PhotoGrid: React.SFC<IPhotoGridProps> = ({
 	dataProvider,
-	extendedState = {},
-	scrollViewProps = {},
+	extendedState,
+	scrollViewProps,
 	itemWidth = Sizes.getThumbSize(),
 	itemHeight = Sizes.getThumbSize(),
 	header,
