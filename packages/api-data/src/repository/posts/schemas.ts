@@ -51,6 +51,10 @@ export const postData = yup
 						.trim()
 						.required(),
 					size: yup.number().required(),
+					dimensions: yup.object().shape({
+						height: yup.number(),
+						width: yup.number(),
+					}),
 				})
 				.required(),
 		),
