@@ -375,7 +375,12 @@ export const createPost = (post: IPost & { media: IOptimizedMedia[] }): IThunk =
 				type: {
 					key: media[index].type.indexOf('image') < 0 ? 'video' : 'image',
 					name: media[index].type.indexOf('image') < 0 ? 'Video' : 'Photo',
+					// todo: do we need this? maybe a trained network can identify this
 					category: media[index].type.indexOf('image') < 0 ? 'Videos' : 'Photography',
+				},
+				dimensions: {
+					width: media[index].width,
+					height: media[index].height,
 				},
 			}));
 

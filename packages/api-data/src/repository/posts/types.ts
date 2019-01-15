@@ -12,6 +12,10 @@ export interface IMedia {
 	type: IMediaTypes;
 	extension: string;
 	size: number;
+	dimensions: {
+		width: number;
+		height: number;
+	};
 }
 
 export interface ILoadMorePostsInput {

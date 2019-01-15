@@ -74,6 +74,15 @@ export const createPost = (
 	const postPath = (privatePost ? privatePath : publicPath) + `.${postId}`;
 
 	const errPrefix = 'failed to create post';
+
+	// creates this out of the array
+	/**
+	 * {
+	 * 	0: {},
+	 * 	1: {},
+	 * 	2: {},
+	 * }
+	 */
 	const mediaSetData = media
 		? media.reduce((res, item, i) => {
 				res = {
