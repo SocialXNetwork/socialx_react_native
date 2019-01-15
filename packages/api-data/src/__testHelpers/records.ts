@@ -39,6 +39,10 @@ const getPost = (): ICreatePostInput => ({
 			},
 			extension: '123',
 			size: 123,
+			dimensions: {
+				width: 1,
+				height: 1,
+			},
 		},
 	],
 	privatePost: false,
