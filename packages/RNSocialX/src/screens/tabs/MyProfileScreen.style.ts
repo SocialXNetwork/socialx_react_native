@@ -39,8 +39,8 @@ const styles: any = {
 	spacer: {
 		backgroundColor: Colors.white,
 		height: SCREEN_HEIGHT,
-		position: 'absolute',
 		bottom: -SCREEN_HEIGHT,
+		position: 'absolute',
 		left: 0,
 		right: 0,
 	},

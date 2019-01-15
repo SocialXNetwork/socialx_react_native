@@ -96,6 +96,7 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					defaultScale={defaultScale}
 					onMove={onMove}
 					onPress={onImagePress}
+					onExit={onExit}
 					style={[styles.media, { width: SCREEN_WIDTH }]}
 					getText={getText}
 				/>

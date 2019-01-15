@@ -119,7 +119,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					/>
 				}
 				scrollEnabled={!loadingPosts}
-				scrollEventThrottle={50}
+				scrollEventThrottle={100}
 				onScroll={onLoadMorePhotos}
 			>
 				<Profile
@@ -136,7 +136,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					activeTab={activeTab}
 					friends={hasFriends}
 					onProfilePhotoPress={onProfilePhotoPress}
-					onAddFriend={() => undefined}
 					onEditProfile={onEditProfile}
 					onIconPress={onIconPress}
 					onViewFriends={onViewFriends}
@@ -173,10 +172,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							<View style={{ flex: 1 }}>
 								<ProfilePhotoGrid
 									dataProvider={dataProvider}
-									header={{
-										element: <View style={{ width: 1, height: 1 }} />,
-										height: 1,
-									}}
 									scrollEnabled={false}
 									onViewMedia={onViewMedia}
 									getText={getText}
@@ -184,7 +179,10 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 							</View>
 						) : (
-							<NoContent gallery={true} getText={getText} />
+							<React.Fragment>
+								<NoContent gallery={true} getText={getText} />
+								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
+							</React.Fragment>
 						)}
 					</Animated.View>
 				</View>

@@ -1,8 +1,14 @@
+import { isEqual } from 'lodash';
 import * as React from 'react';
-import { Animated, Dimensions, Platform, StatusBar } from 'react-native';
+import {
+	Animated,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
+	Platform,
+	StatusBar,
+} from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
-import uuidv4 from 'uuid/v4';
 
 import {
 	IWithNavigationHandlersEnhancedActions,
@@ -15,11 +21,12 @@ import {
 } from '../../enhancers/screens';
 
 import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { IMedia, INavigationProps, MediaTypeImage } from '../../types';
+import { INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const GRID_PAGE_SIZE = 20;
+import { SCREEN_WIDTH } from './UserProfileScreen.style';
+const GRID_PAGE_SIZE = 21;
+const END_REACHED_OFFSET = 500;
 
 interface IState {
 	dataProvider: DataProvider;
@@ -35,37 +42,37 @@ type IProps = INavigationProps &
 	IWithNavigationHandlersEnhancedActions;
 
 class Screen extends React.Component<IProps, IState> {
-	private lastLoadedPhotoIndex = 0;
-	private readonly dataProvider: DataProvider;
-
-	constructor(props: IProps) {
-		super(props);
-		this.dataProvider = new DataProvider((row1: any, row2: any) => {
-			return row1.index !== row2.index;
-		});
-
-		this.state = {
-			dataProvider: this.dataProvider,
-			listTranslate: new Animated.Value(0),
-			gridTranslate: new Animated.Value(SCREEN_WIDTH),
-			activeTab: PROFILE_TAB_ICON_TYPES.LIST,
-			containerHeight: 0,
-		};
-	}
+	public state = {
+		dataProvider: new DataProvider((r1, r2) => r1 !== r2),
+		listTranslate: new Animated.Value(0),
+		gridTranslate: new Animated.Value(SCREEN_WIDTH),
+		activeTab: PROFILE_TAB_ICON_TYPES.LIST,
+		containerHeight: 0,
+	};
+	private lastLoadedIndex: number = 0;
 
 	public componentDidMount() {
+		this.loadPhotos();
 		if (Platform.OS === OS_TYPES.IOS) {
 			StatusBar.setBarStyle('light-content', true);
 		}
 	}
 
+	public componentDidUpdate(prevProps: IProps) {
+		if (prevProps.visitedUser.media.length !== this.props.visitedUser.media.length) {
+			this.refreshGrid();
+		}
+	}
+
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
-			this.state !== nextState ||
-			this.props.visitedUser !== nextProps.visitedUser ||
+			this.state.dataProvider !== nextState.dataProvider ||
+			this.state.activeTab !== nextState.activeTab ||
+			this.state.containerHeight !== nextState.containerHeight ||
 			this.props.hasFriends !== nextProps.hasFriends ||
 			this.props.loadingProfile !== nextProps.loadingProfile ||
-			this.props.loadingPosts !== nextProps.loadingPosts
+			this.props.loadingPosts !== nextProps.loadingPosts ||
+			!isEqual(this.props.visitedUser, nextProps.visitedUser)
 		);
 	}
 
@@ -95,8 +102,6 @@ class Screen extends React.Component<IProps, IState> {
 				containerHeight={containerHeight}
 				onRefresh={this.onRefreshHandler}
 				onLoadMorePhotos={this.onLoadMorePhotosHandler}
-				onAddFriend={this.onAddFriendHandler}
-				onShowFriendshipOptions={this.onShowFriendshipOptionsHandler}
 				onProfilePhotoPress={this.onProfilePhotoPressHandler}
 				onViewMedia={this.onViewMediaHandler}
 				onIconPress={this.onIconPressHandler}
@@ -117,40 +122,23 @@ class Screen extends React.Component<IProps, IState> {
 		}
 	};
 
-	// Improve this when we have lazy loading
-	private onLoadMorePhotosHandler = () => {
-		const { dataProvider } = this.state;
-		const { media } = this.props.visitedUser;
-
-		const headerElement = [{ index: uuidv4() }];
-
-		if (media.length === 0) {
-			this.setState({
-				dataProvider: dataProvider.cloneWithRows(headerElement),
-			});
-		} else if (this.lastLoadedPhotoIndex < media.length) {
-			const loadedSize = dataProvider.getSize();
-			const endIndex = this.lastLoadedPhotoIndex + GRID_PAGE_SIZE;
-			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
-			const newMedia = media
-				.slice(this.lastLoadedPhotoIndex, endIndex)
-				.map((obj: IMedia, index: number) => ({
-					hash: obj.hash,
-					type: obj.type,
-					index: this.lastLoadedPhotoIndex + index,
-				}));
-
-			const allMedia = [...loadedMedia, ...newMedia];
-
-			this.setState({
-				dataProvider: dataProvider.cloneWithRows(allMedia),
-			});
-			this.lastLoadedPhotoIndex = allMedia.length - 1;
+	private onLoadMorePhotosHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+		if (
+			event.nativeEvent.contentOffset.y >= this.state.containerHeight - END_REACHED_OFFSET &&
+			this.state.activeTab === PROFILE_TAB_ICON_TYPES.GRID &&
+			this.lastLoadedIndex < this.props.visitedUser.media.length
+		) {
+			this.loadPhotos();
 		}
 	};
 
-	private onAddFriendHandler = () => {
-		this.props.addFriend(this.props.visitedUser.alias);
+	private onViewMediaHandler = (index: number) => {
+		const {
+			visitedUser: { media },
+			onViewImage,
+		} = this.props;
+
+		onViewImage(media, index, media[index].postId);
 	};
 
 	private onProfilePhotoPressHandler = () => {
@@ -168,15 +156,6 @@ class Screen extends React.Component<IProps, IState> {
 
 			onViewImage(media, 0);
 		}
-	};
-
-	private onViewMediaHandler = (index: number) => {
-		const {
-			visitedUser: { media },
-			onViewImage,
-		} = this.props;
-
-		onViewImage(media, index, media[index].postId);
 	};
 
 	private onIconPressHandler = (tab: string) => {
@@ -219,21 +198,30 @@ class Screen extends React.Component<IProps, IState> {
 		}
 	};
 
-	private onShowFriendshipOptionsHandler = () => {
-		const { showOptionsMenu, getText } = this.props;
-		const items = [
-			{
-				label: getText('friendship.menu.option.remove'),
-				icon: 'md-remove-circle',
-				actionHandler: () => this.onRemoveFriendshipHandler,
-			},
-		];
+	private loadPhotos = () => {
+		const { dataProvider } = this.state;
+		const { media } = this.props.visitedUser;
 
-		showOptionsMenu(items);
+		if (this.lastLoadedIndex < media.length) {
+			const endIndex = this.lastLoadedIndex + GRID_PAGE_SIZE;
+
+			const loadedMedia = dataProvider.getAllData();
+			const newMedia = media.slice(this.lastLoadedIndex, endIndex);
+			const allMedia = [...loadedMedia, ...newMedia];
+
+			this.setState({
+				dataProvider: dataProvider.cloneWithRows(allMedia),
+			});
+			this.lastLoadedIndex = allMedia.length;
+		}
 	};
 
-	private onRemoveFriendshipHandler = () => {
-		// TODO: API call to remove + refresh user query so relationship is updated!
+	private refreshGrid = () => {
+		const { dataProvider } = this.state;
+		const { media } = this.props.visitedUser;
+
+		this.setState({ dataProvider: dataProvider.cloneWithRows(media) });
+		this.lastLoadedIndex = media.length;
 	};
 }
 

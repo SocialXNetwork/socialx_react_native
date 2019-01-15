@@ -32,8 +32,6 @@ interface IProfileProps extends ITranslatedProps {
 	tabs?: boolean;
 	activeTab?: string;
 	friends?: boolean;
-	onAddFriend: () => void;
-	onShowFriendshipOptions?: () => void;
 	onProfilePhotoPress: () => void;
 	onViewFriends: (alias: string) => void;
 	onEditProfile?: () => void;

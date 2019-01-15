@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, Image, StyleProp, Text, View, ViewStyle } from 'react-native';
+import { Dimensions, Image, StyleProp, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ImageZoom from 'react-native-image-pan-zoom';
 import * as mime from 'react-native-mime-types';
@@ -31,6 +31,7 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	onPress?: () => void;
 	onDoublePress?: () => void;
 	onMove?: (position?: IOnMove) => void;
+	onExit?: () => void;
 }
 
 interface IProps extends IMediaObjectViewerProps {
@@ -39,32 +40,41 @@ interface IProps extends IMediaObjectViewerProps {
 
 interface IState {
 	image: { width: number; height: number };
+	uri: string;
+	mimeType: string;
 }
 
 class Component extends React.Component<IProps, IState> {
-	public state = {
-		image: { width: 0, height: 0 },
-	};
-
-	private uri: string = '';
-	private mimeType: string = '';
 	private ref = React.createRef<ImageZoom>();
 
 	constructor(props: IProps) {
 		super(props);
 
 		const { hash, path, type, extension, IPFS_URL } = props;
-		this.uri = path ? path : IPFS_URL + hash;
-		this.mimeType = this.getMimeType(this.uri, type, extension);
+		const uri = path ? path : IPFS_URL + hash;
+
+		this.state = {
+			image: { width: 0, height: 0 },
+			uri,
+			mimeType: this.getMimeType(uri, type, extension),
+		};
 	}
 
 	public componentDidMount() {
-		if (this.props.hash && this.mimeType.startsWith(MediaTypeImage.key)) {
+		const { uri, mimeType } = this.state;
+
+		if (this.props.hash && mimeType.startsWith(MediaTypeImage.key)) {
 			Image.getSize(
-				this.uri,
+				uri,
 				(width, height) => this.setState({ image: { width, height } }),
 				(e) => console.log(e),
 			);
+		}
+	}
+
+	public componentDidUpdate(prevProps: IProps) {
+		if (prevProps.hash !== this.props.hash) {
+			this.setState({ uri: this.props.IPFS_URL + this.props.hash });
 		}
 	}
 
@@ -77,14 +87,15 @@ class Component extends React.Component<IProps, IState> {
 			onPress,
 			onDoublePress,
 			onMove,
+			onExit,
 			getText,
 		} = this.props;
+		const { uri, mimeType, image } = this.state;
 		const heightRatio = SCREEN_WIDTH / this.state.image.width;
 
 		return (
-			<View>
-				{!this.mimeType && <Text>{getText('message.media.not.supported')}</Text>}
-				{this.mimeType && this.mimeType.startsWith(MediaTypeImage.key) && (
+			<React.Fragment>
+				{mimeType && mimeType.startsWith(MediaTypeImage.key) && (
 					<TouchableWithDoublePress
 						style={style}
 						disabled={!onPress && !onDoublePress}
@@ -98,12 +109,14 @@ class Component extends React.Component<IProps, IState> {
 								cropWidth={SCREEN_WIDTH}
 								cropHeight={SCREEN_HEIGHT}
 								imageWidth={SCREEN_WIDTH}
-								imageHeight={this.state.image.height * heightRatio}
+								imageHeight={image.height * heightRatio}
+								enableSwipeDown={true}
 								onMove={onMove}
 								onClick={this.onResetHandler}
+								onSwipeDown={onExit}
 							>
 								<FastImage
-									source={{ uri: this.uri, priority: FastImage.priority.normal }}
+									source={{ uri, priority: FastImage.priority.normal }}
 									resizeMode={
 										resizeMode === 'contain'
 											? FastImage.resizeMode.contain
@@ -111,14 +124,14 @@ class Component extends React.Component<IProps, IState> {
 									}
 									style={{
 										width: SCREEN_WIDTH,
-										height: this.state.image.height * heightRatio,
+										height: image.height * heightRatio,
 									}}
 								/>
 							</ImageZoom>
 						)}
 						{!fullscreen && (
 							<FastImage
-								source={{ uri: this.uri, priority: FastImage.priority.normal }}
+								source={{ uri, priority: FastImage.priority.normal }}
 								resizeMode={
 									resizeMode === 'contain'
 										? FastImage.resizeMode.contain
@@ -129,15 +142,10 @@ class Component extends React.Component<IProps, IState> {
 						)}
 					</TouchableWithDoublePress>
 				)}
-				{this.mimeType && this.mimeType.startsWith(MediaTypeVideo.key) && (
-					<VideoPlayer
-						uri={this.uri}
-						resizeMode={resizeMode}
-						containerStyle={style}
-						getText={getText}
-					/>
+				{mimeType && mimeType.startsWith(MediaTypeVideo.key) && (
+					<VideoPlayer uri={uri} resizeMode={resizeMode} containerStyle={style} getText={getText} />
 				)}
-			</View>
+			</React.Fragment>
 		);
 	}
 

@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
-import uuid from 'uuid/v4';
 
 import {
 	IWithNavigationHandlersEnhancedActions,
@@ -38,9 +37,7 @@ interface IState {
 
 class Screen extends React.Component<IProps, IState> {
 	public state = {
-		dataProvider: new DataProvider((r1, r2) => {
-			return r1 !== r2;
-		}),
+		dataProvider: new DataProvider((r1, r2) => r1 !== r2),
 		listTranslate: new Animated.Value(0),
 		gridTranslate: new Animated.Value(SCREEN_WIDTH),
 		activeTab: PROFILE_TAB_ICON_TYPES.LIST,
@@ -54,8 +51,7 @@ class Screen extends React.Component<IProps, IState> {
 
 	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
 		return (
-			this.state.dataProvider.getSize() !== nextState.dataProvider.getSize() ||
-			this.state.dataProvider.getAllData() !== nextState.dataProvider.getAllData() ||
+			this.state.dataProvider !== nextState.dataProvider ||
 			this.state.activeTab !== nextState.activeTab ||
 			this.state.containerHeight !== nextState.containerHeight ||
 			this.props.hasFriends !== nextProps.hasFriends ||
@@ -66,11 +62,8 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate(prevProps: IProps) {
-		// console.log('cdu');
-
 		if (prevProps.currentUser.media.length !== this.props.currentUser.media.length) {
 			this.refreshGrid();
-			// console.log(this.props.currentUser.media);
 		}
 	}
 
@@ -240,41 +233,29 @@ class Screen extends React.Component<IProps, IState> {
 	};
 
 	private loadPhotos = () => {
-		// console.log('load');
 		const { dataProvider } = this.state;
 		const { media } = this.props.currentUser;
-		const headerElement = [{ index: uuid() }];
 
-		if (media.length === 0) {
-			this.setState({
-				dataProvider: dataProvider.cloneWithRows(headerElement),
-			});
-		} else if (this.lastLoadedIndex < media.length) {
-			const loadedSize = dataProvider.getSize();
+		if (this.lastLoadedIndex < media.length) {
 			const endIndex = this.lastLoadedIndex + GRID_PAGE_SIZE;
 
-			const loadedMedia = loadedSize === 0 ? headerElement : dataProvider.getAllData();
+			const loadedMedia = dataProvider.getAllData();
 			const newMedia = media.slice(this.lastLoadedIndex, endIndex);
 			const allMedia = [...loadedMedia, ...newMedia];
 
 			this.setState({
 				dataProvider: dataProvider.cloneWithRows(allMedia),
 			});
-			this.lastLoadedIndex = allMedia.length - 1;
+			this.lastLoadedIndex = allMedia.length;
 		}
 	};
 
 	private refreshGrid = () => {
-		// console.log('refresh');
 		const { dataProvider } = this.state;
 		const { media } = this.props.currentUser;
-		const headerElement = [{ index: uuid() }];
 
-		const allMedia = [...headerElement, ...media];
-
-		this.setState({
-			dataProvider: dataProvider.cloneWithRows(allMedia),
-		});
+		this.setState({ dataProvider: dataProvider.cloneWithRows(media) });
+		this.lastLoadedIndex = media.length;
 	};
 }
 

@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../environment/theme';
+
+export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const styles: any = {
 	container: {
@@ -7,6 +9,7 @@ const styles: any = {
 		backgroundColor: Colors.pink,
 	},
 	scrollContainer: {
+		flexGrow: 1,
 		width: '100%',
 		backgroundColor: Colors.white,
 	},
@@ -15,6 +18,7 @@ const styles: any = {
 		borderBottomWidth: Sizes.smartHorizontalScale(8),
 	},
 	contentContainer: {
+		flex: 1,
 		flexDirection: 'row',
 	},
 	postsContainer: {
@@ -29,6 +33,14 @@ const styles: any = {
 	},
 	loader: {
 		paddingTop: Sizes.smartVerticalScale(15),
+	},
+	spacer: {
+		backgroundColor: Colors.white,
+		height: SCREEN_HEIGHT,
+		bottom: -SCREEN_HEIGHT,
+		position: 'absolute',
+		left: 0,
+		right: 0,
 	},
 };
 
