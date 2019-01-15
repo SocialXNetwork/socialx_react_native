@@ -193,25 +193,45 @@ export const getProfileByUsername = (
 		profileHandles.publicProfileByUsername(context, username).once(
 			(profile: IProfileCallbackData) => {
 				if (!profile || !Object.keys(profile).length) {
-					return callback(
-						new ApiError('failed to find profile', {
-							initialRequestBody: { username },
-						}),
-					);
-				}
+					fetchPrivateUserBackup();
+				} else {
+					const cleanedProfile = cleanGunMetaFromObject(profile);
 
-				const cleanedProfile = cleanGunMetaFromObject(profile);
-
-				getProfileNumberOfFriends(context, cleanedProfile, (numberOfFriends) => {
-					return callback(null, {
-						...cleanedProfile,
-						status: FRIEND_TYPES.NOT_FRIEND,
-						numberOfFriends,
+					getProfileNumberOfFriends(context, cleanedProfile, (numberOfFriends) => {
+						return callback(null, {
+							...cleanedProfile,
+							status: FRIEND_TYPES.NOT_FRIEND,
+							numberOfFriends,
+						});
 					});
-				});
+				}
 			},
 			{ wait: 1000 },
 		);
+	};
+	// failsafe
+	const fetchPrivateUserBackup = () => {
+		const { gun: dgun } = context;
+		const gun = dgun.back(-1);
+		const extractProf = (data: any) => {
+			const act = Object.keys(data).filter((key) => key !== '_');
+			// tslint:disable-next-line
+			for (let i = 0; i < act.length; i++){
+				const pub = act[i];
+				gun
+					.get(pub)
+					.get(TABLES.PROFILE)
+					.get(username)
+					.once((profile: any) => {
+						if (profile) {
+							friendWithMutualStatus(context, profile, (friend) => {
+								callback(null, friend);
+							});
+						}
+					});
+			}
+		};
+		gun.get(`~@${username}`).once(extractProf);
 	};
 	mainRunner();
 };

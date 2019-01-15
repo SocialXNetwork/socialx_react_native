@@ -24,7 +24,7 @@
  * so next time the user forgets his password, we ask these questions and they get back their reminder (notice here we are not going to return the actual password because of sec reasons / will change in the future)
  */
 
-import { IContext, IGunCallback } from '../../types';
+import { IContext, IGunCallback, TABLES } from '../../types';
 import { ApiError } from '../../utils/errors';
 import { getPublicKeyByUsername } from '../profiles/getters';
 import { createProfile } from '../profiles/setters';
@@ -254,8 +254,26 @@ export const login = (
 			}
 			console.log('authenticated', authCallback);
 
-			return callback(null);
+			// migrate missing data if any
+			checkProfile(() => {
+				return callback(null);
+			});
 		});
+	};
+	const checkProfile = (cb: any) => {
+		gun
+			.get(TABLES.PROFILES)
+			.get(account.is.alias)
+			.once((data: any) => {
+				if (!data) {
+					const profileRef = account.get(TABLES.PROFILE).get(account.is.alias);
+					gun
+						.get(TABLES.PROFILES)
+						.get(account.is.alias)
+						.put(profileRef);
+				}
+				cb();
+			});
 	};
 	doAuth();
 };
