@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {
 	Animated,
-	Dimensions,
 	FlatList,
 	LayoutChangeEvent,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
 	Platform,
 	RefreshControl,
 	ScrollView,
@@ -27,8 +28,6 @@ import { INavigationProps, ITranslatedProps, IVisitedUser } from '../../types';
 import { Colors } from '../../environment/theme';
 import styles from './UserProfileScreen.style';
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-
 interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps {
 	visitedUser: IVisitedUser;
 	hasFriends: boolean;
@@ -41,10 +40,8 @@ interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps
 	containerHeight: number;
 	onRefresh: () => void;
 	onGoBack: () => void;
-	onAddFriend: () => void;
-	onShowFriendshipOptions: () => void;
 	onProfilePhotoPress: () => void;
-	onLoadMorePhotos: () => void;
+	onLoadMorePhotos: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 	onViewMedia: (index: number) => void;
 	onIconPress: (tab: string) => void;
 	onLayoutChange: (height: number) => void;
@@ -61,9 +58,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	gridTranslate,
 	activeTab,
 	containerHeight,
-	onAddFriend,
 	onRefresh,
-	onShowFriendshipOptions,
 	onProfilePhotoPress,
 	onViewMedia,
 	onLoadMorePhotos,
@@ -90,15 +85,10 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	const hasPhotos = numberOfPhotos > 0;
 	const hasPosts = postIds.length > 0;
 
-	let contentContainerStyle;
-	if (activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0) {
-		contentContainerStyle =
-			containerHeight < SCREEN_HEIGHT / 2
-				? [styles.contentContainer, { height: SCREEN_HEIGHT / 2 }]
-				: [styles.contentContainer, { height: containerHeight }];
-	} else {
-		contentContainerStyle = styles.contentContainer;
-	}
+	const contentContainerStyle =
+		activeTab === PROFILE_TAB_ICON_TYPES.GRID && containerHeight !== 0
+			? [styles.contentContainer, { height: containerHeight }]
+			: styles.contentContainer;
 
 	const scrollContainerStyles =
 		hasPhotos || hasPosts ? styles.scrollContainer : [styles.scrollContainer, { flexGrow: 1 }];
@@ -123,6 +113,8 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					/>
 				}
 				scrollEnabled={!loadingPosts}
+				scrollEventThrottle={100}
+				onScroll={onLoadMorePhotos}
 			>
 				<Profile
 					alias={alias}
@@ -139,8 +131,6 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					tabs={hasPosts}
 					friends={hasFriends}
 					onProfilePhotoPress={onProfilePhotoPress}
-					onAddFriend={onAddFriend}
-					onShowFriendshipOptions={onShowFriendshipOptions}
 					onIconPress={onIconPress}
 					onViewFriends={onViewFriends}
 					getText={getText}
@@ -168,18 +158,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
 							/>
 						)}
-						{Platform.OS === OS_TYPES.IOS && (
-							<View
-								style={{
-									backgroundColor: Colors.white,
-									height: SCREEN_HEIGHT / 2,
-									position: 'absolute',
-									bottom: -SCREEN_HEIGHT / 2,
-									left: 0,
-									right: 0,
-								}}
-							/>
-						)}
+						{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 					</Animated.View>
 					<Animated.View
 						onLayout={(event: LayoutChangeEvent) => {
@@ -190,31 +169,17 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 						style={[styles.gridContainer, { transform: [{ translateX: gridTranslate }] }]}
 					>
 						{hasPhotos ? (
-							<ProfilePhotoGrid
-								onLoadMorePhotos={onLoadMorePhotos}
-								dataProvider={dataProvider}
-								onViewMedia={onViewMedia}
-								header={{
-									element: <View style={{ width: 1, height: 1 }} />,
-									height: hasPhotos ? 1 : SCREEN_HEIGHT,
-								}}
-								disabled={hasPhotos}
-								getText={getText}
-							/>
+							<View style={{ flex: 1 }}>
+								<ProfilePhotoGrid
+									dataProvider={dataProvider}
+									scrollEnabled={false}
+									onViewMedia={onViewMedia}
+									getText={getText}
+								/>
+								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
+							</View>
 						) : (
 							<NoContent gallery={true} getText={getText} />
-						)}
-						{Platform.OS === OS_TYPES.IOS && !loadingPosts && (
-							<View
-								style={{
-									backgroundColor: Colors.white,
-									height: SCREEN_HEIGHT / 2,
-									position: 'absolute',
-									bottom: -SCREEN_HEIGHT / 2,
-									left: 0,
-									right: 0,
-								}}
-							/>
 						)}
 					</Animated.View>
 				</View>

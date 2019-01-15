@@ -9,10 +9,6 @@ import styles from './ProfilePhotoGrid.style';
 
 interface IProfilePhotoGridProps extends ITranslatedProps {
 	dataProvider: DataProvider;
-	header: {
-		element: JSX.Element;
-		height: number;
-	};
 	scrollEnabled?: boolean;
 	extendedState?: object;
 	onLoadMorePhotos?: () => void;
@@ -28,10 +24,10 @@ interface IGridItemProps extends ITranslatedProps {
 
 const GridItem: React.SFC<IGridItemProps> = ({ data, index, onViewMedia, getText }) => {
 	const style = [styles.item];
-	if ((index + 1) % 3 === 0) {
+	if ((index - 1) % 3 === 0) {
 		style.push(styles.center);
 	}
-	if (index > 3) {
+	if (index > 2) {
 		style.push(styles.border);
 	}
 
@@ -39,7 +35,6 @@ const GridItem: React.SFC<IGridItemProps> = ({ data, index, onViewMedia, getText
 		<MediaObjectViewer
 			type={data.type}
 			hash={data.hash}
-			thumbOnly={true}
 			onPress={() => onViewMedia(index)}
 			getText={getText}
 			style={style}
@@ -49,7 +44,6 @@ const GridItem: React.SFC<IGridItemProps> = ({ data, index, onViewMedia, getText
 
 export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 	dataProvider,
-	header,
 	extendedState,
 	scrollEnabled = true,
 	onViewMedia,
@@ -58,13 +52,12 @@ export const ProfilePhotoGrid: React.SFC<IProfilePhotoGridProps> = ({
 }) => (
 	<PhotoGrid
 		dataProvider={dataProvider}
-		header={header}
 		extendedState={extendedState}
 		scrollViewProps={{
 			showsVerticalScrollIndicator: false,
 			scrollEnabled,
 		}}
-		renderGridItem={(type: number | string, data: IMedia, index: number) => (
+		renderItem={(type: number | string, data: IMedia, index: number) => (
 			<GridItem type={type} data={data} onViewMedia={onViewMedia} index={index} getText={getText} />
 		)}
 		onLoadMore={onLoadMorePhotos}

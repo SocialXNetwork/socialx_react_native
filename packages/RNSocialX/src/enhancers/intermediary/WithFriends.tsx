@@ -67,7 +67,7 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		rejectFriend: () => undefined,
 		undoRequest: () => undefined,
 		showOptionsMenu: () => undefined,
-		getText: () => '',
+		getText: (value) => value,
 	};
 
 	public render() {
