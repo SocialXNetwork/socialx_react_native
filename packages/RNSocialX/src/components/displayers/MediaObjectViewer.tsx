@@ -5,21 +5,15 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import * as mime from 'react-native-mime-types';
 
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
+import { WithI18n } from '../../enhancers/connectors/app/WithI18n';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
-import {
-	IMediaTypes,
-	IOnMove,
-	ITranslatedProps,
-	MediaTypeImage,
-	MediaTypeVideo,
-} from '../../types';
+import { IDictionary, IMediaTypes, IOnMove, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 import styles from './MediaObjectViewer.style';
-
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
-interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
+interface IMediaObjectViewerProps extends IVideoOptions {
 	hash?: string;
 	path?: string;
 	extension?: string;
@@ -34,7 +28,7 @@ interface IMediaObjectViewerProps extends IVideoOptions, ITranslatedProps {
 	onExit?: () => void;
 }
 
-interface IProps extends IMediaObjectViewerProps {
+interface IProps extends IMediaObjectViewerProps, IDictionary {
 	IPFS_URL: string;
 }
 
@@ -84,11 +78,11 @@ class Component extends React.Component<IProps, IState> {
 			defaultScale,
 			resizeMode,
 			style,
+			dictionary,
 			onPress,
 			onDoublePress,
 			onMove,
 			onExit,
-			getText,
 		} = this.props;
 		const { uri, mimeType, image } = this.state;
 		const heightRatio = SCREEN_WIDTH / this.state.image.width;
@@ -143,7 +137,12 @@ class Component extends React.Component<IProps, IState> {
 					</TouchableWithDoublePress>
 				)}
 				{mimeType && mimeType.startsWith(MediaTypeVideo.key) && (
-					<VideoPlayer uri={uri} resizeMode={resizeMode} containerStyle={style} getText={getText} />
+					<VideoPlayer
+						uri={uri}
+						resizeMode={resizeMode}
+						containerStyle={style}
+						dictionary={dictionary}
+					/>
 				)}
 			</React.Fragment>
 		);
@@ -172,7 +171,13 @@ class Component extends React.Component<IProps, IState> {
 }
 
 export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = (props) => (
-	<WithConfig>
-		{({ appConfig }) => <Component IPFS_URL={appConfig.ipfsConfig.ipfs_URL} {...props} />}
-	</WithConfig>
+	<WithI18n>
+		{({ dictionary }) => (
+			<WithConfig>
+				{({ appConfig }) => (
+					<Component IPFS_URL={appConfig.ipfsConfig.ipfs_URL} dictionary={dictionary} {...props} />
+				)}
+			</WithConfig>
+		)}
+	</WithI18n>
 );

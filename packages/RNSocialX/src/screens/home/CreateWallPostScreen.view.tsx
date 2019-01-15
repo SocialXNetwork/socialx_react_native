@@ -10,11 +10,11 @@ import {
 	SharePostInput,
 } from '../../components';
 import { Colors, Icons } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 
 import styles, { buttonWidth } from './CreateWallPostScreen.style';
 
-interface ICreateWallPostScreenViewProps extends ITranslatedProps {
+interface ICreateWallPostScreenViewProps extends IDictionary {
 	avatar: string;
 	caption: string;
 	media: string[];
@@ -32,34 +32,29 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 	onAddMedia,
 	onCreatePost,
 	onClose,
-	getText,
+	dictionary,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={getText('new.wall.post.screen.title')}
-			left={<CloseButton onClose={onClose} />}
-		/>
+		<Header title={dictionary.screens.createPost.title} left={<CloseButton onClose={onClose} />} />
 		<ScrollView contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps="handled">
 			<SharePostInput
 				avatar={avatar}
-				placeholder={getText('new.wall.post.screen.input.placeholder')}
+				placeholder={dictionary.components.inputs.placeholders.caption}
 				value={caption}
 				onChangeText={onChangeText}
 			/>
 			<TouchableOpacity style={styles.addMediaButton} onPress={onAddMedia}>
 				<Image source={Icons.iconNewPostAddMedia} style={styles.photoIcon} resizeMode="contain" />
-				<Text style={styles.addMediaText}>
-					{getText('new.wall.post.screen.attach.media.button')}
-				</Text>
+				<Text style={styles.addMediaText}>{dictionary.components.buttons.media}</Text>
 			</TouchableOpacity>
 			{media.length > 0 && (
 				<View style={styles.mediaContainer}>
-					<MediaHorizontalScroller paths={media} getText={getText} />
+					<MediaHorizontalScroller paths={media} />
 				</View>
 			)}
 			<View style={styles.buttonContainer}>
 				<PrimaryButton
-					label={getText('new.wall.post.screen.create.button')}
+					label={dictionary.components.buttons.createPost}
 					size={ButtonSizes.Small}
 					width={buttonWidth}
 					onPress={onCreatePost}

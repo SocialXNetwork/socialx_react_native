@@ -305,7 +305,7 @@ const App = createStackNavigator(
 
 const Navigation = () => (
 	<WithI18n>
-		{({ getText }) => (
+		{({ getText, dictionary }) => (
 			<Root>
 				<WithNavigationParams>
 					{({ setNavigationParams }) => (
@@ -334,7 +334,7 @@ const Navigation = () => (
 								<WithActivities>
 									{({ errors }) => (
 										<React.Fragment>
-											<Alert errors={errors} getText={getText} />
+											<Alert errors={errors} dictionary={dictionary} />
 											<TransparentOverlay
 												visible={globals.transparentOverlay.visible}
 												alpha={globals.transparentOverlay.alpha}

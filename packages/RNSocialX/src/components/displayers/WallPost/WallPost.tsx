@@ -214,7 +214,6 @@ class Component extends React.Component<IProps, IState> {
 											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 											onDoublePress={() => onDoubleTapLikePost(postId)}
 											creating={creating}
-											getText={getText}
 										/>
 									</View>
 								)}
@@ -290,7 +289,6 @@ class Component extends React.Component<IProps, IState> {
 											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 											onDoublePress={() => onDoubleTapLikePost(post.postId)}
 											creating={creating}
-											getText={getText}
 										/>
 									)}
 									<WarnOffensiveContent

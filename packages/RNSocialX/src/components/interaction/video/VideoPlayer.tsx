@@ -10,8 +10,8 @@ import {
 import Video from 'react-native-video';
 
 import { OS_TYPES } from '../../../environment/consts';
-import { ITranslatedProps } from '../../../types';
-import { VideoControls, VisibleViewPort } from './';
+import { IDictionary } from '../../../types';
+import { VideoControls } from './';
 
 import styles from './VideoPlayer.style';
 
@@ -20,7 +20,7 @@ export interface IVideoOptions {
 	thumbOnly?: boolean;
 }
 
-interface IVideoPlayerProps extends IVideoOptions, ITranslatedProps {
+interface IVideoPlayerProps extends IVideoOptions, IDictionary {
 	muted?: boolean;
 	uri: string;
 	replayVideo?: boolean;
@@ -65,15 +65,12 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	private playerRef: React.RefObject<Video> = React.createRef();
 
 	public render() {
-		const { thumbOnly, containerStyle, uri, resizeMode, getText } = this.props;
+		const { thumbOnly, containerStyle, uri, resizeMode, dictionary } = this.props;
 		const { fullScreen, playReady, muted, paused, replayVideo } = this.state;
 
 		const showPlayButton = paused;
 
 		return (
-			// <VisibleViewPort
-			// 	onChange={(isVisible: boolean) => this.checkViewPortVisibleHandler(isVisible)}
-			// >
 			<TouchableWithoutFeedback onPress={this.onPauseVideoHandler}>
 				<View style={containerStyle}>
 					<Video
@@ -103,27 +100,12 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 						onVideoMuteToggle={this.onVideoMuteToggleHandler}
 						onVideoEnterFullScreen={this.onVideoEnterFullScreenHandler}
 						onVideoReplay={this.onVideoReplayHandler}
-						getText={getText}
+						dictionary={dictionary}
 					/>
 				</View>
 			</TouchableWithoutFeedback>
-			// </VisibleViewPort>
 		);
 	}
-
-	// private checkViewPortVisibleHandler = (isVisible: boolean) => {
-	// 	const { visibleView, replayVideo } = this.state;
-
-	// 	if (isVisible) {
-	// 		if (!visibleView && !replayVideo) {
-	// 			this.setState({ paused: false, visibleView: true });
-	// 		}
-	// 	} else {
-	// 		if (visibleView && !replayVideo) {
-	// 			this.setState({ paused: true, visibleView: false });
-	// 		}
-	// 	}
-	// };
 
 	private onPauseVideoHandler = () => {
 		if (!this.state.ended) {

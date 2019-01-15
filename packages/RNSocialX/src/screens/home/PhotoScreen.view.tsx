@@ -131,7 +131,7 @@ export const PhotoScreenView: React.SFC<IPhotoScreenViewProps> = ({
 				onChangeText={onChangeText}
 			/>
 			<View style={styles.photoContainer}>
-				<MediaHorizontalScroller paths={media} getText={getText} />
+				<MediaHorizontalScroller paths={media} />
 			</View>
 			<View style={styles.addMediaContainer}>
 				<TouchableOpacity style={styles.addMediaButton} onPress={onAddMedia}>

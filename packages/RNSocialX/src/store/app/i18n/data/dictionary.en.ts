@@ -1,29 +1,69 @@
 // tslint:disable
 
 export default {
-	'error.data/accounts/LOGIN': 'Username or password is incorrect',
-	'error.data/accounts/CREATE_ACCOUNT': 'Could not create your account',
-	'error.data/notifications/MARK_NOTIFICATIONS_AS_READ': 'Could not mark the notifications as read',
-	'error.data/comments/CREATE_COMMENT': 'Could not create the comment',
-	'error.data/comments/REMOVE_COMMENT': 'Could not delete the comment',
-	'error.data/comments/LIKE_COMMENT': 'Could not like the comment',
-	'error.data/comments/UNLIKE_COMMENT': 'Could not unlike the comment',
-	'error.data/profiles/GET_CURRENT_PROFILE': 'Could not get the profile',
-	'error.data/profiles/UPDATE_PROFILE': 'Could not update the profile',
-	'error.data/profiles/GET_PROFILES_BY_POSTS': 'Could not get multiple profiles',
-	'error.data/profiles/GET_CURRENT_FRIENDS': 'Could not get your friends',
-	'error.data/profiles/ADD_FRIEND': 'Could not add the user',
-	'error.data/profiles/REMOVE_FRIEND': 'Could not unfriend the user',
-	'error.data/profiles/ACCEPT_FRIEND': 'Could not accept the request',
-	'error.data/profiles/REJECT_FRIEND': 'Could not decline the request',
-	'error.data/profiles/UNDO_REQUEST': 'Could not undo the request',
-	'error.data/posts/LOAD_MORE_POSTS': 'Could not load global posts',
-	'error.data/posts/LOAD_MORE_FRIENDS_POSTS': 'Could not load friends posts',
-	'error.data/posts/CREATE_POST': 'Could not create the post',
-	'error.data/posts/REMOVE_POST': 'Could not delete the post',
-	'error.data/posts/LIKE_POST': 'Could not like the post',
-	'error.data/posts/UNLIKE_POST': 'Could not unlike the post',
-	'app.name': 'SocialX',
+	errors: {
+		'data/accounts/LOGIN': 'Username or password is incorrect',
+		'data/accounts/CREATE_ACCOUNT': 'Could not create your account',
+		'data/notifications/MARK_NOTIFICATIONS_AS_READ': 'Could not mark the notifications as read',
+		'data/comments/CREATE_COMMENT': 'Could not create the comment',
+		'data/comments/REMOVE_COMMENT': 'Could not delete the comment',
+		'data/comments/LIKE_COMMENT': 'Could not like the comment',
+		'data/comments/UNLIKE_COMMENT': 'Could not unlike the comment',
+		'data/profiles/GET_CURRENT_PROFILE': 'Could not get the profile',
+		'data/profiles/UPDATE_PROFILE': 'Could not update the profile',
+		'data/profiles/GET_PROFILES_BY_POSTS': 'Could not get multiple profiles',
+		'data/profiles/GET_CURRENT_FRIENDS': 'Could not get your friends',
+		'data/profiles/ADD_FRIEND': 'Could not add the user',
+		'data/profiles/REMOVE_FRIEND': 'Could not unfriend the user',
+		'data/profiles/ACCEPT_FRIEND': 'Could not accept the request',
+		'data/profiles/REJECT_FRIEND': 'Could not decline the request',
+		'data/profiles/UNDO_REQUEST': 'Could not undo the request',
+		'data/posts/LOAD_MORE_POSTS': 'Could not load global posts',
+		'data/posts/LOAD_MORE_FRIENDS_POSTS': 'Could not load friends posts',
+		'data/posts/CREATE_POST': 'Could not create the post',
+		'data/posts/REMOVE_POST': 'Could not delete the post',
+		'data/posts/LIKE_POST': 'Could not like the post',
+		'data/posts/UNLIKE_POST': 'Could not unlike the post',
+	},
+	screens: {
+		launch: {
+			name: 'SocialX',
+			description: 'Social interaction with cryptocurrency rewards',
+			rewards: 'Get rewarded',
+			login: 'Login',
+			register: 'Sign up',
+		},
+		loading: {
+			'login': 'Signing you in',
+			'profile': 'Syncing nodes',
+			'friends': 'Syncing profiles and friends',
+			'posts': 'Syncing posts',
+		},
+		createPost: {
+			title: 'Create post',
+		}
+	},
+	components: {
+		buttons: {
+			media: 'Photo/Video',
+			createPost: 'Create post',
+			video: {
+				replay: 'Watch again'
+			}
+
+		},
+		inputs: {
+			placeholders: {
+				caption: 'Write a caption'
+			}
+		},
+		modals: {
+			options: {
+				gallery: 'Pick from gallery',
+				camera: 'Open camera',
+			}
+		}
+	},
 	'button.OK': 'OK',
 	'button.confirm': 'Confirm',
 	'button.back': 'Back',
@@ -60,12 +100,7 @@ export default {
 	'general.error.message': 'Something went wrong.',
 	'please.wait': 'Please wait',
 	'message.link.not.supported': 'Unsupported link type',
-	'message.media.not.supported':
-		'Unsupported media type or type detection failed',
-	'launch.description': 'Social interaction with cryptocurrency rewards',
-	'launch.get.rewarded': 'Get rewarded',
-	'launch.login': 'LOGIN',
-	'launch.signUp': 'SIGN UP',
+	'message.media.not.supported': 'Unsupported media type or type detection failed',
 	'login.screen.title': 'LOGIN',
 	'login.welcome.message': 'Welcome back!',
 	'login.username.input': 'Username',
@@ -125,8 +160,7 @@ export default {
 	'register.screen.password.required': 'Password is required',
 	'register.screen.password.length': 'Password must have at least 6 characters',
 	'register.screen.password.mismatch': 'Passwords do not match',
-	'register.screen.terms.accepted':
-		'You need to accept our terms and conditions',
+	'register.screen.terms.accepted': 'You need to accept our terms and conditions',
 	'terms.and.conditions.screen.title': 'Terms and Conditions',
 	'reset.password.screen.title': 'RESET PASSWORD',
 	'reset.password.description':
@@ -144,14 +178,12 @@ export default {
 	'reset.password.wrong.code': 'Wrong reset code entered, please try again.',
 	'intro.skip.label': 'Skip',
 	'intro.first.slide.title': 'Decentralising your media',
-	'intro.first.slide.description':
-		'Have full ownership of your content and data at all times',
+	'intro.first.slide.description': 'Have full ownership of your content and data at all times',
 	'intro.second.slide.title': 'Get rewarded for content',
 	'intro.second.slide.description':
 		'The Superlike feature allows you to receive SOCX tokens by publishing high-quality content',
 	'intro.third.slide.title': 'Your financial incentive',
-	'intro.third.slide.description':
-		'The days that firms make millions using your data are over',
+	'intro.third.slide.description': 'The days that firms make millions using your data are over',
 	'events.list.item.all.day': 'All Day',
 	'events.list.item.start.at': 'Start at',
 	'notifications.friend.request.accept.failed':
@@ -165,8 +197,7 @@ export default {
 	'notifications.recent.comment': 'commented on your post.',
 	'notifications.super.liked': 'superliked your post,',
 	'notifications.group.request.sent': 'sent you a group request',
-	'notifications.check.failed':
-		'Could not check notification at this time. Try again later..',
+	'notifications.check.failed': 'Could not check notification at this time. Try again later..',
 	'media.info.title': 'Media Info',
 	'media.info.hash': 'Hash',
 	'media.info.size': 'Size',
@@ -250,8 +281,7 @@ export default {
 	'settings.screen.mining.description':
 		'Get rewarded for validating transactions within SocialX network',
 	'settings.screen.sharedata.title': 'Share data',
-	'settings.screen.sharedata.description':
-		'Share your data with advertise partners',
+	'settings.screen.sharedata.description': 'Share your data with advertise partners',
 	'settings.progress.message': 'Updating profile',
 	'nodes.screen.title': 'Edit Nodes',
 	'nodes.screen.description': 'Add/Delete Nodes',
@@ -268,8 +298,7 @@ export default {
 	'modal.report.subject.required': 'Subject is required',
 	'modal.report.description.required': 'Description is required',
 	'modal.sms.code.title': 'Verification Code',
-	'modal.sms.code.type.code.message':
-		'Please type the verification code sent to',
+	'modal.sms.code.type.code.message': 'Please type the verification code sent to',
 	'modal.sms.code.resend.button': 'Resend Code',
 	'tab.bar.bottom.photo.picker.title': 'Share a photo',
 	'tab.bar.bottom.photo.picker.use.camera': 'Open camera',
@@ -298,8 +327,7 @@ export default {
 	'wall.post.menu.block.user': 'Block',
 	'wall.post.menu.report.problem': 'Report a problem',
 	'wall.post.menu.delete.post': 'Delete post',
-	'wall.post.card.offensive.content.warning.text':
-		'This post may contain offensive material.',
+	'wall.post.card.offensive.content.warning.text': 'This post may contain offensive material.',
 	'wall.post.card.offensive.content.button.view': 'View',
 	'wallet.account.title': 'Wallet account',
 	'wallet.account.input.placeholder': 'Account name',
@@ -333,25 +361,22 @@ export default {
 	'ad.management.overview.screen.ads.list.title': 'All ads',
 	'ad.management.overview.screen.account.performance': 'Account Performance',
 	'ad.management.overview.screen.account.performance.spent': 'Spent',
-	'ad.management.overview.screen.account.performance.people.reached':
-		'People reached',
-	'ad.management.overview.screen.account.performance.impressions':
-		'Impressions',
+	'ad.management.overview.screen.account.performance.people.reached': 'People reached',
+	'ad.management.overview.screen.account.performance.impressions': 'Impressions',
 	'ad.management.overview.screen.see.past.performance': 'SEE PAST PERFORMANCE',
 	'ad.management.screen.title': 'Ad management',
 	'ad.management.option.post': 'Boost a post',
 	'ad.management.option.video': 'Get video views',
 	'ad.management.option.traffic': 'Drive traffic to your website',
 	'ad.management.create': 'Create ad',
-	'ad.manage.countries.title':  'Manage Countries',
+	'ad.manage.countries.title': 'Manage Countries',
 	'ad.manage.countries.input.placeholder': 'Search for a country',
 	'ad.manage.countries.all.countries': 'All countries',
 	'search.screen.results.tab.top.title': 'Top',
 	'search.screen.results.tab.people.title': 'People',
 	'search.screen.results.tab.tags.title': 'Tags',
 	'search.screen.results.tab.places.title': 'Places',
-	'search.screen.results.coming.soon':
-		'Stay close, this feature is coming soon!',
+	'search.screen.results.coming.soon': 'Stay close, this feature is coming soon!',
 	'search.indicator': 'Searching for',
 	'search.suggested': 'Suggested',
 	'search.no.results': 'No results found',

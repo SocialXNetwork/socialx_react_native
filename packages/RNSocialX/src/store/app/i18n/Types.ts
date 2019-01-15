@@ -1,25 +1,22 @@
 import { Action } from 'redux';
 import { DeepReadonly } from 'utility-types-fixme-todo';
 
-export const enum AvailableLocales {
-	EN = 'en',
-	ES = 'es',
+export const enum Locales {
+	EN = 'english',
+	ES = 'spanish',
 }
 
-export type IAvailableLocales = AvailableLocales.EN | AvailableLocales.ES;
-
-export interface ILocaleDictionary {
-	[key: string]: string;
-}
+export type ILocales = Locales.EN | Locales.ES;
 
 export interface IDictionary {
-	[AvailableLocales.EN]: ILocaleDictionary;
-	[AvailableLocales.ES]: ILocaleDictionary;
+	[Locales.EN]: ILocaleDictionary;
+	// [Locales.ES]: ILocaleDictionary;
 }
 
 export type IState = DeepReadonly<{
-	currentLocale: IAvailableLocales;
+	currentLocale: ILocales;
 	dictionary: IDictionary;
+	locale: ILocales;
 }>;
 
 export const enum ActionTypes {
@@ -28,7 +25,7 @@ export const enum ActionTypes {
 }
 
 export interface ISetLocaleInput {
-	locale: IAvailableLocales;
+	locale: ILocales;
 }
 
 export interface ISetLocaleAction extends Action {
@@ -46,3 +43,44 @@ interface IRehydrateAction {
 }
 
 export type IAction = IResetStoreAction | ISetLocaleAction | IRehydrateAction;
+
+export interface ILocaleDictionary {
+	errors: {
+		[key: string]: string;
+	};
+	screens: {
+		loading: {
+			[key: string]: string;
+		};
+		launch: {
+			name: string;
+			description: string;
+			rewards: string;
+			login: string;
+			register: string;
+		};
+		createPost: {
+			title: string;
+		};
+	};
+	components: {
+		buttons: {
+			media: string;
+			createPost: string;
+			video: {
+				replay: string;
+			};
+		};
+		inputs: {
+			placeholders: {
+				caption: string;
+			};
+		};
+		modals: {
+			options: {
+				gallery: string;
+				camera: string;
+			};
+		};
+	};
+}

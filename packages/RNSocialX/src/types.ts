@@ -8,6 +8,7 @@ import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 
 import { IAccountCurrencyData } from './components';
 import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environment/consts';
+import { ILocaleDictionary } from './store/app/i18n/Types';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 
@@ -39,6 +40,10 @@ export interface IUserEntry {
 }
 
 export type getTextSignature = (value: string, ...args: any[]) => string;
+
+export interface IDictionary {
+	dictionary: ILocaleDictionary;
+}
 
 export interface ITranslatedProps {
 	getText: getTextSignature;
@@ -136,8 +141,8 @@ export interface IMedia {
 
 export interface IOptimizedMedia extends PickerImage {
 	type: string;
-	pathx: string;
-	contentOptimizedPath?: string;
+	optimizedImagePath?: string;
+	sourceURL?: string;
 }
 
 export interface IGridMedia {
@@ -182,13 +187,24 @@ export interface IWallPost {
 	creating?: boolean;
 }
 
-export interface ICreateWallPost {
-	text: string;
+export interface ICreatePost {
+	postId: string;
+	postText: string;
+	owner: {
+		alias: string;
+		pub: string;
+	};
+	timestamp: number;
+	likes: {
+		ids: string[];
+		byId: {
+			[alias: string]: number;
+		};
+	};
+	comments: string[];
 	media: IOptimizedMedia[];
-	taggedFriends?: Array<{
-		fullName: string;
-	}>;
-	location?: string;
+	privatePost: boolean;
+	creating: boolean;
 }
 
 export enum TransactionType {

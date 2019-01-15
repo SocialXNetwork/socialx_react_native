@@ -174,7 +174,6 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 									dataProvider={dataProvider}
 									scrollEnabled={false}
 									onViewMedia={onViewMedia}
-									getText={getText}
 								/>
 								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 							</View>

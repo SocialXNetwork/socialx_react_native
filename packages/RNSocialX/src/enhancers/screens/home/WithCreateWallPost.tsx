@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { IPost } from '../../../store/data/posts';
 import {
+	ICreatePost,
 	ICurrentUser,
+	IDictionary,
 	IOptionsMenuProps,
-	ITranslatedProps,
 	IUploadFileInput,
 } from '../../../types';
 
@@ -14,12 +14,12 @@ import { WithFiles } from '../../connectors/storage/WithFiles';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../../intermediary';
 
-export interface IWithCreateWallPostEnhancedData {
+export interface IWithCreateWallPostEnhancedData extends IDictionary {
 	currentUser: ICurrentUser;
 }
 
-export interface IWithCreateWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: IPost) => void;
+export interface IWithCreateWallPostEnhancedActions extends IOptionsMenuProps {
+	createPost: (post: ICreatePost) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 }
 
@@ -41,7 +41,7 @@ export class WithCreateWallPost extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithFiles>
@@ -53,15 +53,15 @@ export class WithCreateWallPost extends React.Component<
 													this.props.children({
 														data: {
 															currentUser,
+															dictionary,
 														},
 														actions: {
 															uploadFile,
-															createPost: (post: IPost) => createPost(post),
+															createPost: (post: ICreatePost) => createPost(post),
 															showOptionsMenu: (items) =>
 																showOptionsMenu({
 																	items,
 																}),
-															getText,
 														},
 													})
 												}

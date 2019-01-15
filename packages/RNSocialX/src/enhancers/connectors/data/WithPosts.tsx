@@ -19,6 +19,7 @@ import {
 	unlikePost,
 } from '../../../store/data/posts';
 import { IThunkDispatch } from '../../../store/types';
+import { ICreatePost } from '../../../types';
 
 interface IDataProps {
 	all: {
@@ -39,7 +40,7 @@ interface IActionProps {
 	loadMoreFriendsPosts: () => void;
 	getUserPosts: (alias: string) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
-	createPost: (post: IPost) => void;
+	createPost: (post: ICreatePost) => void;
 	removePost: (postId: string) => void;
 	likePost: (input: IPostLikeInput) => void;
 	unlikePost: (input: IPostLikeInput) => void;
@@ -102,7 +103,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
 	getUserPosts: (alias: string) => dispatch(getUserPosts(alias)),
 	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
-	createPost: (post: IPost) => dispatch(createPost(post as any)),
+	createPost: (post: ICreatePost) => dispatch(createPost(post)),
 	removePost: (postId: string) => dispatch(removePost(postId)),
 	likePost: (input: IPostLikeInput) => dispatch(likePost(input)),
 	unlikePost: (input: IPostLikeInput) => dispatch(unlikePost(input)),

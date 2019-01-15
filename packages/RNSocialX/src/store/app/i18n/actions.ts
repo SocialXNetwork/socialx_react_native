@@ -2,9 +2,9 @@ import { ActionCreator } from 'redux';
 import uuidv4 from 'uuid/v4';
 import { IThunk } from '../../types';
 import { setError } from '../../ui/activities';
-import { ActionTypes, IAvailableLocales, ISetLocaleAction, ISetLocaleInput } from './Types';
+import { ActionTypes, ILocales, ISetLocaleAction, ISetLocaleInput } from './Types';
 
-const setLocaleAction: ActionCreator<ISetLocaleAction> = (locale: IAvailableLocales) => ({
+const setLocaleAction: ActionCreator<ISetLocaleAction> = (locale: ILocales) => ({
 	type: ActionTypes.SET_LOCALE,
 	payload: {
 		locale,

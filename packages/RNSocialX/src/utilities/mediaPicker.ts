@@ -62,6 +62,7 @@ export const getGalleryMediaObject = async (
 			...DEFAULT_PICKER_OPTIONS,
 			...options,
 		});
+
 		return mediaObject as IPickerImage;
 	} catch (ex) {
 		console.log('getGalleryMediaObject error', ex);
@@ -74,8 +75,8 @@ export const getCameraMediaObjectMultiple = async (options = {}): Promise<IPicke
 			...DEFAULT_CAMERA_OPTIONS,
 			...options,
 		});
+
 		return [mediaObject as IPickerImage];
-		// return mediaObject as IPickerImageMultiple;
 	} catch (ex) {
 		console.log('getCameraMediaObjectMultiple error', ex);
 		return [];
@@ -83,7 +84,7 @@ export const getCameraMediaObjectMultiple = async (options = {}): Promise<IPicke
 };
 
 export const getOptimizedMediaObject = async (originalMedia: IPickerImage) => {
-	let contentOptimizedPath;
+	let optimizedImagePath;
 	if (originalMedia.mime.startsWith(MediaTypeImage.key)) {
 		const optimized = await ImageResizer.createResizedImage(
 			originalMedia.path,
@@ -92,12 +93,12 @@ export const getOptimizedMediaObject = async (originalMedia: IPickerImage) => {
 			'JPEG',
 			50,
 		);
-		contentOptimizedPath = optimized.path;
+		optimizedImagePath = optimized.path;
 	}
+
 	return {
 		...originalMedia,
-		contentOptimizedPath,
+		optimizedImagePath,
 		type: originalMedia.mime,
-		pathx: originalMedia.path,
 	};
 };

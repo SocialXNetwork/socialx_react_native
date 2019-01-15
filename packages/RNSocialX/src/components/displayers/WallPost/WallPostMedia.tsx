@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { IMedia, ITranslatedProps } from '../../../types';
+import { IMedia } from '../../../types';
 import { MediaObjectViewer } from '../MediaObjectViewer';
 
 import styles from './WallPostMedia.style';
 
-interface ISingleMediaPostProps extends ITranslatedProps {
+interface ISingleMediaPostProps {
 	media: IMedia;
 	noInteraction: boolean;
 	creating: boolean;
@@ -20,7 +20,6 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	creating,
 	onMediaObjectView,
 	onDoublePress,
-	getText,
 }) => (
 	<MediaObjectViewer
 		onPress={() => onMediaObjectView(0)}
@@ -32,21 +31,15 @@ const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 		path={creating ? media.path : undefined}
 		style={styles.postMediaContainerFullWidth}
 		extension={media.extension}
-		getText={getText}
 	/>
 );
-interface IDualMediaPostProps extends ITranslatedProps {
+interface IDualMediaPostProps {
 	media: IMedia[];
 	onMediaObjectView: (index: number) => void;
 	creating: boolean;
 }
 
-const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
-	media,
-	onMediaObjectView,
-	creating,
-	getText,
-}) => (
+const DualMediaPost: React.SFC<IDualMediaPostProps> = ({ media, onMediaObjectView, creating }) => (
 	<View style={styles.postMediaContainerFullWidth}>
 		<View style={styles.fullHeightHalfWidth}>
 			<MediaObjectViewer
@@ -58,7 +51,6 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 				path={creating ? media[0].path : undefined}
 				style={[styles.fullWidthHeight, styles.rightBorder]}
 				extension={media[0].extension}
-				getText={getText}
 			/>
 		</View>
 		<View style={styles.fullHeightHalfWidth}>
@@ -71,13 +63,12 @@ const DualMediaPost: React.SFC<IDualMediaPostProps> = ({
 				path={creating ? media[1].path : undefined}
 				style={[styles.fullWidthHeight, styles.leftBorder]}
 				extension={media[1].extension}
-				getText={getText}
 			/>
 		</View>
 	</View>
 );
 
-interface IMultiMediaPostProps extends ITranslatedProps {
+interface IMultiMediaPostProps {
 	media: IMedia[];
 	creating: boolean;
 	onMediaObjectView: (index: number) => void;
@@ -87,7 +78,6 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 	media,
 	onMediaObjectView,
 	creating,
-	getText,
 }) => {
 	const remainingMedia = media.length - 3;
 
@@ -103,7 +93,6 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 					path={creating ? media[0].path : undefined}
 					style={[styles.fullWidthHeight, styles.rightBorder]}
 					extension={media[0].extension}
-					getText={getText}
 				/>
 			</View>
 			<View style={[styles.fullHeightHalfWidth, styles.leftBorder]}>
@@ -116,7 +105,6 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						// @ts-ignore
 						path={creating ? media[1].path : undefined}
 						extension={media[1].extension}
-						getText={getText}
 					/>
 				</View>
 				<TouchableOpacity
@@ -132,7 +120,6 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 						path={creating ? media[2].path : undefined}
 						style={styles.fullWidthHeight}
 						extension={media[2].extension}
-						getText={getText}
 					/>
 					{remainingMedia > 0 && (
 						<View style={styles.overlay}>
@@ -145,7 +132,7 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 	);
 };
 
-interface IWallPostMediaProps extends ITranslatedProps {
+interface IWallPostMediaProps {
 	media: IMedia[];
 	onMediaObjectView: (index: number) => void;
 	onDoublePress: () => void;
@@ -159,25 +146,14 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 	creating = false,
 	onMediaObjectView,
 	onDoublePress,
-	getText,
 }) => {
 	return (
 		<React.Fragment>
 			{media.length > 2 && (
-				<MultiMediaPost
-					media={media}
-					onMediaObjectView={onMediaObjectView}
-					creating={creating}
-					getText={getText}
-				/>
+				<MultiMediaPost media={media} onMediaObjectView={onMediaObjectView} creating={creating} />
 			)}
 			{media.length === 2 && (
-				<DualMediaPost
-					media={media}
-					onMediaObjectView={onMediaObjectView}
-					creating={creating}
-					getText={getText}
-				/>
+				<DualMediaPost media={media} onMediaObjectView={onMediaObjectView} creating={creating} />
 			)}
 			{media.length === 1 && (
 				<SingleMediaPost
@@ -186,7 +162,6 @@ export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 					onMediaObjectView={onMediaObjectView}
 					onDoublePress={onDoublePress}
 					creating={creating}
-					getText={getText}
 				/>
 			)}
 		</React.Fragment>

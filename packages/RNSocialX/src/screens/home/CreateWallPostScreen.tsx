@@ -33,7 +33,7 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	public render() {
-		const { getText, currentUser } = this.props;
+		const { currentUser, dictionary } = this.props;
 		const { caption, media } = this.state;
 
 		return (
@@ -41,11 +41,11 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 				avatar={currentUser.avatar}
 				caption={caption}
 				media={media.map((obj: IOptimizedMedia) => obj.path)}
+				dictionary={dictionary}
 				onChangeText={this.onChangeTextHandler}
 				onAddMedia={this.onAddMediaHandler}
 				onCreatePost={this.onCreatePostHandler}
 				onClose={this.onCloseHandler}
-				getText={getText}
 			/>
 		);
 	}
@@ -57,15 +57,15 @@ class Screen extends React.Component<ICreateWallPostScreenProps, ICreateWallPost
 	};
 
 	private onAddMediaHandler = () => {
-		const { showOptionsMenu, getText } = this.props;
+		const { showOptionsMenu, dictionary } = this.props;
 		const menuItems = [
 			{
-				label: getText('new.wall.post.screen.menu.gallery'),
+				label: dictionary.components.modals.options.gallery,
 				icon: 'md-photos',
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
-				label: getText('new.wall.post.screen.menu.photo'),
+				label: dictionary.components.modals.options.camera,
 				icon: 'md-camera',
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},

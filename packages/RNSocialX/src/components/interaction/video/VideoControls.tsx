@@ -2,11 +2,11 @@ import * as React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
 import styles, { defaultColor } from './VideoControls.style';
 
-interface IVideoControlsProps extends ITranslatedProps {
+interface IVideoControlsProps extends IDictionary {
 	showPlayButton: boolean;
 	muted: boolean;
 	playReady: boolean;
@@ -30,7 +30,7 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 	onVideoMuteToggle,
 	onVideoEnterFullScreen,
 	onVideoReplay,
-	getText,
+	dictionary,
 }) => (
 	<React.Fragment>
 		{playReady && !thumbOnly && (
@@ -54,7 +54,9 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 					<View style={styles.darkBackground}>
 						<TouchableOpacity onPress={onVideoReplay}>
 							<Icon name="md-refresh-circle" style={styles.replayIcon} />
-							<Text style={styles.replayVideoText}>{getText('media.types.video.replay')}</Text>
+							<Text style={styles.replayVideoText}>
+								{dictionary.components.buttons.video.replay}
+							</Text>
 						</TouchableOpacity>
 					</View>
 				)}

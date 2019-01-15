@@ -3,11 +3,9 @@ import { Dimensions, ScrollView, StyleSheet } from 'react-native';
 
 import { MediaObjectViewer } from '../';
 import { Sizes } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
-interface IMediaHorizontalScrollerProps extends ITranslatedProps {
+interface IMediaHorizontalScrollerProps {
 	hashes?: string[];
 	paths?: string[];
 }
@@ -23,7 +21,6 @@ const onScrollContentSizeChange = () => {
 export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> = ({
 	hashes,
 	paths,
-	getText,
 }) => (
 	<ScrollView
 		ref={scrollViewRef}
@@ -42,7 +39,6 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 						style.media,
 						{ width: hashes.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8 },
 					]}
-					getText={getText}
 				/>
 			))}
 		{paths &&
@@ -52,11 +48,8 @@ export const MediaHorizontalScroller: React.SFC<IMediaHorizontalScrollerProps> =
 					path={path}
 					style={[
 						style.media,
-						{
-							width: paths.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8,
-						},
+						{ width: paths.length > 1 ? SCREEN_WIDTH * 0.4 : SCREEN_WIDTH * 0.8 },
 					]}
-					getText={getText}
 				/>
 			))}
 	</ScrollView>

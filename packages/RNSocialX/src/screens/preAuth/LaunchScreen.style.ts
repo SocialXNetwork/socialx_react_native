@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-
-import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const style: any = {
 	container: {
@@ -49,10 +48,3 @@ const style: any = {
 };
 
 export default StyleSheet.create(style);
-
-export const customStylesProps = {
-	launchScreenBackground: Images.launch_screen_bg,
-	gradientTextStartColor: Colors.fuchsiaBlue,
-	gradientTextEndColor: Colors.pink,
-	transparentBorderColor: Colors.transparent,
-};

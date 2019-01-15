@@ -1,8 +1,8 @@
-import { IPostReturnData } from '@socialx/api-data';
+import { ICreatePostInput, IPostReturnData } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
 import uuid from 'uuid/v4';
 
-import { IOptimizedMedia } from '../../../types';
+import { ICreatePost, IOptimizedMedia } from '../../../types';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
@@ -289,11 +289,7 @@ const syncCreatePostAction: ActionCreator<ISyncCreatePostAction> = (postId: stri
 	payload: postId,
 });
 
-export const createPost = (post: IPost & { media: IOptimizedMedia[] }): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
+export const createPost = (post: ICreatePost): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuid();
 
 	try {
@@ -340,18 +336,17 @@ export const createPost = (post: IPost & { media: IOptimizedMedia[] }): IThunk =
 			};
 
 			const uploadedFiles = await Promise.all(
-				// TODO: fix the media type
-				media.map((obj: IOptimizedMedia | any) => {
-					const path = () => {
-						if (obj.type.includes('image') && obj.contentOptimizedPath) {
-							return obj.contentOptimizedPath;
-						} else if ((obj.type.includes('gif') || obj.type.includes('video')) && obj.sourceURL) {
-							return obj.sourceURL;
-						} else {
-							return obj.path;
-						}
-					};
-					return storageApi.uploadFile(path(), obj.type, bootstrapStatus, updateStatus);
+				media.map((obj: IOptimizedMedia) => {
+					let path;
+					if (obj.type.includes('image') && obj.optimizedImagePath) {
+						path = obj.optimizedImagePath;
+					} else if ((obj.type.includes('gif') || obj.type.includes('video')) && obj.sourceURL) {
+						path = obj.sourceURL;
+					} else {
+						path = obj.path;
+					}
+
+					return storageApi.uploadFile(path, obj.type, bootstrapStatus, updateStatus);
 				}),
 			);
 
@@ -385,10 +380,11 @@ export const createPost = (post: IPost & { media: IOptimizedMedia[] }): IThunk =
 			}));
 
 			const finalInput = { ...postRest, media: finalMedia };
-			postId = await dataApi.posts.createPost(finalInput as any);
+			postId = await dataApi.posts.createPost(finalInput as ICreatePostInput);
 		} else {
-			postId = await dataApi.posts.createPost(post as any);
+			postId = await dataApi.posts.createPost({ ...post, media: [] });
 		}
+
 		await dispatch(getPostById({ postId }));
 		dispatch(syncCreatePostAction(post.postId));
 	} catch (e) {

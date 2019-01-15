@@ -3,26 +3,29 @@ import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import { Header, ProgressBar } from '../../components';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 
 import styles from './LoadingScreen.style';
 
-interface ILoadingScreenProps extends ITranslatedProps {
+interface ILoadingScreenProps extends IDictionary {
 	loading: {
 		progress: number;
 		message: string;
 	};
 }
 
-export const LoadingScreen: React.SFC<ILoadingScreenProps> = ({ loading, getText }) => (
+export const LoadingScreen: React.SFC<ILoadingScreenProps> = ({
+	loading: { message, progress },
+	dictionary,
+}) => (
 	<SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
 		<Header logo={true} />
 		<View style={styles.top}>
 			<View style={styles.textContainer}>
-				<Text style={styles.text}>{getText(`loading.${loading.message}`)}</Text>
-				<Text style={styles.text}>{loading.progress}%</Text>
+				<Text style={styles.text}>{dictionary.screens.loading[message]}</Text>
+				<Text style={styles.text}>{progress}%</Text>
 			</View>
-			<ProgressBar progress={loading.progress} />
+			<ProgressBar progress={progress} />
 		</View>
 		<View style={styles.separator} />
 		<View style={styles.post}>

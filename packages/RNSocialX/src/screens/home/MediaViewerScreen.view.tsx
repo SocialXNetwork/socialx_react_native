@@ -98,7 +98,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 					onPress={onImagePress}
 					onExit={onExit}
 					style={[styles.media, { width: SCREEN_WIDTH }]}
-					getText={getText}
 				/>
 			)}
 			{data.length > 1 && (
@@ -115,7 +114,6 @@ export const MediaViewerScreenView: React.SFC<IMediaViewerScreenViewProps> = ({
 								onMove={onMove}
 								onPress={onImagePress}
 								style={[styles.media, { width: SCREEN_WIDTH }]}
-								getText={getText}
 							/>
 						)}
 						sliderWidth={SCREEN_WIDTH}

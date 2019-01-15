@@ -1,13 +1,15 @@
-import dictionaryEN from './data/dictionary.en';
-import dictionaryES from './data/dictionary.es';
-import { AvailableLocales, IState } from './Types';
+import english from './data/dictionary.en';
+import spanish from './data/dictionary.es';
+
+import { IState, Locales } from './Types';
 
 const initialState: IState = {
-	currentLocale: AvailableLocales.EN,
+	currentLocale: Locales.EN,
 	dictionary: {
-		[AvailableLocales.EN]: dictionaryEN,
-		[AvailableLocales.ES]: dictionaryES,
+		[Locales.EN]: english,
+		// [Locales.ES]: spanish,
 	},
+	locale: Locales.EN,
 };
 
 export default initialState;

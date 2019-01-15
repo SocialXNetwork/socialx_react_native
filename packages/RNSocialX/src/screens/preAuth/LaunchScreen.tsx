@@ -61,13 +61,15 @@ class Screen extends React.Component<ILaunchScreenProps> {
 			return <View />;
 		}
 		if (this.props.auth && !this.props.globals.logout) {
-			return <LoadingScreen loading={this.props.globals.loading} getText={this.props.getText} />;
+			return (
+				<LoadingScreen loading={this.props.globals.loading} dictionary={this.props.dictionary} />
+			);
 		} else {
 			return (
 				<LaunchScreenView
+					dictionary={this.props.dictionary}
 					onNavigateToLogin={this.onNavigateToLoginHandler}
 					onNavigateToRegister={this.onNavigateToRegisterHandler}
-					getText={this.props.getText}
 				/>
 			);
 		}

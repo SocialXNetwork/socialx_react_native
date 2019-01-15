@@ -7,7 +7,7 @@ import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { ICredentials } from '@socialx/api-data';
-import { IGlobal, ITranslatedProps } from '../../../types';
+import { IDictionary, IGlobal } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -17,13 +17,13 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { resetNavigationToRoute } from '../../helpers';
 
-export interface IWithLaunchEnhancedData {
+export interface IWithLaunchEnhancedData extends IDictionary {
 	globals: IGlobal;
 	applicationInMaintenanceMode: boolean;
 	auth: IAuthData | null;
 }
 
-export interface IWithLaunchEnhancedActions extends ITranslatedProps {
+export interface IWithLaunchEnhancedActions {
 	loadFeed: () => void;
 	login: (creds: ICredentials) => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
@@ -45,7 +45,7 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithGlobals>
 						{({ globals, setGlobal }) => (
 							<WithAuth>
@@ -59,20 +59,21 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 															applicationInMaintenanceMode: false,
 															globals,
 															auth,
+															dictionary,
 														},
 														actions: {
 															loadFeed: async () => {
 																setGlobal({
 																	loading: {
 																		progress: 60,
-																		message: 'posts.global',
+																		message: 'posts',
 																	},
 																});
 																await loadMorePosts();
 																setGlobal({
 																	loading: {
 																		progress: 80,
-																		message: 'posts.friends',
+																		message: 'posts',
 																	},
 																});
 																await loadMoreFriendsPosts();
@@ -80,7 +81,6 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 															login,
 															resetNavigationToRoute,
 															setGlobal,
-															getText,
 														},
 													})
 												}

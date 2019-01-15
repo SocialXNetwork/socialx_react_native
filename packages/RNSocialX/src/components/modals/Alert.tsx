@@ -3,12 +3,12 @@ import { Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { IError, ITranslatedProps } from '../../types';
+import { IDictionary, IError } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
 import styles from './Alert.style';
 
-interface IProps extends ITranslatedProps {
+interface IProps extends IDictionary {
 	errors: IError[];
 }
 
@@ -30,12 +30,12 @@ export class Alert extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate(prevProps: IProps) {
-		const { errors, getText } = this.props;
+		const { errors, dictionary } = this.props;
 
 		if (prevProps.errors !== errors && errors.length > 0 && this.state.error.length === 0) {
-			const error = getText(`error.${errors[0].type}`);
+			if (errors[0].type) {
+				const error = dictionary.errors[errors[0].type];
 
-			if (error) {
 				this.setState({ error, visible: true });
 				this.clearItself();
 			}

@@ -21,6 +21,7 @@ export default (state: IState = initialState, action: IAction): IState => {
 			return {
 				...state,
 				currentLocale: action.payload.locale,
+				locale: action.payload.locale,
 			};
 		}
 

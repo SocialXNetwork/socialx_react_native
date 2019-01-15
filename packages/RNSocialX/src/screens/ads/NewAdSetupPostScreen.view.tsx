@@ -90,7 +90,7 @@ export const NewAdSetupPostScreenView: React.SFC<INewAdSetupPostScreenViewProps>
 						</View>
 						{media.length > 0 && (
 							<View style={styles.mediaContainer}>
-								<MediaHorizontalScroller hashes={media} getText={getText} />
+								<MediaHorizontalScroller hashes={media} />
 							</View>
 						)}
 					</View>

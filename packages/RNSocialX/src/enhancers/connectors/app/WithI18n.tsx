@@ -3,12 +3,15 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { compose, mapProps, withHandlers } from 'recompose';
 import { createSelector } from 'reselect';
 import { IApplicationState } from '../../../store';
-import { getText, IAvailableLocales, ISetLocaleInput, setLocale } from '../../../store/app/i18n';
+import { getText, ILocales, ISetLocaleInput, setLocale } from '../../../store/app/i18n';
 import { ILocaleDictionary } from '../../../store/app/i18n/Types';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
-	currentLocale: IAvailableLocales;
+	currentLocale: ILocales;
+	currentDictionary: ILocaleDictionary;
+	locale: ILocales;
+	dictionary: ILocaleDictionary;
 }
 
 interface IActionProps {
@@ -40,9 +43,15 @@ const selectCurrentDictionary = createSelector(
 	(currentLocale, dictionary) => dictionary[currentLocale],
 );
 
+const selectDictionary = createSelector(
+	(state: IApplicationState) => state.app.i18n.dictionary[state.app.i18n.locale],
+	(dictionary) => dictionary,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
 	currentLocale: selectCurrentLocale(state),
 	currentDictionary: selectCurrentDictionary(state),
+	dictionary: selectDictionary(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
