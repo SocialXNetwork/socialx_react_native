@@ -15,7 +15,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(16),
 		color: Colors.cloudBurst,
-		paddingTop: Sizes.smartVerticalScale(20),
+		paddingTop: Sizes.smartVerticalScale(10),
 		textAlign: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(20),
 	},

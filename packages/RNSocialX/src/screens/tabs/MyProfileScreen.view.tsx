@@ -179,7 +179,10 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 							</View>
 						) : (
-							<NoContent gallery={true} getText={getText} />
+							<React.Fragment>
+								<NoContent gallery={true} getText={getText} />
+								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
+							</React.Fragment>
 						)}
 					</Animated.View>
 				</View>
