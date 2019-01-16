@@ -8,7 +8,6 @@ import styles from './WallPostMedia.style';
 
 interface ISingleMediaPostProps {
 	media: IMedia;
-	noInteraction: boolean;
 	creating: boolean;
 	onMediaObjectView: (index: number) => void;
 	onDoublePress: () => void;
@@ -16,21 +15,20 @@ interface ISingleMediaPostProps {
 
 const SingleMediaPost: React.SFC<ISingleMediaPostProps> = ({
 	media,
-	noInteraction,
 	creating,
 	onMediaObjectView,
 	onDoublePress,
 }) => (
 	<MediaObjectViewer
-		onPress={() => onMediaObjectView(0)}
-		onDoublePress={onDoublePress}
-		thumbOnly={noInteraction}
 		hash={!creating ? media.hash : undefined}
 		// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 		// @ts-ignore
 		path={creating ? media.path : undefined}
-		style={styles.postMediaContainerFullWidth}
+		dimensions={media.dimensions}
 		extension={media.extension}
+		style={styles.fullWidth}
+		onPress={() => onMediaObjectView(0)}
+		onDoublePress={onDoublePress}
 	/>
 );
 interface IDualMediaPostProps {
@@ -40,29 +38,29 @@ interface IDualMediaPostProps {
 }
 
 const DualMediaPost: React.SFC<IDualMediaPostProps> = ({ media, onMediaObjectView, creating }) => (
-	<View style={styles.postMediaContainerFullWidth}>
+	<View style={styles.fullWidth}>
 		<View style={styles.fullHeightHalfWidth}>
 			<MediaObjectViewer
-				onPress={() => onMediaObjectView(0)}
-				thumbOnly={true}
 				hash={!creating ? media[0].hash : undefined}
 				// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 				// @ts-ignore
 				path={creating ? media[0].path : undefined}
-				style={[styles.fullWidthHeight, styles.rightBorder]}
+				dimensions={media[0].dimensions}
 				extension={media[0].extension}
+				style={[styles.fullWidthHeight, styles.rightBorder]}
+				onPress={() => onMediaObjectView(0)}
 			/>
 		</View>
 		<View style={styles.fullHeightHalfWidth}>
 			<MediaObjectViewer
-				onPress={() => onMediaObjectView(1)}
-				thumbOnly={true}
 				hash={!creating ? media[1].hash : undefined}
 				// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 				// @ts-ignore
 				path={creating ? media[1].path : undefined}
-				style={[styles.fullWidthHeight, styles.leftBorder]}
+				dimensions={media[1].dimensions}
 				extension={media[1].extension}
+				style={[styles.fullWidthHeight, styles.leftBorder]}
+				onPress={() => onMediaObjectView(1)}
 			/>
 		</View>
 	</View>
@@ -82,29 +80,29 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 	const remainingMedia = media.length - 3;
 
 	return (
-		<View style={styles.postMediaContainerFullWidth}>
+		<View style={styles.fullWidth}>
 			<View style={styles.fullHeightHalfWidth}>
 				<MediaObjectViewer
-					onPress={() => onMediaObjectView(0)}
-					thumbOnly={true}
 					hash={!creating ? media[0].hash : undefined}
 					// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 					// @ts-ignore
 					path={creating ? media[0].path : undefined}
-					style={[styles.fullWidthHeight, styles.rightBorder]}
+					dimensions={media[0].dimensions}
 					extension={media[0].extension}
+					style={[styles.fullWidthHeight, styles.rightBorder]}
+					onPress={() => onMediaObjectView(0)}
 				/>
 			</View>
 			<View style={[styles.fullHeightHalfWidth, styles.leftBorder]}>
 				<View style={[styles.fullWidthHalfHeight, styles.bottomBorder]}>
 					<MediaObjectViewer
-						onPress={() => onMediaObjectView(1)}
-						thumbOnly={true}
 						hash={!creating ? media[1].hash : undefined}
 						// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 						// @ts-ignore
 						path={creating ? media[1].path : undefined}
+						dimensions={media[1].dimensions}
 						extension={media[1].extension}
+						onPress={() => onMediaObjectView(1)}
 					/>
 				</View>
 				<TouchableOpacity
@@ -113,13 +111,13 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 					onPress={() => onMediaObjectView(2)}
 				>
 					<MediaObjectViewer
-						thumbOnly={true}
 						hash={!creating ? media[2].hash : undefined}
 						// This is because the typing of media will be IOptimizedMedia when displaying the placeholder post
 						// @ts-ignore
 						path={creating ? media[2].path : undefined}
-						style={styles.fullWidthHeight}
+						dimensions={media[0].dimensions}
 						extension={media[2].extension}
+						style={styles.fullWidthHeight}
 					/>
 					{remainingMedia > 0 && (
 						<View style={styles.overlay}>
@@ -134,36 +132,31 @@ const MultiMediaPost: React.SFC<IMultiMediaPostProps> = ({
 
 interface IWallPostMediaProps {
 	media: IMedia[];
+	creating?: boolean;
 	onMediaObjectView: (index: number) => void;
 	onDoublePress: () => void;
-	noInteraction?: boolean;
-	creating?: boolean;
 }
 
 export const WallPostMedia: React.SFC<IWallPostMediaProps> = ({
 	media,
-	noInteraction = false,
 	creating = false,
 	onMediaObjectView,
 	onDoublePress,
-}) => {
-	return (
-		<React.Fragment>
-			{media.length > 2 && (
-				<MultiMediaPost media={media} onMediaObjectView={onMediaObjectView} creating={creating} />
-			)}
-			{media.length === 2 && (
-				<DualMediaPost media={media} onMediaObjectView={onMediaObjectView} creating={creating} />
-			)}
-			{media.length === 1 && (
-				<SingleMediaPost
-					media={media[0]}
-					noInteraction={noInteraction}
-					onMediaObjectView={onMediaObjectView}
-					onDoublePress={onDoublePress}
-					creating={creating}
-				/>
-			)}
-		</React.Fragment>
-	);
-};
+}) => (
+	<React.Fragment>
+		{media.length > 2 && (
+			<MultiMediaPost media={media} onMediaObjectView={onMediaObjectView} creating={creating} />
+		)}
+		{media.length === 2 && (
+			<DualMediaPost media={media} onMediaObjectView={onMediaObjectView} creating={creating} />
+		)}
+		{media.length === 1 && (
+			<SingleMediaPost
+				media={media[0]}
+				creating={creating}
+				onMediaObjectView={onMediaObjectView}
+				onDoublePress={onDoublePress}
+			/>
+		)}
+	</React.Fragment>
+);

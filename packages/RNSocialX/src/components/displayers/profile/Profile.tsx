@@ -9,7 +9,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import { AvatarImage, AvatarName, ButtonSizes, PrimaryButton } from '../../';
 import { PROFILE_TAB_ICON_TYPES } from '../../../environment/consts';
-import { FRIEND_TYPES, ITranslatedProps } from '../../../types';
+import { FRIEND_TYPES, IDictionary } from '../../../types';
 import { Friends, Statistics, Tabs } from './';
 
 import { IWithFriendsEnhancedData, WithFriends } from '../../../enhancers/intermediary';
@@ -18,7 +18,7 @@ import { Colors, Sizes } from '../../../environment/theme';
 import styles from './Profile.style';
 export const BUTTON_WIDTH = Sizes.smartHorizontalScale(150);
 
-interface IProfileProps extends ITranslatedProps {
+interface IProfileProps extends IDictionary {
 	alias: string;
 	avatar: string;
 	fullName: string;
@@ -61,13 +61,17 @@ const Component: React.SFC<IProps> = ({
 	onEditProfile = () => undefined,
 	onSendMessage = () => undefined,
 	onIconPress = () => undefined,
-	getText,
+	dictionary,
 }) => (
 	<View style={styles.container}>
 		<View style={styles.avatarBackground}>
 			<View style={styles.top} />
 			<View style={styles.bottom} />
-			<TouchableOpacity onPress={onProfilePhotoPress} style={styles.avatarContainer}>
+			<TouchableOpacity
+				activeOpacity={1}
+				onPress={onProfilePhotoPress}
+				style={styles.avatarContainer}
+			>
 				<AvatarImage image={avatar} style={styles.avatar} />
 			</TouchableOpacity>
 		</View>
@@ -113,7 +117,7 @@ const Component: React.SFC<IProps> = ({
 			{isCurrentUser && (
 				<PrimaryButton
 					width={BUTTON_WIDTH}
-					label={getText('button.edit.profile')}
+					label={dictionary.components.buttons.editProfile}
 					size={ButtonSizes.Small}
 					borderColor={Colors.pink}
 					textColor={Colors.pink}
@@ -124,7 +128,7 @@ const Component: React.SFC<IProps> = ({
 			{false && (
 				<PrimaryButton
 					width={BUTTON_WIDTH}
-					label={getText('button.message')}
+					label={dictionary.components.buttons.message}
 					size={ButtonSizes.Small}
 					borderColor={Colors.pink}
 					textColor={Colors.white}
@@ -134,7 +138,7 @@ const Component: React.SFC<IProps> = ({
 			)}
 		</View>
 		{friends && (
-			<Friends alias={alias} tabs={tabs} onViewFriends={onViewFriends} getText={getText} />
+			<Friends alias={alias} tabs={tabs} onViewFriends={onViewFriends} dictionary={dictionary} />
 		)}
 		{tabs && <Tabs onIconPress={onIconPress} activeTab={activeTab} />}
 	</View>

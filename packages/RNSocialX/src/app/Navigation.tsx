@@ -232,6 +232,16 @@ const UserProfileStack = createStackNavigator(
 	},
 );
 
+const FriendsListStack = createStackNavigator(
+	{
+		FriendsList: { screen: FriendsListScreen },
+		UserProfile: UserProfileStack,
+	},
+	{
+		headerMode: 'none',
+	},
+);
+
 const HomeWithModalsStack = createStackNavigator(
 	{
 		HomeTabs: { screen: HomeTabs },
@@ -253,7 +263,7 @@ const HomeStack = createStackNavigator(
 		UserProfile: UserProfileStack,
 		Comments: { screen: CommentsScreen },
 		Likes: { screen: LikesScreen },
-		FriendsList: { screen: FriendsListScreen },
+		FriendsList: FriendsListStack,
 		Chat: { screen: ChatScreen },
 	},
 	{

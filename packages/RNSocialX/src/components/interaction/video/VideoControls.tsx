@@ -2,11 +2,12 @@ import * as React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { WithI18n } from '../../../enhancers/connectors/app/WithI18n';
 import { IDictionary } from '../../../types';
 
 import styles, { defaultColor } from './VideoControls.style';
 
-interface IVideoControlsProps extends IDictionary {
+interface IVideoControlsProps {
 	showPlayButton: boolean;
 	muted: boolean;
 	playReady: boolean;
@@ -19,7 +20,9 @@ interface IVideoControlsProps extends IDictionary {
 	onVideoReplay: () => void;
 }
 
-export const VideoControls: React.SFC<IVideoControlsProps> = ({
+interface IProps extends IVideoControlsProps, IDictionary {}
+
+const Component: React.SFC<IProps> = ({
 	showPlayButton,
 	muted,
 	resizeToChangeAspectRatio,
@@ -73,4 +76,8 @@ export const VideoControls: React.SFC<IVideoControlsProps> = ({
 			</View>
 		)}
 	</React.Fragment>
+);
+
+export const VideoControls: React.SFC<IVideoControlsProps> = (props) => (
+	<WithI18n>{({ dictionary }) => <Component {...props} dictionary={dictionary} />}</WithI18n>
 );

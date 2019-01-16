@@ -5,8 +5,9 @@ import uuid from 'uuid/v4';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { setGlobal } from '../../ui/globals';
 import { deleteNotification } from '../notifications';
-import { getUserPosts } from '../posts';
+import { getUserPosts, loadMoreFriendsPosts } from '../posts';
 import {
 	ActionTypes,
 	IAcceptFriendAction,
@@ -167,14 +168,14 @@ const syncGetCurrentProfileAction: ActionCreator<ISyncGetCurrentProfileAction> =
 	payload: input,
 });
 
-export const getCurrentProfile = (initial: boolean = false): IThunk => async (
+export const getCurrentProfile = (init: boolean = false): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	const activityId = uuid();
-	const storeState = getState();
-	const auth = storeState.auth.database.gun;
+	const store = getState();
+	const auth = store.auth.database.gun;
 
 	if (auth && auth.alias) {
 		try {
@@ -187,8 +188,12 @@ export const getCurrentProfile = (initial: boolean = false): IThunk => async (
 			);
 
 			const profile = await context.dataApi.profiles.getCurrentProfile();
-			dispatch(syncGetCurrentProfileAction({ profile, initial }));
-			await dispatch(getUserPosts(profile.alias));
+			dispatch(syncGetCurrentProfileAction({ profile, init }));
+
+			if (init) {
+				await dispatch(getUserPosts(profile.alias));
+				dispatch(setGlobal({ profileLoaded: true }));
+			}
 		} catch (e) {
 			console.log(e);
 			await dispatch(
@@ -221,7 +226,7 @@ const syncGetProfileFriendsAction: ActionCreator<ISyncGetProfileFriendsByAlias> 
 	payload: data,
 });
 
-export const getProfileFriendsByAlias = ({ alias }: { alias: string }): IThunk => async (
+export const getProfileFriendsByAlias = (alias: string): IThunk => async (
 	dispatch,
 	getState,
 	context,
@@ -268,10 +273,14 @@ const syncGetCurrentFriendsAction: ActionCreator<ISyncGetCurrentFriendsAction> =
 	payload: input,
 });
 
-export const getCurrentFriends = (): IThunk => async (dispatch, getState, context) => {
+export const getCurrentFriends = (init: boolean = false): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuid();
-	const state = getState();
-	const { alias } = state.auth.database.gun!;
+	const store = getState();
+	const { alias } = store.auth.database.gun!;
 
 	try {
 		dispatch(getCurrentFriendsAction());
@@ -284,6 +293,11 @@ export const getCurrentFriends = (): IThunk => async (dispatch, getState, contex
 
 		const friends = await context.dataApi.profiles.getCurrentProfileFriends();
 		dispatch(syncGetCurrentFriendsAction({ alias, friends }));
+
+		if (init) {
+			dispatch(setGlobal({ friendsLoaded: true }));
+			dispatch(loadMoreFriendsPosts());
+		}
 	} catch (e) {
 		await dispatch(
 			setError({

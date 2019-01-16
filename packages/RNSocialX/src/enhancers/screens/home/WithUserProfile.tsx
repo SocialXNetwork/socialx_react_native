@@ -7,23 +7,26 @@ import * as React from 'react';
 
 import { ActionTypes as PostActionTypes } from '../../../store/data/posts/Types';
 import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
-import { ITranslatedProps, IVisitedUser } from '../../../types';
-import { getActivity } from '../../helpers';
+import { IDictionary, IVisitedUser } from '../../../types';
+import { getActivities } from '../../helpers';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
+import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithVisitedUserContent } from '../../intermediary';
 
-export interface IWithUserProfileEnhancedData {
+export interface IWithUserProfileEnhancedData extends IDictionary {
 	visitedUser: IVisitedUser;
+	friends: string[];
 	hasFriends: boolean;
 	loadingProfile: boolean;
-	loadingPosts: boolean;
 }
 
-export interface IWithUserProfileEnhancedActions extends ITranslatedProps {
+export interface IWithUserProfileEnhancedActions {
 	getUserProfile: (alias: string) => void;
+	getUserFriends: (alias: string) => void;
+	getUserPosts: (alias: string) => void;
 }
 
 interface IUserProfileEnhancedProps {
@@ -41,33 +44,42 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithProfiles>
-						{({ friends, getProfileByAlias }) => (
+						{({ friends, getProfileByAlias, getProfileFriendsByAlias }) => (
 							<WithActivities>
 								{({ activities }) => (
-									<WithVisitedUserContent>
-										{({ visitedUser }) =>
-											this.props.children({
-												data: {
-													visitedUser,
-													hasFriends:
-														friends[visitedUser.alias] && friends[visitedUser.alias].length > 0,
-													loadingProfile: getActivity(
-														activities,
-														ProfileActionTypes.GET_PROFILE_BY_ALIAS,
-													),
-													loadingPosts: getActivity(activities, PostActionTypes.GET_USER_POSTS),
-												},
-												actions: {
-													getUserProfile: async (alias: string) => {
-														await getProfileByAlias(alias);
-													},
-													getText,
-												},
-											})
-										}
-									</WithVisitedUserContent>
+									<WithPosts>
+										{({ getUserPosts }) => (
+											<WithVisitedUserContent>
+												{({ visitedUser }) =>
+													this.props.children({
+														data: {
+															visitedUser,
+															friends: friends[visitedUser.alias],
+															hasFriends:
+																friends[visitedUser.alias] && friends[visitedUser.alias].length > 0,
+															loadingProfile: getActivities(activities, [
+																ProfileActionTypes.GET_PROFILE_BY_ALIAS,
+																ProfileActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS,
+																PostActionTypes.GET_USER_POSTS,
+															]),
+															dictionary,
+														},
+														actions: {
+															getUserProfile: (alias: string) => {
+																getProfileByAlias(alias);
+																getProfileFriendsByAlias(alias);
+																getUserPosts(alias);
+															},
+															getUserFriends: getProfileFriendsByAlias,
+															getUserPosts,
+														},
+													})
+												}
+											</WithVisitedUserContent>
+										)}
+									</WithPosts>
 								)}
 							</WithActivities>
 						)}

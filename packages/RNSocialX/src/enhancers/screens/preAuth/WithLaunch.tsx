@@ -1,6 +1,6 @@
 /**
  * TODO list:
- * 1. LATER - data props: applicationInMaintenanceMode
+ * 1. LATER - data props: maintenance
  */
 
 import * as React from 'react';
@@ -13,18 +13,16 @@ import { IAuthData } from '../../../store/auth/gun';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
-import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { resetNavigationToRoute } from '../../helpers';
 
 export interface IWithLaunchEnhancedData extends IDictionary {
 	globals: IGlobal;
-	applicationInMaintenanceMode: boolean;
+	maintenance: boolean;
 	auth: IAuthData | null;
 }
 
 export interface IWithLaunchEnhancedActions {
-	loadFeed: () => void;
 	login: (creds: ICredentials) => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 	setGlobal: (global: IGlobal) => void;
@@ -51,41 +49,21 @@ export class WithLaunch extends React.Component<IWithLaunchProps, IWithLaunchSta
 							<WithAuth>
 								{({ auth }) => (
 									<WithAccounts>
-										{({ login }) => (
-											<WithPosts>
-												{({ loadMorePosts, loadMoreFriendsPosts }) =>
-													this.props.children({
-														data: {
-															applicationInMaintenanceMode: false,
-															globals,
-															auth,
-															dictionary,
-														},
-														actions: {
-															loadFeed: async () => {
-																setGlobal({
-																	loading: {
-																		progress: 60,
-																		message: 'posts',
-																	},
-																});
-																await loadMorePosts();
-																setGlobal({
-																	loading: {
-																		progress: 80,
-																		message: 'posts',
-																	},
-																});
-																await loadMoreFriendsPosts();
-															},
-															login,
-															resetNavigationToRoute,
-															setGlobal,
-														},
-													})
-												}
-											</WithPosts>
-										)}
+										{({ login }) =>
+											this.props.children({
+												data: {
+													maintenance: false,
+													globals,
+													auth,
+													dictionary,
+												},
+												actions: {
+													login,
+													resetNavigationToRoute,
+													setGlobal,
+												},
+											})
+										}
 									</WithAccounts>
 								)}
 							</WithAuth>

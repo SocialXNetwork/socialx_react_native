@@ -76,7 +76,7 @@ export interface IUpdateProfileInput {
 
 export interface IGetCurrentProfileInput {
 	profile: IFriendData;
-	initial: boolean;
+	init: boolean;
 }
 
 export const enum ActionTypes {

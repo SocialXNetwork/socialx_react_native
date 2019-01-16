@@ -36,8 +36,8 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	loadMorePosts: () => void;
-	loadMoreFriendsPosts: () => void;
+	loadMorePosts: (init?: boolean) => void;
+	loadMoreFriendsPosts: (init?: boolean) => void;
 	getUserPosts: (alias: string) => void;
 	getPostByPath: (getPostByPathInput: IPostPathInput) => void;
 	createPost: (post: ICreatePost) => void;
@@ -99,8 +99,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	loadMorePosts: () => dispatch(loadMorePosts()),
-	loadMoreFriendsPosts: () => dispatch(loadMoreFriendsPosts()),
+	loadMorePosts: (init: boolean) => dispatch(loadMorePosts(init)),
+	loadMoreFriendsPosts: (init: boolean) => dispatch(loadMoreFriendsPosts(init)),
 	getUserPosts: (alias: string) => dispatch(getUserPosts(alias)),
 	getPostByPath: (getPostPathInput: IPostPathInput) => dispatch(getPostByPath(getPostPathInput)),
 	createPost: (post: ICreatePost) => dispatch(createPost(post)),

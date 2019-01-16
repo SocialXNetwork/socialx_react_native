@@ -16,23 +16,21 @@ import { DataProvider } from 'recyclerlistview';
 import {
 	Header,
 	HeaderButton,
-	Loader,
 	NoContent,
 	Profile,
 	ProfilePhotoGrid,
 	WallPost,
 } from '../../components';
 import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { INavigationProps, ITranslatedProps, IVisitedUser } from '../../types';
+import { IDictionary, INavigationProps, IVisitedUser } from '../../types';
 
 import { Colors } from '../../environment/theme';
 import styles from './UserProfileScreen.style';
 
-interface IUserProfileScreenViewProps extends INavigationProps, ITranslatedProps {
+interface IUserProfileScreenViewProps extends INavigationProps, IDictionary {
 	visitedUser: IVisitedUser;
 	hasFriends: boolean;
 	loadingProfile: boolean;
-	loadingPosts: boolean;
 	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
@@ -52,7 +50,6 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	visitedUser,
 	hasFriends,
 	loadingProfile,
-	loadingPosts,
 	dataProvider,
 	listTranslate,
 	gridTranslate,
@@ -67,7 +64,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	onViewFriends,
 	onGoBack,
 	navigation,
-	getText,
+	dictionary,
 }) => {
 	const {
 		alias,
@@ -97,7 +94,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 		<View style={styles.container}>
 			<View style={styles.headerContainer}>
 				<Header
-					title={getText('user.profile.screen.title')}
+					title={dictionary.screens.userProfile.title}
 					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 				/>
 			</View>
@@ -112,7 +109,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 						progressBackgroundColor={Colors.white}
 					/>
 				}
-				scrollEnabled={!loadingPosts}
+				scrollEnabled={!loadingProfile}
 				scrollEventThrottle={100}
 				onScroll={onLoadMorePhotos}
 			>
@@ -133,31 +130,28 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 					onProfilePhotoPress={onProfilePhotoPress}
 					onIconPress={onIconPress}
 					onViewFriends={onViewFriends}
-					getText={getText}
+					dictionary={dictionary}
 				/>
 				<View style={contentContainerStyle}>
 					<Animated.View
 						style={[styles.postsContainer, { transform: [{ translateX: listTranslate }] }]}
 					>
-						{loadingPosts ? (
-							<View style={styles.loader}>
-								<Loader visible={true} />
-							</View>
-						) : (
-							<FlatList
-								windowSize={10}
-								data={postIds}
-								keyExtractor={(id) => id}
-								renderItem={(data) => (
-									<View style={styles.post}>
-										<WallPost postId={data.item} commentInput={false} navigation={navigation} />
-									</View>
-								)}
-								scrollEnabled={false}
-								showsVerticalScrollIndicator={false}
-								ListEmptyComponent={<NoContent posts={true} getText={getText} />}
-							/>
-						)}
+						<FlatList
+							windowSize={10}
+							data={postIds}
+							keyExtractor={(id) => id}
+							renderItem={(data) => (
+								<View style={styles.post}>
+									<WallPost postId={data.item} commentInput={false} navigation={navigation} />
+								</View>
+							)}
+							scrollEnabled={false}
+							showsVerticalScrollIndicator={false}
+							ListEmptyComponent={
+								<NoContent loading={loadingProfile} posts={true} dictionary={dictionary} />
+							}
+						/>
+
 						{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 					</Animated.View>
 					<Animated.View
@@ -179,7 +173,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							</View>
 						) : (
 							<React.Fragment>
-								<NoContent gallery={true} getText={getText} />
+								<NoContent loading={loadingProfile} gallery={true} dictionary={dictionary} />
 								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 							</React.Fragment>
 						)}

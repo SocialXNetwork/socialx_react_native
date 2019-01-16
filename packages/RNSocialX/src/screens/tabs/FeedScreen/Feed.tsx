@@ -2,14 +2,12 @@ import { delay } from 'lodash';
 import * as React from 'react';
 import { AsyncStorage, Dimensions, FlatList, Platform, View } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { withNavigation } from 'react-navigation';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
 
-import { FeedListView } from './FeedList.view';
-
 import { IWithFeedEnhancedActions, IWithFeedEnhancedData } from '../../../enhancers/screens';
+import { FeedView } from './Feed.view';
 
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
 const BASELINE_SCREEN_HEIGHT = 667;
@@ -27,7 +25,7 @@ interface IState {
 	scrollY: number;
 }
 
-export class FeedList extends React.Component<IProps, IState> {
+export class Feed extends React.Component<IProps, IState> {
 	public state = {
 		loaded: false,
 		scrollY: 0,
@@ -57,20 +55,20 @@ export class FeedList extends React.Component<IProps, IState> {
 			currentUser,
 			postIds,
 			shareMessage,
-			canLoadMore,
-			refreshingFeed,
-			loadingMorePosts,
+			canLoad,
+			refreshing,
+			loading,
 			navigation,
 			getText,
 		} = this.props;
 
 		return (
-			<FeedListView
+			<FeedView
 				postIds={postIds}
 				avatar={currentUser.avatar}
-				refreshing={refreshingFeed}
-				canLoadMorePosts={canLoadMore}
-				loadingMorePosts={loadingMorePosts}
+				refreshing={refreshing}
+				loading={loading}
+				canLoad={canLoad}
 				shareMessage={shareMessage}
 				listRef={this.listRef}
 				postContainerRef={this.postContainerRef}
@@ -86,17 +84,17 @@ export class FeedList extends React.Component<IProps, IState> {
 	}
 
 	private onLoadMorePostsHandler = async () => {
-		const { refreshingFeed, loadingMorePosts, loadMorePosts } = this.props;
+		const { refreshing, loading, loadMorePosts } = this.props;
 
-		if (!loadingMorePosts && !refreshingFeed) {
+		if (!loading && !refreshing) {
 			await loadMorePosts();
 		}
 	};
 
 	private onRefreshHandler = async () => {
-		const { refreshingFeed, loadingMorePosts, refreshFeed } = this.props;
+		const { refreshing, loading, refreshFeed } = this.props;
 
-		if (!refreshingFeed && !loadingMorePosts) {
+		if (!refreshing && !loading) {
 			await refreshFeed();
 		}
 	};

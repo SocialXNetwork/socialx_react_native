@@ -11,6 +11,7 @@ import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environmen
 import { ILocaleDictionary } from './store/app/i18n/Types';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
+export { IGlobal } from './store/ui/globals';
 
 export interface IFriendsSearchResult {
 	id: string;
@@ -47,10 +48,6 @@ export interface IDictionary {
 
 export interface ITranslatedProps {
 	getText: getTextSignature;
-}
-
-export interface IGlobal {
-	[name: string]: any;
 }
 
 export interface IError {
@@ -137,6 +134,10 @@ export interface IMedia {
 	extension: string;
 	size: number;
 	postId?: string;
+	dimensions?: {
+		width: number;
+		height: number;
+	};
 }
 
 export interface IOptimizedMedia extends PickerImage {

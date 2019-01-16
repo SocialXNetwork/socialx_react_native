@@ -5,10 +5,9 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import * as mime from 'react-native-mime-types';
 
 import { WithConfig } from '../../enhancers/connectors/app/WithConfig';
-import { WithI18n } from '../../enhancers/connectors/app/WithI18n';
 
 import { IVideoOptions, TouchableWithDoublePress, VideoPlayer } from '../';
-import { IDictionary, IMediaTypes, IOnMove, MediaTypeImage, MediaTypeVideo } from '../../types';
+import { IMediaTypes, IOnMove, MediaTypeImage, MediaTypeVideo } from '../../types';
 
 import styles from './MediaObjectViewer.style';
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -16,6 +15,10 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 interface IMediaObjectViewerProps extends IVideoOptions {
 	hash?: string;
 	path?: string;
+	dimensions?: {
+		width: number;
+		height: number;
+	};
 	extension?: string;
 	fullscreen?: boolean;
 	type?: IMediaTypes;
@@ -28,7 +31,7 @@ interface IMediaObjectViewerProps extends IVideoOptions {
 	onExit?: () => void;
 }
 
-interface IProps extends IMediaObjectViewerProps, IDictionary {
+interface IProps extends IMediaObjectViewerProps {
 	IPFS_URL: string;
 }
 
@@ -44,25 +47,30 @@ class Component extends React.Component<IProps, IState> {
 	constructor(props: IProps) {
 		super(props);
 
-		const { hash, path, type, extension, IPFS_URL } = props;
+		const { dimensions, hash, path, type, extension, IPFS_URL } = props;
 		const uri = path ? path : IPFS_URL + hash;
 
 		this.state = {
-			image: { width: 0, height: 0 },
+			image: {
+				width: dimensions ? dimensions.width : 0,
+				height: dimensions ? dimensions.height : 0,
+			},
 			uri,
 			mimeType: this.getMimeType(uri, type, extension),
 		};
 	}
 
 	public componentDidMount() {
-		const { uri, mimeType } = this.state;
+		if (this.state.image.height === 0 && this.state.image.width === 0) {
+			const { uri, mimeType } = this.state;
 
-		if (this.props.hash && mimeType.startsWith(MediaTypeImage.key)) {
-			Image.getSize(
-				uri,
-				(width, height) => this.setState({ image: { width, height } }),
-				(e) => console.log(e),
-			);
+			if (this.props.hash && mimeType.startsWith(MediaTypeImage.key)) {
+				Image.getSize(
+					uri,
+					(width, height) => this.setState({ image: { width, height } }),
+					(e) => console.log(e),
+				);
+			}
 		}
 	}
 
@@ -78,7 +86,6 @@ class Component extends React.Component<IProps, IState> {
 			defaultScale,
 			resizeMode,
 			style,
-			dictionary,
 			onPress,
 			onDoublePress,
 			onMove,
@@ -137,12 +144,7 @@ class Component extends React.Component<IProps, IState> {
 					</TouchableWithDoublePress>
 				)}
 				{mimeType && mimeType.startsWith(MediaTypeVideo.key) && (
-					<VideoPlayer
-						uri={uri}
-						resizeMode={resizeMode}
-						containerStyle={style}
-						dictionary={dictionary}
-					/>
+					<VideoPlayer uri={uri} resizeMode={resizeMode} containerStyle={style} />
 				)}
 			</React.Fragment>
 		);
@@ -171,13 +173,7 @@ class Component extends React.Component<IProps, IState> {
 }
 
 export const MediaObjectViewer: React.SFC<IMediaObjectViewerProps> = (props) => (
-	<WithI18n>
-		{({ dictionary }) => (
-			<WithConfig>
-				{({ appConfig }) => (
-					<Component IPFS_URL={appConfig.ipfsConfig.ipfs_URL} dictionary={dictionary} {...props} />
-				)}
-			</WithConfig>
-		)}
-	</WithI18n>
+	<WithConfig>
+		{({ appConfig }) => <Component IPFS_URL={appConfig.ipfsConfig.ipfs_URL} {...props} />}
+	</WithConfig>
 );

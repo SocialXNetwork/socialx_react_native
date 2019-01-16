@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Colors, colorWithAlpha, Fonts, Sizes } from '../../../environment/theme';
 
 const styles: any = {
-	postMediaContainerFullWidth: {
+	fullWidth: {
 		width: '100%',
 		height: Sizes.smartVerticalScale(254),
 		flexDirection: 'row',
@@ -31,13 +31,6 @@ const styles: any = {
 		...Fonts.centuryGothicBold,
 		fontSize: Sizes.smartHorizontalScale(24),
 		color: Colors.white,
-	},
-	placeholder: {
-		backgroundColor: Colors.cloudBurst,
-		width: '100%',
-		height: '100%',
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	rightBorder: {
 		borderRightWidth: 1,

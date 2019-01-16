@@ -56,7 +56,6 @@ class Screen extends React.Component<IProps, IState> {
 			this.state.containerHeight !== nextState.containerHeight ||
 			this.props.hasFriends !== nextProps.hasFriends ||
 			this.props.loadingProfile !== nextProps.loadingProfile ||
-			this.props.loadingPosts !== nextProps.loadingPosts ||
 			!isEqual(this.props.currentUser, nextProps.currentUser)
 		);
 	}
@@ -72,10 +71,9 @@ class Screen extends React.Component<IProps, IState> {
 			currentUser,
 			hasFriends,
 			loadingProfile,
-			loadingPosts,
 			navigation,
 			onViewFriends,
-			getText,
+			dictionary,
 		} = this.props;
 		const { dataProvider, activeTab, listTranslate, gridTranslate, containerHeight } = this.state;
 
@@ -84,7 +82,6 @@ class Screen extends React.Component<IProps, IState> {
 				currentUser={currentUser}
 				hasFriends={hasFriends}
 				loadingProfile={loadingProfile}
-				loadingPosts={loadingPosts}
 				dataProvider={dataProvider}
 				listTranslate={listTranslate}
 				gridTranslate={gridTranslate}
@@ -101,15 +98,15 @@ class Screen extends React.Component<IProps, IState> {
 				onShowOptionsMenu={this.onShowOptionsMenuHandler}
 				onViewFriends={onViewFriends}
 				navigation={navigation}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		);
 	}
 
 	private onRefreshHandler = async () => {
-		const { loadingProfile, loadingPosts, getUserProfile } = this.props;
+		const { loadingProfile, getUserProfile } = this.props;
 
-		if (!loadingProfile && !loadingPosts) {
+		if (!loadingProfile) {
 			await getUserProfile();
 		}
 	};
@@ -121,21 +118,21 @@ class Screen extends React.Component<IProps, IState> {
 			setGlobal,
 			navigation,
 			resetNavigationToRoute,
-			getText,
+			dictionary,
 		} = this.props;
 		const menuItems = [
 			{
-				label: getText('my.profile.screen.menu.wallet'),
+				label: dictionary.screens.myProfile.wallet,
 				icon: 'ios-wallet',
 				actionHandler: () => navigation.navigate(SCREENS.WalletActivity),
 			},
 			{
-				label: getText('my.profile.screen.menu.settings'),
+				label: dictionary.screens.myProfile.settings,
 				icon: 'ios-settings',
 				actionHandler: () => navigation.navigate(SCREENS.Settings),
 			},
 			{
-				label: getText('my.profile.screen.menu.logout'),
+				label: dictionary.screens.myProfile.logout,
 				icon: 'ios-log-out',
 				actionHandler: () => {
 					setGlobal({ logout: true });

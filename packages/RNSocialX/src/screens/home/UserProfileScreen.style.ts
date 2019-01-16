@@ -31,9 +31,6 @@ const styles: any = {
 		minHeight: 1,
 		width: '100%',
 	},
-	loader: {
-		paddingTop: Sizes.smartVerticalScale(15),
-	},
 	spacer: {
 		backgroundColor: Colors.white,
 		height: SCREEN_HEIGHT,

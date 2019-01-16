@@ -62,6 +62,23 @@ export interface ILocaleDictionary {
 		createPost: {
 			title: string;
 		};
+		userProfile: {
+			title: string;
+			posts: string;
+			gallery: string;
+		};
+		myProfile: {
+			title: string;
+			posts: string;
+			gallery: string;
+			analytics: string;
+			wallet: string;
+			settings: string;
+			logout: string;
+		};
+		friends: {
+			title: string;
+		};
 	};
 	components: {
 		buttons: {
@@ -70,6 +87,9 @@ export interface ILocaleDictionary {
 			video: {
 				replay: string;
 			};
+			seeAllFriends: string;
+			editProfile: string;
+			message: string;
 		};
 		inputs: {
 			placeholders: {

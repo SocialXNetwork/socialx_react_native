@@ -10,7 +10,6 @@ import {
 import Video from 'react-native-video';
 
 import { OS_TYPES } from '../../../environment/consts';
-import { IDictionary } from '../../../types';
 import { VideoControls } from './';
 
 import styles from './VideoPlayer.style';
@@ -20,7 +19,7 @@ export interface IVideoOptions {
 	thumbOnly?: boolean;
 }
 
-interface IVideoPlayerProps extends IVideoOptions, IDictionary {
+interface IVideoPlayerProps extends IVideoOptions {
 	muted?: boolean;
 	uri: string;
 	replayVideo?: boolean;
@@ -65,7 +64,7 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 	private playerRef: React.RefObject<Video> = React.createRef();
 
 	public render() {
-		const { thumbOnly, containerStyle, uri, resizeMode, dictionary } = this.props;
+		const { thumbOnly, containerStyle, uri, resizeMode } = this.props;
 		const { fullScreen, playReady, muted, paused, replayVideo } = this.state;
 
 		const showPlayButton = paused;
@@ -100,7 +99,6 @@ export class VideoPlayer extends React.Component<IVideoPlayerProps, IVideoPlayer
 						onVideoMuteToggle={this.onVideoMuteToggleHandler}
 						onVideoEnterFullScreen={this.onVideoEnterFullScreenHandler}
 						onVideoReplay={this.onVideoReplayHandler}
-						dictionary={dictionary}
 					/>
 				</View>
 			</TouchableWithoutFeedback>

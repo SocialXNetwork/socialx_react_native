@@ -23,7 +23,7 @@ export const Component: React.SFC<IProps> = ({ avatar, index, spacey }) => {
 		return (
 			<AvatarImage
 				image={avatar}
-				style={[styles.avatar, { transform: [{ translateX: -(index + 1) * multiplicator }] }]}
+				style={[styles.avatar, { transform: [{ translateX: -index * multiplicator }] }]}
 			/>
 		);
 	}

@@ -6,6 +6,7 @@ import { ICreatePost, IOptimizedMedia } from '../../../types';
 import { setUploadStatus } from '../../storage/files';
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
+import { setGlobal } from '../../ui/globals';
 import { loadCommentsAction } from '../comments';
 import { addPostsToProfile, getProfilesByPosts, removePostFromProfile } from '../profiles';
 import {
@@ -141,7 +142,11 @@ const syncLoadMorePostsAction: ActionCreator<ISyncLoadMorePostsAction> = (
 	payload: input,
 });
 
-export const loadMorePosts = (): IThunk => async (dispatch, getState, context) => {
+export const loadMorePosts = (init: boolean = false): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuid();
 
 	try {
@@ -161,6 +166,10 @@ export const loadMorePosts = (): IThunk => async (dispatch, getState, context) =
 
 		dispatch(loadCommentsAction(data.posts));
 		dispatch(syncLoadMorePostsAction(data));
+
+		if (init) {
+			dispatch(setGlobal({ postsLoaded: true }));
+		}
 	} catch (e) {
 		await dispatch(
 			setError({
@@ -189,7 +198,11 @@ const syncLoadMoreFriendsPostsAction: ActionCreator<ISyncLoadMoreFriendsPostsAct
 	payload: input,
 });
 
-export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, context) => {
+export const loadMoreFriendsPosts = (init: boolean = false): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	const activityId = uuid();
 
 	try {
@@ -206,9 +219,12 @@ export const loadMoreFriendsPosts = (): IThunk => async (dispatch, getState, con
 
 		const data = await context.dataApi.posts.loadMoreFriendsPosts({ nextToken, limit: 5 });
 		await dispatch(getProfilesByPosts(data.posts));
-
 		dispatch(loadCommentsAction(data.posts));
 		dispatch(syncLoadMoreFriendsPostsAction(data));
+
+		if (init) {
+			dispatch(setGlobal({ friendsPostsLoaded: true }));
+		}
 	} catch (e) {
 		await dispatch(
 			setError({

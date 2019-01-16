@@ -36,10 +36,10 @@ class OfflineHandler extends React.Component<IOfflineHandlers> {
 
 const EnhancedOfflineHandler: React.SFC<{}> = (props) => (
 	<WithGlobals>
-		{(globalsProps) => (
+		{({ setGlobal }) => (
 			<OfflineHandler
 				connectionStatusUpdated={(offline) => {
-					globalsProps.setGlobal({ offline });
+					setGlobal({ offline });
 				}}
 			>
 				{props.children}

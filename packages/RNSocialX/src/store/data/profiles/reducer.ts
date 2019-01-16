@@ -10,10 +10,10 @@ export default (state: IState = initialState, action: IAction): IState => {
 		}
 
 		case ActionTypes.SYNC_GET_CURRENT_PROFILE: {
-			const { initial } = action.payload;
+			const { init } = action.payload;
 			let { profile } = action.payload;
 
-			if (!initial && state.profiles[profile.alias].posts.length > 0) {
+			if (!init && state.profiles[profile.alias].posts.length > 0) {
 				profile = {
 					...profile,
 					posts: [...state.profiles[profile.alias].posts],
@@ -29,11 +29,11 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
-		case ActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS: {
+		case ActionTypes.GET_CURRENT_FRIENDS: {
 			return state;
 		}
 
-		case ActionTypes.SYNC_GET_PROFILE_FRIENDS_BY_ALIAS: {
+		case ActionTypes.SYNC_GET_CURRENT_FRIENDS: {
 			const { friends, alias } = action.payload;
 
 			const profiles = { ...state.profiles };
@@ -112,11 +112,11 @@ export default (state: IState = initialState, action: IAction): IState => {
 			};
 		}
 
-		case ActionTypes.GET_CURRENT_FRIENDS: {
+		case ActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS: {
 			return state;
 		}
 
-		case ActionTypes.SYNC_GET_CURRENT_FRIENDS: {
+		case ActionTypes.SYNC_GET_PROFILE_FRIENDS_BY_ALIAS: {
 			const { friends, alias } = action.payload;
 
 			const profiles = { ...state.profiles };

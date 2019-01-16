@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Animated } from 'react-native';
 
 import { getTextMock, posts } from '../../../../src/mocks';
-import { FeedListView } from '../../../../src/screens/tabs/FeedScreen/FeedList.view';
+import { FeedView } from '../../../../src/screens/tabs/FeedScreen/Feed.view';
 
 storiesOf('Screens/mainTabNav', module)
 	.addDecorator(withKnobs)
@@ -17,7 +17,7 @@ storiesOf('Screens/mainTabNav', module)
 		const shareSectionPlaceholder = text('shareSectionPlaceholder', 'Lorem ipsum dolor sit amet.');
 
 		return (
-			<FeedListView
+			<FeedView
 				avatarImage={avatar}
 				posts={posts}
 				refreshing={refreshing}

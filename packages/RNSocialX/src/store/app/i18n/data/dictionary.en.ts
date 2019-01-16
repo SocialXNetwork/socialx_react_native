@@ -35,12 +35,29 @@ export default {
 		},
 		loading: {
 			'login': 'Signing you in',
-			'profile': 'Syncing nodes',
-			'friends': 'Syncing profiles and friends',
+			'nodes': 'Syncing nodes',
+			'profiles': 'Syncing profiles',
 			'posts': 'Syncing posts',
 		},
 		createPost: {
 			title: 'Create post',
+		},
+		userProfile: {
+			title: 'Profile',
+			posts: "User doesn't have any posts.",
+			gallery: "User's photo gallery is empty.",
+		},
+		myProfile: {
+			title: 'Profile',
+			posts: "You don't have any posts.",
+			gallery: 'Your photo gallery is empty.',
+			analytics: 'Profile analytics',
+			wallet: 'Wallet',
+			settings: 'Settings',
+			logout: 'Logout',
+		},
+		friends: {
+			title: 'Friends',
 		}
 	},
 	components: {
@@ -49,7 +66,10 @@ export default {
 			createPost: 'Create post',
 			video: {
 				replay: 'Watch again'
-			}
+			},
+			seeAllFriends: 'See all friends',
+			editProfile: 'Edit profile',
+			message: 'Message'
 
 		},
 		inputs: {
@@ -62,7 +82,7 @@ export default {
 				gallery: 'Pick from gallery',
 				camera: 'Open camera',
 			}
-		}
+		},
 	},
 	'button.OK': 'OK',
 	'button.confirm': 'Confirm',
@@ -87,8 +107,6 @@ export default {
 	'button.friends': 'Friends',
 	'button.add.friend': 'Add friend',
 	'button.undo': 'Undo',
-	'button.edit.profile': 'Edit profile',
-	'button.message': 'Message',
 	'text.and': 'and',
 	'text.with': 'with',
 	'text.others': 'others',
@@ -210,24 +228,6 @@ export default {
 	'notifications.card.group.request.title': 'Invited you to',
 	'notifications.card.generic.hide.notification': 'Hide notification?',
 	'notifications.card.generic.swipeout.label': 'Dismiss',
-	'my.profile.screen.title': 'profile',
-	'my.profile.screen.menu.profile.analytics': 'Profile Analytics',
-	'my.profile.screen.menu.wallet': 'Wallet',
-	'my.profile.screen.menu.settings': 'Settings',
-	'my.profile.screen.menu.logout': 'Logout',
-	'my.profile.screen.refresh.failed': 'Could not refresh your profile',
-	'my.profile.screen.empty.posts': "You don't have any posts.",
-	'my.profile.screen.empty.gallery': 'Your photo gallery is empty.',
-	'my.profile.screen.statistics.posts': 'POSTS',
-	'my.profile.screen.statistics.friends': 'FRIENDS',
-	'friends.screen.title': 'FRIENDS',
-	'user.profile.screen.title': 'PROFILE',
-	'user.profile.screen.refresh.failed': 'Could not refresh user profile',
-	'user.profile.screen.empty.posts': "User doesn't have any posts.",
-	'user.profile.screen.empty.gallery': "User's photo gallery is empty.",
-	'user.profile.screen.about.me': 'ABOUT ME',
-	'user.profile.screen.recent.posts': 'RECENT POSTS',
-	'user.profile.screen.friends': 'See all friends',
 	'referral.screen.title': 'referral system',
 	'referral.screen.referrals': 'Total referrals',
 	'referral.screen.socx': 'SOCX earned through referrals',

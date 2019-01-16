@@ -14,6 +14,7 @@ import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
 import { setGlobal } from '../../ui/globals';
 import { hookNotifications } from '../notifications';
+import { loadMorePosts } from '../posts';
 import { getCurrentFriends, getCurrentProfile } from '../profiles';
 import {
 	ActionTypes,
@@ -42,6 +43,7 @@ const syncGetCurrentAccountAction: ActionCreator<ISyncGetCurrentAccountAction> =
 
 export const getCurrentAccount = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
+
 	try {
 		dispatch(getCurrentAccountAction());
 		await dispatch(
@@ -52,9 +54,11 @@ export const getCurrentAccount = (): IThunk => async (dispatch, getState, contex
 		);
 		const { dataApi, bugsnag } = context;
 		const account = await dataApi.accounts.getCurrentAccount();
+
 		dispatch(syncGetCurrentAccountAction(account));
 		await dispatch(setGunAuth({ alias: account.alias, pub: account.pub }));
 		await dispatch(getCurrentProfile(true));
+
 		// if (bugsnag) {
 		// 	bugsnag.setUser(account.pub, account.alias, account.profile[account.alias].email);
 		// 	const accounts: any = { ...getState().data.accounts.accounts };
@@ -232,8 +236,8 @@ const loginAction: ActionCreator<ILoginAction> = (credentials: ICredentials) => 
 });
 
 export const login = (credentials: ICredentials): IThunk => async (dispatch, getState, context) => {
-	const state = getState();
-	const auth = state.auth.database.gun;
+	const store = getState();
+	const auth = store.auth.database.gun;
 	const activityId = uuidv4();
 
 	try {
@@ -251,28 +255,10 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 				alias: credentials.username,
 			}),
 		);
-
-		await dispatch(
-			setGlobal({
-				loading: {
-					progress: 20,
-					message: 'profile',
-				},
-			}),
-		);
-
-		await dispatch(getCurrentAccount());
-
-		await dispatch(
-			setGlobal({
-				loading: {
-					progress: 40,
-					message: 'friends',
-				},
-			}),
-		);
-
-		await dispatch(getCurrentFriends());
+		dispatch(setGlobal({ accountLoaded: true }));
+		dispatch(getCurrentAccount());
+		dispatch(getCurrentFriends(true));
+		dispatch(loadMorePosts(true));
 		await dispatch(endActivity({ uuid: activityId }));
 		// debounce hook
 		dispatch(hookNotifications());

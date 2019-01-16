@@ -41,6 +41,7 @@ interface IActionProps {
 	getCurrentProfile: () => void;
 	getCurrentFriends: () => void;
 	getProfileByAlias: (alias: string) => void;
+	getProfileFriendsByAlias: (alias: string) => void;
 	updateCurrentProfile: (input: IUpdateProfileInput) => void;
 	addFriend: (input: IAliasInput) => void;
 	removeFriend: (input: IAliasInput) => void;
@@ -50,7 +51,6 @@ interface IActionProps {
 	searchForProfiles: (input: ISearchInput) => void;
 	searchForProfilesLocally: (input: ISearchWithAliasInput) => void;
 	clearSearchResults: () => void;
-	getProfileFriendsByAlias: (input: { alias: string }) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -91,6 +91,7 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getCurrentProfile: () => dispatch(getCurrentProfile()),
 	getCurrentFriends: () => dispatch(getCurrentFriends()),
 	getProfileByAlias: (alias: string) => dispatch(getProfileByAlias(alias)),
+	getProfileFriendsByAlias: (alias: string) => dispatch(getProfileFriendsByAlias(alias)),
 	updateCurrentProfile: (input: IUpdateProfileInput) => dispatch(updateCurrentProfile(input)),
 	addFriend: (input: IAliasInput) => dispatch(addFriend(input)),
 	removeFriend: (input: IAliasInput) => dispatch(removeFriend(input)),
@@ -102,7 +103,6 @@ const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	searchForProfilesLocally: (input: ISearchWithAliasInput) =>
 		dispatch(searchForProfilesLocally(input)),
 	clearSearchResults: () => dispatch(clearSearchResults()),
-	getProfileFriendsByAlias: (input: { alias: string }) => dispatch(getProfileFriendsByAlias(input)),
 });
 
 export const WithProfiles: ConnectedComponentClass<JSX.Element, IChildren> = connect(

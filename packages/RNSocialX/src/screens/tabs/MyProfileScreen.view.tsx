@@ -23,16 +23,15 @@ import {
 	WallPost,
 } from '../../components';
 import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
-import { ICurrentUser, INavigationProps, ITranslatedProps } from '../../types';
+import { ICurrentUser, IDictionary, INavigationProps } from '../../types';
 
 import { Colors, Icons } from '../../environment/theme';
 import styles from './MyProfileScreen.style';
 
-interface IMyProfileScreenViewProps extends ITranslatedProps, INavigationProps {
+interface IMyProfileScreenViewProps extends IDictionary, INavigationProps {
 	currentUser: ICurrentUser;
 	hasFriends: boolean;
 	loadingProfile: boolean;
-	loadingPosts: boolean;
 	dataProvider: DataProvider;
 	listTranslate: AnimatedValue;
 	gridTranslate: AnimatedValue;
@@ -54,7 +53,6 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	currentUser,
 	hasFriends,
 	loadingProfile,
-	loadingPosts,
 	dataProvider,
 	listTranslate,
 	gridTranslate,
@@ -71,7 +69,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	onShowOptionsMenu,
 	onViewFriends,
 	navigation,
-	getText,
+	dictionary,
 }) => {
 	const {
 		alias,
@@ -96,7 +94,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 	return (
 		<View style={styles.container}>
 			<Header
-				title={getText('my.profile.screen.title')}
+				title={dictionary.screens.myProfile.title}
 				// left={
 				// 	<IconButton
 				// 		source={Icons.shareIconWhite}
@@ -118,7 +116,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 						progressBackgroundColor={Colors.white}
 					/>
 				}
-				scrollEnabled={!loadingPosts}
+				scrollEnabled={!loadingProfile}
 				scrollEventThrottle={100}
 				onScroll={onLoadMorePhotos}
 			>
@@ -139,7 +137,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 					onEditProfile={onEditProfile}
 					onIconPress={onIconPress}
 					onViewFriends={onViewFriends}
-					getText={getText}
+					dictionary={dictionary}
 				/>
 				<View style={contentContainerStyle}>
 					<Animated.View
@@ -156,7 +154,9 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							)}
 							showsVerticalScrollIndicator={false}
 							scrollEnabled={false}
-							ListEmptyComponent={<NoContent posts={true} getText={getText} />}
+							ListEmptyComponent={
+								<NoContent loading={loadingProfile} posts={true} dictionary={dictionary} />
+							}
 						/>
 						{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 					</Animated.View>
@@ -179,7 +179,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 							</View>
 						) : (
 							<React.Fragment>
-								<NoContent gallery={true} getText={getText} />
+								<NoContent loading={loadingProfile} gallery={true} dictionary={dictionary} />
 								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 							</React.Fragment>
 						)}

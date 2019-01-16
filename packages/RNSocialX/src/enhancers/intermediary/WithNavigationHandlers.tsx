@@ -30,9 +30,11 @@ interface IWithNavigationHandlersProps extends INavigationProps {
 export class WithNavigationHandlers extends React.Component<IWithNavigationHandlersProps> {
 	private actions: {
 		getUserPosts: (alias: string) => void;
+		getUserFriends: (alias: string) => void;
 		setNavigationParams: (input: any) => void;
 	} = {
 		getUserPosts: () => undefined,
+		getUserFriends: () => undefined,
 		setNavigationParams: () => undefined,
 	};
 
@@ -43,18 +45,19 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 					<WithPosts>
 						{({ getUserPosts }) => (
 							<WithProfiles>
-								{({ profiles }) => (
+								{({ getProfileFriendsByAlias }) => (
 									<WithCurrentUser>
 										{({ currentUser }) => {
 											this.actions = {
 												getUserPosts,
+												getUserFriends: getProfileFriendsByAlias,
 												setNavigationParams,
 											};
 
 											return this.props.children({
 												actions: {
 													onViewUserProfile: (visitedUser) =>
-														this.onViewUserProfileHandler(currentUser.alias, profiles, visitedUser),
+														this.onViewUserProfileHandler(currentUser.alias, visitedUser),
 													onViewLikes: this.onViewLikesHandler,
 													onViewComments: this.onViewCommentsHandler,
 													onViewImage: this.onViewImageHandler,
@@ -78,18 +81,10 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 		this.props.navigation.goBack(null);
 	};
 
-	private onViewUserProfileHandler = (
-		currentUser: string,
-		profiles: { [alias: string]: IProfile },
-		visitedUser: string,
-	) => {
+	private onViewUserProfileHandler = (currentUser: string, visitedUser: string) => {
 		if (visitedUser === currentUser) {
 			this.props.navigation.navigate(SCREENS.MyProfile);
 		} else {
-			if (profiles[visitedUser].posts.length === 0) {
-				this.actions.getUserPosts(visitedUser);
-			}
-
 			this.actions.setNavigationParams({
 				screenName: SCREENS.UserProfile,
 				params: { user: visitedUser },

@@ -4,15 +4,15 @@ import { FlatList, View } from 'react-native';
 import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
 import { INavigationProps, ITranslatedProps } from '../../../types';
 
-import styles from './FeedList.style';
+import styles from './Feed.style';
 
 interface IProps extends INavigationProps, ITranslatedProps {
 	avatar: string;
 	postIds: string[];
 	refreshing: boolean;
 	shareMessage: string;
-	loadingMorePosts: boolean;
-	canLoadMorePosts: boolean;
+	loading: boolean;
+	canLoad: boolean;
 	listRef: React.RefObject<FlatList<string>>;
 	postContainerRef: React.RefObject<View>;
 	loaded: boolean;
@@ -22,11 +22,12 @@ interface IProps extends INavigationProps, ITranslatedProps {
 	onCommentInputPress: (y: number, height: number, first: boolean) => void;
 }
 
-export const FeedListView: React.SFC<IProps> = ({
+export const FeedView: React.SFC<IProps> = ({
 	postIds,
 	avatar,
 	refreshing,
-	canLoadMorePosts,
+	loading,
+	canLoad,
 	shareMessage,
 	listRef,
 	postContainerRef,
@@ -59,12 +60,12 @@ export const FeedListView: React.SFC<IProps> = ({
 			ListHeaderComponent={
 				<ShareSection avatar={avatar} message={shareMessage} onCreateWallPost={onCreateWallPost} />
 			}
-			ListFooterComponent={<LoadingFooter hasMore={canLoadMorePosts} />}
-			ListEmptyComponent={<FeedWithNoPosts onCreateWallPost={onCreateWallPost} getText={getText} />}
+			ListFooterComponent={<LoadingFooter visible={canLoad} />}
+			ListEmptyComponent={<FeedWithNoPosts loading={loading} getText={getText} />}
 			keyboardShouldPersistTaps="handled"
 			showsVerticalScrollIndicator={false}
 			onRefresh={onRefresh}
-			onEndReached={canLoadMorePosts && loaded ? onLoadMorePosts : null}
+			onEndReached={canLoad && loaded ? onLoadMorePosts : null}
 			onEndReachedThreshold={1}
 		/>
 	</View>

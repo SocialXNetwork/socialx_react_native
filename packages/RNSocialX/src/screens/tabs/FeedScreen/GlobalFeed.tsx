@@ -3,12 +3,12 @@ import * as React from 'react';
 import { WithFeed } from '../../../enhancers/screens';
 import { FEED_TYPES } from '../../../environment/consts';
 import { INavigationProps } from '../../../types';
-import { FeedList } from './FeedList';
+import { Feed } from './Feed';
 
 export const GlobalFeed = ({ navigation }: INavigationProps) => (
 	<WithFeed type={FEED_TYPES.GLOBAL}>
 		{({ data, actions }) => (
-			<FeedList
+			<Feed
 				shareMessage="Share with the world what you think"
 				feedType={FEED_TYPES.GLOBAL}
 				navigation={navigation}

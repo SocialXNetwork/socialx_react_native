@@ -1,6 +1,7 @@
 import { IState } from './Types';
 
 const initialState: IState = {
+	logout: false,
 	offline: false,
 	activity: {
 		visible: false,
@@ -12,10 +13,10 @@ const initialState: IState = {
 		alpha: 0,
 		loader: false,
 	},
-	loading: {
-		progress: 0,
-		message: 'login',
-	},
+	accountLoaded: false,
+	profileLoaded: false,
+	friendsLoaded: false,
+	postsLoaded: false,
 };
 
 export default initialState;

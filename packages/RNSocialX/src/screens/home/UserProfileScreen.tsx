@@ -51,6 +51,24 @@ class Screen extends React.Component<IProps, IState> {
 	};
 	private lastLoadedIndex: number = 0;
 
+	public constructor(props: IProps) {
+		super(props);
+
+		const {
+			friends,
+			visitedUser: { alias, postIds },
+			getUserPosts,
+			getUserFriends,
+		} = props;
+
+		if (postIds.length === 0) {
+			getUserPosts(alias);
+		}
+		if (!friends) {
+			getUserFriends(alias);
+		}
+	}
+
 	public componentDidMount() {
 		this.loadPhotos();
 		if (Platform.OS === OS_TYPES.IOS) {
@@ -71,7 +89,6 @@ class Screen extends React.Component<IProps, IState> {
 			this.state.containerHeight !== nextState.containerHeight ||
 			this.props.hasFriends !== nextProps.hasFriends ||
 			this.props.loadingProfile !== nextProps.loadingProfile ||
-			this.props.loadingPosts !== nextProps.loadingPosts ||
 			!isEqual(this.props.visitedUser, nextProps.visitedUser)
 		);
 	}
@@ -81,11 +98,10 @@ class Screen extends React.Component<IProps, IState> {
 			visitedUser,
 			hasFriends,
 			loadingProfile,
-			loadingPosts,
 			onViewFriends,
 			onGoBack,
 			navigation,
-			getText,
+			dictionary,
 		} = this.props;
 		const { activeTab, listTranslate, gridTranslate, containerHeight, dataProvider } = this.state;
 
@@ -94,7 +110,6 @@ class Screen extends React.Component<IProps, IState> {
 				visitedUser={visitedUser}
 				hasFriends={hasFriends}
 				loadingProfile={loadingProfile}
-				loadingPosts={loadingPosts}
 				dataProvider={dataProvider}
 				listTranslate={listTranslate}
 				gridTranslate={gridTranslate}
@@ -109,15 +124,15 @@ class Screen extends React.Component<IProps, IState> {
 				onViewFriends={onViewFriends}
 				onGoBack={onGoBack}
 				navigation={navigation}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		);
 	}
 
 	private onRefreshHandler = async () => {
-		const { visitedUser, loadingProfile, loadingPosts, getUserProfile } = this.props;
+		const { visitedUser, loadingProfile, getUserProfile } = this.props;
 
-		if (!loadingProfile && !loadingPosts) {
+		if (!loadingProfile) {
 			await getUserProfile(visitedUser.alias);
 		}
 	};

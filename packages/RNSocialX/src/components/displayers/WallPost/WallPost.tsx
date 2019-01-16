@@ -211,9 +211,9 @@ class Component extends React.Component<IProps, IState> {
 										{heartAnimation && <HeartAnimation animationProgress={animationProgress} />}
 										<WallPostMedia
 											media={media}
+											creating={creating}
 											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 											onDoublePress={() => onDoubleTapLikePost(postId)}
-											creating={creating}
 										/>
 									</View>
 								)}
@@ -286,9 +286,9 @@ class Component extends React.Component<IProps, IState> {
 									{(!offensiveContent || viewOffensiveContent) && (
 										<WallPostMedia
 											media={media}
+											creating={creating}
 											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
 											onDoublePress={() => onDoubleTapLikePost(post.postId)}
-											creating={creating}
 										/>
 									)}
 									<WarnOffensiveContent

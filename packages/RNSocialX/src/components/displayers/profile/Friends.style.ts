@@ -19,8 +19,11 @@ const styles: any = {
 	friends: {
 		flexDirection: 'row',
 	},
-	multiple: {
-		transform: [{ translateX: Sizes.smartHorizontalScale(15) }],
+	double: {
+		transform: [{ translateX: Sizes.smartHorizontalScale(10) }],
+	},
+	triple: {
+		transform: [{ translateX: Sizes.smartHorizontalScale(25) }],
 	},
 };
 

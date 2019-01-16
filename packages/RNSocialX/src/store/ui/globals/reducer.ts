@@ -5,10 +5,9 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.SET_GLOBAL: {
-			return {
-				...state,
-				[Object.keys(action.payload)[0]]: Object.values(action.payload)[0],
-			};
+			const global: { [key: string]: any } = {};
+			Object.keys(action.payload).map((key) => (global[key] = action.payload[key]));
+			return { ...state, ...global };
 		}
 
 		case 'RESET_STORE': {
