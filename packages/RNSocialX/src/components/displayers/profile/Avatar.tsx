@@ -9,21 +9,18 @@ import styles from './Avatar.style';
 interface IAvatarProps {
 	alias: string;
 	index?: number;
-	spacey?: boolean;
 }
 
 interface IProps extends IAvatarProps {
 	avatar: string;
 }
 
-export const Component: React.SFC<IProps> = ({ avatar, index, spacey }) => {
+export const Component: React.SFC<IProps> = ({ avatar, index }) => {
 	if (index) {
-		const multiplicator = spacey ? 7.5 : 10;
-
 		return (
 			<AvatarImage
 				image={avatar}
-				style={[styles.avatar, { transform: [{ translateX: -index * multiplicator }] }]}
+				style={[styles.avatar, { transform: [{ translateX: -index * 10 }] }]}
 			/>
 		);
 	}

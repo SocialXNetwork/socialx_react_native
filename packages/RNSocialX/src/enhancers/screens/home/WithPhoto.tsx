@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IPost } from '../../../store/data/posts';
 import {
+	ICreatePost,
 	ICurrentUser,
 	IOptimizedMedia,
 	IOptionsMenuProps,
@@ -23,7 +23,7 @@ export interface IWithPhotoEnhancedData {
 }
 
 export interface IWithPhotoEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	createPost: (post: IPost) => void;
+	createPost: (post: ICreatePost) => void;
 	uploadFile: (input: IUploadFileInput) => void;
 }
 
@@ -59,12 +59,9 @@ export class WithPhoto extends React.Component<IWithPhotoProps, IWithPhotoState>
 																	media: navigationParams[SCREENS.Photo].media,
 																},
 																actions: {
+																	createPost: (post: ICreatePost) => createPost(post),
 																	uploadFile,
-																	createPost: (post: IPost) => createPost(post),
-																	showOptionsMenu: (items) =>
-																		showOptionsMenu({
-																			items,
-																		}),
+																	showOptionsMenu,
 																	getText,
 																},
 															})

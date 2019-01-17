@@ -15,7 +15,7 @@ interface IDataProps {
 }
 
 interface IActionProps {
-	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) => void;
+	setNavigationParams: (input: ISetNavigationParamsInput) => void;
 	clearNavigationParams: ({ screenName }: { screenName: string }) => void;
 }
 
@@ -42,8 +42,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	setNavigationParams: (setNavigationParamsInput: ISetNavigationParamsInput) =>
-		dispatch(setNavigationParams(setNavigationParamsInput)),
+	setNavigationParams: (input: ISetNavigationParamsInput) => dispatch(setNavigationParams(input)),
 	clearNavigationParams: ({ screenName }: { screenName: string }) =>
 		dispatch(clearNavigationParams({ screenName })),
 });

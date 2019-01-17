@@ -169,7 +169,7 @@ class Screen extends React.Component<IProps, IState> {
 				},
 			];
 
-			onViewImage(media, 0);
+			onViewImage(media);
 		}
 	};
 
@@ -243,7 +243,7 @@ class Screen extends React.Component<IProps, IState> {
 export const UserProfileScreen = (props: INavigationProps) => (
 	<WithNavigationHandlers navigation={props.navigation}>
 		{(nav) => (
-			<WithUserProfile>
+			<WithUserProfile navigation={props.navigation}>
 				{(profile) => <Screen {...props} {...profile.data} {...profile.actions} {...nav.actions} />}
 			</WithUserProfile>
 		)}

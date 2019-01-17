@@ -20,7 +20,7 @@ const styles: any = {
 		flexDirection: 'row',
 	},
 	double: {
-		transform: [{ translateX: Sizes.smartHorizontalScale(10) }],
+		transform: [{ translateX: Sizes.smartHorizontalScale(20) }],
 	},
 	triple: {
 		transform: [{ translateX: Sizes.smartHorizontalScale(25) }],

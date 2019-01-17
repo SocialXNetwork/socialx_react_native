@@ -42,5 +42,7 @@ class Screen extends Component<IProps> {
 }
 
 export const CommentsScreen = (props: INavigationProps) => (
-	<WithComments>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithComments>
+	<WithComments navigation={props.navigation}>
+		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
+	</WithComments>
 );

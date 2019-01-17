@@ -1,10 +1,3 @@
 export { default as reducer } from './reducer';
-export { IState, IAction, IModal, IMessage, IConfirmation } from './Types';
-export {
-	showModal,
-	hideModal,
-	showConfirmation,
-	hideConfirmation,
-	showMessage,
-	hideMessage,
-} from './actions';
+export { IState, IAction, IOptionsMenuItem, IMediaInput } from './Types';
+export { showOptionsMenu, hideOptionsMenu, showMedia, hideMedia } from './actions';

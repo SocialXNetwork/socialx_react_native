@@ -177,7 +177,7 @@ class Screen extends React.Component<IProps, IState> {
 				},
 			];
 
-			onViewImage(media, 0);
+			onViewImage(media);
 		}
 	};
 

@@ -7,14 +7,14 @@ import * as React from 'react';
 
 import { ActionTypes as PostActionTypes } from '../../../store/data/posts/Types';
 import { ActionTypes as ProfileActionTypes } from '../../../store/data/profiles/Types';
-import { IDictionary, IVisitedUser } from '../../../types';
+import { IDictionary, INavigationProps, IVisitedUser } from '../../../types';
 import { getActivities } from '../../helpers';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 import { WithActivities } from '../../connectors/ui/WithActivities';
-import { WithVisitedUserContent } from '../../intermediary';
+import { WithVisitedUser } from '../../intermediary';
 
 export interface IWithUserProfileEnhancedData extends IDictionary {
 	visitedUser: IVisitedUser;
@@ -34,7 +34,7 @@ interface IUserProfileEnhancedProps {
 	actions: IWithUserProfileEnhancedActions;
 }
 
-interface IWithUserProfileProps {
+interface IWithUserProfileProps extends INavigationProps {
 	children(props: IUserProfileEnhancedProps): JSX.Element;
 }
 
@@ -51,7 +51,7 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 								{({ activities }) => (
 									<WithPosts>
 										{({ getUserPosts }) => (
-											<WithVisitedUserContent>
+											<WithVisitedUser navigation={this.props.navigation}>
 												{({ visitedUser }) =>
 													this.props.children({
 														data: {
@@ -77,7 +77,7 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 														},
 													})
 												}
-											</WithVisitedUserContent>
+											</WithVisitedUser>
 										)}
 									</WithPosts>
 								)}

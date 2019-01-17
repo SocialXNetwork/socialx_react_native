@@ -3,12 +3,12 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { IMediaTypes, ITranslatedProps } from '../../types';
+import { IDictionary, IMediaTypes } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
 import styles from './MediaInfo.style';
 
-interface IProps extends ITranslatedProps {
+interface IProps extends IDictionary {
 	visible: boolean;
 	hash: string;
 	size: number;
@@ -16,7 +16,14 @@ interface IProps extends ITranslatedProps {
 	onClose: () => void;
 }
 
-export const MediaInfo: React.SFC<IProps> = ({ visible, hash, size, type, onClose, getText }) => (
+export const MediaInfo: React.SFC<IProps> = ({
+	visible,
+	hash,
+	size,
+	type,
+	onClose,
+	dictionary,
+}) => (
 	<WithManagedTransitions modalVisible={visible}>
 		{({ onModalHide, onDismiss }) => (
 			<Modal
@@ -31,12 +38,18 @@ export const MediaInfo: React.SFC<IProps> = ({ visible, hash, size, type, onClos
 				style={styles.container}
 			>
 				<View style={styles.boxContainer}>
-					<Text style={styles.title}>{getText('media.info.title')}</Text>
+					<Text style={styles.title}>{dictionary.components.displayers.mediaInfo.title}</Text>
 					<View style={styles.infoContainer}>
 						<View style={styles.infoTitles}>
-							<Text style={styles.fieldTitle}>{getText('media.info.hash')}</Text>
-							<Text style={styles.fieldTitle}>{getText('media.info.size')}</Text>
-							<Text style={styles.fieldTitle}>{getText('media.info.type')}</Text>
+							<Text style={styles.fieldTitle}>
+								{dictionary.components.displayers.mediaInfo.hash}
+							</Text>
+							<Text style={styles.fieldTitle}>
+								{dictionary.components.displayers.mediaInfo.size}
+							</Text>
+							<Text style={styles.fieldTitle}>
+								{dictionary.components.displayers.mediaInfo.type}
+							</Text>
 						</View>
 						<View style={{ flex: 1 }}>
 							<Text style={[styles.fieldValue, styles.filedValueLink]} numberOfLines={1}>
@@ -46,7 +59,9 @@ export const MediaInfo: React.SFC<IProps> = ({ visible, hash, size, type, onClos
 								{numeral(size).format('0.00 b')}
 							</Text>
 							<Text style={styles.fieldValue} numberOfLines={1}>
-								{getText('media.types.' + type.name.toLowerCase())}
+								{type.name === 'Video'
+									? dictionary.components.displayers.mediaInfo.video
+									: dictionary.components.displayers.mediaInfo.photo}
 							</Text>
 						</View>
 					</View>

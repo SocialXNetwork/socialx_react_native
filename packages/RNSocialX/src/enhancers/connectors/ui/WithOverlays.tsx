@@ -1,38 +1,28 @@
 import * as React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { IApplicationState } from '../../../store';
 import { IThunkDispatch } from '../../../store/types';
 import {
-	hideConfirmation,
-	hideMessage,
-	hideModal,
-	IConfirmation,
-	IMessage,
-	IModal,
-	showConfirmation,
-	showMessage,
-	showModal,
+	hideMedia,
+	hideOptionsMenu,
+	IMediaInput,
+	IOptionsMenuItem,
+	showMedia,
+	showOptionsMenu,
 } from '../../../store/ui/overlays';
-import { hideOptionsMenu, showOptionsMenu } from '../../../store/ui/overlays/actions';
-import { IOptionsMenu } from '../../../store/ui/overlays/Types';
 
 interface IDataProps {
-	message: IMessage | null;
-	modal: IModal | null;
-	confirmation: IConfirmation | null;
-	optionsMenu: IOptionsMenu | null;
+	optionsMenuItems: IOptionsMenuItem[];
+	media: IMediaInput;
 }
 
 interface IActionProps {
-	showMessage: (message: IMessage) => void;
-	hideMessage: () => void;
-	showModal: (modal: IModal) => void;
-	hideModal: () => void;
-	showConfirmation: (confirmation: IConfirmation) => void;
-	hideConfirmation: () => void;
-	showOptionsMenu: (optionsMenu: IOptionsMenu) => void;
+	showOptionsMenu: (items: IOptionsMenuItem[]) => void;
 	hideOptionsMenu: () => void;
+	showMedia: (input: IMediaInput) => void;
+	hideMedia: () => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -48,42 +38,26 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
-const selectMessage = createSelector(
-	(state: IApplicationState) => state.ui.overlays.message,
-	(message) => message,
-);
-
-const selectModal = createSelector(
-	(state: IApplicationState) => state.ui.overlays.modal,
-	(modal) => modal,
-);
-
-const selectConfirmation = createSelector(
-	(state: IApplicationState) => state.ui.overlays.confirmation,
-	(confirmation) => confirmation,
-);
-
-const selectOptionsMenu = createSelector(
+const selectOptionsMenuItems = createSelector(
 	(state: IApplicationState) => state.ui.overlays.optionsMenu,
 	(optionsMenu) => optionsMenu,
 );
 
+const selectMedia = createSelector(
+	(state: IApplicationState) => state.ui.overlays.media,
+	(media) => media,
+);
+
 const mapStateToProps = (state: IApplicationState) => ({
-	message: selectMessage(state),
-	modal: selectModal(state),
-	confirmation: selectConfirmation(state),
-	optionsMenu: selectOptionsMenu(state),
+	optionsMenuItems: selectOptionsMenuItems(state),
+	media: selectMedia(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
-	showMessage: (message: IMessage) => dispatch(showMessage(message)),
-	hideMessage: () => dispatch(hideMessage()),
-	showModal: (modal: IModal) => dispatch(showModal(modal)),
-	hideModal: () => dispatch(hideModal()),
-	showConfirmation: (confirmation: IConfirmation) => dispatch(showConfirmation(confirmation)),
-	hideConfirmation: () => dispatch(hideConfirmation()),
-	showOptionsMenu: (optionsMenu: IOptionsMenu) => dispatch(showOptionsMenu(optionsMenu)),
+	showOptionsMenu: (items: IOptionsMenuItem[]) => dispatch(showOptionsMenu(items)),
 	hideOptionsMenu: () => dispatch(hideOptionsMenu()),
+	showMedia: (input: IMediaInput) => dispatch(showMedia(input)),
+	hideMedia: () => dispatch(hideMedia()),
 });
 
 export const WithOverlays: ConnectedComponentClass<JSX.Element, IChildren> = connect(

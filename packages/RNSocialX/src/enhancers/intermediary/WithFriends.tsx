@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ActionTypes, IAliasInput } from '../../store/data/profiles/Types';
-import { FRIEND_TYPES } from '../../types';
+import { FRIEND_TYPES, IOptionsMenuItem } from '../../types';
 
 import { IActivity } from '../../store/ui/activities';
 import { WithI18n } from '../connectors/app/WithI18n';
@@ -58,7 +58,7 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		acceptFriend: (input: IAliasInput) => void;
 		rejectFriend: (input: IAliasInput) => void;
 		undoRequest: (input: IAliasInput) => void;
-		showOptionsMenu: (optionsInput: { items: any }) => void;
+		showOptionsMenu: (items: IOptionsMenuItem[]) => void;
 		getText: (value: string, ...args: any[]) => string;
 	} = {
 		addFriend: () => undefined,
@@ -196,7 +196,7 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 			},
 		];
 
-		showOptionsMenu({ items });
+		showOptionsMenu(items);
 	};
 
 	private onAddFriendHandler = async (username: string) => {

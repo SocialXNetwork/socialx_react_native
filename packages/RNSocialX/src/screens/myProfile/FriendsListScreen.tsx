@@ -8,17 +8,12 @@ import {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
 } from '../../enhancers/intermediary';
-import {
-	IWithFriendsListEnhancedActions,
-	IWithFriendsListEnhancedData,
-	WithFriendsList,
-} from '../../enhancers/screens';
+import { IWithFriendsListEnhancedData, WithFriendsList } from '../../enhancers/screens';
 
 const DEBOUNCE_TIME = 300;
 
 interface IProps
 	extends INavigationProps,
-		IWithFriendsListEnhancedActions,
 		IWithFriendsListEnhancedData,
 		IWithNavigationHandlersEnhancedActions {
 	aliases: string[];
@@ -53,7 +48,7 @@ class Screen extends React.Component<IProps, IState> {
 				onChangeText={this.onChangeTextHandler}
 				onGoBack={this.props.onGoBack}
 				onViewUserProfile={this.props.onViewUserProfile}
-				getText={this.props.getText}
+				dictionary={this.props.dictionary}
 			/>
 		);
 	}
@@ -71,8 +66,8 @@ class Screen extends React.Component<IProps, IState> {
 export const FriendsListScreen = (props: IProps) => (
 	<WithNavigationHandlers navigation={props.navigation}>
 		{(nav) => (
-			<WithFriendsList>
-				{(friends) => <Screen {...props} {...friends.data} {...friends.actions} {...nav.actions} />}
+			<WithFriendsList navigation={props.navigation}>
+				{(friends) => <Screen {...props} {...friends.data} {...nav.actions} />}
 			</WithFriendsList>
 		)}
 	</WithNavigationHandlers>

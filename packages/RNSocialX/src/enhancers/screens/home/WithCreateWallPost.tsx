@@ -56,12 +56,9 @@ export class WithCreateWallPost extends React.Component<
 															dictionary,
 														},
 														actions: {
-															uploadFile,
 															createPost: (post: ICreatePost) => createPost(post),
-															showOptionsMenu: (items) =>
-																showOptionsMenu({
-																	items,
-																}),
+															uploadFile,
+															showOptionsMenu,
 														},
 													})
 												}

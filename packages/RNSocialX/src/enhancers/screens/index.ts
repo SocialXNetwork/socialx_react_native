@@ -42,11 +42,6 @@ export {
 	IWithCreateWallPostEnhancedData,
 } from './home/WithCreateWallPost';
 export { IWithLikesEnhancedActions, IWithLikesEnhancedData, WithLikes } from './home/WithLikes';
-export {
-	WithMediaViewer,
-	IWithMediaViewerEnhancedData,
-	IWithMediaViewerEnhancedActions,
-} from './home/WithMediaViewer';
 export { WithPhoto, IWithPhotoEnhancedActions, IWithPhotoEnhancedData } from './home/WithPhoto';
 export {
 	WithUserProfile,

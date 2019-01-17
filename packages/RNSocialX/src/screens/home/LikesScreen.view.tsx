@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native';
 
 import { Header, HeaderButton, UserEntries } from '../../components';
 import { Colors, Sizes } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 
-interface ILikesScreenViewProps extends ITranslatedProps {
+interface ILikesScreenViewProps extends IDictionary {
 	likeIds: string[];
 	onViewUserProfile: (alias: string) => void;
 	onGoBack: () => void;
@@ -15,11 +15,11 @@ export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
 	likeIds,
 	onViewUserProfile,
 	onGoBack,
-	getText,
+	dictionary,
 }) => (
 	<View style={styles.container}>
 		<Header
-			title={getText('likes.screen.title')}
+			title={dictionary.screens.likes.title}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.list}>

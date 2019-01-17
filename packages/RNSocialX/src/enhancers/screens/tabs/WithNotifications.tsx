@@ -59,7 +59,7 @@ export class WithNotifications extends React.Component<
 												actions: {
 													getNotifications,
 													markNotificationsAsRead,
-													showOptionsMenu: (items) => showOptionsMenu({ items }),
+													showOptionsMenu,
 													getText,
 												},
 											})

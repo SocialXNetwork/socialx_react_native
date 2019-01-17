@@ -5,7 +5,6 @@
 
 import * as React from 'react';
 
-import { IConfirmation } from '../../../store/ui/overlays';
 import {
 	IAdSetupAudienceData,
 	IAdSetupBudgetData,
@@ -20,8 +19,8 @@ const mock: IWithNewAdSliderEnhancedProps = {
 	data: {},
 	actions: {
 		getText: (value, ...args) => value,
-		showOptionsMenu: (items) => undefined,
-		showConfirmation: (confirmation: IConfirmation) => undefined,
+		showOptionsMenu: () => undefined,
+		showConfirmation: () => undefined,
 		createAd: (
 			postData: IAdSetupPostData,
 			audienceData: IAdSetupAudienceData,
@@ -37,7 +36,7 @@ const mock: IWithNewAdSliderEnhancedProps = {
 export interface IWithNewAdSliderEnhancedData {}
 
 export interface IWithNewAdSliderEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
-	showConfirmation: (confirmation: IConfirmation) => void;
+	showConfirmation: () => void;
 	createAd: (
 		postData: IAdSetupPostData,
 		audienceData: IAdSetupAudienceData,
@@ -61,16 +60,16 @@ export class WithNewAdSlider extends React.Component<IWithNewAdSliderProps, IWit
 		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ getText }) => (
 					<WithOverlays>
-						{(overlayProps) =>
+						{({ showOptionsMenu }) =>
 							children({
-								data: { ...mock.data },
+								data: {},
 								actions: {
 									...mock.actions,
-									getText: i18nProps.getText,
-									showOptionsMenu: (items) => overlayProps.showOptionsMenu({ items }),
-									showConfirmation: overlayProps.showConfirmation,
+									showOptionsMenu,
+									showConfirmation: () => undefined,
+									getText,
 								},
 							})
 						}

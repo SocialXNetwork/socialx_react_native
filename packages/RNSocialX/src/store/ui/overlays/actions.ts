@@ -1,163 +1,38 @@
 import { ActionCreator } from 'redux';
-import uuidv4 from 'uuid/v4';
+import uuid from 'uuid/v4';
+
 import { IThunk } from '../../types';
 import { setError } from '../../ui/activities';
 import {
 	ActionTypes,
-	IConfirmation,
-	IHideConfirmationAction,
-	IHideMessageAction,
-	IHideModalAction,
+	IHideMediaAction,
 	IHideOptionsMenuAction,
-	IMessage,
-	IModal,
-	IOptionsMenu,
-	IShowConfirmationAction,
-	IShowMessageAction,
-	IShowModalAction,
+	IMediaInput,
+	IOptionsMenuItem,
+	IShowMediaAction,
 	IShowOptionsMenuAction,
 } from './Types';
 
-const showModalAction: ActionCreator<IShowModalAction> = (modal: IModal) => ({
-	type: ActionTypes.SHOW_MODAL,
-	payload: modal,
-});
-
-export const showModal = (modal: IModal): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(showModalAction(modal));
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.SHOW_MODAL,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
-};
-
-const hideModalAction: ActionCreator<IHideModalAction> = () => ({
-	type: ActionTypes.HIDE_MODAL,
-});
-
-export const hideModal = (): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(hideModalAction());
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.HIDE_MODAL,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
-};
-
-const showConfirmationAction: ActionCreator<IShowConfirmationAction> = (
-	confirmation: IConfirmation,
-) => ({
-	type: ActionTypes.SHOW_CONFIRMATION,
-	payload: confirmation,
-});
-
-export const showConfirmation = (confirmation: IConfirmation): IThunk => async (
-	dispatch,
-	getState,
-	context,
-) => {
-	try {
-		dispatch(showConfirmationAction(confirmation));
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.SHOW_CONFIRMATION,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
-};
-
-const hideConfirmationAction: ActionCreator<IHideConfirmationAction> = () => ({
-	type: ActionTypes.HIDE_CONFIRMATION,
-});
-
-export const hideConfirmation = (): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(hideConfirmationAction());
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.HIDE_CONFIRMATION,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
-};
-
-// This can be converted to an array instead of an object, similar to
-// ui/activities so that messages can be stacked and dismissed separately
-// and even auto dismissed after T seconds!
-const showMessageAction: ActionCreator<IShowMessageAction> = (message: IMessage) => ({
-	type: ActionTypes.SHOW_MESSAGE,
-	payload: message,
-});
-
-export const showMessage = (message: IMessage): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(showMessageAction(message));
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.SHOW_MESSAGE,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
-};
-
-const hideMessageAction: ActionCreator<IHideMessageAction> = () => ({
-	type: ActionTypes.HIDE_MESSAGE,
-});
-
-export const hideMessage = (): IThunk => async (dispatch, getState, context) => {
-	try {
-		dispatch(hideMessageAction());
-	} catch (e) {
-		await dispatch(
-			setError({
-				type: ActionTypes.HIDE_MESSAGE,
-				error: e.message,
-				uuid: uuidv4(),
-			}),
-		);
-	}
-};
-
 const showOptionsMenuAction: ActionCreator<IShowOptionsMenuAction> = (
-	optionsMenu: IOptionsMenu,
+	items: IOptionsMenuItem[],
 ) => ({
 	type: ActionTypes.SHOW_OPTIONS_MENU,
-	payload: optionsMenu,
+	payload: items,
 });
 
-export const showOptionsMenu = (optionsMenu: IOptionsMenu): IThunk => async (
+export const showOptionsMenu = (items: IOptionsMenuItem[]): IThunk => async (
 	dispatch,
 	getState,
 	context,
 ) => {
 	try {
-		dispatch(showOptionsMenuAction(optionsMenu));
+		dispatch(showOptionsMenuAction(items));
 	} catch (e) {
 		await dispatch(
 			setError({
 				type: ActionTypes.SHOW_OPTIONS_MENU,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	}
@@ -175,7 +50,44 @@ export const hideOptionsMenu = (): IThunk => async (dispatch, getState, context)
 			setError({
 				type: ActionTypes.HIDE_OPTIONS_MENU,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
+			}),
+		);
+	}
+};
+
+const showMediaAction: ActionCreator<IShowMediaAction> = (input: IMediaInput) => ({
+	type: ActionTypes.SHOW_MEDIA,
+	payload: input,
+});
+
+export const showMedia = (input: IMediaInput): IThunk => async (dispatch) => {
+	try {
+		dispatch(showMediaAction(input));
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.SHOW_MEDIA,
+				error: e.message,
+				uuid: uuid(),
+			}),
+		);
+	}
+};
+
+const hideMediaAction: ActionCreator<IHideMediaAction> = () => ({
+	type: ActionTypes.HIDE_MEDIA,
+});
+
+export const hideMedia = (): IThunk => async (dispatch) => {
+	try {
+		dispatch(hideMediaAction());
+	} catch (e) {
+		await dispatch(
+			setError({
+				type: ActionTypes.HIDE_MEDIA,
+				error: e.message,
+				uuid: uuid(),
 			}),
 		);
 	}

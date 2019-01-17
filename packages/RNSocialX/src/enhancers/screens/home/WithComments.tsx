@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-
+import { INavigationProps } from '../../../types';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 
 export interface IWithCommentsEnhancedData {
@@ -16,7 +16,7 @@ interface IWithCommentsEnhancedProps {
 	actions: IWithCommentsEnhancedActions;
 }
 
-interface IWithCommentsProps {
+interface IWithCommentsProps extends INavigationProps {
 	children(props: IWithCommentsEnhancedProps): JSX.Element;
 }
 
@@ -27,7 +27,8 @@ export class WithComments extends React.Component<IWithCommentsProps, IWithComme
 		return (
 			<WithNavigationParams>
 				{({ navigationParams }) => {
-					const { postId, keyboardRaised } = navigationParams[SCREENS.Comments];
+					const { key } = this.props.navigation.state;
+					const { postId, keyboardRaised } = navigationParams[SCREENS.Comments][key];
 
 					return this.props.children({
 						data: {

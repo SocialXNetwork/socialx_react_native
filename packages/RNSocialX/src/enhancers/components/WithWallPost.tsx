@@ -105,7 +105,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																	onLikeComment: this.onLikeCommentHandler,
 																	onBlockUser: () => undefined,
 																	onReportProblem: () => undefined,
-																	showOptionsMenu: (items) => showOptionsMenu({ items }),
+																	showOptionsMenu,
 																	getText,
 																},
 															});

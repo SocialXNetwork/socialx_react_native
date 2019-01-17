@@ -58,6 +58,9 @@ export default {
 		},
 		friends: {
 			title: 'Friends',
+		},
+		likes: {
+			title: 'Likes'
 		}
 	},
 	components: {
@@ -83,6 +86,16 @@ export default {
 				camera: 'Open camera',
 			}
 		},
+		displayers: {
+			mediaInfo: {
+				title: 'Media Info',
+				hash: 'Hash',
+				size: 'Size',
+				type: 'Type',
+				photo: 'Photo',
+				video: 'Video'
+			}
+		}
 	},
 	'button.OK': 'OK',
 	'button.confirm': 'Confirm',
@@ -216,12 +229,6 @@ export default {
 	'notifications.super.liked': 'superliked your post,',
 	'notifications.group.request.sent': 'sent you a group request',
 	'notifications.check.failed': 'Could not check notification at this time. Try again later..',
-	'media.info.title': 'Media Info',
-	'media.info.hash': 'Hash',
-	'media.info.size': 'Size',
-	'media.info.type': 'Type',
-	'media.types.photo': 'Photo',
-	'media.types.video': 'Video',
 	'media.types.video.replay': 'Watch again',
 	'notifications.card.recent.comment.title': 'Commented on your post',
 	'notifications.card.super.liked': 'Superliked your post',
@@ -243,7 +250,6 @@ export default {
 	'comments.screen.sending.comment': 'Submitting your comment',
 	'comments.screen.advanced.menu.copy': 'Copy',
 	'comments.screen.advanced.menu.delete': 'Delete',
-	'likes.screen.title': 'LIKES',
 	'photo.screen.title': 'ADD MEDIA',
 	'photo.screen.share.input.placeholder': 'Write a caption...',
 	'photo.screen.tag.friends.checkbox': 'TAG FRIENDS',

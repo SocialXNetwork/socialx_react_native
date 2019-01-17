@@ -3,17 +3,19 @@ import { IThunk } from '../../types';
 import { ActionTypes, ISetNavigationParamsAction, ISetNavigationParamsInput } from './Types';
 
 const setNavigationParamsAction: ActionCreator<ISetNavigationParamsAction> = (
-	setNavigationParamsInput: ISetNavigationParamsInput,
+	input: ISetNavigationParamsInput,
 ) => ({
 	type: ActionTypes.SET_NAVIGATION_PARAMS,
-	payload: setNavigationParamsInput,
+	payload: input,
 });
 
-export const setNavigationParams = (
-	setNavigationParamsInput: ISetNavigationParamsInput,
-): IThunk => async (dispatch, getState, context) => {
+export const setNavigationParams = (input: ISetNavigationParamsInput): IThunk => async (
+	dispatch,
+	getState,
+	context,
+) => {
 	try {
-		dispatch(setNavigationParamsAction(setNavigationParamsInput));
+		dispatch(setNavigationParamsAction(input));
 	} catch (e) {
 		/**/
 	}

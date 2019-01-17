@@ -1,12 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../environment/theme';
 
+const { width, height } = Dimensions.get('window');
 const INFO_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
 const styles: any = {
 	container: {
 		flex: 1,
 		backgroundColor: Colors.black,
+	},
+	modal: {
+		width,
+		height,
+		margin: 0,
+		padding: 0,
 	},
 	controls: {
 		position: 'absolute',

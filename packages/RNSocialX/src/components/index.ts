@@ -82,6 +82,7 @@ export { ActivityIndicator } from './modals/ActivityIndicator';
 export { Confirmation } from './modals/Confirmation';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';
 export { MediaInfo } from './modals/MediaInfo';
+export { MediaOverlay } from './modals/MediaOverlay';
 export { OfflineOverlay } from './modals/OfflineOverlay';
 export { OptionsMenu } from './modals/OptionsMenu';
 export { ReportProblem } from './modals/ReportProblem';

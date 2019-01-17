@@ -5,9 +5,21 @@ import { ActionTypes, IAction, IState } from './Types';
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
 		case ActionTypes.SET_NAVIGATION_PARAMS: {
+			const { screenName, params, key } = action.payload;
+
+			if (key) {
+				return {
+					...state,
+					[screenName]: {
+						...state[screenName],
+						[key]: params,
+					},
+				};
+			}
+
 			return {
 				...state,
-				[action.payload.screenName]: action.payload.params,
+				[screenName]: params,
 			};
 		}
 

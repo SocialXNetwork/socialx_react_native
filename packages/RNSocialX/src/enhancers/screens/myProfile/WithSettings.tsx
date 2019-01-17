@@ -51,15 +51,9 @@ export class WithSettings extends React.Component<IWithSettingsProps, IWithSetti
 																	currentUser,
 																},
 																actions: {
-																	updateUserProfile: (user) =>
-																		updateCurrentProfile({
-																			aboutMeText: user.description,
-																			avatar: user.avatar,
-																			email: user.email,
-																			fullName: user.fullName,
-																		}),
+																	updateUserProfile: (user) => updateCurrentProfile(user),
 																	logout,
-																	showOptionsMenu: (items) => showOptionsMenu({ items }),
+																	showOptionsMenu,
 																	setGlobal,
 																	getText,
 																},

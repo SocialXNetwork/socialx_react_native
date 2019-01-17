@@ -79,6 +79,9 @@ export interface ILocaleDictionary {
 		friends: {
 			title: string;
 		};
+		likes: {
+			title: string;
+		};
 	};
 	components: {
 		buttons: {
@@ -100,6 +103,16 @@ export interface ILocaleDictionary {
 			options: {
 				gallery: string;
 				camera: string;
+			};
+		};
+		displayers: {
+			mediaInfo: {
+				title: string;
+				hash: string;
+				size: string;
+				type: string;
+				video: string;
+				photo: string;
 			};
 		};
 	};

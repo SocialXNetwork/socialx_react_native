@@ -80,7 +80,7 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 																			aboutMeText: 'about me text',
 																		}),
 																	loadPosts: loadMorePosts,
-																	showOptionsMenu: (items) => showOptionsMenu({ items }),
+																	showOptionsMenu,
 																	setGlobal,
 																	resetNavigationToRoute,
 																	getText: i18nProps.getText,

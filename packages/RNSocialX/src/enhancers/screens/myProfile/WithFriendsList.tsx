@@ -1,24 +1,24 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { ITranslatedProps } from '../../../types';
+import { IDictionary, INavigationProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
 
-export interface IWithFriendsListEnhancedData {
+export interface IWithFriendsListEnhancedData extends IDictionary {
 	aliases: string[];
 }
 
-export interface IWithFriendsListEnhancedActions extends ITranslatedProps {}
+export interface IWithFriendsListEnhancedActions {}
 
 interface IWithFriendsListEnhancedProps {
 	data: IWithFriendsListEnhancedData;
 	actions: IWithFriendsListEnhancedActions;
 }
 
-interface IWithFriendsListProps {
+interface IWithFriendsListProps extends INavigationProps {
 	children(props: IWithFriendsListEnhancedProps): JSX.Element;
 }
 
@@ -28,20 +28,20 @@ export class WithFriendsList extends React.Component<IWithFriendsListProps, IWit
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithNavigationParams>
 						{({ navigationParams }) => (
 							<WithProfiles>
 								{({ friends }) => {
-									const { alias } = navigationParams[SCREENS.FriendsList];
+									const { key } = this.props.navigation.state;
+									const { alias } = navigationParams[SCREENS.FriendsList][key];
 
 									return this.props.children({
 										data: {
 											aliases: friends[alias],
+											dictionary,
 										},
-										actions: {
-											getText,
-										},
+										actions: {},
 									});
 								}}
 							</WithProfiles>

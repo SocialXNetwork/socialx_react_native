@@ -77,7 +77,7 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 																						getCurrentFriends();
 																						getUserPosts(currentUser.alias);
 																					},
-																					showOptionsMenu: (items) => showOptionsMenu({ items }),
+																					showOptionsMenu,
 																					logout,
 																					resetNavigationToRoute,
 																					setGlobal,

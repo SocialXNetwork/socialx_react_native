@@ -1,23 +1,23 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { ITranslatedProps } from '../../../types';
+import { IDictionary, INavigationProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 
-export interface IWithLikesEnhancedData {
+export interface IWithLikesEnhancedData extends IDictionary {
 	likeIds: string[];
 }
 
-export interface IWithLikesEnhancedActions extends ITranslatedProps {}
+export interface IWithLikesEnhancedActions {}
 
 interface IUserProfileEnhancedProps {
 	data: IWithLikesEnhancedData;
 	actions: IWithLikesEnhancedActions;
 }
 
-interface IWithLikesProps {
+interface IWithLikesProps extends INavigationProps {
 	children(props: IUserProfileEnhancedProps): JSX.Element;
 }
 
@@ -27,18 +27,20 @@ export class WithLikes extends React.Component<IWithLikesProps, IWithLikesState>
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithNavigationParams>
-						{({ navigationParams }) =>
-							this.props.children({
+						{({ navigationParams }) => {
+							const { key } = this.props.navigation.state;
+							const { likeIds } = navigationParams[SCREENS.Likes][key];
+
+							return this.props.children({
 								data: {
-									likeIds: navigationParams[SCREENS.Likes].likeIds,
+									likeIds,
+									dictionary,
 								},
-								actions: {
-									getText,
-								},
-							})
-						}
+								actions: {},
+							});
+						}}
 					</WithNavigationParams>
 				)}
 			</WithI18n>

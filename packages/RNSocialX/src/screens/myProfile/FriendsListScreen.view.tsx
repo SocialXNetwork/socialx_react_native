@@ -2,10 +2,10 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import { Header, HeaderButton, SearchInput, UserEntries } from '../../components';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 import styles from './FriendsListScreen.style';
 
-interface IFriendsListScreenViewProps extends ITranslatedProps {
+interface IFriendsListScreenViewProps extends IDictionary {
 	aliases: string[];
 	term: string;
 	onChangeText: (term: string) => void;
@@ -19,11 +19,11 @@ export const FriendsListScreenView: React.SFC<IFriendsListScreenViewProps> = ({
 	onChangeText,
 	onViewUserProfile,
 	onGoBack,
-	getText,
+	dictionary,
 }) => (
 	<View style={styles.container}>
 		<Header
-			title={getText('friends.screen.title')}
+			title={dictionary.screens.friends.title}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<View style={styles.input}>

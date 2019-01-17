@@ -13,7 +13,6 @@ import {
 import {
 	ActivityIndicator,
 	Alert,
-	Confirmation,
 	Header,
 	IconButton,
 	OfflineOverlay,
@@ -22,7 +21,7 @@ import {
 	TransparentOverlay,
 } from '../components';
 import { SCREENS, TABS } from '../environment/consts';
-import { IOptionsMenuItem, IStackDefaultConfig } from '../types';
+import { IStackDefaultConfig } from '../types';
 
 import styles from './Navigation.style';
 
@@ -44,7 +43,6 @@ import {
 	LoginScreen,
 	MaintenanceScreen,
 	ManageCountriesScreen,
-	MediaViewerScreen,
 	MyProfileScreen,
 	NewAdSliderScreen,
 	NodesScreen,
@@ -221,33 +219,11 @@ const HomeTabs = createBottomTabNavigator(
 	},
 );
 
-const UserProfileStack = createStackNavigator(
-	{
-		UserProfile: { screen: UserProfileScreen },
-		MediaViewer: { screen: MediaViewerScreen },
-	},
-	{
-		headerMode: 'none',
-		mode: 'modal',
-	},
-);
-
-const FriendsListStack = createStackNavigator(
-	{
-		FriendsList: { screen: FriendsListScreen },
-		UserProfile: UserProfileStack,
-	},
-	{
-		headerMode: 'none',
-	},
-);
-
 const HomeWithModalsStack = createStackNavigator(
 	{
 		HomeTabs: { screen: HomeTabs },
 		CreateWallPost: { screen: CreateWallPostScreen },
 		Photo: { screen: PhotoScreen },
-		MediaViewer: { screen: MediaViewerScreen },
 	},
 	{
 		headerMode: 'none',
@@ -260,10 +236,10 @@ const HomeStack = createStackNavigator(
 		Home: {
 			screen: HomeWithModalsStack,
 		},
-		UserProfile: UserProfileStack,
+		UserProfile: { screen: UserProfileScreen },
 		Comments: { screen: CommentsScreen },
 		Likes: { screen: LikesScreen },
-		FriendsList: FriendsListStack,
+		FriendsList: { screen: FriendsListScreen },
 		Chat: { screen: ChatScreen },
 	},
 	{
@@ -326,7 +302,7 @@ const Navigation = () => (
 										<App
 											screenProps={{
 												notifications: unread.length,
-												showOptionsMenu: (items: IOptionsMenuItem[]) => showOptionsMenu({ items }),
+												showOptionsMenu,
 												setNavigationParams,
 												getText,
 											}}
@@ -340,7 +316,7 @@ const Navigation = () => (
 				<WithGlobals>
 					{({ globals }) => (
 						<WithOverlays>
-							{({ confirmation, hideConfirmation, optionsMenu, hideOptionsMenu }) => (
+							{({ optionsMenuItems, hideOptionsMenu }) => (
 								<WithActivities>
 									{({ errors }) => (
 										<React.Fragment>
@@ -357,26 +333,9 @@ const Navigation = () => (
 												message={globals.activity.message}
 												getText={getText}
 											/>
-											<Confirmation
-												title={confirmation && confirmation.title}
-												message={confirmation && confirmation.message}
-												confirmActive={!!confirmation}
-												onConfirm={() => {
-													if (confirmation) {
-														confirmation.confirmHandler();
-													}
-													hideConfirmation();
-												}}
-												onDecline={() => {
-													if (confirmation && confirmation.cancelHandler) {
-														confirmation.cancelHandler();
-													}
-													hideConfirmation();
-												}}
-											/>
 											<OptionsMenu
-												visible={!!optionsMenu}
-												items={(optionsMenu && optionsMenu.items) || []}
+												visible={optionsMenuItems.length > 0}
+												items={optionsMenuItems}
 												onBackdropPress={hideOptionsMenu}
 											/>
 										</React.Fragment>

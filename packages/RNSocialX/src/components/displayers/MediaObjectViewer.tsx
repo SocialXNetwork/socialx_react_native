@@ -28,7 +28,6 @@ interface IMediaObjectViewerProps extends IVideoOptions {
 	onPress?: () => void;
 	onDoublePress?: () => void;
 	onMove?: (position?: IOnMove) => void;
-	onExit?: () => void;
 }
 
 interface IProps extends IMediaObjectViewerProps {
@@ -89,7 +88,6 @@ class Component extends React.Component<IProps, IState> {
 			onPress,
 			onDoublePress,
 			onMove,
-			onExit,
 		} = this.props;
 		const { uri, mimeType, image } = this.state;
 		const heightRatio = SCREEN_WIDTH / this.state.image.width;
@@ -111,10 +109,8 @@ class Component extends React.Component<IProps, IState> {
 								cropHeight={SCREEN_HEIGHT}
 								imageWidth={SCREEN_WIDTH}
 								imageHeight={image.height * heightRatio}
-								enableSwipeDown={true}
 								onMove={onMove}
 								onClick={this.onResetHandler}
-								onSwipeDown={onExit}
 							>
 								<FastImage
 									source={{ uri, priority: FastImage.priority.normal }}

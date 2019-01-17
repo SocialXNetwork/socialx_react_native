@@ -39,7 +39,7 @@ export class Component extends React.Component<IProps> {
 				{friends.length === 2 && (
 					<View style={[styles.friends, styles.double]}>
 						{friends.map((friend, index) => (
-							<Avatar alias={friend} index={index + 1} spacey={true} key={friend} />
+							<Avatar alias={friend} index={index + 1} key={friend} />
 						))}
 					</View>
 				)}

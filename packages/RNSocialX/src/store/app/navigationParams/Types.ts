@@ -16,6 +16,7 @@ export const enum ActionTypes {
 export interface ISetNavigationParamsInput {
 	screenName: string;
 	params: INavigationParams;
+	key?: string;
 }
 
 export interface ISetNavigationParamsAction extends Action {

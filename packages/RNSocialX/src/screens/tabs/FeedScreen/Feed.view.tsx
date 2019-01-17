@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { FlatList, View } from 'react-native';
 
-import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
+import {
+	FeedWithNoPosts,
+	LoadingFooter,
+	MediaOverlay,
+	ShareSection,
+	WallPost,
+} from '../../../components';
 import { INavigationProps, ITranslatedProps } from '../../../types';
 
 import styles from './Feed.style';
@@ -40,6 +46,7 @@ export const FeedView: React.SFC<IProps> = ({
 	getText,
 }) => (
 	<View ref={postContainerRef} style={styles.container}>
+		<MediaOverlay navigation={navigation} />
 		<FlatList
 			ref={listRef}
 			windowSize={10}

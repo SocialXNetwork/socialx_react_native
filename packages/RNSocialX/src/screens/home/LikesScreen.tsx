@@ -31,16 +31,16 @@ class Screen extends React.Component<ILikesScreenProps> {
 		return (
 			<LikesScreenView
 				likeIds={this.props.likeIds}
+				dictionary={this.props.dictionary}
 				onViewUserProfile={this.props.onViewUserProfile}
 				onGoBack={this.props.onGoBack}
-				getText={this.props.getText}
 			/>
 		);
 	}
 }
 
 export const LikesScreen = (props: INavigationProps) => (
-	<WithLikes>
+	<WithLikes navigation={props.navigation}>
 		{(likes) => (
 			<WithNavigationHandlers navigation={props.navigation}>
 				{(nav) => <Screen {...props} {...likes.data} {...likes.actions} {...nav.actions} />}
