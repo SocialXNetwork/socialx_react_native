@@ -130,15 +130,6 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 
 	private onViewImageHandler = (items: IMedia[], startIndex?: number, postId?: string) => {
 		this.actions.showMedia({ items, startIndex, postId });
-		// this.actions.setNavigationParams({
-		// 	screenName: SCREENS.MediaViewer,
-		// 	params: {
-		// 		media,
-		// 		startIndex,
-		// 		postId,
-		// 	},
-		// });
-		// this.props.navigation.navigate(SCREENS.MediaViewer);
 	};
 
 	private onViewFriendsHandler = (alias: string) => {

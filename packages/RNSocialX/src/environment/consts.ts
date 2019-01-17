@@ -125,7 +125,6 @@ export enum SCREENS {
 	Launch = 'Launch',
 	Login = 'Login',
 	Maintenance = 'Maintenance',
-	MediaViewer = 'MediaViewer',
 	MyProfile = 'MyProfile',
 	Notifications = 'Notifications',
 	Photo = 'Photo',

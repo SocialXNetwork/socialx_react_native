@@ -12,7 +12,6 @@ export { IntroScreen } from './intro/IntroScreen';
 export { CreateWallPostScreen } from './home/CreateWallPostScreen';
 export { LikesScreen } from './home/LikesScreen';
 export { CommentsScreen } from './home/CommentsScreen';
-export { MediaViewerScreen } from './home/MediaViewerScreen';
 export { PhotoScreen } from './home/PhotoScreen';
 export { UserProfileScreen } from './home/UserProfileScreen';
 

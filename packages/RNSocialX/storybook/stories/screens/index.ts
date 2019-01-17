@@ -6,7 +6,6 @@ import './intro/IntroScreen';
 
 import './home/CommentsScreen';
 import './home/CreateWallPostScreen';
-import './home/MediaViewerScreen';
 import './home/PhotoScreen';
 import './home/UserProfileScreen';
 
