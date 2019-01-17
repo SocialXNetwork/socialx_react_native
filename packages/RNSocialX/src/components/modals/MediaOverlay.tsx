@@ -1,9 +1,10 @@
 import { throttle } from 'lodash';
 import * as React from 'react';
-import { Animated, Dimensions, Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Platform, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView } from 'react-navigation';
 
 import {
 	IWithMediaOverlayEnhancedActions,

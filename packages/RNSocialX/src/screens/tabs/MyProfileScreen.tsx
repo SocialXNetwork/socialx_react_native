@@ -171,8 +171,6 @@ class Screen extends React.Component<IProps, IState> {
 			const media = [
 				{
 					hash: currentUser.avatar,
-					size: 0,
-					extension: '',
 					type: MediaTypeImage,
 				},
 			];

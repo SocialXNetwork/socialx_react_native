@@ -82,6 +82,42 @@ export interface ILocaleDictionary {
 		likes: {
 			title: string;
 		};
+		login: {
+			title: string;
+			welcome: string;
+			forgot: string;
+			progress: string;
+			account: string;
+			alias: {
+				required: string;
+			};
+			password: {
+				required: string;
+			};
+		};
+		register: {
+			title: string;
+			progress: string;
+			email: {
+				required: string;
+				invalid: string;
+			};
+			name: {
+				required: string;
+				length: string;
+			};
+			alias: {
+				required: string;
+				length: string;
+			};
+			password: {
+				required: string;
+				length: string;
+				mismatch: string;
+			};
+			accept: string;
+			terms: string;
+		};
 	};
 	components: {
 		buttons: {
@@ -93,16 +129,23 @@ export interface ILocaleDictionary {
 			seeAllFriends: string;
 			editProfile: string;
 			message: string;
+			login: string;
+			signUp: string;
+			register: string;
 		};
 		inputs: {
-			placeholders: {
-				caption: string;
-			};
+			caption: string;
+			alias: string;
+			password: string;
+			confirm: string;
+			email: string;
+			name: string;
 		};
 		modals: {
 			options: {
 				gallery: string;
 				camera: string;
+				remove: string;
 			};
 		};
 		displayers: {

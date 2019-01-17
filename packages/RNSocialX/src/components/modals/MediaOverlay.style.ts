@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import { Colors, Sizes } from '../../environment/theme';
 
 const { width, height } = Dimensions.get('window');
@@ -19,14 +20,14 @@ const styles: any = {
 		position: 'absolute',
 		top: 0,
 		width: '100%',
-		paddingTop: Sizes.smartVerticalScale(20),
+		paddingTop: Sizes.smartVerticalScale(isIphoneX() ? 30 : 20),
 		zIndex: 2,
 	},
 	interaction: {
 		position: 'absolute',
 		width: '100%',
 		bottom: 0,
-		paddingBottom: Sizes.smartVerticalScale(20),
+		paddingBottom: Sizes.smartVerticalScale(isIphoneX() ? 30 : 20),
 		zIndex: 2,
 	},
 	buttons: {

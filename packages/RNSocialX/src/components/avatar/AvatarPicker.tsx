@@ -3,12 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { Colors, Sizes } from '../../environment/theme';
-import {
-	getTextSignature,
-	IOptionsMenuItem,
-	IOptionsMenuProps,
-	ITranslatedProps,
-} from '../../types';
+import { IDictionary, IOptionsMenuProps } from '../../types';
 import { getCameraMediaObject, getGalleryMediaObject } from '../../utilities';
 import { AvatarImage } from './AvatarImage';
 
@@ -30,7 +25,7 @@ const AVATAR_CAMERA_OPTIONS = {
 	useFrontCamera: true,
 };
 
-interface IAvatarPickerProps extends ITranslatedProps, IOptionsMenuProps {
+interface IAvatarPickerProps extends IDictionary, IOptionsMenuProps {
 	image: string;
 	hash?: boolean;
 	afterImagePick: (image: string) => void;
@@ -38,12 +33,10 @@ interface IAvatarPickerProps extends ITranslatedProps, IOptionsMenuProps {
 
 export class AvatarPicker extends React.Component<IAvatarPickerProps> {
 	public render() {
-		const { image, hash, afterImagePick, showOptionsMenu, getText } = this.props;
+		const { image, hash } = this.props;
 
 		return (
-			<TouchableOpacity
-				onPress={() => this.onAvatarPick(image, afterImagePick, showOptionsMenu, getText)}
-			>
+			<TouchableOpacity onPress={() => this.onAvatarPick(image)}>
 				{hash && <AvatarImage image={image} style={styles.avatar} />}
 				{!hash && <AvatarImage local={image} style={styles.avatar} />}
 				<View style={styles.editIcon}>
@@ -53,47 +46,43 @@ export class AvatarPicker extends React.Component<IAvatarPickerProps> {
 		);
 	}
 
-	public onShowGallery = async (afterImagePick: (image: string) => void) => {
+	public onShowGallery = async () => {
 		const galleryMediaObject = await getGalleryMediaObject(AVATAR_PICKER_OPTIONS);
 		if (galleryMediaObject) {
-			afterImagePick(galleryMediaObject.path);
+			this.props.afterImagePick(galleryMediaObject.path);
 		}
 	};
 
-	public onShowCamera = async (afterImagePick: (image: string) => void) => {
+	public onShowCamera = async () => {
 		const cameraMediaObject = await getCameraMediaObject(AVATAR_CAMERA_OPTIONS);
 		if (cameraMediaObject) {
-			afterImagePick(cameraMediaObject.path);
+			this.props.afterImagePick(cameraMediaObject.path);
 		}
 	};
 
-	public onAvatarPick = (
-		uri: string,
-		afterImagePick: (image: string) => void,
-		showOptionsMenu: (items: IOptionsMenuItem[]) => void,
-		getText: getTextSignature,
-	) => {
+	public onAvatarPick = (uri: string) => {
+		const { dictionary, afterImagePick, showOptionsMenu } = this.props;
+
 		const defaultOptions = [
 			{
-				label: getText('avatar.picker.gallery'),
+				label: dictionary.components.modals.options.gallery,
 				icon: 'md-photos',
-				actionHandler: () => this.onShowGallery(afterImagePick),
+				actionHandler: this.onShowGallery,
 			},
 			{
-				label: getText('avatar.picker.camera'),
+				label: dictionary.components.modals.options.camera,
 				icon: 'md-camera',
-				actionHandler: () => this.onShowCamera(afterImagePick),
+				actionHandler: this.onShowCamera,
 			},
 		];
 
 		const removeOption = {
-			label: getText('avatar.picker.remove'),
+			label: dictionary.components.modals.options.remove,
 			icon: 'md-remove-circle',
 			actionHandler: () => afterImagePick(''),
 		};
 
 		const items = uri.length > 0 ? [...defaultOptions, removeOption] : defaultOptions;
-
 		showOptionsMenu(items);
 	};
 }

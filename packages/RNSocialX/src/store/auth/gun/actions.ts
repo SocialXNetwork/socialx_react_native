@@ -25,6 +25,7 @@ export const setGunAuth = (authData: IAuthData): IThunk => async (dispatch, getS
 
 export const clearGunAuth = (): IThunk => async (dispatch, getState, context) => {
 	const activityId = uuidv4();
+
 	try {
 		dispatch(setAuthAction(null));
 

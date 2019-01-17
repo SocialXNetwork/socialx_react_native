@@ -131,8 +131,8 @@ export interface IOnMove {
 export interface IMedia {
 	hash: string;
 	type: IMediaTypes;
-	extension: string;
-	size: number;
+	extension?: string;
+	size?: number;
 	postId?: string;
 	dimensions?: {
 		width: number;

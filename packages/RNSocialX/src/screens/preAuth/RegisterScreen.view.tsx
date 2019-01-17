@@ -14,9 +14,10 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { IOptionsMenuProps, ITranslatedProps } from '../../types';
+import { Colors } from '../../environment/theme';
+import { IDictionary, IOptionsMenuProps } from '../../types';
 
-import style, { colors } from './RegisterScreen.style';
+import styles from './RegisterScreen.style';
 
 export interface IRegisterData {
 	email: string;
@@ -33,14 +34,14 @@ interface IRegisterFormData extends IRegisterData {
 	termsAccepted: boolean;
 }
 
-interface IRegisterScreenViewProps extends ITranslatedProps, IOptionsMenuProps {
+interface IRegisterScreenViewProps extends IDictionary, IOptionsMenuProps {
 	onRegister: (user: IRegisterData) => void;
 	onNavigateToTermsAndConditions: () => void;
 	onGoBack: () => void;
 }
 
 const nameRef: React.RefObject<PrimaryTextInput> = React.createRef();
-const usernameRef: React.RefObject<PrimaryTextInput> = React.createRef();
+const aliasRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const confirmPasswordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
@@ -49,8 +50,8 @@ const EMAIL_SCHEMA = string().email();
 const ErrorMessage: React.SFC<{ text: any; visible: boolean }> = ({ text, visible }) => (
 	<React.Fragment>
 		{visible && (
-			<View style={style.errorContainer}>
-				<Text style={style.errorText}>{text}</Text>
+			<View style={styles.errorContainer}>
+				<Text style={styles.errorText}>{text}</Text>
 			</View>
 		)}
 	</React.Fragment>
@@ -61,16 +62,16 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	onNavigateToTermsAndConditions,
 	onGoBack,
 	showOptionsMenu,
-	getText,
+	dictionary,
 }) => (
 	<View style={{ flex: 1 }}>
 		<Header
-			title={getText('register.screen.title')}
+			title={dictionary.screens.register.title}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<KeyboardAwareScrollView
-			style={style.keyboardView}
-			contentContainerStyle={style.container}
+			style={styles.keyboardView}
+			contentContainerStyle={styles.container}
 			alwaysBounceVertical={false}
 			keyboardShouldPersistTaps="handled"
 			enableOnAndroid={true}
@@ -87,43 +88,39 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					},
 					termsAccepted: false,
 				}}
-				validate={({
-					email,
-					name,
-					alias,
-					password,
-					confirmPassword,
-					termsAccepted,
-				}: IRegisterFormData) => {
+				validate={({ email, name, alias, password, confirmPassword }: IRegisterFormData) => {
 					const errors: FormikErrors<IRegisterFormData> = {};
+
 					if (!email) {
-						errors.email = getText('register.screen.email.required');
+						errors.email = dictionary.screens.register.email.required;
 					} else if (!EMAIL_SCHEMA.isValidSync(email)) {
-						errors.email = getText('register.screen.email.invalid');
+						errors.email = dictionary.screens.register.email.invalid;
 					}
+
 					if (!name) {
-						errors.name = getText('register.screen.name.required');
+						errors.name = dictionary.screens.register.name.required;
 					} else if (name.length < 4) {
-						errors.name = getText('register.screen.name.length');
+						errors.name = dictionary.screens.register.name.length;
 					}
+
 					if (!alias) {
-						errors.alias = getText('register.screen.username.required');
+						errors.alias = dictionary.screens.register.alias.required;
 					} else if (alias.length < 6) {
-						errors.alias = getText('register.screen.username.length');
+						errors.alias = dictionary.screens.register.alias.length;
 					}
+
 					if (!password) {
-						errors.password = getText('register.screen.password.required');
+						errors.password = dictionary.screens.register.password.required;
 					} else if (password.length < 6) {
-						errors.password = getText('register.screen.password.length');
+						errors.password = dictionary.screens.register.password.length;
 					}
+
 					if (!confirmPassword) {
-						errors.confirmPassword = getText('register.screen.password.required');
+						errors.confirmPassword = dictionary.screens.register.password.required;
 					} else if (!errors.password && confirmPassword !== password) {
-						errors.confirmPassword = getText('register.screen.password.mismatch');
+						errors.confirmPassword = dictionary.screens.register.password.mismatch;
 					}
-					if (!termsAccepted) {
-						errors.termsAccepted = getText('register.screen.terms.accepted');
-					}
+
 					return errors;
 				}}
 				onSubmit={({ termsAccepted, ...data }: IRegisterFormData) => {
@@ -140,20 +137,20 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					setFieldTouched,
 				}: FormikProps<IRegisterFormData>) => (
 					<React.Fragment>
-						<View style={style.avatarPickerContainer}>
+						<View style={styles.avatarPickerContainer}>
 							<AvatarPicker
 								image={avatar.uri}
 								afterImagePick={(path: string) => setFieldValue('avatar', { uri: path }, false)}
 								showOptionsMenu={showOptionsMenu}
-								getText={getText}
+								dictionary={dictionary}
 							/>
 						</View>
-						<View style={[style.textInputContainer, style.textInputContainerFirst]}>
+						<View style={[styles.textInputContainer, styles.textInputContainerFirst]}>
 							<PrimaryTextInput
 								icon="ios-mail"
-								placeholder={getText('register.email')}
-								placeholderColor={colors.paleSky}
-								borderColor={colors.transparent}
+								placeholder={dictionary.components.inputs.email}
+								placeholderColor={Colors.paleSky}
+								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
 								keyboardType={TKeyboardKeys.emailAddress}
 								value={email}
@@ -166,13 +163,13 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							/>
 							<ErrorMessage text={errors.email} visible={!!touched.email && !!errors.email} />
 						</View>
-						<View style={style.textInputContainer}>
+						<View style={styles.textInputContainer}>
 							<PrimaryTextInput
 								autoCapitalize="words"
 								icon="md-person"
-								placeholder={getText('register.name')}
-								placeholderColor={colors.paleSky}
-								borderColor={colors.transparent}
+								placeholder={dictionary.components.inputs.name}
+								placeholderColor={Colors.paleSky}
+								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
 								value={name}
 								ref={nameRef}
@@ -181,19 +178,19 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 									setFieldValue('name', value);
 									setFieldTouched('name');
 								}}
-								onSubmitPressed={() => usernameRef.current && usernameRef.current.focusInput()}
+								onSubmitPressed={() => aliasRef.current && aliasRef.current.focusInput()}
 							/>
 							<ErrorMessage text={errors.name} visible={!!touched.name && !!errors.name} />
 						</View>
-						<View style={style.textInputContainer}>
+						<View style={styles.textInputContainer}>
 							<PrimaryTextInput
 								icon="md-person"
-								placeholder={getText('register.username')}
-								placeholderColor={colors.paleSky}
-								borderColor={colors.transparent}
+								placeholder={dictionary.components.inputs.alias}
+								placeholderColor={Colors.paleSky}
+								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
 								value={alias}
-								ref={usernameRef}
+								ref={aliasRef}
 								persistKeyboard={true}
 								onChangeText={(value: string) => {
 									setFieldValue('alias', value);
@@ -203,13 +200,13 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							/>
 							<ErrorMessage text={errors.alias} visible={!!touched.alias && !!errors.alias} />
 						</View>
-						<View style={style.textInputContainer}>
+						<View style={styles.textInputContainer}>
 							<PrimaryTextInput
 								isPassword={true}
 								icon="ios-lock"
-								placeholder={getText('register.password')}
-								placeholderColor={colors.paleSky}
-								borderColor={colors.transparent}
+								placeholder={dictionary.components.inputs.password}
+								placeholderColor={Colors.paleSky}
+								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
 								value={password}
 								ref={passwordRef}
@@ -227,13 +224,13 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								visible={!!touched.password && !!errors.password}
 							/>
 						</View>
-						<View style={style.textInputContainer}>
+						<View style={styles.textInputContainer}>
 							<PrimaryTextInput
 								isPassword={true}
 								icon="ios-lock"
-								placeholder={getText('register.confirm.password')}
-								placeholderColor={colors.paleSky}
-								borderColor={colors.transparent}
+								placeholder={dictionary.components.inputs.confirm}
+								placeholderColor={Colors.paleSky}
+								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.done}
 								value={confirmPassword}
 								ref={confirmPasswordRef}
@@ -248,24 +245,24 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 								visible={!!touched.confirmPassword && !!errors.confirmPassword}
 							/>
 						</View>
-						<View style={style.termsContainer}>
-							<Text style={style.acceptText}>{getText('register.accept.part1')}</Text>
+						<View style={styles.termsContainer}>
+							<Text style={styles.acceptText}>{dictionary.screens.register.accept}</Text>
 							<TouchableOpacity onPress={onNavigateToTermsAndConditions}>
-								<Text style={style.acceptTextLink}>{getText('register.accept.part2')}</Text>
+								<Text style={styles.acceptTextLink}>{dictionary.screens.register.terms}</Text>
 							</TouchableOpacity>
 							<CheckBox
 								checked={termsAccepted}
 								onPress={() => setFieldValue('termsAccepted', !termsAccepted)}
-								color={colors.pink}
-								style={style.acceptCheckbox}
+								color={Colors.pink}
+								style={styles.acceptCheckbox}
 							/>
 						</View>
-						<View style={style.buttonContainer}>
+						<View style={styles.buttonContainer}>
 							<PrimaryButton
-								label={getText('register.button.label')}
+								label={dictionary.components.buttons.register}
 								onPress={handleSubmit}
 								disabled={!(isValid && termsAccepted)}
-								borderColor={colors.transparent}
+								borderColor={Colors.transparent}
 							/>
 						</View>
 					</React.Fragment>

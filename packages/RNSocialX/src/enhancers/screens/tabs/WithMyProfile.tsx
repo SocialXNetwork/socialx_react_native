@@ -53,7 +53,7 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 											<WithActivities>
 												{({ activities }) => (
 													<WithProfiles>
-														{({ friends, getCurrentProfile, getCurrentFriends }) => (
+														{({ friends, getCurrentProfile }) => (
 															<WithPosts>
 																{({ getUserPosts }) => (
 																	<WithCurrentUserContent>
@@ -66,7 +66,6 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 																						friends[currentUser.alias].length > 0,
 																					loadingProfile: getActivities(activities, [
 																						ProfileActionTypes.GET_CURRENT_PROFILE,
-																						ProfileActionTypes.GET_CURRENT_FRIENDS,
 																						PostActionTypes.GET_USER_POSTS,
 																					]),
 																					dictionary,
@@ -74,11 +73,10 @@ export class WithMyProfile extends React.Component<IWithMyProfileProps, IWithMyP
 																				actions: {
 																					getUserProfile: () => {
 																						getCurrentProfile();
-																						getCurrentFriends();
 																						getUserPosts(currentUser.alias);
 																					},
-																					showOptionsMenu,
 																					logout,
+																					showOptionsMenu,
 																					resetNavigationToRoute,
 																					setGlobal,
 																				},

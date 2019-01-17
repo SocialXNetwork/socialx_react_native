@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { IMAGE_PICKER_TYPES, SCREENS, TABS } from '../../environment/consts';
@@ -23,10 +23,11 @@ interface ITabIconProps extends IOptionsMenuProps, INavigationParamsActions, ITr
 export class TabIcon extends React.Component<ITabIconProps> {
 	public render() {
 		const { navigation, focused, notifications } = this.props;
+
 		return (
-			<SafeAreaView style={styles.container}>
+			<View style={styles.container}>
 				{this.getIcon(navigation.state.routeName, focused, notifications)}
-			</SafeAreaView>
+			</View>
 		);
 	}
 

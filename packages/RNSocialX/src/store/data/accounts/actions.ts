@@ -6,7 +6,7 @@ import {
 	IRecoverAccountInput,
 } from '@socialx/api-data';
 import { ActionCreator } from 'redux';
-import uuidv4 from 'uuid/v4';
+import uuid from 'uuid/v4';
 
 import { clearGunAuth, setGunAuth } from '../../auth/gun';
 import { removeUploadedFiles, setUploadStatus } from '../../storage/files';
@@ -42,7 +42,7 @@ const syncGetCurrentAccountAction: ActionCreator<ISyncGetCurrentAccountAction> =
 });
 
 export const getCurrentAccount = (): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 
 	try {
 		dispatch(getCurrentAccountAction());
@@ -82,7 +82,7 @@ export const getCurrentAccount = (): IThunk => async (dispatch, getState, contex
 			setError({
 				type: ActionTypes.GET_CURRENT_ACCOUNT,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	} finally {
@@ -102,7 +102,7 @@ export const createAccount = (createAccountInput: ICreateAccountInput): IThunk =
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 
 	try {
 		dispatch(createAccountAction(createAccountInput));
@@ -185,7 +185,7 @@ export const createAccount = (createAccountInput: ICreateAccountInput): IThunk =
 			setError({
 				type: ActionTypes.CREATE_ACCOUNT,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	} finally {
@@ -206,7 +206,7 @@ export const recoverAccount = (recoverAccountInput: IRecoverAccountInput): IThun
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 	try {
 		dispatch(recoverAccountAction(recoverAccountInput));
 		await dispatch(
@@ -222,7 +222,7 @@ export const recoverAccount = (recoverAccountInput: IRecoverAccountInput): IThun
 			setError({
 				type: ActionTypes.RECOVER_ACCOUNT,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	} finally {
@@ -238,7 +238,7 @@ const loginAction: ActionCreator<ILoginAction> = (credentials: ICredentials) => 
 export const login = (credentials: ICredentials): IThunk => async (dispatch, getState, context) => {
 	const store = getState();
 	const auth = store.auth.database.gun;
-	const activityId = uuidv4();
+	const activityId = uuid();
 
 	try {
 		dispatch(loginAction(credentials));
@@ -274,7 +274,7 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 					setError({
 						type: ActionTypes.LOGIN,
 						error: e.message,
-						uuid: uuidv4(),
+						uuid: uuid(),
 					}),
 				);
 			}
@@ -283,7 +283,7 @@ export const login = (credentials: ICredentials): IThunk => async (dispatch, get
 				setError({
 					type: ActionTypes.LOGIN,
 					error: e.message,
-					uuid: uuidv4(),
+					uuid: uuid(),
 				}),
 			);
 		}
@@ -295,30 +295,28 @@ const logoutAction: ActionCreator<ILogoutAction> = () => ({
 });
 
 export const logout = (): IThunk => async (dispatch, getState, context) => {
-	const activityId = uuidv4();
-	const actionType = ActionTypes.LOGOUT;
+	const activityId = uuid();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
+
 	if (auth && auth.alias) {
 		try {
 			dispatch(logoutAction());
 			await dispatch(
 				beginActivity({
-					type: actionType,
+					type: ActionTypes.LOGOUT,
 					uuid: activityId,
 				}),
 			);
-			const { dataApi } = context;
-			dataApi.accounts.logout();
-
+			context.dataApi.accounts.logout();
 			await dispatch(clearGunAuth());
-			dataApi.hooks.unhookNotifications();
+			context.dataApi.hooks.unhookNotifications();
 		} catch (e) {
 			await dispatch(
 				setError({
-					type: actionType,
+					type: ActionTypes.LOGOUT,
 					error: e.message,
-					uuid: uuidv4(),
+					uuid: uuid(),
 				}),
 			);
 		} finally {
@@ -339,7 +337,7 @@ export const changePassword = (changePasswordInput: IChangePasswordInput): IThun
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 	const storeState = getState();
 	const auth = storeState.auth.database.gun;
 	if (auth && auth.alias) {
@@ -358,7 +356,7 @@ export const changePassword = (changePasswordInput: IChangePasswordInput): IThun
 				setError({
 					type: ActionTypes.CHANGE_PASSWORD,
 					error: e.message,
-					uuid: uuidv4(),
+					uuid: uuid(),
 				}),
 			);
 		} finally {
@@ -386,7 +384,7 @@ export const getAccountByPub = (getAccountByPubInput: IGetAccountByPubInput): IT
 	getState,
 	context,
 ) => {
-	const activityId = uuidv4();
+	const activityId = uuid();
 	try {
 		dispatch(getAccountByPubAction(getAccountByPubInput));
 		await dispatch(beginActivity({ type: ActionTypes.GET_ACCOUNT_BY_PUB, uuid: activityId }));
@@ -398,7 +396,7 @@ export const getAccountByPub = (getAccountByPubInput: IGetAccountByPubInput): IT
 			setError({
 				type: ActionTypes.GET_ACCOUNT_BY_PUB,
 				error: e.message,
-				uuid: uuidv4(),
+				uuid: uuid(),
 			}),
 		);
 	} finally {

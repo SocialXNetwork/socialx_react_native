@@ -12,14 +12,14 @@ import {
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { ITranslatedProps } from '../../types';
-
-import style, { customStyleProps } from './LoginScreen.style';
+import { Colors } from '../../environment/theme';
+import { IDictionary } from '../../types';
+import style from './LoginScreen.style';
 
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const aliasRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
-interface ILoginFormProps extends ITranslatedProps {
+interface ILoginFormProps extends IDictionary {
 	onLogin: (alias: string, password: string) => void;
 }
 
@@ -28,7 +28,7 @@ interface ILoginScreenData {
 	password: string;
 }
 
-const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
+const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 	<Formik
 		initialValues={{
 			alias: '',
@@ -36,12 +36,15 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 		}}
 		validate={({ alias, password }: ILoginScreenData) => {
 			const errors: FormikErrors<ILoginScreenData> = {};
+
 			if (!alias) {
-				errors.alias = getText('login.alias.required');
+				errors.alias = dictionary.screens.login.alias.required;
 			}
+
 			if (!password) {
-				errors.password = getText('login.password.required');
+				errors.password = dictionary.screens.login.password.required;
 			}
+
 			return errors;
 		}}
 		onSubmit={(values: ILoginScreenData) => {
@@ -60,8 +63,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 			<React.Fragment>
 				<PrimaryTextInput
 					icon="md-person"
-					placeholder={getText('login.username.input')}
-					placeholderColor={customStyleProps.inputPlaceholderColor}
+					placeholder={dictionary.components.inputs.alias}
+					placeholderColor={Colors.paleSky}
 					returnKeyType={TRKeyboardKeys.next}
 					keyboardType={TKeyboardKeys.emailAddress}
 					value={alias}
@@ -78,8 +81,8 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 				<View style={style.passwordContainer}>
 					<PrimaryTextInput
 						icon="ios-lock"
-						placeholder={getText('login.password.input')}
-						placeholderColor={customStyleProps.inputPlaceholderColor}
+						placeholder={dictionary.components.inputs.password}
+						placeholderColor={Colors.paleSky}
 						returnKeyType={TRKeyboardKeys.go}
 						isPassword={true}
 						blurOnSubmit={true}
@@ -98,10 +101,10 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 				</View>
 				<View style={style.fullWidth}>
 					<PrimaryButton
-						label={getText('login.login.button')}
+						label={dictionary.components.buttons.login}
 						onPress={handleSubmit}
 						disabled={!isValid}
-						borderColor={customStyleProps.borderTransparent}
+						borderColor={Colors.transparent}
 					/>
 				</View>
 			</React.Fragment>
@@ -109,11 +112,10 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ getText, onLogin }) => (
 	/>
 );
 
-interface ILoginScreenViewProps extends ITranslatedProps {
+interface ILoginScreenViewProps extends IDictionary {
 	onLogin: (alias: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
-	onNavigateToUploadKey: () => void;
 	onGoBack: () => void;
 }
 
@@ -121,13 +123,12 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 	onLogin,
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
-	onNavigateToUploadKey,
 	onGoBack,
-	getText,
+	dictionary,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={style.screenContainer}>
 		<Header
-			title={getText('login.screen.title')}
+			title={dictionary.screens.login.title}
 			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
 		/>
 		<KeyboardAwareScrollView
@@ -140,26 +141,26 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 			keyboardDismissMode="interactive"
 			keyboardShouldPersistTaps="handled"
 		>
-			<Text style={style.welcomeText}>{getText('login.welcome.message')}</Text>
-			<LoginForm onLogin={onLogin} getText={getText} />
+			<Text style={style.welcomeText}>{dictionary.screens.login.welcome}</Text>
+			<LoginForm onLogin={onLogin} dictionary={dictionary} />
 			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={style.forgotPassword}>
-				<Text style={style.forgotPasswordText}>{getText('login.forgot.password')}</Text>
+				<Text style={style.forgotPasswordText}>{dictionary.screens.login.forgot}</Text>
 			</TouchableOpacity>
-			<PrimaryButton
+			{/* <PrimaryButton
 				label={getText('login.use.unlock.file')}
 				onPress={onNavigateToUploadKey}
-				borderColor={customStyleProps.borderTransparent}
+				borderColor={Colors.transparent}
 				disabled={false}
-			/>
+			/> */}
 			<View
 				style={Platform.select({
 					ios: [style.noAccountContainer, style.noAccountContainerIOS],
 					android: [style.noAccountContainer, style.noAccountContainerAndroid],
 				})}
 			>
-				<Text style={style.noAccountQuestion}>{getText('login.no.account.text')}</Text>
+				<Text style={style.noAccountQuestion}>{dictionary.screens.login.account}</Text>
 				<TouchableOpacity onPress={onNavigateToRegister}>
-					<Text style={style.signUpText}>{getText('login.signUp.button')}</Text>
+					<Text style={style.signUpText}>{dictionary.components.buttons.signUp}</Text>
 				</TouchableOpacity>
 			</View>
 		</KeyboardAwareScrollView>

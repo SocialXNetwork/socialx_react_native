@@ -80,8 +80,3 @@ const style: any = {
 };
 
 export default StyleSheet.create(style);
-
-export const customStyleProps = {
-	inputPlaceholderColor: Colors.paleSky,
-	borderTransparent: Colors.transparent,
-};

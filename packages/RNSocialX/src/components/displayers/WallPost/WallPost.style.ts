@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { Sizes } from '../../../environment/theme';
+export const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const styles: any = {
 	container: {
@@ -18,4 +19,3 @@ const styles: any = {
 };
 
 export default StyleSheet.create(styles);
-export const SCREEN_WIDTH = Dimensions.get('window').width;

@@ -36,7 +36,16 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate() {
+		const { resetNavigationToRoute, navigation, globals } = this.props;
+		const { profileLoaded, friendsLoaded, postsLoaded } = globals;
+
+		if (!this.state.error && profileLoaded && friendsLoaded && postsLoaded) {
+			this.switchActivityIndicator(false);
+			resetNavigationToRoute(NAVIGATION.Home, navigation);
+		}
+
 		if (!this.state.error && this.props.errors.length > 0) {
+			this.switchActivityIndicator(false);
 			this.setState({ error: true });
 		}
 	}
@@ -51,9 +60,8 @@ class Screen extends React.Component<IProps, IState> {
 				onLogin={this.onLoginHandler}
 				onNavigateToPasswordForgot={() => this.safeNavigateToScreen(SCREENS.ForgotPassword)}
 				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
-				onNavigateToUploadKey={() => this.safeNavigateToScreen('UploadKeyScreen')}
 				onGoBack={this.onGoBackHandler}
-				getText={this.props.getText}
+				dictionary={this.props.dictionary}
 			/>
 		);
 	}
@@ -66,19 +74,9 @@ class Screen extends React.Component<IProps, IState> {
 	};
 
 	private onLoginHandler = async (alias: string, password: string) => {
-		const { login, loadFeed, resetNavigationToRoute, navigation } = this.props;
-
 		this.setState({ error: false });
 		this.switchActivityIndicator(true);
-		await login(alias, password);
-
-		if (!this.state.error) {
-			await loadFeed();
-			this.switchActivityIndicator(false);
-			resetNavigationToRoute(NAVIGATION.Home, navigation);
-		}
-
-		this.switchActivityIndicator(false);
+		await this.props.login(alias, password);
 	};
 
 	private safeNavigateToScreen = (screenName: string) => {
@@ -88,14 +86,16 @@ class Screen extends React.Component<IProps, IState> {
 
 	private onGoBackHandler = () => {
 		Keyboard.dismiss();
-		this.props.navigation.goBack(null);
+		this.props.navigation.goBack();
 	};
 
 	private switchActivityIndicator = (state: boolean) => {
-		this.props.setGlobal({
+		const { dictionary, setGlobal } = this.props;
+
+		setGlobal({
 			activity: {
 				visible: state,
-				title: this.props.getText('login.progress.message'),
+				title: dictionary.screens.login.progress,
 			},
 		});
 	};

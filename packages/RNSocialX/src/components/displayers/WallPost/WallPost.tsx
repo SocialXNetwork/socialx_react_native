@@ -3,7 +3,6 @@ import * as React from 'react';
 import {
 	Animated,
 	Clipboard,
-	Dimensions,
 	findNodeHandle,
 	Keyboard,
 	KeyboardAvoidingView,
@@ -11,6 +10,7 @@ import {
 	ScrollView,
 	View,
 } from 'react-native';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import { connect } from 'react-redux';
 
 import { CommentCard, HeartAnimation, ReportProblem } from '../../';
@@ -156,8 +156,6 @@ class Component extends React.Component<IProps, IState> {
 			send: sendCommentIconPosition,
 		};
 
-		const isPhoneXOrAbove = Platform.OS === OS_TYPES.IOS && Dimensions.get('screen').height > 800;
-
 		if (post) {
 			return (
 				<View
@@ -255,7 +253,7 @@ class Component extends React.Component<IProps, IState> {
 							</ScrollView>
 							<KeyboardAvoidingView
 								behavior="padding"
-								keyboardVerticalOffset={isPhoneXOrAbove ? 50 : 30}
+								keyboardVerticalOffset={isIphoneX() ? 50 : 30}
 								enabled={Platform.OS === OS_TYPES.IOS}
 							>
 								<CommentInput

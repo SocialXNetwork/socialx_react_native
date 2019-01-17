@@ -147,9 +147,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							)}
 							scrollEnabled={false}
 							showsVerticalScrollIndicator={false}
-							ListEmptyComponent={
-								<NoContent loading={loadingProfile} posts={true} dictionary={dictionary} />
-							}
+							ListEmptyComponent={<NoContent posts={true} dictionary={dictionary} />}
 						/>
 
 						{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
@@ -173,7 +171,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 							</View>
 						) : (
 							<React.Fragment>
-								<NoContent loading={loadingProfile} gallery={true} dictionary={dictionary} />
+								<NoContent gallery={true} dictionary={dictionary} />
 								{Platform.OS === OS_TYPES.IOS && <View style={styles.spacer} />}
 							</React.Fragment>
 						)}

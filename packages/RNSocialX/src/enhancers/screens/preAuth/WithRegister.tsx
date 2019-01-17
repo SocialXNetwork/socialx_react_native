@@ -11,7 +11,7 @@ import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { IRegisterData } from '../../../screens/preAuth/RegisterScreen.view';
-import { IError, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../../types';
+import { IDictionary, IError, IGlobal, IOptionsMenuProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -21,11 +21,11 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { resetNavigationToRoute } from '../../helpers/';
 
-export interface IWithRegisterEnhancedData {
+export interface IWithRegisterEnhancedData extends IDictionary {
 	errors: IError[];
 }
 
-export interface IWithRegisterEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
+export interface IWithRegisterEnhancedActions extends IOptionsMenuProps {
 	register: (data: IRegisterData) => void;
 	loadPosts: () => void;
 	setGlobal: (global: IGlobal) => void;
@@ -47,7 +47,7 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) => (
+				{({ dictionary }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithGlobals>
@@ -61,6 +61,7 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 															this.props.children({
 																data: {
 																	errors,
+																	dictionary,
 																},
 																actions: {
 																	register: (registerData: IRegisterData) =>
@@ -77,13 +78,12 @@ export class WithRegister extends React.Component<IWithRegisterProps, IWithRegis
 																			fullName: registerData.name,
 																			miningEnabled: true,
 																			shareDataEnabled: true,
-																			aboutMeText: 'about me text',
+																			aboutMeText: '',
 																		}),
 																	loadPosts: loadMorePosts,
 																	showOptionsMenu,
 																	setGlobal,
 																	resetNavigationToRoute,
-																	getText: i18nProps.getText,
 																},
 															})
 														}

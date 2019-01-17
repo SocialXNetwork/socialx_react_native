@@ -61,7 +61,6 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 																friends[visitedUser.alias] && friends[visitedUser.alias].length > 0,
 															loadingProfile: getActivities(activities, [
 																ProfileActionTypes.GET_PROFILE_BY_ALIAS,
-																ProfileActionTypes.GET_PROFILE_FRIENDS_BY_ALIAS,
 																PostActionTypes.GET_USER_POSTS,
 															]),
 															dictionary,
@@ -69,7 +68,6 @@ export class WithUserProfile extends React.Component<IWithUserProfileProps, IWit
 														actions: {
 															getUserProfile: (alias: string) => {
 																getProfileByAlias(alias);
-																getProfileFriendsByAlias(alias);
 																getUserPosts(alias);
 															},
 															getUserFriends: getProfileFriendsByAlias,

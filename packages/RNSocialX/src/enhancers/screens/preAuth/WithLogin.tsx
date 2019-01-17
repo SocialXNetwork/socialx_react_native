@@ -5,25 +5,24 @@
 
 import * as React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
-import { IError, IGlobal, ITranslatedProps } from '../../../types';
+import { IDictionary, IError, IGlobal } from '../../../types';
 
 import { IAuthData } from '../../../store/auth/gun';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
-import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { resetNavigationToRoute } from '../../helpers/';
 
-export interface IWithLoginEnhancedData {
+export interface IWithLoginEnhancedData extends IDictionary {
 	auth: IAuthData | null;
+	globals: IGlobal;
 	errors: IError[];
 }
 
-export interface IWithLoginEnhancedActions extends ITranslatedProps {
+export interface IWithLoginEnhancedActions {
 	login: (alias: string, password: string) => void;
-	loadFeed: () => void;
 	setGlobal: (global: IGlobal) => void;
 	resetNavigationToRoute: (screenName: string, navigation: NavigationScreenProp<any>) => void;
 }
@@ -43,42 +42,32 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithGlobals>
-						{({ setGlobal }) => (
+						{({ globals, setGlobal }) => (
 							<WithActivities>
 								{({ errors }) => (
 									<WithAuth>
 										{({ auth }) => (
-											<WithPosts>
-												{({ loadMorePosts, loadMoreFriendsPosts }) => (
-													<WithAccounts>
-														{({ login }) =>
-															this.props.children({
-																data: {
-																	auth,
-																	errors,
-																},
-																actions: {
-																	login: async (alias: string, password: string) => {
-																		await login({
-																			username: alias,
-																			password,
-																		});
-																	},
-																	loadFeed: async () => {
-																		await loadMorePosts();
-																		await loadMoreFriendsPosts();
-																	},
-																	setGlobal,
-																	resetNavigationToRoute,
-																	getText,
-																},
-															})
-														}
-													</WithAccounts>
-												)}
-											</WithPosts>
+											<WithAccounts>
+												{({ login }) =>
+													this.props.children({
+														data: {
+															auth,
+															globals,
+															errors,
+															dictionary,
+														},
+														actions: {
+															login: (username: string, password: string) => {
+																login({ username, password });
+															},
+															setGlobal,
+															resetNavigationToRoute,
+														},
+													})
+												}
+											</WithAccounts>
 										)}
 									</WithAuth>
 								)}

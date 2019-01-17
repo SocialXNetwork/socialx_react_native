@@ -51,7 +51,7 @@ class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState>
 				onNavigateToTermsAndConditions={() => this.safeNavigateToScreen(SCREENS.TermsAndConditions)}
 				onGoBack={this.onGoBackHandler}
 				showOptionsMenu={this.props.showOptionsMenu}
-				getText={this.props.getText}
+				dictionary={this.props.dictionary}
 			/>
 		);
 	}
@@ -90,24 +90,17 @@ class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState>
 	};
 
 	private switchActivityIndicator = (state: boolean) => {
-		this.props.setGlobal({
+		const { setGlobal, dictionary } = this.props;
+
+		setGlobal({
 			activity: {
 				visible: state,
-				title: this.props.getText('register.progress.message'),
+				title: dictionary.screens.register.progress,
 			},
 		});
 	};
 }
 
-export const RegisterScreen = ({ navigation, navigationOptions }: INavigationProps) => (
-	<WithRegister>
-		{({ data, actions }) => (
-			<Screen
-				navigation={navigation}
-				navigationOptions={navigationOptions}
-				{...data}
-				{...actions}
-			/>
-		)}
-	</WithRegister>
+export const RegisterScreen = (props: INavigationProps) => (
+	<WithRegister>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithRegister>
 );

@@ -61,6 +61,42 @@ export default {
 		},
 		likes: {
 			title: 'Likes'
+		},
+		login: {
+			title: 'Login',
+			welcome: 'Welcome back!',
+			forgot: 'Forgot your password',
+			progress: 'Signing you in',
+			account: "Don't have an account?",
+			alias: {
+				required: 'Username is required'
+			},
+			password: {
+				required: 'Password is required',
+			},
+		},
+		register: {
+			title: 'Register',
+			progress: 'Signing you up',
+			email: {
+				required: 'Email is required',
+				invalid: 'Please enter a valid email address',
+			},
+			name: {
+				required: 'Your name is required',
+				length: 'Name must have at least 4 characters',
+			},
+			alias: {
+				required: 'Username is required',
+				length: 'Username must have at least 6 characters',
+			},
+			password: {
+				required: 'Password is required',
+				length: 'Password must have at least 6 characters',
+				mismatch: 'Passwords do not match'
+			},
+			accept: 'Accept our',
+			terms: 'Terms and Conditions',
 		}
 	},
 	components: {
@@ -72,18 +108,25 @@ export default {
 			},
 			seeAllFriends: 'See all friends',
 			editProfile: 'Edit profile',
-			message: 'Message'
+			message: 'Message',
+			login: 'Login',
+			signUp: 'Sign up',
+			register: 'Register',
 
 		},
 		inputs: {
-			placeholders: {
-				caption: 'Write a caption'
-			}
+			caption: 'Write a caption',
+			alias: 'Username',
+			password: 'Password',
+			confirm: 'Confirm password',
+			email: 'Email',
+			name: 'Full name'
 		},
 		modals: {
 			options: {
 				gallery: 'Pick from gallery',
 				camera: 'Open camera',
+				remove: 'Remove picture',
 			}
 		},
 		displayers: {
@@ -160,38 +203,6 @@ export default {
 	'forgot.password.requesting': 'Requesting Password Code..',
 	'forgot.password.request.error': 'Something went wrong, ${args[0]}',
 	'forgot.password.username.required': 'Username is required',
-	'register.screen.title': 'REGISTER',
-	'register.email': 'Email',
-	'register.name': 'Name',
-	'register.username': 'Username',
-	'register.phone.number': 'Phone number',
-	'register.country.select': 'Search your country..',
-	'register.password': 'Password',
-	'register.confirm.password': 'Confirm Password',
-	'register.button.label': 'Register',
-	'register.button.have.code': 'Already have the code? Click here!',
-	'register.accept.part1': 'Accept our',
-	'register.accept.part2': 'Terms and Conditions',
-	'register.could.not.resend.code': 'Could not resend confirmation code:',
-	'register.failed': 'Register failed',
-	'register.progress.message': 'Signing you up',
-	'register.confirming.code': 'Creating your profile',
-	'register.password.min.length': 'minimum length 8',
-	'register.password.invalid.numbers': 'numbers',
-	'register.password.invalid.lowercase': 'lowercase letters',
-	'register.password.invalid.uppercase': 'uppercase letters',
-	'register.password.invalid.symbols': 'special characters',
-	'register.password.invalid.policy': 'Password policy',
-	'register.screen.email.required': 'Email is required',
-	'register.screen.email.invalid': 'Please enter a valid email address',
-	'register.screen.name.required': 'Your name is required',
-	'register.screen.name.length': 'Name must have at least 4 characters',
-	'register.screen.username.required': 'A username is required',
-	'register.screen.username.length': 'Username must have at least 6 characters',
-	'register.screen.password.required': 'Password is required',
-	'register.screen.password.length': 'Password must have at least 6 characters',
-	'register.screen.password.mismatch': 'Passwords do not match',
-	'register.screen.terms.accepted': 'You need to accept our terms and conditions',
 	'terms.and.conditions.screen.title': 'Terms and Conditions',
 	'reset.password.screen.title': 'RESET PASSWORD',
 	'reset.password.description':
@@ -295,9 +306,6 @@ export default {
 	'nodes.screen.input.placeholder': 'Add a new node',
 	'nodes.screen.current.text': 'Current nodes',
 	'nodes.screen.button.text': 'Delete nodes',
-	'avatar.picker.camera': 'Take a photo',
-	'avatar.picker.gallery': 'Pick from gallery',
-	'avatar.picker.remove': 'Remove profile picture',
 	'modal.report.title': 'Report a Problem',
 	'modal.report.subject.placeholder': 'Subject',
 	'modal.report.description.placeholder': 'Description',

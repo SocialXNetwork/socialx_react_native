@@ -39,9 +39,9 @@ class Screen extends React.Component<IProps> {
 
 	public componentDidUpdate() {
 		const { maintenance, globals, navigation, resetNavigationToRoute } = this.props;
-		const { profileLoaded, friendsLoaded, postsLoaded } = globals;
+		const { profileLoaded, friendsLoaded, postsLoaded, logout } = globals;
 
-		if (profileLoaded && friendsLoaded && postsLoaded) {
+		if (!logout && profileLoaded && friendsLoaded && postsLoaded) {
 			clearTimeout(this.loginTimeout);
 
 			if (__DEV__) {
@@ -69,8 +69,7 @@ class Screen extends React.Component<IProps> {
 		// @ts-ignore
 		if (!window.crypto.loaded) {
 			return <View />;
-		}
-		if (auth && !logout) {
+		} else if (auth && !logout) {
 			return <LoadingScreen loading={loading} dictionary={dictionary} />;
 		} else {
 			return (

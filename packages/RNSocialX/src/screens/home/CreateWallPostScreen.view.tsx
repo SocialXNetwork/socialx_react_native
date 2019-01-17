@@ -39,7 +39,7 @@ export const CreateWallPostScreenView: React.SFC<ICreateWallPostScreenViewProps>
 		<ScrollView contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps="handled">
 			<SharePostInput
 				avatar={avatar}
-				placeholder={dictionary.components.inputs.placeholders.caption}
+				placeholder={dictionary.components.inputs.caption}
 				value={caption}
 				onChangeText={onChangeText}
 			/>
