@@ -214,6 +214,9 @@ export const getProfileByUsername = (
 		const { gun: dgun } = context;
 		const gun = dgun.back(-1);
 		const extractProf = (data: any) => {
+			if (!data) {
+				return callback(new ApiError('failed to fetch the profile'));
+			}
 			const act = Object.keys(data).filter((key) => key !== '_');
 			// tslint:disable-next-line
 			for (let i = 0; i < act.length; i++){
@@ -231,7 +234,7 @@ export const getProfileByUsername = (
 					});
 			}
 		};
-		gun.get(`~@${username}`).once(extractProf);
+		gun.get(`~@${username}`).once(extractProf, { wait: 10000 });
 	};
 	mainRunner();
 };
