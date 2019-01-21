@@ -43,6 +43,7 @@ import {
 	LoginScreen,
 	MaintenanceScreen,
 	ManageCountriesScreen,
+	MessagesScreen,
 	MyProfileScreen,
 	NewAdSliderScreen,
 	NodesScreen,
@@ -146,14 +147,14 @@ const FeedStack = createStackNavigator(
 				header: (
 					<Header
 						logo={true}
-						// right={
-						// 	<IconButton
-						// 		source="ios-chatboxes"
-						// 		type="io"
-						// 		iconStyle={styles.chat}
-						// 		onPress={() => props.navigation.navigate(SCREENS.Chat)}
-						// 	/>
-						// }
+						right={
+							<IconButton
+								source="ios-chatboxes"
+								type="io"
+								iconStyle={styles.chat}
+								onPress={() => props.navigation.navigate(SCREENS.Chat)}
+							/>
+						}
 					/>
 				),
 			}),
@@ -249,6 +250,8 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
+		Messages: { screen: MessagesScreen },
+		Chat: { screen: ChatScreen },
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

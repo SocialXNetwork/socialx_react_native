@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Header, HeaderButton, UserEntries } from '../../components';
+import { Header, UserEntries } from '../../components';
 import { Colors, Sizes } from '../../environment/theme';
 import { IDictionary } from '../../types';
 
@@ -18,12 +18,9 @@ export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
 	dictionary,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={dictionary.screens.likes.title}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={dictionary.screens.likes.title} back={true} onPressBack={onGoBack} />
 		<View style={styles.list}>
-			<UserEntries aliases={likeIds} onEntryPress={onViewUserProfile} />
+			<UserEntries aliases={likeIds} friends={true} onEntryPress={onViewUserProfile} />
 		</View>
 	</View>
 );
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 	},
 	list: {
-		paddingVertical: Sizes.smartVerticalScale(16),
-		paddingHorizontal: Sizes.smartHorizontalScale(25),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 });

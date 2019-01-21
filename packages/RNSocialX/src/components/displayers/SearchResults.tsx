@@ -41,7 +41,7 @@ export const SearchResults: React.SFC<ISearchResultsProps> = ({
 		<ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
 			{empty && <NoResults getText={getText} />}
 			{results.length > 0 && (
-				<UserEntries aliases={results} scroll={false} onEntryPress={onResultPress} />
+				<UserEntries aliases={results} friends={true} scroll={false} onEntryPress={onResultPress} />
 			)}
 			{searching && <SearchIndicator term={term} getText={getText} />}
 		</ScrollView>

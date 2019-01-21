@@ -10,17 +10,15 @@ import {
 	ButtonSizes,
 	Checkbox,
 	Header,
-	HeaderButton,
 	InputSizes,
 	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
-import { ICurrentUser, IOptionsMenuProps, ITranslatedProps } from '../../types';
+import { ICurrentUser, IDictionary, IOptionsMenuProps } from '../../types';
 
 import styles, { defaultStyles } from './SettingsScreen.style';
-
 const EMAIL_SCHEMA = string().email();
 
 export interface ISettingsData {
@@ -32,7 +30,7 @@ export interface ISettingsData {
 	avatar: string;
 }
 
-interface ISettingsScreenViewProps extends ITranslatedProps, IOptionsMenuProps {
+interface ISettingsScreenViewProps extends IDictionary, IOptionsMenuProps {
 	currentUser: ICurrentUser;
 	onSaveChanges: (values: ISettingsData) => void;
 	onEditNodes: () => void;
@@ -45,7 +43,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	onGoBack,
 	showOptionsMenu,
 	onEditNodes,
-	getText,
+	dictionary,
 }) => (
 	<Formik
 		initialValues={{
@@ -59,29 +57,24 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 		validate={({ fullName, email, description }: ISettingsData) => {
 			const errors: FormikErrors<ISettingsData> = {};
 			if (!email) {
-				errors.email = getText('settings.screen.email.required');
+				errors.email = dictionary.components.inputs.email.required;
 			} else if (!EMAIL_SCHEMA.isValidSync(email)) {
-				errors.email = getText('settings.screen.email.invalid');
+				errors.email = dictionary.components.inputs.email.invalid;
 			}
 			if (!fullName) {
-				errors.fullName = getText('settings.screen.name.required');
+				errors.fullName = dictionary.components.inputs.name.required;
 			}
 			if (!description) {
-				errors.description = getText('settings.screen.description.required');
+				errors.description = dictionary.components.inputs.description.required;
 			} else if (description.length < 10) {
-				errors.description = getText('settings.screen.description.length');
+				errors.description = dictionary.components.inputs.description.length;
 			}
 			return errors;
 		}}
 		onSubmit={(values: ISettingsData) => onSaveChanges(values)}
 		render={({ values, errors, handleBlur, handleSubmit, isValid, setFieldValue }) => (
 			<View style={{ flex: 1 }}>
-				{
-					<Header
-						title={getText('settings.screen.title')}
-						left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-					/>
-				}
+				{<Header title={dictionary.screens.settings.title} back={true} onPressBack={onGoBack} />}
 				<KeyboardAwareScrollView
 					contentContainerStyle={styles.container}
 					alwaysBounceVertical={false}
@@ -95,13 +88,13 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							hash={values.avatar === currentUser.avatar}
 							afterImagePick={(path: string) => setFieldValue('avatar', path, false)}
 							showOptionsMenu={showOptionsMenu}
-							getText={getText}
+							dictionary={dictionary}
 						/>
 					</View>
 					<AvatarName fullName={currentUser.fullName} alias={currentUser.alias} />
 					<View style={styles.editNodesButton}>
 						<PrimaryButton
-							label={getText('settings.screen.nodes.button')}
+							label={dictionary.components.buttons.editNodes}
 							size={ButtonSizes.Small}
 							onPress={onEditNodes}
 						/>
@@ -109,13 +102,13 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<View style={[styles.input, styles.firstInput]}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>{getText('settings.screen.name.placeholder')}</Text>
+								<Text style={styles.label}>{dictionary.components.inputs.placeholder.name}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="words"
 									value={values.fullName}
-									placeholder={getText('settings.screen.name.placeholder')}
+									placeholder={dictionary.components.inputs.placeholder.name}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									size={InputSizes.Small}
 									borderColor={defaultStyles.userDataInputBorderColor}
@@ -131,13 +124,13 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>{getText('settings.screen.email.placeholder')}</Text>
+								<Text style={styles.label}>{dictionary.components.inputs.placeholder.email}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="words"
 									value={values.email}
-									placeholder={getText('settings.screen.email.placeholder')}
+									placeholder={dictionary.components.inputs.placeholder.email}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									borderColor={defaultStyles.userDataInputBorderColor}
 									size={InputSizes.Small}
@@ -155,14 +148,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
 								<Text style={styles.label}>
-									{getText('settings.screen.description.placeholder')}
+									{dictionary.components.inputs.placeholder.description}
 								</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="sentences"
 									value={values.description}
-									placeholder={getText('settings.screen.description.placeholder')}
+									placeholder={dictionary.components.inputs.placeholder.description}
 									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
 									borderColor={defaultStyles.userDataInputBorderColor}
 									multiline={true}
@@ -177,14 +170,14 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					</View>
 					<View style={styles.mining}>
 						<Checkbox
-							title={getText('settings.screen.mining.title')}
-							description={getText('settings.screen.mining.description')}
+							title={dictionary.screens.settings.mining.title}
+							description={dictionary.screens.settings.mining.description}
 							value={values.miningEnabled}
 							onValueUpdated={() => setFieldValue('miningEnabled', !values.miningEnabled, false)}
 						/>
 						<Checkbox
-							title={getText('settings.screen.sharedata.title')}
-							description={getText('settings.screen.sharedata.description')}
+							title={dictionary.screens.settings.share.title}
+							description={dictionary.screens.settings.share.description}
 							value={values.shareDataEnabled}
 							onValueUpdated={() =>
 								setFieldValue('shareDataEnabled', !values.shareDataEnabled, false)
@@ -194,7 +187,7 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					{isValid && (
 						<View style={styles.button}>
 							<PrimaryButton
-								label={getText('button.save.changes')}
+								label={dictionary.components.buttons.saveChanges}
 								size={ButtonSizes.Small}
 								onPress={handleSubmit}
 							/>

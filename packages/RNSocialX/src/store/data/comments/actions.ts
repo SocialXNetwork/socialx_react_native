@@ -4,7 +4,6 @@ import uuid from 'uuid/v4';
 
 import { IThunk } from '../../types';
 import { beginActivity, endActivity, setError } from '../../ui/activities';
-import { setGlobal } from '../../ui/globals';
 import {
 	addCommentToPostAction,
 	removeCommentFromPostAction,

@@ -36,7 +36,7 @@ class Screen extends React.PureComponent<IResetPasswordScreenProps> {
 	};
 
 	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
+		this.props.navigation.goBack();
 	};
 }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import { Header, HeaderButton, MyWalletInfo, TransactionItem } from '../../components';
+import { Header, MyWalletInfo, TransactionItem } from '../../components';
 import { ITransactionData, ITranslatedProps, TrendOptions } from '../../types';
 import styles from './WalletActivityScreen.style';
 
@@ -31,10 +31,7 @@ export const WalletActivityScreenView: React.SFC<IWalletActivityScreenViewProps>
 }) => {
 	return (
 		<View style={styles.container}>
-			<Header
-				title={getText('wallet.activity.screen.title')}
-				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-			/>
+			<Header title={getText('wallet.activity.screen.title')} back={true} onPressBack={onGoBack} />
 			<View style={styles.walletContainer}>
 				<MyWalletInfo
 					coins={coins}

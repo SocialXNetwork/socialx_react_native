@@ -5,18 +5,22 @@ const styles: any = {
 	container: {
 		backgroundColor: Colors.pink,
 	},
-	inputContainer: {
+	inner: {
 		flexDirection: 'row',
+		alignItems: 'center',
 		height: Sizes.smartVerticalScale(45),
 		width: '100%',
 		paddingVertical: Sizes.smartVerticalScale(2.5),
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
-	backIcon: {
-		fontSize: Sizes.smartHorizontalScale(30),
-		color: Colors.white,
-		paddingLeft: Sizes.smartHorizontalScale(5),
-		paddingRight: Sizes.smartHorizontalScale(13),
+	backButton: {
+		marginHorizontal: Sizes.smartHorizontalScale(10),
+	},
+	inputContainer: {
+		flex: 1,
+	},
+	spacing: {
+		marginHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	inputOverlay: {
 		backgroundColor: Colors.transparent,

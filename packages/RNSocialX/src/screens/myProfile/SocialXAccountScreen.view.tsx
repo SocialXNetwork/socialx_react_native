@@ -3,7 +3,6 @@ import { ScrollView, Text, View } from 'react-native';
 
 import {
 	Header,
-	HeaderButton,
 	IAccountCurrencyData,
 	PrimaryButton,
 	SocialXAccountCurrencyItem,
@@ -39,7 +38,8 @@ export class SocialXAccountScreenView extends Component<ISocialXAccountScreenVie
 			<View style={styles.container}>
 				<Header
 					title={getText('socialx.account.screen.title')}
-					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+					back={true}
+					onPressBack={onGoBack}
 				/>
 				<ScrollView
 					contentContainerStyle={styles.contentContainer}

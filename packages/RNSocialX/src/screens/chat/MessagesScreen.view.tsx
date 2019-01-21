@@ -3,21 +3,22 @@ import { View } from 'react-native';
 
 import { SearchHeader, UserEntries } from '../../components';
 import { INavigationProps } from '../../types';
-import styles from './FriendsListScreen.style';
 
-interface IFriendsListScreenViewProps extends INavigationProps {
-	aliases: string[];
+import styles from './MessagesScreen.style';
+
+interface IProps extends INavigationProps {
 	term: string;
+	aliases: string[];
 	onChangeText: (term: string) => void;
-	onViewUserProfile: (alias: string) => void;
+	onRemoveMessage: (alias: string) => void;
 }
 
-export const FriendsListScreenView: React.SFC<IFriendsListScreenViewProps> = ({
-	aliases,
+export const MessagesScreenView: React.SFC<IProps> = ({
 	term,
+	aliases,
 	navigation,
 	onChangeText,
-	onViewUserProfile,
+	onRemoveMessage,
 }) => (
 	<View style={styles.container}>
 		<SearchHeader
@@ -27,8 +28,14 @@ export const FriendsListScreenView: React.SFC<IFriendsListScreenViewProps> = ({
 			navigation={navigation}
 			onSearchTermChange={onChangeText}
 		/>
-		<View style={styles.friends}>
-			<UserEntries aliases={aliases} friends={true} onEntryPress={onViewUserProfile} />
+		<View style={styles.entries}>
+			<UserEntries
+				aliases={aliases}
+				chat={true}
+				removable={true}
+				onEntryPress={() => undefined}
+				onRemove={onRemoveMessage}
+			/>
 		</View>
 	</View>
 );

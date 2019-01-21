@@ -6,16 +6,8 @@ const styles: any = {
 		flex: 1,
 		backgroundColor: Colors.white,
 	},
-	input: {
-		backgroundColor: Colors.pink,
-		height: Sizes.smartVerticalScale(45),
-		width: '100%',
-		paddingVertical: Sizes.smartVerticalScale(2.5),
-		paddingHorizontal: Sizes.smartHorizontalScale(5),
-	},
-	friends: {
+	entries: {
 		flex: 1,
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 };

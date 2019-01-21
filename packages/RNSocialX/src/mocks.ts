@@ -22,7 +22,7 @@ import dictionary from './store/app/i18n/data/dictionary.en';
 import { getText } from './store/app/i18n/helpers';
 
 export const getTextMock = (key: string, ...args: Array<string | number>) => {
-	return getText(dictionary, key, ...args);
+	return getText(dictionary as any, key, ...args);
 };
 
 const avatar =

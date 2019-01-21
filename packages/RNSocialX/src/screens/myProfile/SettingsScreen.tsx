@@ -16,7 +16,7 @@ type ISettingsScreenProps = INavigationProps &
 
 class Screen extends React.Component<ISettingsScreenProps> {
 	public render() {
-		const { currentUser, navigation, getText, showOptionsMenu } = this.props;
+		const { currentUser, navigation, dictionary, showOptionsMenu } = this.props;
 
 		return (
 			<SettingsScreenView
@@ -25,7 +25,7 @@ class Screen extends React.Component<ISettingsScreenProps> {
 				onGoBack={() => this.onGoBackHandler(navigation)}
 				onEditNodes={() => this.onEditNodesHandler(navigation)}
 				showOptionsMenu={showOptionsMenu}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		);
 	}
@@ -48,7 +48,7 @@ class Screen extends React.Component<ISettingsScreenProps> {
 		this.props.setGlobal({
 			activity: {
 				visible: state,
-				title: this.props.getText('settings.progress.message'),
+				title: this.props.dictionary.screens.settings.progress,
 			},
 		});
 	};

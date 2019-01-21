@@ -68,16 +68,54 @@ export default {
 			forgot: 'Forgot your password',
 			progress: 'Signing you in',
 			account: "Don't have an account?",
-			alias: {
-				required: 'Username is required'
-			},
-			password: {
-				required: 'Password is required',
-			},
 		},
 		register: {
 			title: 'Register',
 			progress: 'Signing you up',
+			accept: 'Accept our',
+			terms: 'Terms and Conditions',
+		},
+		settings: {
+			title: 'Settings',
+			progress: 'Updating your profile',
+		},
+		mining: {
+			title: 'Mining (Beta)',
+			description:
+				'Get rewarded for validating transactions within SocialX network',
+		},
+		share: {
+			title: 'Share data',
+			description: 'Share your data with advertise partners',
+		}
+	},
+	components: {
+		buttons: {
+			media: 'Photo/Video',
+			createPost: 'Create post',
+			video: {
+				replay: 'Watch again'
+			},
+			seeAllFriends: 'See all friends',
+			editProfile: 'Edit profile',
+			message: 'Message',
+			login: 'Login',
+			signUp: 'Sign up',
+			register: 'Register',
+			saveChanges: 'Save changes',
+			editNodes: 'Edit nodes',
+			delete: 'Delete'
+		},
+		inputs: {
+			placeholder: {
+				caption: 'Write a caption',
+				alias: 'Username',
+				password: 'Password',
+				confirm: 'Confirm password',
+				email: 'Email',
+				name: 'Full name',
+				description: 'Bio'
+			},
 			email: {
 				required: 'Email is required',
 				invalid: 'Please enter a valid email address',
@@ -95,32 +133,10 @@ export default {
 				length: 'Password must have at least 6 characters',
 				mismatch: 'Passwords do not match'
 			},
-			accept: 'Accept our',
-			terms: 'Terms and Conditions',
-		}
-	},
-	components: {
-		buttons: {
-			media: 'Photo/Video',
-			createPost: 'Create post',
-			video: {
-				replay: 'Watch again'
-			},
-			seeAllFriends: 'See all friends',
-			editProfile: 'Edit profile',
-			message: 'Message',
-			login: 'Login',
-			signUp: 'Sign up',
-			register: 'Register',
-
-		},
-		inputs: {
-			caption: 'Write a caption',
-			alias: 'Username',
-			password: 'Password',
-			confirm: 'Confirm password',
-			email: 'Email',
-			name: 'Full name'
+			description: {
+				required: 'Bio is required',
+				length: 'Bio must be at least 10 characters',
+			}
 		},
 		modals: {
 			options: {
@@ -159,7 +175,6 @@ export default {
 	'button.next': 'Next',
 	'button.finalize': 'Finalize',
 	'button.export': 'Export keys to the device',
-	'button.save.changes': 'Save changes',
 	'button.friends': 'Friends',
 	'button.add.friend': 'Add friend',
 	'button.undo': 'Undo',
@@ -283,23 +298,6 @@ export default {
 	'new.wall.post.screen.menu.photo': 'Take a photo/video',
 	'new.wall.post.screen.menu.title': 'Add media file',
 	'new.wall.post.screen.progress.message': 'Creating your post',
-	'settings.screen.title': 'SETTINGS',
-	'settings.screen.nodes.button': 'Edit Nodes',
-	'settings.screen.email.required': 'Email is required',
-	'settings.screen.email.invalid': 'Please enter a valid email address',
-	'settings.screen.name.required': 'Name is required',
-	'settings.screen.name.placeholder': 'Name',
-	'settings.screen.description.required': 'Bio is required',
-	'settings.screen.description.placeholder': 'Bio',
-	'settings.screen.description.length': 'Bio must be at least 10 characters',
-	'settings.screen.personal.details': 'PERSONAL DETAILS',
-	'settings.screen.email.placeholder': 'Email',
-	'settings.screen.mining.title': 'Mining (Beta)',
-	'settings.screen.mining.description':
-		'Get rewarded for validating transactions within SocialX network',
-	'settings.screen.sharedata.title': 'Share data',
-	'settings.screen.sharedata.description': 'Share your data with advertise partners',
-	'settings.progress.message': 'Updating profile',
 	'nodes.screen.title': 'Edit Nodes',
 	'nodes.screen.description': 'Add/Delete Nodes',
 	'nodes.progress.message': 'Updating nodes',

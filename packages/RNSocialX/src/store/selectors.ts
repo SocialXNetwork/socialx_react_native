@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 export { IApplicationState } from './rootReducer';
 
 import { IState as IComments } from './data/comments';
+import { IState as IMessages } from './data/messages';
 import { IState as INotifications } from './data/notifications';
 import { IState as IPosts } from './data/posts';
 import { IState as IProfiles } from './data/profiles';
@@ -46,4 +47,9 @@ export const selectFriends = createSelector(
 export const selectAvatar = createSelector(
 	(state: IProfiles, alias: string) => state.profiles[alias].avatar,
 	(avatar) => avatar,
+);
+
+export const selectMessages = createSelector(
+	(state: IMessages, alias: string) => state.messages[alias],
+	(messages) => messages,
 );

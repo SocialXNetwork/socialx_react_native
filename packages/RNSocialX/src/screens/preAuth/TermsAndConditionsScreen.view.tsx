@@ -2,7 +2,7 @@ import * as React from 'react';
 import { WebView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
-import { Header, HeaderButton } from '../../components';
+import { Header } from '../../components';
 import { ITranslatedProps } from '../../types';
 import styles from './TermsAndConditionsScreen.style';
 
@@ -19,7 +19,8 @@ export const TermsAndConditionsScreenView: React.SFC<ITermsAndConditionsScreenVi
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
 			title={getText('terms.and.conditions.screen.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+			back={true}
+			onPressBack={onGoBack}
 		/>
 		<WebView source={localSource} />
 	</SafeAreaView>

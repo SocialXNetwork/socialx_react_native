@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import { AvatarImage, Header, HeaderButton, Option, PrimaryButton } from '../../components';
+import { AvatarImage, Header, Option, PrimaryButton } from '../../components';
 import { Icons } from '../../environment/theme';
 import { IHeaderProps, ITranslatedProps } from '../../types';
 
@@ -21,10 +21,7 @@ export const AdsManagementScreenView: React.SFC<IAdsManagementScreenViewProps> =
 	getText,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={getText('ad.management.screen.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('ad.management.screen.title')} back={true} onPressBack={onGoBack} />
 		<View style={styles.avatarContainer}>
 			<AvatarImage image={avatar} style={styles.avatar} />
 		</View>

@@ -8,7 +8,6 @@ import { string } from 'yup';
 import {
 	AvatarPicker,
 	Header,
-	HeaderButton,
 	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
@@ -65,10 +64,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 	dictionary,
 }) => (
 	<View style={{ flex: 1 }}>
-		<Header
-			title={dictionary.screens.register.title}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={dictionary.screens.register.title} back={true} onPressBack={onGoBack} />
 		<KeyboardAwareScrollView
 			style={styles.keyboardView}
 			contentContainerStyle={styles.container}
@@ -92,33 +88,33 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 					const errors: FormikErrors<IRegisterFormData> = {};
 
 					if (!email) {
-						errors.email = dictionary.screens.register.email.required;
+						errors.email = dictionary.components.inputs.email.required;
 					} else if (!EMAIL_SCHEMA.isValidSync(email)) {
-						errors.email = dictionary.screens.register.email.invalid;
+						errors.email = dictionary.components.inputs.email.invalid;
 					}
 
 					if (!name) {
-						errors.name = dictionary.screens.register.name.required;
+						errors.name = dictionary.components.inputs.name.required;
 					} else if (name.length < 4) {
-						errors.name = dictionary.screens.register.name.length;
+						errors.name = dictionary.components.inputs.name.length;
 					}
 
 					if (!alias) {
-						errors.alias = dictionary.screens.register.alias.required;
+						errors.alias = dictionary.components.inputs.alias.required;
 					} else if (alias.length < 6) {
-						errors.alias = dictionary.screens.register.alias.length;
+						errors.alias = dictionary.components.inputs.alias.length;
 					}
 
 					if (!password) {
-						errors.password = dictionary.screens.register.password.required;
+						errors.password = dictionary.components.inputs.password.required;
 					} else if (password.length < 6) {
-						errors.password = dictionary.screens.register.password.length;
+						errors.password = dictionary.components.inputs.password.length;
 					}
 
 					if (!confirmPassword) {
-						errors.confirmPassword = dictionary.screens.register.password.required;
+						errors.confirmPassword = dictionary.components.inputs.password.required;
 					} else if (!errors.password && confirmPassword !== password) {
-						errors.confirmPassword = dictionary.screens.register.password.mismatch;
+						errors.confirmPassword = dictionary.components.inputs.password.mismatch;
 					}
 
 					return errors;
@@ -148,7 +144,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 						<View style={[styles.textInputContainer, styles.textInputContainerFirst]}>
 							<PrimaryTextInput
 								icon="ios-mail"
-								placeholder={dictionary.components.inputs.email}
+								placeholder={dictionary.components.inputs.placeholder.email}
 								placeholderColor={Colors.paleSky}
 								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
@@ -167,7 +163,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							<PrimaryTextInput
 								autoCapitalize="words"
 								icon="md-person"
-								placeholder={dictionary.components.inputs.name}
+								placeholder={dictionary.components.inputs.placeholder.name}
 								placeholderColor={Colors.paleSky}
 								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
@@ -185,7 +181,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 						<View style={styles.textInputContainer}>
 							<PrimaryTextInput
 								icon="md-person"
-								placeholder={dictionary.components.inputs.alias}
+								placeholder={dictionary.components.inputs.placeholder.alias}
 								placeholderColor={Colors.paleSky}
 								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
@@ -204,7 +200,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							<PrimaryTextInput
 								isPassword={true}
 								icon="ios-lock"
-								placeholder={dictionary.components.inputs.password}
+								placeholder={dictionary.components.inputs.placeholder.password}
 								placeholderColor={Colors.paleSky}
 								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.next}
@@ -228,7 +224,7 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 							<PrimaryTextInput
 								isPassword={true}
 								icon="ios-lock"
-								placeholder={dictionary.components.inputs.confirm}
+								placeholder={dictionary.components.inputs.placeholder.confirm}
 								placeholderColor={Colors.paleSky}
 								borderColor={Colors.transparent}
 								returnKeyType={TRKeyboardKeys.done}

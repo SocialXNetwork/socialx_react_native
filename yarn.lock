@@ -10806,6 +10806,15 @@ react-native-fast-image@5.0.4:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.0.4.tgz#61aa2cd9bbbf2c144b2f5d654f9cd804d4303946"
   integrity sha512-BMyfsHKeNxvgxM1AmwqK1aCuHFOE4rWk0Vx8bchMlrjZMhv/GFYWKgdwzjpb2z3Li4y/JUPMHtX4uWsJo+9/iw==
 
+react-native-gesture-handler@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.12.tgz#99a22f90212df299245357dbd3a9a01c788f310b"
+  integrity sha512-Qp5FjRmqUFeCevSu2IYQG1Xw+YXZ9YOzqze/ZxaIvWzYAoKsRchlgHhNoxvCqElp/befrnVFIjAEQyUxcmBKJw==
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+    invariant "^2.2.2"
+    prop-types "^15.5.10"
+
 react-native-get-random-values@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-get-random-values/-/react-native-get-random-values-1.1.0.tgz#4222983dc0b0b0fd6729828bc0593432af5f7e15"

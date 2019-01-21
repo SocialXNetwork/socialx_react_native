@@ -3,8 +3,8 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const styles: any = {
 	container: {
-		paddingHorizontal: Sizes.smartHorizontalScale(25),
-		paddingVertical: Sizes.smartVerticalScale(16),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 	searchContainer: {
 		flexDirection: 'row',

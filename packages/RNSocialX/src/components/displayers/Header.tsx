@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-
+import { Platform, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { HeaderLogo } from '../';
+
+import { HeaderButton, HeaderLogo } from '../';
 
 import styles from './Header.style';
 
@@ -12,9 +12,19 @@ interface IHeaderProps {
 	left?: JSX.Element | undefined;
 	right?: JSX.Element | undefined;
 	logo?: boolean;
+	back?: boolean;
+	onPressBack?: () => void;
 }
 
-export const Header: React.SFC<IHeaderProps> = ({ center, left, right, title = '', logo }) => {
+export const Header: React.SFC<IHeaderProps> = ({
+	center,
+	left,
+	right,
+	title = '',
+	logo,
+	back,
+	onPressBack,
+}) => {
 	const displayCenter = center;
 	const displayTitle = title.length > 0 && !center;
 	const displayLogo = !center && title.length === 0 && logo;
@@ -22,7 +32,21 @@ export const Header: React.SFC<IHeaderProps> = ({ center, left, right, title = '
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always', bottom: 'never' }}>
-			{left ? <View style={styles.left}>{left}</View> : <View style={styles.placeholder} />}
+			{left ? (
+				<View style={styles.left}>{left}</View>
+			) : back && onPressBack ? (
+				<View style={styles.left}>
+					<HeaderButton
+						iconName={Platform.select({
+							android: 'md-arrow-back',
+							ios: 'ios-arrow-back',
+						})}
+						onPress={onPressBack}
+					/>
+				</View>
+			) : (
+				<View style={styles.placeholder} />
+			)}
 			{displayCenter && <View style={styles.center}>{center}</View>}
 			{displayTitle && (
 				<View style={styles.center}>

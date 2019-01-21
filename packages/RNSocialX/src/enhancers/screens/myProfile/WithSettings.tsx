@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ISettingsData } from '../../../screens/myProfile/SettingsScreen.view';
-import { ICurrentUser, IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IDictionary, IGlobal, IOptionsMenuProps } from '../../../types';
 
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
@@ -10,11 +10,11 @@ import { WithGlobals } from '../../connectors/ui/WithGlobals';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../../intermediary';
 
-export interface IWithSettingsEnhancedData {
+export interface IWithSettingsEnhancedData extends IDictionary {
 	currentUser: ICurrentUser;
 }
 
-export interface IWithSettingsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
+export interface IWithSettingsEnhancedActions extends IOptionsMenuProps {
 	updateUserProfile: (user: ISettingsData) => void;
 	logout: () => void;
 	setGlobal: (global: IGlobal) => void;
@@ -35,7 +35,7 @@ export class WithSettings extends React.Component<IWithSettingsProps, IWithSetti
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithGlobals>
@@ -49,13 +49,13 @@ export class WithSettings extends React.Component<IWithSettingsProps, IWithSetti
 															this.props.children({
 																data: {
 																	currentUser,
+																	dictionary,
 																},
 																actions: {
 																	updateUserProfile: (user) => updateCurrentProfile(user),
 																	logout,
 																	showOptionsMenu,
 																	setGlobal,
-																	getText,
 																},
 															})
 														}

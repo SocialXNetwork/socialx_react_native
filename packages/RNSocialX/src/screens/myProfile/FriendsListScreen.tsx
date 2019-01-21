@@ -45,10 +45,9 @@ class Screen extends React.Component<IProps, IState> {
 			<FriendsListScreenView
 				aliases={this.state.aliases}
 				term={this.state.term}
+				navigation={this.props.navigation}
 				onChangeText={this.onChangeTextHandler}
-				onGoBack={this.props.onGoBack}
 				onViewUserProfile={this.props.onViewUserProfile}
-				dictionary={this.props.dictionary}
 			/>
 		);
 	}

@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-navigation';
 
 import {
 	Header,
-	HeaderButton,
 	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
@@ -38,11 +37,11 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 			const errors: FormikErrors<ILoginScreenData> = {};
 
 			if (!alias) {
-				errors.alias = dictionary.screens.login.alias.required;
+				errors.alias = dictionary.components.inputs.alias.required;
 			}
 
 			if (!password) {
-				errors.password = dictionary.screens.login.password.required;
+				errors.password = dictionary.components.inputs.password.required;
 			}
 
 			return errors;
@@ -63,7 +62,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 			<React.Fragment>
 				<PrimaryTextInput
 					icon="md-person"
-					placeholder={dictionary.components.inputs.alias}
+					placeholder={dictionary.components.inputs.placeholder.alias}
 					placeholderColor={Colors.paleSky}
 					returnKeyType={TRKeyboardKeys.next}
 					keyboardType={TKeyboardKeys.emailAddress}
@@ -81,7 +80,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 				<View style={style.passwordContainer}>
 					<PrimaryTextInput
 						icon="ios-lock"
-						placeholder={dictionary.components.inputs.password}
+						placeholder={dictionary.components.inputs.placeholder.password}
 						placeholderColor={Colors.paleSky}
 						returnKeyType={TRKeyboardKeys.go}
 						isPassword={true}
@@ -127,10 +126,7 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 	dictionary,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={style.screenContainer}>
-		<Header
-			title={dictionary.screens.login.title}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={dictionary.screens.login.title} back={true} onPressBack={onGoBack} />
 		<KeyboardAwareScrollView
 			style={style.keyboardView}
 			contentContainerStyle={Platform.select({

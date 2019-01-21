@@ -5,7 +5,6 @@ import { Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native
 import {
 	ButtonSizes,
 	Header,
-	HeaderButton,
 	InputSizes,
 	PrimaryButton,
 	PrimaryTextInput,
@@ -40,12 +39,7 @@ export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
 	selectedCheckList,
 }) => (
 	<View style={{ flex: 1 }}>
-		{
-			<Header
-				title={getText('nodes.screen.title')}
-				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-			/>
-		}
+		{<Header title={getText('nodes.screen.title')} back={true} onPressBack={onGoBack} />}
 		<View style={styles.container}>
 			<Text style={styles.description}>{getText('nodes.screen.description').toUpperCase()}</Text>
 			<View style={styles.separator} />

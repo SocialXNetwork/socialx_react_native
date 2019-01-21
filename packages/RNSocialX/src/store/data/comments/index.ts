@@ -8,7 +8,6 @@ export {
 	ILikeCommentInput,
 	IUnlikeCommentErrorAction,
 	ICreateCommentErrorAction,
-	IRemoveCommentErrorAction,
 	IComment,
 	IComments,
 } from './Types';

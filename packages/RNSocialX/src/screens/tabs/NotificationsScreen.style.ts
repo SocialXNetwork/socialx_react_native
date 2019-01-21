@@ -7,8 +7,8 @@ const styles: any = {
 		backgroundColor: Colors.white,
 	},
 	list: {
-		paddingVertical: Sizes.smartVerticalScale(16),
-		paddingHorizontal: Sizes.smartHorizontalScale(25),
+		paddingVertical: Sizes.smartVerticalScale(10),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	empty: {
 		flex: 1,

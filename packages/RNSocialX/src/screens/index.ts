@@ -6,6 +6,7 @@ export { NewAdSliderScreen } from './ads/NewAdSliderScreen';
 export { ManageCountriesScreen } from './ads/ManageCountriesScreen';
 
 export { ChatScreen } from './chat/ChatScreen';
+export { MessagesScreen } from './chat/MessagesScreen';
 
 export { IntroScreen } from './intro/IntroScreen';
 

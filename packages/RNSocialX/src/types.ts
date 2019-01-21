@@ -26,6 +26,11 @@ export enum FRIEND_TYPES {
 	NOT_FRIEND = 'not_friend',
 }
 
+export enum MESSAGE_TYPES {
+	TEXT = 'text',
+	MEDIA = 'media',
+}
+
 export enum SearchTabs {
 	Top = 'TOP',
 	People = 'PEOPLE',

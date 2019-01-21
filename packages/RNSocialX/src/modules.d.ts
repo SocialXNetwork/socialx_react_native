@@ -14,6 +14,9 @@ declare module 'react-native-svg-charts';
 
 declare module 'react-native-app-intro-slider';
 
+declare module 'react-native-gesture-handler';
+declare module 'react-native-gesture-handler/Swipeable';
+
 // declare module 'react-native-image-crop-picker';
 
 // declare module 'react-native-image-resizer';

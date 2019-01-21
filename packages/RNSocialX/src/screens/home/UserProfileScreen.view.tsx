@@ -13,14 +13,7 @@ import {
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 
-import {
-	Header,
-	HeaderButton,
-	NoContent,
-	Profile,
-	ProfilePhotoGrid,
-	WallPost,
-} from '../../components';
+import { Header, NoContent, Profile, ProfilePhotoGrid, WallPost } from '../../components';
 import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { IDictionary, INavigationProps, IVisitedUser } from '../../types';
 
@@ -93,10 +86,7 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 	return (
 		<View style={styles.container}>
 			<View style={styles.headerContainer}>
-				<Header
-					title={dictionary.screens.userProfile.title}
-					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-				/>
+				<Header title={dictionary.screens.userProfile.title} back={true} onPressBack={onGoBack} />
 			</View>
 			<ScrollView
 				contentContainerStyle={scrollContainerStyles}
