@@ -1,5 +1,6 @@
+import { Tab, Tabs } from 'native-base';
 import * as React from 'react';
-import { View } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { SearchHeader, UserEntries } from '../../components';
 import { INavigationProps } from '../../types';
@@ -28,14 +29,41 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 			navigation={navigation}
 			onSearchTermChange={onChangeText}
 		/>
-		<View style={styles.entries}>
-			<UserEntries
-				aliases={aliases}
-				chat={true}
-				removable={true}
-				onEntryPress={() => undefined}
-				onRemove={onRemoveMessage}
-			/>
-		</View>
+		<Tabs tabBarUnderlineStyle={styles.underline as ViewStyle} onChangeTab={() => undefined}>
+			<Tab
+				tabStyle={styles.tab as ViewStyle}
+				activeTabStyle={styles.tab as ViewStyle}
+				textStyle={styles.title as TextStyle}
+				activeTextStyle={[styles.title, styles.active] as TextStyle}
+				heading="Messages"
+			>
+				<View style={styles.entries}>
+					<UserEntries
+						aliases={aliases}
+						chat={true}
+						removable={true}
+						onEntryPress={() => undefined}
+						onRemove={onRemoveMessage}
+					/>
+				</View>
+			</Tab>
+			<Tab
+				tabStyle={styles.tab as ViewStyle}
+				activeTabStyle={styles.tab as ViewStyle}
+				textStyle={styles.title as TextStyle}
+				activeTextStyle={[styles.title, styles.active] as TextStyle}
+				heading="People"
+			>
+				<View style={styles.entries}>
+					<UserEntries
+						aliases={aliases}
+						chat={true}
+						removable={true}
+						onEntryPress={() => undefined}
+						onRemove={onRemoveMessage}
+					/>
+				</View>
+			</Tab>
+		</Tabs>
 	</View>
 );

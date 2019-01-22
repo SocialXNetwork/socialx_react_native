@@ -3,7 +3,7 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(50);
 
-const styles: any = {
+export default StyleSheet.create({
 	card: {
 		backgroundColor: Colors.white,
 		flexDirection: 'row',
@@ -76,6 +76,4 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(18),
 		color: Colors.white,
 	},
-};
-
-export default StyleSheet.create(styles);
+});

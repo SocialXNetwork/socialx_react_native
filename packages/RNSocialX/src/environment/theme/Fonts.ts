@@ -1,7 +1,78 @@
 import { Platform } from 'react-native';
 import { OS_TYPES } from '../consts';
 
-export const Fonts = {
+interface IFonts {
+	centuryGothic: {
+		fontFamily: string;
+		fontWeight:
+			| 'normal'
+			| 'bold'
+			| '100'
+			| '200'
+			| '300'
+			| '400'
+			| '500'
+			| '600'
+			| '700'
+			| '800'
+			| '900'
+			| undefined;
+		fontStyle: 'normal' | 'italic' | undefined;
+	};
+	centuryGothicBold: {
+		fontFamily: string;
+		fontWeight:
+			| 'normal'
+			| 'bold'
+			| '100'
+			| '200'
+			| '300'
+			| '400'
+			| '500'
+			| '600'
+			| '700'
+			| '800'
+			| '900'
+			| undefined;
+		fontStyle: 'normal' | 'italic' | undefined;
+	};
+	centuryGothicItalic: {
+		fontFamily: string;
+		fontWeight:
+			| 'normal'
+			| 'bold'
+			| '100'
+			| '200'
+			| '300'
+			| '400'
+			| '500'
+			| '600'
+			| '700'
+			| '800'
+			| '900'
+			| undefined;
+		fontStyle: 'normal' | 'italic' | undefined;
+	};
+	centuryGothicBoldItalic: {
+		fontFamily: string;
+		fontWeight:
+			| 'normal'
+			| 'bold'
+			| '100'
+			| '200'
+			| '300'
+			| '400'
+			| '500'
+			| '600'
+			| '700'
+			| '800'
+			| '900'
+			| undefined;
+		fontStyle: 'normal' | 'italic' | undefined;
+	};
+}
+
+export const Fonts: IFonts = {
 	centuryGothic: {
 		fontFamily: Platform.OS === OS_TYPES.Android ? 'century_gothic' : 'CenturyGothic',
 		fontWeight: 'normal',

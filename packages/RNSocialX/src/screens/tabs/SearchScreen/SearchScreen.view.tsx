@@ -1,6 +1,6 @@
 import { Tab, Tabs } from 'native-base';
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { SearchHeader, SearchTabResults } from '../../../components';
@@ -9,9 +9,9 @@ import { INavigationProps, ITranslatedProps } from '../../../types';
 import styles from './SearchScreen.style';
 
 export const ComingSoon: React.SFC<{ message: string }> = ({ message }) => (
-	<View style={styles.comingSoonContainer}>
-		<Icon name="md-stopwatch" style={styles.comingSoonIcon} />
-		<Text style={styles.comingSoonText}>{message}</Text>
+	<View style={styles.coming}>
+		<Icon name="md-stopwatch" style={styles.text} />
+		<Text style={styles.icon}>{message}</Text>
 	</View>
 );
 
@@ -51,14 +51,14 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 		/>
 		<Tabs
 			locked={false}
-			tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+			tabBarUnderlineStyle={styles.underline as ViewStyle}
 			onChangeTab={onTabIndexChanged}
 		>
 			<Tab
-				tabStyle={styles.tabStyle}
-				activeTabStyle={styles.tabStyle}
-				textStyle={styles.tabTitleTextInactive}
-				activeTextStyle={styles.tabTitleTextActive}
+				tabStyle={styles.tab as ViewStyle}
+				activeTabStyle={styles.tab as ViewStyle}
+				textStyle={styles.title as TextStyle}
+				activeTextStyle={[styles.title, styles.active] as TextStyle}
 				heading={getText('search.screen.results.tab.top.title')}
 			>
 				{loadedTabs.includes(0) && (
@@ -73,10 +73,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 				)}
 			</Tab>
 			<Tab
-				tabStyle={styles.tabStyle}
-				activeTabStyle={styles.tabStyle}
-				textStyle={styles.tabTitleTextInactive}
-				activeTextStyle={styles.tabTitleTextActive}
+				tabStyle={styles.tab as ViewStyle}
+				activeTabStyle={styles.tab as ViewStyle}
+				textStyle={styles.title as TextStyle}
+				activeTextStyle={[styles.title, styles.active] as TextStyle}
 				heading={getText('search.screen.results.tab.people.title')}
 			>
 				{loadedTabs.includes(1) && (
@@ -84,10 +84,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 				)}
 			</Tab>
 			<Tab
-				tabStyle={styles.tabStyle}
-				activeTabStyle={styles.tabStyle}
-				textStyle={styles.tabTitleTextInactive}
-				activeTextStyle={styles.tabTitleTextActive}
+				tabStyle={styles.tab as ViewStyle}
+				activeTabStyle={styles.tab as ViewStyle}
+				textStyle={styles.title as TextStyle}
+				activeTextStyle={[styles.title, styles.active] as TextStyle}
 				heading={getText('search.screen.results.tab.tags.title')}
 			>
 				{loadedTabs.includes(2) && (
@@ -95,10 +95,10 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 				)}
 			</Tab>
 			<Tab
-				tabStyle={styles.tabStyle}
-				activeTabStyle={styles.tabStyle}
-				textStyle={styles.tabTitleTextInactive}
-				activeTextStyle={styles.tabTitleTextActive}
+				tabStyle={styles.tab as ViewStyle}
+				activeTabStyle={styles.tab as ViewStyle}
+				textStyle={styles.title as TextStyle}
+				activeTextStyle={[styles.title, styles.active] as TextStyle}
 				heading={getText('search.screen.results.tab.places.title')}
 			>
 				{loadedTabs.includes(3) && (
