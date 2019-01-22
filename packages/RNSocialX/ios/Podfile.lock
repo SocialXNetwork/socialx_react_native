@@ -41,8 +41,6 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNGestureHandler (1.0.12):
-    - React
   - RNImageCropPicker (0.21.3):
     - QBImagePickerController
     - React/Core
@@ -65,7 +63,6 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
@@ -83,8 +80,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   react-native-orientation:
     :path: "../node_modules/react-native-orientation"
-  RNGestureHandler:
-    :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   yoga:
@@ -96,11 +91,10 @@ SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-orientation: 3d9a0a8273d18260f7528414093a6a36491382b6
-  RNGestureHandler: 282af6ea58ed8483612365159c58a3ca5f55e7da
   RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 7c600a3754f5f27f447ae748727632e2a2a7cac4
+PODFILE CHECKSUM: e4597d9bc18a49925d69806171b6de45283f54b7
 
 COCOAPODS: 1.5.3
