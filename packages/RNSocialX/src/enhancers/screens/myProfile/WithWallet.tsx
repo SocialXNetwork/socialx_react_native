@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { transactions } from '../../../mocks';
-import { ITranslatedProps, IWallet, TrendOptions } from '../../../types';
+import { ITranslatedProps, IWallet, TREND_OPTIONS } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithWalletEnhancedProps = {
@@ -14,7 +14,7 @@ const mock: IWithWalletEnhancedProps = {
 		wallet: {
 			coins: '53,680',
 			trendPercentage: '27.21',
-			trendArrow: TrendOptions.Up,
+			trendArrow: TREND_OPTIONS.UP,
 			transactions,
 			refreshing: false,
 		},

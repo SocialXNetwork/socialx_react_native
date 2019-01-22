@@ -80,6 +80,7 @@ export { WithManagedTransitions, ModalManager, IManagedModal } from './managedTr
 export { Alert } from './modals/Alert';
 export { ActivityIndicator } from './modals/ActivityIndicator';
 export { Confirmation } from './modals/Confirmation';
+export { GenericModal } from './modals/GenericModal';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';
 export { MediaInfo } from './modals/MediaInfo';
 export { MediaOverlay } from './modals/MediaOverlay';

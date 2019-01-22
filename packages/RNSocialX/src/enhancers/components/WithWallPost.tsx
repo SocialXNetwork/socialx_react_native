@@ -10,7 +10,7 @@ import {
 	ILikeCommentInput,
 	IRemoveCommentInput,
 } from '../../store/data/comments';
-import { IGlobal, IOptionsMenuProps, ITranslatedProps } from '../../types';
+import { IDictionary, IGlobal, IOptionsMenuProps } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithComments } from '../connectors/data/WithComments';
@@ -19,7 +19,7 @@ import { WithGlobals } from '../connectors/ui/WithGlobals';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
-export interface IWallPostEnhancedData {
+export interface IWallPostEnhancedData extends IDictionary {
 	currentUser: {
 		alias: string;
 		pub: string;
@@ -29,7 +29,7 @@ export interface IWallPostEnhancedData {
 	keyboardRaised?: boolean;
 }
 
-export interface IWallPostEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
+export interface IWallPostEnhancedActions extends IOptionsMenuProps {
 	onRemovePost: (postId: string) => void;
 	onSubmitComment: (text: string, alias: string, pub: string, postId: string) => void;
 	onLikeComment: (alias: string, pub: string, liked: boolean, commentId: string) => void;
@@ -70,11 +70,11 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 	public render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithGlobals>
-								{({ globals, setGlobal }) => (
+								{({ setGlobal }) => (
 									<WithPosts>
 										{({ removePost }) => (
 											<WithComments>
@@ -97,6 +97,7 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																		pub: currentUser.pub,
 																		avatar: currentUser.avatar,
 																	},
+																	dictionary,
 																},
 																actions: {
 																	onRemovePost: this.onRemovePostHandler,
@@ -106,7 +107,6 @@ export class WithWallPost extends React.Component<IWithWallPostProps, IWithWallP
 																	onBlockUser: () => undefined,
 																	onReportProblem: () => undefined,
 																	showOptionsMenu,
-																	getText,
 																},
 															});
 														}}

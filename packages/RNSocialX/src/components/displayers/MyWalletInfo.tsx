@@ -3,13 +3,14 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { ButtonSizes, PrimaryButton } from '../../components';
-import { ITranslatedProps, TrendOptions } from '../../types';
-import styles, { defaultStyles } from './MyWalletInfo.style';
+import { Colors } from '../../environment/theme';
+import { ITranslatedProps, TREND_OPTIONS } from '../../types';
+import styles from './MyWalletInfo.style';
 
 interface IMyWalletInfoProps extends ITranslatedProps {
 	coins: string;
 	trendPercentage: string;
-	trendArrow: TrendOptions;
+	trendArrow: TREND_OPTIONS;
 	onViewAccount: () => void;
 }
 
@@ -22,7 +23,7 @@ export const MyWalletInfo: React.SFC<IMyWalletInfoProps> = ({
 	getText,
 }) => {
 	let iconName = 'md-trending-up';
-	if (trendArrow === TrendOptions.Down) {
+	if (trendArrow === TREND_OPTIONS.DOWN) {
 		iconName = 'md-trending-down';
 	}
 
@@ -42,10 +43,10 @@ export const MyWalletInfo: React.SFC<IMyWalletInfoProps> = ({
 				</View>
 				<PrimaryButton
 					autoWidth={true}
-					label={'View Account'}
+					label="View Account"
 					size={ButtonSizes.Small}
 					onPress={onViewAccount}
-					borderColor={defaultStyles.transparent}
+					borderColor={Colors.transparent}
 				/>
 			</View>
 		</View>

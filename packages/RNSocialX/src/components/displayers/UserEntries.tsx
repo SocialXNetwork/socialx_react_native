@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { UserEntry } from '../../components';
+import { GenericModal, UserEntry } from '../../components';
 
 interface IUserEntriesProps {
 	aliases: string[];
@@ -13,30 +13,42 @@ interface IUserEntriesProps {
 	onRemove?: (alias: string) => void;
 }
 
-export const UserEntries: React.SFC<IUserEntriesProps> = ({
-	aliases,
-	friends = false,
-	chat = false,
-	removable = false,
-	scroll = true,
-	onEntryPress,
-	onRemove,
-}) => (
-	<FlatList
-		data={aliases}
-		renderItem={({ item }) => (
-			<UserEntry
-				alias={item}
-				friends={friends}
-				chat={chat}
-				removable={removable}
-				onPress={() => onEntryPress(item)}
-				onRemove={onRemove ? () => onRemove(item) : undefined}
-			/>
-		)}
-		keyboardShouldPersistTaps="handled"
-		keyExtractor={(item) => item}
-		showsVerticalScrollIndicator={false}
-		scrollEnabled={scroll}
-	/>
-);
+export class UserEntries extends React.Component<IUserEntriesProps> {
+	public shouldComponentUpdate(nextProps: IUserEntriesProps) {
+		return this.props.aliases !== nextProps.aliases;
+	}
+
+	public render() {
+		const {
+			aliases,
+			friends = false,
+			chat = false,
+			removable = false,
+			scroll = true,
+			onEntryPress,
+			onRemove = () => undefined,
+		} = this.props;
+
+		return (
+			<React.Fragment>
+				<GenericModal onDeletePress={onRemove} />
+				<FlatList
+					data={aliases}
+					renderItem={({ item }) => (
+						<UserEntry
+							alias={item}
+							friends={friends}
+							chat={chat}
+							removable={removable}
+							onPress={() => onEntryPress(item)}
+						/>
+					)}
+					keyboardShouldPersistTaps="handled"
+					keyExtractor={(item) => item}
+					showsVerticalScrollIndicator={false}
+					scrollEnabled={scroll}
+				/>
+			</React.Fragment>
+		);
+	}
+}

@@ -1,9 +1,9 @@
 import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../../environment/theme';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -13,7 +13,7 @@ const styles: any = {
 	inputContainer: {
 		borderWidth: Sizes.smartHorizontalScale(1),
 		borderRadius: Sizes.smartHorizontalScale(6),
-		borderColor: Colors.grayText,
+		borderColor: Colors.dustyGray,
 		width: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
 		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
 		...Platform.select({
@@ -38,6 +38,4 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(30),
 		transform: [{ translateY: 2 }],
 	},
-};
-
-export default StyleSheet.create(styles);
+});

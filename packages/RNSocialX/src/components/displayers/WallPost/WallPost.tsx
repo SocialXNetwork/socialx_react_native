@@ -120,7 +120,7 @@ class Component extends React.Component<IProps, IState> {
 			onViewImage,
 			onViewUserProfile,
 			onGoBack,
-			getText,
+			dictionary,
 			navigation,
 		} = this.props;
 
@@ -175,7 +175,7 @@ class Component extends React.Component<IProps, IState> {
 						onUserPress={onViewUserProfile}
 						onShowOptions={this.onShowPostOptionsHandler}
 						onGoBack={onGoBack}
-						getText={getText}
+						dictionary={dictionary}
 					/>
 					<ReportProblem
 						visible={reportAProblem}
@@ -183,7 +183,7 @@ class Component extends React.Component<IProps, IState> {
 							this.onReportAProblemHandler(true, subject, description)
 						}
 						onDecline={() => this.onReportAProblemHandler(false)}
-						getText={getText}
+						dictionary={dictionary}
 					/>
 					{isCommentsScreen && (
 						<React.Fragment>
@@ -202,7 +202,7 @@ class Component extends React.Component<IProps, IState> {
 									handleHashTag={() => undefined}
 									handleUserTag={() => undefined}
 									handleUrls={() => undefined}
-									getText={getText}
+									dictionary={dictionary}
 								/>
 								{media.length > 0 && (
 									<View style={styles.media}>
@@ -233,7 +233,7 @@ class Component extends React.Component<IProps, IState> {
 										total={likeIds.length}
 										onUserPress={onViewUserProfile}
 										onViewLikes={() => onViewLikes(likeIds)}
-										getText={getText}
+										dictionary={dictionary}
 									/>
 								)}
 								{commentIds.length > 0 &&
@@ -247,7 +247,7 @@ class Component extends React.Component<IProps, IState> {
 											onUserPress={onViewUserProfile}
 											onShowOptionsMenu={this.onShowCommentOptionsHandler}
 											navigation={navigation}
-											getText={getText}
+											dictionary={dictionary}
 										/>
 									))}
 							</ScrollView>
@@ -262,7 +262,7 @@ class Component extends React.Component<IProps, IState> {
 									autoFocus={keyboardRaised}
 									onCommentInputChange={this.onCommentInputChangeHandler}
 									onSubmitComment={this.onSubmitCommentHandler}
-									getText={getText}
+									dictionary={dictionary}
 								/>
 							</KeyboardAvoidingView>
 						</React.Fragment>
@@ -276,7 +276,7 @@ class Component extends React.Component<IProps, IState> {
 								handleHashTag={() => undefined}
 								handleUserTag={() => undefined}
 								handleUrls={() => undefined}
-								getText={getText}
+								dictionary={dictionary}
 							/>
 							{media.length > 0 && (
 								<View style={styles.media}>
@@ -290,9 +290,9 @@ class Component extends React.Component<IProps, IState> {
 										/>
 									)}
 									<WarnOffensiveContent
-										getText={getText}
 										onShowOffensiveContent={this.onShowOffensiveContentHandler}
 										visible={offensiveContent && !viewOffensiveContent}
+										dictionary={dictionary}
 									/>
 								</View>
 							)}
@@ -312,13 +312,13 @@ class Component extends React.Component<IProps, IState> {
 									total={likeIds.length}
 									onUserPress={onViewUserProfile}
 									onViewLikes={() => onViewLikes(likeIds)}
-									getText={getText}
+									dictionary={dictionary}
 								/>
 							)}
 							<ViewAllComments
 								commentIds={commentIds}
 								onCommentPress={() => onViewComments(postId, false)}
-								getText={getText}
+								dictionary={dictionary}
 							/>
 							<TopComments
 								commentIds={topCommentIds}
@@ -335,7 +335,7 @@ class Component extends React.Component<IProps, IState> {
 									onCommentInputPress={this.onCommentInputPressHandler}
 									onCommentInputBlur={this.onCommentInputBlur}
 									onSubmitComment={this.onSubmitCommentHandler}
-									getText={getText}
+									dictionary={dictionary}
 								/>
 							)}
 						</React.Fragment>
@@ -407,26 +407,24 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onShowPostOptionsHandler = () => {
-		const { post, showOptionsMenu, getText } = this.props;
+		const { post, showOptionsMenu, dictionary } = this.props;
 
 		const baseItems = [
 			{
-				label: getText('wall.post.menu.block.user'),
+				label: dictionary.components.modals.options.block,
 				icon: 'ios-close-circle',
 				actionHandler: () => undefined,
 			},
 			{
-				label: getText('wall.post.menu.report.problem'),
+				label: dictionary.components.modals.options.report,
 				icon: 'ios-warning',
 				actionHandler: () => this.setState({ reportAProblem: true }),
 			},
 		];
 		const deleteItem = {
-			label: getText('wall.post.menu.delete.post'),
+			label: dictionary.components.modals.options.deletePost,
 			icon: 'ios-trash',
-			actionHandler: async () => {
-				await this.props.onRemovePost(post.postId);
-			},
+			actionHandler: () => this.props.onRemovePost(post.postId),
 		};
 
 		const items = post.removable ? [...baseItems, deleteItem] : baseItems;
@@ -448,17 +446,17 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private onShowCommentOptionsHandler = (comment: IComment) => {
-		const { post, currentUser, showOptionsMenu, onRemoveComment, getText } = this.props;
+		const { post, currentUser, showOptionsMenu, onRemoveComment, dictionary } = this.props;
 
 		const baseItems = [
 			{
-				label: getText('comments.screen.advanced.menu.copy'),
+				label: dictionary.components.modals.options.copy,
 				icon: 'ios-copy',
 				actionHandler: () => Clipboard.setString(comment.text),
 			},
 		];
 		const deleteItem = {
-			label: getText('comments.screen.advanced.menu.delete'),
+			label: dictionary.components.modals.options.delete,
 			icon: 'ios-trash',
 			actionHandler: () => onRemoveComment(comment.commentId, post.postId),
 		};

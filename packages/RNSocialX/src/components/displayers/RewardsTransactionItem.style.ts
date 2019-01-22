@@ -3,7 +3,7 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const COIN_ICON_SIZE = Sizes.smartHorizontalScale(50);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -102,6 +102,4 @@ const styles: any = {
 		color: Colors.shuttleGray,
 		textAlign: 'center',
 	},
-};
-
-export default StyleSheet.create(styles);
+});

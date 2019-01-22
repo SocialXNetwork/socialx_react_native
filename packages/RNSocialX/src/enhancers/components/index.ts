@@ -9,3 +9,8 @@ export {
 	IWithUserEntryEnhancedActions,
 	IWithUserEntryEnhancedData,
 } from './WithUserEntry';
+export {
+	WithGenericModal,
+	IWithGenericModalEnhancedActions,
+	IWithGenericModalEnhancedData,
+} from './WithGenericModal';

@@ -124,6 +124,9 @@ export interface ILocaleDictionary {
 			saveChanges: string;
 			editNodes: string;
 			delete: string;
+			cancel: string;
+			send: string;
+			view: string;
 		};
 		inputs: {
 			placeholder: {
@@ -134,6 +137,7 @@ export interface ILocaleDictionary {
 				email: string;
 				name: string;
 				description: string;
+				comment: string;
 			};
 			email: {
 				required: string;
@@ -162,6 +166,22 @@ export interface ILocaleDictionary {
 				gallery: string;
 				camera: string;
 				remove: string;
+				copy: string;
+				delete: string;
+				block: string;
+				report: string;
+				deletePost: string;
+			};
+			report: {
+				title: string;
+				subject: {
+					placeholder: string;
+					required: string;
+				};
+				description: {
+					placeholder: string;
+					required: string;
+				};
 			};
 		};
 		displayers: {
@@ -172,6 +192,20 @@ export interface ILocaleDictionary {
 				type: string;
 				video: string;
 				photo: string;
+			};
+			wallPost: {
+				other: string;
+				others: string;
+				liked: string;
+				creating: string;
+				more: string;
+				and: string;
+				like: string;
+				unlike: string;
+				warning: string;
+				view: string;
+				comment: string;
+				comments: string;
 			};
 		};
 	};

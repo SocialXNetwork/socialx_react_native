@@ -5,9 +5,13 @@ import { connect } from 'react-redux';
 
 import { AvatarImage, ButtonSizes, PrimaryButton } from '../';
 import { Colors } from '../../environment/theme';
-import { FRIEND_TYPES } from '../../types';
+import { FRIEND_TYPES, MODAL_TYPES } from '../../types';
 
-import { IWithUserEntryEnhancedData, WithUserEntry } from '../../enhancers/components';
+import {
+	IWithUserEntryEnhancedActions,
+	IWithUserEntryEnhancedData,
+	WithUserEntry,
+} from '../../enhancers/components';
 import { IMessage } from '../../store/data/messages';
 import { IProfile } from '../../store/data/profiles';
 import { IApplicationState, selectMessages, selectProfile } from '../../store/selectors';
@@ -20,10 +24,12 @@ interface IUserEntryProps {
 	chat: boolean;
 	removable: boolean;
 	onPress: () => void;
-	onRemove?: () => void;
 }
 
-interface IProps extends IUserEntryProps, IWithUserEntryEnhancedData {
+interface IProps
+	extends IUserEntryProps,
+		IWithUserEntryEnhancedData,
+		IWithUserEntryEnhancedActions {
 	profile: IProfile;
 	currentUserAlias: string;
 	messages: IMessage[];
@@ -34,8 +40,9 @@ class Component extends React.Component<IProps> {
 		return (
 			this.props.messages !== nextProps.messages ||
 			this.props.profile !== nextProps.profile ||
-			this.props.relationship !== nextProps.relationship ||
-			this.props.request !== nextProps.request
+			this.props.relationship.action !== nextProps.relationship.action ||
+			this.props.request.accepting !== nextProps.request.accepting ||
+			this.props.request.rejecting !== nextProps.request.rejecting
 		);
 	}
 
@@ -59,10 +66,9 @@ class Component extends React.Component<IProps> {
 			if (removable) {
 				return (
 					<TouchableOpacity
-						activeOpacity={1}
 						onPress={onPress}
-						onLongPress={() => undefined}
-						style={[styles.card, styles.removable]}
+						onLongPress={this.onShowOptionsHandler}
+						style={styles.card}
 					>
 						<View style={styles.details}>
 							<AvatarImage image={profile.avatar} style={styles.avatar} />
@@ -170,10 +176,26 @@ class Component extends React.Component<IProps> {
 
 		return null;
 	}
+
+	private onShowOptionsHandler = () => {
+		const { showModal, showOptionsMenu, dictionary, alias } = this.props;
+
+		const items = [
+			{
+				label: dictionary.components.modals.options.delete,
+				icon: 'ios-trash',
+				actionHandler: () => showModal({ type: MODAL_TYPES.DELETE, payload: alias }),
+			},
+		];
+
+		showOptionsMenu(items);
+	};
 }
 
 const EnhancedComponent: React.SFC<IProps> = (props) => (
-	<WithUserEntry>{({ data }) => <Component {...props} {...data} />}</WithUserEntry>
+	<WithUserEntry>
+		{({ data, actions }) => <Component {...props} {...data} {...actions} />}
+	</WithUserEntry>
 );
 
 const mapStateToProps = (state: IApplicationState, props: IUserEntryProps) => ({

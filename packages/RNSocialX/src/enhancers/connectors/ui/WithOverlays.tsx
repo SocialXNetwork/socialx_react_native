@@ -6,22 +6,28 @@ import { IApplicationState } from '../../../store';
 import { IThunkDispatch } from '../../../store/types';
 import {
 	hideMedia,
+	hideModal,
 	hideOptionsMenu,
-	IMediaInput,
-	IOptionsMenuItem,
+	IMediaOverlay,
+	IModalOverlay,
 	showMedia,
+	showModal,
 	showOptionsMenu,
 } from '../../../store/ui/overlays';
+import { IOptionsMenuItem } from '../../../types';
 
 interface IDataProps {
+	modal: IModalOverlay;
 	optionsMenuItems: IOptionsMenuItem[];
-	media: IMediaInput;
+	media: IMediaOverlay;
 }
 
 interface IActionProps {
+	showModal: (input: IModalOverlay) => void;
+	hideModal: () => void;
 	showOptionsMenu: (items: IOptionsMenuItem[]) => void;
 	hideOptionsMenu: () => void;
-	showMedia: (input: IMediaInput) => void;
+	showMedia: (input: IMediaOverlay) => void;
 	hideMedia: () => void;
 }
 
@@ -38,6 +44,11 @@ class Enhancer extends React.Component<IProps & IChildren> {
 	}
 }
 
+const selectModal = createSelector(
+	(state: IApplicationState) => state.ui.overlays.modal,
+	(modal) => modal,
+);
+
 const selectOptionsMenuItems = createSelector(
 	(state: IApplicationState) => state.ui.overlays.optionsMenu,
 	(optionsMenu) => optionsMenu,
@@ -49,14 +60,17 @@ const selectMedia = createSelector(
 );
 
 const mapStateToProps = (state: IApplicationState) => ({
+	modal: selectModal(state),
 	optionsMenuItems: selectOptionsMenuItems(state),
 	media: selectMedia(state),
 });
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
+	showModal: (input: IModalOverlay) => dispatch(showModal(input)),
+	hideModal: () => dispatch(hideModal()),
 	showOptionsMenu: (items: IOptionsMenuItem[]) => dispatch(showOptionsMenu(items)),
 	hideOptionsMenu: () => dispatch(hideOptionsMenu()),
-	showMedia: (input: IMediaInput) => dispatch(showMedia(input)),
+	showMedia: (input: IMediaOverlay) => dispatch(showMedia(input)),
 	hideMedia: () => dispatch(hideMedia()),
 });
 

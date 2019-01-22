@@ -27,7 +27,7 @@ export default StyleSheet.create({
 	},
 	text: {
 		...Fonts.centuryGothic,
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 		fontSize: Sizes.smartHorizontalScale(16),
 		paddingTop: Sizes.smartVerticalScale(20),
 		textAlign: 'center',

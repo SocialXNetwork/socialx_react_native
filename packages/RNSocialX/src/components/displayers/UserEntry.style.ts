@@ -9,8 +9,6 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingVertical: Sizes.smartVerticalScale(5),
-	},
-	removable: {
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	details: {

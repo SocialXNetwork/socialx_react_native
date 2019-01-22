@@ -11,8 +11,8 @@ import styles from './MediaInfo.style';
 interface IProps extends IDictionary {
 	visible: boolean;
 	hash: string;
-	size: number;
 	type: IMediaTypes;
+	size?: number;
 	onClose: () => void;
 }
 

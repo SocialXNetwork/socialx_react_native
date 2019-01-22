@@ -104,7 +104,10 @@ export default {
 			register: 'Register',
 			saveChanges: 'Save changes',
 			editNodes: 'Edit nodes',
-			delete: 'Delete'
+			delete: 'Delete',
+			cancel: 'Cancel',
+			send: 'Send',
+			view: 'View',
 		},
 		inputs: {
 			placeholder: {
@@ -114,7 +117,8 @@ export default {
 				confirm: 'Confirm password',
 				email: 'Email',
 				name: 'Full name',
-				description: 'Bio'
+				description: 'Bio',
+				comment: 'Write a comment...',
 			},
 			email: {
 				required: 'Email is required',
@@ -136,14 +140,30 @@ export default {
 			description: {
 				required: 'Bio is required',
 				length: 'Bio must be at least 10 characters',
-			}
+			},
 		},
 		modals: {
 			options: {
 				gallery: 'Pick from gallery',
 				camera: 'Open camera',
 				remove: 'Remove picture',
-			}
+				copy: 'Copy',
+				delete: 'Delete',
+				block: 'Block',
+				report: 'Report a problem',
+				deletePost: 'Delete post',
+			},
+			report: {
+				title: 'Report a problem',
+				subject: {
+					placeholder: 'Subject',
+					required: 'Subject is required',
+				},
+				description: {
+					placeholder: 'Description',
+					required: 'Description is required',
+				}
+			},
 		},
 		displayers: {
 			mediaInfo: {
@@ -153,8 +173,22 @@ export default {
 				type: 'Type',
 				photo: 'Photo',
 				video: 'Video'
+			},
+			wallPost: {
+				other: 'other',
+				others: 'others',
+				liked: 'Liked by',
+				creating: 'Posting...',
+				more: 'More',
+				and: 'And',
+				like: 'Like',
+				unlike: 'Unlike',
+				warning: 'This post may contain offensive material.',
+				view: 'View',
+				comment: 'comment',
+				comments: 'comments',
 			}
-		}
+		},
 	},
 	'button.OK': 'OK',
 	'button.confirm': 'Confirm',
@@ -205,12 +239,6 @@ export default {
 	'login.code.confirm.wait': 'Confirming code..',
 	'login.username.required': 'Username is required',
 	'login.password.required': 'Password is required',
-	'post.card.view.comment': 'View 1 comment',
-	'post.card.view.multiple.comments': 'View ${args[0]} comments',
-	'post.card.liked.by': 'Liked by',
-	'post.card.other': 'other',
-	'post.card.others': 'others',
-	'post.card.creating': 'Posting...',
 	'forgot.password.screen.title': 'FORGOT PASSWORD',
 	'forgot.password.instructions': 'Enter your username to get a new password.',
 	'forgot.password.username': 'Username',
@@ -269,13 +297,8 @@ export default {
 	'referral.screen.code': 'Invite code',
 	'referral.screen.invite': 'Invite friends via social',
 	'comments.screen.no.comments': 'Be the first to comment here',
-	'comments.screen.comment.input.placeholder': 'Write a comment...',
-	'comments.screen.actions.like': 'Like',
-	'comments.screen.actions.unlike': 'Unlike',
 	'comments.screen.comment.card.view.more': 'View ${args[0]} more replies',
 	'comments.screen.sending.comment': 'Submitting your comment',
-	'comments.screen.advanced.menu.copy': 'Copy',
-	'comments.screen.advanced.menu.delete': 'Delete',
 	'photo.screen.title': 'ADD MEDIA',
 	'photo.screen.share.input.placeholder': 'Write a caption...',
 	'photo.screen.tag.friends.checkbox': 'TAG FRIENDS',
@@ -304,11 +327,6 @@ export default {
 	'nodes.screen.input.placeholder': 'Add a new node',
 	'nodes.screen.current.text': 'Current nodes',
 	'nodes.screen.button.text': 'Delete nodes',
-	'modal.report.title': 'Report a Problem',
-	'modal.report.subject.placeholder': 'Subject',
-	'modal.report.description.placeholder': 'Description',
-	'modal.report.subject.required': 'Subject is required',
-	'modal.report.description.required': 'Description is required',
 	'modal.sms.code.title': 'Verification Code',
 	'modal.sms.code.type.code.message': 'Please type the verification code sent to',
 	'modal.sms.code.resend.button': 'Resend Code',
@@ -336,11 +354,6 @@ export default {
 	'feed.screen.no.posts': 'Your feed is empty. Create your first post!',
 	'feed.screen.no.posts.create': 'Create a post',
 	'feed.screen.suggestions': 'Sugggestions for you',
-	'wall.post.menu.block.user': 'Block',
-	'wall.post.menu.report.problem': 'Report a problem',
-	'wall.post.menu.delete.post': 'Delete post',
-	'wall.post.card.offensive.content.warning.text': 'This post may contain offensive material.',
-	'wall.post.card.offensive.content.button.view': 'View',
 	'wallet.account.title': 'Wallet account',
 	'wallet.account.input.placeholder': 'Account name',
 	'wallet.account.input.label': 'Unique blockchain account name',

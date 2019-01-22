@@ -9,14 +9,13 @@ import { WithNavigationHandlers } from '../../../enhancers/intermediary';
 import { IApplicationState, selectComment, selectProfile } from '../../../store/selectors';
 
 import { AvatarImage, RichText } from '../../';
-import { IComment, INavigationProps, ITranslatedProps } from '../../../types';
+import { IComment, IDictionary, INavigationProps } from '../../../types';
 import { CommentLikes } from './';
 
 import styles from './CommentCard.style';
-
 const TEXT_LENGTH_TRESHOLD = 15;
 
-interface ICommentCardProps extends INavigationProps, ITranslatedProps {
+interface ICommentCardProps extends INavigationProps, IDictionary {
 	commentId: string;
 	alias: string;
 	pub: string;
@@ -33,7 +32,7 @@ interface IProps extends ICommentCardProps {
 class Component extends React.Component<IProps> {
 	public render() {
 		if (this.props.comment) {
-			const { comment, onUserPress, onViewLikes, onShowOptionsMenu, getText } = this.props;
+			const { comment, onUserPress, onViewLikes, onShowOptionsMenu, dictionary } = this.props;
 			const { text, owner, timestamp, likeIds, likedByCurrentUser, posting } = comment;
 			const commentTimestamp = moment(timestamp).fromNow();
 
@@ -86,15 +85,17 @@ class Component extends React.Component<IProps> {
 							)}
 						</View>
 						{posting ? (
-							<Text style={styles.timestamp}>{getText('post.card.creating')}</Text>
+							<Text style={styles.timestamp}>
+								{dictionary.components.displayers.wallPost.creating}
+							</Text>
 						) : (
 							<View style={styles.actionsContainer}>
 								<Text style={styles.timestamp}>{commentTimestamp}</Text>
 								<TouchableOpacity onPress={this.onCommentLikeHandler}>
 									<Text style={styles.actionButtonText}>
 										{likedByCurrentUser
-											? getText('comments.screen.actions.unlike')
-											: getText('comments.screen.actions.like')}
+											? dictionary.components.displayers.wallPost.unlike
+											: dictionary.components.displayers.wallPost.like}
 									</Text>
 								</TouchableOpacity>
 							</View>

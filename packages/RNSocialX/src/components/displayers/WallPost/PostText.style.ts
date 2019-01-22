@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		marginHorizontal: Sizes.smartHorizontalScale(16),
 	},
@@ -10,10 +10,10 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(15),
 		color: Colors.cloudBurst,
 	},
-	showMoreText: {
+	more: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.postHour,
+		color: Colors.pink,
 		paddingLeft: Sizes.smartHorizontalScale(5),
 	},
 	hashtag: {
@@ -25,6 +25,4 @@ const styles: any = {
 	url: {
 		color: Colors.pink,
 	},
-};
-
-export default StyleSheet.create(styles);
+});

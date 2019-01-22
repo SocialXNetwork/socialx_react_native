@@ -77,7 +77,7 @@ export default StyleSheet.create(style);
 export const defaultStyles = {
 	defaultIconColor: Colors.iron,
 	defaultIconActiveColor: Colors.pink,
-	defaultPlaceholderColor: Colors.grayText,
+	defaultPlaceholderColor: Colors.dustyGray,
 	defaultCancelTextColor: Colors.pink,
 	defaultBorderColor: Colors.pink,
 	defaultBorderWidth: Sizes.smartHorizontalScale(2),

@@ -1,6 +1,6 @@
 import { throttle } from 'lodash';
 import * as React from 'react';
-import { Animated, BackHandler, Dimensions, Platform, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Platform, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -61,18 +61,6 @@ class Component extends React.Component<IProps, IState> {
 			this.state !== nextState
 		);
 	}
-
-	// public componentDidMount() {
-	// 	BackHandler.addEventListener('hardwareBackPress', () => {
-	// 		console.log('pressed');
-	// 		// this.androidBackPressHandler(); // works best when the goBack is async
-	// 		return true;
-	// 	  });
-	// }
-
-	// public componentWillUnmount() {
-	// 	BackHandler.removeEventListener('hardwareBackPress', this.androidBackPressHandler);
-	// }
 
 	public render() {
 		const {
@@ -233,11 +221,6 @@ class Component extends React.Component<IProps, IState> {
 	private onSwipeDownHandler = () => {
 		this.props.hideMedia();
 	};
-
-	// private androidBackPressHandler = () => {
-	// 	this.props.hideMedia();
-	// 	return true;
-	// };
 
 	private toggleInfo = (state: boolean) => {
 		this.setState({

@@ -1,15 +1,20 @@
 import * as React from 'react';
 
-import { IDictionary } from '../../types';
+import { IDictionary, IOptionsMenuProps } from '../../types';
 
+import { IModalOverlay } from '../../store/ui/overlays';
 import { WithI18n } from '../connectors/app/WithI18n';
+import { WithOverlays } from '../connectors/ui/WithOverlays';
 import { IWithFriendsEnhancedData, WithCurrentUser, WithFriends } from '../intermediary';
 
 export interface IWithUserEntryEnhancedData extends IDictionary, IWithFriendsEnhancedData {
 	currentUserAlias: string;
+	modal: IModalOverlay;
 }
 
-export interface IWithUserEntryEnhancedActions {}
+export interface IWithUserEntryEnhancedActions extends IOptionsMenuProps {
+	showModal: (input: IModalOverlay) => void;
+}
 
 interface IWithUserEntryEnhancedProps {
 	data: IWithUserEntryEnhancedData;
@@ -27,22 +32,30 @@ export class WithUserEntry extends React.Component<IWithUserEntryProps, IWithUse
 		return (
 			<WithI18n>
 				{({ dictionary }) => (
-					<WithFriends>
-						{(friends) => (
-							<WithCurrentUser>
-								{({ currentUser }) =>
-									this.props.children({
-										data: {
-											...friends.data,
-											currentUserAlias: currentUser.alias,
-											dictionary,
-										},
-										actions: {},
-									})
-								}
-							</WithCurrentUser>
+					<WithOverlays>
+						{({ modal, showModal, showOptionsMenu }) => (
+							<WithFriends>
+								{(friends) => (
+									<WithCurrentUser>
+										{({ currentUser }) =>
+											this.props.children({
+												data: {
+													...friends.data,
+													currentUserAlias: currentUser.alias,
+													modal,
+													dictionary,
+												},
+												actions: {
+													showModal,
+													showOptionsMenu,
+												},
+											})
+										}
+									</WithCurrentUser>
+								)}
+							</WithFriends>
 						)}
-					</WithFriends>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

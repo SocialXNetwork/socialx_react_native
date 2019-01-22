@@ -30,9 +30,7 @@ target 'RNSocialX' do
 
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
 
-
   pod 'Picker', :path => '../node_modules/react-native-picker'
-
 
   target 'RNSocialXTests' do
     inherit! :search_paths

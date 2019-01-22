@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		marginBottom: Sizes.smartVerticalScale(10),
 	},
-} as any);
+});

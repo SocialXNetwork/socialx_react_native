@@ -19,7 +19,7 @@ export const Colors = {
 	postButtonColor: '#AAAAAA',
 	userAvatarFullName: '#006BFF',
 	dustWhite: '#EEEEEE',
-	grayText: '#9B9B9B',
+	dustyGray: '#9B9B9B',
 	manatee: '#8F9095',
 	fuchsiaBlue: '#814FBE',
 	iron: '#D3D6DA',

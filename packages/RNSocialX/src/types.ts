@@ -13,13 +13,6 @@ import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 export { IGlobal } from './store/ui/globals';
 
-export interface IFriendsSearchResult {
-	id: string;
-	fullName: string;
-	location: string;
-	avatar: string;
-}
-
 export enum FRIEND_TYPES {
 	PENDING = 'pending',
 	MUTUAL = 'mutual',
@@ -31,11 +24,35 @@ export enum MESSAGE_TYPES {
 	MEDIA = 'media',
 }
 
-export enum SearchTabs {
-	Top = 'TOP',
-	People = 'PEOPLE',
-	Tags = 'TAGS',
-	Places = 'PLACES',
+export enum SEARCH_TABS {
+	TOP = 'top',
+	PEOPLE = 'people',
+	TAGS = 'tags',
+	PLACES = 'places',
+}
+
+export enum TRANSACTION_TYPES {
+	SOLD = 'sold',
+	BOUGHT = 'bought',
+	RECEIVED = 'received',
+	SENT = 'sent',
+	CONVERTED = 'converted',
+}
+
+export enum TREND_OPTIONS {
+	UP = 'up',
+	DOWN = 'down',
+}
+
+export enum MODAL_TYPES {
+	DELETE = 'delete',
+}
+
+export interface IFriendsSearchResult {
+	id: string;
+	fullName: string;
+	location: string;
+	avatar: string;
 }
 
 export interface IUserEntry {
@@ -213,22 +230,9 @@ export interface ICreatePost {
 	creating: boolean;
 }
 
-export enum TransactionType {
-	Sold = 'Sold',
-	Bought = 'Bought',
-	Received = 'Received',
-	Sent = 'Sent',
-	Converted = 'Converted',
-}
-
-export enum TrendOptions {
-	Up = 'UP',
-	Down = 'DOWN',
-}
-
 export interface ITransactionData {
 	id: string;
-	type: TransactionType;
+	type: TRANSACTION_TYPES;
 	firstAmount: number;
 	transactionIcon?: TransactionSymbol;
 	firstCoin: CoinSymbol;
@@ -237,13 +241,12 @@ export interface ITransactionData {
 	fromType?: TransactionFromType;
 	from?: string;
 	date: Date;
-	onViewUserProfile?: (username: string) => void;
 }
 
 export interface IWallet {
 	coins: string;
 	trendPercentage: string;
-	trendArrow: TrendOptions;
+	trendArrow: TREND_OPTIONS;
 	transactions: ITransactionData[];
 	refreshing: boolean;
 }

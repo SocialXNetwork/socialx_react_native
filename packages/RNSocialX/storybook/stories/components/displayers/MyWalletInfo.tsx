@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { MyWalletInfo } from '../../../../src/components/';
 import { getTextMock } from '../../../../src/mocks';
-import { TrendOptions } from '../../../../src/types';
+import { TREND_OPTIONS } from '../../../../src/types';
 import CenterView from '../../../helpers/CenterView';
 
 storiesOf('Components/displayers', module)
@@ -13,7 +13,7 @@ storiesOf('Components/displayers', module)
 		<MyWalletInfo
 			coins="53,680"
 			trendPercentage="27.21"
-			trendArrow={TrendOptions.Up}
+			trendArrow={TREND_OPTIONS.UP}
 			onViewAccount={action('onViewAccount')}
 			getText={getTextMock}
 		/>

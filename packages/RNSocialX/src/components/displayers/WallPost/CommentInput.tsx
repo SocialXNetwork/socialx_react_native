@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AvatarImage, InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
 import { Colors } from '../../../environment/theme';
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
 import styles from './CommentInput.style';
 
@@ -13,7 +13,7 @@ interface IAnimationValues {
 	send: Animated.Value;
 }
 
-interface ICommentInputProps extends ITranslatedProps {
+interface ICommentInputProps extends IDictionary {
 	comment: string;
 	feed?: boolean;
 	avatar?: string;
@@ -42,7 +42,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	onCommentInputPress,
 	onSubmitComment,
 	onCommentInputBlur,
-	getText,
+	dictionary,
 }) => (
 	<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
 		{feed && (
@@ -52,7 +52,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 					<PrimaryTextInput
 						borderWidth={0}
 						size={InputSizes.Small}
-						placeholder={getText('comments.screen.comment.input.placeholder')}
+						placeholder={dictionary.components.inputs.placeholder.comment}
 						value={comment}
 						autoCorrect={false}
 						autoFocus={autoFocus}
@@ -74,7 +74,10 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 					>
 						<Icon
 							name="comment-arrow-right"
-							style={[styles.icon, { color: comment.length === 0 ? Colors.grayText : Colors.pink }]}
+							style={[
+								styles.icon,
+								{ color: comment.length === 0 ? Colors.dustyGray : Colors.pink },
+							]}
 						/>
 					</TouchableOpacity>
 				</Animated.View>
@@ -87,7 +90,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						ref={commentInputRef}
 						borderWidth={0}
 						size={InputSizes.Small}
-						placeholder={getText('comments.screen.comment.input.placeholder')}
+						placeholder={dictionary.components.inputs.placeholder.comment}
 						value={comment}
 						autoCorrect={false}
 						autoFocus={autoFocus}
@@ -107,7 +110,10 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 					>
 						<Icon
 							name="comment-arrow-right"
-							style={[styles.icon, { color: comment.length === 0 ? Colors.grayText : Colors.pink }]}
+							style={[
+								styles.icon,
+								{ color: comment.length === 0 ? Colors.dustyGray : Colors.pink },
+							]}
 						/>
 					</TouchableOpacity>
 				</View>

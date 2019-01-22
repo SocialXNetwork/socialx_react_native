@@ -4,6 +4,27 @@ import { ActionTypes, IAction, IState } from './Types';
 
 export default (state: IState = initialState, action: IAction): IState => {
 	switch (action.type) {
+		case ActionTypes.SHOW_MODAL: {
+			const { type, payload } = action.payload;
+
+			return {
+				...state,
+				modal: {
+					type,
+					payload,
+				},
+			};
+		}
+
+		case ActionTypes.HIDE_MODAL: {
+			return {
+				...state,
+				modal: {
+					type: null,
+				},
+			};
+		}
+
 		case ActionTypes.SHOW_OPTIONS_MENU: {
 			return {
 				...state,

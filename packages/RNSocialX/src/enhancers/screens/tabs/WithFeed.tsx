@@ -53,15 +53,22 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 							<WithActivities>
 								{({ activities }) => (
 									<WithPosts>
-										{(feed) => (
+										{({
+											global,
+											friends,
+											loadMorePosts,
+											loadMoreFriendsPosts,
+											refreshFriendsPosts,
+											refreshGlobalPosts,
+										}) => (
 											<WithCurrentUser>
 												{({ currentUser }) => {
 													if (type === FEED_TYPES.GLOBAL) {
 														return this.props.children({
 															data: {
 																currentUser,
-																postIds: feed.global.posts,
-																canLoad: feed.global.canLoadMore,
+																postIds: global.posts,
+																canLoad: global.canLoadMore,
 																loading: getActivity(activities, ActionTypes.LOAD_MORE_POSTS),
 																refreshing: getActivity(
 																	activities,
@@ -69,10 +76,8 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 																),
 															},
 															actions: {
-																loadMorePosts: feed.loadMorePosts,
-																refreshFeed: async () => {
-																	await feed.refreshGlobalPosts();
-																},
+																loadMorePosts,
+																refreshFeed: refreshGlobalPosts,
 																setNavigationParams,
 																getText,
 															},
@@ -81,8 +86,8 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 														return this.props.children({
 															data: {
 																currentUser,
-																postIds: feed.friends.posts,
-																canLoad: feed.friends.canLoadMore,
+																postIds: friends.posts,
+																canLoad: friends.canLoadMore,
 																loading: getActivity(
 																	activities,
 																	ActionTypes.LOAD_MORE_FRIENDS_POSTS,
@@ -93,10 +98,8 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 																),
 															},
 															actions: {
-																loadMorePosts: feed.loadMoreFriendsPosts,
-																refreshFeed: async () => {
-																	await feed.refreshFriendsPosts();
-																},
+																loadMorePosts: loadMoreFriendsPosts,
+																refreshFeed: refreshFriendsPosts,
 																setNavigationParams,
 																getText,
 															},

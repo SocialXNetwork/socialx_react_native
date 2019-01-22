@@ -27,6 +27,7 @@ messages.sort((x, y) => y.timestamp - x.timestamp);
 const initialState: IState = {
 	messages: {
 		jaakee: messages,
+		hackerman: messages,
 	},
 };
 

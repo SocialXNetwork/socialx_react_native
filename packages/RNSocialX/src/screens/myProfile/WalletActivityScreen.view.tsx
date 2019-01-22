@@ -2,16 +2,16 @@ import * as React from 'react';
 import { FlatList, Text, View } from 'react-native';
 
 import { Header, MyWalletInfo, TransactionItem } from '../../components';
-import { ITransactionData, ITranslatedProps, TrendOptions } from '../../types';
+import { ITransactionData, ITranslatedProps, TREND_OPTIONS } from '../../types';
 import styles from './WalletActivityScreen.style';
 
 export interface IWalletActivityScreenViewProps extends ITranslatedProps {
 	coins: string;
 	trendPercentage: string;
-	trendArrow: TrendOptions;
-	onViewAccount: () => void;
+	trendArrow: TREND_OPTIONS;
 	transactions: ITransactionData[];
 	refreshing: boolean;
+	onViewAccount: () => void;
 	onRefresh: () => void;
 	onEndReached: () => void;
 	onGoBack: () => void;

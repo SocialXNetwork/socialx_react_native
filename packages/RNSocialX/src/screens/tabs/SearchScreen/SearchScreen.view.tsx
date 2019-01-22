@@ -49,11 +49,7 @@ export const SearchScreenView: React.SFC<ISearchScreenViewProps> = ({
 			onSearchTermChange={onSearchTermChange}
 			onCancelSearch={onCancelSearch}
 		/>
-		<Tabs
-			locked={false}
-			tabBarUnderlineStyle={styles.underline as ViewStyle}
-			onChangeTab={onTabIndexChanged}
-		>
+		<Tabs tabBarUnderlineStyle={styles.underline as ViewStyle} onChangeTab={onTabIndexChanged}>
 			<Tab
 				tabStyle={styles.tab as ViewStyle}
 				activeTabStyle={styles.tab as ViewStyle}

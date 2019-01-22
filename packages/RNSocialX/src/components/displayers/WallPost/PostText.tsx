@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { RichText } from '../..';
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
 import styles from './PostText.style';
 
 const POST_SHORT_LENGTH = 100;
 const POST_SHORT_MAX_LINES = 3;
 
-interface IPostTextProps extends ITranslatedProps {
+interface IPostTextProps extends IDictionary {
 	text: string;
 	fullTextVisible: boolean;
 	handleHashTag: (hashTag: string) => void;
@@ -25,7 +25,7 @@ export const PostText: React.SFC<IPostTextProps> = ({
 	handleUserTag,
 	handleUrls,
 	onShowFullText,
-	getText,
+	dictionary,
 }) => {
 	const numberOfLines = text.split('\n').length;
 
@@ -76,8 +76,8 @@ export const PostText: React.SFC<IPostTextProps> = ({
 					{textToRender}
 				</RichText>
 				{!!hasMore && (
-					<Text style={styles.showMoreText} onPress={onShowFullText}>
-						{getText('text.more')}
+					<Text style={styles.more} onPress={onShowFullText}>
+						{dictionary.components.displayers.wallPost.more}
 					</Text>
 				)}
 			</Text>

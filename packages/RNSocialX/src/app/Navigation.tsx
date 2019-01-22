@@ -250,8 +250,8 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		// Messages: { screen: MessagesScreen },
-		// Chat: { screen: ChatScreen },
+		Messages: { screen: MessagesScreen },
+		Chat: { screen: ChatScreen },
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },
