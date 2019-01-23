@@ -29,6 +29,12 @@ export {
 	IWithManageCountriesEnhancedData,
 } from './ads/WithManageCountries';
 
+export {
+	WithConversation,
+	IWithConversationEnhancedActions,
+	IWithConversationEnhancedData,
+} from './chat/WithConversation';
+
 export { WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData } from './intro/WithIntro';
 
 export {

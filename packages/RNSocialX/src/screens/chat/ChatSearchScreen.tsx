@@ -1,19 +1,19 @@
 import { debounce } from 'lodash';
 import * as React from 'react';
 
-import { WithNavigationHandlers } from '../../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,
 	WithSearch,
-} from '../../../enhancers/screens';
+} from '../../enhancers/screens';
 
-import { INavigationProps } from '../../../types';
-import { SearchScreenView } from './SearchScreen.view';
+import { INavigationProps } from '../../types';
+import { ChatSearchScreenView } from './ChatSearchScreen.view';
 const SEARCH_DEBOUNCE_TIME = 300;
 
-interface IProps extends INavigationProps, IWithSearchEnhancedData, IWithSearchEnhancedActions {
-	onViewUserProfile: (alias: string) => void;
+interface IProps extends INavigationProps, IWithSearchEnhancedActions, IWithSearchEnhancedData {
+	onOpenConversation: (alias: string) => void;
 }
 
 interface IState {
@@ -38,17 +38,17 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public render() {
-		const { results, searching, navigation, dictionary } = this.props;
+		const { results, searching, navigation, dictionary, onOpenConversation } = this.props;
 
 		return (
-			<SearchScreenView
+			<ChatSearchScreenView
 				results={results}
 				term={this.state.term}
 				suggestions={this.state.suggestions}
 				searching={searching}
 				onCancelSearch={this.onCancelSearchHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
-				onResultPress={(alias) => this.props.onViewUserProfile(alias)}
+				onResultPress={onOpenConversation}
 				navigation={navigation}
 				dictionary={dictionary}
 			/>
@@ -72,16 +72,16 @@ class Screen extends React.Component<IProps, IState> {
 	};
 }
 
-export const SearchScreen = (props: INavigationProps) => (
+export const ChatSearchScreen: React.SFC<INavigationProps> = (props) => (
 	<WithNavigationHandlers navigation={props.navigation}>
-		{(nav) => (
+		{({ actions }) => (
 			<WithSearch>
 				{(search) => (
 					<Screen
 						{...props}
 						{...search.data}
 						{...search.actions}
-						onViewUserProfile={nav.actions.onViewUserProfile}
+						onOpenConversation={actions.onOpenConversation}
 					/>
 				)}
 			</WithSearch>

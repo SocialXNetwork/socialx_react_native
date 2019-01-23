@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { FlatList, Image, ImageStyle, Text, View } from 'react-native';
 
 import { Header, Notification } from '../../components';
+import { Icons } from '../../environment/theme';
 import { ITranslatedProps } from '../../types';
 
-import styles, { Icon } from './NotificationsScreen.style';
+import styles from './NotificationsScreen.style';
 
 interface INotificationsScreenViewProps extends ITranslatedProps {
 	ids: string[];
@@ -16,7 +17,7 @@ interface INotificationsScreenViewProps extends ITranslatedProps {
 
 const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
 	<View style={styles.empty}>
-		<Image style={styles.icon} source={Icon} resizeMode="contain" />
+		<Image style={styles.icon as ImageStyle} source={Icons.noNotifications} resizeMode="contain" />
 		<Text style={styles.text}>{getText('notifications.empty.list')}</Text>
 	</View>
 );

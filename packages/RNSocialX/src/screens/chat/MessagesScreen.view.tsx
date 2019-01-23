@@ -8,32 +8,22 @@ import { INavigationProps } from '../../types';
 import styles from './MessagesScreen.style';
 
 interface IProps extends INavigationProps {
-	term: string;
 	messages: string[];
 	people: string[];
-	onChangeText: (term: string) => void;
-	onChangeTab: () => void;
 	onRemoveMessage: (alias: string) => void;
+	onEntryPress: (alias: string) => void;
 }
 
 export const MessagesScreenView: React.SFC<IProps> = ({
-	term,
 	messages,
 	people,
 	navigation,
-	onChangeText,
-	onChangeTab,
 	onRemoveMessage,
+	onEntryPress,
 }) => (
 	<View style={styles.container}>
-		<SearchHeader
-			term={term}
-			back={true}
-			cancel={true}
-			navigation={navigation}
-			onSearchTermChange={onChangeText}
-		/>
-		<Tabs tabBarUnderlineStyle={styles.underline as ViewStyle} onChangeTab={onChangeTab}>
+		<SearchHeader cancel={false} overlay={true} back={true} navigation={navigation} />
+		<Tabs tabBarUnderlineStyle={styles.underline as ViewStyle}>
 			<Tab
 				tabStyle={styles.tab as ViewStyle}
 				activeTabStyle={styles.tab as ViewStyle}
@@ -46,7 +36,7 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 						aliases={messages}
 						chat={true}
 						removable={true}
-						onEntryPress={() => undefined}
+						onEntryPress={onEntryPress}
 						onRemove={onRemoveMessage}
 					/>
 				</View>
@@ -56,10 +46,10 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 				activeTabStyle={styles.tab as ViewStyle}
 				textStyle={styles.title as TextStyle}
 				activeTextStyle={[styles.title, styles.active] as TextStyle}
-				heading="People"
+				heading="Friends"
 			>
 				<View style={styles.entries}>
-					<UserEntries aliases={people} onEntryPress={() => undefined} />
+					<UserEntries aliases={people} onEntryPress={onEntryPress} />
 				</View>
 			</Tab>
 		</Tabs>

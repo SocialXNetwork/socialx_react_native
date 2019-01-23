@@ -34,7 +34,7 @@ export class Alert extends React.Component<IProps, IState> {
 
 		if (prevProps.errors !== errors && errors.length > 0 && this.state.error.length === 0) {
 			if (errors[0].type) {
-				const error = dictionary.errors[errors[0].type];
+				const error = dictionary.errors[errors[0].type] || '';
 
 				this.setState({ error, visible: true });
 				this.clearItself();

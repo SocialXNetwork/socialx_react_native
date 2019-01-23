@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
 		height: Sizes.smartVerticalScale(45),
@@ -33,6 +33,4 @@ const styles: any = {
 	placeholder: {
 		flex: 1,
 	},
-};
-
-export default StyleSheet.create(styles);
+});

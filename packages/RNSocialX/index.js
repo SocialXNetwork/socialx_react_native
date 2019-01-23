@@ -8,7 +8,6 @@ import StorybookUI from './storybook';
 import { name as appName } from './app.json';
 
 // import { RUN_STORYBOOK } from 'react-native-dotenv';
-
 AppRegistry.registerComponent(appName, () => App);
 
 // if (__DEV__ && RUN_STORYBOOK === 'true') {

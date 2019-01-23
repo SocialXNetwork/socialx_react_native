@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
 	},
@@ -14,13 +14,11 @@ const styles: any = {
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	backButton: {
-		marginHorizontal: Sizes.smartHorizontalScale(10),
+		marginLeft: Sizes.smartHorizontalScale(11),
+		marginRight: Sizes.smartHorizontalScale(17.5),
 	},
 	inputContainer: {
 		flex: 1,
-	},
-	spacing: {
-		marginHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	inputOverlay: {
 		backgroundColor: Colors.transparent,
@@ -28,9 +26,7 @@ const styles: any = {
 		height: '100%',
 		position: 'absolute',
 	},
-};
-
-export default StyleSheet.create(styles);
+});
 
 export const colors = {
 	icon: Colors.cadetBlue,

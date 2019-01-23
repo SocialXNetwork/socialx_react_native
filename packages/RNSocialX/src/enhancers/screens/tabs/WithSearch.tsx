@@ -1,7 +1,7 @@
 import { sampleSize } from 'lodash';
 import * as React from 'react';
 
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/profiles/Types';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -10,7 +10,7 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 import { getActivity } from '../../helpers';
 import { WithCurrentUser } from '../../intermediary';
 
-export interface IWithSearchEnhancedData {
+export interface IWithSearchEnhancedData extends IDictionary {
 	results: string[];
 	previousTerms: {
 		[term: string]: boolean;
@@ -19,7 +19,7 @@ export interface IWithSearchEnhancedData {
 	searching: boolean;
 }
 
-export interface IWithSearchEnhancedActions extends ITranslatedProps {
+export interface IWithSearchEnhancedActions {
 	search: (term: string, limit: number) => void;
 	searchLocally: (term: string) => void;
 	clearSearchResults: () => void;
@@ -40,7 +40,7 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithActivities>
 						{({ activities }) => (
 							<WithProfiles>
@@ -64,18 +64,17 @@ export class WithSearch extends React.Component<IWithSearchProps, IWithSearchSta
 													results,
 													previousTerms,
 													suggestions: sampleSize(aliases, 5),
+													dictionary,
 												},
 												actions: {
-													search: async (term, limit) => {
-														await searchForProfiles({
+													search: (term, limit) =>
+														searchForProfiles({
 															term,
 															limit,
-														});
-													},
+														}),
 													searchLocally: (term) =>
 														searchForProfilesLocally({ term, alias: currentUser.alias }),
 													clearSearchResults,
-													getText,
 												},
 											});
 										}}

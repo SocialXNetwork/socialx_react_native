@@ -151,6 +151,9 @@ export enum SCREENS {
 	RewardsTransactionHistory = 'TransactionHistory',
 	FriendsList = 'FriendsList',
 	Chat = 'Chat',
+	Messages = 'Messages',
+	ChatSearch = 'ChatSearch',
+	Conversation = 'Conversation',
 }
 
 export enum NAVIGATION {

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-navigation';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 
-import { HeaderButton, PrimaryTextInput, SearchInput } from '../';
+import { HeaderButton, SearchInput } from '../';
 import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import styles from './SearchHeader.style';
@@ -14,6 +14,7 @@ interface ISearchHeaderProps extends INavigationProps {
 	term?: string;
 	autoFocus?: boolean;
 	back?: boolean;
+	overlay?: boolean;
 	onSearchTermChange?: (term: string) => void;
 	onCancelSearch?: () => void;
 }
@@ -22,71 +23,35 @@ interface IProps extends ISearchHeaderProps {
 	onGoBack: () => void;
 }
 
-interface IState {
-	navigatedFromTrending: boolean;
-}
-
-class Component extends React.Component<IProps, IState> {
-	public static defaultProps = {
-		cancel: false,
-		autoFocus: false,
-	};
-
-	public state = {
-		navigatedFromTrending: false,
-	};
-
-	private inputRef: React.RefObject<PrimaryTextInput> = React.createRef();
-
-	// public componentDidUpdate() {
-	// 	if (this.inputRef.current && this.props.cancel && !this.state.navigatedFromTrending) {
-	// 		this.inputRef.current.focusInput();
-	// 		this.setState({ navigatedFromTrending: true });
-	// 	}
-
-	// 	if (!this.props.cancel && this.state.navigatedFromTrending) {
-	// 		this.setState({ navigatedFromTrending: false });
-	// 	}
-	// }
-
+class Component extends React.Component<IProps> {
 	public render() {
-		let inputContainer = [styles.inputContainer];
-		if (this.props.back) {
-			inputContainer = [styles.inputContainer, styles.spacing];
-		}
+		const { back, term, cancel, autoFocus, overlay, onGoBack } = this.props;
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<View style={styles.headerContainer}>
-					<View style={styles.inner}>
-						{this.props.back && (
-							<View style={styles.backButton}>
-								<HeaderButton
-									iconName={Platform.select({
-										android: 'md-arrow-back',
-										ios: 'ios-arrow-back',
-									})}
-									onPress={this.props.onGoBack}
-								/>
-							</View>
-						)}
-						<View style={inputContainer}>
-							<SearchInput
-								cancel={false}
-								term={this.props.term}
-								autoFocus={this.props.autoFocus}
-								reference={this.inputRef}
-								onChangeText={this.onChangeTextHandler}
-								onPressCancel={this.onCancelHandler}
+				<View style={styles.inner}>
+					{back && (
+						<View style={styles.backButton}>
+							<HeaderButton
+								iconName={Platform.select({
+									android: 'md-arrow-back',
+									ios: 'ios-arrow-back',
+								})}
+								onPress={onGoBack}
 							/>
 						</View>
-						{!this.props.cancel ? (
-							<TouchableOpacity
-								activeOpacity={1}
-								onPress={this.onInputPressHandler}
-								style={styles.inputOverlay}
-							/>
-						) : null}
+					)}
+					<View style={styles.inputContainer}>
+						<SearchInput
+							term={term}
+							autoFocus={autoFocus}
+							cancel={cancel}
+							onChangeText={this.onChangeTextHandler}
+							onPressCancel={this.onCancelHandler}
+						/>
+						{overlay && (
+							<TouchableOpacity onPress={this.onInputPressHandler} style={styles.inputOverlay} />
+						)}
 					</View>
 				</View>
 			</SafeAreaView>
@@ -105,12 +70,19 @@ class Component extends React.Component<IProps, IState> {
 		if (navigation.state.routeName === SCREENS.Trending) {
 			navigation.navigate(SCREENS.Search);
 		}
+
+		if (navigation.state.routeName === SCREENS.Messages) {
+			navigation.navigate(SCREENS.ChatSearch);
+		}
 	};
 
 	private onCancelHandler = () => {
-		// this.props.onGoBack();
 		if (this.props.onCancelSearch) {
 			this.props.onCancelSearch();
+		}
+
+		if (this.props.cancel) {
+			this.props.onGoBack();
 		}
 	};
 }

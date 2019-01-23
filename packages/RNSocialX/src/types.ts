@@ -257,11 +257,6 @@ export interface IRewardsTransactionHistory {
 	isRefreshing: boolean;
 }
 
-export interface ISearchTabResultsProps {
-	navigation: NavigationScreenProp<any>;
-	searchTermValue: string;
-}
-
 // =====================================================
 // ENHANCER DATA TYPES
 // =====================================================

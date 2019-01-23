@@ -14,7 +14,7 @@ import {
 } from '../../enhancers/components';
 import { IMessage } from '../../store/data/messages';
 import { IProfile } from '../../store/data/profiles';
-import { IApplicationState, selectMessages, selectProfile } from '../../store/selectors';
+import { IApplicationState, selectLastMessage, selectProfile } from '../../store/selectors';
 
 import styles from './UserEntry.style';
 
@@ -32,13 +32,13 @@ interface IProps
 		IWithUserEntryEnhancedActions {
 	profile: IProfile;
 	currentUserAlias: string;
-	messages: IMessage[];
+	message: IMessage;
 }
 
 class Component extends React.Component<IProps> {
 	public shouldComponentUpdate(nextProps: IProps) {
 		return (
-			this.props.messages !== nextProps.messages ||
+			this.props.message !== nextProps.message ||
 			this.props.profile !== nextProps.profile ||
 			this.props.relationship.action !== nextProps.relationship.action ||
 			this.props.request.accepting !== nextProps.request.accepting ||
@@ -52,15 +52,15 @@ class Component extends React.Component<IProps> {
 			chat,
 			removable,
 			profile,
-			messages,
+			message,
 			currentUserAlias,
 			relationship,
+			request,
 			onPress,
 		} = this.props;
 
 		if (profile) {
-			const latestMessage = messages && messages[0];
-			const showMessage = chat && latestMessage;
+			const showMessage = chat && message;
 			const showFriendshipButtons = currentUserAlias !== profile.alias && friends;
 
 			if (removable) {
@@ -75,7 +75,7 @@ class Component extends React.Component<IProps> {
 							<View style={styles.textContainer}>
 								<Text style={styles.name}>{profile.fullName}</Text>
 								{showMessage ? (
-									<Text style={styles.message}>{latestMessage.content}</Text>
+									<Text style={styles.message}>{message.content}</Text>
 								) : (
 									<Text style={styles.alias}>@{profile.alias}</Text>
 								)}
@@ -83,7 +83,7 @@ class Component extends React.Component<IProps> {
 						</View>
 						{showMessage && (
 							<View style={styles.right}>
-								<Text style={styles.timestamp}>{moment(latestMessage.timestamp).fromNow()}</Text>
+								<Text style={styles.timestamp}>{moment(message.timestamp).fromNow()}</Text>
 							</View>
 						)}
 						{showFriendshipButtons && (
@@ -95,6 +95,7 @@ class Component extends React.Component<IProps> {
 											relationship.activity !== null &&
 											relationship.activity.payload === profile.alias
 										}
+										disabled={request.accepting || request.rejecting}
 										size={ButtonSizes.Small}
 										borderColor={Colors.pink}
 										textColor={Colors.white}
@@ -108,6 +109,7 @@ class Component extends React.Component<IProps> {
 											relationship.activity !== null &&
 											relationship.activity.payload === profile.alias
 										}
+										disabled={request.accepting || request.rejecting}
 										size={ButtonSizes.Small}
 										borderColor={Colors.pink}
 										textColor={Colors.pink}
@@ -122,13 +124,13 @@ class Component extends React.Component<IProps> {
 			}
 
 			return (
-				<TouchableOpacity activeOpacity={1} onPress={onPress} style={styles.card}>
+				<TouchableOpacity onPress={onPress} style={styles.card}>
 					<View style={styles.details}>
 						<AvatarImage image={profile.avatar} style={styles.avatar} />
 						<View style={styles.textContainer}>
 							<Text style={styles.name}>{profile.fullName}</Text>
 							{showMessage ? (
-								<Text style={styles.message}>{latestMessage.content}</Text>
+								<Text style={styles.message}>{message.content}</Text>
 							) : (
 								<Text style={styles.alias}>@{profile.alias}</Text>
 							)}
@@ -136,7 +138,7 @@ class Component extends React.Component<IProps> {
 					</View>
 					{showMessage && (
 						<View style={styles.right}>
-							<Text style={styles.timestamp}>{moment(latestMessage.timestamp).fromNow()}</Text>
+							<Text style={styles.timestamp}>{moment(message.timestamp).fromNow()}</Text>
 						</View>
 					)}
 					{showFriendshipButtons && (
@@ -148,6 +150,7 @@ class Component extends React.Component<IProps> {
 										relationship.activity !== null &&
 										relationship.activity.payload === profile.alias
 									}
+									disabled={request.accepting || request.rejecting}
 									size={ButtonSizes.Small}
 									borderColor={Colors.pink}
 									textColor={Colors.white}
@@ -161,6 +164,7 @@ class Component extends React.Component<IProps> {
 										relationship.activity !== null &&
 										relationship.activity.payload === profile.alias
 									}
+									disabled={request.accepting || request.rejecting}
 									size={ButtonSizes.Small}
 									borderColor={Colors.pink}
 									textColor={Colors.pink}
@@ -200,7 +204,7 @@ const EnhancedComponent: React.SFC<IProps> = (props) => (
 
 const mapStateToProps = (state: IApplicationState, props: IUserEntryProps) => ({
 	profile: selectProfile(state.data.profiles, props.alias),
-	messages: selectMessages(state.data.messages, props.alias),
+	message: selectLastMessage(state.data.messages, props.alias),
 });
 
 export const UserEntry = connect(mapStateToProps)(EnhancedComponent as any);

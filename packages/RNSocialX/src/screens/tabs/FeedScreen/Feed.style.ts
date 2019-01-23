@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		width: '100%',
@@ -11,6 +11,4 @@ const styles: any = {
 		borderBottomColor: Colors.geyser,
 		borderBottomWidth: Sizes.smartHorizontalScale(8),
 	},
-};
-
-export default StyleSheet.create(styles) as any;
+});

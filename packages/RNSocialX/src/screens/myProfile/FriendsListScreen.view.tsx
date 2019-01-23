@@ -23,7 +23,7 @@ export const FriendsListScreenView: React.SFC<IFriendsListScreenViewProps> = ({
 		<SearchHeader
 			term={term}
 			back={true}
-			cancel={true}
+			cancel={false}
 			navigation={navigation}
 			onSearchTermChange={onChangeText}
 		/>

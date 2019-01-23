@@ -49,6 +49,11 @@ export const selectAvatar = createSelector(
 	(avatar) => avatar,
 );
 
+export const selectLastMessage = createSelector(
+	(state: IMessages, alias: string) => state.messages[alias] && state.messages[alias][0],
+	(message) => message,
+);
+
 export const selectMessages = createSelector(
 	(state: IMessages, alias: string) => state.messages[alias],
 	(messages) => messages,

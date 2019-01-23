@@ -5,7 +5,7 @@ import uuid from 'uuid/v4';
 import { SCREENS } from '../../environment/consts';
 import { IMedia, INavigationProps } from '../../types';
 
-import { IMediaInput } from '../../store/ui/overlays';
+import { IMediaOverlay } from '../../store/ui/overlays';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
 import { WithPosts } from '../connectors/data/WithPosts';
 import { WithProfiles } from '../connectors/data/WithProfiles';
@@ -18,6 +18,7 @@ export interface IWithNavigationHandlersEnhancedActions {
 	onViewComments: (postId: string, keyboardRaised: boolean) => void;
 	onViewImage: (items: IMedia[], startIndex?: number, postId?: string) => void;
 	onViewFriends: (alias: string) => void;
+	onOpenConversation: (alias: string) => void;
 	onGoBack: () => void;
 }
 
@@ -33,7 +34,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 	private actions: {
 		getUserPosts: (alias: string) => void;
 		getUserFriends: (alias: string) => void;
-		showMedia: (input: IMediaInput) => void;
+		showMedia: (input: IMediaOverlay) => void;
 		setNavigationParams: (input: any) => void;
 	} = {
 		getUserPosts: () => undefined,
@@ -69,6 +70,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 															onViewComments: this.onViewCommentsHandler,
 															onViewImage: this.onViewImageHandler,
 															onViewFriends: this.onViewFriendsHandler,
+															onOpenConversation: this.onOpenConversationHandler,
 															onGoBack: this.onGoBackHandler,
 														},
 													});
@@ -87,7 +89,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 
 	private onGoBackHandler = () => {
 		Keyboard.dismiss();
-		this.props.navigation.goBack();
+		this.props.navigation.goBack(null);
 	};
 
 	private onViewUserProfileHandler = (currentUser: string, visitedUser: string) => {
@@ -143,5 +145,15 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 			key,
 		});
 		this.props.navigation.navigate({ routeName: SCREENS.FriendsList, key });
+	};
+
+	private onOpenConversationHandler = (alias: string) => {
+		this.actions.setNavigationParams({
+			screenName: SCREENS.Conversation,
+			params: {
+				alias,
+			},
+		});
+		this.props.navigation.navigate(SCREENS.Conversation);
 	};
 }

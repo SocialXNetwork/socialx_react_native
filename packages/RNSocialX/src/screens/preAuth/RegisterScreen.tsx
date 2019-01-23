@@ -86,7 +86,7 @@ class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState>
 
 	private onGoBackHandler = () => {
 		Keyboard.dismiss();
-		this.props.navigation.goBack();
+		this.props.navigation.goBack(null);
 	};
 
 	private switchActivityIndicator = (state: boolean) => {

@@ -30,8 +30,9 @@ import {
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
-	ChatScreen,
+	ChatSearchScreen,
 	CommentsScreen,
+	ConversationScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,
 	FriendsFeed,
@@ -185,6 +186,46 @@ const SearchStack = createStackNavigator(
 	},
 );
 
+const ChatStack = createStackNavigator(
+	{
+		Messages: { screen: MessagesScreen },
+		Conversation: { screen: ConversationScreen },
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false,
+		},
+	},
+);
+
+const ChatSearchStack = createStackNavigator(
+	{
+		ChatSearch: { screen: ChatSearchScreen },
+		Conversation: { screen: ConversationScreen },
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false,
+		},
+	},
+);
+
+const ChatWithSearch = createStackNavigator(
+	{
+		ChatStack,
+		ChatSearchStack,
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false,
+		},
+		transitionConfig: fadeIn,
+	},
+);
+
 const HomeTabs = createBottomTabNavigator(
 	{
 		FeedTab: FeedStack,
@@ -241,7 +282,7 @@ const HomeStack = createStackNavigator(
 		Comments: { screen: CommentsScreen },
 		Likes: { screen: LikesScreen },
 		FriendsList: { screen: FriendsListScreen },
-		Chat: { screen: ChatScreen },
+		// Chat: ChatWithSearch,
 	},
 	{
 		headerMode: 'none',
@@ -250,8 +291,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		Messages: { screen: MessagesScreen },
-		Chat: { screen: ChatScreen },
+		ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

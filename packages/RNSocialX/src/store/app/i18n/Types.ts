@@ -107,6 +107,13 @@ export interface ILocaleDictionary {
 				description: string;
 			};
 		};
+		search: {
+			top: string;
+			people: string;
+			tags: string;
+			places: string;
+			soon: string;
+		};
 	};
 	components: {
 		buttons: {
@@ -183,6 +190,12 @@ export interface ILocaleDictionary {
 					required: string;
 				};
 			};
+			generic: {
+				delete: {
+					title: string;
+					description: string;
+				};
+			};
 		};
 		displayers: {
 			mediaInfo: {
@@ -206,6 +219,11 @@ export interface ILocaleDictionary {
 				view: string;
 				comment: string;
 				comments: string;
+			};
+			search: {
+				indicator: string;
+				suggested: string;
+				results: string;
 			};
 		};
 	};

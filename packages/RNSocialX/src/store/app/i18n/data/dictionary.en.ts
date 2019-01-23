@@ -78,15 +78,22 @@ export default {
 		settings: {
 			title: 'Settings',
 			progress: 'Updating your profile',
+			mining: {
+				title: 'Mining (Beta)',
+				description:
+					'Get rewarded for validating transactions within SocialX network',
+			},
+			share: {
+				title: 'Share data',
+				description: 'Share your data with advertise partners',
+			},
 		},
-		mining: {
-			title: 'Mining (Beta)',
-			description:
-				'Get rewarded for validating transactions within SocialX network',
-		},
-		share: {
-			title: 'Share data',
-			description: 'Share your data with advertise partners',
+		search: {
+			top: 'Top',
+			people: 'People',
+			tags: 'Tags',
+			places: 'Places',
+			soon: 'Stay close, this feature is coming soon!',
 		}
 	},
 	components: {
@@ -164,6 +171,12 @@ export default {
 					required: 'Description is required',
 				}
 			},
+			generic: {
+				delete: {
+					title: 'Delete conversation?',
+					description: 'This will permanently delete the conversation history.',
+				}
+			}
 		},
 		displayers: {
 			mediaInfo: {
@@ -187,6 +200,11 @@ export default {
 				view: 'View',
 				comment: 'comment',
 				comments: 'comments',
+			},
+			search: {
+				indicator: 'Searching for',
+				suggested: 'Suggested',
+				results: 'No results found',
 			}
 		},
 	},
@@ -397,14 +415,6 @@ export default {
 	'ad.manage.countries.title': 'Manage Countries',
 	'ad.manage.countries.input.placeholder': 'Search for a country',
 	'ad.manage.countries.all.countries': 'All countries',
-	'search.screen.results.tab.top.title': 'Top',
-	'search.screen.results.tab.people.title': 'People',
-	'search.screen.results.tab.tags.title': 'Tags',
-	'search.screen.results.tab.places.title': 'Places',
-	'search.screen.results.coming.soon': 'Stay close, this feature is coming soon!',
-	'search.indicator': 'Searching for',
-	'search.suggested': 'Suggested',
-	'search.no.results': 'No results found',
 	'new.ad.setup.post.screen.title': 'Create Ad',
 	'new.ad.setup.post.header.title': 'Create a post',
 	'new.ad.setup.post.header.headline.input.placeholder': 'Headline',
