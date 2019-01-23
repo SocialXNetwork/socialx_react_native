@@ -2,6 +2,7 @@ import { Root } from 'native-base';
 import React from 'react';
 import { Animated, Easing } from 'react-native';
 import {
+	createAppContainer,
 	createBottomTabNavigator,
 	createMaterialTopTabNavigator,
 	createStackNavigator,
@@ -64,6 +65,7 @@ import {
 	WalletActivityScreen,
 } from '../screens';
 
+import { create } from 'domain';
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
 import { WithNotifications } from '../enhancers/connectors/data/WithNotifications';
@@ -235,7 +237,7 @@ const HomeTabs = createBottomTabNavigator(
 		ProfileTab: MyProfileStack,
 	},
 	{
-		navigationOptions: (props) => ({
+		defaultNavigationOptions: (props) => ({
 			tabBarIcon: ({ focused }) => {
 				return (
 					<TabIcon
@@ -319,7 +321,7 @@ const HomelessNavigator = createStackNavigator(
 	},
 );
 
-const App = createStackNavigator(
+const AppStack = createStackNavigator(
 	{
 		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthStack },
@@ -331,6 +333,8 @@ const App = createStackNavigator(
 		headerMode: 'none',
 	},
 );
+
+const App = createAppContainer(AppStack);
 
 const Navigation = () => (
 	<WithI18n>

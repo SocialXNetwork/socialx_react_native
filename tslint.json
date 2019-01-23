@@ -27,8 +27,7 @@
       true,
       "gun",
       "react-native-vector-icons",
-      "uuid",
-      "react-native-gesture-handler"
+      "uuid"
     ],
     "no-empty-interface": false,
     "interface-name": [

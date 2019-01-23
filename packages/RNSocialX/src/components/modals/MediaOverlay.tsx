@@ -83,7 +83,8 @@ class Component extends React.Component<IProps, IState> {
 				animationOut="fadeOut"
 				swipeDirection="down"
 				hideModalContentWhileAnimating={true}
-				onSwipe={this.onSwipeDownHandler}
+				onBackButtonPress={this.onCloseModalHandler}
+				onSwipe={this.onCloseModalHandler}
 				style={styles.modal}
 			>
 				<SafeAreaView style={styles.container}>
@@ -218,7 +219,7 @@ class Component extends React.Component<IProps, IState> {
 		}).start();
 	};
 
-	private onSwipeDownHandler = () => {
+	private onCloseModalHandler = () => {
 		this.props.hideMedia();
 	};
 

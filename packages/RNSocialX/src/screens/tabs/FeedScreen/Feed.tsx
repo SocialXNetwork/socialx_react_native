@@ -1,6 +1,6 @@
 import { delay } from 'lodash';
 import * as React from 'react';
-import { AsyncStorage, Dimensions, FlatList, Platform, View } from 'react-native';
+import { AsyncStorage, BackHandler, Dimensions, FlatList, Platform, View } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import { FEED_TYPES, OS_TYPES, SCREENS } from '../../../environment/consts';
