@@ -5,9 +5,9 @@ import { IDictionary, IOptionsMenuProps } from '../../types';
 import { IModalOverlay } from '../../store/ui/overlays';
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
-import { IWithFriendsEnhancedData, WithCurrentUser, WithFriends } from '../intermediary';
+import { WithCurrentUser } from '../intermediary';
 
-export interface IWithUserEntryEnhancedData extends IDictionary, IWithFriendsEnhancedData {
+export interface IWithUserEntryEnhancedData extends IDictionary {
 	currentUserAlias: string;
 	modal: IModalOverlay;
 }
@@ -34,26 +34,21 @@ export class WithUserEntry extends React.Component<IWithUserEntryProps, IWithUse
 				{({ dictionary }) => (
 					<WithOverlays>
 						{({ modal, showModal, showOptionsMenu }) => (
-							<WithFriends>
-								{(friends) => (
-									<WithCurrentUser>
-										{({ currentUser }) =>
-											this.props.children({
-												data: {
-													...friends.data,
-													currentUserAlias: currentUser.alias,
-													modal,
-													dictionary,
-												},
-												actions: {
-													showModal,
-													showOptionsMenu,
-												},
-											})
-										}
-									</WithCurrentUser>
-								)}
-							</WithFriends>
+							<WithCurrentUser>
+								{({ currentUser }) =>
+									this.props.children({
+										data: {
+											currentUserAlias: currentUser.alias,
+											modal,
+											dictionary,
+										},
+										actions: {
+											showModal,
+											showOptionsMenu,
+										},
+									})
+								}
+							</WithCurrentUser>
 						)}
 					</WithOverlays>
 				)}

@@ -7,18 +7,15 @@ const INPUT_FONT_SIZE = Sizes.smartHorizontalScale(14);
 
 export default StyleSheet.create({
 	container: {
-		width: '100%',
 		flexDirection: 'row',
 		alignItems: 'center',
 		backgroundColor: Colors.white,
 		borderRadius: Sizes.smartHorizontalScale(6),
-		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
 	inputContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: Colors.white,
 		borderRadius: Sizes.smartHorizontalScale(6),
 		height: '100%',
 	},
@@ -26,7 +23,6 @@ export default StyleSheet.create({
 		flex: 1,
 		...Fonts.centuryGothic,
 		fontSize: INPUT_FONT_SIZE,
-		paddingHorizontal: Sizes.smartHorizontalScale(5),
 		color: Colors.shuttleGray,
 	},
 	multilineTextInput: {

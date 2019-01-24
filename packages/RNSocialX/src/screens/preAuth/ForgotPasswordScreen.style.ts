@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
-
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white,
@@ -30,11 +29,4 @@ const style: any = {
 		paddingVertical: Sizes.smartVerticalScale(3),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
-};
-
-export default StyleSheet.create(style);
-
-export const customStyleProps = {
-	usernameInputIconColor: Colors.iron,
-	transparentBorder: Colors.transparent,
-};
+});

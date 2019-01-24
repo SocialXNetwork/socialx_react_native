@@ -1,8 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../environment/theme';
 
-const { width } = Dimensions.get('window');
-
 export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
@@ -29,9 +27,3 @@ export default StyleSheet.create({
 		position: 'absolute',
 	},
 });
-
-export const colors = {
-	icon: Colors.cadetBlue,
-	border: Colors.transparent,
-	iosInputCancel: Colors.paleSky,
-};

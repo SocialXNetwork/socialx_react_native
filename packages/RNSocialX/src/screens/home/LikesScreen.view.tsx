@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 	},
 	list: {
-		paddingHorizontal: Sizes.smartHorizontalScale(16),
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
 });

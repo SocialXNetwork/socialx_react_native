@@ -12,6 +12,7 @@ import {
 	IWithUserEntryEnhancedData,
 	WithUserEntry,
 } from '../../enhancers/components';
+import { IWithFriendsEnhancedData, WithFriends } from '../../enhancers/intermediary';
 import { IMessage } from '../../store/data/messages';
 import { IProfile } from '../../store/data/profiles';
 import { IApplicationState, selectLastMessage, selectProfile } from '../../store/selectors';
@@ -29,7 +30,8 @@ interface IUserEntryProps {
 interface IProps
 	extends IUserEntryProps,
 		IWithUserEntryEnhancedData,
-		IWithUserEntryEnhancedActions {
+		IWithUserEntryEnhancedActions,
+		IWithFriendsEnhancedData {
 	profile: IProfile;
 	currentUserAlias: string;
 	message: IMessage;
@@ -41,6 +43,7 @@ class Component extends React.Component<IProps> {
 			this.props.message !== nextProps.message ||
 			this.props.profile !== nextProps.profile ||
 			this.props.relationship.action !== nextProps.relationship.action ||
+			this.props.relationship.activity !== nextProps.relationship.activity ||
 			this.props.request.accepting !== nextProps.request.accepting ||
 			this.props.request.rejecting !== nextProps.request.rejecting
 		);
@@ -197,9 +200,13 @@ class Component extends React.Component<IProps> {
 }
 
 const EnhancedComponent: React.SFC<IProps> = (props) => (
-	<WithUserEntry>
-		{({ data, actions }) => <Component {...props} {...data} {...actions} />}
-	</WithUserEntry>
+	<WithFriends status={props.profile.status}>
+		{(friends) => (
+			<WithUserEntry>
+				{({ data, actions }) => <Component {...props} {...data} {...actions} {...friends.data} />}
+			</WithUserEntry>
+		)}
+	</WithFriends>
 );
 
 const mapStateToProps = (state: IApplicationState, props: IUserEntryProps) => ({

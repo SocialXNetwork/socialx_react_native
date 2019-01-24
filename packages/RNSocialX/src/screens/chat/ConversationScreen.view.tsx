@@ -7,15 +7,15 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView } from 'react-navigation';
 
 import { Header, InputSizes, PrimaryTextInput } from '../../components';
 import { OS_TYPES } from '../../environment/consts';
 import { ILocaleDictionary } from '../../store/app/i18n/Types';
 import { IProfile } from '../../types';
 
-import styles, { customStyles, INPUT_SIZE } from './ConversationScreen.style';
+import styles from './ConversationScreen.style';
 
 interface IProps {
 	profile: IProfile;
@@ -27,41 +27,45 @@ interface IProps {
 
 export const ConversationScreenView: React.SFC<IProps> = ({
 	profile,
-	onGoBack,
 	dictionary,
 	showProfileOptions,
 	showAddOptions,
+	onGoBack,
 }) => (
-	<View style={styles.container}>
+	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
-			avatar={profile.avatar}
-			showProfileOptions={showProfileOptions}
 			title={profile.alias}
+			avatar={profile.avatar}
 			back={true}
+			onPressAvatar={showProfileOptions}
 			onPressBack={onGoBack}
 		/>
 		<ScrollView style={styles.messages}>
 			<Text>{profile.alias}</Text>
 			<Text>{profile.aboutMeText}</Text>
 		</ScrollView>
-		<KeyboardAvoidingView behavior="padding" enabled={Platform.OS === OS_TYPES.IOS}>
+		<KeyboardAvoidingView
+			behavior="padding"
+			keyboardVerticalOffset={4}
+			enabled={Platform.OS === OS_TYPES.IOS}
+		>
 			<View style={styles.footer}>
-				<TouchableOpacity style={styles.emojiContainer} onPress={() => undefined}>
-					<Icon name="ios-happy" style={styles.emojiIcon} />
+				<TouchableOpacity style={styles.iconContainer} onPress={showAddOptions}>
+					<Icon name="ios-add-circle" style={styles.icon} />
 				</TouchableOpacity>
-
-				<PrimaryTextInput
-					placeholder={dictionary.screens.chat.conversation.inputPlaceholder}
-					width={INPUT_SIZE}
-					size={InputSizes.Small}
-					borderColor={customStyles.inputBorderColor}
-					borderWidth={0.3}
-					multiline={true}
-				/>
-				<TouchableOpacity style={styles.addContainer} onPress={showAddOptions}>
-					<Icon name="ios-add" style={styles.addIcon} />
+				<View style={{ flex: 1 }}>
+					<PrimaryTextInput
+						placeholder={dictionary.components.inputs.placeholder.type}
+						size={InputSizes.Small}
+						borderWidth={0}
+						multiline={true}
+						style={styles.input}
+					/>
+				</View>
+				<TouchableOpacity style={styles.iconContainer} onPress={() => undefined}>
+					<Icon name="ios-paper-plane" style={styles.icon} />
 				</TouchableOpacity>
 			</View>
 		</KeyboardAvoidingView>
-	</View>
+	</SafeAreaView>
 );

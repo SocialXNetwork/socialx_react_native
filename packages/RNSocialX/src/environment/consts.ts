@@ -176,5 +176,12 @@ export enum IMAGE_PICKER_TYPES {
 	Gallery = 'Gallery',
 }
 
+export enum ICON_TYPES {
+	IO = 'ionicon',
+	FA = 'font-awesome',
+	OCT = 'octicon',
+	ENT = 'entypo',
+}
+
 export const HEART_ANIMATION_TIME = 1000;
 export const USER_AVATAR_PLACEHOLDER = 'QmZgsU2Syps515N6xYFcLoL6u9pyqcvzNdz5xUtZQM7oV9';

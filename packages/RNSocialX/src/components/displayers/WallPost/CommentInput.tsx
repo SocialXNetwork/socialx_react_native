@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Animated, Keyboard, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AvatarImage, InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
 import { Colors } from '../../../environment/theme';
@@ -48,7 +48,9 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		{feed && (
 			<React.Fragment>
 				<AvatarImage image={avatar} style={styles.avatar} />
-				<Animated.View style={[styles.inputContainer, { width: animationValues.width }]}>
+				<Animated.View
+					style={[styles.inputContainer, styles.animatingInput, { width: animationValues.width }]}
+				>
 					<PrimaryTextInput
 						borderWidth={0}
 						size={InputSizes.Small}
@@ -73,7 +75,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						disabled={comment.length === 0}
 					>
 						<Icon
-							name="comment-arrow-right"
+							name="ios-paper-plane"
 							style={[
 								styles.icon,
 								{ color: comment.length === 0 ? Colors.dustyGray : Colors.pink },
@@ -85,7 +87,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		)}
 		{!feed && (
 			<React.Fragment>
-				<View style={styles.inputContainer}>
+				<View style={[styles.inputContainer, { flex: 1 }]}>
 					<PrimaryTextInput
 						ref={commentInputRef}
 						borderWidth={0}
@@ -109,7 +111,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						disabled={comment.length === 0}
 					>
 						<Icon
-							name="comment-arrow-right"
+							name="ios-paper-plane"
 							style={[
 								styles.icon,
 								{ color: comment.length === 0 ? Colors.dustyGray : Colors.pink },

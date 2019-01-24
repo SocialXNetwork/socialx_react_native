@@ -3,7 +3,7 @@ import { Colors, Sizes } from '../../environment/theme';
 
 const { width, height } = Dimensions.get('window');
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		width,
 		height,
@@ -42,6 +42,8 @@ const styles: any = {
 		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(25),
 	},
-};
-
-export default StyleSheet.create(styles);
+	oct: {
+		color: Colors.cloudBurst,
+		fontSize: Sizes.smartHorizontalScale(20),
+	},
+});

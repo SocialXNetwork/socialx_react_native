@@ -1,26 +1,27 @@
 import * as React from 'react';
-import { AsyncStorage, Keyboard } from 'react-native';
+import { AsyncStorage, EmitterSubscription, Keyboard } from 'react-native';
 
-import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { IError, INavigationProps } from '../../types';
-import { IRegisterData, RegisterScreenView } from './RegisterScreen.view';
-
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithRegisterEnhancedActions,
 	IWithRegisterEnhancedData,
 	WithRegister,
 } from '../../enhancers/screens';
 
-type IRegisterScreenProps = IWithRegisterEnhancedActions &
-	IWithRegisterEnhancedData &
-	INavigationProps;
+import { NAVIGATION, SCREENS } from '../../environment/consts';
+import { IError, INavigationProps } from '../../types';
+import { IRegisterData, RegisterScreenView } from './RegisterScreen.view';
 
-interface IRegisterScreenState {
+interface IProps extends IWithRegisterEnhancedActions, IWithRegisterEnhancedData, INavigationProps {
+	onGoBack: () => void;
+}
+
+interface IState {
 	errors: IError[];
 }
 
-class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState> {
-	public static getDerivedStateFromProps(nextProps: IRegisterScreenProps) {
+class Screen extends React.Component<IProps, IState> {
+	public static getDerivedStateFromProps(nextProps: IProps) {
 		if (nextProps.errors.length > 0) {
 			return {
 				errors: nextProps.errors,
@@ -34,14 +35,16 @@ class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState>
 		errors: [],
 	};
 
-	private keyboardDidShowListener: any;
+	private keyboardDidShowListener: EmitterSubscription | null = null;
 
 	public componentDidMount() {
 		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
 	}
 
 	public componentWillUnmount() {
-		this.keyboardDidShowListener.remove();
+		if (this.keyboardDidShowListener) {
+			this.keyboardDidShowListener.remove();
+		}
 	}
 
 	public render() {
@@ -102,5 +105,13 @@ class Screen extends React.Component<IRegisterScreenProps, IRegisterScreenState>
 }
 
 export const RegisterScreen = (props: INavigationProps) => (
-	<WithRegister>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithRegister>
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithRegister>
+				{({ data, actions }) => (
+					<Screen {...props} {...data} {...actions} onGoBack={nav.actions.onGoBack} />
+				)}
+			</WithRegister>
+		)}
+	</WithNavigationHandlers>
 );

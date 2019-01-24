@@ -14,7 +14,7 @@ import {
 	WithMyProfile,
 } from '../../enhancers/screens';
 
-import { NAVIGATION, PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
+import { ICON_TYPES, NAVIGATION, PROFILE_TAB_ICON_TYPES, SCREENS } from '../../environment/consts';
 import { INavigationProps, MediaTypeImage } from '../../types';
 import { MyProfileScreenView } from './MyProfileScreen.view';
 
@@ -127,13 +127,20 @@ class Screen extends React.Component<IProps, IState> {
 				actionHandler: () => navigation.navigate(SCREENS.WalletActivity),
 			},
 			{
+				label: dictionary.screens.myProfile.nodes,
+				icon: 'network',
+				source: ICON_TYPES.ENT,
+				actionHandler: () => navigation.navigate(SCREENS.Nodes),
+			},
+			{
 				label: dictionary.screens.myProfile.settings,
 				icon: 'ios-settings',
 				actionHandler: () => navigation.navigate(SCREENS.Settings),
 			},
 			{
 				label: dictionary.screens.myProfile.logout,
-				icon: 'ios-log-out',
+				icon: 'sign-out',
+				source: ICON_TYPES.OCT,
 				actionHandler: () => {
 					setGlobal({ logout: true });
 					resetNavigationToRoute(NAVIGATION.PreAuth, navigation);

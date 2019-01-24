@@ -2,14 +2,11 @@ import { StyleSheet } from 'react-native';
 
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+export default StyleSheet.create({
 	container: {
 		width: '100%',
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
-	},
-	containerIOS: {
-		flex: 1,
 	},
 	keyboardView: {
 		backgroundColor: Colors.white,
@@ -19,12 +16,11 @@ const style: any = {
 		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(24),
-		paddingTop: Sizes.smartVerticalScale(59),
-		paddingBottom: Sizes.smartVerticalScale(51),
+		marginVertical: Sizes.smartVerticalScale(50),
 	},
-	passwordContainer: {
-		paddingTop: Sizes.smartVerticalScale(16),
-		paddingBottom: Sizes.smartVerticalScale(20),
+	inputContainer: {
+		width: '100%',
+		marginBottom: Sizes.smartVerticalScale(16),
 	},
 	forgotPassword: {
 		marginTop: Sizes.smartVerticalScale(25),
@@ -77,6 +73,4 @@ const style: any = {
 		alignSelf: 'flex-start',
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
-};
-
-export default StyleSheet.create(style);
+});

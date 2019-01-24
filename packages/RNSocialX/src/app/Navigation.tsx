@@ -291,7 +291,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		ChatWithSearch,
+		// ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

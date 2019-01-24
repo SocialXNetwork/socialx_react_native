@@ -16,7 +16,7 @@ interface IHeaderProps {
 	back?: boolean;
 	avatar?: string;
 	onPressBack?: () => void;
-	showProfileOptions?: () => void;
+	onPressAvatar?: () => void;
 }
 
 export const Header: React.SFC<IHeaderProps> = ({
@@ -24,11 +24,11 @@ export const Header: React.SFC<IHeaderProps> = ({
 	left,
 	right,
 	title = '',
-	logo,
 	avatar = '',
+	logo,
 	back,
 	onPressBack,
-	showProfileOptions,
+	onPressAvatar,
 }) => {
 	const displayCenter = center;
 	const displayTitle = title.length > 0 && !center && avatar.length === 0;
@@ -55,7 +55,7 @@ export const Header: React.SFC<IHeaderProps> = ({
 			)}
 			{displayCenter && <View style={styles.center}>{center}</View>}
 			{displayAvatar && (
-				<TouchableOpacity onPress={showProfileOptions} style={styles.avatarContainer}>
+				<TouchableOpacity onPress={onPressAvatar} style={styles.avatarContainer}>
 					<AvatarImage image={avatar} style={styles.avatar} />
 					<Text style={styles.text}>{title.toUpperCase()}</Text>
 				</TouchableOpacity>

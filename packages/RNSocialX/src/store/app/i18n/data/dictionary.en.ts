@@ -39,6 +39,23 @@ export default {
 			'profiles': 'Syncing profiles',
 			'posts': 'Syncing posts',
 		},
+		login: {
+			title: 'Login',
+			welcome: 'Welcome back!',
+			forgot: 'Forgot your password',
+			progress: 'Signing you in',
+			account: "Don't have an account?",
+		},
+		forgotPassword: {
+			title: 'Forgot password',
+			instructions: 'Enter your username to get a new password.',
+		},
+		register: {
+			title: 'Register',
+			progress: 'Signing you up',
+			accept: 'Accept our',
+			terms: 'Terms and Conditions',
+		},
 		createPost: {
 			title: 'Create post',
 		},
@@ -54,6 +71,7 @@ export default {
 			analytics: 'Profile analytics',
 			wallet: 'Wallet',
 			settings: 'Settings',
+			nodes: 'Nodes',
 			logout: 'Logout',
 		},
 		friends: {
@@ -61,19 +79,6 @@ export default {
 		},
 		likes: {
 			title: 'Likes'
-		},
-		login: {
-			title: 'Login',
-			welcome: 'Welcome back!',
-			forgot: 'Forgot your password',
-			progress: 'Signing you in',
-			account: "Don't have an account?",
-		},
-		register: {
-			title: 'Register',
-			progress: 'Signing you up',
-			accept: 'Accept our',
-			terms: 'Terms and Conditions',
 		},
 		settings: {
 			title: 'Settings',
@@ -106,12 +111,6 @@ export default {
 				friends: 'Friends',
 				empty: "You don't have messages.",
 			},
-			conversation: {
-				inputPlaceholder: 'Type something...',
-				conversationAdd: {
-					photo: 'Add a photo/video'
-				}
-			},
 		},
 	},
 	components: {
@@ -133,7 +132,10 @@ export default {
 			cancel: 'Cancel',
 			send: 'Send',
 			view: 'View',
-			viewProfile: 'ViewProfile',
+			resetCode: 'Send reset code',
+			friends: 'Friends',
+			addFriend: 'Add friend',
+			undo: 'Undo',
 		},
 		inputs: {
 			placeholder: {
@@ -142,9 +144,10 @@ export default {
 				password: 'Password',
 				confirm: 'Confirm password',
 				email: 'Email',
-				name: 'Full name',
+				name: 'Name',
 				description: 'Bio',
 				comment: 'Write a comment...',
+				type: 'Type something...',
 			},
 			email: {
 				required: 'Email is required',
@@ -179,6 +182,8 @@ export default {
 				report: 'Report a problem',
 				deletePost: 'Delete post',
 				viewProfile: 'View profile',
+				addMedia: 'Add a photo/video',
+				unfriend: 'Unfriend',
 			},
 			report: {
 				title: 'Report a problem',
@@ -246,9 +251,6 @@ export default {
 	'button.next': 'Next',
 	'button.finalize': 'Finalize',
 	'button.export': 'Export keys to the device',
-	'button.friends': 'Friends',
-	'button.add.friend': 'Add friend',
-	'button.undo': 'Undo',
 	'text.and': 'and',
 	'text.with': 'with',
 	'text.others': 'others',
@@ -261,28 +263,6 @@ export default {
 	'please.wait': 'Please wait',
 	'message.link.not.supported': 'Unsupported link type',
 	'message.media.not.supported': 'Unsupported media type or type detection failed',
-	'login.screen.title': 'LOGIN',
-	'login.welcome.message': 'Welcome back!',
-	'login.username.input': 'Username',
-	'login.password.input': 'Password',
-	'login.login.button': 'LOGIN',
-	'login.forgot.password': 'Forgot your password',
-	'login.no.account.text': "Don't have an account?",
-	'login.signUp.button': 'Sign up',
-	'login.use.unlock.file': 'Or use unlock file',
-	'login.wrong.credentials': 'Wrong username/password',
-	'login.wrong.confirmation.code': 'Wrong confirmation code',
-	'login.progress.message': 'Signing you in',
-	'login.code.confirm.wait': 'Confirming code..',
-	'login.username.required': 'Username is required',
-	'login.password.required': 'Password is required',
-	'forgot.password.screen.title': 'FORGOT PASSWORD',
-	'forgot.password.instructions': 'Enter your username to get a new password.',
-	'forgot.password.username': 'Username',
-	'forgot.password.send.button': 'Send reset code',
-	'forgot.password.requesting': 'Requesting Password Code..',
-	'forgot.password.request.error': 'Something went wrong, ${args[0]}',
-	'forgot.password.username.required': 'Username is required',
 	'terms.and.conditions.screen.title': 'Terms and Conditions',
 	'reset.password.screen.title': 'RESET PASSWORD',
 	'reset.password.description':
@@ -370,7 +350,6 @@ export default {
 	'tab.bar.bottom.photo.picker.title': 'Share a photo',
 	'tab.bar.bottom.photo.picker.use.camera': 'Open camera',
 	'tab.bar.bottom.photo.picker.use.gallery': 'Pick from gallery',
-	'friendship.menu.option.remove': 'Unfriend',
 	'user.avatar.button.label.own.user': 'EDIT PROFILE',
 	'user.avatar.button.label.other.user': 'MESSAGE',
 	'offline.overlay.message': 'Offline. Waiting for connection..',

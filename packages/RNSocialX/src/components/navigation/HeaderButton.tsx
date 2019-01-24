@@ -5,24 +5,22 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles, { defaultColor, HEADER_BUTTON_SIZE } from './HeaderButton.style';
 
 interface IHeaderButtonProps {
-	onPress: () => void;
 	iconName: string;
 	iconSource?: number;
 	iconColor?: string;
 	iconSize?: number;
+	onPress: () => void;
 }
 
 export const HeaderButton: React.SFC<IHeaderButtonProps> = ({
-	onPress,
 	iconName,
 	iconSource,
 	iconColor = defaultColor,
 	iconSize = HEADER_BUTTON_SIZE,
-}) => {
-	return (
-		<TouchableOpacity onPress={onPress}>
-			{iconName && <Icon name={iconName} size={iconSize} color={iconColor} />}
-			{iconSource ? <Image source={iconSource} style={styles.icon} resizeMode="contain" /> : null}
-		</TouchableOpacity>
-	);
-};
+	onPress,
+}) => (
+	<TouchableOpacity onPress={onPress}>
+		{iconName && <Icon name={iconName} size={iconSize} color={iconColor} />}
+		{iconSource ? <Image source={iconSource} style={styles.icon} resizeMode="contain" /> : null}
+	</TouchableOpacity>
+);

@@ -1,24 +1,20 @@
-/**
- * old screen -> screens/LoginScreen/index.tsx
- * TODO list:
- * 1. Decide if we will have a verification step: code sent via SMS or email.
- * 2. (later) Get rid of navigation hacks!
- */
-
 import * as React from 'react';
-import { AsyncStorage, Keyboard } from 'react-native';
+import { AsyncStorage, EmitterSubscription, Keyboard } from 'react-native';
 
-import { NAVIGATION, SCREENS } from '../../environment/consts';
-import { INavigationProps } from '../../types';
-import { LoginScreenView } from './LoginScreen.view';
-
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithLoginEnhancedActions,
 	IWithLoginEnhancedData,
 	WithLogin,
 } from '../../enhancers/screens';
 
-type IProps = INavigationProps & IWithLoginEnhancedData & IWithLoginEnhancedActions;
+import { NAVIGATION, SCREENS } from '../../environment/consts';
+import { INavigationProps } from '../../types';
+import { LoginScreenView } from './LoginScreen.view';
+
+interface IProps extends INavigationProps, IWithLoginEnhancedData, IWithLoginEnhancedActions {
+	onGoBack: () => void;
+}
 
 interface IState {
 	error: boolean;
@@ -29,7 +25,7 @@ class Screen extends React.Component<IProps, IState> {
 		error: false,
 	};
 
-	private keyboardDidShowListener: any;
+	private keyboardDidShowListener: EmitterSubscription | null = null;
 
 	public componentDidMount() {
 		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
@@ -51,17 +47,19 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public componentWillUnmount() {
-		this.keyboardDidShowListener.remove();
+		if (this.keyboardDidShowListener) {
+			this.keyboardDidShowListener.remove();
+		}
 	}
 
 	public render() {
 		return (
 			<LoginScreenView
+				dictionary={this.props.dictionary}
 				onLogin={this.onLoginHandler}
 				onNavigateToPasswordForgot={() => this.safeNavigateToScreen(SCREENS.ForgotPassword)}
 				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
-				onGoBack={this.onGoBackHandler}
-				dictionary={this.props.dictionary}
+				onGoBack={this.props.onGoBack}
 			/>
 		);
 	}
@@ -84,11 +82,6 @@ class Screen extends React.Component<IProps, IState> {
 		this.props.navigation.navigate(screenName);
 	};
 
-	private onGoBackHandler = () => {
-		Keyboard.dismiss();
-		this.props.navigation.goBack(null);
-	};
-
 	private switchActivityIndicator = (state: boolean) => {
 		const { dictionary, setGlobal } = this.props;
 
@@ -102,5 +95,13 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const LoginScreen = (props: INavigationProps) => (
-	<WithLogin>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithLogin>
+	<WithNavigationHandlers navigation={props.navigation}>
+		{(nav) => (
+			<WithLogin>
+				{({ data, actions }) => (
+					<Screen {...props} {...data} {...actions} onGoBack={nav.actions.onGoBack} />
+				)}
+			</WithLogin>
+		)}
+	</WithNavigationHandlers>
 );

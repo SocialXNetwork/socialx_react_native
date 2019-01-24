@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+	Keyboard,
+	RegisteredStyle,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Colors, Sizes } from '../../environment/theme';
@@ -52,6 +60,7 @@ interface IPrimaryTextInputProps {
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
 	persistKeyboard: boolean;
+	style?: RegisteredStyle<ViewStyle>;
 	onSubmitPressed: (event: any) => void;
 	onChangeText: (value: string) => void;
 	onSetFocus: (hasFocus: boolean) => void;
@@ -71,7 +80,7 @@ interface IInputIconProps {
 }
 
 const InputIcon: React.SFC<IInputIconProps> = ({ size, icon, iconColor }) => {
-	let iconHeight = Sizes.smartHorizontalScale(20);
+	let iconHeight = Sizes.smartHorizontalScale(25);
 	let containerSize = styles.iconContainerNormal;
 
 	if (size === InputSizes.Small) {
@@ -132,7 +141,7 @@ export class PrimaryTextInput extends React.Component<
 	IPrimaryTextInputState
 > {
 	public static defaultProps = {
-		width: '100%',
+		width: 0,
 		icon: '',
 		value: '',
 		iconColor: Colors.iron,
@@ -192,6 +201,7 @@ export class PrimaryTextInput extends React.Component<
 			numberOfLines,
 			multiline,
 			value,
+			style,
 			borderColor,
 			borderWidth,
 			persistKeyboard,
@@ -221,12 +231,12 @@ export class PrimaryTextInput extends React.Component<
 			<View
 				style={[styles.container, width ? { width } : {}, disabled ? styles.disabledInput : {}]}
 			>
-				<View style={inputContainerStyles}>
+				<View style={[inputContainerStyles, style]}>
 					{icon !== '' && <InputIcon icon={icon} iconColor={this.state.iconColor} size={size} />}
 					<TextInput
 						allowFontScaling={false}
 						autoFocus={autoFocus}
-						value={value || ''}
+						value={value}
 						onChangeText={onChangeText}
 						onSubmitEditing={(event) => {
 							onSubmitPressed(event);

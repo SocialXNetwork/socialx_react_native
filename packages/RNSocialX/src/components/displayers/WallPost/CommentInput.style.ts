@@ -12,15 +12,17 @@ export default StyleSheet.create({
 	},
 	inputContainer: {
 		borderWidth: Sizes.smartHorizontalScale(1),
-		borderRadius: Sizes.smartHorizontalScale(6),
+		borderRadius: Sizes.smartHorizontalScale(5),
 		borderColor: Colors.dustyGray,
-		width: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
-		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
 		...Platform.select({
 			android: {
 				maxHeight: Sizes.smartVerticalScale(40),
 			},
 		}),
+		paddingHorizontal: Sizes.smartHorizontalScale(10),
+	},
+	animatingInput: {
+		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(80),
 	},
 	avatar: {
 		width: Sizes.smartHorizontalScale(35),
@@ -29,13 +31,12 @@ export default StyleSheet.create({
 		marginRight: Sizes.smartHorizontalScale(10),
 	},
 	send: {
-		flex: 1,
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(30),
-		transform: [{ translateY: 2 }],
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 });

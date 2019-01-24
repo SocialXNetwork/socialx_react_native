@@ -25,10 +25,10 @@ class Screen extends React.Component<IProps> {
 		return (
 			<ConversationScreenView
 				profile={profile}
-				onGoBack={onGoBack}
 				dictionary={dictionary}
 				showProfileOptions={this.showProfileOptionsHandler}
 				showAddOptions={this.showAddOptionsHandler}
+				onGoBack={onGoBack}
 			/>
 		);
 	}
@@ -52,7 +52,7 @@ class Screen extends React.Component<IProps> {
 
 		const items = [
 			{
-				label: dictionary.screens.chat.conversation.conversationAdd.photo,
+				label: dictionary.components.modals.options.addMedia,
 				icon: 'md-photos',
 				actionHandler: () => undefined,
 			},

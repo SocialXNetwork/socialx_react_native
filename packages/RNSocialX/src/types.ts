@@ -9,6 +9,7 @@ import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 import { IAccountCurrencyData } from './components';
 import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environment/consts';
 import { ILocaleDictionary } from './store/app/i18n/Types';
+export { ILocaleDictionary } from './store/app/i18n/Types';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 export { IGlobal } from './store/ui/globals';
@@ -95,6 +96,7 @@ export type INotification = IFriendRequest | IFriendResponse;
 export interface IOptionsMenuItem {
 	label: string;
 	icon: string;
+	source?: string;
 	actionHandler: () => void;
 }
 

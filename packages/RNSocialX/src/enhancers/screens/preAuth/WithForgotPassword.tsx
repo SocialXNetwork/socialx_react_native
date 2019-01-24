@@ -5,20 +5,12 @@
 
 import * as React from 'react';
 
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
-const mock: IWithForgotPasswordEnhancedProps = {
-	data: {},
-	actions: {
-		sendResetCode: (alias: string) => undefined,
-		getText: (value: string, ...args: any[]) => value,
-	},
-};
+export interface IWithForgotPasswordEnhancedData extends IDictionary {}
 
-export interface IWithForgotPasswordEnhancedData {}
-
-export interface IWithForgotPasswordEnhancedActions extends ITranslatedProps {
+export interface IWithForgotPasswordEnhancedActions {
 	sendResetCode: (alias: string) => void;
 }
 
@@ -38,13 +30,12 @@ export class WithForgotPassword extends React.Component<
 	IWithForgotPasswordState
 > {
 	render() {
-		const { children } = this.props;
 		return (
 			<WithI18n>
-				{(i18nProps) =>
-					children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+				{({ dictionary }) =>
+					this.props.children({
+						data: { dictionary },
+						actions: { sendResetCode: () => undefined },
 					})
 				}
 			</WithI18n>

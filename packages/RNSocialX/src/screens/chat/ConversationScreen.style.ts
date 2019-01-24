@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Sizes } from '../../environment/theme';
-
-export const INPUT_SIZE = Sizes.smartHorizontalScale(300);
+import { Colors, Sizes } from '../../environment/theme';
 
 export default StyleSheet.create({
 	container: {
@@ -17,22 +15,17 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		marginBottom: Sizes.smartHorizontalScale(5),
 	},
-	emojiContainer: {
-		marginHorizontal: Sizes.smartHorizontalScale(7.5),
+	input: {
+		borderWidth: Sizes.smartHorizontalScale(1),
+		borderColor: Colors.dustGray,
+		paddingVertical: Sizes.smartHorizontalScale(2),
+		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
-	addContainer: {
-		marginHorizontal: Sizes.smartHorizontalScale(7.5),
+	iconContainer: {
+		marginHorizontal: Sizes.smartHorizontalScale(10),
 	},
-	emojiIcon: {
-		fontSize: Sizes.smartHorizontalScale(25),
-		color: Colors.pink,
-	},
-	addIcon: {
-		fontSize: Sizes.smartHorizontalScale(32),
+	icon: {
+		fontSize: Sizes.smartHorizontalScale(30),
 		color: Colors.pink,
 	},
 });
-
-export const customStyles = {
-	inputBorderColor: Colors.dustGray,
-};

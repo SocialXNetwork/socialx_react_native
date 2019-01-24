@@ -1,8 +1,8 @@
 import { Platform, StyleSheet } from 'react-native';
 
-import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+export default StyleSheet.create({
 	container: {
 		width: '100%',
 		alignItems: 'center',
@@ -106,13 +106,4 @@ const style: any = {
 		fontSize: Sizes.smartHorizontalScale(30),
 		color: Colors.iron,
 	},
-};
-
-export default StyleSheet.create(style);
-
-export const colors = {
-	iron: Colors.iron,
-	paleSky: Colors.paleSky,
-	transparent: Colors.transparent,
-	pink: Colors.pink,
-};
+});

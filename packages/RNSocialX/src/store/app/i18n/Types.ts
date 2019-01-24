@@ -59,6 +59,23 @@ export interface ILocaleDictionary {
 			login: string;
 			register: string;
 		};
+		login: {
+			title: string;
+			welcome: string;
+			forgot: string;
+			progress: string;
+			account: string;
+		};
+		forgotPassword: {
+			title: string;
+			instructions: string;
+		};
+		register: {
+			title: string;
+			progress: string;
+			accept: string;
+			terms: string;
+		};
 		createPost: {
 			title: string;
 		};
@@ -74,6 +91,7 @@ export interface ILocaleDictionary {
 			analytics: string;
 			wallet: string;
 			settings: string;
+			nodes: string;
 			logout: string;
 		};
 		friends: {
@@ -81,19 +99,6 @@ export interface ILocaleDictionary {
 		};
 		likes: {
 			title: string;
-		};
-		login: {
-			title: string;
-			welcome: string;
-			forgot: string;
-			progress: string;
-			account: string;
-		};
-		register: {
-			title: string;
-			progress: string;
-			accept: string;
-			terms: string;
 		};
 		settings: {
 			title: string;
@@ -125,12 +130,6 @@ export interface ILocaleDictionary {
 				friends: string;
 				empty: string;
 			};
-			conversation: {
-				inputPlaceholder: string;
-				conversationAdd: {
-					photo: string;
-				};
-			};
 		};
 	};
 	components: {
@@ -152,6 +151,10 @@ export interface ILocaleDictionary {
 			cancel: string;
 			send: string;
 			view: string;
+			resetCode: string;
+			friends: string;
+			addFriend: string;
+			undo: string;
 		};
 		inputs: {
 			placeholder: {
@@ -163,6 +166,7 @@ export interface ILocaleDictionary {
 				name: string;
 				description: string;
 				comment: string;
+				type: string;
 			};
 			email: {
 				required: string;
@@ -197,6 +201,8 @@ export interface ILocaleDictionary {
 				report: string;
 				deletePost: string;
 				viewProfile: string;
+				addMedia: string;
+				unfriend: string;
 			};
 			report: {
 				title: string;

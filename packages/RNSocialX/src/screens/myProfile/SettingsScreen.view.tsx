@@ -7,18 +7,18 @@ import { string } from 'yup';
 import {
 	AvatarName,
 	AvatarPicker,
-	ButtonSizes,
 	Checkbox,
 	Header,
+	HeaderButton,
 	InputSizes,
-	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
 	TRKeyboardKeys,
 } from '../../components';
+import { Colors } from '../../environment/theme';
 import { ICurrentUser, IDictionary, IOptionsMenuProps } from '../../types';
 
-import styles, { defaultStyles } from './SettingsScreen.style';
+import styles from './SettingsScreen.style';
 const EMAIL_SCHEMA = string().email();
 
 export interface ISettingsData {
@@ -33,16 +33,14 @@ export interface ISettingsData {
 interface ISettingsScreenViewProps extends IDictionary, IOptionsMenuProps {
 	currentUser: ICurrentUser;
 	onSaveChanges: (values: ISettingsData) => void;
-	onEditNodes: () => void;
 	onGoBack: () => void;
 }
 
 export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 	currentUser,
+	showOptionsMenu,
 	onSaveChanges,
 	onGoBack,
-	showOptionsMenu,
-	onEditNodes,
 	dictionary,
 }) => (
 	<Formik
@@ -74,7 +72,16 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 		onSubmit={(values: ISettingsData) => onSaveChanges(values)}
 		render={({ values, errors, handleBlur, handleSubmit, isValid, setFieldValue }) => (
 			<View style={{ flex: 1 }}>
-				{<Header title={dictionary.screens.settings.title} back={true} onPressBack={onGoBack} />}
+				{isValid ? (
+					<Header
+						title={dictionary.screens.settings.title}
+						back={true}
+						right={<HeaderButton iconName="ios-checkmark-circle" onPress={handleSubmit} />}
+						onPressBack={onGoBack}
+					/>
+				) : (
+					<Header title={dictionary.screens.settings.title} back={true} onPressBack={onGoBack} />
+				)}
 				<KeyboardAwareScrollView
 					contentContainerStyle={styles.container}
 					alwaysBounceVertical={false}
@@ -92,26 +99,19 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 						/>
 					</View>
 					<AvatarName fullName={currentUser.fullName} alias={currentUser.alias} />
-					<View style={styles.editNodesButton}>
-						<PrimaryButton
-							label={dictionary.components.buttons.editNodes}
-							size={ButtonSizes.Small}
-							onPress={onEditNodes}
-						/>
-					</View>
 					<View style={[styles.input, styles.firstInput]}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>{dictionary.components.inputs.placeholder.name}</Text>
+								<Text>{dictionary.components.inputs.placeholder.name}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="words"
 									value={values.fullName}
 									placeholder={dictionary.components.inputs.placeholder.name}
-									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
+									placeholderColor={Colors.paleSky}
 									size={InputSizes.Small}
-									borderColor={defaultStyles.userDataInputBorderColor}
+									borderColor={Colors.transparent}
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
 									onChangeText={(value: string) => setFieldValue('fullName', value)}
@@ -124,15 +124,15 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>{dictionary.components.inputs.placeholder.email}</Text>
+								<Text>{dictionary.components.inputs.placeholder.email}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="words"
 									value={values.email}
 									placeholder={dictionary.components.inputs.placeholder.email}
-									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
-									borderColor={defaultStyles.userDataInputBorderColor}
+									placeholderColor={Colors.paleSky}
+									borderColor={Colors.transparent}
 									size={InputSizes.Small}
 									keyboardType={TKeyboardKeys.emailAddress}
 									blurOnSubmit={true}
@@ -147,17 +147,15 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 					<View style={styles.input}>
 						<View style={styles.row}>
 							<View style={{ flex: 1 }}>
-								<Text style={styles.label}>
-									{dictionary.components.inputs.placeholder.description}
-								</Text>
+								<Text>{dictionary.components.inputs.placeholder.description}</Text>
 							</View>
 							<View style={{ flex: 5 }}>
 								<PrimaryTextInput
 									autoCapitalize="sentences"
 									value={values.description}
 									placeholder={dictionary.components.inputs.placeholder.description}
-									placeholderColor={defaultStyles.userDataInputPlaceholderColor}
-									borderColor={defaultStyles.userDataInputBorderColor}
+									placeholderColor={Colors.paleSky}
+									borderColor={Colors.transparent}
 									multiline={true}
 									blurOnSubmit={true}
 									returnKeyType={TRKeyboardKeys.done}
@@ -184,15 +182,6 @@ export const SettingsScreenView: React.SFC<ISettingsScreenViewProps> = ({
 							}
 						/>
 					</View>
-					{isValid && (
-						<View style={styles.button}>
-							<PrimaryButton
-								label={dictionary.components.buttons.saveChanges}
-								size={ButtonSizes.Small}
-								onPress={handleSubmit}
-							/>
-						</View>
-					)}
 				</KeyboardAwareScrollView>
 			</View>
 		)}
