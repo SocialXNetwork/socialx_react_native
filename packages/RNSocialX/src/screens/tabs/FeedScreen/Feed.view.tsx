@@ -67,7 +67,7 @@ export const FeedView: React.SFC<IProps> = ({
 			ListHeaderComponent={
 				<ShareSection avatar={avatar} message={shareMessage} onCreateWallPost={onCreateWallPost} />
 			}
-			ListFooterComponent={<LoadingFooter visible={canLoad} />}
+			ListFooterComponent={<LoadingFooter visible={canLoad && loading} />}
 			ListEmptyComponent={<FeedWithNoPosts loading={loading} getText={getText} />}
 			keyboardShouldPersistTaps="handled"
 			showsVerticalScrollIndicator={false}

@@ -69,6 +69,7 @@
     "react-native-picker": "^4.3.7",
     "react-native-qrcode": "^0.2.7",
     "react-native-randombytes": "^3.5.0",
+    "react-native-screens": "^1.0.0-alpha.22",
     "react-native-smart-splash-screen": "^2.3.5",
     "react-native-snap-carousel": "^3.7.2",
     "react-native-spinkit": "^1.1.1",

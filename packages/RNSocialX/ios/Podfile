@@ -32,8 +32,9 @@ target 'RNSocialX' do
 
   pod 'Picker', :path => '../node_modules/react-native-picker'
 
-
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
   target 'RNSocialXTests' do
     inherit! :search_paths

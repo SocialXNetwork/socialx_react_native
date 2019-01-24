@@ -1,4 +1,3 @@
-import { Root } from 'native-base';
 import React from 'react';
 import { Animated, Easing } from 'react-native';
 import {
@@ -65,7 +64,6 @@ import {
 	WalletActivityScreen,
 } from '../screens';
 
-import { create } from 'domain';
 import { WithI18n } from '../enhancers/connectors/app/WithI18n';
 import { WithNavigationParams } from '../enhancers/connectors/app/WithNavigationParams';
 import { WithNotifications } from '../enhancers/connectors/data/WithNotifications';
@@ -293,7 +291,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		ChatWithSearch,
+		// ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },
@@ -321,7 +319,7 @@ const HomelessNavigator = createStackNavigator(
 	},
 );
 
-const AppStack = createStackNavigator(
+const App = createStackNavigator(
 	{
 		// HomelessScreens: { screen: HomelessNavigator }, // TODO: enable only when adding new screens!
 		PreAuth: { screen: PreAuthStack },
@@ -334,19 +332,19 @@ const AppStack = createStackNavigator(
 	},
 );
 
-const App = createAppContainer(AppStack);
+const Root = createAppContainer(App);
 
 const Navigation = () => (
 	<WithI18n>
 		{({ getText, dictionary }) => (
-			<Root>
+			<React.Fragment>
 				<WithNavigationParams>
 					{({ setNavigationParams }) => (
 						<WithOverlays>
 							{({ showOptionsMenu }) => (
 								<WithNotifications>
 									{({ unread }) => (
-										<App
+										<Root
 											screenProps={{
 												notifications: unread.length,
 												showOptionsMenu,
@@ -392,7 +390,7 @@ const Navigation = () => (
 						</WithOverlays>
 					)}
 				</WithGlobals>
-			</Root>
+			</React.Fragment>
 		)}
 	</WithI18n>
 );

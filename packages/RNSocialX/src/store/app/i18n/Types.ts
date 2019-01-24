@@ -217,7 +217,6 @@ export interface ILocaleDictionary {
 				unlike: string;
 				warning: string;
 				view: string;
-				comment: string;
 				comments: string;
 			};
 			search: {

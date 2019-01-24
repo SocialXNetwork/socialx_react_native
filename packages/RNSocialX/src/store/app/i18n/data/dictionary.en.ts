@@ -198,7 +198,6 @@ export default {
 				unlike: 'Unlike',
 				warning: 'This post may contain offensive material.',
 				view: 'View',
-				comment: 'comment',
 				comments: 'comments',
 			},
 			search: {

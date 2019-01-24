@@ -1,6 +1,7 @@
 import './globals';
 import React from 'react';
 import { AppRegistry } from 'react-native';
+import { useScreens } from 'react-native-screens';
 
 import { App } from './src/app';
 import StorybookUI from './storybook';
@@ -8,6 +9,7 @@ import StorybookUI from './storybook';
 import { name as appName } from './app.json';
 
 // import { RUN_STORYBOOK } from 'react-native-dotenv';
+useScreens();
 AppRegistry.registerComponent(appName, () => App);
 
 // if (__DEV__ && RUN_STORYBOOK === 'true') {
