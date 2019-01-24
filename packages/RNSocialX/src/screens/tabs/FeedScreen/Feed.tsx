@@ -59,7 +59,7 @@ export class Feed extends React.Component<IProps, IState> {
 			refreshing,
 			loading,
 			navigation,
-			getText,
+			dictionary,
 		} = this.props;
 
 		return (
@@ -78,7 +78,7 @@ export class Feed extends React.Component<IProps, IState> {
 				onCreateWallPost={this.onCreateWallPostHandler}
 				onCommentInputPress={this.onCommentInputPressHandler}
 				navigation={navigation}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		);
 	}

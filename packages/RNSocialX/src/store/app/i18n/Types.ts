@@ -114,6 +114,16 @@ export interface ILocaleDictionary {
 			places: string;
 			soon: string;
 		};
+		feed: {
+			global: string;
+			friends: string;
+			empty: string;
+		};
+		messages: {
+			messages: string;
+			friends: string;
+			empty: string;
+		};
 	};
 	components: {
 		buttons: {

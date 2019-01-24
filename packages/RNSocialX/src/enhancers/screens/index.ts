@@ -34,6 +34,11 @@ export {
 	IWithConversationEnhancedActions,
 	IWithConversationEnhancedData,
 } from './chat/WithConversation';
+export {
+	WithMessages,
+	IWithMessagesEnhancedActions,
+	IWithMessagesEnhancedData,
+} from './chat/WithMessages';
 
 export { WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData } from './intro/WithIntro';
 

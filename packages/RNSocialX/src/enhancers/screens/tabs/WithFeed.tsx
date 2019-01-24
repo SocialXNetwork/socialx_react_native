@@ -6,7 +6,7 @@
 import * as React from 'react';
 
 import { FEED_TYPES } from '../../../environment/consts';
-import { ICurrentUser, INavigationParamsActions, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IDictionary, INavigationParamsActions } from '../../../types';
 import { getActivity } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
@@ -16,7 +16,7 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser } from '../../intermediary';
 
-export interface IWithFeedEnhancedData {
+export interface IWithFeedEnhancedData extends IDictionary {
 	currentUser: ICurrentUser;
 	postIds: string[];
 	refreshing: boolean;
@@ -24,7 +24,7 @@ export interface IWithFeedEnhancedData {
 	canLoad: boolean;
 }
 
-export interface IWithFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
+export interface IWithFeedEnhancedActions extends INavigationParamsActions {
 	loadMorePosts: () => void;
 	refreshFeed: () => void;
 }
@@ -43,11 +43,9 @@ interface IWithFeedState {}
 
 export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 	render() {
-		const { type } = this.props;
-
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithNavigationParams>
 						{({ setNavigationParams }) => (
 							<WithActivities>
@@ -63,7 +61,7 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 										}) => (
 											<WithCurrentUser>
 												{({ currentUser }) => {
-													if (type === FEED_TYPES.GLOBAL) {
+													if (this.props.type === FEED_TYPES.GLOBAL) {
 														return this.props.children({
 															data: {
 																currentUser,
@@ -74,12 +72,12 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 																	activities,
 																	ActionTypes.REFRESH_GLOBAL_POSTS,
 																),
+																dictionary,
 															},
 															actions: {
 																loadMorePosts,
 																refreshFeed: refreshGlobalPosts,
 																setNavigationParams,
-																getText,
 															},
 														});
 													} else {
@@ -96,12 +94,12 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 																	activities,
 																	ActionTypes.REFRESH_FRIENDS_POSTS,
 																),
+																dictionary,
 															},
 															actions: {
 																loadMorePosts: loadMoreFriendsPosts,
 																refreshFeed: refreshFriendsPosts,
 																setNavigationParams,
-																getText,
 															},
 														});
 													}

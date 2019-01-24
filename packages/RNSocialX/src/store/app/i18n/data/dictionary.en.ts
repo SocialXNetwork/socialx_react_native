@@ -94,6 +94,16 @@ export default {
 			tags: 'Tags',
 			places: 'Places',
 			soon: 'Stay close, this feature is coming soon!',
+		},
+		feed: {
+			global: 'Share with the world what you think',
+			friends: 'Share with your friends what you think',
+			empty: 'Your feed is empty. Create your first post!',
+		},
+		messages: {
+			messages: 'Messages',
+			friends: 'Friends',
+			empty: "You don't have messages.",
 		}
 	},
 	components: {
@@ -368,9 +378,6 @@ export default {
 	'media.viewer.screen.like.button': 'Like',
 	'media.viewer.screen.comment.button': 'Comment',
 	'notifications.screen.title': 'ACTIVITY',
-	'feed.screen.no.posts': 'Your feed is empty. Create your first post!',
-	'feed.screen.no.posts.create': 'Create a post',
-	'feed.screen.suggestions': 'Sugggestions for you',
 	'wallet.account.title': 'Wallet account',
 	'wallet.account.input.placeholder': 'Account name',
 	'wallet.account.input.label': 'Unique blockchain account name',

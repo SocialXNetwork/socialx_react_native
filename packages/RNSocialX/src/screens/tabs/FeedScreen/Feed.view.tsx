@@ -8,11 +8,11 @@ import {
 	ShareSection,
 	WallPost,
 } from '../../../components';
-import { INavigationProps, ITranslatedProps } from '../../../types';
+import { IDictionary, INavigationProps } from '../../../types';
 
 import styles from './Feed.style';
 
-interface IProps extends INavigationProps, ITranslatedProps {
+interface IProps extends INavigationProps, IDictionary {
 	avatar: string;
 	postIds: string[];
 	refreshing: boolean;
@@ -43,7 +43,7 @@ export const FeedView: React.SFC<IProps> = ({
 	onCreateWallPost,
 	onCommentInputPress,
 	navigation,
-	getText,
+	dictionary,
 }) => (
 	<View ref={postContainerRef} style={styles.container}>
 		<MediaOverlay navigation={navigation} />
@@ -68,7 +68,7 @@ export const FeedView: React.SFC<IProps> = ({
 				<ShareSection avatar={avatar} message={shareMessage} onCreateWallPost={onCreateWallPost} />
 			}
 			ListFooterComponent={<LoadingFooter visible={canLoad && loading} />}
-			ListEmptyComponent={<FeedWithNoPosts loading={loading} getText={getText} />}
+			ListEmptyComponent={<FeedWithNoPosts loading={loading} dictionary={dictionary} />}
 			keyboardShouldPersistTaps="handled"
 			showsVerticalScrollIndicator={false}
 			onRefresh={onRefresh}

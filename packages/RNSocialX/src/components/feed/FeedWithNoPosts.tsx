@@ -3,18 +3,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Colors, Fonts, Sizes } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 
-interface IFeedWithNoPostsProps extends ITranslatedProps {
+interface IFeedWithNoPostsProps extends IDictionary {
 	loading: boolean;
 }
 
-export const FeedWithNoPosts: React.SFC<IFeedWithNoPostsProps> = ({ loading, getText }) => {
+export const FeedWithNoPosts: React.SFC<IFeedWithNoPostsProps> = ({ loading, dictionary }) => {
 	if (!loading) {
 		return (
 			<View style={styles.container}>
 				<Icon name="md-film" size={Sizes.smartHorizontalScale(120)} color={Colors.geyser} />
-				<Text style={styles.text}>{getText('feed.screen.no.posts')}</Text>
+				<Text style={styles.text}>{dictionary.screens.feed.empty}</Text>
 			</View>
 		);
 	}

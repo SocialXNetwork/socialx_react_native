@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, View } from 'react-native';
 
 import { InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../';
 import { Colors } from '../../environment/theme';
@@ -30,7 +30,7 @@ export const SearchInput: React.SFC<ISearchInputProps> = ({
 		borderColor={Colors.transparent}
 		iconColor={Colors.cadetBlue}
 		returnKeyType={TRKeyboardKeys.done}
-		canCancel={true}
+		canCancel={cancel}
 		persistCancel={cancel}
 		cancelButtonTextColor={Colors.paleSky}
 		autoFocus={autoFocus}

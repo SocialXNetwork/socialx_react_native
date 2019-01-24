@@ -9,6 +9,7 @@ interface IUserEntriesProps {
 	chat?: boolean;
 	removable?: boolean;
 	scroll?: boolean;
+	emptyComponent?: JSX.Element;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
 }
@@ -26,6 +27,7 @@ export class UserEntries extends React.Component<IUserEntriesProps> {
 			removable = false,
 			scroll = true,
 			onEntryPress,
+			emptyComponent,
 			onRemove = () => undefined,
 		} = this.props;
 
@@ -47,6 +49,7 @@ export class UserEntries extends React.Component<IUserEntriesProps> {
 					keyExtractor={(item) => item}
 					showsVerticalScrollIndicator={false}
 					scrollEnabled={scroll}
+					ListEmptyComponent={emptyComponent}
 				/>
 			</React.Fragment>
 		);

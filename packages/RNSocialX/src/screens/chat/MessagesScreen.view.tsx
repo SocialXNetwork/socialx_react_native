@@ -2,12 +2,12 @@ import { Tab, Tabs } from 'native-base';
 import * as React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
-import { SearchHeader, UserEntries } from '../../components';
-import { INavigationProps } from '../../types';
+import { NoContent, SearchHeader, UserEntries } from '../../components';
+import { IDictionary, INavigationProps } from '../../types';
 
 import styles from './MessagesScreen.style';
 
-interface IProps extends INavigationProps {
+interface IProps extends INavigationProps, IDictionary {
 	messages: string[];
 	people: string[];
 	onRemoveMessage: (alias: string) => void;
@@ -18,6 +18,7 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 	messages,
 	people,
 	navigation,
+	dictionary,
 	onRemoveMessage,
 	onEntryPress,
 }) => (
@@ -29,13 +30,14 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 				activeTabStyle={styles.tab as ViewStyle}
 				textStyle={styles.title as TextStyle}
 				activeTextStyle={[styles.title, styles.active] as TextStyle}
-				heading="Messages"
+				heading={dictionary.screens.messages.messages}
 			>
 				<View style={styles.entries}>
 					<UserEntries
 						aliases={messages}
 						chat={true}
 						removable={true}
+						emptyComponent={<NoContent messages={true} dictionary={dictionary} />}
 						onEntryPress={onEntryPress}
 						onRemove={onRemoveMessage}
 					/>
@@ -46,7 +48,7 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 				activeTabStyle={styles.tab as ViewStyle}
 				textStyle={styles.title as TextStyle}
 				activeTextStyle={[styles.title, styles.active] as TextStyle}
-				heading="Friends"
+				heading={dictionary.screens.messages.friends}
 			>
 				<View style={styles.entries}>
 					<UserEntries aliases={people} onEntryPress={onEntryPress} />

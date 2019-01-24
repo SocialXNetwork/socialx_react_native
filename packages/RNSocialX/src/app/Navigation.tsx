@@ -9,7 +9,6 @@ import {
 	NavigationScreenProps,
 	TransitionConfig,
 } from 'react-navigation';
-import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 
 import {
 	ActivityIndicator,
@@ -86,8 +85,8 @@ const slideFromLeftTransition = (): TransitionConfig => ({
 		easing: Easing.out(Easing.poly(4)),
 		timing: Animated.timing,
 	},
-	screenInterpolator: (sceneProps: NavigationSceneRendererProps) => {
-		const { layout, position, scene } = sceneProps;
+	screenInterpolator: (props: NavigationSceneRendererProps) => {
+		const { layout, position, scene } = props;
 
 		const thisSceneIndex = scene.index;
 		const width = layout.initWidth;
@@ -102,8 +101,8 @@ const slideFromLeftTransition = (): TransitionConfig => ({
 });
 
 const fadeIn = (): TransitionConfig => ({
-	screenInterpolator: (sceneProps: NavigationSceneRendererProps) => {
-		const { position, scene } = sceneProps;
+	screenInterpolator: (props: NavigationSceneRendererProps) => {
+		const { position, scene } = props;
 
 		const sceneIndex = scene.index;
 
@@ -187,56 +186,43 @@ const SearchStack = createStackNavigator(
 	},
 );
 
-// const ChatStack = createStackNavigator(
-// 	{
-// 		Messages: { screen: MessagesScreen },
-// 		Conversation: { screen: ConversationScreen },
-// 	},
-// 	{
-// 		headerMode: 'none',
-// 		navigationOptions: {
-// 			gesturesEnabled: false,
-// 		},
-// 	},
-// );
-
-// const ChatSearchStack = createStackNavigator(
-// 	{
-// 		ChatSearch: { screen: ChatSearchScreen },
-// 		Conversation: { screen: ConversationScreen },
-// 	},
-// 	{
-// 		headerMode: 'none',
-// 		navigationOptions: {
-// 			gesturesEnabled: false,
-// 		},
-// 	},
-// );
-
-// const ChatWithSearch = createStackNavigator(
-// 	{
-// 		ChatStack,
-// 		ChatSearchStack,
-// 	},
-// 	{
-// 		headerMode: 'none',
-// 		navigationOptions: {
-// 			gesturesEnabled: false,
-// 		},
-// 		transitionConfig: fadeIn,
-// 	},
-// );
-
-const ChatWithSearch = createFluidNavigator(
+const ChatStack = createStackNavigator(
 	{
 		Messages: { screen: MessagesScreen },
+		Conversation: { screen: ConversationScreen },
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false,
+		},
+	},
+);
+
+const ChatSearchStack = createStackNavigator(
+	{
 		ChatSearch: { screen: ChatSearchScreen },
 		Conversation: { screen: ConversationScreen },
 	},
 	{
+		headerMode: 'none',
 		navigationOptions: {
 			gesturesEnabled: false,
 		},
+	},
+);
+
+const ChatWithSearch = createStackNavigator(
+	{
+		ChatStack,
+		ChatSearchStack,
+	},
+	{
+		headerMode: 'none',
+		navigationOptions: {
+			gesturesEnabled: false,
+		},
+		transitionConfig: fadeIn,
 	},
 );
 
@@ -305,7 +291,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		// ChatWithSearch,
+		ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

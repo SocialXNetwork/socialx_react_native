@@ -21,13 +21,15 @@ export const SuggestedSearches: React.SFC<ISuggestedProps> = ({
 	if (suggestions && suggestions.length > 0) {
 		return (
 			<View style={styles.container}>
-				<Text style={styles.title}>{dictionary.components.displayers.search.suggested}</Text>
-				<UserEntries
-					aliases={suggestions}
-					friends={friends}
-					scroll={false}
-					onEntryPress={onResultPress}
-				/>
+				<React.Fragment>
+					<Text style={styles.title}>{dictionary.components.displayers.search.suggested}</Text>
+					<UserEntries
+						aliases={suggestions}
+						friends={friends}
+						scroll={false}
+						onEntryPress={onResultPress}
+					/>
+				</React.Fragment>
 			</View>
 		);
 	}
