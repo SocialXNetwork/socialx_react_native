@@ -1,17 +1,20 @@
 import * as React from 'react';
 
 import { SCREENS } from '../../../environment/consts';
-import { IDictionary, IProfile } from '../../../types';
+import { IDictionary, IOptionsMenuProps, IProfile } from '../../../types';
 
+import { IModalOverlay } from '../../../store/ui/overlays';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
 import { WithProfiles } from '../../connectors/data/WithProfiles';
+import { WithOverlays } from '../../connectors/ui/WithOverlays';
 
 export interface IWithConversationEnhancedData extends IDictionary {
 	profile: IProfile;
+	modal: IModalOverlay;
 }
 
-export interface IWithConversationEnhancedActions {}
+export interface IWithConversationEnhancedActions extends IOptionsMenuProps {}
 
 interface IWithConversationEnhancedProps {
 	data: IWithConversationEnhancedData;
@@ -32,23 +35,30 @@ export class WithConversation extends React.Component<
 		return (
 			<WithI18n>
 				{({ dictionary }) => (
-					<WithNavigationParams>
-						{({ navigationParams }) => (
-							<WithProfiles>
-								{({ profiles }) => {
-									const { alias } = navigationParams[SCREENS.Conversation];
+					<WithOverlays>
+						{({ modal, showOptionsMenu }) => (
+							<WithNavigationParams>
+								{({ navigationParams }) => (
+									<WithProfiles>
+										{({ profiles }) => {
+											const { alias } = navigationParams[SCREENS.Conversation];
 
-									return this.props.children({
-										data: {
-											profile: profiles[alias],
-											dictionary,
-										},
-										actions: {},
-									});
-								}}
-							</WithProfiles>
+											return this.props.children({
+												data: {
+													profile: profiles[alias],
+													dictionary,
+													modal,
+												},
+												actions: {
+													showOptionsMenu,
+												},
+											});
+										}}
+									</WithProfiles>
+								)}
+							</WithNavigationParams>
 						)}
-					</WithNavigationParams>
+					</WithOverlays>
 				)}
 			</WithI18n>
 		);

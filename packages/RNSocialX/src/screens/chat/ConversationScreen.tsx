@@ -1,26 +1,80 @@
 import * as React from 'react';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
-import { IWithConversationEnhancedData, WithConversation } from '../../enhancers/screens';
+import {
+	IWithConversationEnhancedActions,
+	IWithConversationEnhancedData,
+	WithConversation,
+} from '../../enhancers/screens';
 
 import { INavigationProps } from '../../types';
 import { ConversationScreenView } from './ConversationScreen.view';
 
-interface IProps extends INavigationProps, IWithConversationEnhancedData {
+interface IProps
+	extends INavigationProps,
+		IWithConversationEnhancedData,
+		IWithConversationEnhancedActions {
 	onGoBack: () => void;
+	onViewUserProfile: (alias: string) => void;
 }
 
 class Screen extends React.Component<IProps> {
 	public render() {
-		return <ConversationScreenView profile={this.props.profile} onGoBack={this.props.onGoBack} />;
+		const { profile, onGoBack, dictionary } = this.props;
+
+		return (
+			<ConversationScreenView
+				profile={profile}
+				onGoBack={onGoBack}
+				dictionary={dictionary}
+				showProfileOptions={this.showProfileOptionsHandler}
+				showAddOptions={this.showAddOptionsHandler}
+			/>
+		);
 	}
+
+	public showProfileOptionsHandler = () => {
+		const { showOptionsMenu, dictionary, profile, onViewUserProfile } = this.props;
+
+		const items = [
+			{
+				label: dictionary.components.modals.options.viewProfile,
+				icon: 'ios-person',
+				actionHandler: () => onViewUserProfile(profile.alias),
+			},
+		];
+
+		showOptionsMenu(items);
+	};
+
+	public showAddOptionsHandler = () => {
+		const { showOptionsMenu, dictionary } = this.props;
+
+		const items = [
+			{
+				label: dictionary.screens.chat.conversation.conversationAdd.photo,
+				icon: 'md-photos',
+				actionHandler: () => undefined,
+			},
+		];
+
+		showOptionsMenu(items);
+	};
 }
 
 export const ConversationScreen = (props: INavigationProps) => (
 	<WithNavigationHandlers navigation={props.navigation}>
 		{({ actions }) => (
 			<WithConversation>
-				{(conv) => <Screen {...props} {...conv.data} onGoBack={actions.onGoBack} />}
+				{(conv) => (
+					<Screen
+						{...props}
+						{...conv.data}
+						{...conv.actions}
+						onGoBack={actions.onGoBack}
+						onViewUserProfile={actions.onViewUserProfile}
+					/>
+				)}
 			</WithConversation>
 		)}
 	</WithNavigationHandlers>

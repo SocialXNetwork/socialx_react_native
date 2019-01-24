@@ -30,7 +30,7 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 				activeTabStyle={styles.tab as ViewStyle}
 				textStyle={styles.title as TextStyle}
 				activeTextStyle={[styles.title, styles.active] as TextStyle}
-				heading={dictionary.screens.messages.messages}
+				heading={dictionary.screens.chat.messages.messages}
 			>
 				<View style={styles.entries}>
 					<UserEntries
@@ -48,7 +48,7 @@ export const MessagesScreenView: React.SFC<IProps> = ({
 				activeTabStyle={styles.tab as ViewStyle}
 				textStyle={styles.title as TextStyle}
 				activeTextStyle={[styles.title, styles.active] as TextStyle}
-				heading={dictionary.screens.messages.friends}
+				heading={dictionary.screens.chat.messages.friends}
 			>
 				<View style={styles.entries}>
 					<UserEntries aliases={people} onEntryPress={onEntryPress} />

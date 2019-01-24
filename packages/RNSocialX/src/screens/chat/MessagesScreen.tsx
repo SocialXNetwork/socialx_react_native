@@ -6,7 +6,7 @@ import { IWithMessagesEnhancedData, WithMessages } from '../../enhancers/screens
 import { INavigationProps } from '../../types';
 import { MessagesScreenView } from './MessagesScreen.view';
 
-const messages: string[] = [];
+const messages: string[] = ['jaakee'];
 const people: string[] = ['letsgheek', 'Philip', 'will2k'];
 
 interface IProps extends INavigationProps, IWithMessagesEnhancedData {

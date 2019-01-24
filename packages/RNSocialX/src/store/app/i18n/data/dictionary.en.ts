@@ -100,11 +100,19 @@ export default {
 			friends: 'Share with your friends what you think',
 			empty: 'Your feed is empty. Create your first post!',
 		},
-		messages: {
-			messages: 'Messages',
-			friends: 'Friends',
-			empty: "You don't have messages.",
-		}
+		chat: {
+			messages: {
+				messages: 'Messages',
+				friends: 'Friends',
+				empty: "You don't have messages.",
+			},
+			conversation: {
+				inputPlaceholder: 'Type something...',
+				conversationAdd: {
+					photo: 'Add a photo/video'
+				}
+			},
+		},
 	},
 	components: {
 		buttons: {
@@ -125,6 +133,7 @@ export default {
 			cancel: 'Cancel',
 			send: 'Send',
 			view: 'View',
+			viewProfile: 'ViewProfile',
 		},
 		inputs: {
 			placeholder: {
@@ -169,6 +178,7 @@ export default {
 				block: 'Block',
 				report: 'Report a problem',
 				deletePost: 'Delete post',
+				viewProfile: 'View profile',
 			},
 			report: {
 				title: 'Report a problem',

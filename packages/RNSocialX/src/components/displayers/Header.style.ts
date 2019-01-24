@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
+const AVATAR_SIZE = Sizes.smartHorizontalScale(30);
+
 export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
@@ -21,6 +23,19 @@ export default StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'flex-end',
+	},
+	avatarContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		// marginLeft: Sizes.smartHorizontalScale(10),
+	},
+	avatar: {
+		width: AVATAR_SIZE,
+		height: AVATAR_SIZE,
+		borderRadius: AVATAR_SIZE / 2,
+		marginRight: Sizes.smartHorizontalScale(10),
 	},
 	text: {
 		...Fonts.centuryGothic,

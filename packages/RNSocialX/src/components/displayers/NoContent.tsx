@@ -40,7 +40,7 @@ export const NoContent: React.SFC<INoContentProps> = ({
 		{messages && (
 			<React.Fragment>
 				<Ionicon name="ios-chatboxes" style={styles.icon} />
-				<Text style={styles.text}>{dictionary.screens.messages.empty}</Text>
+				<Text style={styles.text}>{dictionary.screens.chat.messages.empty}</Text>
 			</React.Fragment>
 		)}
 	</View>

@@ -13,6 +13,7 @@ import styles from './GenericModal.style';
 
 interface IGenericModalProps {
 	onDeletePress?: (alias: string) => void;
+	onViewUserProfile?: (alias: string) => void;
 }
 
 interface IProps

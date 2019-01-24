@@ -119,10 +119,18 @@ export interface ILocaleDictionary {
 			friends: string;
 			empty: string;
 		};
-		messages: {
-			messages: string;
-			friends: string;
-			empty: string;
+		chat: {
+			messages: {
+				messages: string;
+				friends: string;
+				empty: string;
+			};
+			conversation: {
+				inputPlaceholder: string;
+				conversationAdd: {
+					photo: string;
+				};
+			};
 		};
 	};
 	components: {
@@ -188,6 +196,7 @@ export interface ILocaleDictionary {
 				block: string;
 				report: string;
 				deletePost: string;
+				viewProfile: string;
 			};
 			report: {
 				title: string;
