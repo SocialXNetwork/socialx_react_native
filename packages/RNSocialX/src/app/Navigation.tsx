@@ -9,6 +9,7 @@ import {
 	NavigationScreenProps,
 	TransitionConfig,
 } from 'react-navigation';
+import { createFluidNavigator } from 'react-navigation-fluid-transitions';
 
 import {
 	ActivityIndicator,
@@ -186,43 +187,56 @@ const SearchStack = createStackNavigator(
 	},
 );
 
-const ChatStack = createStackNavigator(
+// const ChatStack = createStackNavigator(
+// 	{
+// 		Messages: { screen: MessagesScreen },
+// 		Conversation: { screen: ConversationScreen },
+// 	},
+// 	{
+// 		headerMode: 'none',
+// 		navigationOptions: {
+// 			gesturesEnabled: false,
+// 		},
+// 	},
+// );
+
+// const ChatSearchStack = createStackNavigator(
+// 	{
+// 		ChatSearch: { screen: ChatSearchScreen },
+// 		Conversation: { screen: ConversationScreen },
+// 	},
+// 	{
+// 		headerMode: 'none',
+// 		navigationOptions: {
+// 			gesturesEnabled: false,
+// 		},
+// 	},
+// );
+
+// const ChatWithSearch = createStackNavigator(
+// 	{
+// 		ChatStack,
+// 		ChatSearchStack,
+// 	},
+// 	{
+// 		headerMode: 'none',
+// 		navigationOptions: {
+// 			gesturesEnabled: false,
+// 		},
+// 		transitionConfig: fadeIn,
+// 	},
+// );
+
+const ChatWithSearch = createFluidNavigator(
 	{
 		Messages: { screen: MessagesScreen },
-		Conversation: { screen: ConversationScreen },
-	},
-	{
-		headerMode: 'none',
-		navigationOptions: {
-			gesturesEnabled: false,
-		},
-	},
-);
-
-const ChatSearchStack = createStackNavigator(
-	{
 		ChatSearch: { screen: ChatSearchScreen },
 		Conversation: { screen: ConversationScreen },
 	},
 	{
-		headerMode: 'none',
 		navigationOptions: {
 			gesturesEnabled: false,
 		},
-	},
-);
-
-const ChatWithSearch = createStackNavigator(
-	{
-		ChatStack,
-		ChatSearchStack,
-	},
-	{
-		headerMode: 'none',
-		navigationOptions: {
-			gesturesEnabled: false,
-		},
-		transitionConfig: fadeIn,
 	},
 );
 
@@ -282,7 +296,7 @@ const HomeStack = createStackNavigator(
 		Comments: { screen: CommentsScreen },
 		Likes: { screen: LikesScreen },
 		FriendsList: { screen: FriendsListScreen },
-		// Chat: ChatWithSearch,
+		Chat: ChatWithSearch,
 	},
 	{
 		headerMode: 'none',

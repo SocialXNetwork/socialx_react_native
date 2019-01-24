@@ -42,8 +42,8 @@ export const ChatSearchScreenView: React.SFC<IProps> = ({
 			suggestions={suggestions}
 			searching={searching}
 			friends={false}
-			onResultPress={onResultPress}
 			dictionary={dictionary}
+			onResultPress={onResultPress}
 		/>
 	</View>
 );

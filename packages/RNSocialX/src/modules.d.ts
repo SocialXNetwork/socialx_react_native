@@ -16,6 +16,8 @@ declare module 'react-native-app-intro-slider';
 
 declare module 'react-native-mime-types';
 
+declare module 'react-navigation-fluid-transitions';
+
 declare module '*.json' {
 	const value: any;
 	export default value;
