@@ -10,7 +10,6 @@ export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
 export { CommentCard, CommentLikes } from './displayers/CommentCard';
-export { Header } from './displayers/Header';
 export { HeartAnimation } from './displayers/HeartAnimation';
 export { IntroFirstSlide } from './displayers/IntroFirstSlide';
 export { IntroGenericSlide } from './displayers/IntroGenericSlide';
@@ -45,6 +44,7 @@ export { TransactionItem } from './displayers/TransactionItem';
 export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
 export { Container as ReferralContainer } from './displayers/referral/Container';
 export { Row as ReferralRow } from './displayers/referral/Row';
+export { MessageList } from './displayers/chat/MessageList';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';
@@ -91,6 +91,7 @@ export { TagFriendsModal } from './modals/TagFriendsModal';
 export { TransparentOverlay } from './modals/TransparentOverlay';
 export { WalletModal } from './modals/WalletModal';
 
+export { Header } from './navigation/Header';
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';
 export { TabIcon } from './navigation/TabIcon';

@@ -26,7 +26,6 @@ export const Colors = {
 	iron2: '#D6D9DE',
 	rhino: '#273851',
 	mercury: '#E5E5E5',
-	alabaster: '#f7f7f7',
 	green: '#43a324',
 	geyser: '#D2DAE1',
 	cadetBlue: '#A1B5C2',
@@ -40,14 +39,15 @@ export const Colors = {
 	tundora: '#4A4A4A',
 	ceriseRed: '#E0295A',
 	dustGray: '#979797',
-	gallery: '#efefef',
 	monza: '#D0021B',
 	blueMarguerite: '#6162C7',
 	amethyst: '#9863D3',
 	blueGem: '#4813A0',
-	wildSand: '#F6F6F6',
-	gray: '#808080',
 	charade: '#2E333D',
+	alabaster: '#F7F7F7',
+	wildSand: '#F6F6F6',
+	gallery: '#EFEFEF',
+	gray: '#808080',
 };
 
 export const colorWithAlpha = (color: string, alpha: number) => {

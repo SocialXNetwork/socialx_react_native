@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { ImageStyle, StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const BADGE_HEIGHT = Sizes.smartHorizontalScale(18);
 const ICON_SIZE = Sizes.smartHorizontalScale(25);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		width: '20%',
 		justifyContent: 'center',
@@ -30,6 +30,4 @@ const styles: any = {
 		top: -5,
 		left: 7.5,
 	},
-};
-
-export default StyleSheet.create(styles);
+});

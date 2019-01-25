@@ -48,9 +48,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		{feed && (
 			<React.Fragment>
 				<AvatarImage image={avatar} style={styles.avatar} />
-				<Animated.View
-					style={[styles.inputContainer, styles.animatingInput, { width: animationValues.width }]}
-				>
+				<Animated.View style={[styles.animatingInput, { width: animationValues.width }]}>
 					<PrimaryTextInput
 						borderWidth={0}
 						size={InputSizes.Small}
@@ -60,12 +58,12 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						autoFocus={autoFocus}
 						returnKeyType={TRKeyboardKeys.send}
 						blurOnSubmit={true}
-						multiline={true}
 						disabled={disabled}
 						onBlur={onCommentInputBlur}
 						onSetFocus={onCommentInputPress}
 						onChangeText={onCommentInputChange}
 						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						style={styles.input}
 					/>
 				</Animated.View>
 				<Animated.View style={[styles.send, { transform: [{ translateX: animationValues.send }] }]}>
@@ -87,7 +85,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		)}
 		{!feed && (
 			<React.Fragment>
-				<View style={[styles.inputContainer, { flex: 1 }]}>
+				<View style={{ flex: 1 }}>
 					<PrimaryTextInput
 						ref={commentInputRef}
 						borderWidth={0}
@@ -102,6 +100,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						disabled={disabled}
 						onChangeText={onCommentInputChange}
 						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						style={styles.input}
 					/>
 				</View>
 				<View style={styles.send}>

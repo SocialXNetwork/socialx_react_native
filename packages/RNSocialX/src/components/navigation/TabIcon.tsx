@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { IMAGE_PICKER_TYPES, SCREENS, TABS } from '../../environment/consts';
@@ -39,7 +39,7 @@ export class TabIcon extends React.Component<ITabIconProps> {
 					<Image
 						source={focused ? Icons.iconTabBarHomeSelected : Icons.iconTabBarHome}
 						resizeMode="contain"
-						style={styles.icon}
+						style={styles.icon as ImageStyle}
 					/>
 				);
 				break;
@@ -48,7 +48,7 @@ export class TabIcon extends React.Component<ITabIconProps> {
 					<Image
 						source={focused ? Icons.iconTabBarSearchSelected : Icons.iconTabBarSearch}
 						resizeMode="contain"
-						style={styles.icon}
+						style={styles.icon as ImageStyle}
 					/>
 				);
 				break;
@@ -60,7 +60,7 @@ export class TabIcon extends React.Component<ITabIconProps> {
 								focused ? Icons.iconTabBarNotificationsSelected : Icons.iconTabBarNotifications
 							}
 							resizeMode="contain"
-							style={styles.icon}
+							style={styles.icon as ImageStyle}
 						/>
 						{notifications > 0 ? (
 							<View style={styles.background}>
@@ -77,14 +77,18 @@ export class TabIcon extends React.Component<ITabIconProps> {
 					<Image
 						source={focused ? Icons.iconTabBarProfileSelected : Icons.iconTabBarProfile}
 						resizeMode="contain"
-						style={styles.icon}
+						style={styles.icon as ImageStyle}
 					/>
 				);
 				break;
 			default:
 				icon = (
 					<TouchableOpacity activeOpacity={1} onPress={this.showPhotoOptionsMenu}>
-						<Image source={Icons.iconTabBarPhoto} resizeMode="contain" style={styles.icon} />
+						<Image
+							source={Icons.iconTabBarPhoto}
+							resizeMode="contain"
+							style={styles.icon as ImageStyle}
+						/>
 					</TouchableOpacity>
 				);
 				break;

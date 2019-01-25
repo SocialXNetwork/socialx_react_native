@@ -115,6 +115,13 @@ const fadeIn = (): TransitionConfig => ({
 	},
 });
 
+const commonScreens = {
+	UserProfile: { screen: UserProfileScreen },
+	Comments: { screen: CommentsScreen },
+	Likes: { screen: LikesScreen },
+	FriendsList: { screen: FriendsListScreen },
+};
+
 const MyProfileStack = createStackNavigator(
 	{
 		MyProfile: { screen: MyProfileScreen },
@@ -188,8 +195,9 @@ const SearchStack = createStackNavigator(
 
 const ChatStack = createStackNavigator(
 	{
-		Messages: { screen: MessagesScreen },
 		Conversation: { screen: ConversationScreen },
+		Messages: { screen: MessagesScreen },
+		...commonScreens,
 	},
 	{
 		headerMode: 'none',
@@ -278,11 +286,8 @@ const HomeStack = createStackNavigator(
 		Home: {
 			screen: HomeWithModalsStack,
 		},
-		UserProfile: { screen: UserProfileScreen },
-		Comments: { screen: CommentsScreen },
-		Likes: { screen: LikesScreen },
-		FriendsList: { screen: FriendsListScreen },
 		Chat: ChatWithSearch,
+		...commonScreens,
 	},
 	{
 		headerMode: 'none',
@@ -291,7 +296,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		// ChatWithSearch,
+		ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

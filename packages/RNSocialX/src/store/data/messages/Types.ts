@@ -7,6 +7,12 @@ export interface IMessage {
 	type: MESSAGE_TYPES;
 	content: string;
 	timestamp: number;
+	self?: boolean;
+	consecutive?: {
+		first: boolean;
+		middle: boolean;
+		last: boolean;
+	};
 }
 
 export interface IMessages {

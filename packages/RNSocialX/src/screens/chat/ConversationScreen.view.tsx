@@ -1,16 +1,9 @@
 import * as React from 'react';
-import {
-	KeyboardAvoidingView,
-	Platform,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
-import { Header, InputSizes, PrimaryTextInput } from '../../components';
+import { Header, InputSizes, MessageList, PrimaryTextInput } from '../../components';
 import { OS_TYPES } from '../../environment/consts';
 import { ILocaleDictionary } from '../../store/app/i18n/Types';
 import { IProfile } from '../../types';
@@ -34,19 +27,16 @@ export const ConversationScreenView: React.SFC<IProps> = ({
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
-			title={profile.alias}
-			avatar={profile.avatar}
 			back={true}
+			name={profile.fullName}
+			avatar={profile.avatar}
 			onPressAvatar={showProfileOptions}
 			onPressBack={onGoBack}
 		/>
-		<ScrollView style={styles.messages}>
-			<Text>{profile.alias}</Text>
-			<Text>{profile.aboutMeText}</Text>
-		</ScrollView>
+		<MessageList alias={profile.alias} />
 		<KeyboardAvoidingView
 			behavior="padding"
-			keyboardVerticalOffset={4}
+			keyboardVerticalOffset={3}
 			enabled={Platform.OS === OS_TYPES.IOS}
 		>
 			<View style={styles.footer}>
@@ -57,8 +47,8 @@ export const ConversationScreenView: React.SFC<IProps> = ({
 					<PrimaryTextInput
 						placeholder={dictionary.components.inputs.placeholder.type}
 						size={InputSizes.Small}
-						borderWidth={0}
 						multiline={true}
+						borderWidth={0}
 						style={styles.input}
 					/>
 				</View>

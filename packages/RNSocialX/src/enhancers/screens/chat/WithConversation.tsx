@@ -41,11 +41,11 @@ export class WithConversation extends React.Component<
 								{({ navigationParams }) => (
 									<WithProfiles>
 										{({ profiles }) => {
-											const { alias } = navigationParams[SCREENS.Conversation];
+											// const { alias } = navigationParams[SCREENS.Conversation];
 
 											return this.props.children({
 												data: {
-													profile: profiles[alias],
+													profile: profiles.jaakee,
 													dictionary,
 													modal,
 												},

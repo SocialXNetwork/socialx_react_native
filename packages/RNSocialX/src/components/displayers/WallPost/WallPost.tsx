@@ -39,7 +39,7 @@ import {
 	WithLiking,
 	WithNavigationHandlers,
 } from '../../../enhancers/intermediary';
-import { IApplicationState, selectPost, selectProfile } from '../../../store';
+import { IApplicationState, selectPost, selectProfile } from '../../../store/selectors';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';

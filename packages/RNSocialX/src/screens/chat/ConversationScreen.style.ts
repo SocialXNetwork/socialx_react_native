@@ -6,18 +6,18 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.white,
 	},
-	messages: {
-		flex: 1,
-	},
 	footer: {
 		flexDirection: 'row',
-		alignItems: 'center',
 		justifyContent: 'center',
+		alignItems: 'flex-end',
 		marginBottom: Sizes.smartHorizontalScale(5),
+		marginTop: Sizes.smartVerticalScale(10),
 	},
 	input: {
-		borderWidth: Sizes.smartHorizontalScale(1),
 		borderColor: Colors.dustGray,
+		backgroundColor: Colors.alabaster,
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: Sizes.smartHorizontalScale(20),
 		paddingVertical: Sizes.smartHorizontalScale(2),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},

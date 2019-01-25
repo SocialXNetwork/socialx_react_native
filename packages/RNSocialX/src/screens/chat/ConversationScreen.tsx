@@ -20,7 +20,7 @@ interface IProps
 
 class Screen extends React.Component<IProps> {
 	public render() {
-		const { profile, onGoBack, dictionary } = this.props;
+		const { profile, dictionary, onGoBack } = this.props;
 
 		return (
 			<ConversationScreenView

@@ -6,7 +6,7 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 		width: '100%',
-		paddingVertical: Sizes.smartVerticalScale(16),
+		paddingTop: Sizes.smartVerticalScale(16),
 	},
 	media: {
 		marginTop: Sizes.smartVerticalScale(10),

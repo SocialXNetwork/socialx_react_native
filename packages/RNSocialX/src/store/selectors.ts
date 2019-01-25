@@ -50,7 +50,8 @@ export const selectAvatar = createSelector(
 );
 
 export const selectLastMessage = createSelector(
-	(state: IMessages, alias: string) => state.messages[alias] && state.messages[alias][0],
+	(state: IMessages, alias: string) =>
+		state.messages[alias] && state.messages[alias][state.messages[alias].length - 1],
 	(message) => message,
 );
 

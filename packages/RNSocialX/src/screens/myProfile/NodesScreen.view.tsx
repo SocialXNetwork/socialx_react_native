@@ -39,23 +39,24 @@ export const NodesScreenView: React.SFC<INodesScreenViewProps> = ({
 	selectedCheckList,
 }) => (
 	<View style={{ flex: 1 }}>
-		{<Header title={getText('nodes.screen.title')} back={true} onPressBack={onGoBack} />}
+		<Header title={getText('nodes.screen.title')} back={true} onPressBack={onGoBack} />
 		<View style={styles.container}>
 			<Text style={styles.description}>{getText('nodes.screen.description').toUpperCase()}</Text>
 			<View style={styles.separator} />
-			<View style={styles.marginBetweenTitleAndInput} />
 			<ScrollView>
-				<PrimaryTextInput
-					borderWidth={0}
-					size={InputSizes.Normal}
-					placeholder={getText('nodes.screen.input.placeholder')}
-					value={nodeValue}
-					autoFocus={autoFocus}
-					onChangeText={onNodeInputChange}
-					returnKeyType={TRKeyboardKeys.send}
-					onSubmitPressed={nodeValue.length > 0 ? onSaveNewNode : Keyboard.dismiss}
-					blurOnSubmit={true}
-				/>
+				<View style={styles.inputContainer}>
+					<PrimaryTextInput
+						borderWidth={0}
+						size={InputSizes.Normal}
+						placeholder={getText('nodes.screen.input.placeholder')}
+						value={nodeValue}
+						autoFocus={autoFocus}
+						onChangeText={onNodeInputChange}
+						returnKeyType={TRKeyboardKeys.send}
+						onSubmitPressed={nodeValue.length > 0 ? onSaveNewNode : Keyboard.dismiss}
+						blurOnSubmit={true}
+					/>
+				</View>
 				<View style={styles.textContainer}>
 					<Text style={styles.currentNodesText}>
 						{getText('nodes.screen.current.text').toUpperCase()}

@@ -1,4 +1,4 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../../environment/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -8,17 +8,14 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
-		marginTop: Sizes.smartVerticalScale(5),
+		marginTop: Sizes.smartVerticalScale(7.5),
 	},
-	inputContainer: {
-		borderWidth: Sizes.smartHorizontalScale(1),
-		borderRadius: Sizes.smartHorizontalScale(5),
-		borderColor: Colors.dustyGray,
-		...Platform.select({
-			android: {
-				maxHeight: Sizes.smartVerticalScale(40),
-			},
-		}),
+	input: {
+		borderColor: Colors.dustGray,
+		backgroundColor: Colors.alabaster,
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: Sizes.smartHorizontalScale(20),
+		paddingVertical: Sizes.smartHorizontalScale(2),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 	},
 	animatingInput: {
