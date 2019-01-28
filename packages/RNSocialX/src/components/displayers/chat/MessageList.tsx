@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, View } from 'react-native';
+import { Animated, FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IMessage } from '../../../store/data/messages';

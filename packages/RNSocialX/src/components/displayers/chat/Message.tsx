@@ -1,8 +1,9 @@
 import moment from 'moment';
 import * as React from 'react';
-import { Animated, Text, TouchableOpacity } from 'react-native';
+import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../../../environment/theme';
 import { IMessage } from '../../../store/data/messages';
 import { AvatarImage } from '../../avatar/AvatarImage';
@@ -46,22 +47,33 @@ export class Message extends React.Component<IProps> {
 
 	public render() {
 		const { selected, message, onAvatarPress, onMessagePress } = this.props;
-		const { content, timestamp, self, consecutive } = message;
+		const { content, timestamp, self, consecutive, seen, sent } = message;
 		const wrapperStyles = this.getWrapperStyles();
 		const date = moment
 			.unix(timestamp)
 			.format('LT')
 			.toString();
 
-		const opacity = this.translateY.interpolate({
-			inputRange: [0, 20, 25],
-			outputRange: [0, 0.8, 1],
-		});
-
 		if (self) {
 			return (
 				<React.Fragment>
-					{selected && <Text style={styles.timestamp}>{date}</Text>}
+					{selected && (
+						<React.Fragment>
+							<Text style={styles.timestamp}>{date}</Text>
+							{sent && seen && (
+								<View>
+									<Text style={[styles.status, { textAlign: 'right' }]}>Seen</Text>
+									<AvatarImage image={this.props.avatar} style={styles.atomAvatar} />
+								</View>
+							)}
+							{sent && !seen && (
+								<View>
+									<Text style={[styles.status, { textAlign: 'right' }]}>Delivered</Text>
+									<Icon name="ios-checkmark-circle" style={styles.checkmark} />
+								</View>
+							)}
+						</React.Fragment>
+					)}
 					<Animated.View
 						style={[rightStyles.container, { transform: [{ translateY: this.translateY }] }]}
 					>
@@ -86,7 +98,18 @@ export class Message extends React.Component<IProps> {
 
 		return (
 			<React.Fragment>
-				{selected && <Text style={styles.timestamp}>{date}</Text>}
+				{selected && (
+					<React.Fragment>
+						<Text style={styles.timestamp}>{date}</Text>
+						{sent && seen && (
+							<View>
+								<Text style={[styles.status, { textAlign: 'left' }]}>Seen</Text>
+								<Icon name="ios-checkmark-circle" style={styles.checkmark} />
+							</View>
+						)}
+						{sent && !seen && <Text style={styles.status}>Delivered</Text>}
+					</React.Fragment>
+				)}
 				<Animated.View
 					style={[leftStyles.container, { transform: [{ translateY: this.translateY }] }]}
 				>

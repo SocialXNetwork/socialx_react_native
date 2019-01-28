@@ -9,6 +9,7 @@ export interface IMessage {
 	timestamp: number;
 	self?: boolean;
 	seen?: boolean;
+	sent?: boolean;
 	consecutive?: {
 		first: boolean;
 		middle: boolean;

@@ -8,6 +8,7 @@ const messages: IMessage[] = [
 		content: 'What are you doing tomorrow?',
 		timestamp: Number(new Date(2018, 2, 13)),
 		seen: false,
+		sent: false,
 	},
 	{
 		id: '1',
@@ -16,6 +17,7 @@ const messages: IMessage[] = [
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 3, 13)),
 		seen: false,
+		sent: false,
 	},
 	{
 		id: '3',
@@ -23,6 +25,7 @@ const messages: IMessage[] = [
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2018, 4, 13)),
 		seen: true,
+		sent: false,
 	},
 	{
 		id: '4',
@@ -30,6 +33,7 @@ const messages: IMessage[] = [
 		content: 'What are you doing tomorrow?',
 		timestamp: Number(new Date(2018, 5, 13)),
 		seen: true,
+		sent: false,
 	},
 	{
 		id: '5',
@@ -38,6 +42,7 @@ const messages: IMessage[] = [
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 6, 13)),
 		seen: false,
+		sent: false,
 	},
 	{
 		id: '6',
@@ -45,6 +50,7 @@ const messages: IMessage[] = [
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2019, 0, 27, 14, 20)),
 		seen: true,
+		sent: false,
 	},
 	{
 		id: '7',
@@ -54,6 +60,7 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2019, 0, 28, 14, 20)),
 		self: true,
 		seen: false,
+		sent: true,
 	},
 	{
 		id: '8',
@@ -63,6 +70,7 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2019, 0, 28, 15, 20)),
 		self: true,
 		seen: true,
+		sent: true,
 	},
 	{
 		id: '9',
@@ -71,6 +79,7 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2019, 0, 28, 15, 25)),
 		self: true,
 		seen: true,
+		sent: true,
 	},
 ];
 
