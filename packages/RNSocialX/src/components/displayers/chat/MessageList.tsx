@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Animated, FlatList, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IMessage } from '../../../store/data/messages';
 import { IApplicationState, selectMessages } from '../../../store/selectors';
 
-import { Colors } from '../../../environment/theme';
 import { Message } from './Message';
 import styles from './MessageList.style';
 
@@ -37,11 +36,14 @@ class Component extends React.Component<IProps, IState> {
 		const { messageIndex, selected } = this.state;
 
 		return (
-			<React.Fragment>
-				<FlatList
-					ref={this.scrollRef}
-					data={messages}
-					renderItem={({ item, index }) => (
+			<FlatList
+				ref={this.scrollRef}
+				data={messages}
+				renderItem={({ item, index }) => (
+					<TouchableOpacity
+						activeOpacity={1}
+						onPress={() => selected && this.onMessagePressHandler(messageIndex)}
+					>
 						<Message
 							message={item}
 							avatar={avatar}
@@ -50,14 +52,14 @@ class Component extends React.Component<IProps, IState> {
 							onAvatarPress={onAvatarPress}
 							onMessagePress={() => this.onMessagePressHandler(index)}
 						/>
-					)}
-					keyboardShouldPersistTaps="handled"
-					keyExtractor={(item) => item.id}
-					onLayout={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}
-					onContentSizeChange={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}
-					contentContainerStyle={[styles.container, { paddingBottom: this.getContainerSpace() }]}
-				/>
-			</React.Fragment>
+					</TouchableOpacity>
+				)}
+				keyboardShouldPersistTaps="handled"
+				keyExtractor={(item) => item.id}
+				onLayout={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}
+				onContentSizeChange={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}
+				contentContainerStyle={[styles.container, { paddingBottom: this.getContainerSpace() }]}
+			/>
 		);
 	}
 

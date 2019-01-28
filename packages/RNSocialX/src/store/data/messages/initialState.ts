@@ -3,21 +3,21 @@ import { IMessage, IState } from './Types';
 
 const messages: IMessage[] = [
 	{
-		id: '0',
+		id: '1',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'What are you doing tomorrow?',
 		timestamp: Number(new Date(2018, 2, 13)),
-		seen: false,
-		sent: false,
+		seen: true,
+		sent: true,
 	},
 	{
-		id: '1',
+		id: '2',
 		type: MESSAGE_TYPES.TEXT,
 		content:
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 3, 13)),
 		seen: false,
-		sent: false,
+		sent: true,
 	},
 	{
 		id: '3',
@@ -25,7 +25,7 @@ const messages: IMessage[] = [
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2018, 4, 13)),
 		seen: true,
-		sent: false,
+		sent: true,
 	},
 	{
 		id: '4',
@@ -33,7 +33,7 @@ const messages: IMessage[] = [
 		content: 'What are you doing tomorrow?',
 		timestamp: Number(new Date(2018, 5, 13)),
 		seen: true,
-		sent: false,
+		sent: true,
 	},
 	{
 		id: '5',
@@ -42,7 +42,7 @@ const messages: IMessage[] = [
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 6, 13)),
 		seen: false,
-		sent: false,
+		sent: true,
 	},
 	{
 		id: '6',
@@ -50,7 +50,7 @@ const messages: IMessage[] = [
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2019, 0, 27, 14, 20)),
 		seen: true,
-		sent: false,
+		sent: true,
 	},
 	{
 		id: '7',

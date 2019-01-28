@@ -39,38 +39,40 @@ export const styles = StyleSheet.create({
 	self: {
 		color: Colors.white,
 	},
-	timestamp: {
+	row: {
+		flexDirection: 'row',
 		position: 'absolute',
-		transform: [{ translateY: 2 }],
-		width,
-		color: Colors.dustGray,
-		...Fonts.centuryGothic,
-		textAlign: 'center',
+		transform: [{ translateY: 4 }],
+	},
+	spacer: {
+		flex: 1,
+	},
+	timestamp: {
+		flex: 1,
+		alignItems: 'center',
 	},
 	status: {
-		position: 'absolute',
-		width: Sizes.smartHorizontalScale(width - 48),
-		transform: [{ translateY: 4 }],
-		color: Colors.dustGray,
-		...Fonts.centuryGothic,
-		fontSize: Sizes.smartHorizontalScale(12),
-		textAlign: 'right',
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
-	checkmark: {
-		position: 'absolute',
-		transform: [{ translateY: 4.5 }],
-		width: Sizes.smartHorizontalScale(width - 32),
+	smallText: {
+		fontSize: Sizes.smartHorizontalScale(12),
+	},
+	grayText: {
+		color: Colors.dustGray,
+	},
+	check: {
 		fontSize: Sizes.smartHorizontalScale(15),
 		color: Colors.pink,
-		textAlign: 'right',
+		transform: [{ translateY: 1 }],
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
-	atomAvatar: {
-		position: 'absolute',
-		right: 0,
-		transform: [{ translateY: 4.5 }],
+	seen: {
 		width: Sizes.smartHorizontalScale(15),
 		height: Sizes.smartHorizontalScale(15),
 		borderRadius: Sizes.smartHorizontalScale(7.5),
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 });
 
