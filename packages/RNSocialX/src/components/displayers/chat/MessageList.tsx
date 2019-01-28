@@ -10,6 +10,8 @@ import styles from './MessageList.style';
 
 interface IMessageListProps {
 	alias: string;
+	avatar: string;
+	showProfileOptionsHandler: () => void;
 }
 
 interface IProps extends IMessageListProps {
@@ -24,7 +26,13 @@ class Component extends React.Component<IProps> {
 			<FlatList
 				ref={this.scrollRef}
 				data={this.props.messages}
-				renderItem={({ item }) => <Message message={item} />}
+				renderItem={({ item }) => (
+					<Message
+						message={item}
+						avatar={this.props.avatar}
+						showProfileOptionsHandler={this.props.showProfileOptionsHandler}
+					/>
+				)}
 				keyboardShouldPersistTaps="handled"
 				keyExtractor={(item) => item.id}
 				onLayout={() => this.scrollRef.current && this.scrollRef.current.scrollToEnd()}

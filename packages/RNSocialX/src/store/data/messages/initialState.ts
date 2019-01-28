@@ -7,6 +7,7 @@ const messages: IMessage[] = [
 		type: MESSAGE_TYPES.TEXT,
 		content: 'What are you doing tomorrow?',
 		timestamp: Number(new Date(2018, 2, 13)),
+		seen: false,
 	},
 	{
 		id: '1',
@@ -14,18 +15,21 @@ const messages: IMessage[] = [
 		content:
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 3, 13)),
+		seen: false,
 	},
 	{
 		id: '3',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2018, 4, 13)),
+		seen: true,
 	},
 	{
 		id: '4',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'What are you doing tomorrow?',
 		timestamp: Number(new Date(2018, 5, 13)),
+		seen: true,
 	},
 	{
 		id: '5',
@@ -33,12 +37,14 @@ const messages: IMessage[] = [
 		content:
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 6, 13)),
+		seen: false,
 	},
 	{
 		id: '6',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2018, 7, 20)),
+		seen: true,
 	},
 	{
 		id: '7',
@@ -47,6 +53,7 @@ const messages: IMessage[] = [
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 8, 13)),
 		self: true,
+		seen: false,
 	},
 	{
 		id: '8',
@@ -55,6 +62,7 @@ const messages: IMessage[] = [
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 9, 13)),
 		self: true,
+		seen: true,
 	},
 	{
 		id: '9',
@@ -62,6 +70,7 @@ const messages: IMessage[] = [
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2018, 10, 20)),
 		self: true,
+		seen: true,
 	},
 ];
 
