@@ -43,7 +43,7 @@ const messages: IMessage[] = [
 		id: '6',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'Why are you doing this?',
-		timestamp: Number(new Date(2018, 7, 20)),
+		timestamp: Number(new Date(2019, 0, 27, 14, 20)),
 		seen: true,
 	},
 	{
@@ -51,7 +51,7 @@ const messages: IMessage[] = [
 		type: MESSAGE_TYPES.TEXT,
 		content:
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
-		timestamp: Number(new Date(2018, 8, 13)),
+		timestamp: Number(new Date(2019, 0, 28, 14, 20)),
 		self: true,
 		seen: false,
 	},
@@ -60,7 +60,7 @@ const messages: IMessage[] = [
 		type: MESSAGE_TYPES.TEXT,
 		content:
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
-		timestamp: Number(new Date(2018, 9, 13)),
+		timestamp: Number(new Date(2019, 0, 28, 15, 20)),
 		self: true,
 		seen: true,
 	},
@@ -68,7 +68,7 @@ const messages: IMessage[] = [
 		id: '9',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'Why are you doing this?',
-		timestamp: Number(new Date(2018, 10, 20)),
+		timestamp: Number(new Date(2019, 0, 28, 15, 25)),
 		self: true,
 		seen: true,
 	},

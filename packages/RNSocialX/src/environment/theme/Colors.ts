@@ -9,7 +9,6 @@ export const Colors = {
 	blackWithAlpha: (alpha: number) => {
 		return 'rgba(0, 0, 0, ' + alpha + ')';
 	},
-	pink: '#ff0099',
 	pinkLace: '#fecdec',
 	background: '#4a5963',
 	shuttleGray: '#54646e',
@@ -19,9 +18,7 @@ export const Colors = {
 	postButtonColor: '#AAAAAA',
 	userAvatarFullName: '#006BFF',
 	dustWhite: '#EEEEEE',
-	dustyGray: '#9B9B9B',
 	manatee: '#8F9095',
-	fuchsiaBlue: '#814FBE',
 	iron: '#D3D6DA',
 	iron2: '#D6D9DE',
 	rhino: '#273851',
@@ -38,15 +35,22 @@ export const Colors = {
 	grayNurse: '#E6E7E6',
 	tundora: '#4A4A4A',
 	ceriseRed: '#E0295A',
-	dustGray: '#979797',
 	monza: '#D0021B',
 	blueMarguerite: '#6162C7',
 	amethyst: '#9863D3',
 	blueGem: '#4813A0',
 	charade: '#2E333D',
+
+	pink: '#FF0099',
+	flirt: '#BB0070',
+	fuchsiaBlue: '#814FBE',
+	gigas: '#603693',
 	alabaster: '#F7F7F7',
 	wildSand: '#F6F6F6',
 	gallery: '#EFEFEF',
+	alto: '#DEDEDE',
+	dustyGray: '#9B9B9B',
+	dustGray: '#979797',
 	gray: '#808080',
 };
 

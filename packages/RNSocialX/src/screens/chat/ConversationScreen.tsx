@@ -1,4 +1,5 @@
-import * as React from 'react';
+import moment from 'moment';
+import React from 'react';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {

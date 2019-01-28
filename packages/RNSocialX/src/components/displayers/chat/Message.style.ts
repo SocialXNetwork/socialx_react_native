@@ -2,18 +2,10 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 const { width } = Dimensions.get('window');
 
-const AVATAR_SIZE = Sizes.smartHorizontalScale(26);
+const AVATAR_SIZE = Sizes.smartHorizontalScale(30);
 const MARGIN_RIGHT_AVATAR = Sizes.smartHorizontalScale(10);
 
 export const styles = StyleSheet.create({
-	leftContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-	},
-	rightContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-	},
 	gradient: {
 		paddingVertical: Sizes.smartVerticalScale(7.5),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
@@ -25,7 +17,6 @@ export const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	background: {
-		backgroundColor: Colors.gallery,
 		paddingVertical: Sizes.smartVerticalScale(7.5),
 		paddingHorizontal: Sizes.smartHorizontalScale(10),
 		borderRadius: Sizes.smartHorizontalScale(15),
@@ -47,6 +38,14 @@ export const styles = StyleSheet.create({
 	},
 	self: {
 		color: Colors.white,
+	},
+	timestamp: {
+		...Fonts.centuryGothic,
+		color: Colors.dustGray,
+		position: 'absolute',
+		width,
+		textAlign: 'center',
+		transform: [{ translateY: 2 }],
 	},
 });
 
