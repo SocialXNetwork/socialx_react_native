@@ -9,6 +9,11 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2018, 2, 13)),
 		seen: true,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '2',
@@ -18,6 +23,11 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2018, 3, 13)),
 		seen: false,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '3',
@@ -26,6 +36,11 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2018, 4, 13)),
 		seen: true,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '4',
@@ -34,6 +49,11 @@ const messages: IMessage[] = [
 		timestamp: Number(new Date(2018, 5, 13)),
 		seen: true,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '5',
@@ -44,14 +64,25 @@ const messages: IMessage[] = [
 		self: true,
 		seen: false,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '6',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2019, 0, 27, 14, 20)),
+		self: true,
 		seen: true,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '7',
@@ -62,6 +93,11 @@ const messages: IMessage[] = [
 		self: true,
 		seen: false,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '8',
@@ -72,15 +108,25 @@ const messages: IMessage[] = [
 		self: true,
 		seen: true,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 	{
 		id: '9',
 		type: MESSAGE_TYPES.TEXT,
 		content: 'Why are you doing this?',
 		timestamp: Number(new Date(2019, 0, 28, 15, 25)),
-		self: true,
+		self: false,
 		seen: true,
 		sent: true,
+		consecutive: {
+			first: false,
+			middle: false,
+			last: false,
+		},
 	},
 ];
 
@@ -89,30 +135,6 @@ for (let i = 0; i < messages.length - 1; i++) {
 	const current = messages[i];
 	const next = messages[i + 1];
 	const previous = messages[i - 1];
-
-	if (!current.consecutive) {
-		current.consecutive = {
-			first: false,
-			middle: false,
-			last: false,
-		};
-	}
-
-	if (!next.consecutive) {
-		next.consecutive = {
-			first: false,
-			middle: false,
-			last: false,
-		};
-	}
-
-	if (i > 0 && !previous.consecutive) {
-		previous.consecutive = {
-			first: false,
-			middle: false,
-			last: false,
-		};
-	}
 
 	if ((current.self && next.self) || (!current.self && !next.self)) {
 		current.consecutive.first = true;

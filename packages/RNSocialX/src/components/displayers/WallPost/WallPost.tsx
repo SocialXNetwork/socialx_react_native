@@ -45,7 +45,7 @@ import { OS_TYPES } from '../../../environment/consts';
 import { Sizes } from '../../../environment/theme';
 import { IComment, INavigationProps, IWallPost } from '../../../types';
 
-import { PrimaryTextInput } from '../../inputs/PrimaryTextInput';
+import { PrimaryTextInput } from '../..';
 import styles, { SCREEN_WIDTH } from './WallPost.style';
 
 interface IWallPostProps extends INavigationProps {
@@ -162,7 +162,10 @@ class Component extends React.Component<IProps, IState> {
 					ref={this.postRef}
 					style={[
 						styles.container,
-						{ opacity: creating ? 0.5 : 1, paddingBottom: isCommentsScreen ? 10 : 16 },
+						{
+							opacity: creating ? 0.5 : 1,
+							paddingBottom: isCommentsScreen ? 10 : 16,
+						},
 					]}
 				>
 					{post.creating && <View style={styles.overlay} />}
@@ -448,21 +451,18 @@ class Component extends React.Component<IProps, IState> {
 	private onShowCommentOptionsHandler = (comment: IComment) => {
 		const { post, currentUser, showOptionsMenu, onRemoveComment, dictionary } = this.props;
 
-		const baseItems = [
-			{
-				label: dictionary.components.modals.options.copy,
-				icon: 'ios-copy',
-				actionHandler: () => Clipboard.setString(comment.text),
-			},
-		];
-		const deleteItem = {
+		const copy = {
+			label: dictionary.components.modals.options.copy,
+			icon: 'ios-copy',
+			actionHandler: () => Clipboard.setString(comment.text),
+		};
+		const remove = {
 			label: dictionary.components.modals.options.delete,
 			icon: 'ios-trash',
 			actionHandler: () => onRemoveComment(comment.commentId, post.postId),
 		};
 
-		const items =
-			comment.owner.alias === currentUser.alias ? [...baseItems, deleteItem] : baseItems;
+		const items = comment.owner.alias === currentUser.alias ? [copy, remove] : [copy];
 		showOptionsMenu(items);
 	};
 

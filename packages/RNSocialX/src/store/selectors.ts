@@ -56,6 +56,6 @@ export const selectLastMessage = createSelector(
 );
 
 export const selectMessages = createSelector(
-	(state: IMessages, alias: string) => state.messages[alias],
+	(state: IMessages, alias: string) => state.messages[alias] || [],
 	(messages) => messages,
 );

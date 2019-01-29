@@ -249,6 +249,10 @@ export interface ILocaleDictionary {
 				suggested: string;
 				results: string;
 			};
+			message: {
+				delivered: string;
+				seen: string;
+			};
 		};
 	};
 }

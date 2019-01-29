@@ -1,8 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-
-import { OS_TYPES } from '../../environment/consts';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
-
 const INPUT_FONT_SIZE = Sizes.smartHorizontalScale(14);
 
 export default StyleSheet.create({
@@ -26,16 +23,16 @@ export default StyleSheet.create({
 		color: Colors.shuttleGray,
 	},
 	multilineTextInput: {
-		paddingVertical:
-			Platform.OS === OS_TYPES.Android
-				? Sizes.smartVerticalScale(2)
-				: Sizes.smartVerticalScale(7.5),
+		paddingVertical: Platform.select({
+			android: Sizes.smartVerticalScale(3),
+			ios: Sizes.smartVerticalScale(7.5),
+		}),
 	},
 	textInputNormal: {
-		paddingVertical:
-			Platform.OS === OS_TYPES.Android
-				? Sizes.smartVerticalScale(10)
-				: Sizes.smartVerticalScale(16),
+		paddingVertical: Platform.select({
+			android: Sizes.smartVerticalScale(10),
+			ios: Sizes.smartVerticalScale(16),
+		}),
 	},
 	textInputSmall: {
 		paddingVertical: 0,

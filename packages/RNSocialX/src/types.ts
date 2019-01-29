@@ -320,7 +320,7 @@ export interface INavigationProps<SP = any, SC = any> {
 
 export interface IStackDefaultConfig {
 	headerMode: 'none' | 'float' | 'screen' | undefined;
-	navigationOptions: {
+	defaultNavigationOptions: {
 		gesturesEnabled: boolean;
 	};
 }
@@ -400,8 +400,3 @@ export interface IAdSetupBudgetData {
 	start: string;
 	stop: string;
 }
-
-/**
- * TODO list:
- * 1. @Serkan: find better structure to define shared types across components.
- */

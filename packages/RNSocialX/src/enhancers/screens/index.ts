@@ -35,10 +35,10 @@ export {
 	IWithConversationEnhancedData,
 } from './chat/WithConversation';
 export {
-	WithMessages,
-	IWithMessagesEnhancedActions,
-	IWithMessagesEnhancedData,
-} from './chat/WithMessages';
+	WithAllMessages,
+	IWithAllMessagesEnhancedActions,
+	IWithAllMessagesEnhancedData,
+} from './chat/WithAllMessages';
 
 export { WithIntro, IWithIntroEnhancedActions, IWithIntroEnhancedData } from './intro/WithIntro';
 

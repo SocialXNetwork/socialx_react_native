@@ -1,9 +1,15 @@
 import moment from 'moment';
-import * as React from 'react';
-import { Animated, Platform, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Animated, Clipboard, Platform, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AnimatedValue } from 'react-navigation';
+
+import {
+	IWithMessageEnhancedActions,
+	IWithMessageEnhancedData,
+	WithMessage,
+} from '../../../enhancers/components';
 
 import { OS_TYPES } from '../../../environment/consts';
 import { Colors, Icons } from '../../../environment/theme';
@@ -11,8 +17,11 @@ import { IMessage } from '../../../store/data/messages';
 import { AvatarImage } from '../../avatar/AvatarImage';
 import { leftStyles, rightStyles, styles } from './Message.style';
 
-interface IProps {
+interface IMessageProps {
 	message: IMessage;
+	previousMessage: IMessage | null;
+	nextMessage: IMessage | null;
+	alias: string;
 	avatar: string;
 	selected: boolean;
 	translateY: boolean;
@@ -20,18 +29,22 @@ interface IProps {
 	onAvatarPress: () => void;
 }
 
+interface IProps extends IMessageProps, IWithMessageEnhancedData, IWithMessageEnhancedActions {}
+
 interface IState {
 	translateY: AnimatedValue;
 }
 
-export class Message extends React.Component<IProps, IState> {
+class Component extends React.Component<IProps, IState> {
 	public state = {
 		translateY: new Animated.Value(0),
 	};
 
 	public shouldComponentUpdate(prevProps: IProps) {
 		return (
-			prevProps.selected !== this.props.selected || prevProps.translateY !== this.props.translateY
+			prevProps.message.consecutive !== this.props.message.consecutive ||
+			prevProps.selected !== this.props.selected ||
+			prevProps.translateY !== this.props.translateY
 		);
 	}
 
@@ -55,9 +68,10 @@ export class Message extends React.Component<IProps, IState> {
 	}
 
 	public render() {
-		const { selected, message, onAvatarPress, onMessagePress } = this.props;
+		const { selected, message, avatar, dictionary, onAvatarPress, onMessagePress } = this.props;
 		const { content, self, consecutive, seen, sent } = message;
 		const wrapperStyles = this.getWrapperStyles();
+		const date = this.getDate();
 
 		if (self) {
 			return (
@@ -66,19 +80,23 @@ export class Message extends React.Component<IProps, IState> {
 						<View style={styles.row}>
 							<View style={styles.spacer} />
 							<View style={styles.timestamp}>
-								<Text style={styles.grayText}>{this.getDate()}</Text>
+								<Text style={styles.grayText}>{date}</Text>
 							</View>
 							<View style={[styles.status, { justifyContent: 'flex-end' }]}>
 								{sent && !seen && (
 									<React.Fragment>
-										<Text style={[styles.smallText, styles.grayText]}>Delivered</Text>
+										<Text style={[styles.smallText, styles.grayText]}>
+											{dictionary.components.displayers.message.delivered}
+										</Text>
 										<Icon name={Icons.check} style={styles.check} />
 									</React.Fragment>
 								)}
 								{sent && seen && (
 									<React.Fragment>
-										<Text style={[styles.smallText, styles.grayText]}>Seen</Text>
-										<AvatarImage image={this.props.avatar} style={styles.seen} />
+										<Text style={[styles.smallText, styles.grayText]}>
+											{dictionary.components.displayers.message.seen}
+										</Text>
+										<AvatarImage image={avatar} style={styles.seen} />
 									</React.Fragment>
 								)}
 							</View>
@@ -96,6 +114,7 @@ export class Message extends React.Component<IProps, IState> {
 							style={[styles.overflow, wrapperStyles]}
 							activeOpacity={1}
 							onPress={onMessagePress}
+							onLongPress={this.showOptions}
 						>
 							<LinearGradient
 								start={{ x: 0, y: 0.5 }}
@@ -128,20 +147,24 @@ export class Message extends React.Component<IProps, IState> {
 							{sent && !seen && (
 								<React.Fragment>
 									<View style={leftStyles.spacer} />
-									<Text style={[styles.smallText, styles.grayText]}>Delivered</Text>
+									<Text style={[styles.smallText, styles.grayText]}>
+										{dictionary.components.displayers.message.delivered}
+									</Text>
 									<Icon name={Icons.check} style={styles.check} />
 								</React.Fragment>
 							)}
 							{sent && seen && (
 								<React.Fragment>
 									<View style={leftStyles.spacer} />
-									<Text style={[styles.smallText, styles.grayText]}>Seen</Text>
-									<AvatarImage image={this.props.avatar} style={styles.seen} />
+									<Text style={[styles.smallText, styles.grayText]}>
+										{dictionary.components.displayers.message.seen}
+									</Text>
+									<AvatarImage image={avatar} style={styles.seen} />
 								</React.Fragment>
 							)}
 						</View>
 						<View style={styles.timestamp}>
-							<Text style={styles.grayText}>{this.getDate()}</Text>
+							<Text style={styles.grayText}>{date}</Text>
 						</View>
 						<View style={styles.spacer} />
 					</View>
@@ -161,7 +184,7 @@ export class Message extends React.Component<IProps, IState> {
 								activeOpacity={1}
 								onPress={onAvatarPress}
 							>
-								<AvatarImage image={this.props.avatar} style={leftStyles.avatar} />
+								<AvatarImage image={avatar} style={leftStyles.avatar} />
 							</TouchableOpacity>
 						) : (
 							<View style={leftStyles.spacer} />
@@ -176,6 +199,7 @@ export class Message extends React.Component<IProps, IState> {
 							]}
 							activeOpacity={1}
 							onPress={onMessagePress}
+							onLongPress={this.showOptions}
 						>
 							<Text style={styles.text}>{content}</Text>
 						</TouchableOpacity>
@@ -184,6 +208,59 @@ export class Message extends React.Component<IProps, IState> {
 			</React.Fragment>
 		);
 	}
+
+	private showOptions = () => {
+		const { message, dictionary, showOptionsMenu } = this.props;
+
+		const copy = {
+			label: dictionary.components.modals.options.copy,
+			icon: Icons.copy,
+			actionHandler: () => Clipboard.setString(message.content),
+		};
+		const remove = {
+			label: dictionary.components.modals.options.delete,
+			icon: Icons.delete,
+			actionHandler: this.deleteMessageHandler,
+		};
+
+		const items = message.self ? [copy, remove] : [copy];
+		showOptionsMenu(items);
+	};
+
+	private deleteMessageHandler = () => {
+		const {
+			message,
+			previousMessage,
+			nextMessage,
+			alias,
+			deleteMessage,
+			updateMessage,
+		} = this.props;
+
+		if (message.consecutive.first && nextMessage && nextMessage.self) {
+			if (nextMessage.consecutive.middle) {
+				updateMessage({ id: nextMessage.id, alias, consecutive: { first: true, middle: false } });
+			} else {
+				updateMessage({ id: nextMessage.id, alias, consecutive: { last: false, middle: false } });
+			}
+		} else if (message.consecutive.last && previousMessage && previousMessage.self) {
+			if (previousMessage.consecutive.middle) {
+				updateMessage({
+					id: previousMessage.id,
+					alias,
+					consecutive: { last: true, middle: false },
+				});
+			} else {
+				updateMessage({
+					id: previousMessage.id,
+					alias,
+					consecutive: { first: false, middle: false },
+				});
+			}
+		}
+
+		deleteMessage({ id: message.id, alias });
+	};
 
 	private getWrapperStyles = () => {
 		const { self, consecutive } = this.props.message;
@@ -207,24 +284,33 @@ export class Message extends React.Component<IProps, IState> {
 
 	private getDate = () => {
 		const { timestamp } = this.props.message;
-
-		let formattedDate;
+		let date;
 
 		const startOfWeek = moment().startOf('isoWeek');
 		const endOfWeek = moment().endOf('isoWeek');
 		const messageDate = moment(timestamp);
-		const currentYear = moment().year();
+		const messageDay = moment(timestamp).day();
 		const messageYear = moment(timestamp).year();
+		const currentDay = moment().day();
 		const currentWeek = messageDate.isBetween(startOfWeek, endOfWeek);
+		const currentYear = moment().year();
 
-		if (currentWeek && messageYear === currentYear) {
-			formattedDate = moment(timestamp).format('dddd, H:mm');
+		if (currentDay === messageDay && messageYear === currentYear) {
+			date = moment(timestamp).format('H:mm');
+		} else if (currentWeek && messageYear === currentYear) {
+			date = moment(timestamp).format('dddd, H:mm');
 		} else if (!currentWeek && messageYear === currentYear) {
-			formattedDate = moment(timestamp).format('DD MMM H:mm');
+			date = moment(timestamp).format('DD MMM, H:mm');
 		} else if (!currentWeek && messageYear < currentYear) {
-			formattedDate = moment(timestamp).format('DD MMM YYYY H:mm');
+			date = moment(timestamp).format('DD MMM YYYY, H:mm');
 		}
 
-		return formattedDate;
+		return date;
 	};
 }
+
+export const Message: React.SFC<IMessageProps> = (props) => (
+	<WithMessage>
+		{({ data, actions }) => <Component {...props} {...data} {...actions} />}
+	</WithMessage>
+);

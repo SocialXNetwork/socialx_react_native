@@ -1,11 +1,11 @@
 import { Tab, Tabs } from 'native-base';
-import * as React from 'react';
+import React from 'react';
 import { TextStyle, View, ViewStyle } from 'react-native';
 
 import { NoContent, SearchHeader, UserEntries } from '../../components';
 import { IDictionary, INavigationProps } from '../../types';
 
-import styles from './MessagesScreen.style';
+import styles from './AllMessagesScreen.style';
 
 interface IProps extends INavigationProps, IDictionary {
 	messages: string[];
@@ -14,7 +14,7 @@ interface IProps extends INavigationProps, IDictionary {
 	onEntryPress: (alias: string) => void;
 }
 
-export const MessagesScreenView: React.SFC<IProps> = ({
+export const AllMessagesScreenView: React.SFC<IProps> = ({
 	messages,
 	people,
 	navigation,

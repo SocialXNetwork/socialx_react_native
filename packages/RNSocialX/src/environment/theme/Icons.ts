@@ -1,5 +1,11 @@
 export const Icons = {
 	check: 'ios-checkmark-circle',
+	gallery: 'md-photos',
+	user: 'ios-person',
+	plus: 'ios-add-circle',
+	send: 'ios-paper-plane',
+	copy: 'ios-copy',
+	delete: 'ios-trash',
 
 	envelope: require('./assets/icons/envelope_icon.png'),
 	noNotifications: require('./assets/icons/icon_notifications_screen_empty.png'),

@@ -14,3 +14,4 @@ export {
 	IWithGenericModalEnhancedActions,
 	IWithGenericModalEnhancedData,
 } from './WithGenericModal';
+export { WithMessage, IWithMessageEnhancedActions, IWithMessageEnhancedData } from './WithMessage';

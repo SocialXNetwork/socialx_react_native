@@ -1,15 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
-import { IWithMessagesEnhancedData, WithMessages } from '../../enhancers/screens';
+import { IWithAllMessagesEnhancedData, WithAllMessages } from '../../enhancers/screens';
 
 import { INavigationProps } from '../../types';
-import { MessagesScreenView } from './MessagesScreen.view';
+import { AllMessagesScreenView } from './AllMessagesScreen.view';
 
 const messages: string[] = ['jaakee', 'hackerman'];
 const people: string[] = ['letsgheek', 'Philip', 'will2k'];
 
-interface IProps extends INavigationProps, IWithMessagesEnhancedData {
+interface IProps extends INavigationProps, IWithAllMessagesEnhancedData {
 	onOpenConversation: (alias: string) => void;
 }
 
@@ -30,7 +30,7 @@ class Screen extends React.Component<IProps, IState> {
 
 	public render() {
 		return (
-			<MessagesScreenView
+			<AllMessagesScreenView
 				messages={this.state.messages}
 				people={this.state.people}
 				navigation={this.props.navigation}
@@ -48,14 +48,14 @@ class Screen extends React.Component<IProps, IState> {
 	};
 }
 
-export const MessagesScreen = (props: INavigationProps) => (
+export const AllMessagesScreen = (props: INavigationProps) => (
 	<WithNavigationHandlers navigation={props.navigation}>
 		{({ actions }) => (
-			<WithMessages>
+			<WithAllMessages>
 				{({ data }) => (
 					<Screen {...props} {...data} onOpenConversation={actions.onOpenConversation} />
 				)}
-			</WithMessages>
+			</WithAllMessages>
 		)}
 	</WithNavigationHandlers>
 );

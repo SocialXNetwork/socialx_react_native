@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 

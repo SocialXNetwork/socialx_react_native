@@ -47,6 +47,7 @@ export const Colors = {
 	gigas: '#603693',
 	alabaster: '#F7F7F7',
 	wildSand: '#F6F6F6',
+	athensGray: '#F4F5F7',
 	gallery: '#EFEFEF',
 	alto: '#DEDEDE',
 	dustyGray: '#9B9B9B',

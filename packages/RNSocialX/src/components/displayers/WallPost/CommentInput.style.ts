@@ -12,7 +12,7 @@ export default StyleSheet.create({
 	},
 	input: {
 		borderColor: Colors.dustGray,
-		backgroundColor: Colors.alabaster,
+		backgroundColor: Colors.athensGray,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: Sizes.smartHorizontalScale(20),
 		paddingVertical: Sizes.smartHorizontalScale(2),

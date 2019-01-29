@@ -1,32 +1,39 @@
-import * as React from 'react';
-import { KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
-import { Header, InputSizes, MessageList, PrimaryTextInput } from '../../components';
+import {
+	Header,
+	InputSizes,
+	MessageList,
+	PrimaryTextInput,
+	TRKeyboardKeys,
+} from '../../components';
 import { OS_TYPES } from '../../environment/consts';
-import { ILocaleDictionary } from '../../store/app/i18n/Types';
-import { IProfile } from '../../types';
+import { IDictionary, IProfile } from '../../types';
 
+import { Icons } from '../../environment/theme';
 import styles from './ConversationScreen.style';
 
-interface IProps {
+interface IProps extends IDictionary {
 	profile: IProfile;
-	input: string;
-	dictionary: ILocaleDictionary;
+	value: string;
 	showProfileOptions: () => void;
 	showAddOptions: () => void;
-	onChangeText: (input: string) => void;
+	onChangeText: (value: string) => void;
+	onSendMessage: () => void;
 	onGoBack: () => void;
 }
 
 export const ConversationScreenView: React.SFC<IProps> = ({
 	profile,
-	input,
+	value,
 	dictionary,
 	showProfileOptions,
 	showAddOptions,
 	onChangeText,
+	onSendMessage,
 	onGoBack,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
@@ -37,31 +44,34 @@ export const ConversationScreenView: React.SFC<IProps> = ({
 			onPressAvatar={showProfileOptions}
 			onPressBack={onGoBack}
 		/>
-		{/* <View style={{ flex: 1, overflow: 'scroll', position: 'relative' }}> */}
 		<MessageList alias={profile.alias} avatar={profile.avatar} onAvatarPress={showProfileOptions} />
-		{/* </View> */}
-		<KeyboardAvoidingView
-			behavior="padding"
-			keyboardVerticalOffset={3}
-			enabled={Platform.OS === OS_TYPES.IOS}
-		>
+		<KeyboardAvoidingView behavior="padding" enabled={Platform.OS === OS_TYPES.IOS}>
 			<View style={styles.footer}>
-				<TouchableOpacity style={styles.iconContainer} onPress={showAddOptions}>
-					<Icon name="ios-add-circle" style={styles.icon} />
+				<TouchableOpacity
+					style={styles.iconContainer}
+					onPress={() => {
+						Keyboard.dismiss();
+						showAddOptions();
+					}}
+				>
+					<Icon name={Icons.plus} style={styles.icon} />
 				</TouchableOpacity>
 				<View style={{ flex: 1 }}>
 					<PrimaryTextInput
-						value={input}
+						value={value}
 						placeholder={dictionary.components.inputs.placeholder.type}
 						size={InputSizes.Small}
 						multiline={true}
 						borderWidth={0}
+						autoCorrect={false}
+						returnKeyType={TRKeyboardKeys.send}
+						blurOnSubmit={true}
 						onChangeText={onChangeText}
 						style={styles.input}
 					/>
 				</View>
-				<TouchableOpacity style={styles.iconContainer} onPress={() => undefined}>
-					<Icon name="ios-paper-plane" style={styles.icon} />
+				<TouchableOpacity style={styles.iconContainer} onPress={onSendMessage}>
+					<Icon name={Icons.send} style={styles.icon} />
 				</TouchableOpacity>
 			</View>
 		</KeyboardAvoidingView>

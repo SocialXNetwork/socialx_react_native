@@ -16,6 +16,7 @@ import { DataProvider } from 'recyclerlistview';
 import {
 	Header,
 	IconButton,
+	MediaOverlay,
 	NoContent,
 	OptionsMenuButton,
 	Profile,
@@ -93,6 +94,7 @@ export const MyProfileScreenView: React.SFC<IMyProfileScreenViewProps> = ({
 
 	return (
 		<View style={styles.container}>
+			<MediaOverlay navigation={navigation} />
 			<Header
 				title={dictionary.screens.myProfile.title}
 				// left={

@@ -1,5 +1,5 @@
-import moment from 'moment';
 import React from 'react';
+import uuid from 'uuid/v4';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
@@ -8,24 +8,25 @@ import {
 	WithConversation,
 } from '../../enhancers/screens';
 
-import { INavigationProps } from '../../types';
+import { Icons } from '../../environment/theme';
+import { INavigationProps, MESSAGE_TYPES } from '../../types';
 import { ConversationScreenView } from './ConversationScreen.view';
 
 interface IProps
 	extends INavigationProps,
 		IWithConversationEnhancedData,
 		IWithConversationEnhancedActions {
-	onGoBack: () => void;
 	onViewUserProfile: (alias: string) => void;
+	onGoBack: () => void;
 }
 
 interface IState {
-	input: string;
+	value: string;
 }
 
 class Screen extends React.Component<IProps, IState> {
 	public state = {
-		input: '',
+		value: '',
 	};
 
 	public render() {
@@ -34,18 +35,67 @@ class Screen extends React.Component<IProps, IState> {
 		return (
 			<ConversationScreenView
 				profile={profile}
-				input={this.state.input}
+				value={this.state.value}
 				dictionary={dictionary}
 				showProfileOptions={this.showProfileOptionsHandler}
 				showAddOptions={this.showAddOptionsHandler}
 				onChangeText={this.onChangeTextHandler}
+				onSendMessage={this.onSendMessageHandler}
 				onGoBack={onGoBack}
 			/>
 		);
 	}
 
-	private onChangeTextHandler = (input: string) => {
-		this.setState({ input });
+	private onChangeTextHandler = (value: string) => {
+		this.setState({ value });
+	};
+
+	private onSendMessageHandler = () => {
+		const {
+			profile: { alias },
+			messages,
+			sendMessage,
+			updateMessage,
+		} = this.props;
+
+		const content = this.state.value.trim();
+		if (content.length > 0) {
+			const message = {
+				id: uuid(),
+				type: MESSAGE_TYPES.TEXT,
+				content,
+				timestamp: Number(new Date(Date.now())),
+				self: true,
+				consecutive: {
+					first: false,
+					middle: false,
+					last: false,
+				},
+			};
+
+			sendMessage({ alias, message });
+			this.setState({ value: '' });
+
+			if (messages.length > 0) {
+				const lastMessage = messages[messages.length - 1];
+				if (lastMessage.self) {
+					message.consecutive = {
+						...message.consecutive,
+						last: true,
+					};
+
+					if (lastMessage.consecutive.last) {
+						updateMessage({
+							id: lastMessage.id,
+							alias,
+							consecutive: { middle: true, last: false },
+						});
+					} else {
+						updateMessage({ id: lastMessage.id, alias, consecutive: { first: true } });
+					}
+				}
+			}
+		}
 	};
 
 	private showProfileOptionsHandler = () => {
@@ -54,7 +104,7 @@ class Screen extends React.Component<IProps, IState> {
 		const items = [
 			{
 				label: dictionary.components.modals.options.viewProfile,
-				icon: 'ios-person',
+				icon: Icons.user,
 				actionHandler: () => onViewUserProfile(profile.alias),
 			},
 		];
@@ -68,7 +118,7 @@ class Screen extends React.Component<IProps, IState> {
 		const items = [
 			{
 				label: dictionary.components.modals.options.addMedia,
-				icon: 'md-photos',
+				icon: Icons.gallery,
 				actionHandler: () => undefined,
 			},
 		];

@@ -5,15 +5,15 @@ import { View } from 'react-native';
 
 import { Profile } from '../../../../src/components';
 import { PROFILE_TAB_ICON_TYPES } from '../../../../src/environment/consts';
-import { getTextMock } from '../../../../src/mocks';
 import Provider from '../../../helpers/Provider';
 
 const image = 'QmZgsU2Syps515N6xYFcLoL6u9pyqcvzNdz5xUtZQM7oV9';
 
 storiesOf('Components/displayers', module)
 	.addDecorator((story) => <Provider>{story()}</Provider>)
-	.add('ProfileTopContainer', () => (
+	.add('Profile', () => (
 		<View style={{ flex: 1 }}>
+			// @ts-ignore
 			<Profile
 				alias="alexsirbu"
 				avatar={image}
@@ -26,13 +26,10 @@ storiesOf('Components/displayers', module)
 				tabs={true}
 				activeTab={PROFILE_TAB_ICON_TYPES.LIST}
 				description="Hi, this is some text about me."
-				onAddFriend={action('onRequestConfirmed')}
 				onEditProfile={action('onRequestConfirmed')}
 				onIconPress={action('onRequestConfirmed')}
-				onShowFriendshipOptions={action('onRequestConfirmed')}
 				onProfilePhotoPress={action('onProfilePhotoPress')}
 				onViewFriends={action('onViewFriends')}
-				getText={getTextMock}
 			/>
 		</View>
 	));

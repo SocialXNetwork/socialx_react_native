@@ -3,7 +3,16 @@ import { connect, ConnectedComponentClass } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { IApplicationState } from '../../../store';
-import { getMessages, IMessages } from '../../../store/data/messages';
+import {
+	deleteMessage,
+	getMessages,
+	IDeleteMessageInput,
+	IMessages,
+	ISendMessageInput,
+	IUpdateMessageInput,
+	sendMessage,
+	updateMessage,
+} from '../../../store/data/messages';
 import { IThunkDispatch } from '../../../store/types';
 
 interface IDataProps {
@@ -12,6 +21,9 @@ interface IDataProps {
 
 interface IActionProps {
 	getMessages: () => void;
+	sendMessage: (input: ISendMessageInput) => void;
+	updateMessage: (input: IUpdateMessageInput) => void;
+	deleteMessage: (input: IDeleteMessageInput) => void;
 }
 
 type IProps = IDataProps & IActionProps;
@@ -38,6 +50,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 
 const mapDispatchToProps = (dispatch: IThunkDispatch) => ({
 	getNotifications: () => dispatch(getMessages()),
+	sendMessage: (input: ISendMessageInput) => dispatch(sendMessage(input)),
+	updateMessage: (input: IUpdateMessageInput) => dispatch(updateMessage(input)),
+	deleteMessage: (input: IDeleteMessageInput) => dispatch(deleteMessage(input)),
 });
 
 export const WithMessages: ConnectedComponentClass<JSX.Element, IChildren> = connect(

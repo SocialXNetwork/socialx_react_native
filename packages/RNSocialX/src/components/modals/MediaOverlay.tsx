@@ -122,7 +122,10 @@ class Component extends React.Component<IProps, IState> {
 								postId={postId}
 								likedByCurrentUser={likedByCurrentUser}
 								disabled={!isOverlayVisible}
-								onCommentPress={() => onViewComments(postId, false)}
+								onCommentPress={() => {
+									hideMedia();
+									onViewComments(postId, false);
+								}}
 								onLikePress={() => onLikePost(postId)}
 							/>
 						</Animated.View>

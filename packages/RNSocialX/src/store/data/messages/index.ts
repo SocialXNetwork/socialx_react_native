@@ -1,5 +1,13 @@
 export { default as reducer } from './reducer';
 
-export { IState, IAction, IMessages, IMessage } from './Types';
+export {
+	IState,
+	IAction,
+	IMessages,
+	IMessage,
+	ISendMessageInput,
+	IUpdateMessageInput,
+	IDeleteMessageInput,
+} from './Types';
 
-export { getMessages } from './actions';
+export { getMessages, sendMessage, updateMessage, deleteMessage } from './actions';

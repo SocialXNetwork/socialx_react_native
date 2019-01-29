@@ -71,7 +71,7 @@ class Component extends React.Component<IProps> {
 			navigation.navigate(SCREENS.Search);
 		}
 
-		if (navigation.state.routeName === SCREENS.Messages) {
+		if (navigation.state.routeName === SCREENS.AllMessages) {
 			navigation.navigate(SCREENS.ChatSearch);
 		}
 	};

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { FlatList, Keyboard, Platform, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -33,7 +33,7 @@ class Component extends React.Component<IProps, IState> {
 	private scrollRef: React.RefObject<FlatList<IMessage>> = React.createRef();
 
 	public render() {
-		const { messages, avatar, onAvatarPress } = this.props;
+		const { messages, alias, avatar, onAvatarPress } = this.props;
 		const { messageIndex, selected } = this.state;
 
 		return (
@@ -55,6 +55,9 @@ class Component extends React.Component<IProps, IState> {
 							>
 								<Message
 									message={item}
+									previousMessage={messages[index - 1] || null}
+									nextMessage={messages[index + 1] || null}
+									alias={alias}
 									avatar={avatar}
 									selected={messageIndex === index && selected}
 									translateY={messageIndex <= index && selected}
@@ -66,6 +69,9 @@ class Component extends React.Component<IProps, IState> {
 						{Platform.OS === OS_TYPES.Android && (
 							<Message
 								message={item}
+								previousMessage={messages[index - 1] || null}
+								nextMessage={messages[index + 1] || null}
+								alias={alias}
 								avatar={avatar}
 								selected={messageIndex === index && selected}
 								translateY={messageIndex <= index && selected}

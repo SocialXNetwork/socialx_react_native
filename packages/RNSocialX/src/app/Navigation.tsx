@@ -30,6 +30,7 @@ import {
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
+	AllMessagesScreen,
 	ChatSearchScreen,
 	CommentsScreen,
 	ConversationScreen,
@@ -44,7 +45,6 @@ import {
 	LoginScreen,
 	MaintenanceScreen,
 	ManageCountriesScreen,
-	MessagesScreen,
 	MyProfileScreen,
 	NewAdSliderScreen,
 	NodesScreen,
@@ -73,7 +73,7 @@ import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
-	navigationOptions: {
+	defaultNavigationOptions: {
 		gesturesEnabled: true,
 	},
 };
@@ -169,7 +169,7 @@ const FeedStack = createStackNavigator(
 		},
 	},
 	{
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: true,
 		},
 	},
@@ -185,7 +185,7 @@ const SearchStack = createStackNavigator(
 		},
 	},
 	{
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: false,
 		},
 		headerMode: 'none',
@@ -195,13 +195,13 @@ const SearchStack = createStackNavigator(
 
 const ChatStack = createStackNavigator(
 	{
+		AllMessages: { screen: AllMessagesScreen },
 		Conversation: { screen: ConversationScreen },
-		Messages: { screen: MessagesScreen },
 		...commonScreens,
 	},
 	{
 		headerMode: 'none',
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: false,
 		},
 	},
@@ -214,7 +214,7 @@ const ChatSearchStack = createStackNavigator(
 	},
 	{
 		headerMode: 'none',
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: false,
 		},
 	},
@@ -227,7 +227,7 @@ const ChatWithSearch = createStackNavigator(
 	},
 	{
 		headerMode: 'none',
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: false,
 		},
 		transitionConfig: fadeIn,
