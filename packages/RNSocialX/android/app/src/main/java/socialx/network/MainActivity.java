@@ -1,6 +1,6 @@
 package socialx.network;
 
-import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactFragmentActivity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,7 +12,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 import com.reactnativecomponent.splashscreen.RCTSplashScreen;
 
-public class MainActivity extends ReactActivity {
+public class MainActivity extends ReactFragmentActivity {
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -26,7 +26,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         RCTSplashScreen.openSplashScreen(this);
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
     }
 
     @Override
