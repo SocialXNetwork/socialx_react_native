@@ -41,6 +41,7 @@ const messages: IMessage[] = [
 		content:
 			'How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today? How are you doing today?',
 		timestamp: Number(new Date(2018, 6, 13)),
+		self: true,
 		seen: false,
 		sent: true,
 	},

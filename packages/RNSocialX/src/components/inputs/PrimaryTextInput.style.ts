@@ -26,7 +26,10 @@ export default StyleSheet.create({
 		color: Colors.shuttleGray,
 	},
 	multilineTextInput: {
-		paddingVertical: Sizes.smartVerticalScale(7.5),
+		paddingVertical:
+			Platform.OS === OS_TYPES.Android
+				? Sizes.smartVerticalScale(2)
+				: Sizes.smartVerticalScale(7.5),
 	},
 	textInputNormal: {
 		paddingVertical:

@@ -19,22 +19,36 @@ interface IProps
 	onViewUserProfile: (alias: string) => void;
 }
 
-class Screen extends React.Component<IProps> {
+interface IState {
+	input: string;
+}
+
+class Screen extends React.Component<IProps, IState> {
+	public state = {
+		input: '',
+	};
+
 	public render() {
 		const { profile, dictionary, onGoBack } = this.props;
 
 		return (
 			<ConversationScreenView
 				profile={profile}
+				input={this.state.input}
 				dictionary={dictionary}
 				showProfileOptions={this.showProfileOptionsHandler}
 				showAddOptions={this.showAddOptionsHandler}
+				onChangeText={this.onChangeTextHandler}
 				onGoBack={onGoBack}
 			/>
 		);
 	}
 
-	public showProfileOptionsHandler = () => {
+	private onChangeTextHandler = (input: string) => {
+		this.setState({ input });
+	};
+
+	private showProfileOptionsHandler = () => {
 		const { showOptionsMenu, dictionary, profile, onViewUserProfile } = this.props;
 
 		const items = [
@@ -48,7 +62,7 @@ class Screen extends React.Component<IProps> {
 		showOptionsMenu(items);
 	};
 
-	public showAddOptionsHandler = () => {
+	private showAddOptionsHandler = () => {
 		const { showOptionsMenu, dictionary } = this.props;
 
 		const items = [

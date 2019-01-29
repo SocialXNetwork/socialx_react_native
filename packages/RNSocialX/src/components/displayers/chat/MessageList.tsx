@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, Keyboard, Platform, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IMessage } from '../../../store/data/messages';
 import { IApplicationState, selectMessages } from '../../../store/selectors';
 
+import { OS_TYPES } from '../../../environment/consts';
 import { Message } from './Message';
 import styles from './MessageList.style';
 
@@ -40,19 +41,39 @@ class Component extends React.Component<IProps, IState> {
 				ref={this.scrollRef}
 				data={messages}
 				renderItem={({ item, index }) => (
-					<TouchableOpacity
-						activeOpacity={1}
-						onPress={() => selected && this.onMessagePressHandler(messageIndex)}
-					>
-						<Message
-							message={item}
-							avatar={avatar}
-							selected={messageIndex === index && selected}
-							translateY={messageIndex <= index && selected}
-							onAvatarPress={onAvatarPress}
-							onMessagePress={() => this.onMessagePressHandler(index)}
-						/>
-					</TouchableOpacity>
+					<React.Fragment>
+						{Platform.OS === OS_TYPES.IOS && (
+							<TouchableOpacity
+								activeOpacity={1}
+								onPress={() => {
+									Keyboard.dismiss();
+
+									if (selected) {
+										this.onMessagePressHandler(messageIndex);
+									}
+								}}
+							>
+								<Message
+									message={item}
+									avatar={avatar}
+									selected={messageIndex === index && selected}
+									translateY={messageIndex <= index && selected}
+									onAvatarPress={onAvatarPress}
+									onMessagePress={() => this.onMessagePressHandler(index)}
+								/>
+							</TouchableOpacity>
+						)}
+						{Platform.OS === OS_TYPES.Android && (
+							<Message
+								message={item}
+								avatar={avatar}
+								selected={messageIndex === index && selected}
+								translateY={messageIndex <= index && selected}
+								onAvatarPress={onAvatarPress}
+								onMessagePress={() => this.onMessagePressHandler(index)}
+							/>
+						)}
+					</React.Fragment>
 				)}
 				keyboardShouldPersistTaps="handled"
 				keyExtractor={(item) => item.id}
@@ -83,7 +104,7 @@ class Component extends React.Component<IProps, IState> {
 	};
 
 	private getContainerSpace = () => {
-		if (this.state.messageIndex > 2 && this.state.selected) {
+		if (this.state.messageIndex > 2 && this.state.selected && Platform.OS === OS_TYPES.IOS) {
 			return 30;
 		}
 

@@ -12,17 +12,21 @@ import styles from './ConversationScreen.style';
 
 interface IProps {
 	profile: IProfile;
+	input: string;
 	dictionary: ILocaleDictionary;
-	onGoBack: () => void;
 	showProfileOptions: () => void;
 	showAddOptions: () => void;
+	onChangeText: (input: string) => void;
+	onGoBack: () => void;
 }
 
 export const ConversationScreenView: React.SFC<IProps> = ({
 	profile,
+	input,
 	dictionary,
 	showProfileOptions,
 	showAddOptions,
+	onChangeText,
 	onGoBack,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
@@ -45,10 +49,12 @@ export const ConversationScreenView: React.SFC<IProps> = ({
 				</TouchableOpacity>
 				<View style={{ flex: 1 }}>
 					<PrimaryTextInput
+						value={input}
 						placeholder={dictionary.components.inputs.placeholder.type}
 						size={InputSizes.Small}
 						multiline={true}
 						borderWidth={0}
+						onChangeText={onChangeText}
 						style={styles.input}
 					/>
 				</View>

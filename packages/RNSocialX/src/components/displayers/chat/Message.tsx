@@ -1,11 +1,12 @@
 import moment from 'moment';
 import * as React from 'react';
-import { Animated, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Platform, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AnimatedValue } from 'react-navigation';
 
-import { Colors } from '../../../environment/theme';
+import { OS_TYPES } from '../../../environment/consts';
+import { Colors, Icons } from '../../../environment/theme';
 import { IMessage } from '../../../store/data/messages';
 import { AvatarImage } from '../../avatar/AvatarImage';
 import { leftStyles, rightStyles, styles } from './Message.style';
@@ -35,20 +36,21 @@ export class Message extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate(prevProps: IProps) {
-		if (!prevProps.translateY && this.props.translateY) {
-			Animated.timing(this.state.translateY, {
-				toValue: 25,
-				duration: 250,
-				useNativeDriver: true,
-			}).start();
-		}
-
-		if (prevProps.translateY && !this.props.translateY) {
-			Animated.timing(this.state.translateY, {
-				toValue: 0,
-				duration: 250,
-				useNativeDriver: true,
-			}).start();
+		if (Platform.OS === OS_TYPES.IOS) {
+			if (!prevProps.translateY && this.props.translateY) {
+				Animated.timing(this.state.translateY, {
+					toValue: 25,
+					duration: 250,
+					useNativeDriver: true,
+				}).start();
+			}
+			if (prevProps.translateY && !this.props.translateY) {
+				Animated.timing(this.state.translateY, {
+					toValue: 0,
+					duration: 250,
+					useNativeDriver: true,
+				}).start();
+			}
 		}
 	}
 
@@ -58,7 +60,7 @@ export class Message extends React.Component<IProps, IState> {
 		const wrapperStyles = this.getWrapperStyles();
 		const date = moment
 			.unix(timestamp)
-			.format('LT')
+			.format('L')
 			.toString();
 
 		if (self) {
@@ -74,7 +76,7 @@ export class Message extends React.Component<IProps, IState> {
 								{sent && !seen && (
 									<React.Fragment>
 										<Text style={[styles.smallText, styles.grayText]}>Delivered</Text>
-										<Icon name="ios-checkmark-circle" style={styles.check} />
+										<Icon name={Icons.check} style={styles.check} />
 									</React.Fragment>
 								)}
 								{sent && seen && (
@@ -113,19 +115,30 @@ export class Message extends React.Component<IProps, IState> {
 			);
 		}
 
+		let showAvatar = false;
+		if (consecutive) {
+			if (consecutive.last) {
+				showAvatar = true;
+			} else if (!consecutive.first && !consecutive.middle && !consecutive.last) {
+				showAvatar = true;
+			}
+		}
+
 		return (
 			<React.Fragment>
 				{selected && (
-					<View style={[styles.row, leftStyles.specialMargin]}>
+					<View style={styles.row}>
 						<View style={styles.status}>
 							{sent && !seen && (
 								<React.Fragment>
+									<View style={leftStyles.spacer} />
 									<Text style={[styles.smallText, styles.grayText]}>Delivered</Text>
-									<Icon name="ios-checkmark-circle" style={styles.check} />
+									<Icon name={Icons.check} style={styles.check} />
 								</React.Fragment>
 							)}
 							{sent && seen && (
 								<React.Fragment>
+									<View style={leftStyles.spacer} />
 									<Text style={[styles.smallText, styles.grayText]}>Seen</Text>
 									<AvatarImage image={this.props.avatar} style={styles.seen} />
 								</React.Fragment>
@@ -138,31 +151,39 @@ export class Message extends React.Component<IProps, IState> {
 					</View>
 				)}
 				<Animated.View
-					style={[leftStyles.container, { transform: [{ translateY: this.state.translateY }] }]}
+					style={[
+						leftStyles.container,
+						{
+							transform: [{ translateY: this.state.translateY }],
+						},
+					]}
 				>
-					{consecutive && consecutive.last && (
+					<View style={leftStyles.row}>
+						{showAvatar ? (
+							<TouchableOpacity
+								style={leftStyles.avatarContainer}
+								activeOpacity={1}
+								onPress={onAvatarPress}
+							>
+								<AvatarImage image={this.props.avatar} style={leftStyles.avatar} />
+							</TouchableOpacity>
+						) : (
+							<View style={leftStyles.spacer} />
+						)}
 						<TouchableOpacity
-							style={styles.avatarContainer}
+							style={[
+								styles.background,
+								wrapperStyles,
+								{
+									backgroundColor: selected ? Colors.alto : Colors.gallery,
+								},
+							]}
 							activeOpacity={1}
-							onPress={onAvatarPress}
+							onPress={onMessagePress}
 						>
-							<AvatarImage image={this.props.avatar} style={styles.avatar} />
+							<Text style={styles.text}>{content}</Text>
 						</TouchableOpacity>
-					)}
-					<TouchableOpacity
-						style={[
-							styles.background,
-							wrapperStyles,
-							{ backgroundColor: selected ? Colors.alto : Colors.gallery },
-							consecutive && !consecutive.last
-								? leftStyles.specialMargin
-								: leftStyles.noSpecialMargin,
-						]}
-						activeOpacity={1}
-						onPress={onMessagePress}
-					>
-						<Text style={styles.text}>{content}</Text>
-					</TouchableOpacity>
+					</View>
 				</Animated.View>
 			</React.Fragment>
 		);

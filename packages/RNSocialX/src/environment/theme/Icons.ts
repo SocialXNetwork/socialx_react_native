@@ -1,4 +1,6 @@
 export const Icons = {
+	check: 'ios-checkmark-circle',
+
 	envelope: require('./assets/icons/envelope_icon.png'),
 	noNotifications: require('./assets/icons/icon_notifications_screen_empty.png'),
 	likeIconBlueOutline: require('./assets/icons/like_blue_outline.png'),

@@ -1,9 +1,9 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { OS_TYPES } from '../../../environment/consts';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 const { width } = Dimensions.get('window');
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(30);
-const MARGIN_RIGHT_AVATAR = Sizes.smartHorizontalScale(10);
 
 export const styles = StyleSheet.create({
 	gradient: {
@@ -23,15 +23,6 @@ export const styles = StyleSheet.create({
 		marginBottom: Sizes.smartVerticalScale(12),
 		maxWidth: width * 0.75,
 	},
-	avatarContainer: {
-		marginRight: Sizes.smartVerticalScale(MARGIN_RIGHT_AVATAR),
-		marginBottom: Sizes.smartHorizontalScale(12),
-	},
-	avatar: {
-		width: AVATAR_SIZE,
-		height: AVATAR_SIZE,
-		borderRadius: AVATAR_SIZE / 2,
-	},
 	text: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
@@ -41,8 +32,9 @@ export const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
-		position: 'absolute',
-		transform: [{ translateY: 4 }],
+		position: Platform.OS === OS_TYPES.IOS ? 'absolute' : 'relative',
+		transform: Platform.OS === OS_TYPES.IOS ? [{ translateY: 4 }] : [],
+		marginVertical: Platform.OS === OS_TYPES.Android ? Sizes.smartVerticalScale(2) : 0,
 	},
 	spacer: {
 		flex: 1,
@@ -94,11 +86,19 @@ export const leftStyles = StyleSheet.create({
 	last: {
 		borderTopLeftRadius: Sizes.smartHorizontalScale(3),
 	},
-	specialMargin: {
-		marginLeft: Sizes.smartHorizontalScale(AVATAR_SIZE + MARGIN_RIGHT_AVATAR),
+	row: {
+		flexDirection: 'row',
 	},
-	noSpecialMargin: {
-		marginLeft: 0,
+	avatarContainer: {
+		marginRight: Sizes.smartVerticalScale(10),
+	},
+	avatar: {
+		width: AVATAR_SIZE,
+		height: AVATAR_SIZE,
+		borderRadius: AVATAR_SIZE / 2,
+	},
+	spacer: {
+		width: Sizes.smartHorizontalScale(40),
 	},
 });
 
