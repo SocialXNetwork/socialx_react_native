@@ -37,7 +37,9 @@ export const ConversationScreenView: React.SFC<IProps> = ({
 			onPressAvatar={showProfileOptions}
 			onPressBack={onGoBack}
 		/>
+		{/* <View style={{ flex: 1, overflow: 'scroll', position: 'relative' }}> */}
 		<MessageList alias={profile.alias} avatar={profile.avatar} onAvatarPress={showProfileOptions} />
+		{/* </View> */}
 		<KeyboardAvoidingView
 			behavior="padding"
 			keyboardVerticalOffset={3}

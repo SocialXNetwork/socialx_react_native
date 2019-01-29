@@ -3,7 +3,8 @@ import { Colors, Sizes } from '../../environment/theme';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
+		height: '100%',
 		backgroundColor: Colors.white,
 	},
 	footer: {

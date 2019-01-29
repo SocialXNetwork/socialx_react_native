@@ -56,12 +56,8 @@ export class Message extends React.Component<IProps, IState> {
 
 	public render() {
 		const { selected, message, onAvatarPress, onMessagePress } = this.props;
-		const { content, timestamp, self, consecutive, seen, sent } = message;
+		const { content, self, consecutive, seen, sent } = message;
 		const wrapperStyles = this.getWrapperStyles();
-		const date = moment
-			.unix(timestamp)
-			.format('L')
-			.toString();
 
 		if (self) {
 			return (
@@ -70,7 +66,7 @@ export class Message extends React.Component<IProps, IState> {
 						<View style={styles.row}>
 							<View style={styles.spacer} />
 							<View style={styles.timestamp}>
-								<Text style={styles.grayText}>{date}</Text>
+								<Text style={styles.grayText}>{this.getDate()}</Text>
 							</View>
 							<View style={[styles.status, { justifyContent: 'flex-end' }]}>
 								{sent && !seen && (
@@ -145,7 +141,7 @@ export class Message extends React.Component<IProps, IState> {
 							)}
 						</View>
 						<View style={styles.timestamp}>
-							<Text style={styles.grayText}>{date}</Text>
+							<Text style={styles.grayText}>{this.getDate()}</Text>
 						</View>
 						<View style={styles.spacer} />
 					</View>
@@ -207,5 +203,28 @@ export class Message extends React.Component<IProps, IState> {
 		}
 
 		return wrapperStyles;
+	};
+
+	private getDate = () => {
+		const { timestamp } = this.props.message;
+
+		let formattedDate;
+
+		const startOfWeek = moment().startOf('isoWeek');
+		const endOfWeek = moment().endOf('isoWeek');
+		const messageDate = moment(timestamp);
+		const currentYear = moment().year();
+		const messageYear = moment(timestamp).year();
+		const currentWeek = messageDate.isBetween(startOfWeek, endOfWeek);
+
+		if (currentWeek && messageYear === currentYear) {
+			formattedDate = moment(timestamp).format('dddd, H:mm');
+		} else if (!currentWeek && messageYear === currentYear) {
+			formattedDate = moment(timestamp).format('DD MMM H:mm');
+		} else if (!currentWeek && messageYear < currentYear) {
+			formattedDate = moment(timestamp).format('DD MMM YYYY H:mm');
+		}
+
+		return formattedDate;
 	};
 }
