@@ -1,50 +1,53 @@
-import * as React from 'react';
+import React from 'react';
 import { FlatList, Image, ImageStyle, Text, View } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 
 import { Header, Notification } from '../../components';
 import { Icons } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
-
+import { IDictionary } from '../../types';
 import styles from './NotificationsScreen.style';
 
-interface INotificationsScreenViewProps extends ITranslatedProps {
+const EmptyList: React.SFC<IDictionary> = ({ dictionary }) => (
+	<View style={styles.empty}>
+		<Image style={styles.icon as ImageStyle} source={Icons.noNotifications} resizeMode="contain" />
+		<Text style={styles.text}>{dictionary.screens.notifications.empty}</Text>
+	</View>
+);
+
+interface IProps extends IDictionary {
 	ids: string[];
 	refreshing: boolean;
 	onRefresh: () => void;
+	onWillFocus: () => void;
 	onViewUserProfile: (alias: string) => void;
 	onShowOptions: (id: string) => void;
 }
 
-const EmptyListComponent: React.SFC<ITranslatedProps> = ({ getText }) => (
-	<View style={styles.empty}>
-		<Image style={styles.icon as ImageStyle} source={Icons.noNotifications} resizeMode="contain" />
-		<Text style={styles.text}>{getText('notifications.empty.list')}</Text>
-	</View>
-);
-
-export const NotificationsScreenView: React.SFC<INotificationsScreenViewProps> = ({
+export const NotificationsScreenView: React.SFC<IProps> = ({
 	ids,
-	refreshing,
-	onRefresh,
+	dictionary,
+	// refreshing,
+	// onRefresh,
+	onWillFocus,
 	onViewUserProfile,
 	onShowOptions,
-	getText,
 }) => (
 	<View style={styles.container}>
-		<Header title={getText('notifications.screen.title')} />
+		<NavigationEvents onWillFocus={onWillFocus} />
+		<Header title={dictionary.screens.notifications.title} />
 		<FlatList
 			data={ids}
 			keyExtractor={(id) => id}
 			renderItem={({ item }) => (
 				<Notification
 					id={item}
+					dictionary={dictionary}
 					onViewUserProfile={onViewUserProfile}
 					onShowOptions={onShowOptions}
-					getText={getText}
 				/>
 			)}
-			ListEmptyComponent={<EmptyListComponent getText={getText} />}
-			refreshing={false}
+			ListEmptyComponent={<EmptyList dictionary={dictionary} />}
+			// refreshing={refreshing}
 			// onRefresh={onRefresh}
 			contentContainerStyle={styles.list}
 		/>

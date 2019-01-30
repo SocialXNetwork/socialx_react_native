@@ -262,7 +262,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const MyProfileScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithMyProfile>
 				{(profile) => <Screen {...props} {...profile.data} {...profile.actions} {...nav.actions} />}

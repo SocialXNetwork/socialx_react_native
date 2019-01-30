@@ -30,7 +30,7 @@ const Screen: React.SFC<IProps> = ({ navigation, dictionary, sendResetCode }) =>
 );
 
 export const ForgotPasswordScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithForgotPassword>
 				{({ data, actions }) => (

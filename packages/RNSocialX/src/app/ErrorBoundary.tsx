@@ -11,7 +11,6 @@ export default class ErrorBoundary extends React.Component<{}, { hasError: boole
 	state = { hasError: false };
 
 	public componentDidCatch() {
-		StatusBar.setBarStyle('dark-content');
 		this.setState({ hasError: true });
 	}
 
@@ -19,6 +18,7 @@ export default class ErrorBoundary extends React.Component<{}, { hasError: boole
 		if (this.state.hasError) {
 			return (
 				<View style={styles.container}>
+					<StatusBar barStyle="dark-content" />
 					<Icon name="ios-warning" style={styles.icon} />
 					<Text style={styles.header}>Something went wrong</Text>
 					<Text style={styles.text}>

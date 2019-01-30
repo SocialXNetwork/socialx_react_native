@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 
 import { Header, UserEntries } from '../../components';
 import { Colors, Sizes } from '../../environment/theme';
@@ -18,6 +18,7 @@ export const LikesScreenView: React.SFC<ILikesScreenViewProps> = ({
 	dictionary,
 }) => (
 	<View style={styles.container}>
+		<StatusBar barStyle="light-content" />
 		<Header title={dictionary.screens.likes.title} back={true} onPressBack={onGoBack} />
 		<View style={styles.list}>
 			<UserEntries aliases={likeIds} friends={true} onEntryPress={onViewUserProfile} />

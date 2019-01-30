@@ -62,12 +62,12 @@ export default {
 		},
 		userProfile: {
 			title: "Profile",
-			posts: "User doesn't have any posts.",
+			posts: "User doesn't have posts.",
 			gallery: "User's photo gallery is empty."
 		},
 		myProfile: {
 			title: "Profile",
-			posts: "You don't have any posts.",
+			posts: "You don't have posts.",
 			gallery: "Your photo gallery is empty.",
 			analytics: "Profile analytics",
 			wallet: "Wallet",
@@ -106,11 +106,21 @@ export default {
 			friends: "Share with your friends what you think",
 			empty: "Your feed is empty. Create your first post!"
 		},
+		notifications: {
+			title: 'Activity',
+			empty: "You don't have notifications!",
+		},
 		chat: {
 			messages: {
 				messages: "Messages",
 				friends: "Friends",
 				empty: "You don't have messages."
+			}
+		},
+		wallet: {
+			activity: {
+				title: "Socialx wallet",
+				heading: "Activity",
 			}
 		}
 	},
@@ -136,7 +146,10 @@ export default {
 			resetCode: "Send reset code",
 			friends: "Friends",
 			addFriend: "Add friend",
-			undo: "Undo"
+			undo: "Undo",
+			viewAccount: 'View account',
+			accept: "Accept",
+			decline: "Decline",
 		},
 		inputs: {
 			placeholder: {
@@ -202,7 +215,9 @@ export default {
 					title: "Delete conversation?",
 					description: "This will permanently delete the conversation history."
 				}
-			}
+			},
+			offline: "Offline. Waiting for connection...",
+			activity: 'Please wait...',
 		},
 		displayers: {
 			mediaInfo: {
@@ -218,7 +233,7 @@ export default {
 				others: "others",
 				liked: "Liked by",
 				creating: "Posting...",
-				more: "More",
+				more: "Read more",
 				and: "And",
 				like: "Like",
 				unlike: "Unlike",
@@ -234,6 +249,14 @@ export default {
 			message: {
 				delivered: "Delivered",
 				seen: "Seen"
+			},
+			wallet: {
+				socx: 'SOCX',
+			},
+			notification: {
+				request: "sent you a friend request.",
+				accepted: "accepted your friend request.",
+				declined: "declined your friend request.",
 			}
 		}
 	},
@@ -265,7 +288,6 @@ export default {
 	"app.error": "App error",
 	"validation.error": "Validation error",
 	"general.error.message": "Something went wrong.",
-	"please.wait": "Please wait",
 	"message.link.not.supported": "Unsupported link type",
 	"message.media.not.supported":
 		"Unsupported media type or type detection failed",
@@ -296,25 +318,6 @@ export default {
 		"The days that firms make millions using your data are over",
 	"events.list.item.all.day": "All Day",
 	"events.list.item.start.at": "Start at",
-	"notifications.friend.request.accept.failed":
-		"Friend request could not be accepted at this time. Try again later..",
-	"notifications.friend.request.decline.failed":
-		"Friend request could not be declined at this time. Try again later..",
-	"notifications.friend.request.accepted": "accepted your friend request.",
-	"notifications.friend.request.declined": "declined your friend request.",
-	"notifications.friend.request": "sent you a friend request.",
-	"notifications.empty.list": "You have no notifications!",
-	"notifications.recent.comment": "commented on your post.",
-	"notifications.super.liked": "superliked your post,",
-	"notifications.group.request.sent": "sent you a group request",
-	"notifications.check.failed":
-		"Could not check notification at this time. Try again later..",
-	"media.types.video.replay": "Watch again",
-	"notifications.card.recent.comment.title": "Commented on your post",
-	"notifications.card.super.liked": "Superliked your post",
-	"notifications.card.group.request.title": "Invited you to",
-	"notifications.card.generic.hide.notification": "Hide notification?",
-	"notifications.card.generic.swipeout.label": "Dismiss",
 	"referral.screen.title": "referral system",
 	"referral.screen.referrals": "Total referrals",
 	"referral.screen.socx": "SOCX earned through referrals",
@@ -357,12 +360,8 @@ export default {
 	"modal.sms.code.type.code.message":
 		"Please type the verification code sent to",
 	"modal.sms.code.resend.button": "Resend Code",
-	"tab.bar.bottom.photo.picker.title": "Share a photo",
-	"tab.bar.bottom.photo.picker.use.camera": "Open camera",
-	"tab.bar.bottom.photo.picker.use.gallery": "Pick from gallery",
 	"user.avatar.button.label.own.user": "EDIT PROFILE",
 	"user.avatar.button.label.other.user": "MESSAGE",
-	"offline.overlay.message": "Offline. Waiting for connection..",
 	"modal.tag.friends.title": "Tag Friends",
 	"modal.tag.friends.search.box.placeholder": "Search",
 	"toast.message.on.like.failed": "Like failed with exception",
@@ -376,7 +375,6 @@ export default {
 	"media.viewer.screen.comments": "Comments",
 	"media.viewer.screen.like.button": "Like",
 	"media.viewer.screen.comment.button": "Comment",
-	"notifications.screen.title": "ACTIVITY",
 	"wallet.account.title": "Wallet account",
 	"wallet.account.input.placeholder": "Account name",
 	"wallet.account.input.label": "Unique blockchain account name",
@@ -391,8 +389,6 @@ export default {
 	"wallet.send.coins.title": "Send coins",
 	"wallet.receive.coins.title": "Receive coins",
 	"wallet.receive.coins.address": "Your wallet address:",
-	"wallet.activity.screen.title": "socialx wallet",
-	"wallet.activity.screen.heading": "Activity",
 	"rewards.title": "Rewards",
 	"rewards.date.buttons.daily": "Daily",
 	"rewards.date.buttons.monthly": "Monthly",

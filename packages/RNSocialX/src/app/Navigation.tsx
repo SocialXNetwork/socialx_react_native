@@ -5,6 +5,7 @@ import {
 	createBottomTabNavigator,
 	createMaterialTopTabNavigator,
 	createStackNavigator,
+	NavigationContainerComponent,
 	NavigationSceneRendererProps,
 	NavigationScreenProps,
 	TransitionConfig,
@@ -15,6 +16,7 @@ import {
 	Alert,
 	Header,
 	IconButton,
+	MediaOverlay,
 	OfflineOverlay,
 	OptionsMenu,
 	TabIcon,
@@ -252,7 +254,7 @@ const HomeTabs = createBottomTabNavigator(
 						notifications={props.screenProps.notifications}
 						setNavigationParams={props.screenProps.setNavigationParams}
 						showOptionsMenu={props.screenProps.showOptionsMenu}
-						getText={props.screenProps.getText}
+						dictionary={props.screenProps.dictionary}
 					/>
 				);
 			},
@@ -261,6 +263,7 @@ const HomeTabs = createBottomTabNavigator(
 					defaultHandler();
 				}
 			},
+			removeClippedSubviews: false,
 			tabBarOptions: {
 				showLabel: false,
 				style: styles.tabs,
@@ -296,7 +299,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		ChatWithSearch,
+		// ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },
@@ -338,10 +341,11 @@ const App = createStackNavigator(
 );
 
 const Root = createAppContainer(App);
+export let navigator: NavigationContainerComponent | null;
 
 const Navigation = () => (
 	<WithI18n>
-		{({ getText, dictionary }) => (
+		{({ dictionary }) => (
 			<React.Fragment>
 				<WithNavigationParams>
 					{({ setNavigationParams }) => (
@@ -350,11 +354,12 @@ const Navigation = () => (
 								<WithNotifications>
 									{({ unread }) => (
 										<Root
+											ref={(nav) => (navigator = nav)}
 											screenProps={{
 												notifications: unread.length,
 												showOptionsMenu,
 												setNavigationParams,
-												getText,
+												dictionary,
 											}}
 										/>
 									)}
@@ -376,18 +381,19 @@ const Navigation = () => (
 												alpha={globals.transparentOverlay.alpha}
 												loader={globals.transparentOverlay.loader}
 											/>
-											<OfflineOverlay visible={!!globals.offline} getText={getText} />
+											<OfflineOverlay visible={!!globals.offline} dictionary={dictionary} />
 											<ActivityIndicator
 												visible={globals.activity.visible}
 												title={globals.activity.title}
 												message={globals.activity.message}
-												getText={getText}
+												dictionary={dictionary}
 											/>
 											<OptionsMenu
 												visible={optionsMenuItems.length > 0}
 												items={optionsMenuItems}
 												onBackdropPress={hideOptionsMenu}
 											/>
+											<MediaOverlay />
 										</React.Fragment>
 									)}
 								</WithActivities>

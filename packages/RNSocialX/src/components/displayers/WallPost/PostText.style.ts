@@ -13,8 +13,7 @@ export default StyleSheet.create({
 	more: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
-		color: Colors.pink,
-		paddingLeft: Sizes.smartHorizontalScale(5),
+		color: Colors.dustGray,
 	},
 	hashtag: {
 		...Fonts.centuryGothicBold,

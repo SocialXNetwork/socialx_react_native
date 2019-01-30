@@ -124,11 +124,21 @@ export interface ILocaleDictionary {
 			friends: string;
 			empty: string;
 		};
+		notifications: {
+			title: string;
+			empty: string;
+		};
 		chat: {
 			messages: {
 				messages: string;
 				friends: string;
 				empty: string;
+			};
+		};
+		wallet: {
+			activity: {
+				title: string;
+				heading: string;
 			};
 		};
 	};
@@ -155,6 +165,9 @@ export interface ILocaleDictionary {
 			friends: string;
 			addFriend: string;
 			undo: string;
+			viewAccount: string;
+			accept: string;
+			decline: string;
 		};
 		inputs: {
 			placeholder: {
@@ -221,6 +234,8 @@ export interface ILocaleDictionary {
 					description: string;
 				};
 			};
+			offline: string;
+			activity: string;
 		};
 		displayers: {
 			mediaInfo: {
@@ -252,6 +267,14 @@ export interface ILocaleDictionary {
 			message: {
 				delivered: string;
 				seen: string;
+			};
+			wallet: {
+				socx: string;
+			};
+			notification: {
+				request: string;
+				accepted: string;
+				declined: string;
 			};
 		};
 	};

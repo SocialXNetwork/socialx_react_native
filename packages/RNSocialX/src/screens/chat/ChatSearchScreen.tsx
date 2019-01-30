@@ -73,7 +73,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const ChatSearchScreen: React.SFC<INavigationProps> = (props) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{({ actions }) => (
 			<WithSearch>
 				{(search) => (

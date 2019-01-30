@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white,
@@ -23,6 +23,4 @@ const styles: any = {
 		color: Colors.cloudBurst,
 		paddingVertical: Sizes.smartVerticalScale(10),
 	},
-};
-
-export default StyleSheet.create(styles);
+});

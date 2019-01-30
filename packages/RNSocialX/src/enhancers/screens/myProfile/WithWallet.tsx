@@ -1,15 +1,12 @@
-/**
- * TODO list:
- * 1. Data props: wallet
- * 2. Action props: loadMoreTransactions, refreshTransactions
- */
+import React from 'react';
 
-import * as React from 'react';
 import { transactions } from '../../../mocks';
-import { ITranslatedProps, IWallet, TREND_OPTIONS } from '../../../types';
+import { IDictionary, IWallet, TREND_OPTIONS } from '../../../types';
+
 import { WithI18n } from '../../connectors/app/WithI18n';
 
 const mock: IWithWalletEnhancedProps = {
+	// @ts-ignore
 	data: {
 		wallet: {
 			coins: '53,680',
@@ -20,21 +17,16 @@ const mock: IWithWalletEnhancedProps = {
 		},
 	},
 	actions: {
-		loadMoreTransactions: () => {
-			/**/
-		},
-		refreshTransactions: () => {
-			/**/
-		},
-		getText: (value: string, ...args: any[]) => value,
+		loadMoreTransactions: () => undefined,
+		refreshTransactions: () => undefined,
 	},
 };
 
-export interface IWithWalletEnhancedData {
+export interface IWithWalletEnhancedData extends IDictionary {
 	wallet: IWallet;
 }
 
-export interface IWithWalletEnhancedActions extends ITranslatedProps {
+export interface IWithWalletEnhancedActions {
 	loadMoreTransactions: () => void;
 	refreshTransactions: () => void;
 }
@@ -52,10 +44,10 @@ export class WithWallet extends React.Component<IWithWalletProps> {
 	render() {
 		return (
 			<WithI18n>
-				{(i18nProps) =>
+				{({ dictionary }) =>
 					this.props.children({
-						data: mock.data,
-						actions: { ...mock.actions, getText: i18nProps.getText },
+						data: { ...mock.data, dictionary },
+						actions: { ...mock.actions },
 					})
 				}
 			</WithI18n>

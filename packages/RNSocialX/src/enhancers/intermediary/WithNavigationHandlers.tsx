@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Keyboard } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import uuid from 'uuid/v4';
 
+import { navigator } from '../../app/Navigation';
 import { SCREENS } from '../../environment/consts';
-import { IMedia, INavigationProps } from '../../types';
+import { IMedia } from '../../types';
 
 import { IMediaOverlay } from '../../store/ui/overlays';
 import { WithNavigationParams } from '../connectors/app/WithNavigationParams';
@@ -13,12 +15,12 @@ import { WithOverlays } from '../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithNavigationHandlersEnhancedActions {
-	onViewUserProfile: (alias: string) => void;
-	onViewLikes: (likeIds: string[]) => void;
-	onViewComments: (postId: string, keyboardRaised: boolean) => void;
-	onViewImage: (items: IMedia[], startIndex?: number, postId?: string) => void;
-	onViewFriends: (alias: string) => void;
-	onOpenConversation: (alias: string) => void;
+	onViewUserProfile?: (alias: string) => void;
+	onViewLikes?: (likeIds: string[]) => void;
+	onViewComments?: (postId: string, keyboardRaised: boolean) => void;
+	onViewImage?: (items: IMedia[], startIndex?: number, postId?: string) => void;
+	onViewFriends?: (alias: string) => void;
+	onOpenConversation?: (alias: string) => void;
 	onGoBack: () => void;
 }
 
@@ -26,7 +28,7 @@ interface IWithNavigationHandlersEnhancedProps {
 	actions: IWithNavigationHandlersEnhancedActions;
 }
 
-interface IWithNavigationHandlersProps extends INavigationProps {
+interface IWithNavigationHandlersProps {
 	children(props: IWithNavigationHandlersEnhancedProps): JSX.Element;
 }
 
@@ -88,72 +90,98 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 	}
 
 	private onGoBackHandler = () => {
-		Keyboard.dismiss();
-		this.props.navigation.goBack(null);
+		if (navigator) {
+			Keyboard.dismiss();
+			const action = NavigationActions.back({ key: null });
+			navigator.dispatch(action);
+		}
 	};
 
 	private onViewUserProfileHandler = (currentUser: string, visitedUser: string) => {
-		if (visitedUser === currentUser) {
-			this.props.navigation.navigate(SCREENS.MyProfile);
-		} else {
-			const key = uuid();
+		if (navigator) {
+			Keyboard.dismiss();
 
-			this.actions.setNavigationParams({
-				screenName: SCREENS.UserProfile,
-				params: { user: visitedUser },
-				key,
-			});
-			this.props.navigation.navigate({ routeName: SCREENS.UserProfile, key });
+			if (visitedUser === currentUser) {
+				const action = NavigationActions.navigate({ routeName: SCREENS.MyProfile });
+				navigator.dispatch(action);
+			} else {
+				const key = uuid();
+
+				this.actions.setNavigationParams({
+					screenName: SCREENS.UserProfile,
+					params: { user: visitedUser },
+					key,
+				});
+				const action = NavigationActions.navigate({ routeName: SCREENS.UserProfile, key });
+				navigator.dispatch(action);
+			}
 		}
 	};
 
 	private onViewLikesHandler = (likeIds: string[]) => {
-		const key = uuid();
+		if (navigator) {
+			Keyboard.dismiss();
+			const key = uuid();
 
-		this.actions.setNavigationParams({
-			screenName: SCREENS.Likes,
-			params: { likeIds },
-			key,
-		});
-		this.props.navigation.navigate({ routeName: SCREENS.Likes, key });
+			this.actions.setNavigationParams({
+				screenName: SCREENS.Likes,
+				params: { likeIds },
+				key,
+			});
+			const action = NavigationActions.navigate({ routeName: SCREENS.Likes, key });
+			navigator.dispatch(action);
+		}
 	};
 
 	private onViewCommentsHandler = (postId: string, keyboardRaised: boolean) => {
-		if (postId) {
+		if (postId && navigator) {
+			Keyboard.dismiss();
 			const key = uuid();
+
 			this.actions.setNavigationParams({
 				screenName: SCREENS.Comments,
 				params: { postId, keyboardRaised },
 				key,
 			});
-			this.props.navigation.navigate({ routeName: SCREENS.Comments, key });
+			const action = NavigationActions.navigate({ routeName: SCREENS.Comments, key });
+			navigator.dispatch(action);
 		}
 	};
 
 	private onViewImageHandler = (items: IMedia[], startIndex?: number, postId?: string) => {
+		Keyboard.dismiss();
 		this.actions.showMedia({ items, startIndex, postId });
 	};
 
 	private onViewFriendsHandler = (alias: string) => {
-		const key = uuid();
+		if (navigator) {
+			Keyboard.dismiss();
+			const key = uuid();
 
-		this.actions.setNavigationParams({
-			screenName: SCREENS.FriendsList,
-			params: {
-				alias,
-			},
-			key,
-		});
-		this.props.navigation.navigate({ routeName: SCREENS.FriendsList, key });
+			this.actions.setNavigationParams({
+				screenName: SCREENS.FriendsList,
+				params: {
+					alias,
+				},
+				key,
+			});
+			const action = NavigationActions.navigate({ routeName: SCREENS.FriendsList, key });
+			navigator.dispatch(action);
+		}
 	};
 
 	private onOpenConversationHandler = (alias: string) => {
-		this.actions.setNavigationParams({
-			screenName: SCREENS.Conversation,
-			params: {
-				alias,
-			},
-		});
-		this.props.navigation.navigate(SCREENS.Conversation);
+		if (navigator) {
+			Keyboard.dismiss();
+
+			this.actions.setNavigationParams({
+				screenName: SCREENS.Conversation,
+				params: {
+					alias,
+				},
+			});
+			const action = NavigationActions.navigate({ routeName: SCREENS.Conversation });
+			navigator.dispatch(action);
+		}
 	};
 }

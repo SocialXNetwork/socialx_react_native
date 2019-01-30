@@ -49,7 +49,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const AllMessagesScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{({ actions }) => (
 			<WithAllMessages>
 				{({ data }) => (

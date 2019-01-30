@@ -105,7 +105,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const RegisterScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithRegister>
 				{({ data, actions }) => (

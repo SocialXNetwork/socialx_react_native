@@ -73,15 +73,15 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const SearchScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
-		{(nav) => (
+	<WithNavigationHandlers>
+		{({ actions }) => (
 			<WithSearch>
 				{(search) => (
 					<Screen
 						{...props}
 						{...search.data}
 						{...search.actions}
-						onViewUserProfile={nav.actions.onViewUserProfile}
+						onViewUserProfile={actions.onViewUserProfile}
 					/>
 				)}
 			</WithSearch>

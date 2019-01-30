@@ -2,10 +2,10 @@ import * as React from 'react';
 import { FlatList, Text, View } from 'react-native';
 
 import { Header, MyWalletInfo, TransactionItem } from '../../components';
-import { ITransactionData, ITranslatedProps, TREND_OPTIONS } from '../../types';
+import { IDictionary, ITransactionData, TREND_OPTIONS } from '../../types';
 import styles from './WalletActivityScreen.style';
 
-export interface IWalletActivityScreenViewProps extends ITranslatedProps {
+interface IProps extends IDictionary {
 	coins: string;
 	trendPercentage: string;
 	trendArrow: TREND_OPTIONS;
@@ -17,44 +17,42 @@ export interface IWalletActivityScreenViewProps extends ITranslatedProps {
 	onGoBack: () => void;
 }
 
-export const WalletActivityScreenView: React.SFC<IWalletActivityScreenViewProps> = ({
+export const WalletActivityScreenView: React.SFC<IProps> = ({
 	coins,
 	trendPercentage,
 	trendArrow,
-	onViewAccount,
 	transactions,
 	refreshing,
+	dictionary,
+	onViewAccount,
 	onRefresh,
 	onEndReached,
 	onGoBack,
-	getText,
-}) => {
-	return (
-		<View style={styles.container}>
-			<Header title={getText('wallet.activity.screen.title')} back={true} onPressBack={onGoBack} />
-			<View style={styles.walletContainer}>
-				<MyWalletInfo
-					coins={coins}
-					trendPercentage={trendPercentage}
-					trendArrow={trendArrow}
-					onViewAccount={onViewAccount}
-					getText={getText}
-				/>
-			</View>
-			<View style={styles.activity}>
-				<Text style={styles.heading}>{getText('wallet.activity.screen.heading')}</Text>
-				<FlatList
-					showsVerticalScrollIndicator={false}
-					refreshing={refreshing}
-					onRefresh={onRefresh}
-					onEndReached={onEndReached}
-					data={transactions}
-					renderItem={(data: { item: ITransactionData; index: number }) => (
-						<TransactionItem {...data.item} />
-					)}
-					keyExtractor={(item: ITransactionData) => item.id}
-				/>
-			</View>
+}) => (
+	<View style={styles.container}>
+		<Header title={dictionary.screens.wallet.activity.title} back={true} onPressBack={onGoBack} />
+		<View style={styles.walletContainer}>
+			<MyWalletInfo
+				coins={coins}
+				trendPercentage={trendPercentage}
+				trendArrow={trendArrow}
+				dictionary={dictionary}
+				onViewAccount={onViewAccount}
+			/>
 		</View>
-	);
-};
+		<View style={styles.activity}>
+			<Text style={styles.heading}>{dictionary.screens.wallet.activity.heading}</Text>
+			<FlatList
+				showsVerticalScrollIndicator={false}
+				refreshing={refreshing}
+				onRefresh={onRefresh}
+				onEndReached={onEndReached}
+				data={transactions}
+				renderItem={(data: { item: ITransactionData; index: number }) => (
+					<TransactionItem {...data.item} />
+				)}
+				keyExtractor={(item: ITransactionData) => item.id}
+			/>
+		</View>
+	</View>
+);

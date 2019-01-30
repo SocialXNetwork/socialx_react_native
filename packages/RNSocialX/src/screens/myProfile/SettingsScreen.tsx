@@ -46,7 +46,7 @@ class Screen extends React.Component<IProps> {
 }
 
 export const SettingsScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithSettings>
 				{({ data, actions }) => (

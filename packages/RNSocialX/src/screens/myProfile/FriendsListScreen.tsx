@@ -63,7 +63,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const FriendsListScreen = (props: IProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithFriendsList navigation={props.navigation}>
 				{(friends) => <Screen {...props} {...friends.data} {...nav.actions} />}

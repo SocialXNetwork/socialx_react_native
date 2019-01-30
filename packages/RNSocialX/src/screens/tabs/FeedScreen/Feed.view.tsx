@@ -46,7 +46,6 @@ export const FeedView: React.SFC<IProps> = ({
 	dictionary,
 }) => (
 	<View ref={postContainerRef} style={styles.container}>
-		<MediaOverlay navigation={navigation} />
 		<FlatList
 			ref={listRef}
 			windowSize={10}

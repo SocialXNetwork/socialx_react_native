@@ -200,11 +200,11 @@ class Component extends React.Component<IProps, IState> {
 							>
 								<PostText
 									text={postText}
-									fullTextVisible={fullTextVisible}
-									onShowFullText={this.onShowFullTextHandler}
+									fullTextVisible={true}
 									handleHashTag={() => undefined}
 									handleUserTag={() => undefined}
 									handleUrls={() => undefined}
+									onShowFullText={this.onShowFullTextHandler}
 									dictionary={dictionary}
 								/>
 								{media.length > 0 && (
@@ -213,7 +213,7 @@ class Component extends React.Component<IProps, IState> {
 										<WallPostMedia
 											media={media}
 											creating={creating}
-											onMediaObjectView={(index: number) => onViewImage(media, index, postId)}
+											onMediaObjectView={(index: number) => onViewImage(media, index)}
 											onDoublePress={() => onDoubleTapLikePost(postId)}
 										/>
 									</View>
@@ -482,7 +482,7 @@ class Component extends React.Component<IProps, IState> {
 const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithWallPost>
 		{(wallPost) => (
-			<WithNavigationHandlers navigation={props.navigation}>
+			<WithNavigationHandlers>
 				{(nav) => (
 					<WithLiking likedByCurrentUser={props.post.likedByCurrentUser || false}>
 						{(likes) => (

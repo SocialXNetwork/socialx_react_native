@@ -117,7 +117,7 @@ class Component extends React.Component<IProps> {
 }
 
 const EnhancedComponent: React.SFC<IProps> = (props) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{({ actions }) => <Component {...props} onViewLikes={actions.onViewLikes} />}
 	</WithNavigationHandlers>
 );

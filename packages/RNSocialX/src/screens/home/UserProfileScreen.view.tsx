@@ -8,19 +8,13 @@ import {
 	Platform,
 	RefreshControl,
 	ScrollView,
+	StatusBar,
 	View,
 } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 
-import {
-	Header,
-	MediaOverlay,
-	NoContent,
-	Profile,
-	ProfilePhotoGrid,
-	WallPost,
-} from '../../components';
+import { Header, NoContent, Profile, ProfilePhotoGrid, WallPost } from '../../components';
 import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { IDictionary, INavigationProps, IVisitedUser } from '../../types';
 
@@ -92,10 +86,8 @@ export const UserProfileScreenView: React.SFC<IUserProfileScreenViewProps> = ({
 
 	return (
 		<View style={styles.container}>
-			<MediaOverlay navigation={navigation} />
-			<View style={styles.headerContainer}>
-				<Header title={dictionary.screens.userProfile.title} back={true} onPressBack={onGoBack} />
-			</View>
+			<StatusBar barStyle="light-content" />
+			<Header title={dictionary.screens.userProfile.title} back={true} onPressBack={onGoBack} />
 			<ScrollView
 				contentContainerStyle={scrollContainerStyles}
 				showsVerticalScrollIndicator={false}

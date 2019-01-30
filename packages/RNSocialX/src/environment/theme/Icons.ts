@@ -1,12 +1,39 @@
 export const Icons = {
 	check: 'ios-checkmark-circle',
 	gallery: 'md-photos',
+	camera: 'md-camera',
 	user: 'ios-person',
 	plus: 'ios-add-circle',
 	send: 'ios-paper-plane',
 	copy: 'ios-copy',
 	delete: 'ios-trash',
+	trending: {
+		up: 'md-trending-up',
+		down: 'md-trending-down',
+	},
 
+	tabs: {
+		home: {
+			normal: require('./assets/icons/tab_bar_home.png'),
+			selected: require('./assets/icons/tab_bar_home_selected.png'),
+		},
+		search: {
+			normal: require('./assets/icons/tab_bar_search.png'),
+			selected: require('./assets/icons/tab_bar_search_selected.png'),
+		},
+		photo: {
+			normal: require('./assets/icons/tab_bar_photo.png'),
+			selected: require('./assets/icons/tab_bar_photo_selected.png'),
+		},
+		notifications: {
+			normal: require('./assets/icons/tab_bar_notifications.png'),
+			selected: require('./assets/icons/tab_bar_notifications_selected.png'),
+		},
+		profile: {
+			normal: require('./assets/icons/tab_bar_profile.png'),
+			selected: require('./assets/icons/tab_bar_profile_selected.png'),
+		},
+	},
 	envelope: require('./assets/icons/envelope_icon.png'),
 	noNotifications: require('./assets/icons/icon_notifications_screen_empty.png'),
 	likeIconBlueOutline: require('./assets/icons/like_blue_outline.png'),
@@ -15,16 +42,6 @@ export const Icons = {
 	iconPostComments: require('./assets/icons/post_comments.png'),
 	iconPostShare: require('./assets/icons/post_share.png'),
 	iconPostWalletCoins: require('./assets/icons/post_wallet_coins.png'),
-	iconTabBarHome: require('./assets/icons/tab_bar_home.png'),
-	iconTabBarHomeSelected: require('./assets/icons/tab_bar_home_selected.png'),
-	iconTabBarSearch: require('./assets/icons/tab_bar_search.png'),
-	iconTabBarSearchSelected: require('./assets/icons/tab_bar_search_selected.png'),
-	iconTabBarPhoto: require('./assets/icons/tab_bar_photo.png'),
-	iconTabBarPhotoSelected: require('./assets/icons/tab_bar_photo_selected.png'),
-	iconTabBarNotifications: require('./assets/icons/tab_bar_notifications.png'),
-	iconTabBarNotificationsSelected: require('./assets/icons/tab_bar_notifications_selected.png'),
-	iconTabBarProfile: require('./assets/icons/tab_bar_profile.png'),
-	iconTabBarProfileSelected: require('./assets/icons/tab_bar_profile_selected.png'),
 	iconNewPostAddMedia: require('./assets/icons/post_add_photo.png'),
 	searchTabStartSearch: require('./assets/icons/search_tab_start_search.png'),
 	searchTabCreateGroup: require('./assets/icons/search_tab_create_group.png'),

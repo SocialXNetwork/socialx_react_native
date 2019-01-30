@@ -1,4 +1,4 @@
-import { ImageStyle, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const BADGE_HEIGHT = Sizes.smartHorizontalScale(18);

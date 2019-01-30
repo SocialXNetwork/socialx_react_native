@@ -88,7 +88,7 @@ class Component extends React.Component<IProps> {
 }
 
 export const SearchHeader: React.SFC<ISearchHeaderProps> = (props) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{({ actions }) => <Component {...props} onGoBack={actions.onGoBack} />}
 	</WithNavigationHandlers>
 );

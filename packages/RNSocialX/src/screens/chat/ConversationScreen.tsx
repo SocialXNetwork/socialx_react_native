@@ -128,7 +128,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const ConversationScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{({ actions }) => (
 			<WithConversation>
 				{(conv) => (

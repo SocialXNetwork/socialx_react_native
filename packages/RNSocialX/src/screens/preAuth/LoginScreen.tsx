@@ -95,7 +95,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const LoginScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithLogin>
 				{({ data, actions }) => (

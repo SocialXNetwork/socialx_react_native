@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, colorWithAlpha, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		justifyContent: 'flex-start',
 	},
@@ -20,7 +20,4 @@ const styles: any = {
 		color: Colors.white,
 		paddingLeft: Sizes.smartHorizontalScale(15),
 	},
-};
-
-export const defaultColor = Colors.white;
-export default StyleSheet.create(styles);
+});

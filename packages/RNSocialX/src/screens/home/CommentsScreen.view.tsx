@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 
 import { WallPost } from '../../components';
 import { INavigationProps } from '../../types';
@@ -17,6 +17,7 @@ export const CommentsScreenView: React.SFC<ICommentsScreenComponentProps> = ({
 	navigation,
 }) => (
 	<SafeAreaView style={styles.container}>
+		<StatusBar barStyle="dark-content" />
 		<WallPost
 			postId={postId}
 			isCommentsScreen={true}

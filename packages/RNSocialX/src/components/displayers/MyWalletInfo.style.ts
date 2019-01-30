@@ -25,7 +25,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	myCoinsValue: {
+	coins: {
 		...Fonts.centuryGothic,
 		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(30),
