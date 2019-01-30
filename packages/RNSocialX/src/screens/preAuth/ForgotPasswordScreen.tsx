@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
@@ -17,15 +17,11 @@ interface IProps
 	onGoBack: () => void;
 }
 
-const onGoBackHandler = (navigation: any) => {
-	navigation.goBack(null);
-};
-
-const Screen: React.SFC<IProps> = ({ navigation, dictionary, sendResetCode }) => (
+const Screen: React.SFC<IProps> = ({ navigation, dictionary, sendResetCode, onGoBack }) => (
 	<ForgotPasswordScreenView
 		dictionary={dictionary}
 		onSendResetCode={sendResetCode}
-		onGoBack={() => onGoBackHandler(navigation)}
+		onGoBack={onGoBack}
 	/>
 );
 

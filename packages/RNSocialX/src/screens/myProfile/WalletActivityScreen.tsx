@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithWalletEnhancedActions,
 	IWithWalletEnhancedData,
@@ -14,11 +11,9 @@ import { SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 import { WalletActivityScreenView } from './WalletActivityScreen.view';
 
-interface IProps
-	extends INavigationProps,
-		IWithWalletEnhancedActions,
-		IWithWalletEnhancedData,
-		IWithNavigationHandlersEnhancedActions {}
+interface IProps extends INavigationProps, IWithWalletEnhancedActions, IWithWalletEnhancedData {
+	onGoBack: () => void;
+}
 
 export class Screen extends React.Component<IProps> {
 	public render() {

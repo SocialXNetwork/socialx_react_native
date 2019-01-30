@@ -15,12 +15,12 @@ import { WithOverlays } from '../connectors/ui/WithOverlays';
 import { WithCurrentUser } from '../intermediary';
 
 export interface IWithNavigationHandlersEnhancedActions {
-	onViewUserProfile?: (alias: string) => void;
-	onViewLikes?: (likeIds: string[]) => void;
-	onViewComments?: (postId: string, keyboardRaised: boolean) => void;
-	onViewImage?: (items: IMedia[], startIndex?: number, postId?: string) => void;
-	onViewFriends?: (alias: string) => void;
-	onOpenConversation?: (alias: string) => void;
+	onViewUserProfile: (alias: string) => void;
+	onViewLikes: (likeIds: string[]) => void;
+	onViewComments: (postId: string, keyboardRaised: boolean) => void;
+	onViewImage: (items: IMedia[], startIndex?: number, postId?: string) => void;
+	onViewFriends: (alias: string) => void;
+	onOpenConversation: (alias: string) => void;
 	onGoBack: () => void;
 }
 

@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { FlatList, View } from 'react-native';
 
-import {
-	FeedWithNoPosts,
-	LoadingFooter,
-	MediaOverlay,
-	ShareSection,
-	WallPost,
-} from '../../../components';
+import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
 import { IDictionary, INavigationProps } from '../../../types';
 
 import styles from './Feed.style';

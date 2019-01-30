@@ -34,7 +34,7 @@ export const Header: React.SFC<IHeaderProps> = ({
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always', bottom: 'never' }}>
-			{displayAvatar && (
+			{!!displayAvatar && (
 				<React.Fragment>
 					{back && (
 						<View style={styles.backArrow}>

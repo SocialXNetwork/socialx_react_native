@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackHandler, View } from 'react-native';
+import { View } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';

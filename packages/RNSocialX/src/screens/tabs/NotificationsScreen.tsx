@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithNotificationsEnhancedActions,
 	IWithNotificationsEnhancedData,
@@ -17,8 +14,9 @@ import { NotificationsScreenView } from './NotificationsScreen.view';
 interface IProps
 	extends INavigationProps,
 		IWithNotificationsEnhancedData,
-		IWithNotificationsEnhancedActions,
-		IWithNavigationHandlersEnhancedActions {}
+		IWithNotificationsEnhancedActions {
+	onViewUserProfile: (alias: string) => void;
+}
 
 class Screen extends React.Component<IProps> {
 	public render() {
@@ -27,7 +25,7 @@ class Screen extends React.Component<IProps> {
 			refreshing,
 			dictionary,
 			getNotifications,
-			onViewUserProfile = () => undefined,
+			onViewUserProfile,
 		} = this.props;
 
 		return (
@@ -74,7 +72,6 @@ export const NotificationsScreen = (props: INavigationProps) => (
 						{...data}
 						{...actions}
 						onViewUserProfile={nav.actions.onViewUserProfile}
-						onGoBack={() => undefined}
 					/>
 				)}
 			</WithNotifications>

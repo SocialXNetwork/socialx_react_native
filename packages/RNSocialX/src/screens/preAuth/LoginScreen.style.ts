@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
-
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 export default StyleSheet.create({
 	container: {
-		width: '100%',
+		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(24),
 	},
@@ -34,15 +33,10 @@ export default StyleSheet.create({
 		color: Colors.black,
 	},
 	noAccountContainer: {
-		paddingBottom: Sizes.smartVerticalScale(10),
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'flex-end',
-	},
-	noAccountContainerAndroid: {
-		paddingTop: Sizes.smartVerticalScale(50),
-	},
-	noAccountContainerIOS: {
-		flex: 1,
+		marginBottom: Sizes.smartVerticalScale(16),
 	},
 	noAccountQuestion: {
 		...Fonts.centuryGothic,

@@ -57,6 +57,9 @@ export default {
 			accept: "Accept our",
 			terms: "Terms and Conditions"
 		},
+		termsAndConditions: {
+			title: 'Terms and conditions',
+		},
 		createPost: {
 			title: "Create post"
 		},

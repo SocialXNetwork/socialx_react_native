@@ -81,6 +81,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 				</View>
 				<View style={styles.inputContainer}>
 					<PrimaryTextInput
+						ref={passwordRef}
 						icon="ios-lock"
 						placeholder={dictionary.components.inputs.placeholder.password}
 						placeholderColor={Colors.paleSky}
@@ -94,13 +95,11 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 						}}
 						onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('password')}
 						onSubmitPressed={handleSubmit}
-						ref={passwordRef}
 					/>
 					{touched.password && errors.password && (
 						<Text style={styles.errorText}>{errors.password}</Text>
 					)}
 				</View>
-
 				<View style={styles.fullWidth}>
 					<PrimaryButton
 						label={dictionary.components.buttons.login}
@@ -114,19 +113,19 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 	/>
 );
 
-interface ILoginScreenViewProps extends IDictionary {
+interface IProps extends IDictionary {
 	onLogin: (alias: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onGoBack: () => void;
 }
 
-export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
+export const LoginScreenView: React.SFC<IProps> = ({
+	dictionary,
 	onLogin,
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
 	onGoBack,
-	dictionary,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.screenContainer}>
 		<Header title={dictionary.screens.login.title} back={true} onPressBack={onGoBack} />
@@ -151,12 +150,7 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 				borderColor={Colors.transparent}
 				disabled={false}
 			/> */}
-			<View
-				style={Platform.select({
-					ios: [styles.noAccountContainer, styles.noAccountContainerIOS],
-					android: [styles.noAccountContainer, styles.noAccountContainerAndroid],
-				})}
-			>
+			<View style={styles.noAccountContainer}>
 				<Text style={styles.noAccountQuestion}>{dictionary.screens.login.account}</Text>
 				<TouchableOpacity onPress={onNavigateToRegister}>
 					<Text style={styles.signUpText}>{dictionary.components.buttons.signUp}</Text>

@@ -263,7 +263,6 @@ const HomeTabs = createBottomTabNavigator(
 					defaultHandler();
 				}
 			},
-			removeClippedSubviews: false,
 			tabBarOptions: {
 				showLabel: false,
 				style: styles.tabs,
@@ -357,9 +356,9 @@ const Navigation = () => (
 											ref={(nav) => (navigator = nav)}
 											screenProps={{
 												notifications: unread.length,
+												dictionary,
 												showOptionsMenu,
 												setNavigationParams,
-												dictionary,
 											}}
 										/>
 									)}

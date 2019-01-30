@@ -76,6 +76,9 @@ export interface ILocaleDictionary {
 			accept: string;
 			terms: string;
 		};
+		termsAndConditions: {
+			title: string;
+		};
 		createPost: {
 			title: string;
 		};
