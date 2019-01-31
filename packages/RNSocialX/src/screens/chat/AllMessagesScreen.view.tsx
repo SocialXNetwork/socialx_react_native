@@ -18,6 +18,7 @@ interface IProps extends INavigationProps, IDictionary {
 	messages: string[];
 	people: string[];
 	scrollY: Animated.Value;
+	expandHeader: () => void;
 	onRemoveMessage: (alias: string) => void;
 	onEntryPress: (alias: string) => void;
 	onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -33,6 +34,7 @@ const AllMessagesTabs = createMaterialTopTabNavigator(
 						chat={true}
 						removable={true}
 						scrollY={screenProps.scrollY}
+						expandHeader={screenProps.expandHeader}
 						emptyComponent={<NoContent messages={true} dictionary={screenProps.dictionary} />}
 						onEntryPress={screenProps.onEntryPress}
 						onRemove={screenProps.onRemoveMessage}
@@ -49,6 +51,7 @@ const AllMessagesTabs = createMaterialTopTabNavigator(
 						chat={true}
 						removable={true}
 						scrollY={screenProps.scrollY}
+						expandHeader={screenProps.expandHeader}
 						emptyComponent={<NoContent messages={true} dictionary={screenProps.dictionary} />}
 						onEntryPress={screenProps.onEntryPress}
 						onRemove={screenProps.onRemoveMessage}
@@ -64,6 +67,12 @@ const AllMessagesTabs = createMaterialTopTabNavigator(
 		// @ts-ignore
 		optimizationsEnabled: true,
 		tabBarOptions: tabsStyles,
+		defaultNavigationOptions: ({ screenProps }: { screenProps: IProps }) => ({
+			tabBarOnPress: ({ defaultHandler }: { defaultHandler: () => void }) => {
+				defaultHandler();
+				screenProps.expandHeader();
+			},
+		}),
 	},
 );
 
@@ -83,7 +92,7 @@ export const AllMessagesScreenView: React.SFC<IProps> = (props) => {
 			outputRange: [0, -HEADER_HEIGHT],
 			extrapolate: 'clamp',
 		});
-	} else if (Platform.OS === OS_TYPES.Android) {
+	} else {
 		translateY = Animated.diffClamp(props.scrollY, 0, 1).interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, -HEADER_HEIGHT],

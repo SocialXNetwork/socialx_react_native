@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Animated, Platform, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
@@ -59,7 +59,7 @@ class Component extends React.PureComponent<IProps> {
 					outputRange: [1, 0.3, 0],
 					extrapolate: 'clamp',
 				});
-			} else if (Platform.OS === OS_TYPES.Android) {
+			} else {
 				opacity = Animated.diffClamp(scrollY, 0, 1).interpolate({
 					inputRange: [0, 1 / 3, 1],
 					outputRange: [1, 0.3, 0],
