@@ -3,7 +3,7 @@
  * 1. LATER - data props: maintenance
  */
 
-import * as React from 'react';
+import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { ICredentials } from '@socialx/api-data';
@@ -14,7 +14,6 @@ import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithAuth } from '../../connectors/auth/WithAuth';
 import { WithAccounts } from '../../connectors/data/WithAccounts';
 import { WithGlobals } from '../../connectors/ui/WithGlobals';
-import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { resetNavigationToRoute } from '../../helpers';
 
 export interface IWithLaunchEnhancedData extends IDictionary {

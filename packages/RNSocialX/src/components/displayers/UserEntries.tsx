@@ -1,7 +1,10 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { Animated } from 'react-native';
+// @ts-ignore
+import { FlatList } from 'react-navigation';
 
 import { GenericModal, UserEntry } from '../../components';
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 interface IUserEntriesProps {
 	aliases: string[];
@@ -10,15 +13,12 @@ interface IUserEntriesProps {
 	removable?: boolean;
 	scroll?: boolean;
 	emptyComponent?: JSX.Element;
+	scrollY?: Animated.Value;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
 }
 
-export class UserEntries extends React.Component<IUserEntriesProps> {
-	public shouldComponentUpdate(nextProps: IUserEntriesProps) {
-		return this.props.aliases !== nextProps.aliases;
-	}
-
+export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 	public render() {
 		const {
 			aliases,
@@ -28,28 +28,37 @@ export class UserEntries extends React.Component<IUserEntriesProps> {
 			scroll = true,
 			onEntryPress,
 			emptyComponent,
+			scrollY = new Animated.Value(0),
 			onRemove = () => undefined,
 		} = this.props;
+
+		const Component = scrollY ? AnimatedFlatList : FlatList;
 
 		return (
 			<React.Fragment>
 				<GenericModal onDeletePress={onRemove} />
-				<FlatList
+				<Component
 					data={aliases}
-					renderItem={({ item }) => (
+					renderItem={({ item, index }: { item: string; index: number }) => (
 						<UserEntry
 							alias={item}
 							friends={friends}
 							chat={chat}
 							removable={removable}
+							first={index === 0}
+							last={index === aliases.length - 1}
 							onPress={() => onEntryPress(item)}
 						/>
 					)}
 					keyboardShouldPersistTaps="handled"
-					keyExtractor={(item) => item}
+					keyExtractor={(item: string, index: number) => item + index}
 					showsVerticalScrollIndicator={false}
 					scrollEnabled={scroll}
+					scrollEventThrottle={16}
 					ListEmptyComponent={emptyComponent}
+					onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+						// 	useNativeDriver: true,
+					})}
 				/>
 			</React.Fragment>
 		);

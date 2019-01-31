@@ -1,49 +1,49 @@
-import * as React from 'react';
-import { Image, Text, View } from 'react-native';
+import React from 'react';
+import { Image, ImageStyle, Text, View } from 'react-native';
 
 import { GradientButton, PrimaryButton, TextGradient } from '../../components';
 import { Colors, Images } from '../../environment/theme';
 import { IDictionary } from '../../types';
-import style from './LaunchScreen.style';
+import styles from './LaunchScreen.style';
 
-interface ILaunchScreenViewProps extends IDictionary {
-	onNavigateToLogin: () => void;
-	onNavigateToRegister: () => void;
+interface IProps extends IDictionary {
+	onLoginPress: () => void;
+	onRegisterPress: () => void;
 }
 
-export const LaunchScreenView: React.SFC<ILaunchScreenViewProps> = ({
+export const LaunchScreenView: React.SFC<IProps> = ({
 	dictionary,
-	onNavigateToLogin,
-	onNavigateToRegister,
+	onLoginPress,
+	onRegisterPress,
 }) => (
-	<View style={style.container}>
-		<Image source={Images.launch} style={style.background} resizeMode="cover" />
-		<View style={style.topPaddingContainer}>
+	<View style={styles.container}>
+		<Image source={Images.launch} style={styles.background as ImageStyle} resizeMode="cover" />
+		<View style={styles.topPaddingContainer}>
 			<TextGradient
 				text={dictionary.screens.launch.name}
 				colors={[Colors.fuchsiaBlue, Colors.pink]}
-				style={style.socialxGradient}
+				style={styles.socialxGradient}
 			/>
-			<Text style={style.description}>{dictionary.screens.launch.description}</Text>
+			<Text style={styles.description}>{dictionary.screens.launch.description}</Text>
 		</View>
 		<TextGradient
 			text={dictionary.screens.launch.rewards}
 			colors={[Colors.fuchsiaBlue, Colors.pink]}
-			style={style.getRewardedGradient}
+			style={styles.getRewardedGradient}
 		/>
-		<View style={style.bottomPaddingContainer}>
+		<View style={styles.bottomPaddingContainer}>
 			<GradientButton
 				colorStart={Colors.fuchsiaBlue}
 				colorEnd={Colors.pink}
 				label={dictionary.screens.launch.login}
 				borderColor={Colors.transparent}
-				onPress={onNavigateToLogin}
+				onPress={onLoginPress}
 			/>
-			<View style={style.signUpTopPadding}>
+			<View style={styles.signUpTopPadding}>
 				<PrimaryButton
 					label={dictionary.screens.launch.register}
 					borderColor={Colors.transparent}
-					onPress={onNavigateToRegister}
+					onPress={onRegisterPress}
 				/>
 			</View>
 		</View>

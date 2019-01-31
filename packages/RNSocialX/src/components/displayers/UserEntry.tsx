@@ -24,6 +24,8 @@ interface IUserEntryProps {
 	friends: boolean;
 	chat: boolean;
 	removable: boolean;
+	first: boolean;
+	last: boolean;
 	onPress: () => void;
 }
 
@@ -59,8 +61,16 @@ class Component extends React.Component<IProps> {
 			currentUserAlias,
 			relationship,
 			request,
+			first,
+			last,
 			onPress,
 		} = this.props;
+
+		const cardStyles = first
+			? [styles.card, styles.first]
+			: last
+			? [styles.card, styles.last]
+			: styles.card;
 
 		if (profile) {
 			const showMessage = chat && message;
@@ -71,7 +81,7 @@ class Component extends React.Component<IProps> {
 					<TouchableOpacity
 						onPress={onPress}
 						onLongPress={this.onShowOptionsHandler}
-						style={styles.card}
+						style={cardStyles}
 					>
 						<View style={styles.details}>
 							<AvatarImage image={profile.avatar} style={styles.avatar} />
@@ -127,7 +137,7 @@ class Component extends React.Component<IProps> {
 			}
 
 			return (
-				<TouchableOpacity onPress={onPress} style={styles.card}>
+				<TouchableOpacity onPress={onPress} style={cardStyles}>
 					<View style={styles.details}>
 						<AvatarImage image={profile.avatar} style={styles.avatar} />
 						<View style={styles.textContainer}>

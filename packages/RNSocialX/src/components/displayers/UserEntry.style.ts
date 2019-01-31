@@ -11,6 +11,12 @@ export default StyleSheet.create({
 		paddingVertical: Sizes.smartVerticalScale(5),
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
+	first: {
+		paddingTop: Sizes.smartVerticalScale(10),
+	},
+	last: {
+		paddingBottom: Sizes.smartVerticalScale(10),
+	},
 	details: {
 		flex: 2,
 		flexDirection: 'row',

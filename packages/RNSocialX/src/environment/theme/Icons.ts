@@ -11,7 +11,10 @@ export const Icons = {
 		up: 'md-trending-up',
 		down: 'md-trending-down',
 	},
-
+	backArrow: {
+		ios: 'ios-arrow-back',
+		android: 'md-arrow-back',
+	},
 	tabs: {
 		home: {
 			normal: require('./assets/icons/tab_bar_home.png'),

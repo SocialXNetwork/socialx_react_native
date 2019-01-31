@@ -72,6 +72,7 @@ import { WithNotifications } from '../enhancers/connectors/data/WithNotification
 import { WithActivities } from '../enhancers/connectors/ui/WithActivities';
 import { WithGlobals } from '../enhancers/connectors/ui/WithGlobals';
 import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
+import { Colors } from '../environment/theme';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
@@ -145,6 +146,8 @@ const FeedTabs = createMaterialTopTabNavigator(
 	{
 		animationEnabled: true,
 		swipeEnabled: true,
+		// @ts-ignore
+		optimizationsEnabled: true,
 		tabBarOptions: styles.feed,
 	},
 );
@@ -298,7 +301,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		// ChatWithSearch,
+		ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

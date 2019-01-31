@@ -1,4 +1,5 @@
 import React from 'react';
+import { Animated } from 'react-native';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import { IWithAllMessagesEnhancedData, WithAllMessages } from '../../enhancers/screens';
@@ -6,7 +7,24 @@ import { IWithAllMessagesEnhancedData, WithAllMessages } from '../../enhancers/s
 import { INavigationProps } from '../../types';
 import { AllMessagesScreenView } from './AllMessagesScreen.view';
 
-const messages: string[] = ['jaakee', 'hackerman'];
+const messages: string[] = [
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+	'jaakee',
+	'hackerman',
+];
 const people: string[] = ['letsgheek', 'Philip', 'will2k'];
 
 interface IProps extends INavigationProps, IWithAllMessagesEnhancedData {
@@ -24,15 +42,14 @@ class Screen extends React.Component<IProps, IState> {
 		people,
 	};
 
-	public shouldComponentUpdate(nextProps: IProps, nextState: IState) {
-		return this.state.messages !== nextState.messages || this.state.people !== nextState.people;
-	}
+	private scrollY = new Animated.Value(0);
 
 	public render() {
 		return (
 			<AllMessagesScreenView
 				messages={this.state.messages}
 				people={this.state.people}
+				scrollY={this.scrollY}
 				navigation={this.props.navigation}
 				dictionary={this.props.dictionary}
 				onRemoveMessage={this.onRemoveMessageHandler}

@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { Animated, Platform, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 
 import { HeaderButton, SearchInput } from '../';
 import { SCREENS } from '../../environment/consts';
+import { Icons, Sizes } from '../../environment/theme';
 import { INavigationProps } from '../../types';
+
 import styles from './SearchHeader.style';
+const THRESHOLD = Sizes.smartVerticalScale(45);
 
 interface ISearchHeaderProps extends INavigationProps {
 	cancel: boolean;
@@ -15,6 +18,7 @@ interface ISearchHeaderProps extends INavigationProps {
 	autoFocus?: boolean;
 	back?: boolean;
 	overlay?: boolean;
+	scrollY?: Animated.Value;
 	onSearchTermChange?: (term: string) => void;
 	onCancelSearch?: () => void;
 }
@@ -23,25 +27,49 @@ interface IProps extends ISearchHeaderProps {
 	onGoBack: () => void;
 }
 
-class Component extends React.Component<IProps> {
+class Component extends React.PureComponent<IProps> {
 	public render() {
-		const { back, term, cancel, autoFocus, overlay, onGoBack } = this.props;
+		const { back, term, cancel, autoFocus, overlay, scrollY, onGoBack } = this.props;
+
+		let height: number | any = THRESHOLD;
+		let opacity: number | any = 1;
+		let translateY: number | any = 0;
+		let Container = View;
+
+		if (scrollY) {
+			Container = Animated.View;
+			height = scrollY.interpolate({
+				inputRange: [0, THRESHOLD],
+				outputRange: [THRESHOLD, 0],
+				extrapolate: 'clamp',
+			});
+			opacity = scrollY.interpolate({
+				inputRange: [0, THRESHOLD / 3, THRESHOLD],
+				outputRange: [1, 0.2, 0],
+				extrapolate: 'clamp',
+			});
+			translateY = scrollY.interpolate({
+				inputRange: [0, THRESHOLD],
+				outputRange: [0, -THRESHOLD / 2],
+				extrapolate: 'clamp',
+			});
+		}
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<View style={styles.inner}>
+				<Container style={[styles.inner, { height }]}>
 					{back && (
-						<View style={styles.backButton}>
+						<Container style={[styles.backButton, { opacity, transform: [{ translateY }] }]}>
 							<HeaderButton
 								iconName={Platform.select({
-									android: 'md-arrow-back',
-									ios: 'ios-arrow-back',
+									android: Icons.backArrow.android,
+									ios: Icons.backArrow.ios,
 								})}
 								onPress={onGoBack}
 							/>
-						</View>
+						</Container>
 					)}
-					<View style={styles.inputContainer}>
+					<Container style={[styles.inputContainer, { opacity, transform: [{ translateY }] }]}>
 						<SearchInput
 							term={term}
 							autoFocus={autoFocus}
@@ -52,8 +80,8 @@ class Component extends React.Component<IProps> {
 						{overlay && (
 							<TouchableOpacity onPress={this.onInputPressHandler} style={styles.inputOverlay} />
 						)}
-					</View>
-				</View>
+					</Container>
+				</Container>
 			</SafeAreaView>
 		);
 	}

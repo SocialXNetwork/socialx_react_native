@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
@@ -75,18 +75,18 @@ class Screen extends React.Component<IProps> {
 			return (
 				<LaunchScreenView
 					dictionary={dictionary}
-					onNavigateToLogin={this.onNavigateToLoginHandler}
-					onNavigateToRegister={this.onNavigateToRegisterHandler}
+					onLoginPress={this.onLoginPressHandler}
+					onRegisterPress={this.onRegisterPressHandler}
 				/>
 			);
 		}
 	}
 
-	private onNavigateToLoginHandler = () => {
+	private onLoginPressHandler = () => {
 		this.props.navigation.navigate(SCREENS.Login);
 	};
 
-	private onNavigateToRegisterHandler = () => {
+	private onRegisterPressHandler = () => {
 		this.props.navigation.navigate(SCREENS.Register);
 	};
 }
