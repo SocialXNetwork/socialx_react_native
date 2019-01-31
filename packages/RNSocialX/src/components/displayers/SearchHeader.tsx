@@ -5,12 +5,10 @@ import { SafeAreaView } from 'react-navigation';
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 
 import { HeaderButton, SearchInput } from '../';
-import { SCREENS } from '../../environment/consts';
-import { Icons, Sizes } from '../../environment/theme';
+import { OS_TYPES, SCREENS } from '../../environment/consts';
+import { Icons } from '../../environment/theme';
 import { INavigationProps } from '../../types';
-
 import styles from './SearchHeader.style';
-const THRESHOLD = Sizes.smartVerticalScale(45);
 
 interface ISearchHeaderProps extends INavigationProps {
 	cancel: boolean;
@@ -19,6 +17,8 @@ interface ISearchHeaderProps extends INavigationProps {
 	back?: boolean;
 	overlay?: boolean;
 	scrollY?: Animated.Value;
+	scrollThreshold?: number;
+	minimumScrollDistance?: number;
 	onSearchTermChange?: (term: string) => void;
 	onCancelSearch?: () => void;
 }
@@ -29,37 +29,50 @@ interface IProps extends ISearchHeaderProps {
 
 class Component extends React.PureComponent<IProps> {
 	public render() {
-		const { back, term, cancel, autoFocus, overlay, scrollY, onGoBack } = this.props;
+		const {
+			back,
+			term,
+			cancel,
+			autoFocus,
+			overlay,
+			scrollY,
+			minimumScrollDistance,
+			scrollThreshold,
+			onGoBack,
+		} = this.props;
 
-		let height: number | any = THRESHOLD;
 		let opacity: number | any = 1;
-		let translateY: number | any = 0;
 		let Container = View;
 
-		if (scrollY) {
+		if (scrollY && minimumScrollDistance && scrollThreshold) {
 			Container = Animated.View;
-			height = scrollY.interpolate({
-				inputRange: [0, THRESHOLD],
-				outputRange: [THRESHOLD, 0],
-				extrapolate: 'clamp',
-			});
-			opacity = scrollY.interpolate({
-				inputRange: [0, THRESHOLD / 3, THRESHOLD],
-				outputRange: [1, 0.2, 0],
-				extrapolate: 'clamp',
-			});
-			translateY = scrollY.interpolate({
-				inputRange: [0, THRESHOLD],
-				outputRange: [0, -THRESHOLD / 2],
-				extrapolate: 'clamp',
-			});
+
+			if (Platform.OS === OS_TYPES.IOS) {
+				const distance = scrollY.interpolate({
+					inputRange: [minimumScrollDistance, minimumScrollDistance + scrollThreshold],
+					outputRange: [0, scrollThreshold],
+					extrapolateLeft: 'clamp',
+				});
+
+				opacity = distance.interpolate({
+					inputRange: [0, scrollThreshold / 3, scrollThreshold],
+					outputRange: [1, 0.3, 0],
+					extrapolate: 'clamp',
+				});
+			} else if (Platform.OS === OS_TYPES.Android) {
+				opacity = Animated.diffClamp(scrollY, 0, 1).interpolate({
+					inputRange: [0, 1 / 3, 1],
+					outputRange: [1, 0.3, 0],
+					extrapolate: 'clamp',
+				});
+			}
 		}
 
 		return (
 			<SafeAreaView style={styles.container}>
-				<Container style={[styles.inner, { height }]}>
+				<View style={styles.inner}>
 					{back && (
-						<Container style={[styles.backButton, { opacity, transform: [{ translateY }] }]}>
+						<Container style={[styles.backButton, { opacity }]}>
 							<HeaderButton
 								iconName={Platform.select({
 									android: Icons.backArrow.android,
@@ -69,7 +82,7 @@ class Component extends React.PureComponent<IProps> {
 							/>
 						</Container>
 					)}
-					<Container style={[styles.inputContainer, { opacity, transform: [{ translateY }] }]}>
+					<Container style={[styles.inputContainer, { opacity }]}>
 						<SearchInput
 							term={term}
 							autoFocus={autoFocus}
@@ -81,7 +94,7 @@ class Component extends React.PureComponent<IProps> {
 							<TouchableOpacity onPress={this.onInputPressHandler} style={styles.inputOverlay} />
 						)}
 					</Container>
-				</Container>
+				</View>
 			</SafeAreaView>
 		);
 	}

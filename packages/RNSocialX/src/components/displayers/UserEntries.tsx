@@ -1,9 +1,10 @@
 import React from 'react';
-import { Animated } from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, Platform } from 'react-native';
 // @ts-ignore
 import { FlatList } from 'react-navigation';
 
 import { GenericModal, UserEntry } from '../../components';
+import { OS_TYPES } from '../../environment/consts';
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 interface IUserEntriesProps {
@@ -13,9 +14,10 @@ interface IUserEntriesProps {
 	removable?: boolean;
 	scroll?: boolean;
 	emptyComponent?: JSX.Element;
-	scrollY?: Animated.Value;
+	scrollY: Animated.Value;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
+	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 export class UserEntries extends React.PureComponent<IUserEntriesProps> {
@@ -30,9 +32,10 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 			emptyComponent,
 			scrollY = new Animated.Value(0),
 			onRemove = () => undefined,
+			onScroll,
 		} = this.props;
 
-		const Component = scrollY ? AnimatedFlatList : FlatList;
+		const Component = onScroll ? AnimatedFlatList : FlatList;
 
 		return (
 			<React.Fragment>
@@ -55,10 +58,13 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 					showsVerticalScrollIndicator={false}
 					scrollEnabled={scroll}
 					scrollEventThrottle={16}
-					ListEmptyComponent={emptyComponent}
-					onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-						// 	useNativeDriver: true,
+					onScroll={Platform.select({
+						ios: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+							useNativeDriver: true,
+						}),
+						android: onScroll,
 					})}
+					ListEmptyComponent={emptyComponent}
 				/>
 			</React.Fragment>
 		);
