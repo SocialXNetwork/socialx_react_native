@@ -14,7 +14,7 @@ interface IUserEntriesProps {
 	removable?: boolean;
 	scroll?: boolean;
 	emptyComponent?: JSX.Element;
-	scrollY: Animated.Value;
+	scrollY?: Animated.Value;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -30,12 +30,12 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 			scroll = true,
 			onEntryPress,
 			emptyComponent,
-			scrollY = new Animated.Value(0),
-			onRemove = () => undefined,
+			scrollY,
 			onScroll,
+			onRemove,
 		} = this.props;
 
-		const Component = onScroll ? AnimatedFlatList : FlatList;
+		const Component = scrollY && onScroll ? AnimatedFlatList : FlatList;
 
 		return (
 			<React.Fragment>
@@ -58,15 +58,23 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 					showsVerticalScrollIndicator={false}
 					scrollEnabled={scroll}
 					scrollEventThrottle={16}
-					onScroll={Platform.select({
-						ios: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-							useNativeDriver: true,
-						}),
-						android: onScroll,
-					})}
+					onScroll={this.onScrollHandler}
 					ListEmptyComponent={emptyComponent}
 				/>
 			</React.Fragment>
 		);
 	}
+
+	private onScrollHandler = () => {
+		const { scrollY, onScroll } = this.props;
+
+		if (scrollY && onScroll) {
+			return Platform.select({
+				ios: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+					useNativeDriver: true,
+				}),
+				android: onScroll,
+			});
+		}
+	};
 }
