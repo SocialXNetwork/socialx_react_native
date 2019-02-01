@@ -144,6 +144,9 @@ export interface ILocaleDictionary {
 				heading: string;
 			};
 		};
+		bounty: {
+			title: string;
+		};
 	};
 	components: {
 		buttons: {

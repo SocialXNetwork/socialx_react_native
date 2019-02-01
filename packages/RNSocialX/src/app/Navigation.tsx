@@ -32,6 +32,7 @@ import {
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
+	AllBountiesScreen,
 	AllMessagesScreen,
 	ChatSearchScreen,
 	CommentsScreen,
@@ -300,7 +301,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		ChatWithSearch,
+		AllBounties: { screen: AllBountiesScreen },
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

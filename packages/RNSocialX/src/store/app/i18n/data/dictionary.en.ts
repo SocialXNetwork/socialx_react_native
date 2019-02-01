@@ -125,6 +125,9 @@ export default {
 				title: "Socialx wallet",
 				heading: "Activity",
 			}
+		},
+		bounty: {
+			title: 'Bounty Management',
 		}
 	},
 	components: {

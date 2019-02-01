@@ -5,6 +5,9 @@ export { AdsStatisticsScreen } from './ads/AdsStatisticsScreen';
 export { NewAdSliderScreen } from './ads/NewAdSliderScreen';
 export { ManageCountriesScreen } from './ads/ManageCountriesScreen';
 
+export { AllBountiesScreen } from './bounty/AllBountiesScreen';
+export { BountyScreen } from './bounty/BountyScreen';
+
 export { AllMessagesScreen } from './chat/AllMessagesScreen';
 export { ChatSearchScreen } from './chat/ChatSearchScreen';
 export { ConversationScreen } from './chat/ConversationScreen';
