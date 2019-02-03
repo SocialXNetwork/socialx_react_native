@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import { IWithAllMessagesEnhancedData, WithAllMessages } from '../../enhancers/screens';
@@ -55,6 +55,7 @@ class Screen extends React.Component<IProps, IState> {
 				navigation={this.props.navigation}
 				dictionary={this.props.dictionary}
 				expandHeader={this.expandHeader}
+				scrollToTop={this.scrollToTop}
 				onRemoveMessage={this.onRemoveMessageHandler}
 				onEntryPress={this.props.onOpenConversation}
 				onScroll={this.onScrollHandler}
@@ -78,6 +79,13 @@ class Screen extends React.Component<IProps, IState> {
 		this.setState((currentState) => ({
 			messages: currentState.messages.filter((a) => a !== alias),
 		}));
+	};
+
+	private scrollToTop = (ref: React.RefObject<FlatList<any>>) => {
+		if (ref.current) {
+			// @ts-ignore
+			ref.current.getNode().scrollToOffset({ offset: 0, animated: true });
+		}
 	};
 
 	private collapseHeader = () => {

@@ -29,21 +29,3 @@ export const styles = StyleSheet.create({
 		flex: 1,
 	},
 });
-
-export const tabsStyles = {
-	activeTintColor: Colors.pink,
-	inactiveTintColor: Colors.background,
-	indicatorStyle: {
-		height: 1,
-		backgroundColor: Colors.pink,
-	},
-	pressOpacity: 1,
-	upperCaseLabel: false,
-	labelStyle: {
-		fontSize: 14,
-		...Fonts.centuryGothic,
-	},
-	style: {
-		backgroundColor: Colors.white,
-	},
-};

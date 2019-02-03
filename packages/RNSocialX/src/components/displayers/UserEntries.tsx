@@ -1,7 +1,12 @@
 import React from 'react';
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, Platform } from 'react-native';
-// @ts-ignore
-import { FlatList, NavigationEvents } from 'react-navigation';
+import {
+	Animated,
+	FlatList,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
+	Platform,
+} from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 
 import { GenericModal, UserEntry } from '../../components';
 import { OS_TYPES } from '../../environment/consts';
@@ -16,12 +21,21 @@ interface IUserEntriesProps {
 	emptyComponent?: JSX.Element;
 	scrollY?: Animated.Value;
 	expandHeader: () => void;
+	liftRef?: (ref: React.RefObject<FlatList<any>>) => void;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
 	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 export class UserEntries extends React.PureComponent<IUserEntriesProps> {
+	private ref: React.RefObject<FlatList<any>> = React.createRef();
+
+	public componentDidMount() {
+		if (this.props.liftRef) {
+			this.props.liftRef(this.ref);
+		}
+	}
+
 	public render() {
 		const {
 			aliases,
@@ -44,6 +58,7 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 				<GenericModal onDeletePress={onRemove} />
 				{Platform.OS === OS_TYPES.Android && <NavigationEvents onWillFocus={expandHeader} />}
 				<Component
+					ref={this.ref}
 					data={aliases}
 					renderItem={({ item, index }: { item: string; index: number }) => (
 						<UserEntry

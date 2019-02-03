@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Platform, TouchableOpacity, View } from 'react-native';
+import { Animated, Platform, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
@@ -41,7 +41,7 @@ class Component extends React.PureComponent<IProps> {
 			onGoBack,
 		} = this.props;
 
-		let opacity: number | any = 1;
+		let opacity: number | Animated.AnimatedInterpolation = 1;
 		let Container = View;
 
 		if (scrollY && minimumScrollDistance && scrollThreshold) {
@@ -72,7 +72,7 @@ class Component extends React.PureComponent<IProps> {
 			<SafeAreaView style={styles.container}>
 				<View style={styles.inner}>
 					{back && (
-						<Container style={[styles.backButton, { opacity }]}>
+						<Container style={[styles.backButton, { opacity }] as ViewStyle}>
 							<HeaderButton
 								iconName={Platform.select({
 									android: Icons.backArrow.android,
@@ -82,7 +82,7 @@ class Component extends React.PureComponent<IProps> {
 							/>
 						</Container>
 					)}
-					<Container style={[styles.inputContainer, { opacity }]}>
+					<Container style={[styles.inputContainer, { opacity }] as ViewStyle}>
 						<SearchInput
 							term={term}
 							autoFocus={autoFocus}

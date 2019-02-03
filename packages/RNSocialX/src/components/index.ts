@@ -94,6 +94,8 @@ export { WalletModal } from './modals/WalletModal';
 export { Header } from './navigation/Header';
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';
+export { Tab } from './navigation/Tab';
+export { Tabs } from './navigation/Tabs';
 export { TabIcon } from './navigation/TabIcon';
 
 export { WithModalForAddFriends } from './WithModalForAddFriends';
