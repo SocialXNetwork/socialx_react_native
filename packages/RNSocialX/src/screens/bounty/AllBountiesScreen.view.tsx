@@ -1,8 +1,8 @@
 import React from 'react';
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, View } from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, Text, View } from 'react-native';
 import { createAppContainer, createMaterialTopTabNavigator, SafeAreaView } from 'react-navigation';
 
-import { Header } from '../../components';
+import { BountiesList, Header } from '../../components';
 import { IDictionary, INavigationProps } from '../../types';
 
 import { styles, tabsStyles } from './AllBountiesScreen.style';
@@ -15,13 +15,25 @@ interface IProps extends INavigationProps, IDictionary {
 const AllBountiesTabs = createMaterialTopTabNavigator(
 	{
 		Sponsored: {
-			screen: ({ screenProps }: { screenProps: IProps }) => <View style={styles.entries} />,
+			screen: ({ screenProps }: { screenProps: IProps }) => (
+				<View style={styles.entries}>
+					<BountiesList onClaimReward={() => undefined} />
+				</View>
+			),
 		},
 		Hot: {
-			screen: ({ screenProps }: { screenProps: IProps }) => <View style={styles.entries} />,
+			screen: ({ screenProps }: { screenProps: IProps }) => (
+				<View style={styles.entries}>
+					<BountiesList onClaimReward={() => undefined} />
+				</View>
+			),
 		},
 		New: {
-			screen: ({ screenProps }: { screenProps: IProps }) => <View style={styles.entries} />,
+			screen: ({ screenProps }: { screenProps: IProps }) => (
+				<View style={styles.entries}>
+					<BountiesList onClaimReward={() => undefined} />
+				</View>
+			),
 		},
 	},
 	{

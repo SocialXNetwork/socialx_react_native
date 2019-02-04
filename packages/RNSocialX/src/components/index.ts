@@ -45,6 +45,7 @@ export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
 export { Container as ReferralContainer } from './displayers/referral/Container';
 export { Row as ReferralRow } from './displayers/referral/Row';
 export { MessageList } from './displayers/chat/MessageList';
+export { BountiesList } from './displayers/bounty/BountiesList';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';
