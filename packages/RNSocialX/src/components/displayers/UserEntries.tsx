@@ -6,28 +6,26 @@ import {
 	NativeSyntheticEvent,
 	Platform,
 } from 'react-native';
-import { NavigationEvents } from 'react-navigation';
 
 import { GenericModal, UserEntry } from '../../components';
 import { OS_TYPES } from '../../environment/consts';
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-interface IUserEntriesProps {
+interface IProps {
 	aliases: string[];
 	friends?: boolean;
 	chat?: boolean;
 	removable?: boolean;
 	scroll?: boolean;
-	emptyComponent?: JSX.Element;
 	scrollY?: Animated.Value;
-	expandHeader: () => void;
+	emptyComponent?: JSX.Element;
 	liftRef?: (ref: React.RefObject<FlatList<any>>) => void;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
-	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+	onScroll?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
-export class UserEntries extends React.PureComponent<IUserEntriesProps> {
+export class UserEntries extends React.Component<IProps> {
 	private ref: React.RefObject<FlatList<any>> = React.createRef();
 
 	public componentDidMount() {
@@ -43,21 +41,19 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 			chat = false,
 			removable = false,
 			scroll = true,
-			emptyComponent,
 			scrollY,
-			expandHeader,
+			emptyComponent,
 			onEntryPress,
 			onRemove,
 			onScroll,
 		} = this.props;
 
-		const Component = scrollY || onScroll ? AnimatedFlatList : FlatList;
+		const List = scrollY || onScroll ? AnimatedFlatList : FlatList;
 
 		return (
 			<React.Fragment>
 				<GenericModal onDeletePress={onRemove} />
-				{Platform.OS === OS_TYPES.Android && <NavigationEvents onWillFocus={expandHeader} />}
-				<Component
+				<List
 					ref={this.ref}
 					data={aliases}
 					renderItem={({ item, index }: { item: string; index: number }) => (
@@ -77,10 +73,11 @@ export class UserEntries extends React.PureComponent<IUserEntriesProps> {
 					scrollEnabled={scroll}
 					scrollEventThrottle={16}
 					onScroll={
-						Platform.OS === OS_TYPES.IOS &&
 						scrollY &&
+						Platform.OS === OS_TYPES.IOS &&
 						Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
 							useNativeDriver: true,
+							listener: (props) => console.log(props.nativeEvent.contentOffset),
 						})
 					}
 					onScrollBeginDrag={onScroll}

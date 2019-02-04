@@ -5,11 +5,19 @@ export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
 	},
+	floating: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		width: '100%',
+		backgroundColor: Colors.pink,
+	},
 	inner: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		height: Sizes.smartVerticalScale(45),
 		width: '100%',
+		height: Sizes.smartVerticalScale(45),
 		paddingVertical: Sizes.smartVerticalScale(2.5),
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},

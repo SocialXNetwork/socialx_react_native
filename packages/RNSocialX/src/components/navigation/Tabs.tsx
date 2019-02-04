@@ -1,6 +1,7 @@
 import React from 'react';
 import {
 	Animated,
+	FlatList,
 	GestureResponderEvent,
 	PanResponder,
 	PanResponderGestureState,
@@ -16,6 +17,8 @@ import { SCREEN_WIDTH, styles } from './Tabs.style';
 
 interface IProps {
 	children: JSX.Element[];
+	refs?: Array<React.RefObject<FlatList<any>>>;
+	onChangeTab?: () => void;
 }
 
 interface IState {
@@ -27,10 +30,17 @@ export class Tabs extends React.Component<IProps, IState> {
 	private position = new Animated.Value(0);
 
 	private panResponder = PanResponder.create({
-		onMoveShouldSetPanResponder: (event, gestureState) =>
-			this.isMovingHorizontally(event, gestureState),
 		onMoveShouldSetPanResponderCapture: (event, gestureState) =>
 			this.isMovingHorizontally(event, gestureState),
+		onPanResponderGrant: () => {
+			const { refs } = this.props;
+			const { activeIndex } = this.state;
+
+			if (refs && refs[activeIndex].current) {
+				// @ts-ignore
+				refs[activeIndex].current.setNativeProps({ scrollEnabled: false });
+			}
+		},
 		onPanResponderMove: (event, gestureState) => {
 			const newPosition = -gestureState.dx / 400 + this.state.activeIndex;
 			this.position.setValue(newPosition);
@@ -47,6 +57,12 @@ export class Tabs extends React.Component<IProps, IState> {
 		this.state = {
 			activeIndex: 0,
 		};
+	}
+
+	public componentDidUpdate(prevProps: IProps, prevState: IState) {
+		if (this.props.onChangeTab && prevState.activeIndex !== this.state.activeIndex) {
+			this.props.onChangeTab();
+		}
 	}
 
 	public render() {
@@ -87,7 +103,7 @@ export class Tabs extends React.Component<IProps, IState> {
 								this.transitionTo(index);
 
 								if (child.props.onPress) {
-									child.props.onPress();
+									child.props.onPress(this.state.activeIndex === index);
 								}
 							}}
 						>
@@ -165,6 +181,13 @@ export class Tabs extends React.Component<IProps, IState> {
 			duration: 300,
 			useNativeDriver: true,
 		}).start(() => {
+			const { refs } = this.props;
+			const { activeIndex } = this.state;
+
+			if (refs && refs[activeIndex].current) {
+				// @ts-ignore
+				refs[activeIndex].current.setNativeProps({ scrollEnabled: true });
+			}
 			this.setState({ activeIndex: index });
 		});
 	};

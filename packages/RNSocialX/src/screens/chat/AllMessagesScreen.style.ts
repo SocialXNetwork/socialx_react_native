@@ -1,14 +1,13 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
-
-const { height } = Dimensions.get('window');
-export const HEADER_HEIGHT = Sizes.smartVerticalScale(45);
-export const MINIMUM_SCROLL_DISTANCE = Sizes.smartVerticalScale(50);
 
 export const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		backgroundColor: Colors.white,
-		height,
+	},
+	inner: {
+		flex: 1,
 	},
 	underline: {
 		height: Sizes.smartVerticalScale(1),

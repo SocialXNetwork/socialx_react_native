@@ -5,7 +5,7 @@ const { width } = Dimensions.get('window');
 interface IProps {
 	heading: string;
 	translateX?: Animated.AnimatedInterpolation;
-	onPress?: () => void;
+	onPress?: (isActive: boolean) => void;
 }
 
 export const Tab: React.SFC<IProps> = ({ children, translateX }) => (

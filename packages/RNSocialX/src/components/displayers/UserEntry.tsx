@@ -79,6 +79,7 @@ class Component extends React.Component<IProps> {
 			if (removable) {
 				return (
 					<TouchableOpacity
+						delayPressIn={50}
 						onPress={onPress}
 						onLongPress={this.onShowOptionsHandler}
 						style={cardStyles}

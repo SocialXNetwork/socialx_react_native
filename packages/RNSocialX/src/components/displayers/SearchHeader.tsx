@@ -5,10 +5,12 @@ import { SafeAreaView } from 'react-navigation';
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 
 import { HeaderButton, SearchInput } from '../';
-import { OS_TYPES, SCREENS } from '../../environment/consts';
+import { SCREENS } from '../../environment/consts';
 import { Icons } from '../../environment/theme';
 import { INavigationProps } from '../../types';
+
 import styles from './SearchHeader.style';
+const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
 interface ISearchHeaderProps extends INavigationProps {
 	cancel: boolean;
@@ -16,9 +18,8 @@ interface ISearchHeaderProps extends INavigationProps {
 	autoFocus?: boolean;
 	back?: boolean;
 	overlay?: boolean;
-	scrollY?: Animated.Value;
-	scrollThreshold?: number;
-	minimumScrollDistance?: number;
+	opacity?: Animated.AnimatedInterpolation | number;
+	translateY?: Animated.AnimatedInterpolation | number;
 	onSearchTermChange?: (term: string) => void;
 	onCancelSearch?: () => void;
 }
@@ -29,50 +30,47 @@ interface IProps extends ISearchHeaderProps {
 
 class Component extends React.PureComponent<IProps> {
 	public render() {
-		const {
-			back,
-			term,
-			cancel,
-			autoFocus,
-			overlay,
-			scrollY,
-			minimumScrollDistance,
-			scrollThreshold,
-			onGoBack,
-		} = this.props;
+		const { back, term, cancel, autoFocus, overlay, translateY, opacity, onGoBack } = this.props;
 
-		let opacity: number | Animated.AnimatedInterpolation = 1;
-		let Container = View;
-
-		if (scrollY && minimumScrollDistance && scrollThreshold) {
-			Container = Animated.View;
-
-			if (Platform.OS === OS_TYPES.IOS) {
-				const distance = scrollY.interpolate({
-					inputRange: [minimumScrollDistance, minimumScrollDistance + scrollThreshold],
-					outputRange: [0, scrollThreshold],
-					extrapolateLeft: 'clamp',
-				});
-
-				opacity = distance.interpolate({
-					inputRange: [0, scrollThreshold / 3, scrollThreshold],
-					outputRange: [1, 0.3, 0],
-					extrapolate: 'clamp',
-				});
-			} else {
-				opacity = Animated.diffClamp(scrollY, 0, 1).interpolate({
-					inputRange: [0, 1 / 3, 1],
-					outputRange: [1, 0.3, 0],
-					extrapolate: 'clamp',
-				});
-			}
+		if (opacity || translateY) {
+			return (
+				<AnimatedSafeAreaView
+					style={[styles.floating, { transform: [{ translateY }] }] as ViewStyle}
+				>
+					<View style={styles.inner}>
+						{back && (
+							<Animated.View style={[styles.backButton, { opacity }] as ViewStyle}>
+								<HeaderButton
+									iconName={Platform.select({
+										android: Icons.backArrow.android,
+										ios: Icons.backArrow.ios,
+									})}
+									onPress={onGoBack}
+								/>
+							</Animated.View>
+						)}
+						<Animated.View style={[styles.inputContainer, { opacity }] as ViewStyle}>
+							<SearchInput
+								term={term}
+								autoFocus={autoFocus}
+								cancel={cancel}
+								onChangeText={this.onChangeTextHandler}
+								onPressCancel={this.onCancelHandler}
+							/>
+							{overlay && (
+								<TouchableOpacity onPress={this.onInputPressHandler} style={styles.inputOverlay} />
+							)}
+						</Animated.View>
+					</View>
+				</AnimatedSafeAreaView>
+			);
 		}
 
 		return (
 			<SafeAreaView style={styles.container}>
 				<View style={styles.inner}>
 					{back && (
-						<Container style={[styles.backButton, { opacity }] as ViewStyle}>
+						<View style={styles.backButton}>
 							<HeaderButton
 								iconName={Platform.select({
 									android: Icons.backArrow.android,
@@ -80,9 +78,9 @@ class Component extends React.PureComponent<IProps> {
 								})}
 								onPress={onGoBack}
 							/>
-						</Container>
+						</View>
 					)}
-					<Container style={[styles.inputContainer, { opacity }] as ViewStyle}>
+					<View style={styles.inputContainer}>
 						<SearchInput
 							term={term}
 							autoFocus={autoFocus}
@@ -93,7 +91,7 @@ class Component extends React.PureComponent<IProps> {
 						{overlay && (
 							<TouchableOpacity onPress={this.onInputPressHandler} style={styles.inputOverlay} />
 						)}
-					</Container>
+					</View>
 				</View>
 			</SafeAreaView>
 		);

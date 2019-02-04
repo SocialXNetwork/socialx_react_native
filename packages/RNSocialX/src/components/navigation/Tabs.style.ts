@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
 		height: Sizes.smartVerticalScale(50),
 		flexDirection: 'row',
 		alignItems: 'center',
-		borderWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderColor: Colors.dustGray,
 	},
 	heading: {
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
 	indicator: {
 		height: Sizes.smartVerticalScale(1),
 		backgroundColor: Colors.pink,
-		top: -2,
+		top: -1,
 	},
 	children: {
 		flex: 1,
