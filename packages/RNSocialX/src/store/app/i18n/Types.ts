@@ -144,8 +144,14 @@ export interface ILocaleDictionary {
 				heading: string;
 			};
 		};
-		bounty: {
+		bounties: {
 			title: string;
+			claimed: string;
+			bounty: {
+				title: string;
+				available: string;
+				unavailable: string;
+			};
 		};
 	};
 	components: {

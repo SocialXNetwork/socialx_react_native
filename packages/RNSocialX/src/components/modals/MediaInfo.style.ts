@@ -45,7 +45,7 @@ export default StyleSheet.create({
 		lineHeight: ROW_LINE_HEIGHT,
 	},
 	filedValueLink: {
-		color: Colors.postHour,
+		color: Colors.cerulean,
 		textDecorationLine: 'underline',
 	},
 	infoTitles: {

@@ -1,11 +1,16 @@
 import * as React from 'react';
 
-import { IDictionary, IOptionsMenuProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
+import { SCREENS } from '../../../environment/consts';
+import { IBounty } from '../../../store/data/bounties';
 import { WithI18n } from '../../connectors/app/WithI18n';
 import { WithNavigationParams } from '../../connectors/app/WithNavigationParams';
+import { WithAllBounties } from './WithAllBounties';
 
-export interface IWithBountyEnhancedData extends IDictionary {}
+export interface IWithBountyEnhancedData extends IDictionary {
+	bounty: IBounty;
+}
 
 export interface IWithBountyEnhancedActions {}
 
@@ -24,14 +29,25 @@ export class WithBounty extends React.Component<IWithBountyProps, IWithBountySta
 	render() {
 		return (
 			<WithI18n>
-				{({ dictionary }) =>
-					this.props.children({
-						data: {
-							dictionary,
-						},
-						actions: {},
-					})
-				}
+				{({ dictionary }) => (
+					<WithNavigationParams>
+						{({ navigationParams }) => (
+							<WithAllBounties>
+								{({ data }) => {
+									const { id } = navigationParams[SCREENS.Bounty];
+
+									return this.props.children({
+										data: {
+											bounty: data.bounties[id - 1],
+											dictionary,
+										},
+										actions: {},
+									});
+								}}
+							</WithAllBounties>
+						)}
+					</WithNavigationParams>
+				)}
 			</WithI18n>
 		);
 	}

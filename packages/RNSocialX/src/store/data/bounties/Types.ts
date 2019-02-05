@@ -8,18 +8,12 @@ export interface IBounty {
 	content: string;
 	categories: string[];
 	expiryDate: Date;
+	submissionMin: number;
+	submissionMax: number;
 	reward: number;
 	claimed: boolean;
 	coin?: CoinSymbol;
 }
-
-export interface IBounties {
-	[alias: string]: IBounty[];
-}
-
-export type IState = DeepReadonly<{
-	bounties: IBounties;
-}>;
 
 export const enum ActionTypes {
 	GET_BOUNTIES = 'data/bounties/GET_BOUNTIES',
@@ -38,7 +32,7 @@ export interface IGetBountiesAction extends Action {
 
 export interface ISyncGetBountiesAction extends Action {
 	type: ActionTypes.SYNC_GET_BOUNTIES;
-	payload: IBounties;
+	payload: IBounty[];
 }
 
 export interface IUpdateBountyAction extends Action {

@@ -1,52 +1,40 @@
 import React from 'react';
-import { FlatList, Keyboard, Platform, TouchableOpacity, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IBounty } from '../../../store/data/bounties';
 import { IApplicationState, selectMessages } from '../../../store/selectors';
 
+import { ILocaleDictionary } from '../../../store/app/i18n/Types';
 import styles from './BountiesList.style';
 import { Bounty } from './Bounty';
 
-import { bounties } from '../../../mocks';
-
 interface IBountiesListProps {
-	onClaimReward: () => void;
+	dictionary: ILocaleDictionary;
+	onClaimBounty: (index: string) => void;
 }
 
 interface IProps extends IBountiesListProps {
-	// bounties: IBounty[];
+	bounties: IBounty[];
 }
 
-interface IState {
-	// bountyIndex: number;
-	// selected: boolean;
-}
+interface IState {}
 
 export class BountiesList extends React.Component<IProps, IState> {
-	public state = {
-		// bountyIndex: this.props.bounties.length,
-		// selected: false,
-	};
+	public state = {};
 
 	private scrollRef: React.RefObject<FlatList<IBounty>> = React.createRef();
 
 	public render() {
-		// const { bounties, onClaimReward } = this.props;
+		const { bounties, dictionary } = this.props;
 		// const { bountyIndex, selected } = this.state;
 
 		return (
 			<FlatList
 				ref={this.scrollRef}
 				data={bounties}
-				renderItem={({ item, index }) => (
-					<Bounty
-						bounty={item}
-						// previousMessage={bounties[index - 1] || null}
-						// nextMessage={bounties[index + 1] || null}
-						// selected={messageIndex === index && selected}
-						onClaimReward={() => this.onClaimRewardHandler(index)}
-					/>
+				renderItem={({ item }) => (
+					<Bounty bounty={item} dictionary={dictionary} onClaimBounty={this.onClaimBountyHandler} />
 				)}
 				keyboardShouldPersistTaps="handled"
 				keyExtractor={(item) => item.id}
@@ -59,25 +47,10 @@ export class BountiesList extends React.Component<IProps, IState> {
 		);
 	}
 
-	private onClaimRewardHandler = (index: number) => {
-		// const { selected, messageIndex } = this.state;
+	private onClaimBountyHandler = (index: string) => {
+		console.log(index);
 
-		// if (index !== messageIndex && !selected) {
-		// 	this.setState({
-		// 		messageIndex: index,
-		// 		selected: true,
-		// 	});
-		// } else if (index !== messageIndex && selected) {
-		// 	this.setState({
-		// 		messageIndex: index,
-		// 	});
-		// } else if (index === messageIndex && !selected) {
-		// 	this.setState({ selected: true });
-		// } else {
-		// 	this.setState({ selected: false });
-		// }
-
-		return true;
+		this.props.onClaimBounty(index);
 	};
 }
 

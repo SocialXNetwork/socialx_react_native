@@ -126,8 +126,14 @@ export default {
 				heading: "Activity",
 			}
 		},
-		bounty: {
+		bounties: {
 			title: 'Bounty Management',
+			claimed: 'Claimed',
+			bounty: {
+				title: 'Details',
+				available: 'Available bounty',
+				unavailable: 'Already claimed',
+			},
 		}
 	},
 	components: {

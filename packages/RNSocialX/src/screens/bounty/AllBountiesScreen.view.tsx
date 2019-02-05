@@ -1,15 +1,16 @@
 import React from 'react';
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { createAppContainer, createMaterialTopTabNavigator, SafeAreaView } from 'react-navigation';
 
 import { BountiesList, Header } from '../../components';
 import { IDictionary, INavigationProps } from '../../types';
 
+import { IBounty } from '../../store/data/bounties';
 import { styles, tabsStyles } from './AllBountiesScreen.style';
 
 interface IProps extends INavigationProps, IDictionary {
-	bounties: string[];
-	onClaimBounty: (alias: string) => void;
+	bounties: IBounty[];
+	onClaimBounty: (id: string) => void;
 }
 
 const AllBountiesTabs = createMaterialTopTabNavigator(
@@ -17,21 +18,33 @@ const AllBountiesTabs = createMaterialTopTabNavigator(
 		Sponsored: {
 			screen: ({ screenProps }: { screenProps: IProps }) => (
 				<View style={styles.entries}>
-					<BountiesList onClaimReward={() => undefined} />
+					<BountiesList
+						dictionary={screenProps.dictionary}
+						bounties={screenProps.bounties}
+						onClaimBounty={screenProps.onClaimBounty}
+					/>
 				</View>
 			),
 		},
 		Hot: {
 			screen: ({ screenProps }: { screenProps: IProps }) => (
 				<View style={styles.entries}>
-					<BountiesList onClaimReward={() => undefined} />
+					<BountiesList
+						dictionary={screenProps.dictionary}
+						bounties={screenProps.bounties}
+						onClaimBounty={screenProps.onClaimBounty}
+					/>
 				</View>
 			),
 		},
 		New: {
 			screen: ({ screenProps }: { screenProps: IProps }) => (
 				<View style={styles.entries}>
-					<BountiesList onClaimReward={() => undefined} />
+					<BountiesList
+						dictionary={screenProps.dictionary}
+						bounties={screenProps.bounties}
+						onClaimBounty={screenProps.onClaimBounty}
+					/>
 				</View>
 			),
 		},
@@ -50,7 +63,7 @@ const Tabs = createAppContainer(AllBountiesTabs);
 export const AllBountiesScreenView: React.SFC<IProps> = (props) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
-			title={props.dictionary.screens.bounty.title.toUpperCase()}
+			title={props.dictionary.screens.bounties.title.toUpperCase()}
 			back={true}
 			onPressBack={props.navigation.goBack}
 		/>

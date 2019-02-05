@@ -74,7 +74,7 @@ const style: any = {
 		lineHeight: Sizes.smartHorizontalScale(18),
 	},
 	buttonTextConfirm: {
-		color: Colors.postHour,
+		color: Colors.cerulean,
 	},
 	buttonTextCancel: {
 		opacity: 0.5,

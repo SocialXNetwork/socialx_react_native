@@ -2,13 +2,15 @@ import * as React from 'react';
 
 import { IDictionary } from '../../../types';
 
+import { bounties } from '../../../mocks';
+import { IBounty } from '../../../store/data/bounties';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
-export interface IWithAllBountiesEnhancedData extends IDictionary {}
-
-export interface IWithAllBountiesEnhancedActions {
-	onClaimBounty: () => undefined;
+export interface IWithAllBountiesEnhancedData extends IDictionary {
+	bounties: IBounty[];
 }
+
+export interface IWithAllBountiesEnhancedActions {}
 
 interface IWithAllBountiesEnhancedProps {
 	data: IWithAllBountiesEnhancedData;
@@ -28,11 +30,10 @@ export class WithAllBounties extends React.Component<IWithAllBountiesProps, IWit
 				{({ dictionary }) =>
 					this.props.children({
 						data: {
+							bounties,
 							dictionary,
 						},
-						actions: {
-							onClaimBounty: () => undefined,
-						},
+						actions: {},
 					})
 				}
 			</WithI18n>

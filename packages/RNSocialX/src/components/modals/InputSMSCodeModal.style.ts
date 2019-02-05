@@ -67,7 +67,7 @@ const style: any = {
 		flex: 1,
 	},
 	buttonTextConfirm: {
-		color: Colors.postHour,
+		color: Colors.cerulean,
 	},
 	buttonTextCancel: {
 		color: Colors.cloudBurst,

@@ -36,8 +36,8 @@ export const customStyleProps = {
 	slide1GradientEnd: Colors.blueMarguerite,
 	slide2BackgroundImage: Images.IntroWalkThrough2,
 	slide2GradientStart: Colors.blueMarguerite,
-	slide2GradientEnd: Colors.postHour,
+	slide2GradientEnd: Colors.cerulean,
 	slide3BackgroundImage: Images.IntroWalkThrough3,
 	slide3GradientStart: Colors.pink,
-	slide3GradientEnd: Colors.postHour,
+	slide3GradientEnd: Colors.cerulean,
 };

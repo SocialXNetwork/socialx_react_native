@@ -3,42 +3,38 @@ import React from 'react';
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import { IWithAllBountiesEnhancedData, WithAllBounties } from '../../enhancers/screens';
 
+import { IBounty } from '../../store/data/bounties';
 import { INavigationProps } from '../../types';
 import { AllBountiesScreenView } from './AllBountiesScreen.view';
 
-const bounties: string[] = ['Bounty 1', 'Bounty 2', 'Bounty 3', 'Bounty 4', 'Bounty 5'];
-
-interface IProps extends INavigationProps, IWithAllBountiesEnhancedData {}
-
-interface IState {
-	bounties: string[];
+interface IProps extends INavigationProps, IWithAllBountiesEnhancedData {
+	bounties: IBounty[];
+	onOpenBounty: (id: string) => void;
 }
 
+interface IState {}
+
 class Screen extends React.Component<IProps, IState> {
-	public state = {
-		bounties,
-	};
+	public state = {};
 
 	public render() {
 		return (
 			<AllBountiesScreenView
+				bounties={this.props.bounties}
 				navigation={this.props.navigation}
 				dictionary={this.props.dictionary}
-				bounties={this.state.bounties}
-				onClaimBounty={this.onClaimBountyHandler}
+				onClaimBounty={this.props.onOpenBounty}
 			/>
 		);
 	}
-
-	private onClaimBountyHandler = () => {
-		return true;
-	};
 }
 
 export const AllBountiesScreen = (props: INavigationProps) => (
 	<WithNavigationHandlers>
 		{({ actions }) => (
-			<WithAllBounties>{({ data }) => <Screen {...props} {...data} />}</WithAllBounties>
+			<WithAllBounties>
+				{({ data }) => <Screen {...props} {...data} onOpenBounty={actions.onOpenBounty} />}
+			</WithAllBounties>
 		)}
 	</WithNavigationHandlers>
 );

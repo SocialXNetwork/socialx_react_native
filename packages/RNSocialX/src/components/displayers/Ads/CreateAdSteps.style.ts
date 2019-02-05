@@ -31,7 +31,7 @@ const styles: any = {
 		borderRadius: CONTAINER_SIZE / 2,
 	},
 	iconContainerSelected: {
-		backgroundColor: Colors.postHour,
+		backgroundColor: Colors.cerulean,
 	},
 	connectorView: {
 		backgroundColor: Colors.white,

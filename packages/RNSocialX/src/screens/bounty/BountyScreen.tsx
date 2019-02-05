@@ -7,10 +7,12 @@ import {
 	WithBounty,
 } from '../../enhancers/screens';
 
+import { IBounty } from '../../store/data/bounties';
 import { INavigationProps } from '../../types';
 import { BountyScreenView } from './BountyScreen.view';
 
 interface IProps extends INavigationProps, IWithBountyEnhancedData, IWithBountyEnhancedActions {
+	bounty: IBounty;
 	onGoBack: () => void;
 }
 
@@ -20,9 +22,9 @@ class Screen extends React.Component<IProps, IState> {
 	public state = {};
 
 	public render() {
-		const { dictionary, onGoBack } = this.props;
+		const { dictionary, onGoBack, bounty } = this.props;
 
-		return <BountyScreenView dictionary={dictionary} onGoBack={onGoBack} />;
+		return <BountyScreenView bounty={bounty} dictionary={dictionary} onGoBack={onGoBack} />;
 	}
 }
 
