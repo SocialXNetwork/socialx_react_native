@@ -7,11 +7,16 @@ import {
 	Platform,
 } from 'react-native';
 
+import {
+	IWithHeaderCollapseEnhancedActions,
+	WithHeaderCollapse,
+} from '../../enhancers/intermediary';
+
 import { GenericModal, UserEntry } from '../../components';
 import { OS_TYPES } from '../../environment/consts';
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-interface IProps {
+interface IUserEntriesProps {
 	aliases: string[];
 	friends?: boolean;
 	chat?: boolean;
@@ -22,10 +27,11 @@ interface IProps {
 	liftRef?: (ref: React.RefObject<FlatList<any>>) => void;
 	onEntryPress: (alias: string) => void;
 	onRemove?: (alias: string) => void;
-	onScroll?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
-export class UserEntries extends React.Component<IProps> {
+interface IProps extends IUserEntriesProps, IWithHeaderCollapseEnhancedActions {}
+
+class Compoenent extends React.Component<IProps> {
 	private ref: React.RefObject<FlatList<any>> = React.createRef();
 
 	public componentDidMount() {
@@ -64,6 +70,7 @@ export class UserEntries extends React.Component<IProps> {
 							removable={removable}
 							first={index === 0}
 							last={index === aliases.length - 1}
+							space={Platform.OS === OS_TYPES.IOS && scrollY && index === aliases.length - 1}
 							onPress={() => onEntryPress(item)}
 						/>
 					)}
@@ -71,13 +78,15 @@ export class UserEntries extends React.Component<IProps> {
 					keyExtractor={(item: string, index: number) => item + index}
 					showsVerticalScrollIndicator={false}
 					scrollEnabled={scroll}
-					scrollEventThrottle={16}
+					scrollEventThrottle={1}
 					onScroll={
 						scrollY &&
-						Platform.OS === OS_TYPES.IOS &&
-						Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-							useNativeDriver: true,
-							listener: (props) => console.log(props.nativeEvent.contentOffset),
+						Platform.select({
+							ios: Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+								useNativeDriver: true,
+								listener: (event: NativeSyntheticEvent<NativeScrollEvent>) =>
+									onScroll(event, this.ref),
+							}),
 						})
 					}
 					onScrollBeginDrag={onScroll}
@@ -90,3 +99,7 @@ export class UserEntries extends React.Component<IProps> {
 		);
 	}
 }
+
+export const UserEntries = (props: IUserEntriesProps) => (
+	<WithHeaderCollapse>{({ actions }) => <Compoenent {...props} {...actions} />}</WithHeaderCollapse>
+);

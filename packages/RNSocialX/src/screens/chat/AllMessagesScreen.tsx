@@ -1,14 +1,13 @@
 import React from 'react';
-import { Animated, FlatList } from 'react-native';
 
 import {
-	IWithHeaderCollapseEnhancedActions,
 	IWithHeaderCollapseEnhancedData,
 	WithHeaderCollapse,
 	WithNavigationHandlers,
 } from '../../enhancers/intermediary';
 import { IWithAllMessagesEnhancedData, WithAllMessages } from '../../enhancers/screens';
 
+import { FlatList } from 'react-native';
 import { INavigationProps } from '../../types';
 import { AllMessagesScreenView } from './AllMessagesScreen.view';
 
@@ -49,8 +48,9 @@ const people: string[] = ['letsgheek', 'Philip', 'will2k'];
 interface IProps
 	extends INavigationProps,
 		IWithAllMessagesEnhancedData,
-		IWithHeaderCollapseEnhancedActions,
 		IWithHeaderCollapseEnhancedData {
+	expand: () => void;
+	scrollToTop: (ref: React.RefObject<FlatList<any>>, isActive: boolean) => void;
 	onOpenConversation: (alias: string) => void;
 }
 
@@ -76,7 +76,6 @@ class Screen extends React.Component<IProps, IState> {
 			expand,
 			scrollToTop,
 			onOpenConversation,
-			onScroll,
 		} = this.props;
 
 		return (
@@ -93,7 +92,6 @@ class Screen extends React.Component<IProps, IState> {
 				scrollToTop={scrollToTop}
 				onRemoveMessage={this.onRemoveMessageHandler}
 				onEntryPress={onOpenConversation}
-				onScroll={onScroll}
 			/>
 		);
 	}
@@ -116,7 +114,8 @@ export const AllMessagesScreen = (props: INavigationProps) => (
 								{...props}
 								{...data}
 								{...collapse.data}
-								{...collapse.actions}
+								expand={collapse.actions.expand}
+								scrollToTop={collapse.actions.scrollToTop}
 								onOpenConversation={actions.onOpenConversation}
 							/>
 						)}

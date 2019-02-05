@@ -7,13 +7,16 @@ import {
 	NativeSyntheticEvent,
 	Platform,
 } from 'react-native';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
-import { OS_TYPES } from '../../environment/consts';
+import {
+	HEADER_HEIGHT,
+	MINIMUM_SCROLL_DISTANCE,
+	OS_TYPES,
+	STATUS_BAR_HEIGHT,
+} from '../../environment/consts';
 import { Sizes } from '../../environment/theme';
-const HEADER_HEIGHT = Sizes.smartVerticalScale(45);
-const STATUS_BAR_HEIGHT = getStatusBarHeight();
-const MINIMUM_SCROLL_DISTANCE = 50;
+const NOTCH_OFFSET = Sizes.smartVerticalScale(10);
 const THROTTLE_TIME = 300;
 const ANIMATION_TIME = 300;
 
@@ -28,7 +31,10 @@ export interface IWithHeaderCollapseEnhancedActions {
 	collapse: () => void;
 	expand: () => void;
 	scrollToTop: (ref: React.RefObject<FlatList<any>>, isActive: boolean) => void;
-	onScroll: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
+	onScroll: (
+		e: NativeSyntheticEvent<NativeScrollEvent>,
+		ref?: React.RefObject<FlatList<any>>,
+	) => void;
 }
 
 interface IWithHeaderCollapsetEnhancedProps {
@@ -41,7 +47,13 @@ interface IWithHeaderCollapseProps {
 }
 
 export class WithHeaderCollapse extends React.Component<IWithHeaderCollapseProps> {
-	private scrollY = new Animated.Value(1);
+	private scrollY = new Animated.Value(
+		Platform.select({
+			ios: 0,
+			android: 1,
+		}),
+	);
+	private offset = new Animated.Value(0);
 	private oldPosition = 0;
 	private down = true;
 	private up = false;
@@ -55,25 +67,35 @@ export class WithHeaderCollapse extends React.Component<IWithHeaderCollapseProps
 		let opacity;
 
 		if (Platform.OS === OS_TYPES.IOS) {
-			const distance = this.scrollY.interpolate({
-				inputRange: [MINIMUM_SCROLL_DISTANCE, MINIMUM_SCROLL_DISTANCE + HEADER_HEIGHT],
-				outputRange: [0, HEADER_HEIGHT],
-			});
+			const MAX = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+			const OFFSET = isIphoneX() ? NOTCH_OFFSET : 0;
 
-			headerTranslate = distance.interpolate({
-				inputRange: [0, HEADER_HEIGHT],
+			const scroll = Animated.diffClamp(
+				Animated.add(
+					this.scrollY.interpolate({
+						inputRange: [MINIMUM_SCROLL_DISTANCE, MINIMUM_SCROLL_DISTANCE + 1],
+						outputRange: [0, 1],
+						extrapolateLeft: 'clamp',
+					}),
+					this.offset,
+				),
+				0,
+				MAX,
+			);
+
+			headerTranslate = scroll.interpolate({
+				inputRange: [0, MAX],
 				outputRange: [0, -HEADER_HEIGHT],
 				extrapolate: 'clamp',
 			});
-
-			listTranslate = distance.interpolate({
-				inputRange: [0, HEADER_HEIGHT],
-				outputRange: [HEADER_HEIGHT + STATUS_BAR_HEIGHT, HEADER_HEIGHT - STATUS_BAR_HEIGHT],
+			listTranslate = scroll.interpolate({
+				inputRange: [0, MAX],
+				outputRange: [HEADER_HEIGHT + OFFSET, OFFSET],
 				extrapolate: 'clamp',
 			});
-			opacity = distance.interpolate({
-				inputRange: [0, HEADER_HEIGHT / 3, HEADER_HEIGHT],
-				outputRange: [1, 0.3, 0],
+			opacity = scroll.interpolate({
+				inputRange: [0, MAX],
+				outputRange: [1, 0],
 				extrapolate: 'clamp',
 			});
 		} else {
@@ -110,16 +132,31 @@ export class WithHeaderCollapse extends React.Component<IWithHeaderCollapseProps
 		});
 	}
 
-	private onScrollHandler = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+	private onScrollHandler = (
+		e: NativeSyntheticEvent<NativeScrollEvent>,
+		ref?: React.RefObject<FlatList<any>>,
+	) => {
 		const newPosition = e.nativeEvent.contentOffset.y;
 
-		if (newPosition > 0 && newPosition >= this.oldPosition && this.down && !this.up) {
-			this.throttledCollapse();
-		} else if (newPosition >= 0 && newPosition < this.oldPosition && this.up && !this.down) {
-			this.throttledExpand();
-		}
+		if (Platform.OS === OS_TYPES.Android) {
+			if (newPosition > 0 && newPosition >= this.oldPosition && this.down && !this.up) {
+				this.throttledCollapse();
+			} else if (newPosition >= 0 && newPosition < this.oldPosition && this.up && !this.down) {
+				this.throttledExpand();
+			}
 
-		this.oldPosition = newPosition;
+			this.oldPosition = newPosition;
+		} else {
+			if (ref && ref.current) {
+				if (newPosition >= MINIMUM_SCROLL_DISTANCE) {
+					// @ts-ignore
+					ref.current.setNativeProps({ bounces: false });
+				} else {
+					// @ts-ignore
+					ref.current.setNativeProps({ bounces: true });
+				}
+			}
+		}
 	};
 
 	private expand = () => {

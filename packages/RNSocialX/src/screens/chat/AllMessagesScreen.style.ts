@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { STATUS_BAR_HEIGHT } from '../../environment/consts';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 export const styles = StyleSheet.create({
@@ -8,6 +9,7 @@ export const styles = StyleSheet.create({
 	},
 	inner: {
 		flex: 1,
+		paddingTop: STATUS_BAR_HEIGHT,
 	},
 	underline: {
 		height: Sizes.smartVerticalScale(1),

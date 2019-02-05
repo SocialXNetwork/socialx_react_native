@@ -3,9 +3,10 @@
  *	1. Alex C: Replace icons from TransactionIcons with ones provided by @Dunja
  */
 
-import * as React from 'react';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 // DO NOT SHORTEN THIS IMPORT! For some reason, RN/Typescript cannot import the icons like that
 import { Icons } from './theme/Icons';
+import { Sizes } from './theme/Sizes';
 
 export enum FormTypes {
 	Input,
@@ -185,3 +186,6 @@ export enum ICON_TYPES {
 
 export const HEART_ANIMATION_TIME = 1000;
 export const USER_AVATAR_PLACEHOLDER = 'QmZgsU2Syps515N6xYFcLoL6u9pyqcvzNdz5xUtZQM7oV9';
+export const HEADER_HEIGHT = Sizes.smartVerticalScale(45);
+export const STATUS_BAR_HEIGHT = getStatusBarHeight();
+export const MINIMUM_SCROLL_DISTANCE = 200;

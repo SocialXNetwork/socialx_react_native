@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { Animated, FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
 import { NoContent, SearchHeader, Tab, Tabs, UserEntries } from '../../components';
@@ -17,7 +17,6 @@ interface IProps extends INavigationProps, IDictionary {
 	scrollToTop: (ref: React.RefObject<FlatList<any>>, isActive: boolean) => void;
 	onRemoveMessage: (alias: string) => void;
 	onEntryPress: (alias: string) => void;
-	onScroll: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 let messagesRef: React.RefObject<FlatList<any>>;
@@ -36,7 +35,6 @@ export const AllMessagesScreenView: React.SFC<IProps> = ({
 	scrollToTop,
 	onRemoveMessage,
 	onEntryPress,
-	onScroll,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<SearchHeader
@@ -62,7 +60,6 @@ export const AllMessagesScreenView: React.SFC<IProps> = ({
 						liftRef={(ref) => (messagesRef = ref)}
 						onEntryPress={onEntryPress}
 						onRemove={onRemoveMessage}
-						onScroll={onScroll}
 					/>
 				</Tab>
 				<Tab
@@ -78,7 +75,6 @@ export const AllMessagesScreenView: React.SFC<IProps> = ({
 						liftRef={(ref) => (friendsRef = ref)}
 						onEntryPress={onEntryPress}
 						onRemove={onRemoveMessage}
-						onScroll={onScroll}
 					/>
 				</Tab>
 			</Tabs>

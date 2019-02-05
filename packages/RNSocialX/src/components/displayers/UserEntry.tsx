@@ -26,6 +26,7 @@ interface IUserEntryProps {
 	removable: boolean;
 	first: boolean;
 	last: boolean;
+	space?: boolean;
 	onPress: () => void;
 }
 
@@ -63,14 +64,11 @@ class Component extends React.Component<IProps> {
 			request,
 			first,
 			last,
+			space,
 			onPress,
 		} = this.props;
 
-		const cardStyles = first
-			? [styles.card, styles.first]
-			: last
-			? [styles.card, styles.last]
-			: styles.card;
+		const cardStyles = this.getCardStyles();
 
 		if (profile) {
 			const showMessage = chat && message;
@@ -207,6 +205,22 @@ class Component extends React.Component<IProps> {
 		];
 
 		showOptionsMenu(items);
+	};
+
+	private getCardStyles = () => {
+		const { first, last, space } = this.props;
+
+		const style = [styles.card];
+
+		if (first) {
+			style.push(styles.first);
+		} else if (space) {
+			style.push(styles.space);
+		} else if (last) {
+			style.push(styles.last);
+		}
+
+		return style;
 	};
 }
 

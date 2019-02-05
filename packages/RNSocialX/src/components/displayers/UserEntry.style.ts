@@ -17,6 +17,9 @@ export default StyleSheet.create({
 	last: {
 		paddingBottom: Sizes.smartVerticalScale(10),
 	},
+	space: {
+		paddingBottom: Sizes.smartVerticalScale(60),
+	},
 	details: {
 		flex: 2,
 		flexDirection: 'row',
