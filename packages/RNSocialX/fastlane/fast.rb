@@ -65,7 +65,7 @@ private_lane :send_play_store do
       track: 'internal', # other options here: 'alpha', 'beta', 'production'
       json_key: "#{GOOGLE_JSON_KEY_PATH}",
       package_name: 'socialx.network',
-      apk: './android/app/build/outputs/apk/app-release.apk',
+      apk: './android/app/build/outputs/apk/release/app-release.apk',
   )
 end
 
