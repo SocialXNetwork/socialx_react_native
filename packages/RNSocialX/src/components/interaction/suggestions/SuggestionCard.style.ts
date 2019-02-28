@@ -30,7 +30,7 @@ const styles: any = {
 	reason: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(14),
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 		paddingBottom: Sizes.smartVerticalScale(10),
 		textAlign: 'center',
 	},
@@ -46,7 +46,7 @@ const styles: any = {
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(35),
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 	},
 };
 

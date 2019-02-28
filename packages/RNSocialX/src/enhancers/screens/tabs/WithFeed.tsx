@@ -6,7 +6,7 @@
 import * as React from 'react';
 
 import { FEED_TYPES } from '../../../environment/consts';
-import { ICurrentUser, INavigationParamsActions, ITranslatedProps } from '../../../types';
+import { ICurrentUser, IDictionary, INavigationParamsActions } from '../../../types';
 import { getActivity } from '../../helpers';
 
 import { ActionTypes } from '../../../store/data/posts/Types';
@@ -16,7 +16,7 @@ import { WithPosts } from '../../connectors/data/WithPosts';
 import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithCurrentUser } from '../../intermediary';
 
-export interface IWithFeedEnhancedData {
+export interface IWithFeedEnhancedData extends IDictionary {
 	currentUser: ICurrentUser;
 	postIds: string[];
 	refreshing: boolean;
@@ -24,7 +24,7 @@ export interface IWithFeedEnhancedData {
 	canLoad: boolean;
 }
 
-export interface IWithFeedEnhancedActions extends ITranslatedProps, INavigationParamsActions {
+export interface IWithFeedEnhancedActions extends INavigationParamsActions {
 	loadMorePosts: () => void;
 	refreshFeed: () => void;
 }
@@ -43,46 +43,49 @@ interface IWithFeedState {}
 
 export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 	render() {
-		const { type } = this.props;
-
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithNavigationParams>
 						{({ setNavigationParams }) => (
 							<WithActivities>
 								{({ activities }) => (
 									<WithPosts>
-										{(feed) => (
+										{({
+											global,
+											friends,
+											loadMorePosts,
+											loadMoreFriendsPosts,
+											refreshFriendsPosts,
+											refreshGlobalPosts,
+										}) => (
 											<WithCurrentUser>
 												{({ currentUser }) => {
-													if (type === FEED_TYPES.GLOBAL) {
+													if (this.props.type === FEED_TYPES.GLOBAL) {
 														return this.props.children({
 															data: {
 																currentUser,
-																postIds: feed.global.posts,
-																canLoad: feed.global.canLoadMore,
+																postIds: global.posts,
+																canLoad: global.canLoadMore,
 																loading: getActivity(activities, ActionTypes.LOAD_MORE_POSTS),
 																refreshing: getActivity(
 																	activities,
 																	ActionTypes.REFRESH_GLOBAL_POSTS,
 																),
+																dictionary,
 															},
 															actions: {
-																loadMorePosts: feed.loadMorePosts,
-																refreshFeed: async () => {
-																	await feed.refreshGlobalPosts();
-																},
+																loadMorePosts,
+																refreshFeed: refreshGlobalPosts,
 																setNavigationParams,
-																getText,
 															},
 														});
 													} else {
 														return this.props.children({
 															data: {
 																currentUser,
-																postIds: feed.friends.posts,
-																canLoad: feed.friends.canLoadMore,
+																postIds: friends.posts,
+																canLoad: friends.canLoadMore,
 																loading: getActivity(
 																	activities,
 																	ActionTypes.LOAD_MORE_FRIENDS_POSTS,
@@ -91,14 +94,12 @@ export class WithFeed extends React.Component<IWithFeedProps, IWithFeedState> {
 																	activities,
 																	ActionTypes.REFRESH_FRIENDS_POSTS,
 																),
+																dictionary,
 															},
 															actions: {
-																loadMorePosts: feed.loadMoreFriendsPosts,
-																refreshFeed: async () => {
-																	await feed.refreshFriendsPosts();
-																},
+																loadMorePosts: loadMoreFriendsPosts,
+																refreshFeed: refreshFriendsPosts,
 																setNavigationParams,
-																getText,
 															},
 														});
 													}

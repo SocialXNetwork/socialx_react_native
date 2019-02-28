@@ -7,37 +7,39 @@ import {
 	WithTermsAndConditions,
 } from '../../enhancers/screens';
 
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import { OS_TYPES } from '../../environment/consts';
 import { INavigationProps } from '../../types';
 // @ts-ignore
 import TermsAndConditionsHTML from './terms-and-conditions.html';
 import { TermsAndConditionsScreenView } from './TermsAndConditionsScreen.view';
 
-type ITermsAndConditionsScreenProps = INavigationProps &
-	IWithTermsAndConditionsEnhancedActions &
-	IWithTermsAndConditionsEnhancedData;
+interface IProps
+	extends INavigationProps,
+		IWithTermsAndConditionsEnhancedActions,
+		IWithTermsAndConditionsEnhancedData {
+	onGoBack: () => void;
+}
 
-const onGoBackHandler = (navigation: any) => {
-	navigation.goBack(null);
-};
-
-const Screen: React.SFC<ITermsAndConditionsScreenProps> = ({ navigation, getText }) => {
-	const webViewLocalSource =
+const Screen: React.SFC<IProps> = ({ dictionary, onGoBack }) => {
+	const source =
 		Platform.OS === OS_TYPES.IOS
 			? TermsAndConditionsHTML
 			: { uri: 'file:///android_asset/html/terms_and_conditions.html' };
 
 	return (
-		<TermsAndConditionsScreenView
-			localSource={webViewLocalSource}
-			onGoBack={() => onGoBackHandler(navigation)}
-			getText={getText}
-		/>
+		<TermsAndConditionsScreenView source={source} dictionary={dictionary} onGoBack={onGoBack} />
 	);
 };
 
 export const TermsAndConditionsScreen = (props: INavigationProps) => (
-	<WithTermsAndConditions>
-		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
-	</WithTermsAndConditions>
+	<WithNavigationHandlers>
+		{(nav) => (
+			<WithTermsAndConditions>
+				{({ data, actions }) => (
+					<Screen {...props} {...data} {...actions} onGoBack={nav.actions.onGoBack} />
+				)}
+			</WithTermsAndConditions>
+		)}
+	</WithNavigationHandlers>
 );

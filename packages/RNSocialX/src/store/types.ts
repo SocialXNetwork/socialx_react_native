@@ -6,6 +6,7 @@ import { IApplicationState } from './rootReducer';
 
 import { IAction as IAccountActions } from './data/accounts/Types';
 import { IAction as ICommentsActions } from './data/comments/Types';
+import { IAction as IMessagesActions } from './data/messages/Types';
 import { IAction as INotificationsActions } from './data/notifications/Types';
 import { IAction as IPostsActions } from './data/posts/Types';
 import { IAction as IProfilesActions } from './data/profiles/Types';
@@ -34,6 +35,7 @@ type IApplicationAction =
 	| ICommentsActions
 	| IPostsActions
 	| INotificationsActions
+	| IMessagesActions
 	| IAuthActions
 	| IConfigActions
 	| II18nActions

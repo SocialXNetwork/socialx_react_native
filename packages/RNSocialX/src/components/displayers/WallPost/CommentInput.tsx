@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Animated, Keyboard, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AvatarImage, InputSizes, PrimaryTextInput, TRKeyboardKeys } from '../../';
 import { Colors } from '../../../environment/theme';
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
 import styles from './CommentInput.style';
 
@@ -13,7 +13,7 @@ interface IAnimationValues {
 	send: Animated.Value;
 }
 
-interface ICommentInputProps extends ITranslatedProps {
+interface ICommentInputProps extends IDictionary {
 	comment: string;
 	feed?: boolean;
 	avatar?: string;
@@ -42,28 +42,28 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 	onCommentInputPress,
 	onSubmitComment,
 	onCommentInputBlur,
-	getText,
+	dictionary,
 }) => (
 	<TouchableOpacity onPress={onCommentInputPress} activeOpacity={1} style={styles.container}>
 		{feed && (
 			<React.Fragment>
 				<AvatarImage image={avatar} style={styles.avatar} />
-				<Animated.View style={[styles.inputContainer, { width: animationValues.width }]}>
+				<Animated.View style={[styles.animatingInput, { width: animationValues.width }]}>
 					<PrimaryTextInput
 						borderWidth={0}
 						size={InputSizes.Small}
-						placeholder={getText('comments.screen.comment.input.placeholder')}
+						placeholder={dictionary.components.inputs.placeholder.comment}
 						value={comment}
 						autoCorrect={false}
 						autoFocus={autoFocus}
 						returnKeyType={TRKeyboardKeys.send}
 						blurOnSubmit={true}
-						multiline={true}
 						disabled={disabled}
 						onBlur={onCommentInputBlur}
 						onSetFocus={onCommentInputPress}
 						onChangeText={onCommentInputChange}
 						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						style={styles.input}
 					/>
 				</Animated.View>
 				<Animated.View style={[styles.send, { transform: [{ translateX: animationValues.send }] }]}>
@@ -73,8 +73,11 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						disabled={comment.length === 0}
 					>
 						<Icon
-							name="comment-arrow-right"
-							style={[styles.icon, { color: comment.length === 0 ? Colors.grayText : Colors.pink }]}
+							name="ios-paper-plane"
+							style={[
+								styles.icon,
+								{ color: comment.length === 0 ? Colors.dustyGray : Colors.pink },
+							]}
 						/>
 					</TouchableOpacity>
 				</Animated.View>
@@ -82,12 +85,12 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 		)}
 		{!feed && (
 			<React.Fragment>
-				<View style={styles.inputContainer}>
+				<View style={{ flex: 1 }}>
 					<PrimaryTextInput
 						ref={commentInputRef}
 						borderWidth={0}
 						size={InputSizes.Small}
-						placeholder={getText('comments.screen.comment.input.placeholder')}
+						placeholder={dictionary.components.inputs.placeholder.comment}
 						value={comment}
 						autoCorrect={false}
 						autoFocus={autoFocus}
@@ -97,6 +100,7 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						disabled={disabled}
 						onChangeText={onCommentInputChange}
 						onSubmitPressed={comment.length > 0 ? onSubmitComment : Keyboard.dismiss}
+						style={styles.input}
 					/>
 				</View>
 				<View style={styles.send}>
@@ -106,8 +110,11 @@ export const CommentInput: React.SFC<ICommentInputProps> = ({
 						disabled={comment.length === 0}
 					>
 						<Icon
-							name="comment-arrow-right"
-							style={[styles.icon, { color: comment.length === 0 ? Colors.grayText : Colors.pink }]}
+							name="ios-paper-plane"
+							style={[
+								styles.icon,
+								{ color: comment.length === 0 ? Colors.dustyGray : Colors.pink },
+							]}
 						/>
 					</TouchableOpacity>
 				</View>

@@ -2,9 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(40);
-export const DROPDOWN_ITEM_HEIGHT = Sizes.smartHorizontalScale(35);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		width: '100%',
 		flexDirection: 'row',
@@ -65,7 +64,7 @@ const styles: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
 		color: Colors.cloudBurst,
-		lineHeight: DROPDOWN_ITEM_HEIGHT,
+		lineHeight: Sizes.smartHorizontalScale(35),
 		paddingHorizontal: Sizes.smartHorizontalScale(15),
 	},
 	hashtag: {
@@ -77,6 +76,4 @@ const styles: any = {
 	url: {
 		color: Colors.pink,
 	},
-};
-
-export default StyleSheet.create(styles);
+});

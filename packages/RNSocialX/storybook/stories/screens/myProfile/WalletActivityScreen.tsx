@@ -4,13 +4,13 @@ import * as React from 'react';
 
 import { getTextMock, transactions } from '../../../../src/mocks';
 import { WalletActivityScreenView } from '../../../../src/screens/myProfile/WalletActivityScreen.view';
-import { TrendOptions } from '../../../../src/types';
+import { TREND_OPTIONS } from '../../../../src/types';
 
 storiesOf('Screens/myProfile', module).add('WalletActivityScreenView', () => {
 	const wallet = {
 		coins: '53,680',
 		trendPercentage: '27.21',
-		trendArrow: TrendOptions.Up,
+		trendArrow: TREND_OPTIONS.UP,
 		transactions,
 		refreshing: false,
 	};

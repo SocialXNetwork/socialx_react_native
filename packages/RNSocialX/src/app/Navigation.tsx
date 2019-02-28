@@ -1,10 +1,11 @@
-import { Root } from 'native-base';
 import React from 'react';
 import { Animated, Easing } from 'react-native';
 import {
+	createAppContainer,
 	createBottomTabNavigator,
 	createMaterialTopTabNavigator,
 	createStackNavigator,
+	NavigationContainerComponent,
 	NavigationSceneRendererProps,
 	NavigationScreenProps,
 	TransitionConfig,
@@ -15,6 +16,7 @@ import {
 	Alert,
 	Header,
 	IconButton,
+	MediaOverlay,
 	OfflineOverlay,
 	OptionsMenu,
 	TabIcon,
@@ -30,8 +32,10 @@ import {
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
-	ChatScreen,
+	AllMessagesScreen,
+	ChatSearchScreen,
 	CommentsScreen,
+	ConversationScreen,
 	CreateWallPostScreen,
 	ForgotPasswordScreen,
 	FriendsFeed,
@@ -71,7 +75,7 @@ import { WithOverlays } from '../enhancers/connectors/ui/WithOverlays';
 
 const defaultConfig: IStackDefaultConfig = {
 	headerMode: 'none',
-	navigationOptions: {
+	defaultNavigationOptions: {
 		gesturesEnabled: true,
 	},
 };
@@ -83,8 +87,8 @@ const slideFromLeftTransition = (): TransitionConfig => ({
 		easing: Easing.out(Easing.poly(4)),
 		timing: Animated.timing,
 	},
-	screenInterpolator: (sceneProps: NavigationSceneRendererProps) => {
-		const { layout, position, scene } = sceneProps;
+	screenInterpolator: (props: NavigationSceneRendererProps) => {
+		const { layout, position, scene } = props;
 
 		const thisSceneIndex = scene.index;
 		const width = layout.initWidth;
@@ -99,8 +103,8 @@ const slideFromLeftTransition = (): TransitionConfig => ({
 });
 
 const fadeIn = (): TransitionConfig => ({
-	screenInterpolator: (sceneProps: NavigationSceneRendererProps) => {
-		const { position, scene } = sceneProps;
+	screenInterpolator: (props: NavigationSceneRendererProps) => {
+		const { position, scene } = props;
 
 		const sceneIndex = scene.index;
 
@@ -112,6 +116,13 @@ const fadeIn = (): TransitionConfig => ({
 		return { opacity };
 	},
 });
+
+const commonScreens = {
+	UserProfile: { screen: UserProfileScreen },
+	Comments: { screen: CommentsScreen },
+	Likes: { screen: LikesScreen },
+	FriendsList: { screen: FriendsListScreen },
+};
 
 const MyProfileStack = createStackNavigator(
 	{
@@ -134,6 +145,8 @@ const FeedTabs = createMaterialTopTabNavigator(
 	{
 		animationEnabled: true,
 		swipeEnabled: true,
+		// @ts-ignore
+		optimizationsEnabled: true,
 		tabBarOptions: styles.feed,
 	},
 );
@@ -146,21 +159,21 @@ const FeedStack = createStackNavigator(
 				header: (
 					<Header
 						logo={true}
-						// right={
-						// 	<IconButton
-						// 		source="ios-chatboxes"
-						// 		type="io"
-						// 		iconStyle={styles.chat}
-						// 		onPress={() => props.navigation.navigate(SCREENS.Chat)}
-						// 	/>
-						// }
+						right={
+							<IconButton
+								source="ios-chatboxes"
+								type="io"
+								iconStyle={styles.chat}
+								onPress={() => props.navigation.navigate(SCREENS.Chat)}
+							/>
+						}
 					/>
 				),
 			}),
 		},
 	},
 	{
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: true,
 		},
 	},
@@ -176,10 +189,51 @@ const SearchStack = createStackNavigator(
 		},
 	},
 	{
-		navigationOptions: {
+		defaultNavigationOptions: {
 			gesturesEnabled: false,
 		},
 		headerMode: 'none',
+		transitionConfig: fadeIn,
+	},
+);
+
+const ChatStack = createStackNavigator(
+	{
+		AllMessages: { screen: AllMessagesScreen },
+		Conversation: { screen: ConversationScreen },
+		...commonScreens,
+	},
+	{
+		headerMode: 'none',
+		defaultNavigationOptions: {
+			gesturesEnabled: false,
+		},
+	},
+);
+
+const ChatSearchStack = createStackNavigator(
+	{
+		ChatSearch: { screen: ChatSearchScreen },
+		Conversation: { screen: ConversationScreen },
+	},
+	{
+		headerMode: 'none',
+		defaultNavigationOptions: {
+			gesturesEnabled: false,
+		},
+	},
+);
+
+const ChatWithSearch = createStackNavigator(
+	{
+		ChatStack,
+		ChatSearchStack,
+	},
+	{
+		headerMode: 'none',
+		defaultNavigationOptions: {
+			gesturesEnabled: false,
+		},
 		transitionConfig: fadeIn,
 	},
 );
@@ -193,7 +247,7 @@ const HomeTabs = createBottomTabNavigator(
 		ProfileTab: MyProfileStack,
 	},
 	{
-		navigationOptions: (props) => ({
+		defaultNavigationOptions: (props) => ({
 			tabBarIcon: ({ focused }) => {
 				return (
 					<TabIcon
@@ -202,7 +256,7 @@ const HomeTabs = createBottomTabNavigator(
 						notifications={props.screenProps.notifications}
 						setNavigationParams={props.screenProps.setNavigationParams}
 						showOptionsMenu={props.screenProps.showOptionsMenu}
-						getText={props.screenProps.getText}
+						dictionary={props.screenProps.dictionary}
 					/>
 				);
 			},
@@ -236,11 +290,8 @@ const HomeStack = createStackNavigator(
 		Home: {
 			screen: HomeWithModalsStack,
 		},
-		UserProfile: { screen: UserProfileScreen },
-		Comments: { screen: CommentsScreen },
-		Likes: { screen: LikesScreen },
-		FriendsList: { screen: FriendsListScreen },
-		Chat: { screen: ChatScreen },
+		Chat: ChatWithSearch,
+		...commonScreens,
 	},
 	{
 		headerMode: 'none',
@@ -249,6 +300,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
+		ChatWithSearch,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },
@@ -289,22 +341,26 @@ const App = createStackNavigator(
 	},
 );
 
+const Root = createAppContainer(App);
+export let navigator: NavigationContainerComponent | null;
+
 const Navigation = () => (
 	<WithI18n>
-		{({ getText, dictionary }) => (
-			<Root>
+		{({ dictionary }) => (
+			<React.Fragment>
 				<WithNavigationParams>
 					{({ setNavigationParams }) => (
 						<WithOverlays>
 							{({ showOptionsMenu }) => (
 								<WithNotifications>
 									{({ unread }) => (
-										<App
+										<Root
+											ref={(nav) => (navigator = nav)}
 											screenProps={{
 												notifications: unread.length,
+												dictionary,
 												showOptionsMenu,
 												setNavigationParams,
-												getText,
 											}}
 										/>
 									)}
@@ -326,18 +382,19 @@ const Navigation = () => (
 												alpha={globals.transparentOverlay.alpha}
 												loader={globals.transparentOverlay.loader}
 											/>
-											<OfflineOverlay visible={!!globals.offline} getText={getText} />
+											<OfflineOverlay visible={!!globals.offline} dictionary={dictionary} />
 											<ActivityIndicator
 												visible={globals.activity.visible}
 												title={globals.activity.title}
 												message={globals.activity.message}
-												getText={getText}
+												dictionary={dictionary}
 											/>
 											<OptionsMenu
 												visible={optionsMenuItems.length > 0}
 												items={optionsMenuItems}
 												onBackdropPress={hideOptionsMenu}
 											/>
+											<MediaOverlay />
 										</React.Fragment>
 									)}
 								</WithActivities>
@@ -345,7 +402,7 @@ const Navigation = () => (
 						</WithOverlays>
 					)}
 				</WithGlobals>
-			</Root>
+			</React.Fragment>
 		)}
 	</WithI18n>
 );

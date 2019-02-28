@@ -9,7 +9,7 @@ export const FriendsFeed = ({ navigation }: INavigationProps) => (
 	<WithFeed type={FEED_TYPES.FRIENDS}>
 		{({ data, actions }) => (
 			<Feed
-				shareMessage="Share with your friends what you think"
+				shareMessage={data.dictionary.screens.feed.friends}
 				feedType={FEED_TYPES.FRIENDS}
 				navigation={navigation}
 				{...data}

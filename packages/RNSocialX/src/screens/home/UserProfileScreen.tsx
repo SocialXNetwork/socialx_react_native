@@ -1,12 +1,6 @@
 import { isEqual } from 'lodash';
 import * as React from 'react';
-import {
-	Animated,
-	NativeScrollEvent,
-	NativeSyntheticEvent,
-	Platform,
-	StatusBar,
-} from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 import { DataProvider } from 'recyclerlistview';
 
@@ -20,7 +14,7 @@ import {
 	WithUserProfile,
 } from '../../enhancers/screens';
 
-import { OS_TYPES, PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
+import { PROFILE_TAB_ICON_TYPES } from '../../environment/consts';
 import { INavigationProps, MediaTypeImage } from '../../types';
 import { UserProfileScreenView } from './UserProfileScreen.view';
 
@@ -71,9 +65,6 @@ class Screen extends React.Component<IProps, IState> {
 
 	public componentDidMount() {
 		this.loadPhotos();
-		if (Platform.OS === OS_TYPES.IOS) {
-			StatusBar.setBarStyle('light-content', true);
-		}
 	}
 
 	public componentDidUpdate(prevProps: IProps) {
@@ -239,7 +230,7 @@ class Screen extends React.Component<IProps, IState> {
 }
 
 export const UserProfileScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithUserProfile navigation={props.navigation}>
 				{(profile) => <Screen {...props} {...profile.data} {...profile.actions} {...nav.actions} />}

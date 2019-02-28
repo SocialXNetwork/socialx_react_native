@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithForgotPasswordEnhancedActions,
 	IWithForgotPasswordEnhancedData,
@@ -9,24 +10,29 @@ import {
 import { INavigationProps } from '../../types';
 import { ForgotPasswordScreenView } from './ForgotPasswordScreen.view';
 
-type IForgotPasswordScreenProps = INavigationProps &
-	IWithForgotPasswordEnhancedData &
-	IWithForgotPasswordEnhancedActions;
+interface IProps
+	extends INavigationProps,
+		IWithForgotPasswordEnhancedData,
+		IWithForgotPasswordEnhancedActions {
+	onGoBack: () => void;
+}
 
-const onGoBackHandler = (navigation: any) => {
-	navigation.goBack(null);
-};
-
-const Screen: React.SFC<IForgotPasswordScreenProps> = ({ getText, navigation, sendResetCode }) => (
+const Screen: React.SFC<IProps> = ({ navigation, dictionary, sendResetCode, onGoBack }) => (
 	<ForgotPasswordScreenView
-		getText={getText}
+		dictionary={dictionary}
 		onSendResetCode={sendResetCode}
-		onGoBack={() => onGoBackHandler(navigation)}
+		onGoBack={onGoBack}
 	/>
 );
 
 export const ForgotPasswordScreen = (props: INavigationProps) => (
-	<WithForgotPassword>
-		{({ data, actions }) => <Screen {...props} {...data} {...actions} />}
-	</WithForgotPassword>
+	<WithNavigationHandlers>
+		{(nav) => (
+			<WithForgotPassword>
+				{({ data, actions }) => (
+					<Screen {...props} {...data} {...actions} onGoBack={nav.actions.onGoBack} />
+				)}
+			</WithForgotPassword>
+		)}
+	</WithNavigationHandlers>
 );

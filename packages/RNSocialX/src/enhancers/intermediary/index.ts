@@ -4,6 +4,11 @@ export {
 	IWithNavigationHandlersEnhancedActions,
 	WithNavigationHandlers,
 } from './WithNavigationHandlers';
+export {
+	IWithHeaderCollapseEnhancedActions,
+	IWithHeaderCollapseEnhancedData,
+	WithHeaderCollapse,
+} from './WithHeaderCollapse';
 
 export { WithCurrentUser } from './WithCurrentUser';
 export { WithCurrentUserContent } from './WithCurrentUserContent';

@@ -1,26 +1,25 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../../environment/theme';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: Sizes.smartHorizontalScale(16),
-		marginTop: Sizes.smartVerticalScale(5),
+		marginTop: Sizes.smartVerticalScale(7.5),
 	},
-	inputContainer: {
-		borderWidth: Sizes.smartHorizontalScale(1),
-		borderRadius: Sizes.smartHorizontalScale(6),
-		borderColor: Colors.grayText,
-		width: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
-		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(85),
-		...Platform.select({
-			android: {
-				maxHeight: Sizes.smartVerticalScale(40),
-			},
-		}),
+	input: {
+		borderColor: Colors.dustGray,
+		backgroundColor: Colors.athensGray,
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: Sizes.smartHorizontalScale(20),
+		paddingVertical: Sizes.smartHorizontalScale(2),
+		paddingHorizontal: Sizes.smartHorizontalScale(10),
+	},
+	animatingInput: {
+		maxWidth: SCREEN_WIDTH - Sizes.smartHorizontalScale(80),
 	},
 	avatar: {
 		width: Sizes.smartHorizontalScale(35),
@@ -29,15 +28,12 @@ const styles: any = {
 		marginRight: Sizes.smartHorizontalScale(10),
 	},
 	send: {
-		flex: 1,
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		marginLeft: Sizes.smartHorizontalScale(5),
 	},
 	icon: {
 		fontSize: Sizes.smartHorizontalScale(30),
-		transform: [{ translateY: 2 }],
+		marginLeft: Sizes.smartHorizontalScale(5),
 	},
-};
-
-export default StyleSheet.create(styles);
+});

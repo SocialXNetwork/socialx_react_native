@@ -1,10 +1,7 @@
 import { debounce } from 'lodash';
 import * as React from 'react';
 
-import {
-	IWithNavigationHandlersEnhancedActions,
-	WithNavigationHandlers,
-} from '../../../enhancers/intermediary';
+import { WithNavigationHandlers } from '../../../enhancers/intermediary';
 import {
 	IWithSearchEnhancedActions,
 	IWithSearchEnhancedData,
@@ -13,30 +10,24 @@ import {
 
 import { INavigationProps } from '../../../types';
 import { SearchScreenView } from './SearchScreen.view';
-
 const SEARCH_DEBOUNCE_TIME = 300;
 
-type ISearchScreenProps = INavigationProps &
-	IWithSearchEnhancedData &
-	IWithSearchEnhancedActions &
-	IWithNavigationHandlersEnhancedActions;
+interface IProps extends INavigationProps, IWithSearchEnhancedData, IWithSearchEnhancedActions {
+	onViewUserProfile: (alias: string) => void;
+}
 
-interface IISearchScreenState {
+interface IState {
 	term: string;
-	loadedTabs: number[];
-	selectedTab: number;
 	suggestions: string[];
 }
 
-class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
+class Screen extends React.Component<IProps, IState> {
 	public state = {
 		term: '',
-		loadedTabs: [0],
-		selectedTab: 0,
 		suggestions: [],
 	};
 
-	private debouncedSearch = debounce((term: string) => {
+	private search = debounce((term: string) => {
 		this.props.search(term, 10);
 	}, SEARCH_DEBOUNCE_TIME);
 
@@ -47,34 +38,22 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 	}
 
 	public render() {
-		const { results, searching, navigation, getText } = this.props;
-		const { loadedTabs, term } = this.state;
+		const { results, searching, navigation, dictionary } = this.props;
 
 		return (
 			<SearchScreenView
-				term={term}
 				results={results}
+				term={this.state.term}
 				suggestions={this.state.suggestions}
-				loadedTabs={loadedTabs}
 				searching={searching}
 				onCancelSearch={this.onCancelSearchHandler}
-				onTabIndexChanged={this.onTabIndexChangedHandler}
 				onSearchTermChange={this.onSearchTermChangeHandler}
 				onResultPress={(alias) => this.props.onViewUserProfile(alias)}
 				navigation={navigation}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		);
 	}
-
-	private onTabIndexChangedHandler = (value: { i: number }) => {
-		if (!this.state.loadedTabs.includes(value.i)) {
-			this.setState({
-				selectedTab: value.i,
-				loadedTabs: [...this.state.loadedTabs, value.i],
-			});
-		}
-	};
 
 	private onSearchTermChangeHandler = (term: string) => {
 		const { previousTerms, searchLocally } = this.props;
@@ -82,20 +61,29 @@ class Screen extends React.Component<ISearchScreenProps, IISearchScreenState> {
 		this.setState({ term });
 		searchLocally(term);
 		if (term.length > 2 && !previousTerms[term]) {
-			this.debouncedSearch(term);
+			this.search(term);
 		}
 	};
 
 	private onCancelSearchHandler = () => {
-		this.setState({ term: '' }, () => this.props.clearSearchResults());
+		if (this.state.term.length > 0) {
+			this.setState({ term: '' }, () => this.props.clearSearchResults());
+		}
 	};
 }
 
 export const SearchScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
-		{(nav) => (
+	<WithNavigationHandlers>
+		{({ actions }) => (
 			<WithSearch>
-				{(search) => <Screen {...props} {...search.data} {...search.actions} {...nav.actions} />}
+				{(search) => (
+					<Screen
+						{...props}
+						{...search.data}
+						{...search.actions}
+						onViewUserProfile={actions.onViewUserProfile}
+					/>
+				)}
 			</WithSearch>
 		)}
 	</WithNavigationHandlers>

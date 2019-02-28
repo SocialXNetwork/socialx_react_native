@@ -1,21 +1,23 @@
-import * as React from 'react';
+import React from 'react';
 
-import { INavigationProps } from '../../types';
-import { WalletActivityScreenView } from './WalletActivityScreen.view';
-
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithWalletEnhancedActions,
 	IWithWalletEnhancedData,
 	WithWallet,
 } from '../../enhancers/screens';
 
-type IWalletActivityScreenProps = INavigationProps &
-	IWithWalletEnhancedActions &
-	IWithWalletEnhancedData;
+import { SCREENS } from '../../environment/consts';
+import { INavigationProps } from '../../types';
+import { WalletActivityScreenView } from './WalletActivityScreen.view';
 
-export class Screen extends React.Component<IWalletActivityScreenProps> {
+interface IProps extends INavigationProps, IWithWalletEnhancedActions, IWithWalletEnhancedData {
+	onGoBack: () => void;
+}
+
+export class Screen extends React.Component<IProps> {
 	public render() {
-		const { wallet } = this.props;
+		const { wallet, dictionary, onGoBack } = this.props;
 
 		return (
 			<WalletActivityScreenView
@@ -24,17 +26,17 @@ export class Screen extends React.Component<IWalletActivityScreenProps> {
 				trendArrow={wallet.trendArrow}
 				transactions={wallet.transactions}
 				refreshing={wallet.refreshing}
+				dictionary={dictionary}
 				onViewAccount={this.onViewAccountHandler}
 				onRefresh={this.onRefreshHandler}
 				onEndReached={this.onEndReachedHandler}
-				onGoBack={this.onGoBackHandler}
-				getText={this.props.getText}
+				onGoBack={onGoBack}
 			/>
 		);
 	}
 
 	private onViewAccountHandler = () => {
-		this.props.navigation.navigate('SocialXAccountScreen');
+		this.props.navigation.navigate(SCREENS.SocialXAccount);
 	};
 
 	private onRefreshHandler = () => {
@@ -44,14 +46,16 @@ export class Screen extends React.Component<IWalletActivityScreenProps> {
 	private onEndReachedHandler = () => {
 		this.props.loadMoreTransactions();
 	};
-
-	private onGoBackHandler = () => {
-		this.props.navigation.goBack(null);
-	};
 }
 
-export const WalletActivityScreen = ({ navigation }: INavigationProps) => (
-	<WithWallet>
-		{({ data, actions }) => <Screen navigation={navigation} {...data} {...actions} />}
-	</WithWallet>
+export const WalletActivityScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers>
+		{(nav) => (
+			<WithWallet>
+				{({ data, actions }) => (
+					<Screen {...props} {...data} {...actions} onGoBack={nav.actions.onGoBack} />
+				)}
+			</WithWallet>
+		)}
+	</WithNavigationHandlers>
 );

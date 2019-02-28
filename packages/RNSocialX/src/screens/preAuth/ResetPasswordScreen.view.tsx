@@ -10,7 +10,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import {
 	Header,
-	HeaderButton,
 	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
@@ -86,11 +85,7 @@ export const ResetPasswordScreenView: React.SFC<IResetPasswordScreenViewProps> =
 			setFieldTouched,
 		}: FormikProps<IResetPasswordForm>) => (
 			<View style={styles.container}>
-				<Header
-					title={getText('reset.password.screen.title')}
-					left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-				/>
-
+				<Header title={getText('reset.password.screen.title')} back={true} onPressBack={onGoBack} />
 				<KeyboardAwareScrollView
 					style={styles.scrollView}
 					contentContainerStyle={styles.scrollContent}

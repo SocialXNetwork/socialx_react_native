@@ -1,9 +1,9 @@
 import moment from 'moment';
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
 
 import { CoinIcons, TransactionFromType, TransactionIcons } from '../../environment/consts';
-import { ITransactionData, TransactionType } from '../../types';
+import { ITransactionData, TRANSACTION_TYPES } from '../../types';
 import styles from './RewardsTransactionItem.style';
 
 export const RewardsTransactionItem: React.SFC<ITransactionData> = (props) => {
@@ -17,17 +17,21 @@ export const RewardsTransactionItem: React.SFC<ITransactionData> = (props) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.leftContainer}>
-				{props.type === TransactionType.Received ? (
-					<Image source={CoinIcons[props.firstCoin]} style={styles.coinIcon} resizeMode="contain" />
+				{props.type === TRANSACTION_TYPES.RECEIVED ? (
+					<Image
+						source={CoinIcons[props.firstCoin]}
+						style={styles.coinIcon as ImageStyle}
+						resizeMode="contain"
+					/>
 				) : (
 					<Image
 						source={TransactionIcons[props.transactionIcon!]}
-						style={styles.coinIcon}
+						style={styles.coinIcon as ImageStyle}
 						resizeMode="contain"
 					/>
 				)}
 				<View>
-					{props.type === TransactionType.Converted ? (
+					{props.type === TRANSACTION_TYPES.CONVERTED ? (
 						<Text style={styles.lineText}>{props.type}</Text>
 					) : (
 						<Text style={styles.lineText}>
@@ -51,13 +55,13 @@ export const RewardsTransactionItem: React.SFC<ITransactionData> = (props) => {
 							<Text style={styles.dateText}>{moment(props.date).format('DD')}</Text>
 						</View>
 					)}
-					{!props.from && !props.fromType && props.type !== TransactionType.Converted && (
+					{!props.from && !props.fromType && props.type !== TRANSACTION_TYPES.CONVERTED && (
 						<View style={styles.descriptionContainer}>
 							<Text style={styles.dateText}>{moment(props.date).format('MMM')} </Text>
 							<Text style={styles.dateText}> {moment(props.date).format('DD')}</Text>
 						</View>
 					)}
-					{props.type === TransactionType.Converted && (
+					{props.type === TRANSACTION_TYPES.CONVERTED && (
 						<View style={styles.descriptionContainer}>
 							<Text style={styles.grayTextBold}>{props.secondCoin}</Text>
 							<Text style={styles.grayTextWithPadding}>to</Text>
@@ -67,17 +71,17 @@ export const RewardsTransactionItem: React.SFC<ITransactionData> = (props) => {
 				</View>
 			</View>
 			<View style={styles.rightContainer}>
-				{props.type === TransactionType.Received && (
+				{props.type === TRANSACTION_TYPES.RECEIVED && (
 					<Text style={styles.greenText}>
 						{firstAmount} {props.firstCoin}
 					</Text>
 				)}
-				{props.type === TransactionType.Sent && (
+				{props.type === TRANSACTION_TYPES.SENT && (
 					<Text style={styles.firstCoinGrayText}>
 						{firstAmount} {props.firstCoin}
 					</Text>
 				)}
-				{props.type === TransactionType.Converted && (
+				{props.type === TRANSACTION_TYPES.CONVERTED && (
 					<View>
 						<Text style={styles.firstCoinGrayText}>
 							{firstAmount} {props.firstCoin}

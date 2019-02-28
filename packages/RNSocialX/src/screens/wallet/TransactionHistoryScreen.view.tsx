@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
-import {
-	ButtonSizes,
-	Header,
-	HeaderButton,
-	PrimaryButton,
-	RewardsTransactionItem,
-} from '../../components';
+import { ButtonSizes, Header, PrimaryButton, RewardsTransactionItem } from '../../components';
 import { CoinFullName } from '../../environment/consts';
 import { ITransactionData, ITranslatedProps } from '../../types';
 
@@ -40,10 +34,7 @@ export const TransactionHistoryScreenView: React.SFC<ITransactionHistoryViewProp
 	coins,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={getText('transaction.history.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('transaction.history.title')} back={true} onPressBack={onGoBack} />
 		<View style={styles.overviewContainer}>
 			<Text style={styles.balance}>{getText('transaction.history.balance').toUpperCase()}</Text>
 			<View style={styles.coinContainer}>

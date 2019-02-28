@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IMediaInput } from '../../store/ui/overlays';
+import { IMediaOverlay } from '../../store/ui/overlays';
 import { IDictionary } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
@@ -9,7 +9,7 @@ import { WithPosts } from '../connectors/data/WithPosts';
 import { WithOverlays } from '../connectors/ui/WithOverlays';
 
 export interface IWithMediaOverlayEnhancedData extends IDictionary {
-	media: IMediaInput;
+	media: IMediaOverlay;
 	likedByCurrentUser: boolean;
 }
 

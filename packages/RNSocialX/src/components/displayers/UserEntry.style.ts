@@ -3,16 +3,37 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const AVATAR_SIZE = Sizes.smartHorizontalScale(50);
 
-const styles: any = {
+export default StyleSheet.create({
 	card: {
+		backgroundColor: Colors.white,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: Sizes.smartVerticalScale(5),
+		paddingVertical: Sizes.smartVerticalScale(5),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
+	},
+	first: {
+		paddingTop: Sizes.smartVerticalScale(10),
+	},
+	last: {
+		paddingBottom: Sizes.smartVerticalScale(10),
+	},
+	space: {
+		paddingBottom: Sizes.smartVerticalScale(60),
 	},
 	details: {
 		flex: 2,
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	right: {
+		flex: 1,
+		paddingVertical: Sizes.smartVerticalScale(10),
+		alignItems: 'flex-end',
+	},
+	timestamp: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(14),
+		color: Colors.paleSky,
 	},
 	avatar: {
 		width: AVATAR_SIZE,
@@ -26,11 +47,12 @@ const styles: any = {
 	name: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(15),
+		marginBottom: Sizes.smartVerticalScale(3),
 	},
-	text: {
+	message: {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(13),
-		color: Colors.grayText,
+		color: Colors.gray,
 	},
 	alias: {
 		...Fonts.centuryGothic,
@@ -49,6 +71,16 @@ const styles: any = {
 		height: Sizes.smartVerticalScale(30),
 		backgroundColor: Colors.white,
 	},
-};
-
-export default StyleSheet.create(styles);
+	rightContainer: {
+		flex: 1,
+		maxWidth: Sizes.smartHorizontalScale(100),
+		backgroundColor: Colors.ceriseRed,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	action: {
+		...Fonts.centuryGothic,
+		fontSize: Sizes.smartHorizontalScale(18),
+		color: Colors.white,
+	},
+});

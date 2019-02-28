@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, Fonts, Images, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		width: '100%',
 		alignItems: 'center',
@@ -47,20 +47,4 @@ const styles: any = {
 		marginBottom: Sizes.smartVerticalScale(5),
 		color: Colors.monza,
 	},
-	button: {
-		marginTop: Sizes.smartVerticalScale(20),
-		justifyContent: 'center',
-	},
-	editNodesButton: {
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-};
-
-export default StyleSheet.create(styles);
-
-export const defaultStyles = {
-	descriptionBorderColor: Colors.dustWhite,
-	userDataInputPlaceholderColor: Colors.paleSky,
-	userDataInputBorderColor: Colors.transparent,
-};
+});

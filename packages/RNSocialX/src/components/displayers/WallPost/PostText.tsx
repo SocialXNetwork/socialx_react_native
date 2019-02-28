@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 
 import { RichText } from '../..';
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 
 import styles from './PostText.style';
 
-const POST_SHORT_LENGTH = 100;
-const POST_SHORT_MAX_LINES = 3;
+const SHORT_POST_LENGTH = 100;
+const SHORT_POST_LINES = 3;
 
-interface IPostTextProps extends ITranslatedProps {
+interface IProps extends IDictionary {
 	text: string;
 	fullTextVisible: boolean;
 	handleHashTag: (hashTag: string) => void;
@@ -18,35 +18,34 @@ interface IPostTextProps extends ITranslatedProps {
 	onShowFullText: () => void;
 }
 
-export const PostText: React.SFC<IPostTextProps> = ({
+export const PostText: React.SFC<IProps> = ({
 	text,
 	fullTextVisible,
 	handleHashTag,
 	handleUserTag,
 	handleUrls,
+	dictionary,
 	onShowFullText,
-	getText,
 }) => {
 	const numberOfLines = text.split('\n').length;
-
 	const hasMore =
-		(text.length > POST_SHORT_LENGTH || numberOfLines > POST_SHORT_MAX_LINES) && !fullTextVisible;
+		(text.length > SHORT_POST_LENGTH || numberOfLines > SHORT_POST_LINES) && !fullTextVisible;
 
-	let textToRender = text;
-
+	let description = text;
 	if (hasMore) {
-		if (numberOfLines > POST_SHORT_MAX_LINES) {
-			textToRender = textToRender
+		if (numberOfLines > SHORT_POST_LINES) {
+			description = description
 				.split('\n')
-				.slice(0, POST_SHORT_MAX_LINES)
+				.slice(0, SHORT_POST_LINES)
 				.join('\n');
 		}
 
-		if (text.length > POST_SHORT_LENGTH) {
-			textToRender = textToRender.substr(0, POST_SHORT_LENGTH);
+		if (text.length > SHORT_POST_LENGTH) {
+			description = description.substr(0, SHORT_POST_LENGTH);
 		}
 
-		textToRender = textToRender + '...';
+		description.trim();
+		description = description.concat('... ');
 	}
 
 	return (
@@ -73,11 +72,11 @@ export const PostText: React.SFC<IPostTextProps> = ({
 						},
 					]}
 				>
-					{textToRender}
+					{description}
 				</RichText>
 				{!!hasMore && (
-					<Text style={styles.showMoreText} onPress={onShowFullText}>
-						{getText('text.more')}
+					<Text style={styles.more} onPress={onShowFullText}>
+						{dictionary.components.displayers.wallPost.more}
 					</Text>
 				)}
 			</Text>

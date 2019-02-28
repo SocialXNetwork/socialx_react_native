@@ -3,7 +3,7 @@ import { Colors, Sizes } from '../../environment/theme';
 
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.pink,
@@ -39,6 +39,4 @@ const styles: any = {
 		left: 0,
 		right: 0,
 	},
-};
-
-export default StyleSheet.create(styles);
+});

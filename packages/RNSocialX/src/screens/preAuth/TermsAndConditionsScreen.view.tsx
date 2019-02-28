@@ -1,26 +1,27 @@
 import * as React from 'react';
-import { WebView } from 'react-native';
+import { WebView, WebViewHtmlSource, WebViewUriSource } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
-import { Header, HeaderButton } from '../../components';
-import { ITranslatedProps } from '../../types';
+import { Header } from '../../components';
+import { IDictionary } from '../../types';
 import styles from './TermsAndConditionsScreen.style';
 
-interface ITermsAndConditionsScreenViewProps extends ITranslatedProps {
-	localSource: any;
+interface ITermsAndConditionsScreenViewProps extends IDictionary {
+	source: WebViewHtmlSource | WebViewUriSource;
 	onGoBack: () => void;
 }
 
 export const TermsAndConditionsScreenView: React.SFC<ITermsAndConditionsScreenViewProps> = ({
-	localSource,
+	source,
+	dictionary,
 	onGoBack,
-	getText,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
 		<Header
-			title={getText('terms.and.conditions.screen.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+			title={dictionary.screens.termsAndConditions.title}
+			back={true}
+			onPressBack={onGoBack}
 		/>
-		<WebView source={localSource} />
+		<WebView source={source} />
 	</SafeAreaView>
 );

@@ -3,8 +3,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import * as React from 'react';
 
-import { SearchTabResults } from '../../../../src/components';
-import { getTextMock } from '../../../../src/mocks';
+import { SearchContainer } from '../../../../src/components';
 import CenterView from '../../../helpers/CenterView';
 
 const items: string[] = [];
@@ -12,18 +11,18 @@ const items: string[] = [];
 storiesOf('Components/displayers', module)
 	.addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
 	.addDecorator(withKnobs)
-	.add('SearchTabResults', () => {
+	.add('SearchContainer', () => {
 		const searchTermValue = text('searchTermValue', '');
 		const searching = boolean('searching', false);
 
 		return (
-			<SearchTabResults
+			// @ts-ignore
+			<SearchContainer
 				searching={searching}
 				results={items}
 				suggestions={items}
 				term={searchTermValue}
 				onResultPress={action('onResultPress')}
-				getText={getTextMock}
 			/>
 		);
 	});

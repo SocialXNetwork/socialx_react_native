@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import { Header, HeaderButton, PrimaryButton, PrimaryTextInput } from '../../components';
+import { Header, PrimaryButton, PrimaryTextInput } from '../../components';
 import { ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './WalletKeys.style';
@@ -27,10 +27,7 @@ export const WalletKeysScreenView: React.SFC<IWalletKeysScreenViewProps> = ({
 	getText,
 }) => (
 	<ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-		<Header
-			title={getText('wallet.keys.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('wallet.keys.title')} back={true} onPressBack={onGoBack} />
 		<View style={styles.content}>
 			<Text style={styles.label}>{getText('wallet.keys.owner.public')}</Text>
 			<View style={styles.input}>

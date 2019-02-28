@@ -1,7 +1,4 @@
-import * as React from 'react';
-
-import { INavigationProps } from '../../types';
-import { NotificationsScreenView } from './NotificationsScreen.view';
+import React from 'react';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
@@ -10,58 +7,53 @@ import {
 	WithNotifications,
 } from '../../enhancers/screens';
 
-interface INotificationsScreenProps
+import { Icons } from '../../environment/theme';
+import { INavigationProps } from '../../types';
+import { NotificationsScreenView } from './NotificationsScreen.view';
+
+interface IProps
 	extends INavigationProps,
 		IWithNotificationsEnhancedData,
 		IWithNotificationsEnhancedActions {
 	onViewUserProfile: (alias: string) => void;
 }
 
-class Screen extends React.Component<INotificationsScreenProps> {
-	private willFocusScreen: any;
-
-	public componentDidMount() {
-		this.willFocusScreen = this.props.navigation.addListener('willFocus', this.onWillFocusScreen);
-	}
-
-	public componentWillUnmount() {
-		this.willFocusScreen.remove();
-	}
-
+class Screen extends React.Component<IProps> {
 	public render() {
 		const {
 			notificationIds,
 			refreshing,
+			dictionary,
 			getNotifications,
 			onViewUserProfile,
-			getText,
 		} = this.props;
 
 		return (
 			<NotificationsScreenView
 				ids={notificationIds}
 				refreshing={refreshing}
+				dictionary={dictionary}
 				onRefresh={getNotifications}
+				onWillFocus={this.onWillFocusHandler}
 				onViewUserProfile={onViewUserProfile}
 				onShowOptions={this.onShowOptionsHandler}
-				getText={getText}
 			/>
 		);
 	}
 
-	private onWillFocusScreen = () => {
+	private onWillFocusHandler = () => {
 		if (this.props.unread) {
 			this.props.markNotificationsAsRead();
 		}
 	};
 
 	private onShowOptionsHandler = (id: string) => {
-		const { showOptionsMenu, getText } = this.props;
+		const { showOptionsMenu, dictionary } = this.props;
 
 		const items = [
 			{
-				label: getText('comments.screen.advanced.menu.delete'),
-				icon: 'ios-trash',
+				label: dictionary.components.modals.options.delete,
+				icon: Icons.delete,
 				actionHandler: () => undefined,
 			},
 		];
@@ -71,14 +63,14 @@ class Screen extends React.Component<INotificationsScreenProps> {
 }
 
 export const NotificationsScreen = (props: INavigationProps) => (
-	<WithNavigationHandlers navigation={props.navigation}>
+	<WithNavigationHandlers>
 		{(nav) => (
 			<WithNotifications>
-				{(notifications) => (
+				{({ data, actions }) => (
 					<Screen
 						{...props}
-						{...notifications.data}
-						{...notifications.actions}
+						{...data}
+						{...actions}
 						onViewUserProfile={nav.actions.onViewUserProfile}
 					/>
 				)}

@@ -3,7 +3,6 @@ import { SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
 
 import {
 	Header,
-	HeaderButton,
 	PrimaryButton,
 	SendCoinsHeader,
 	TKeyboardKeys,
@@ -38,10 +37,7 @@ export const SendCoinsScreenView: React.SFC<ISendCoinsScreenViewProps> = ({
 	getText,
 }) => (
 	<SafeAreaView style={styles.container}>
-		<Header
-			title={getText('wallet.send.coins.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('wallet.send.coins.title')} back={true} onPressBack={onGoBack} />
 		<ScrollView
 			contentContainerStyle={styles.contentContainer}
 			keyboardShouldPersistTaps="handled"

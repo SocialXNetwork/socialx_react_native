@@ -5,7 +5,7 @@ import { Colors, Sizes } from '../../environment/theme';
 const { width, height } = Dimensions.get('window');
 const INFO_BUTTON_SIZE = Sizes.smartHorizontalScale(40);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.black,
@@ -58,6 +58,4 @@ const styles: any = {
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-};
-
-export default StyleSheet.create(styles);
+});

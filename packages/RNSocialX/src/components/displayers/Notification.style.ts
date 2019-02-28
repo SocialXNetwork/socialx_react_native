@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
-
 const ICON_SIZE = Sizes.smartHorizontalScale(60);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -52,11 +51,4 @@ const styles: any = {
 		height: Sizes.smartVerticalScale(30),
 		backgroundColor: Colors.white,
 	},
-};
-
-export const colors = {
-	white: Colors.white,
-	pink: Colors.pink,
-	transparent: Colors.transparent,
-};
-export default StyleSheet.create(styles);
+});

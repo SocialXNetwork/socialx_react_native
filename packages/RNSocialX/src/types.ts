@@ -9,16 +9,10 @@ import { NavigationScreenConfig, NavigationScreenProp } from 'react-navigation';
 import { IAccountCurrencyData } from './components';
 import { CoinSymbol, TransactionFromType, TransactionSymbol } from './environment/consts';
 import { ILocaleDictionary } from './store/app/i18n/Types';
+export { ILocaleDictionary } from './store/app/i18n/Types';
 import { ISetNavigationParamsInput } from './store/app/navigationParams';
 import { IFriendRequest, IFriendResponse } from './store/data/notifications';
 export { IGlobal } from './store/ui/globals';
-
-export interface IFriendsSearchResult {
-	id: string;
-	fullName: string;
-	location: string;
-	avatar: string;
-}
 
 export enum FRIEND_TYPES {
 	PENDING = 'pending',
@@ -26,11 +20,40 @@ export enum FRIEND_TYPES {
 	NOT_FRIEND = 'not_friend',
 }
 
-export enum SearchTabs {
-	Top = 'TOP',
-	People = 'PEOPLE',
-	Tags = 'TAGS',
-	Places = 'PLACES',
+export enum MESSAGE_TYPES {
+	TEXT = 'text',
+	MEDIA = 'media',
+}
+
+export enum SEARCH_TABS {
+	TOP = 'top',
+	PEOPLE = 'people',
+	TAGS = 'tags',
+	PLACES = 'places',
+}
+
+export enum TRANSACTION_TYPES {
+	SOLD = 'sold',
+	BOUGHT = 'bought',
+	RECEIVED = 'received',
+	SENT = 'sent',
+	CONVERTED = 'converted',
+}
+
+export enum TREND_OPTIONS {
+	UP = 'up',
+	DOWN = 'down',
+}
+
+export enum MODAL_TYPES {
+	DELETE = 'delete',
+}
+
+export interface IFriendsSearchResult {
+	id: string;
+	fullName: string;
+	location: string;
+	avatar: string;
 }
 
 export interface IUserEntry {
@@ -73,6 +96,7 @@ export type INotification = IFriendRequest | IFriendResponse;
 export interface IOptionsMenuItem {
 	label: string;
 	icon: string;
+	source?: string;
 	actionHandler: () => void;
 }
 
@@ -208,22 +232,9 @@ export interface ICreatePost {
 	creating: boolean;
 }
 
-export enum TransactionType {
-	Sold = 'Sold',
-	Bought = 'Bought',
-	Received = 'Received',
-	Sent = 'Sent',
-	Converted = 'Converted',
-}
-
-export enum TrendOptions {
-	Up = 'UP',
-	Down = 'DOWN',
-}
-
 export interface ITransactionData {
 	id: string;
-	type: TransactionType;
+	type: TRANSACTION_TYPES;
 	firstAmount: number;
 	transactionIcon?: TransactionSymbol;
 	firstCoin: CoinSymbol;
@@ -232,13 +243,12 @@ export interface ITransactionData {
 	fromType?: TransactionFromType;
 	from?: string;
 	date: Date;
-	onViewUserProfile?: (username: string) => void;
 }
 
 export interface IWallet {
 	coins: string;
 	trendPercentage: string;
-	trendArrow: TrendOptions;
+	trendArrow: TREND_OPTIONS;
 	transactions: ITransactionData[];
 	refreshing: boolean;
 }
@@ -247,11 +257,6 @@ export interface IRewardsTransactionHistory {
 	coins: string;
 	rewardsTransactions: ITransactionData[];
 	isRefreshing: boolean;
-}
-
-export interface ISearchTabResultsProps {
-	navigation: NavigationScreenProp<any>;
-	searchTermValue: string;
 }
 
 // =====================================================
@@ -315,7 +320,7 @@ export interface INavigationProps<SP = any, SC = any> {
 
 export interface IStackDefaultConfig {
 	headerMode: 'none' | 'float' | 'screen' | undefined;
-	navigationOptions: {
+	defaultNavigationOptions: {
 		gesturesEnabled: boolean;
 	};
 }
@@ -395,8 +400,3 @@ export interface IAdSetupBudgetData {
 	start: string;
 	stop: string;
 }
-
-/**
- * TODO list:
- * 1. @Serkan: find better structure to define shared types across components.
- */

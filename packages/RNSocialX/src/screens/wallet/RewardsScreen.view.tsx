@@ -4,7 +4,7 @@ import { Animated, Dimensions, LayoutChangeEvent, Platform, View } from 'react-n
 import Carousel from 'react-native-snap-carousel';
 import { SafeAreaView } from 'react-navigation';
 
-import { AnimatedBar, Header, HeaderButton, PrimaryButton } from '../../components';
+import { AnimatedBar, Header, PrimaryButton } from '../../components';
 import { IRewardsDate, IRewardsHistoryData, OS_TYPES } from '../../environment/consts';
 import { ITranslatedProps } from '../../types';
 
@@ -61,10 +61,7 @@ export const RewardsScreenView: React.SFC<IRewardsScreenViewProps> = ({
 	translateXValue,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
-		<Header
-			title={getText('rewards.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('rewards.title')} back={true} onPressBack={onGoBack} />
 		<View style={styles.contentContainer}>
 			<Segment style={styles.segmentContainer}>
 				{REWARDS_DATE_BUTTONS.map((rewardsDateButton, index) => (

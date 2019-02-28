@@ -16,6 +16,7 @@ import { DataProvider } from 'recyclerlistview';
 import {
 	Header,
 	IconButton,
+	MediaOverlay,
 	NoContent,
 	OptionsMenuButton,
 	Profile,

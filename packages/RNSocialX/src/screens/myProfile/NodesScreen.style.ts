@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, colorWithAlphaArray, Fonts, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export const buttonWidth = Sizes.smartHorizontalScale(110);
+
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		width: '100%',
@@ -18,8 +20,13 @@ const styles: any = {
 		paddingVertical: Sizes.smartVerticalScale(20),
 		backgroundColor: Colors.white,
 	},
-	marginBetweenTitleAndInput: {
-		marginBottom: Sizes.smartVerticalScale(29),
+	inputContainer: {
+		flex: 1,
+		backgroundColor: Colors.white,
+		paddingHorizontal: Sizes.smartHorizontalScale(15),
+	},
+	separator: {
+		marginBottom: Sizes.smartVerticalScale(30),
 	},
 	textContainer: {
 		flexDirection: 'row',
@@ -67,11 +74,7 @@ const styles: any = {
 	checkbox: {
 		left: 0,
 	},
-};
-
-export const buttonWidth = Sizes.smartHorizontalScale(110);
-
-export default StyleSheet.create(styles);
+});
 
 export const defaultStyles = {
 	checkboxColor: Colors.pink,

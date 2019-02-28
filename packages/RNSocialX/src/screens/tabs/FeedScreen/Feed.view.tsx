@@ -1,18 +1,12 @@
 import * as React from 'react';
 import { FlatList, View } from 'react-native';
 
-import {
-	FeedWithNoPosts,
-	LoadingFooter,
-	MediaOverlay,
-	ShareSection,
-	WallPost,
-} from '../../../components';
-import { INavigationProps, ITranslatedProps } from '../../../types';
+import { FeedWithNoPosts, LoadingFooter, ShareSection, WallPost } from '../../../components';
+import { IDictionary, INavigationProps } from '../../../types';
 
 import styles from './Feed.style';
 
-interface IProps extends INavigationProps, ITranslatedProps {
+interface IProps extends INavigationProps, IDictionary {
 	avatar: string;
 	postIds: string[];
 	refreshing: boolean;
@@ -43,10 +37,9 @@ export const FeedView: React.SFC<IProps> = ({
 	onCreateWallPost,
 	onCommentInputPress,
 	navigation,
-	getText,
+	dictionary,
 }) => (
 	<View ref={postContainerRef} style={styles.container}>
-		<MediaOverlay navigation={navigation} />
 		<FlatList
 			ref={listRef}
 			windowSize={10}
@@ -67,8 +60,8 @@ export const FeedView: React.SFC<IProps> = ({
 			ListHeaderComponent={
 				<ShareSection avatar={avatar} message={shareMessage} onCreateWallPost={onCreateWallPost} />
 			}
-			ListFooterComponent={<LoadingFooter visible={canLoad} />}
-			ListEmptyComponent={<FeedWithNoPosts loading={loading} getText={getText} />}
+			ListFooterComponent={<LoadingFooter visible={canLoad && loading} />}
+			ListEmptyComponent={<FeedWithNoPosts loading={loading} dictionary={dictionary} />}
 			keyboardShouldPersistTaps="handled"
 			showsVerticalScrollIndicator={false}
 			onRefresh={onRefresh}

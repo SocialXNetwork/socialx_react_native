@@ -1,34 +1,36 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { ITranslatedProps } from '../../types';
+import { Colors } from '../../environment/theme';
+import { IDictionary } from '../../types';
 import { SearchResults } from './SearchResults';
 import { SuggestedSearches } from './SuggestedSearches';
 
-import styles from './SearchTabResults.style';
-
-interface ISearchTabResultsProps extends ITranslatedProps {
+interface IProps extends IDictionary {
 	term: string;
 	results: string[];
 	suggestions: string[];
 	searching: boolean;
+	friends?: boolean;
 	onResultPress: (alias: string) => void;
 }
 
-export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
+export const SearchContainer: React.SFC<IProps> = ({
 	term,
 	results,
 	suggestions,
 	searching,
+	friends,
+	dictionary,
 	onResultPress,
-	getText,
 }) => (
 	<View style={styles.container}>
 		{term.length === 0 && (
 			<SuggestedSearches
 				suggestions={suggestions}
+				friends={friends}
 				onResultPress={onResultPress}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		)}
 		{term.length !== 0 && (
@@ -36,9 +38,17 @@ export const SearchTabResults: React.SFC<ISearchTabResultsProps> = ({
 				term={term}
 				results={results}
 				searching={searching}
+				friends={friends}
 				onResultPress={onResultPress}
-				getText={getText}
+				dictionary={dictionary}
 			/>
 		)}
 	</View>
 );
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Colors.white,
+	},
+});

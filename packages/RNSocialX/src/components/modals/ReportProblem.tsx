@@ -14,12 +14,12 @@ import { FormikBag, FormikErrors, FormikProps, withFormik } from 'formik';
 import { PrimaryTextInput } from '..';
 import { OS_TYPES } from '../../environment/consts';
 import { ApplicationStyles, Colors } from '../../environment/theme';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 import { WithManagedTransitions } from '../managedTransitions';
 
 import style from './ReportProblem.style';
 
-interface IReportProblemProps extends ITranslatedProps {
+interface IReportProblemProps extends IDictionary {
 	visible: boolean;
 	onConfirm: (subject: string, description: string) => void;
 	onDecline: () => void;
@@ -31,7 +31,7 @@ interface IProps extends IReportProblemProps {
 }
 
 const Component: React.SFC<FormikProps<IProps>> = ({
-	values: { visible, onDecline, getText, description, subject },
+	values: { visible, onDecline, description, subject, dictionary },
 	isValid,
 	handleSubmit,
 	errors,
@@ -63,7 +63,7 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 				>
 					<View style={style.boxContainer}>
 						<View style={style.titleContainer}>
-							<Text style={style.title}>{getText('modal.report.title')}</Text>
+							<Text style={style.title}>{dictionary.components.modals.report.title}</Text>
 						</View>
 						<View style={style.inputContainer}>
 							<View style={style.subjectContainer}>
@@ -72,7 +72,7 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 									autoCorrect={true}
 									numberOfLines={2}
 									borderColor={Colors.dustWhite}
-									placeholder={getText('modal.report.subject.placeholder')}
+									placeholder={dictionary.components.modals.report.subject.placeholder}
 									onChangeText={(value: string) => {
 										setFieldValue('subject', value);
 										setFieldTouched('subject');
@@ -81,7 +81,9 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 									blurOnSubmit={false}
 								/>
 								{touched.subject && errors.subject && (
-									<Text style={ApplicationStyles.inputErrorText}>{getText(errors.subject)}</Text>
+									<Text style={ApplicationStyles.inputErrorText}>
+										{dictionary.components.modals.report.subject.required}
+									</Text>
 								)}
 							</View>
 							<View style={style.descriptionContainer}>
@@ -90,7 +92,7 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 									autoCorrect={true}
 									multiline={true}
 									borderColor={Colors.dustWhite}
-									placeholder={getText('modal.report.description.placeholder')}
+									placeholder={dictionary.components.modals.report.description.placeholder}
 									onChangeText={(value: string) => {
 										setFieldValue('description', value);
 										setFieldTouched('description');
@@ -100,7 +102,7 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 								/>
 								{touched.description && errors.description && (
 									<Text style={ApplicationStyles.inputErrorText}>
-										{getText(errors.description)}
+										{dictionary.components.modals.report.description.required}
 									</Text>
 								)}
 							</View>
@@ -108,7 +110,7 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 						<View style={style.buttonsContainer}>
 							<TouchableOpacity style={[style.button, style.leftButton]} onPress={onDecline}>
 								<Text style={[style.buttonText, style.buttonTextCancel]}>
-									{getText('button.cancel')}
+									{dictionary.components.buttons.cancel}
 								</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
@@ -117,7 +119,7 @@ const Component: React.SFC<FormikProps<IProps>> = ({
 								onPress={handleSubmit}
 							>
 								<Text style={[style.buttonText, style.buttonTextConfirm]}>
-									{getText('button.send')}
+									{dictionary.components.buttons.send}
 								</Text>
 							</TouchableOpacity>
 						</View>

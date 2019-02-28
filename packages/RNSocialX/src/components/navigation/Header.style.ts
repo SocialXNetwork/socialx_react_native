@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
+const AVATAR_SIZE = Sizes.smartHorizontalScale(35);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
-		height: Sizes.smartVerticalScale(45),
-		justifyContent: 'center',
 		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: Sizes.smartVerticalScale(45),
 		paddingHorizontal: Sizes.smartVerticalScale(16),
 	},
 	left: {
@@ -33,6 +35,18 @@ const styles: any = {
 	placeholder: {
 		flex: 1,
 	},
-};
-
-export default StyleSheet.create(styles);
+	avatar: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	image: {
+		width: AVATAR_SIZE,
+		height: AVATAR_SIZE,
+		borderRadius: AVATAR_SIZE / 2,
+		marginRight: Sizes.smartHorizontalScale(10),
+	},
+	backArrow: {
+		marginRight: Sizes.smartHorizontalScale(15),
+	},
+});

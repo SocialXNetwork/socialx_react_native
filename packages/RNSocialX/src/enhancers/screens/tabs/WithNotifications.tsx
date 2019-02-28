@@ -3,9 +3,9 @@
  * OBS: Only FRIEND_REQUEST and FRIEND_REQUEST_RESPONSE are implemented right now
  */
 
-import * as React from 'react';
+import React from 'react';
 
-import { IOptionsMenuProps, ITranslatedProps } from '../../../types';
+import { IDictionary, IOptionsMenuProps } from '../../../types';
 
 import { ActionTypes } from '../../../store/data/notifications';
 import { WithI18n } from '../../connectors/app/WithI18n';
@@ -14,13 +14,13 @@ import { WithActivities } from '../../connectors/ui/WithActivities';
 import { WithOverlays } from '../../connectors/ui/WithOverlays';
 import { getActivity } from '../../helpers';
 
-export interface IWithNotificationsEnhancedData {
+export interface IWithNotificationsEnhancedData extends IDictionary {
 	notificationIds: string[];
 	unread: boolean;
 	refreshing: boolean;
 }
 
-export interface IWithNotificationsEnhancedActions extends ITranslatedProps, IOptionsMenuProps {
+export interface IWithNotificationsEnhancedActions extends IOptionsMenuProps {
 	getNotifications: () => void;
 	markNotificationsAsRead: () => void;
 }
@@ -43,7 +43,7 @@ export class WithNotifications extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithActivities>
@@ -55,12 +55,12 @@ export class WithNotifications extends React.Component<
 													refreshing: getActivity(activities, ActionTypes.GET_NOTIFICATIONS),
 													notificationIds: ids,
 													unread: unread.length > 0,
+													dictionary,
 												},
 												actions: {
 													getNotifications,
 													markNotificationsAsRead,
 													showOptionsMenu,
-													getText,
 												},
 											})
 										}

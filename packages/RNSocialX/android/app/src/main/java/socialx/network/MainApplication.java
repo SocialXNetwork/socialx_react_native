@@ -3,6 +3,8 @@ package socialx.network;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.rnscreens.RNScreensPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import org.linusu.RNGetRandomValuesPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
@@ -44,6 +46,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
             new BridgePackage(),
             new MainReactPackage(),
+            new RNScreensPackage(),
+            new RNGestureHandlerPackage(),
             new RNGetRandomValuesPackage(),
             new WebViewBridgePackage(),
             new AndroidKeyboardAdjustPackage(),

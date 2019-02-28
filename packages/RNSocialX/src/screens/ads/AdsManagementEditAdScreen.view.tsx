@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 
-import { AdPreview, Header, HeaderButton, Option } from '../../components';
+import { AdPreview, Header, Option } from '../../components';
 import { IAd, IHeaderProps, ITranslatedProps } from '../../types';
 
 import styles from './AdsManagementEditAdScreen.style';
@@ -34,10 +34,7 @@ export const AdsManagementEditAdScreenView: React.SFC<IAdsManagementEditAdScreen
 	budgetAmount,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
-		<Header
-			title={getText('ad.management.screen.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('ad.management.screen.title')} back={true} onPressBack={onGoBack} />
 		<Text style={styles.title}>{getText('ad.management.editad.title').toUpperCase()}</Text>
 		<View style={styles.separator} />
 		<ScrollView showsVerticalScrollIndicator={false}>

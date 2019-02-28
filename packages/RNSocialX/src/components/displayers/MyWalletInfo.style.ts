@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		width: '85%',
 		backgroundColor: Colors.white,
@@ -25,7 +25,7 @@ const styles: any = {
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	myCoinsValue: {
+	coins: {
 		...Fonts.centuryGothic,
 		color: Colors.cloudBurst,
 		fontSize: Sizes.smartHorizontalScale(30),
@@ -42,9 +42,4 @@ const styles: any = {
 		fontSize: Sizes.smartHorizontalScale(25),
 		color: Colors.sushi,
 	},
-};
-
-export default StyleSheet.create(styles);
-export const defaultStyles = {
-	transparent: Colors.transparent,
-};
+});

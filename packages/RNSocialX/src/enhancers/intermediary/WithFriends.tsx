@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ActionTypes, IAliasInput } from '../../store/data/profiles/Types';
-import { FRIEND_TYPES, IOptionsMenuItem } from '../../types';
+import { FRIEND_TYPES, ILocaleDictionary, IOptionsMenuItem } from '../../types';
 
 import { IActivity } from '../../store/ui/activities';
 import { WithI18n } from '../connectors/app/WithI18n';
@@ -52,6 +52,7 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		},
 	};
 
+	private dictionary!: ILocaleDictionary;
 	private actions: {
 		addFriend: (input: IAliasInput) => void;
 		removeFriend: (input: IAliasInput) => void;
@@ -59,7 +60,6 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		rejectFriend: (input: IAliasInput) => void;
 		undoRequest: (input: IAliasInput) => void;
 		showOptionsMenu: (items: IOptionsMenuItem[]) => void;
-		getText: (value: string, ...args: any[]) => string;
 	} = {
 		addFriend: () => undefined,
 		removeFriend: () => undefined,
@@ -67,19 +67,19 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 		rejectFriend: () => undefined,
 		undoRequest: () => undefined,
 		showOptionsMenu: () => undefined,
-		getText: (value) => value,
 	};
 
 	public render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithOverlays>
 						{({ showOptionsMenu }) => (
 							<WithActivities>
 								{({ activities }) => (
 									<WithProfiles>
 										{({ addFriend, removeFriend, acceptFriend, rejectFriend, undoRequest }) => {
+											this.dictionary = dictionary;
 											this.actions = {
 												addFriend,
 												removeFriend,
@@ -87,7 +87,6 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 												rejectFriend,
 												undoRequest,
 												showOptionsMenu,
-												getText,
 											};
 
 											return this.props.children({
@@ -116,22 +115,21 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 	}
 
 	private getAction = () => {
-		const { getText } = this.actions;
-		let action: string = getText('button.add.friend');
+		let action = this.dictionary.components.buttons.addFriend;
 
 		if (this.props.status) {
 			switch (this.props.status) {
 				case FRIEND_TYPES.MUTUAL:
-					action = getText('button.friends');
+					action = this.dictionary.components.buttons.friends;
 					break;
 				case FRIEND_TYPES.PENDING:
-					action = getText('button.undo');
+					action = this.dictionary.components.buttons.undo;
 					break;
 				case FRIEND_TYPES.NOT_FRIEND:
-					action = getText('button.add.friend');
+					action = this.dictionary.components.buttons.addFriend;
 					break;
 				default:
-					action = getText('button.add.friend');
+					action = this.dictionary.components.buttons.addFriend;
 					break;
 			}
 		}
@@ -186,11 +184,11 @@ export class WithFriends extends React.Component<IWithFriendsProps, IWithFriends
 	};
 
 	private onShowOptionsHandler = (alias: string) => {
-		const { showOptionsMenu, getText } = this.actions;
+		const { showOptionsMenu } = this.actions;
 
 		const items = [
 			{
-				label: getText('friendship.menu.option.remove'),
+				label: this.dictionary.components.modals.options.unfriend,
 				icon: 'md-remove-circle',
 				actionHandler: () => this.onRemoveFriendHandler(alias),
 			},

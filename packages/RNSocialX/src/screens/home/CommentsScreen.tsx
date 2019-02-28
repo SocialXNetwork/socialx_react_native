@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform } from 'react-native';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 
 import {
@@ -19,16 +19,12 @@ class Screen extends Component<IProps> {
 	public componentDidMount() {
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustResize();
-		} else {
-			StatusBar.setBarStyle('dark-content', true);
 		}
 	}
 
 	public componentWillUnmount() {
 		if (Platform.OS === OS_TYPES.Android) {
 			AndroidKeyboardAdjust.setAdjustNothing();
-		} else {
-			StatusBar.setBarStyle('light-content', true);
 		}
 	}
 

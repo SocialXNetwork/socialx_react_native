@@ -41,10 +41,14 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNGestureHandler (1.0.15):
+    - React
   - RNImageCropPicker (0.21.3):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
+  - RNScreens (1.0.0-alpha.22):
+    - React
   - RSKImageCropper (2.2.1)
   - yoga (0.56.1.React)
 
@@ -63,7 +67,9 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -80,8 +86,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   react-native-orientation:
     :path: "../node_modules/react-native-orientation"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -91,10 +101,12 @@ SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-orientation: 3d9a0a8273d18260f7528414093a6a36491382b6
+  RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
   RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
+  RNScreens: 354046589421edc3d83d5c6212475bf1fb9a731d
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: ca055cff8a0c2d98a6731c1b2ebeafbdfb08fee1
+PODFILE CHECKSUM: 055968d898f5daad8c9a4c6ad09552b023fba9d7
 
 COCOAPODS: 1.5.3

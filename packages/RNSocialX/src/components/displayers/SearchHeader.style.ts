@@ -1,22 +1,32 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		backgroundColor: Colors.pink,
 	},
-	inputContainer: {
-		flexDirection: 'row',
-		height: Sizes.smartVerticalScale(45),
+	floating: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
 		width: '100%',
+		backgroundColor: Colors.pink,
+	},
+	inner: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		width: '100%',
+		height: Sizes.smartVerticalScale(45),
 		paddingVertical: Sizes.smartVerticalScale(2.5),
 		paddingHorizontal: Sizes.smartHorizontalScale(5),
 	},
-	backIcon: {
-		fontSize: Sizes.smartHorizontalScale(30),
-		color: Colors.white,
-		paddingLeft: Sizes.smartHorizontalScale(5),
-		paddingRight: Sizes.smartHorizontalScale(13),
+	backButton: {
+		marginLeft: Sizes.smartHorizontalScale(11),
+		marginRight: Sizes.smartHorizontalScale(17.5),
+	},
+	inputContainer: {
+		flex: 1,
 	},
 	inputOverlay: {
 		backgroundColor: Colors.transparent,
@@ -24,12 +34,4 @@ const styles: any = {
 		height: '100%',
 		position: 'absolute',
 	},
-};
-
-export default StyleSheet.create(styles);
-
-export const colors = {
-	icon: Colors.cadetBlue,
-	border: Colors.transparent,
-	iosInputCancel: Colors.paleSky,
-};
+});

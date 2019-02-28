@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+export default StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -28,6 +28,4 @@ const style: any = {
 		paddingBottom: Sizes.smartHorizontalScale(20),
 		textAlign: 'center',
 	},
-};
-
-export default StyleSheet.create(style);
+});

@@ -3,29 +3,28 @@ import * as React from 'react';
 import { INavigationProps } from '../../types';
 import { ISettingsData, SettingsScreenView } from './SettingsScreen.view';
 
+import { WithNavigationHandlers } from '../../enhancers/intermediary';
 import {
 	IWithSettingsEnhancedActions,
 	IWithSettingsEnhancedData,
 	WithSettings,
 } from '../../enhancers/screens';
-import { SCREENS } from '../../environment/consts';
 
-type ISettingsScreenProps = INavigationProps &
-	IWithSettingsEnhancedActions &
-	IWithSettingsEnhancedData;
+interface IProps extends INavigationProps, IWithSettingsEnhancedActions, IWithSettingsEnhancedData {
+	onGoBack: () => void;
+}
 
-class Screen extends React.Component<ISettingsScreenProps> {
+class Screen extends React.Component<IProps> {
 	public render() {
-		const { currentUser, navigation, getText, showOptionsMenu } = this.props;
+		const { currentUser, dictionary, showOptionsMenu, onGoBack } = this.props;
 
 		return (
 			<SettingsScreenView
 				currentUser={currentUser}
 				onSaveChanges={this.onSaveChangesHandler}
-				onGoBack={() => this.onGoBackHandler(navigation)}
-				onEditNodes={() => this.onEditNodesHandler(navigation)}
 				showOptionsMenu={showOptionsMenu}
-				getText={getText}
+				dictionary={dictionary}
+				onGoBack={onGoBack}
 			/>
 		);
 	}
@@ -36,33 +35,24 @@ class Screen extends React.Component<ISettingsScreenProps> {
 		this.switchActivityIndicator(false);
 	};
 
-	private onGoBackHandler = (navigation: any) => {
-		navigation.goBack(null);
-	};
-
-	private onEditNodesHandler = (navigation: any) => {
-		navigation.navigate(SCREENS.Nodes);
-	};
-
 	private switchActivityIndicator = (state: boolean) => {
 		this.props.setGlobal({
 			activity: {
 				visible: state,
-				title: this.props.getText('settings.progress.message'),
+				title: this.props.dictionary.screens.settings.progress,
 			},
 		});
 	};
 }
 
-export const SettingsScreen = ({ navigation, navigationOptions }: INavigationProps) => (
-	<WithSettings>
-		{({ data, actions }) => (
-			<Screen
-				navigation={navigation}
-				navigationOptions={navigationOptions}
-				{...data}
-				{...actions}
-			/>
+export const SettingsScreen = (props: INavigationProps) => (
+	<WithNavigationHandlers>
+		{(nav) => (
+			<WithSettings>
+				{({ data, actions }) => (
+					<Screen {...props} {...data} {...actions} onGoBack={nav.actions.onGoBack} />
+				)}
+			</WithSettings>
 		)}
-	</WithSettings>
+	</WithNavigationHandlers>
 );

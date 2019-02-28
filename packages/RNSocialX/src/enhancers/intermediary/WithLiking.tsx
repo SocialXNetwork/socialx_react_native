@@ -3,18 +3,18 @@ import { Animated, Easing } from 'react-native';
 import { AnimatedValue } from 'react-navigation';
 
 import { IPostLikeInput } from '../../store/data/posts';
-import { ITranslatedProps } from '../../types';
+import { IDictionary } from '../../types';
 
 import { WithI18n } from '../connectors/app/WithI18n';
 import { WithPosts } from '../connectors/data/WithPosts';
 import { WithCurrentUser } from './WithCurrentUser';
 
-export interface IWithLikingEnhancedData {
+export interface IWithLikingEnhancedData extends IDictionary {
 	animationProgress: AnimatedValue;
 	heartAnimation: boolean;
 }
 
-export interface IWithLikingEnhancedActions extends ITranslatedProps {
+export interface IWithLikingEnhancedActions {
 	onLikePost: (postId: string) => void;
 	onDoubleTapLikePost: (postId: string) => void;
 }
@@ -51,7 +51,7 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 	public render() {
 		return (
 			<WithI18n>
-				{({ getText }) => (
+				{({ dictionary }) => (
 					<WithCurrentUser>
 						{({ currentUser }) => (
 							<WithPosts>
@@ -65,12 +65,12 @@ export class WithLiking extends React.Component<IWithLikingProps, IWithLikingSta
 										data: {
 											animationProgress: this.animationProgress,
 											heartAnimation: this.state.heartAnimation,
+											dictionary,
 										},
 										actions: {
 											onLikePost: (postId) => this.onLikePostHandler(postId, currentUser.alias),
 											onDoubleTapLikePost: (postId) =>
 												this.onDoubleTapLikeHandler(postId, currentUser.alias),
-											getText,
 										},
 									});
 								}}

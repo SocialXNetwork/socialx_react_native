@@ -1,43 +1,39 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-	tabBarUnderlineStyle: {
+	underline: {
 		height: Sizes.smartVerticalScale(1),
 		backgroundColor: Colors.pink,
 	},
-	tabStyle: {
+	tab: {
 		backgroundColor: Colors.white,
 	},
-	tabTitleTextInactive: {
+	title: {
 		...Fonts.centuryGothic,
 		color: Colors.background,
 		fontSize: Sizes.smartHorizontalScale(14),
 	},
-	tabTitleTextActive: {
-		...Fonts.centuryGothic,
+	active: {
 		color: Colors.pink,
-		fontSize: Sizes.smartHorizontalScale(14),
 	},
-	comingSoonContainer: {
+	coming: {
 		paddingTop: Sizes.smartVerticalScale(100),
 		paddingHorizontal: Sizes.smartHorizontalScale(30),
 		alignItems: 'center',
 	},
-	comingSoonText: {
+	text: {
 		...Fonts.centuryGothic,
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 		fontSize: Sizes.smartHorizontalScale(16),
 		paddingTop: Sizes.smartVerticalScale(20),
 		textAlign: 'center',
 	},
-	comingSoonIcon: {
+	icon: {
 		fontSize: Sizes.smartVerticalScale(72),
 		color: Colors.paleSky,
 	},
-};
-
-export default StyleSheet.create(styles) as any;
+});

@@ -3,16 +3,16 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { AvatarImage, ButtonSizes, PrimaryButton } from '../../components';
-import { NOTIFICATION_TYPES } from '../../environment/consts';
-import { INotification, ITranslatedProps } from '../../types';
-
 import { IWithFriendsEnhancedActions, WithFriends } from '../../enhancers/intermediary';
 import { IApplicationState, selectNotification } from '../../store/selectors';
 
-import styles, { colors } from './Notification.style';
+import { AvatarImage, ButtonSizes, PrimaryButton } from '../../components';
+import { NOTIFICATION_TYPES } from '../../environment/consts';
+import { Colors } from '../../environment/theme';
+import { IDictionary, INotification } from '../../types';
+import styles from './Notification.style';
 
-interface INotificationProps extends ITranslatedProps {
+interface INotificationProps extends IDictionary {
 	id: string;
 	onViewUserProfile: (alias: string) => void;
 	onShowOptions: (id: string) => void;
@@ -29,11 +29,11 @@ interface IProps extends INotificationProps, IWithFriendsEnhancedActions {
 const Component: React.SFC<IProps> = ({
 	notification,
 	request,
+	dictionary,
 	onViewUserProfile,
 	onShowOptions,
 	onAcceptFriendRequest,
 	onDeclineFriendRequest,
-	getText,
 }) => {
 	const {
 		id,
@@ -49,14 +49,14 @@ const Component: React.SFC<IProps> = ({
 
 	switch (type) {
 		case NOTIFICATION_TYPES.FRIEND_REQUEST:
-			text = getText('notifications.friend.request');
+			text = dictionary.components.displayers.notification.request;
 			buttons = true;
 			break;
 		case NOTIFICATION_TYPES.FRIEND_RESPONSE_ACCEPTED:
-			text = getText('notifications.friend.request.accepted');
+			text = dictionary.components.displayers.notification.accepted;
 			break;
 		case NOTIFICATION_TYPES.FRIEND_RESPONSE_DECLINED:
-			text = getText('notifications.friend.request.declined');
+			text = dictionary.components.displayers.notification.declined;
 			break;
 		default:
 			break;
@@ -79,21 +79,21 @@ const Component: React.SFC<IProps> = ({
 					<View style={styles.buttons}>
 						<PrimaryButton
 							autoWidth={true}
-							label={getText('button.accept')}
+							label={dictionary.components.buttons.accept}
 							loading={request.accepting}
 							size={ButtonSizes.Small}
-							borderColor={colors.pink}
-							textColor={colors.white}
+							borderColor={Colors.pink}
+							textColor={Colors.white}
 							containerStyle={styles.button}
 							onPress={() => onAcceptFriendRequest(alias, id)}
 						/>
 						<PrimaryButton
 							autoWidth={true}
-							label={getText('button.decline')}
+							label={dictionary.components.buttons.decline}
 							loading={request.rejecting}
 							size={ButtonSizes.Small}
-							borderColor={colors.pink}
-							textColor={colors.pink}
+							borderColor={Colors.pink}
+							textColor={Colors.pink}
 							containerStyle={styles.ghostButton}
 							onPress={() => onDeclineFriendRequest(alias, id)}
 						/>
@@ -107,7 +107,7 @@ const Component: React.SFC<IProps> = ({
 	);
 };
 
-export const EnhancedComponent: React.SFC<IProps> = (props) => (
+const EnhancedComponent: React.SFC<IProps> = (props) => (
 	<WithFriends>
 		{({ data, actions }) => <Component {...props} request={data.request} {...actions} />}
 	</WithFriends>

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Animated, LayoutChangeEvent, TouchableHighlight, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
-import { Header, HeaderButton } from '../../components';
+import { Header } from '../../components';
 import { BarChart } from '../../components/displayers/BarChart';
 import { IMonthlyBarChartData, ISpentTillNow, IWeeklyBarChartData } from '../../environment/consts';
 import { IHeaderProps, ITranslatedProps } from '../../types';
@@ -54,10 +54,7 @@ export const AdsStatisticsScreenView: React.SFC<IAdsStatisticsScreenViewProps> =
 	maxWeeklyValue,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.container}>
-		<Header
-			title={getText('ad.management.screen.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('ad.management.screen.title')} back={true} onPressBack={onGoBack} />
 		<Text style={styles.title}>{getText('ad.statistics.title').toUpperCase()}</Text>
 		<View style={styles.separator} />
 		<View style={styles.transactionsContainer}>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NativeScrollEvent, ScrollView, View } from 'react-native';
 
-import { CreateAdSteps, Header, HeaderButton } from '../../components';
+import { CreateAdSteps, Header } from '../../components';
 import { ICreateAdSteps, ITranslatedProps } from '../../types';
 import styles from './NewAdSliderScreen.style';
 
@@ -33,7 +33,8 @@ export const NewAdSliderScreenView = React.forwardRef<ScrollView, INewAdSliderSc
 		<View style={styles.rootView}>
 			<Header
 				title={getText('new.ad.setup.post.screen.title')}
-				left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
+				back={true}
+				onPressBack={onGoBack}
 			/>
 			<ScrollView
 				ref={ref}

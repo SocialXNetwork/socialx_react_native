@@ -4,12 +4,12 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AvatarImage, OptionsMenuButton } from '../../';
-import { IPostOwner, ITranslatedProps } from '../../../types';
+import { IDictionary, IPostOwner } from '../../../types';
 import { Location, TaggedFriends } from './';
 
 import styles from './UserDetails.style';
 
-interface IUserDetailsProps extends ITranslatedProps {
+interface IUserDetailsProps extends IDictionary {
 	canBack: boolean;
 	user: IPostOwner;
 	timestamp: Date;
@@ -31,7 +31,7 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 	onUserPress,
 	onShowOptions,
 	onGoBack,
-	getText,
+	dictionary,
 }) => {
 	const date = moment(timestamp).format('MMM DD');
 	const hour = moment(timestamp).format('hh:mm');
@@ -53,8 +53,8 @@ export const UserDetails: React.SFC<IUserDetailsProps> = ({
 			<View style={[styles.details, !canBack ? { flex: 9 } : { flex: 8 }]}>
 				<Text style={styles.fullName} onPress={() => onUserPress(user.alias)}>
 					{user.fullName}
-					<TaggedFriends friends={taggedFriends || []} getText={getText} />
-					<Location location={location} getText={getText} />
+					{/* <TaggedFriends friends={taggedFriends || []} dictionary={dictionary} />
+					<Location location={location} dictionary={dictionary} /> */}
 				</Text>
 				<Text style={styles.timestamp}>{`${date} at ${hour}`}</Text>
 			</View>

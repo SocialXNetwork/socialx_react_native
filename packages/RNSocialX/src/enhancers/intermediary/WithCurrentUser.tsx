@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { ICurrentUser } from '../../types';
 
@@ -39,10 +39,29 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 									miningEnabled: profile.miningEnabled,
 									shareDataEnabled: false,
 								};
+							} else {
+								const profile = profiles.hackerman;
+
+								currentUser = {
+									alias: profile.alias,
+									email: profile.email,
+									pub: profile.pub,
+									fullName: profile.fullName,
+									avatar: profile.avatar,
+									description: profile.aboutMeText === 'about me text' ? '' : profile.aboutMeText,
+									numberOfFriends: profile.numberOfFriends,
+									numberOfLikes: 0,
+									numberOfPhotos: 0,
+									numberOfComments: 0,
+									media: [],
+									postIds: [],
+									miningEnabled: profile.miningEnabled,
+									shareDataEnabled: false,
+								};
 							}
 
 							return this.props.children({
-								currentUser: currentUser!,
+								currentUser,
 							});
 						}}
 					</WithProfiles>

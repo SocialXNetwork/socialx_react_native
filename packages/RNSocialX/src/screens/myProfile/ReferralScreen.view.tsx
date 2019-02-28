@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-import { Header, HeaderButton, ReferralContainer, ReferralRow } from '../../components';
+import { Header, ReferralContainer, ReferralRow } from '../../components';
 import { ITranslatedProps } from '../../types';
 
 import styles, { shareIcon } from './ReferralScreen.style';
@@ -31,10 +31,7 @@ export const ReferralScreenView: React.SFC<IReferralScreenViewProps> = ({
 	getText,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={getText('referral.screen.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('referral.screen.title')} back={true} onPressBack={onGoBack} />
 		<ReferralContainer heading={HEADING} text={TEXT} />
 		<ReferralRow title={getText('referral.screen.referrals')} value={referrals} />
 		<ReferralRow title={getText('referral.screen.socx')} value={socx} last={true} />

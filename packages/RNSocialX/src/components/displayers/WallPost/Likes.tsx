@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { IProfile } from '../../../store/data/profiles';
 import { IApplicationState, selectProfile } from '../../../store/selectors';
 
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 import styles from './Likes.style';
 
-interface ILikesProps extends ITranslatedProps {
+interface ILikesProps extends IDictionary {
 	alias: string;
 	total: number;
 	onUserPress: (alias: string) => void;
@@ -25,21 +25,26 @@ export const Component: React.SFC<IProps> = ({
 	total,
 	onUserPress,
 	onViewLikes,
-	getText,
+	dictionary,
 }) => {
-	const others = total - 1 === 1 ? getText('post.card.other') : getText('post.card.others');
+	const others =
+		total - 1 === 1
+			? dictionary.components.displayers.wallPost.other
+			: dictionary.components.displayers.wallPost.others;
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.wrapper}>
-				<Text style={styles.normal}>{getText('post.card.liked.by') + ' '}</Text>
+				<Text style={styles.normal}>{dictionary.components.displayers.wallPost.liked + ' '}</Text>
 				<Text style={styles.bold} onPress={() => onUserPress(alias)}>
 					{profile.fullName}
 				</Text>
 			</View>
 			{total > 1 && (
 				<View style={styles.wrapper}>
-					<Text style={styles.normal}>{' ' + getText('text.and') + ' '}</Text>
+					<Text style={styles.normal}>
+						{' ' + dictionary.components.displayers.wallPost.and + ' '}
+					</Text>
 					<TouchableOpacity activeOpacity={1} onPress={onViewLikes}>
 						<Text style={styles.bold}>{total - 1 + ' ' + others}</Text>
 					</TouchableOpacity>

@@ -59,6 +59,26 @@ export interface ILocaleDictionary {
 			login: string;
 			register: string;
 		};
+		login: {
+			title: string;
+			welcome: string;
+			forgot: string;
+			progress: string;
+			account: string;
+		};
+		forgotPassword: {
+			title: string;
+			instructions: string;
+		};
+		register: {
+			title: string;
+			progress: string;
+			accept: string;
+			terms: string;
+		};
+		termsAndConditions: {
+			title: string;
+		};
 		createPost: {
 			title: string;
 		};
@@ -74,6 +94,7 @@ export interface ILocaleDictionary {
 			analytics: string;
 			wallet: string;
 			settings: string;
+			nodes: string;
 			logout: string;
 		};
 		friends: {
@@ -82,22 +103,87 @@ export interface ILocaleDictionary {
 		likes: {
 			title: string;
 		};
-		login: {
+		settings: {
 			title: string;
-			welcome: string;
-			forgot: string;
 			progress: string;
-			account: string;
-			alias: {
-				required: string;
+			mining: {
+				title: string;
+				description: string;
 			};
-			password: {
-				required: string;
+			share: {
+				title: string;
+				description: string;
 			};
 		};
-		register: {
+		search: {
+			top: string;
+			people: string;
+			tags: string;
+			places: string;
+			soon: string;
+		};
+		feed: {
+			global: string;
+			friends: string;
+			empty: string;
+		};
+		notifications: {
 			title: string;
-			progress: string;
+			empty: string;
+		};
+		chat: {
+			messages: {
+				messages: string;
+				friends: string;
+				empty: string;
+			};
+		};
+		wallet: {
+			activity: {
+				title: string;
+				heading: string;
+			};
+		};
+	};
+	components: {
+		buttons: {
+			media: string;
+			createPost: string;
+			video: {
+				replay: string;
+			};
+			seeAllFriends: string;
+			editProfile: string;
+			message: string;
+			login: string;
+			signUp: string;
+			register: string;
+			saveChanges: string;
+			editNodes: string;
+			delete: string;
+			cancel: string;
+			send: string;
+			view: string;
+			resetCode: string;
+			friends: string;
+			addFriend: string;
+			undo: string;
+			viewAccount: string;
+			accept: string;
+			decline: string;
+		};
+		inputs: {
+			placeholder: {
+				caption: string;
+				alias: string;
+				password: string;
+				confirm: string;
+				email: string;
+				name: string;
+				description: string;
+				comment: string;
+				type: string;
+			};
 			email: {
 				required: string;
 				invalid: string;
@@ -115,38 +201,44 @@ export interface ILocaleDictionary {
 				length: string;
 				mismatch: string;
 			};
-			accept: string;
-			terms: string;
-		};
-	};
-	components: {
-		buttons: {
-			media: string;
-			createPost: string;
-			video: {
-				replay: string;
+			description: {
+				required: string;
+				length: string;
 			};
-			seeAllFriends: string;
-			editProfile: string;
-			message: string;
-			login: string;
-			signUp: string;
-			register: string;
-		};
-		inputs: {
-			caption: string;
-			alias: string;
-			password: string;
-			confirm: string;
-			email: string;
-			name: string;
 		};
 		modals: {
 			options: {
 				gallery: string;
 				camera: string;
 				remove: string;
+				copy: string;
+				delete: string;
+				block: string;
+				report: string;
+				deletePost: string;
+				viewProfile: string;
+				addMedia: string;
+				unfriend: string;
 			};
+			report: {
+				title: string;
+				subject: {
+					placeholder: string;
+					required: string;
+				};
+				description: {
+					placeholder: string;
+					required: string;
+				};
+			};
+			generic: {
+				delete: {
+					title: string;
+					description: string;
+				};
+			};
+			offline: string;
+			activity: string;
 		};
 		displayers: {
 			mediaInfo: {
@@ -156,6 +248,36 @@ export interface ILocaleDictionary {
 				type: string;
 				video: string;
 				photo: string;
+			};
+			wallPost: {
+				other: string;
+				others: string;
+				liked: string;
+				creating: string;
+				more: string;
+				and: string;
+				like: string;
+				unlike: string;
+				warning: string;
+				view: string;
+				comments: string;
+			};
+			search: {
+				indicator: string;
+				suggested: string;
+				results: string;
+			};
+			message: {
+				delivered: string;
+				seen: string;
+			};
+			wallet: {
+				socx: string;
+			};
+			notification: {
+				request: string;
+				accepted: string;
+				declined: string;
 			};
 		};
 	};

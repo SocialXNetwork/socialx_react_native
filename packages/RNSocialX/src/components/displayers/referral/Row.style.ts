@@ -19,7 +19,7 @@ const styles: any = {
 		color: Colors.cloudBurst,
 	},
 	border: {
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 		paddingVertical: Sizes.smartVerticalScale(4),
 		paddingHorizontal: Sizes.smartHorizontalScale(6),
 		borderWidth: 1,

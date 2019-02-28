@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts, Icons, Sizes } from '../../environment/theme';
+import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.white,
 	},
 	list: {
-		paddingVertical: Sizes.smartVerticalScale(16),
-		paddingHorizontal: Sizes.smartHorizontalScale(25),
+		paddingVertical: Sizes.smartVerticalScale(10),
+		paddingHorizontal: Sizes.smartHorizontalScale(16),
 	},
 	empty: {
 		flex: 1,
@@ -28,7 +28,4 @@ const styles: any = {
 		height: Sizes.smartHorizontalScale(33),
 		marginBottom: Sizes.smartVerticalScale(15),
 	},
-};
-
-export default StyleSheet.create(styles);
-export const Icon = Icons.iconNotificationsScreenEmpty;
+});

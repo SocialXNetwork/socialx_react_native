@@ -1,6 +1,6 @@
 import { CheckBox } from 'native-base';
 import * as React from 'react';
-import { Image, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import {
 	Header,
@@ -44,7 +44,7 @@ export const ManageCountriesScreenView: React.SFC<IManageCountriesScreenViewProp
 			{
 				<Header
 					title={getText('ad.manage.countries.title')}
-					left={<HeaderButton iconName="ios-close" onPress={onGoBack} />}
+					back={true}
 					right={
 						<HeaderButton
 							iconName="ios-checkmark"
@@ -53,6 +53,7 @@ export const ManageCountriesScreenView: React.SFC<IManageCountriesScreenViewProp
 							}}
 						/>
 					}
+					onPressBack={onGoBack}
 				/>
 			}
 			<View style={styles.container}>

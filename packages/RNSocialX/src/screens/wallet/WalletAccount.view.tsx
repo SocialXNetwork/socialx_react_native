@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-import {
-	Header,
-	HeaderButton,
-	PrimaryButton,
-	PrimaryTextInput,
-	TRKeyboardKeys,
-} from '../../components';
+import { Header, PrimaryButton, PrimaryTextInput, TRKeyboardKeys } from '../../components';
 import { ITranslatedProps } from '../../types';
 
 import styles, { defaultStyles } from './WalletAccount.style';
@@ -31,10 +25,7 @@ export const WalletAccountScreenView: React.SFC<IWalletAccountScreenViewProps> =
 	getText,
 }) => (
 	<View style={styles.container}>
-		<Header
-			title={getText('wallet.account.title')}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+		<Header title={getText('wallet.account.title')} back={true} onPressBack={onGoBack} />
 		<View style={styles.content}>
 			<Text style={styles.label}>{getText('wallet.account.input.label')}</Text>
 			<PrimaryTextInput

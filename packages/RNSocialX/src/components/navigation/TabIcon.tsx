@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
+import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
 
 import { IMAGE_PICKER_TYPES, SCREENS, TABS } from '../../environment/consts';
 import { Icons } from '../../environment/theme';
-import { INavigationParamsActions, IOptionsMenuProps, ITranslatedProps } from '../../types';
+import {
+	IDictionary,
+	INavigationParamsActions,
+	INavigationProps,
+	IOptionsMenuProps,
+} from '../../types';
 import {
 	getCameraMediaObjectMultiple,
 	getGalleryMediaObjectMultiple,
@@ -14,13 +18,16 @@ import {
 
 import styles from './TabIcon.style';
 
-interface ITabIconProps extends IOptionsMenuProps, INavigationParamsActions, ITranslatedProps {
-	navigation: NavigationScreenProp<any>;
+interface IProps
+	extends IOptionsMenuProps,
+		INavigationProps,
+		INavigationParamsActions,
+		IDictionary {
 	focused: boolean;
 	notifications: number;
 }
 
-export class TabIcon extends React.Component<ITabIconProps> {
+export class TabIcon extends React.Component<IProps> {
 	public render() {
 		const { navigation, focused, notifications } = this.props;
 
@@ -37,18 +44,18 @@ export class TabIcon extends React.Component<ITabIconProps> {
 			case TABS.Feed:
 				icon = (
 					<Image
-						source={focused ? Icons.iconTabBarHomeSelected : Icons.iconTabBarHome}
+						source={focused ? Icons.tabs.home.selected : Icons.tabs.home.normal}
 						resizeMode="contain"
-						style={styles.icon}
+						style={styles.icon as ImageStyle}
 					/>
 				);
 				break;
 			case TABS.Search:
 				icon = (
 					<Image
-						source={focused ? Icons.iconTabBarSearchSelected : Icons.iconTabBarSearch}
+						source={focused ? Icons.tabs.search.selected : Icons.tabs.search.normal}
 						resizeMode="contain"
-						style={styles.icon}
+						style={styles.icon as ImageStyle}
 					/>
 				);
 				break;
@@ -56,11 +63,9 @@ export class TabIcon extends React.Component<ITabIconProps> {
 				icon = (
 					<React.Fragment>
 						<Image
-							source={
-								focused ? Icons.iconTabBarNotificationsSelected : Icons.iconTabBarNotifications
-							}
+							source={focused ? Icons.tabs.notifications.selected : Icons.tabs.notifications.normal}
 							resizeMode="contain"
-							style={styles.icon}
+							style={styles.icon as ImageStyle}
 						/>
 						{notifications > 0 ? (
 							<View style={styles.background}>
@@ -75,16 +80,20 @@ export class TabIcon extends React.Component<ITabIconProps> {
 			case TABS.Profile:
 				icon = (
 					<Image
-						source={focused ? Icons.iconTabBarProfileSelected : Icons.iconTabBarProfile}
+						source={focused ? Icons.tabs.profile.selected : Icons.tabs.profile.normal}
 						resizeMode="contain"
-						style={styles.icon}
+						style={styles.icon as ImageStyle}
 					/>
 				);
 				break;
 			default:
 				icon = (
 					<TouchableOpacity activeOpacity={1} onPress={this.showPhotoOptionsMenu}>
-						<Image source={Icons.iconTabBarPhoto} resizeMode="contain" style={styles.icon} />
+						<Image
+							source={Icons.tabs.photo.normal}
+							resizeMode="contain"
+							style={styles.icon as ImageStyle}
+						/>
 					</TouchableOpacity>
 				);
 				break;
@@ -94,21 +103,22 @@ export class TabIcon extends React.Component<ITabIconProps> {
 	};
 
 	private showPhotoOptionsMenu = () => {
-		const { showOptionsMenu, getText } = this.props;
+		const { dictionary, showOptionsMenu } = this.props;
 
-		const menuItems = [
+		const items = [
 			{
-				label: getText('tab.bar.bottom.photo.picker.use.gallery'),
-				icon: 'md-photos',
+				label: dictionary.components.modals.options.gallery,
+				icon: Icons.gallery,
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Gallery),
 			},
 			{
-				label: getText('tab.bar.bottom.photo.picker.use.camera'),
-				icon: 'md-camera',
+				label: dictionary.components.modals.options.camera,
+				icon: Icons.camera,
 				actionHandler: () => this.onSelectOption(IMAGE_PICKER_TYPES.Camera),
 			},
 		];
-		showOptionsMenu(menuItems);
+
+		showOptionsMenu(items);
 	};
 
 	private onSelectOption = async (source: IMAGE_PICKER_TYPES) => {

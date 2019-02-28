@@ -5,7 +5,9 @@ export { AdsStatisticsScreen } from './ads/AdsStatisticsScreen';
 export { NewAdSliderScreen } from './ads/NewAdSliderScreen';
 export { ManageCountriesScreen } from './ads/ManageCountriesScreen';
 
-export { ChatScreen } from './chat/ChatScreen';
+export { AllMessagesScreen } from './chat/AllMessagesScreen';
+export { ChatSearchScreen } from './chat/ChatSearchScreen';
+export { ConversationScreen } from './chat/ConversationScreen';
 
 export { IntroScreen } from './intro/IntroScreen';
 

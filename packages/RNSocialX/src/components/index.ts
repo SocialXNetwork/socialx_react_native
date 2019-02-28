@@ -10,7 +10,6 @@ export { Option } from './displayers/Ads/Option';
 export { AddFriendsList } from './displayers/AddFriendsList';
 export { CheckboxButtonWithIcon } from './displayers/CheckboxButtonWithIcon';
 export { CommentCard, CommentLikes } from './displayers/CommentCard';
-export { Header } from './displayers/Header';
 export { HeartAnimation } from './displayers/HeartAnimation';
 export { IntroFirstSlide } from './displayers/IntroFirstSlide';
 export { IntroGenericSlide } from './displayers/IntroGenericSlide';
@@ -34,9 +33,9 @@ export { RichText } from './displayers/RichText/RichText';
 export { Notification } from './displayers/Notification';
 export { SearchHeader } from './displayers/SearchHeader';
 export { SearchResults } from './displayers/SearchResults';
+export { SearchContainer } from './displayers/SearchContainer';
 export { UserEntry } from './displayers/UserEntry';
 export { UserEntries } from './displayers/UserEntries';
-export { SearchTabResults } from './displayers/SearchTabResults';
 export { SendCoinsHeader } from './displayers/SendCoinsHeader';
 export { SuggestedSearches } from './displayers/SuggestedSearches';
 export { TextGradient } from './displayers/TextGradient';
@@ -45,6 +44,7 @@ export { TransactionItem } from './displayers/TransactionItem';
 export { WallPost, PostText, Likes, UserDetails } from './displayers/WallPost';
 export { Container as ReferralContainer } from './displayers/referral/Container';
 export { Row as ReferralRow } from './displayers/referral/Row';
+export { MessageList } from './displayers/chat/MessageList';
 
 export { FeedWithNoPosts } from './feed/FeedWithNoPosts';
 export { LoadingFooter } from './feed/LoadingFooter';
@@ -80,6 +80,7 @@ export { WithManagedTransitions, ModalManager, IManagedModal } from './managedTr
 export { Alert } from './modals/Alert';
 export { ActivityIndicator } from './modals/ActivityIndicator';
 export { Confirmation } from './modals/Confirmation';
+export { GenericModal } from './modals/GenericModal';
 export { InputSMSCodeModal } from './modals/InputSMSCodeModal';
 export { MediaInfo } from './modals/MediaInfo';
 export { MediaOverlay } from './modals/MediaOverlay';
@@ -90,8 +91,11 @@ export { TagFriendsModal } from './modals/TagFriendsModal';
 export { TransparentOverlay } from './modals/TransparentOverlay';
 export { WalletModal } from './modals/WalletModal';
 
+export { Header } from './navigation/Header';
 export { HeaderLogo } from './navigation/HeaderLogo';
 export { HeaderButton } from './navigation/HeaderButton';
+export { Tab } from './navigation/Tab';
+export { Tabs } from './navigation/Tabs';
 export { TabIcon } from './navigation/TabIcon';
 
 export { WithModalForAddFriends } from './WithModalForAddFriends';

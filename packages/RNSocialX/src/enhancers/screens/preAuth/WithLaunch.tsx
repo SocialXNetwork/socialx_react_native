@@ -3,7 +3,7 @@
  * 1. LATER - data props: maintenance
  */
 
-import * as React from 'react';
+import React from 'react';
 import { NavigationScreenProp } from 'react-navigation';
 
 import { ICredentials } from '@socialx/api-data';

@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-navigation';
 
 import {
 	Header,
-	HeaderButton,
 	PrimaryButton,
 	PrimaryTextInput,
 	TKeyboardKeys,
@@ -14,7 +13,7 @@ import {
 } from '../../components';
 import { Colors } from '../../environment/theme';
 import { IDictionary } from '../../types';
-import style from './LoginScreen.style';
+import styles from './LoginScreen.style';
 
 const passwordRef: React.RefObject<PrimaryTextInput> = React.createRef();
 const aliasRef: React.RefObject<PrimaryTextInput> = React.createRef();
@@ -38,11 +37,11 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 			const errors: FormikErrors<ILoginScreenData> = {};
 
 			if (!alias) {
-				errors.alias = dictionary.screens.login.alias.required;
+				errors.alias = dictionary.components.inputs.alias.required;
 			}
 
 			if (!password) {
-				errors.password = dictionary.screens.login.password.required;
+				errors.password = dictionary.components.inputs.password.required;
 			}
 
 			return errors;
@@ -61,27 +60,30 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 			setFieldTouched,
 		}: FormikProps<ILoginScreenData>) => (
 			<React.Fragment>
-				<PrimaryTextInput
-					icon="md-person"
-					placeholder={dictionary.components.inputs.alias}
-					placeholderColor={Colors.paleSky}
-					returnKeyType={TRKeyboardKeys.next}
-					keyboardType={TKeyboardKeys.emailAddress}
-					value={alias}
-					persistKeyboard={true}
-					onChangeText={(value: string) => {
-						setFieldValue('alias', value);
-						setFieldTouched('alias');
-					}}
-					onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('alias')}
-					onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
-					ref={aliasRef}
-				/>
-				{touched.alias && errors.alias && <Text style={style.errorText}>{errors.alias}</Text>}
-				<View style={style.passwordContainer}>
+				<View style={styles.inputContainer}>
 					<PrimaryTextInput
+						icon="md-person"
+						placeholder={dictionary.components.inputs.placeholder.alias}
+						placeholderColor={Colors.paleSky}
+						returnKeyType={TRKeyboardKeys.next}
+						keyboardType={TKeyboardKeys.emailAddress}
+						value={alias}
+						persistKeyboard={true}
+						onChangeText={(value: string) => {
+							setFieldValue('alias', value);
+							setFieldTouched('alias');
+						}}
+						onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('alias')}
+						onSubmitPressed={() => passwordRef.current && passwordRef.current.focusInput()}
+						ref={aliasRef}
+					/>
+					{touched.alias && errors.alias && <Text style={styles.errorText}>{errors.alias}</Text>}
+				</View>
+				<View style={styles.inputContainer}>
+					<PrimaryTextInput
+						ref={passwordRef}
 						icon="ios-lock"
-						placeholder={dictionary.components.inputs.password}
+						placeholder={dictionary.components.inputs.placeholder.password}
 						placeholderColor={Colors.paleSky}
 						returnKeyType={TRKeyboardKeys.go}
 						isPassword={true}
@@ -93,13 +95,12 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 						}}
 						onSetFocus={(hasFocus) => !hasFocus && setFieldTouched('password')}
 						onSubmitPressed={handleSubmit}
-						ref={passwordRef}
 					/>
 					{touched.password && errors.password && (
-						<Text style={style.errorText}>{errors.password}</Text>
+						<Text style={styles.errorText}>{errors.password}</Text>
 					)}
 				</View>
-				<View style={style.fullWidth}>
+				<View style={styles.fullWidth}>
 					<PrimaryButton
 						label={dictionary.components.buttons.login}
 						onPress={handleSubmit}
@@ -112,39 +113,36 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 	/>
 );
 
-interface ILoginScreenViewProps extends IDictionary {
+interface IProps extends IDictionary {
 	onLogin: (alias: string, password: string) => void;
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onGoBack: () => void;
 }
 
-export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
+export const LoginScreenView: React.SFC<IProps> = ({
+	dictionary,
 	onLogin,
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
 	onGoBack,
-	dictionary,
 }) => (
-	<SafeAreaView forceInset={{ top: 'never' }} style={style.screenContainer}>
-		<Header
-			title={dictionary.screens.login.title}
-			left={<HeaderButton iconName="ios-arrow-back" onPress={onGoBack} />}
-		/>
+	<SafeAreaView forceInset={{ top: 'never' }} style={styles.screenContainer}>
+		<Header title={dictionary.screens.login.title} back={true} onPressBack={onGoBack} />
 		<KeyboardAwareScrollView
-			style={style.keyboardView}
+			style={styles.keyboardView}
 			contentContainerStyle={Platform.select({
-				ios: [style.container, style.containerIOS],
-				android: [style.container],
+				ios: [styles.container, { flex: 1 }],
+				android: [styles.container],
 			})}
 			alwaysBounceVertical={false}
 			keyboardDismissMode="interactive"
 			keyboardShouldPersistTaps="handled"
 		>
-			<Text style={style.welcomeText}>{dictionary.screens.login.welcome}</Text>
+			<Text style={styles.welcomeText}>{dictionary.screens.login.welcome}</Text>
 			<LoginForm onLogin={onLogin} dictionary={dictionary} />
-			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={style.forgotPassword}>
-				<Text style={style.forgotPasswordText}>{dictionary.screens.login.forgot}</Text>
+			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={styles.forgotPassword}>
+				<Text style={styles.forgotPasswordText}>{dictionary.screens.login.forgot}</Text>
 			</TouchableOpacity>
 			{/* <PrimaryButton
 				label={getText('login.use.unlock.file')}
@@ -152,15 +150,10 @@ export const LoginScreenView: React.SFC<ILoginScreenViewProps> = ({
 				borderColor={Colors.transparent}
 				disabled={false}
 			/> */}
-			<View
-				style={Platform.select({
-					ios: [style.noAccountContainer, style.noAccountContainerIOS],
-					android: [style.noAccountContainer, style.noAccountContainerAndroid],
-				})}
-			>
-				<Text style={style.noAccountQuestion}>{dictionary.screens.login.account}</Text>
+			<View style={styles.noAccountContainer}>
+				<Text style={styles.noAccountQuestion}>{dictionary.screens.login.account}</Text>
 				<TouchableOpacity onPress={onNavigateToRegister}>
-					<Text style={style.signUpText}>{dictionary.components.buttons.signUp}</Text>
+					<Text style={styles.signUpText}>{dictionary.components.buttons.signUp}</Text>
 				</TouchableOpacity>
 			</View>
 		</KeyboardAwareScrollView>

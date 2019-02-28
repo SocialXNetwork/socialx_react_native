@@ -8,7 +8,7 @@ import {
 	IWallPost,
 	MediaTypeImage,
 	MediaTypeVideo,
-	TransactionType,
+	TRANSACTION_TYPES,
 } from './types';
 
 import {
@@ -22,7 +22,7 @@ import dictionary from './store/app/i18n/data/dictionary.en';
 import { getText } from './store/app/i18n/helpers';
 
 export const getTextMock = (key: string, ...args: Array<string | number>) => {
-	return getText(dictionary, key, ...args);
+	return getText(dictionary as any, key, ...args);
 };
 
 const avatar =
@@ -618,7 +618,7 @@ export const monthlyHistory: IRewardsHistoryData[] = [
 export const transactions: ITransactionData[] = [
 	{
 		id: '1',
-		type: TransactionType.Bought,
+		type: TRANSACTION_TYPES.BOUGHT,
 		firstAmount: 23,
 		firstCoin: CoinSymbol.SOCX,
 		secondAmount: 0.2,
@@ -627,7 +627,7 @@ export const transactions: ITransactionData[] = [
 	},
 	{
 		id: '2',
-		type: TransactionType.Sold,
+		type: TRANSACTION_TYPES.SOLD,
 		firstAmount: 0.2,
 		firstCoin: CoinSymbol.ETH,
 		secondAmount: 23,
@@ -636,7 +636,7 @@ export const transactions: ITransactionData[] = [
 	},
 	{
 		id: '3',
-		type: TransactionType.Sold,
+		type: TRANSACTION_TYPES.SOLD,
 		firstAmount: 23,
 		firstCoin: CoinSymbol.SOCX,
 		secondAmount: 0.2,
@@ -645,7 +645,7 @@ export const transactions: ITransactionData[] = [
 	},
 	{
 		id: '4',
-		type: TransactionType.Bought,
+		type: TRANSACTION_TYPES.BOUGHT,
 		firstAmount: 0.2,
 		firstCoin: CoinSymbol.ETH,
 		secondAmount: 23,
@@ -654,7 +654,7 @@ export const transactions: ITransactionData[] = [
 	},
 	{
 		id: '5',
-		type: TransactionType.Sold,
+		type: TRANSACTION_TYPES.SOLD,
 		firstAmount: 0.2,
 		firstCoin: CoinSymbol.ETH,
 		secondAmount: 23,
@@ -666,7 +666,7 @@ export const transactions: ITransactionData[] = [
 export const rewardsTransactions: ITransactionData[] = [
 	{
 		id: '1',
-		type: TransactionType.Received,
+		type: TRANSACTION_TYPES.RECEIVED,
 		firstAmount: 23,
 		firstCoin: CoinSymbol.SOCX,
 		secondAmount: 0.2,
@@ -676,7 +676,7 @@ export const rewardsTransactions: ITransactionData[] = [
 	},
 	{
 		id: '2',
-		type: TransactionType.Received,
+		type: TRANSACTION_TYPES.RECEIVED,
 		firstAmount: 0.2,
 		firstCoin: CoinSymbol.ETH,
 		fromType: TransactionFromType.USER,
@@ -687,7 +687,7 @@ export const rewardsTransactions: ITransactionData[] = [
 	},
 	{
 		id: '3',
-		type: TransactionType.Received,
+		type: TRANSACTION_TYPES.RECEIVED,
 		firstAmount: +23,
 		firstCoin: CoinSymbol.SOCX,
 		secondAmount: +0.2,
@@ -696,7 +696,7 @@ export const rewardsTransactions: ITransactionData[] = [
 	},
 	{
 		id: '4',
-		type: TransactionType.Sent,
+		type: TRANSACTION_TYPES.SENT,
 		firstAmount: -0.2,
 		firstCoin: CoinSymbol.ETH,
 		transactionIcon: TransactionSymbol.SENT,
@@ -704,7 +704,7 @@ export const rewardsTransactions: ITransactionData[] = [
 	},
 	{
 		id: '5',
-		type: TransactionType.Converted,
+		type: TRANSACTION_TYPES.CONVERTED,
 		firstAmount: 0.2,
 		firstCoin: CoinSymbol.ETH,
 		transactionIcon: TransactionSymbol.CONVERTED,
@@ -714,7 +714,7 @@ export const rewardsTransactions: ITransactionData[] = [
 	},
 	{
 		id: '6',
-		type: TransactionType.Converted,
+		type: TRANSACTION_TYPES.CONVERTED,
 		firstAmount: 11.2,
 		firstCoin: CoinSymbol.SOCX,
 		transactionIcon: TransactionSymbol.CONVERTED,

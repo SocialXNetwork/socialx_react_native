@@ -1,6 +1,6 @@
 import { throttle } from 'lodash';
 import * as React from 'react';
-import { Animated, Dimensions, Platform, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Platform, StatusBar, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,17 +18,14 @@ import {
 } from '../../enhancers/intermediary';
 
 import { MediaInfo, MediaInteractionButtons, MediaObjectViewer } from '../../components';
-import { INavigationProps, IOnMove, MediaTypeImage } from '../../types';
+import { IOnMove, MediaTypeImage } from '../../types';
 
 import styles from './MediaOverlay.style';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const THROTTLE_TIME = 300;
 
-interface IMediaOverlayProps extends INavigationProps {}
-
 interface IProps
-	extends INavigationProps,
-		IWithMediaOverlayEnhancedActions,
+	extends IWithMediaOverlayEnhancedActions,
 		IWithMediaOverlayEnhancedData,
 		IWithLikingEnhancedActions {
 	onViewComments: (postId: string, keyboardRaised: boolean) => void;
@@ -83,9 +80,11 @@ class Component extends React.Component<IProps, IState> {
 				animationOut="fadeOut"
 				swipeDirection="down"
 				hideModalContentWhileAnimating={true}
-				onSwipe={this.onSwipeDownHandler}
+				onBackButtonPress={this.onCloseModalHandler}
+				onSwipe={this.onCloseModalHandler}
 				style={styles.modal}
 			>
+				<StatusBar barStyle="light-content" />
 				<SafeAreaView style={styles.container}>
 					{currentMedia && (
 						<MediaInfo
@@ -121,7 +120,10 @@ class Component extends React.Component<IProps, IState> {
 								postId={postId}
 								likedByCurrentUser={likedByCurrentUser}
 								disabled={!isOverlayVisible}
-								onCommentPress={() => onViewComments(postId, false)}
+								onCommentPress={() => {
+									hideMedia();
+									onViewComments(postId, false);
+								}}
 								onLikePress={() => onLikePost(postId)}
 							/>
 						</Animated.View>
@@ -218,7 +220,7 @@ class Component extends React.Component<IProps, IState> {
 		}).start();
 	};
 
-	private onSwipeDownHandler = () => {
+	private onCloseModalHandler = () => {
 		this.props.hideMedia();
 	};
 
@@ -229,19 +231,18 @@ class Component extends React.Component<IProps, IState> {
 	};
 }
 
-export const MediaOverlay = (props: IMediaOverlayProps) => (
+export const MediaOverlay = () => (
 	<WithMediaOverlay>
 		{(media) => (
 			<WithLiking likedByCurrentUser={media.data.likedByCurrentUser || false}>
 				{(likes) => (
-					<WithNavigationHandlers navigation={props.navigation}>
-						{(nav) => (
+					<WithNavigationHandlers>
+						{({ actions }) => (
 							<Component
-								{...props}
 								{...media.data}
 								{...media.actions}
 								{...likes.actions}
-								onViewComments={nav.actions.onViewComments}
+								onViewComments={actions.onViewComments}
 							/>
 						)}
 					</WithNavigationHandlers>

@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { Keyboard, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+	Keyboard,
+	RegisteredStyle,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { OS_TYPES } from '../../environment/consts';
-import style, { defaultStyles } from './PrimaryTextInput.style';
+import { Colors, Sizes } from '../../environment/theme';
+import styles from './PrimaryTextInput.style';
 
 export enum TKeyboardKeys {
 	default = 'default',
@@ -28,7 +36,7 @@ export enum InputSizes {
 }
 
 interface IPrimaryTextInputProps {
-	width: number;
+	width: number | string;
 	icon: string;
 	iconColor: string;
 	placeholder: string;
@@ -52,6 +60,7 @@ interface IPrimaryTextInputProps {
 	autoCapitalize: 'none' | 'sentences' | 'characters' | 'words';
 	persistCancel: boolean;
 	persistKeyboard: boolean;
+	style?: RegisteredStyle<ViewStyle>;
 	onSubmitPressed: (event: any) => void;
 	onChangeText: (value: string) => void;
 	onSetFocus: (hasFocus: boolean) => void;
@@ -64,49 +73,62 @@ interface IPrimaryTextInputState {
 	iconColor: string;
 }
 
-const InputIcon: React.SFC<{
+interface IInputIconProps {
 	size: InputSizes;
 	icon: string;
 	iconColor: string;
-}> = ({ size, icon, iconColor }) => {
-	let iconHeight = defaultStyles.iconHeightNormal;
+}
+
+const InputIcon: React.SFC<IInputIconProps> = ({ size, icon, iconColor }) => {
+	let iconHeight = Sizes.smartHorizontalScale(25);
+	let containerSize = styles.iconContainerNormal;
 
 	if (size === InputSizes.Small) {
-		iconHeight = defaultStyles.iconHeightSmall;
+		iconHeight = Sizes.smartHorizontalScale(20);
+		containerSize = styles.iconContainerSmall;
 	} else if (size === InputSizes.Large) {
-		iconHeight = defaultStyles.iconHeightLarge;
+		iconHeight = Sizes.smartHorizontalScale(30);
+		containerSize = styles.iconContainerLarge;
 	}
 
 	return (
-		<View style={[style.iconContainer, style['iconContainer' + size]]}>
+		<View style={[styles.iconContainer, containerSize]}>
 			<Icon name={icon} size={iconHeight} color={iconColor} />
 		</View>
 	);
 };
 
-const CancelButton: React.SFC<{
+interface ICancelButtonProps {
 	persistCancel: boolean;
 	canCancel: boolean;
 	hasFocus: boolean;
-	onPressCancel: () => void;
 	cancelButtonTextColor: string;
-}> = ({ persistCancel, canCancel, hasFocus, onPressCancel, cancelButtonTextColor }) => {
-	if (persistCancel && canCancel && Platform.OS === OS_TYPES.IOS) {
+	onPressCancel: () => void;
+}
+
+const CancelButton: React.SFC<ICancelButtonProps> = ({
+	persistCancel,
+	canCancel,
+	hasFocus,
+	onPressCancel,
+	cancelButtonTextColor,
+}) => {
+	if (persistCancel && canCancel) {
 		return (
-			<TouchableOpacity style={style.cancelButton} onPress={onPressCancel}>
-				<Text style={[style.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
+			<TouchableOpacity style={styles.cancelButton} onPress={onPressCancel}>
+				<Text style={[styles.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
 			</TouchableOpacity>
 		);
-	} else if (hasFocus && canCancel && Platform.OS === OS_TYPES.IOS) {
+	} else if (hasFocus && canCancel) {
 		return (
 			<TouchableOpacity
-				style={style.cancelButton}
+				style={styles.cancelButton}
 				onPress={() => {
 					Keyboard.dismiss();
 					onPressCancel();
 				}}
 			>
-				<Text style={[style.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
+				<Text style={[styles.cancelButtonText, { color: cancelButtonTextColor }]}>Cancel</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -122,22 +144,22 @@ export class PrimaryTextInput extends React.Component<
 		width: 0,
 		icon: '',
 		value: '',
-		iconColor: defaultStyles.defaultIconColor,
+		iconColor: Colors.iron,
 		placeholder: '',
-		placeholderColor: defaultStyles.defaultPlaceholderColor,
+		placeholderColor: Colors.dustyGray,
 		disabled: false,
 		isPassword: false,
 		keyboardType: TKeyboardKeys.default,
 		returnKeyType: TRKeyboardKeys.default,
-		cancelButtonTextColor: defaultStyles.defaultCancelTextColor,
+		cancelButtonTextColor: Colors.pink,
 		canCancel: false,
 		hasFocus: false,
 		blurOnSubmit: false,
-		borderColor: defaultStyles.defaultBorderColor,
+		borderColor: Colors.pink,
 		numberOfLines: 1,
 		autoFocus: false,
 		size: InputSizes.Normal,
-		borderWidth: defaultStyles.defaultBorderWidth,
+		borderWidth: 2,
 		multiline: false,
 		autoCorrect: false,
 		autoCapitalize: 'none',
@@ -152,7 +174,7 @@ export class PrimaryTextInput extends React.Component<
 
 	public state = {
 		hasFocus: false,
-		iconColor: defaultStyles.defaultIconColor,
+		iconColor: this.props.autoFocus ? Colors.pink : Colors.iron,
 	};
 
 	private inputRef: React.RefObject<TextInput> = React.createRef();
@@ -179,6 +201,7 @@ export class PrimaryTextInput extends React.Component<
 			numberOfLines,
 			multiline,
 			value,
+			style,
 			borderColor,
 			borderWidth,
 			persistKeyboard,
@@ -188,22 +211,32 @@ export class PrimaryTextInput extends React.Component<
 		} = this.props;
 		const { hasFocus } = this.state;
 
+		let inputSize = styles.textInputNormal;
+
+		if (size === InputSizes.Small) {
+			inputSize = styles.textInputSmall;
+		} else if (size === InputSizes.Large) {
+			inputSize = styles.textInputLarge;
+		}
+
 		const isMultiLine = numberOfLines > 1 || multiline;
-		const inputContainerStyles = [style.inputContainer, { borderColor, borderWidth }];
+		const inputContainerStyles = [styles.inputContainer, { borderColor, borderWidth }];
 		const textInputStyles = [
-			style.textInput,
-			style['textInput' + size],
-			...(isMultiLine ? [style.multilineTextInput, { height: 'auto' }] : []),
+			styles.textInput,
+			inputSize,
+			...(isMultiLine ? [styles.multilineTextInput, { height: 'auto' }] : []),
 		];
 
 		return (
-			<View style={[style.container, width ? { width } : {}, disabled ? style.disabledInput : {}]}>
-				<View style={inputContainerStyles}>
+			<View
+				style={[styles.container, width ? { width } : {}, disabled ? styles.disabledInput : {}]}
+			>
+				<View style={[inputContainerStyles, style]}>
 					{icon !== '' && <InputIcon icon={icon} iconColor={this.state.iconColor} size={size} />}
 					<TextInput
 						allowFontScaling={false}
 						autoFocus={autoFocus}
-						value={value || ''}
+						value={value}
 						onChangeText={onChangeText}
 						onSubmitEditing={(event) => {
 							onSubmitPressed(event);
@@ -227,9 +260,9 @@ export class PrimaryTextInput extends React.Component<
 						placeholder={placeholder}
 						placeholderTextColor={placeholderColor}
 						autoCorrect={autoCorrect}
-						underlineColorAndroid={defaultStyles.defaultUnderlineColorAndroid}
+						underlineColorAndroid={Colors.transparent}
 						autoCapitalize={autoCapitalize}
-						clearButtonMode="while-editing" // only works on iOS
+						clearButtonMode="while-editing"
 						blurOnSubmit={blurOnSubmit}
 						numberOfLines={numberOfLines}
 						multiline={isMultiLine}
@@ -255,7 +288,7 @@ export class PrimaryTextInput extends React.Component<
 	private setFocusHandler = (value: boolean) => {
 		this.setState({
 			hasFocus: value,
-			iconColor: value ? defaultStyles.defaultIconActiveColor : this.props.iconColor,
+			iconColor: value ? Colors.pink : this.props.iconColor,
 		});
 		this.props.onSetFocus(value);
 	};

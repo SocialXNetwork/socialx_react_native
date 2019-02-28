@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { ITranslatedProps } from '../../../types';
+import { IDictionary } from '../../../types';
 import { WithI18n } from '../../connectors/app/WithI18n';
 
-export interface IWithTermsAndConditionsEnhancedData {}
+export interface IWithTermsAndConditionsEnhancedData extends IDictionary {}
 
-export interface IWithTermsAndConditionsEnhancedActions extends ITranslatedProps {}
+export interface IWithTermsAndConditionsEnhancedActions {}
 
 interface IWithTermsAndConditionsEnhancedProps {
 	data: IWithTermsAndConditionsEnhancedData;
@@ -25,10 +25,10 @@ export class WithTermsAndConditions extends React.Component<
 	render() {
 		return (
 			<WithI18n>
-				{({ getText }) =>
+				{({ dictionary }) =>
 					this.props.children({
-						data: {},
-						actions: { getText },
+						data: { dictionary },
+						actions: {},
 					})
 				}
 			</WithI18n>

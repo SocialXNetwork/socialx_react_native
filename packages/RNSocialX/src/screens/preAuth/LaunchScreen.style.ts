@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Colors, Fonts, Sizes } from '../../environment/theme';
 
-const style: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
@@ -34,7 +34,7 @@ const style: any = {
 		...Fonts.centuryGothic,
 		fontSize: Sizes.smartHorizontalScale(20),
 		lineHeight: Sizes.smartHorizontalScale(24),
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 		paddingTop: Sizes.smartVerticalScale(20),
 		paddingBottom: Sizes.smartVerticalScale(20),
 	},
@@ -45,6 +45,4 @@ const style: any = {
 	signUpTopPadding: {
 		paddingTop: Sizes.smartVerticalScale(19),
 	},
-};
-
-export default StyleSheet.create(style);
+});

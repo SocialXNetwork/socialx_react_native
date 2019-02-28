@@ -76,7 +76,7 @@ const style: any = {
 	buttonText: {
 		textAlign: 'center',
 		...Fonts.centuryGothic,
-		color: Colors.grayText,
+		color: Colors.dustyGray,
 		fontSize: Sizes.smartHorizontalScale(16),
 		lineHeight: Sizes.smartHorizontalScale(18),
 	},

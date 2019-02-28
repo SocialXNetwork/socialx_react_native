@@ -3,7 +3,7 @@ import { Colors, Fonts, Sizes } from '../../environment/theme';
 
 const ROW_LINE_HEIGHT = Sizes.smartHorizontalScale(30);
 
-const styles: any = {
+export default StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
@@ -54,6 +54,4 @@ const styles: any = {
 		paddingRight: Sizes.smartHorizontalScale(10),
 		marginRight: Sizes.smartHorizontalScale(10),
 	},
-};
-
-export default StyleSheet.create(styles);
+});

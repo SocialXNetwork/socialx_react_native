@@ -116,5 +116,5 @@ export default StyleSheet.create(style);
 
 export const customStyleProps = {
 	underlineColorAndroid: Colors.transparent,
-	activityIndicatorColor: Colors.grayText,
+	activityIndicatorColor: Colors.dustyGray,
 };
