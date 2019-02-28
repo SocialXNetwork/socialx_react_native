@@ -155,6 +155,8 @@ export enum SCREENS {
 	AllMessages = 'AllMessages',
 	ChatSearch = 'ChatSearch',
 	Conversation = 'Conversation',
+	AllBounties = 'AllBounties',
+	Bounty = 'Bounty',
 }
 
 export enum NAVIGATION {

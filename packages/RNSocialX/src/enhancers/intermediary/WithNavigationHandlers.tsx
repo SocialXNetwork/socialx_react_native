@@ -21,6 +21,7 @@ export interface IWithNavigationHandlersEnhancedActions {
 	onViewImage: (items: IMedia[], startIndex?: number, postId?: string) => void;
 	onViewFriends: (alias: string) => void;
 	onOpenConversation: (alias: string) => void;
+	onOpenBounty: (id: string) => void;
 	onGoBack: () => void;
 }
 
@@ -73,6 +74,7 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 															onViewImage: this.onViewImageHandler,
 															onViewFriends: this.onViewFriendsHandler,
 															onOpenConversation: this.onOpenConversationHandler,
+															onOpenBounty: this.onOpenBountyHandler,
 															onGoBack: this.onGoBackHandler,
 														},
 													});
@@ -181,6 +183,21 @@ export class WithNavigationHandlers extends React.Component<IWithNavigationHandl
 				},
 			});
 			const action = NavigationActions.navigate({ routeName: SCREENS.Conversation });
+			navigator.dispatch(action);
+		}
+	};
+
+	private onOpenBountyHandler = (id: string) => {
+		if (navigator) {
+			Keyboard.dismiss();
+
+			this.actions.setNavigationParams({
+				screenName: SCREENS.Bounty,
+				params: {
+					id,
+				},
+			});
+			const action = NavigationActions.navigate({ routeName: SCREENS.Bounty });
 			navigator.dispatch(action);
 		}
 	};

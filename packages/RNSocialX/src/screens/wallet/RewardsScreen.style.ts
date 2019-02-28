@@ -181,6 +181,6 @@ export default StyleSheet.create(styles) as any;
 
 export const customStyles = {
 	referralsColor: Colors.pink,
-	postsColor: Colors.userAvatarFullName,
+	postsColor: Colors.blueRibbon,
 	bountiesColor: Colors.green,
 };

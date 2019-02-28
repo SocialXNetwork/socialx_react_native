@@ -81,7 +81,7 @@ const style: any = {
 		lineHeight: Sizes.smartHorizontalScale(18),
 	},
 	buttonTextConfirm: {
-		color: Colors.postHour,
+		color: Colors.cerulean,
 		textTransform: 'capitalize',
 	},
 	buttonTextCancel: {

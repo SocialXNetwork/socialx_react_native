@@ -20,6 +20,7 @@ import {
 
 import dictionary from './store/app/i18n/data/dictionary.en';
 import { getText } from './store/app/i18n/helpers';
+import { IBounty } from './store/data/bounties';
 
 export const getTextMock = (key: string, ...args: Array<string | number>) => {
 	return getText(dictionary as any, key, ...args);
@@ -29,6 +30,126 @@ const avatar =
 	'https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350';
 
 const topCommentIds = ['topCommentId1', 'topCommentId2'];
+
+export const bounties: IBounty[] = [
+	{
+		id: '1',
+		title: 'Earn free coins',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: true,
+		coin: CoinSymbol.SOCX,
+	},
+	{
+		id: '2',
+		title: 'Share SocialX',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.ETH,
+	},
+	{
+		id: '3',
+		title: 'Watch ads',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.SOCX,
+	},
+	{
+		id: '4',
+		title: 'Earn free coins',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.ETH,
+	},
+	{
+		id: '5',
+		title: 'Share SocialX',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.SOCX,
+	},
+	{
+		id: '6',
+		title: 'Watch ads',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.ETH,
+	},
+	{
+		id: '7',
+		title: 'Earn free coins',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.SOCX,
+	},
+	{
+		id: '8',
+		title: 'Share SocialX',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.ETH,
+	},
+	{
+		id: '9',
+		title: 'Watch ads',
+		content:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies dolor sit amet.',
+		categories: ['category1', 'category2', 'category3'],
+		expiryDate: new Date('May 6, 2019'),
+		submissionMin: 115,
+		submissionMax: 120,
+		reward: 3000,
+		claimed: false,
+		coin: CoinSymbol.SOCX,
+	},
+];
 
 export const suggestedItems: IUserEntry[] = [
 	{

@@ -30,6 +30,17 @@ export {
 } from './ads/WithManageCountries';
 
 export {
+	WithAllBounties,
+	IWithAllBountiesEnhancedActions,
+	IWithAllBountiesEnhancedData,
+} from './bounty/WithAllBounties';
+export {
+	WithBounty,
+	IWithBountyEnhancedActions,
+	IWithBountyEnhancedData,
+} from './bounty/WithBounty';
+
+export {
 	WithConversation,
 	IWithConversationEnhancedActions,
 	IWithConversationEnhancedData,

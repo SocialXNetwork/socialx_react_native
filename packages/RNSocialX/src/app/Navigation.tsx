@@ -32,7 +32,9 @@ import {
 	AdsManagementOverviewScreen,
 	AdsManagementScreen,
 	AdsStatisticsScreen,
+	AllBountiesScreen,
 	AllMessagesScreen,
+	BountyScreen,
 	ChatSearchScreen,
 	CommentsScreen,
 	ConversationScreen,
@@ -238,6 +240,20 @@ const ChatWithSearch = createStackNavigator(
 	},
 );
 
+const BountyManagement = createStackNavigator(
+	{
+		AllBounties: { screen: AllBountiesScreen },
+		Bounty: { screen: BountyScreen },
+	},
+	{
+		headerMode: 'none',
+		defaultNavigationOptions: {
+			gesturesEnabled: false,
+		},
+		transitionConfig: fadeIn,
+	},
+);
+
 const HomeTabs = createBottomTabNavigator(
 	{
 		FeedTab: FeedStack,
@@ -300,7 +316,7 @@ const HomeStack = createStackNavigator(
 
 const PreAuthStack = createStackNavigator(
 	{
-		ChatWithSearch,
+		BountyManagement,
 		Launch: { screen: LaunchScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },
