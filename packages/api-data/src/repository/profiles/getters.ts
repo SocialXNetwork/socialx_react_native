@@ -170,6 +170,10 @@ export const getProfileByUsername = (
 	{ username }: { username: string },
 	callback: IGunCallback<IFriendData>,
 ) => {
+	const { account } = context;
+	if (account.is.alias === username) {
+		return getCurrentProfile(context, callback as any);
+	}
 	const mainRunner = () => {
 		profileHandles.currentProfileFriendByUsername(context, username).once(
 			(checkFriendCallback: IProfileData) => {
@@ -211,8 +215,7 @@ export const getProfileByUsername = (
 	};
 	// failsafe
 	const fetchPrivateUserBackup = () => {
-		const { gun: dgun } = context;
-		const gun = dgun.back(-1);
+		const { gun } = context;
 		const extractProf = (data: any) => {
 			if (!data) {
 				return callback(new ApiError('failed to fetch the profile'));
@@ -234,7 +237,10 @@ export const getProfileByUsername = (
 					});
 			}
 		};
-		gun.get(`~@${username}`).once(extractProf, { wait: 10000 });
+		gun
+			.back(-1)
+			.get(`~@${username}`)
+			.once(extractProf, { wait: 100000 });
 	};
 	mainRunner();
 };
