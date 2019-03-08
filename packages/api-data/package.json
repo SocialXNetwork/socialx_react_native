@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@socialx/commons": "^0.0.1",
-    "gun": "0.9.99999",
+    "gun": "0.9.9999991",
     "gun-flint": "^0.0.28",
     "js-base64": "^2.4.9",
     "utility-types-fixme-todo": "latest",

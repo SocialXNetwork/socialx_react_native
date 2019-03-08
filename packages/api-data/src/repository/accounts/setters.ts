@@ -201,17 +201,19 @@ export const createAccount = async (
 		);
 	};
 
-	account.create(username, password, (createAccountCallback: any) => {
+	account.create(username, password, async (createAccountCallback: any) => {
 		if (!createAccountCallback.pub) {
 			return callback(new ApiError('cannot create account.'));
 		}
 
-		login(context, { username, password }, () => {
-			account
-				.get('profile')
-				.get(username)
-				.put(
-					{
+		account.auth(username, password, (loginAck: any) => {
+			if (!loginAck.soul) {
+				return callback(new ApiError('Failed to authenticate with the new user'));
+			}
+
+			const dataTemp = {
+				profile: {
+					[username]: {
 						alias: username,
 						pub: account.is.pub,
 						aboutMeText,
@@ -219,10 +221,11 @@ export const createAccount = async (
 						fullName,
 						email,
 						avatar,
-						friends: null,
 					},
-					createPublicRecord,
-				);
+				},
+			};
+
+			account.put(dataTemp, createPublicRecord);
 		});
 	});
 };
@@ -255,26 +258,26 @@ export const login = (
 			console.log('authenticated', authCallback);
 
 			// migrate missing data if any
-			return callback(null);
-			// checkProfile(() => {
-			// 	return callback(null);
-			// });
+			checkProfile(() => {
+				return callback(null);
+			});
 		});
 	};
 	const checkProfile = (cb: any) => {
-		gun
-			.get(TABLES.PROFILES)
-			.get(account.is.alias)
-			.once((data: any) => {
-				if (!data) {
-					const profileRef = account.get(TABLES.PROFILE).get(account.is.alias);
+		gun.get(TABLES.PROFILES).once(
+			(publicProfiles: any) => {
+				const profileRef = account.get('profile').get(account.is.alias);
+				if (!Object.keys(publicProfiles).includes(account.is.alias)) {
 					gun
 						.get(TABLES.PROFILES)
 						.get(account.is.alias)
-						.put(profileRef);
+						.put(profileRef, cb);
+				} else {
+					cb();
 				}
-				cb();
-			});
+			},
+			{ wait: 500 },
+		);
 	};
 	doAuth();
 };

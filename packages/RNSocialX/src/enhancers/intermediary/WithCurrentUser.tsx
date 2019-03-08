@@ -19,8 +19,7 @@ export class WithCurrentUser extends React.Component<IWithCurrentUserProps, IWit
 					<WithProfiles>
 						{({ profiles }) => {
 							let currentUser: ICurrentUser;
-
-							if (auth && Object.keys(profiles).length > 0) {
+							if (auth && auth.alias && Object.keys(profiles).includes(auth.alias)) {
 								const profile = profiles[auth.alias!];
 
 								currentUser = {

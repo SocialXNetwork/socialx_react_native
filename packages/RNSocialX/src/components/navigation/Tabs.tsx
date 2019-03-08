@@ -184,7 +184,7 @@ export class Tabs extends React.Component<IProps, IState> {
 			const { refs } = this.props;
 			const { activeIndex } = this.state;
 
-			if (refs && refs[activeIndex].current) {
+			if (refs && refs[activeIndex] && refs[activeIndex].current) {
 				// @ts-ignore
 				refs[activeIndex].current.setNativeProps({ scrollEnabled: true });
 			}
