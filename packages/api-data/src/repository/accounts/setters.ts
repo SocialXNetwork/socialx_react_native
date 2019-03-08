@@ -255,9 +255,10 @@ export const login = (
 			console.log('authenticated', authCallback);
 
 			// migrate missing data if any
-			checkProfile(() => {
-				return callback(null);
-			});
+			return callback(null);
+			// checkProfile(() => {
+			// 	return callback(null);
+			// });
 		});
 	};
 	const checkProfile = (cb: any) => {
