@@ -185,7 +185,8 @@ export default {
 			},
 			alias: {
 				required: "Username is required",
-				length: "Username must have at least 6 characters"
+				length: "Username must have at least 6 characters",
+				bad: "Username must not contain \".\" or \"|\" "
 			},
 			password: {
 				required: "Password is required",

@@ -24,12 +24,13 @@
  * so next time the user forgets his password, we ask these questions and they get back their reminder (notice here we are not going to return the actual password because of sec reasons / will change in the future)
  */
 
-import { IContext, IGunCallback, TABLES } from '../../types';
+import { IContext, IGunCallback, TABLE_ENUMS, TABLES } from '../../types';
 import { ApiError } from '../../utils/errors';
 import { getPublicKeyByUsername } from '../profiles/getters';
 import { createProfile } from '../profiles/setters';
 import * as accountHandles from './handles';
 
+import { IProfileData } from '../profiles';
 import {
 	IChangePasswordInput,
 	ICreateAccountInput,
@@ -267,14 +268,41 @@ export const login = (
 	const checkProfile = (cb: any) => {
 		gun.get(TABLES.PROFILES).once(
 			(publicProfiles: any) => {
-				const profileRef = account.get('profile').get(account.is.alias);
 				if (!Object.keys(publicProfiles).includes(account.is.alias)) {
+					account
+						.get(TABLES.PROFILE)
+						.get(account.is.alias)
+						.once(
+							(profileData: IProfileData) => {
+								gun
+									.get(TABLES.PROFILES)
+									.get(account.is.alias)
+									.put(profileData, cb);
+							},
+							{ wait: 1000 },
+						);
+				} else {
 					gun
 						.get(TABLES.PROFILES)
 						.get(account.is.alias)
-						.put(profileRef, cb);
-				} else {
-					cb();
+						.once((publicProfileData: IProfileData) => {
+							if (!publicProfileData || !Object.keys(publicProfileData).includes('alias')) {
+								account
+									.get(TABLES.PROFILE)
+									.get(account.is.alias)
+									.once(
+										(profileData: IProfileData) => {
+											gun
+												.get(TABLES.PROFILES)
+												.get(account.is.alias)
+												.put(profileData, cb);
+										},
+										{ wait: 1000 },
+									);
+							} else {
+								cb();
+							}
+						});
 				}
 			},
 			{ wait: 500 },

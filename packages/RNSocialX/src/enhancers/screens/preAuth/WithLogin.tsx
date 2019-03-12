@@ -59,9 +59,8 @@ export class WithLogin extends React.Component<IWithLoginProps, IWithLoginState>
 															dictionary,
 														},
 														actions: {
-															login: (username: string, password: string) => {
-																login({ username, password });
-															},
+															login: (username: string, password: string) =>
+																login({ username, password }),
 															setGlobal,
 															resetNavigationToRoute,
 														},

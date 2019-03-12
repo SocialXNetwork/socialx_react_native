@@ -250,6 +250,7 @@ export const getProfileByUserObject = (
 	userObject: IUserObject,
 	callback: IGunCallback<IFriendData>,
 ) => {
+	const { alias, pub } = userObject;
 	const mainRunner = () => {
 		profileHandles.currentProfileFriendByUsername(context, userObject.alias).once(
 			(checkFriendCallback: IProfileData) => {
@@ -272,9 +273,23 @@ export const getProfileByUserObject = (
 	const fetchPublicUser = () => {
 		profileHandles.privateUserProfileByUserObj(context, userObject).once(
 			(data: any) => {
-				// very rare case
+				// very rare cases
+				if (typeof data === 'string') {
+					return callback(null, {
+						alias: userObject.alias,
+						fullName: `Corrupted User ${userObject.alias}`,
+						avatar: '',
+						status: FRIEND_TYPES.NOT_FRIEND,
+						numberOfFriends: 0,
+						corruptedUser: true,
+						aboutMeText: 'about me text',
+						email: '',
+						pub: 'sketchy0xA9ECF',
+						miningEnabled: true,
+					} as any);
+				}
 				if (!data) {
-					fetchPublicUserRecord();
+					fetchPrivateUserBackup();
 				} else {
 					profileHandles.privateUserProfileByUserObj(context, userObject).open(
 						(profileDataCallback: IProfileData) => {
@@ -295,27 +310,53 @@ export const getProfileByUserObject = (
 		);
 	};
 
-	const fetchPublicUserRecord = () => {
-		profileHandles.publicProfileByUsername(context, userObject.alias).once(
-			(publicUserProfileCallback: IProfileData) => {
-				const profileData = cleanGunMetaFromObject(publicUserProfileCallback);
-				return callback(null, {
-					...profileData,
-					alias: userObject.alias,
-					fullName: 'sketchy',
-					avatar: '',
-					status: FRIEND_TYPES.NOT_FRIEND,
-					numberOfFriends: 0,
-					sketchyProfile: true,
-					aboutMeText: 'about me text',
-					email: '',
-					pub: 'sketchy0xA9ECF',
-					miningEnabled: true,
-				});
-			},
-			{ wait: 1000 },
-		);
+	// failsafe
+	const fetchPrivateUserBackup = () => {
+		const { gun } = context;
+		gun
+			.back(-1)
+			.get(`~${pub}`)
+			.get('profile')
+			.get(alias)
+			.once(
+				(failsafePrivateProfile: IProfileData) => {
+					if (!failsafePrivateProfile) {
+						return callback(null);
+					}
+					const profileData = cleanGunMetaFromObject(failsafePrivateProfile);
+					getProfileNumberOfFriends(context, profileData, (numberOfFriends) => {
+						return callback(null, {
+							...profileData,
+							status: FRIEND_TYPES.NOT_FRIEND,
+							numberOfFriends,
+						});
+					});
+				},
+				{ wait: 1000 },
+			);
 	};
+
+	// const fetchPublicUserRecord = () => {
+	// 	profileHandles.publicProfileByUsername(context, userObject.alias).once(
+	// 		(publicUserProfileCallback: IProfileData) => {
+	// 			const profileData = cleanGunMetaFromObject(publicUserProfileCallback);
+	// 			return callback(null, {
+	// 				...profileData,
+	// 				alias: userObject.alias,
+	// 				fullName: 'sketchy',
+	// 				avatar: '',
+	// 				status: FRIEND_TYPES.NOT_FRIEND,
+	// 				numberOfFriends: 0,
+	// 				sketchyProfile: true,
+	// 				aboutMeText: 'about me text',
+	// 				email: '',
+	// 				pub: 'sketchy0xA9ECF',
+	// 				miningEnabled: true,
+	// 			});
+	// 		},
+	// 		{ wait: 1000 },
+	// 	);
+	// };
 	mainRunner();
 };
 

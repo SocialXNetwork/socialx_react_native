@@ -20,6 +20,7 @@ const aliasRef: React.RefObject<PrimaryTextInput> = React.createRef();
 
 interface ILoginFormProps extends IDictionary {
 	onLogin: (alias: string, password: string) => void;
+	loginDisabled?: boolean;
 }
 
 interface ILoginScreenData {
@@ -27,7 +28,7 @@ interface ILoginScreenData {
 	password: string;
 }
 
-const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
+const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin, loginDisabled }) => (
 	<Formik
 		initialValues={{
 			alias: '',
@@ -104,7 +105,7 @@ const LoginForm: React.SFC<ILoginFormProps> = ({ dictionary, onLogin }) => (
 					<PrimaryButton
 						label={dictionary.components.buttons.login}
 						onPress={handleSubmit}
-						disabled={!isValid}
+						disabled={!isValid || loginDisabled}
 						borderColor={Colors.transparent}
 					/>
 				</View>
@@ -118,6 +119,7 @@ interface IProps extends IDictionary {
 	onNavigateToPasswordForgot: () => void;
 	onNavigateToRegister: () => void;
 	onGoBack: () => void;
+	loginDisabled?: boolean;
 }
 
 export const LoginScreenView: React.SFC<IProps> = ({
@@ -126,6 +128,7 @@ export const LoginScreenView: React.SFC<IProps> = ({
 	onNavigateToPasswordForgot,
 	onNavigateToRegister,
 	onGoBack,
+	loginDisabled,
 }) => (
 	<SafeAreaView forceInset={{ top: 'never' }} style={styles.screenContainer}>
 		<Header title={dictionary.screens.login.title} back={true} onPressBack={onGoBack} />
@@ -140,7 +143,7 @@ export const LoginScreenView: React.SFC<IProps> = ({
 			keyboardShouldPersistTaps="handled"
 		>
 			<Text style={styles.welcomeText}>{dictionary.screens.login.welcome}</Text>
-			<LoginForm onLogin={onLogin} dictionary={dictionary} />
+			<LoginForm onLogin={onLogin} dictionary={dictionary} loginDisabled={loginDisabled} />
 			<TouchableOpacity onPress={onNavigateToPasswordForgot} style={styles.forgotPassword}>
 				<Text style={styles.forgotPasswordText}>{dictionary.screens.login.forgot}</Text>
 			</TouchableOpacity>

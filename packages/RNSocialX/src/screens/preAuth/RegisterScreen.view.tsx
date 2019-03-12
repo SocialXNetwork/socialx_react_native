@@ -103,6 +103,8 @@ export const RegisterScreenView: React.SFC<IRegisterScreenViewProps> = ({
 						errors.alias = dictionary.components.inputs.alias.required;
 					} else if (alias.length < 6) {
 						errors.alias = dictionary.components.inputs.alias.length;
+					} else if (alias.includes('.') || alias.includes('|')) {
+						errors.alias = dictionary.components.inputs.alias.bad;
 					}
 
 					if (!password) {

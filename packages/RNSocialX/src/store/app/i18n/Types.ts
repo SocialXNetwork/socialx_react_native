@@ -204,6 +204,7 @@ export interface ILocaleDictionary {
 			alias: {
 				required: string;
 				length: string;
+				bad: string;
 			};
 			password: {
 				required: string;

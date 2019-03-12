@@ -10,6 +10,7 @@ import {
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
 import { INavigationProps } from '../../types';
+import { LoadingScreen } from './LoadingScreen';
 import { LoginScreenView } from './LoginScreen.view';
 
 interface IProps extends INavigationProps, IWithLoginEnhancedData, IWithLoginEnhancedActions {
@@ -18,11 +19,13 @@ interface IProps extends INavigationProps, IWithLoginEnhancedData, IWithLoginEnh
 
 interface IState {
 	error: boolean;
+	loggingIn: boolean;
 }
 
 class Screen extends React.Component<IProps, IState> {
 	public state = {
 		error: false,
+		loggingIn: false,
 	};
 
 	private keyboardDidShowListener: EmitterSubscription | null = null;
@@ -32,17 +35,21 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public componentDidUpdate() {
-		const { resetNavigationToRoute, navigation, globals } = this.props;
+		const { resetNavigationToRoute, navigation, globals, auth } = this.props;
 		const { profileLoaded, friendsLoaded, postsLoaded } = globals;
 
+		// if (auth) {
+		// 	this.switchActivityIndicator(false);
+		// }
+
 		if (!this.state.error && profileLoaded && friendsLoaded && postsLoaded) {
-			this.switchActivityIndicator(false);
+			// this.switchActivityIndicator(false);
 			resetNavigationToRoute(NAVIGATION.Home, navigation);
 		}
 
 		if (!this.state.error && this.props.errors.length > 0) {
-			this.switchActivityIndicator(false);
-			this.setState({ error: true });
+			// this.switchActivityIndicator(false);
+			this.setState({ error: true, loggingIn: false });
 		}
 	}
 
@@ -53,6 +60,17 @@ class Screen extends React.Component<IProps, IState> {
 	}
 
 	public render() {
+		const { globals, dictionary, auth } = this.props;
+		const { profileLoaded, friendsLoaded, postsLoaded, accountLoaded } = globals;
+		const loading = {
+			accountLoaded,
+			profileLoaded,
+			friendsLoaded,
+			postsLoaded,
+		};
+		if (auth) {
+			return <LoadingScreen loading={loading} dictionary={dictionary} />;
+		}
 		return (
 			<LoginScreenView
 				dictionary={this.props.dictionary}
@@ -60,6 +78,7 @@ class Screen extends React.Component<IProps, IState> {
 				onNavigateToPasswordForgot={() => this.safeNavigateToScreen(SCREENS.ForgotPassword)}
 				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
 				onGoBack={this.props.onGoBack}
+				loginDisabled={this.state.loggingIn}
 			/>
 		);
 	}
@@ -72,8 +91,8 @@ class Screen extends React.Component<IProps, IState> {
 	};
 
 	private onLoginHandler = async (alias: string, password: string) => {
-		this.setState({ error: false });
-		this.switchActivityIndicator(true);
+		this.setState({ error: false, loggingIn: true });
+		// this.switchActivityIndicator(true);
 		await this.props.login(alias, password);
 	};
 
