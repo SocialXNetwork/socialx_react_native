@@ -34,8 +34,8 @@ const searchQ = (data: any, term: string) => {
   }
   const t = term.toLowerCase();
   const profiles = Object.entries(data).map(([key, value]) => value);
-    const res = profiles.filter((profile: any) => {
-        if (!Object.keys(profile).length) {
+    const res = profiles.filter((profile: any | undefined) => {
+        if (!profile || !Object.keys(profile).length) {
             return false;
         } else {
             return ~profile.alias.toLowerCase().search(term) || ~profile.fullName.toLowerCase().search(term);
