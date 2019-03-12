@@ -206,11 +206,7 @@ export const createAccount = async (
 			return callback(new ApiError('cannot create account.'));
 		}
 
-		account.auth(username, password, (loginAck: any) => {
-			if (!loginAck.soul) {
-				return callback(new ApiError('Failed to authenticate with the new user'));
-			}
-
+		account.auth(username, password, () => {
 			const dataTemp = {
 				profile: {
 					[username]: {
@@ -234,6 +230,7 @@ export const login = (
 	context: IContext,
 	{ username, password }: ICredentials,
 	callback: IGunCallback<null>,
+	localCall?: boolean,
 ) => {
 	const { account, gun } = context;
 	if (account.is) {
@@ -257,10 +254,14 @@ export const login = (
 			}
 			console.log('authenticated', authCallback);
 
-			// migrate missing data if any
-			checkProfile(() => {
+			if (localCall) {
 				return callback(null);
-			});
+			} else {
+				// migrate missing data if any
+				checkProfile(() => {
+					return callback(null);
+				});
+			}
 		});
 	};
 	const checkProfile = (cb: any) => {
