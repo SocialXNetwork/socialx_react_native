@@ -1,0 +1,41 @@
+{
+    "name": "central-database",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "private": true,
+    "author": "Shadyzpop",
+    "scripts": {
+        "dev": "yarn build && node ./dist/index.js",
+        "start": "node ./dist/index.js",
+        "prod:start": "node ./index.js",
+        "clean": "rm -rf ./dist",
+        "build": "tsc -p tsconfig.json && cp package.json dist/"
+      },
+      "dependencies": {
+        "apollo-server-express": "^2.4.8",
+        "axios": "^0.18.0",
+        "bcrypt": "^3.0.4",
+        "body-parser": "^1.18.3",
+        "compression": "^1.7.3",
+        "cookie-parser": "^1.4.4",
+        "dotenv": "^6.2.0",
+        "express": "^4.16.4",
+        "express-favicon": "^2.0.1",
+        "graphql": "^14.1.1",
+        "graphql-import": "^0.7.1",
+        "helmet": "^3.15.1",
+        "jsonwebtoken": "^8.5.0",
+        "mongoose": "^5.4.16",
+        "mongoose-relationship": "^0.1.5",
+        "morgan": "^1.9.1",
+        "socket.io": "^2.2.0"
+      },
+      "devDependencies": {
+        "@types/graphql": "^14.0.7",
+        "@types/mongoose": "^5.3.20",
+        "@types/socket.io": "^2.1.2",
+        "tslint": "^5.13.1",
+        "typescript": "^3.3.3333"
+      }
+}

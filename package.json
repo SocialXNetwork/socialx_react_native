@@ -9,6 +9,7 @@
   "workspaces": {
     "packages": [
       "packages/database",
+      "packages/central-database",
       "packages/commons",
       "packages/api-storage",
       "packages/api-blockchain",
@@ -19,6 +20,8 @@
     "nohoist": [
       "**/database",
       "**/database/**",
+      "**/central-database",
+      "**/central-database/**",
       "**/commons",
       "**/commons/**",
       "**/api-storage",
@@ -57,6 +60,7 @@
     "lint:fix": "npm-run-all lint:fix:*",
     "build:commons": "cd packages/commons/ && yarn run build && cd ../../",
     "build:api-storage": "cd packages/api-storage/ && yarn run build && cd ../../",
+    "build:central-database": "cd packages/central-database/ && yarn run build && cd ../../",
     "build:api-blockchain": "cd packages/api-blockchain/ && yarn run build && cd ../../",
     "build:api-data": "cd packages/api-data/ && yarn run build && cd ../../",
     "build:webview-crypto": "cd packages/webview-crypto/ && yarn run build && cd ../../",
