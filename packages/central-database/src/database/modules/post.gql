@@ -1,0 +1,44 @@
+type Post {
+    _id: String!
+    createdAt: String!
+    updatedAt: String!
+
+    owner: User!
+
+    images: [String]
+    text: String!
+    location: {
+        long: String
+        lat: String
+        meta: String
+    }
+
+    tags: [User]
+
+    likes: [Like]
+    comments: [Comment]
+}
+
+type SortedPostsType {
+    data: [Post]
+    nextToken: String!
+    canLoadMore: Boolean!
+}
+
+enum SortOrder {
+    ASC
+    DES
+}
+
+input SortedPostsInput {
+    order: SortOrder!
+    token: String
+    limit: Int
+}
+
+type Query {
+    myPosts: [Post]
+    post(postId: ID!): Post
+
+    sortedPosts(args: SortedPostsInput): SortedPostsType
+}

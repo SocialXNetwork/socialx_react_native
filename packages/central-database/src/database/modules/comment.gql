@@ -1,0 +1,35 @@
+enum CommentType {
+    Post
+    Comment
+}
+
+type Comment {
+    _id: String!
+    createdAt: String!
+    updatedAt: String!
+
+    owner: User!
+
+    text: String!
+    type: CommentType!
+    target: String!
+
+    children: [String]
+
+    likes: [Like]
+}
+
+input CreateCommentInput {
+    type: CommentType!
+    target: ID!
+    text: String!
+}
+
+type Query {
+    myComments: [Comment]
+    comment(commentId: ID!): Comment
+}
+
+type Mutation {
+    createComment(args: CreateCommentInput!): Comment!
+}

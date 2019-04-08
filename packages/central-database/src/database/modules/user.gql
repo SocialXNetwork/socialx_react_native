@@ -1,0 +1,52 @@
+type User {
+    _id: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+
+    username: String!
+    email: String!
+    avatar: String!
+    bio: String!
+    phone: String!
+
+    cert: {
+        pub: String!
+        epub: String!
+    }
+
+    token: String!
+
+    posts: [Post]
+    comments: [Comment]
+    likes: [Like]
+
+    friends: [User]
+}
+
+input RegisterTypeInput {
+    username: String!
+    password: String!
+    email: String!
+    avatar: String
+    bio: String
+    phone: String
+
+    pub: String!
+    epub: String!
+}
+
+type Query {
+    currentUser: User
+    currentUserFriends: [User]
+}
+
+type Mutation {
+    login(username: String!, password: String!): User
+    register(args: RegisterTypeInput!): User!
+
+    addFriend(userId: ID!): User
+    removeFriend(userId: ID!): User
+
+    acceptFriendRequest(requestId: ID!): Boolean!
+    declineFriendRequest(requestId: ID!): Boolean!
+}

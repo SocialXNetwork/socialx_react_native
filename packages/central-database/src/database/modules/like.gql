@@ -1,0 +1,30 @@
+enum LikeType {
+    Comment
+    Post
+}
+
+type Like {
+    _id: String!
+    createdAt: String!
+    updatedAt: String!
+
+    owner: User!
+
+    type: LikeType!
+    target: String!
+}
+
+input CreateLikeInput {
+    type: LikeType!
+    target: ID!
+}
+
+type Query {
+    myLikes: [Like]
+    like(likeId: ID!): Like
+}
+
+type Mutation {
+    createLike(args: CreateLikeInput!): Like!
+    removeLike(likeId: ID!): Like!
+}
