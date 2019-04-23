@@ -1,3 +1,8 @@
+type UserIdentification {
+    pub: String!
+    epub: String!
+}
+
 type User {
     _id: String!
     createdAt: DateTime!
@@ -9,10 +14,7 @@ type User {
     bio: String!
     phone: String!
 
-    cert: {
-        pub: String!
-        epub: String!
-    }
+    identity: UserIdentification!
 
     token: String!
 

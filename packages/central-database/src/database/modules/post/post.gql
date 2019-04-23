@@ -1,3 +1,9 @@
+type PostLocation {
+    long: String
+    lat: String
+    meta: String
+}
+
 type Post {
     _id: String!
     createdAt: String!
@@ -7,11 +13,7 @@ type Post {
 
     images: [String]
     text: String!
-    location: {
-        long: String
-        lat: String
-        meta: String
-    }
+    location: PostLocation
 
     tags: [User]
 
