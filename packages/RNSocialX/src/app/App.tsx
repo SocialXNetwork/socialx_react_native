@@ -1,6 +1,7 @@
 import { Client } from 'bugsnag-react-native';
 import * as React from 'react';
 
+import ApolloProvider from './ApolloProvider';
 import BugSnag from './BugSnag';
 import ErrorBoundary from './ErrorBoundary';
 import Init from './Init';
@@ -17,23 +18,25 @@ export default class App extends React.Component<{}> {
 	public render() {
 		return (
 			<ErrorBoundary>
-				<BugSnag>
-					{(client: Client | null) => (
-						<Init>
-							<Splash>
-								<PolyfillCrypto />
-								<Store bugSnag={client}>
-									<React.Fragment>
-										<StatusBar />
-										<OfflineHandler>
-											<Navigation />
-										</OfflineHandler>
-									</React.Fragment>
-								</Store>
-							</Splash>
-						</Init>
-					)}
-				</BugSnag>
+				<ApolloProvider>
+					<BugSnag>
+						{(client: Client | null) => (
+							<Init>
+								<Splash>
+									<PolyfillCrypto />
+									<Store bugSnag={client}>
+										<React.Fragment>
+											<StatusBar />
+											<OfflineHandler>
+												<Navigation />
+											</OfflineHandler>
+										</React.Fragment>
+									</Store>
+								</Splash>
+							</Init>
+						)}
+					</BugSnag>
+				</ApolloProvider>
 			</ErrorBoundary>
 		);
 	}
