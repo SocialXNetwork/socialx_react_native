@@ -12,3 +12,5 @@ export type IResolverType = IResolvers<any, IResolverContext>;
 declare module 'apollo-server';
 
 declare module 'merge-graphql-schemas';
+
+declare module 'jsonwebtoken';
