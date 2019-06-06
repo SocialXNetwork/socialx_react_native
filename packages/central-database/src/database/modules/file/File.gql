@@ -1,0 +1,18 @@
+type File {
+    _id: String
+    createdAt: DateTime
+    updatedAt: DateTime
+
+    filename: String!
+    mimetype: String!
+    encoding: String!
+    url: String
+}
+
+type Query {
+    Uploads: [File]
+}
+
+type Mutation {
+    uploadFile(file: Upload!): File!
+}

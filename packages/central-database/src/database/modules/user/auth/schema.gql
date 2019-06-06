@@ -1,0 +1,16 @@
+input RegisterTypeInput {
+    username: String!
+    password: String!
+    email: String!
+    avatar: String
+    bio: String
+    phone: String
+
+    pub: String!
+    epub: String!
+}
+
+type Mutation {
+    login(username: String!, password: String!): User!
+    register(args: RegisterTypeInput!): User!
+}

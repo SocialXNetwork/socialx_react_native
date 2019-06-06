@@ -16,7 +16,8 @@ type User {
 
     identity: UserIdentification!
 
-    token: String!
+    # this token will be sent along the user data only when login/register mutations is called
+    token: String
 
     posts: [Post]
     comments: [Comment]
@@ -25,30 +26,21 @@ type User {
     friends: [User]
 }
 
-input RegisterTypeInput {
-    username: String!
-    password: String!
-    email: String!
-    avatar: String
-    bio: String
-    phone: String
-
-    pub: String!
-    epub: String!
-}
 
 type Query {
     currentUser: User
-    currentUserFriends: [User]
+
+    # TODO
+    # currentUserFriends: [User]
+    # searchUsers(query: String!, limit: Int, offset: Int): SearchQueryResult!
+    # getUser(userId: ID!): User!
 }
 
 type Mutation {
-    login(username: String!, password: String!): User
-    register(args: RegisterTypeInput!): User!
+    # TODO
+    # addFriend(userId: ID!): User
+    # removeFriend(userId: ID!): User
 
-    addFriend(userId: ID!): User
-    removeFriend(userId: ID!): User
-
-    acceptFriendRequest(requestId: ID!): Boolean!
-    declineFriendRequest(requestId: ID!): Boolean!
+    # acceptFriendRequest(requestId: ID!): Boolean!
+    # declineFriendRequest(requestId: ID!): Boolean!
 }

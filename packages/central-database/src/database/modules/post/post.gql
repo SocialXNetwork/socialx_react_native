@@ -42,5 +42,6 @@ type Query {
     myPosts: [Post]
     post(postId: ID!): Post
 
-    sortedPosts(args: SortedPostsInput!): SortedPostsType
+    # TODO
+    # sortedPosts(args: SortedPostsInput!): SortedPostsType
 }
