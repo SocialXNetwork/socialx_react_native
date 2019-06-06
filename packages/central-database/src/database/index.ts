@@ -1,28 +1,24 @@
 import { ApolloServer } from 'apollo-server-express';
 
-import mongoose from 'mongoose';
-
-import config from '../config';
+import { genDBInterface } from '../util/genDbInterface';
+import { genSchemaServer } from '../util/genSchema';
 
 export default async (app: any) => {
 	console.log('database: Starting..');
 
-	await mongoose.connect(config.mongoose_path, {
-		useNewUrlParser: true,
-		user: process.env.MONGO_USER,
-		pass: process.env.MONGO_PASS,
-		auth: {
-			authdb: process.env.MONGO_AUTH_DB || process.env.MONGO_TABLE,
-		},
-	});
+	const schema = genSchemaServer();
+	const db = await genDBInterface();
 
 	const server = new ApolloServer({
-		typeDefs: {} as any,
-		resolvers: {} as any,
+		...schema,
 		context: ({ req }) => ({
 			authScope: req.headers.authorization,
-			...{},
+			...db,
 		}),
+		uploads: {
+			maxFieldSize: 1000000000,
+			maxFiles: 20,
+		},
 		playground: true,
 		introspection: true,
 	});
