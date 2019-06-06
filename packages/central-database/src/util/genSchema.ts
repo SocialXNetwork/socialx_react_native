@@ -6,16 +6,19 @@ import { mergeResolvers, mergeTypes } from 'merge-graphql-schemas';
 import * as path from 'path';
 
 export const genSchema = () => {
-	const pathToModules = path.join(__dirname, '../database/modules');
+	const pathToModules = path.join(__dirname, '../database/Modules');
 
-	const graphqlTypes = glob.sync(`${pathToModules}/**/*.gql`).map((x) => fs.readFileSync(x, { encoding: 'utf8' }));
+	const graphqlTypes = glob
+		.sync(`${pathToModules}/**/*.gql`)
+		.map((x) => fs.readFileSync(x, { encoding: 'utf8' }));
 
-	const resolvers = glob.sync(`${pathToModules}/**/resolver?.?s`).map((resolver) => require(resolver).resolvers);
+	const resolvers = glob
+		.sync(`${pathToModules}/**/resolvers.?s`)
+		.map((resolver) => require(resolver).resolvers);
 
 	return makeExecutableSchema({
 		typeDefs: gql`
 			scalar Upload
-			scalar DateTime
 			${mergeTypes(graphqlTypes)}
 		`,
 		resolvers: mergeResolvers(resolvers) as any,
@@ -23,11 +26,15 @@ export const genSchema = () => {
 };
 
 export const genSchemaServer = () => {
-	const pathToModules = path.join(__dirname, '../database/modules');
+	const pathToModules = path.join(__dirname, '../database/Modules');
 
-	const graphqlTypes = glob.sync(`${pathToModules}/**/*.gql`).map((x) => fs.readFileSync(x, { encoding: 'utf8' }));
+	const graphqlTypes = glob
+		.sync(`${pathToModules}/**/*.gql`)
+		.map((x) => fs.readFileSync(x, { encoding: 'utf8' }));
 
-	const resolvers = glob.sync(`${pathToModules}/**/resolver?.?s`).map((resolver) => require(resolver).resolvers);
+	const resolvers = glob
+		.sync(`${pathToModules}/**/resolvers.?s`)
+		.map((resolver) => require(resolver).resolvers);
 
 	return {
 		typeDefs: gql`
@@ -38,9 +45,11 @@ export const genSchemaServer = () => {
 };
 
 export const gqlSchema = () => {
-	const pathToModules = path.join(__dirname, '../database/modules');
+	const pathToModules = path.join(__dirname, '../database/Modules');
 
-	const graphqlTypes = glob.sync(`${pathToModules}/**/*.gql`).map((x) => fs.readFileSync(x, { encoding: 'utf8' }));
+	const graphqlTypes = glob
+		.sync(`${pathToModules}/**/*.gql`)
+		.map((x) => fs.readFileSync(x, { encoding: 'utf8' }));
 
 	return mergeTypes(graphqlTypes);
 };

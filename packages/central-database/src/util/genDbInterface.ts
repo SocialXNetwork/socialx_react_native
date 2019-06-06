@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose';
 import Modules from '../database/Modules';
 
@@ -11,7 +10,7 @@ export const genDBInterface = async () => {
 		pass: process.env.MONGO_PASS,
 		auth: {
 			authdb: process.env.MONGO_AUTH_DB || process.env.MONGO_TABLE,
-		},
+		} as any,
 	});
 	return Modules(mongoose);
 };
