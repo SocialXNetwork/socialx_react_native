@@ -22,15 +22,14 @@ declare namespace IGraphqlTypes {
 
   interface IQuery {
     __typename: 'Query';
+    Uploads: Array<IFile | null> | null;
     myComments: Array<IComment | null> | null;
     comment: IComment | null;
     myLikes: Array<ILike | null> | null;
     like: ILike | null;
     myPosts: Array<IPost | null> | null;
     post: IPost | null;
-    sortedPosts: ISortedPostsType | null;
     currentUser: IUser | null;
-    currentUserFriends: Array<IUser | null> | null;
   }
 
   interface ICommentOnQueryArguments {
@@ -45,8 +44,15 @@ declare namespace IGraphqlTypes {
     postId: string;
   }
 
-  interface ISortedPostsOnQueryArguments {
-    args?: ISortedPostsInput | null;
+  interface IFile {
+    __typename: 'File';
+    _id: string | null;
+    createdAt: any | null;
+    updatedAt: any | null;
+    filename: string;
+    mimetype: string;
+    encoding: string;
+    url: string | null;
   }
 
   interface IComment {
@@ -73,7 +79,7 @@ declare namespace IGraphqlTypes {
     bio: string;
     phone: string;
     identity: IUserIdentification;
-    token: string;
+    token: string | null;
     posts: Array<IPost | null> | null;
     comments: Array<IComment | null> | null;
     likes: Array<ILike | null> | null;
@@ -127,35 +133,18 @@ declare namespace IGraphqlTypes {
     Comment = 'Comment'
   }
 
-  interface ISortedPostsInput {
-    order: SortOrder;
-    token?: string | null;
-    limit?: number | null;
-  }
-
-  const enum SortOrder {
-    ASC = 'ASC',
-    DES = 'DES'
-  }
-
-  interface ISortedPostsType {
-    __typename: 'SortedPostsType';
-    data: Array<IPost | null> | null;
-    nextToken: string;
-    canLoadMore: boolean;
-  }
-
   interface IMutation {
     __typename: 'Mutation';
+    uploadFile: IFile;
     createComment: IComment;
     createLike: ILike;
     removeLike: ILike;
-    login: IUser | null;
+    login: IUser;
     register: IUser;
-    addFriend: IUser | null;
-    removeFriend: IUser | null;
-    acceptFriendRequest: boolean;
-    declineFriendRequest: boolean;
+  }
+
+  interface IUploadFileOnMutationArguments {
+    file: any;
   }
 
   interface ICreateCommentOnMutationArguments {
@@ -179,22 +168,6 @@ declare namespace IGraphqlTypes {
     args: IRegisterTypeInput;
   }
 
-  interface IAddFriendOnMutationArguments {
-    userId: string;
-  }
-
-  interface IRemoveFriendOnMutationArguments {
-    userId: string;
-  }
-
-  interface IAcceptFriendRequestOnMutationArguments {
-    requestId: string;
-  }
-
-  interface IDeclineFriendRequestOnMutationArguments {
-    requestId: string;
-  }
-
   interface ICreateCommentInput {
     type: CommentType;
     target: string;
@@ -215,6 +188,24 @@ declare namespace IGraphqlTypes {
     phone?: string | null;
     pub: string;
     epub: string;
+  }
+
+  interface ISortedPostsType {
+    __typename: 'SortedPostsType';
+    data: Array<IPost | null> | null;
+    nextToken: string;
+    canLoadMore: boolean;
+  }
+
+  const enum SortOrder {
+    ASC = 'ASC',
+    DES = 'DES'
+  }
+
+  interface ISortedPostsInput {
+    order: SortOrder;
+    token?: string | null;
+    limit?: number | null;
   }
 }
 
