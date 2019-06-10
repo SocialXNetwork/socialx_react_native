@@ -4,7 +4,7 @@ export const CommentTypes = new Schema({
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },
 
-	owner: { type: Schema.Types.ObjectId, ref: 'owner', autopopulate: true },
+	owner: { type: Schema.Types.ObjectId, ref: 'owner', childPath: 'comments', autopopulate: true },
 
 	text: String,
 	type: String,

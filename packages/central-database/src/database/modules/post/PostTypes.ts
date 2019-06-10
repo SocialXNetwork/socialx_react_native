@@ -4,7 +4,7 @@ export const PostTypes = new Schema({
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },
 
-	owner: { type: Schema.Types.ObjectId, ref: 'owner', autopopulate: true },
+	owner: { type: Schema.Types.ObjectId, ref: 'owner', childPath: 'posts', autopopulate: true },
 
 	images: [String],
 	text: String,
@@ -14,8 +14,8 @@ export const PostTypes = new Schema({
 		meta: String,
 	},
 
-	tags: { type: [Schema.Types.ObjectId], ref: 'tags', autopopulate: true },
+	tags: { type: [Schema.Types.ObjectId], autopopulate: true },
 
-	likes: { type: [Schema.Types.ObjectId], ref: 'likes', autopopulate: true },
-	comments: { type: [Schema.Types.ObjectId], ref: 'comments', autopopulate: true },
+	likes: { type: [Schema.Types.ObjectId], autopopulate: true },
+	comments: { type: [Schema.Types.ObjectId], autopopulate: true },
 });
