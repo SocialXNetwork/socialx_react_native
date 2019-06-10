@@ -1,4 +1,5 @@
 prod.env
+.env
 *.tar.gz
 dist
 node_modules
