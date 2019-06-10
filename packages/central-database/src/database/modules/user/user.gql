@@ -36,11 +36,11 @@ type Query {
     # getUser(userId: ID!): User!
 }
 
-type Mutation {
-    # TODO
-    # addFriend(userId: ID!): User
-    # removeFriend(userId: ID!): User
+# type Mutation {
+#     # TODO
+#     # addFriend(userId: ID!): User
+#     # removeFriend(userId: ID!): User
 
-    # acceptFriendRequest(requestId: ID!): Boolean!
-    # declineFriendRequest(requestId: ID!): Boolean!
-}
+#     # acceptFriendRequest(requestId: ID!): Boolean!
+#     # declineFriendRequest(requestId: ID!): Boolean!
+# }
