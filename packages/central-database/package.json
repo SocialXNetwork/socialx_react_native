@@ -6,13 +6,14 @@
   "private": true,
   "author": "Shadyzpop",
   "scripts": {
-    "dev": "yarn build && yarn start",
+    "dev": "yarn build:dev && yarn start",
     "start": "node ./dist/index.js",
     "prod:start": "node ./index.js",
     "clean": "rm -rf ./dist",
-    "build": "tsc -p tsconfig.json && cp package.json dist/ && cp prod.evn dist/.env",
-    "gen:types": "ts-node -O '{\"module\": \"commonjs\"}' src/scripts/createTypes.ts",
-    "gen:schema": "ts-node -O '{\"module\": \"commonjs\"}' src/scripts/transpileSchema.ts"
+    "build:prod": "tsc -p tsconfig.json && cp package.json dist/ && cp prod.env dist/.env && yarn schema:gen-schema && yarn schema:gen-types",
+    "build:dev": "tsc -p tsconfig.json && cp package.json dist/ && cp .env dist/.env && yarn schema:gen-schema && yarn schema:gen-types",
+    "schema:gen-types": "ts-node src/scripts/createTypes.ts",
+    "schema:gen-schema": "ts-node src/scripts/transpileSchema.ts"
   },
   "dependencies": {
     "@gql2ts/from-schema": "^1.10.1",
