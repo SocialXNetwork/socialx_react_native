@@ -37,7 +37,6 @@
     ]
   },
   "scripts": {
-    "precommit": "yarn run lint:check && yarn run test",
     "reset:android": "cd packages/RNSocialX/android/ && ./gradlew clean && cd ../../../",
     "reset:rn": "watchman watch-del-all && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/metro-cache-* && rm -fr /tmp/react-* && rm -rf /tmp/haste-map-react-native-packager-* && rm -rf /tmp/haste-map-metro-*",
     "reset:yarn": "yarn cache clean",
