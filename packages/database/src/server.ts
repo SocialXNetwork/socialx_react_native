@@ -13,7 +13,7 @@ const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 8765;
 
 const app: Application = express();
 
-app.use(Gun.serve);
+// app.use(Gun.serve);
 
 const server: Server = app.listen(PORT, HOST);
 
