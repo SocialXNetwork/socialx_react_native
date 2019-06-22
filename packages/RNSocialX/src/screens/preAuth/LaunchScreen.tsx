@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import { View } from 'react-native';
 
 import { NAVIGATION, SCREENS } from '../../environment/consts';
@@ -12,84 +12,34 @@ import {
 	WithLaunch,
 } from '../../enhancers/screens';
 
+import useLifeCycles from '../../hooks/logic/useLifecycles';
+
 type IProps = INavigationProps & IWithLaunchEnhancedData & IWithLaunchEnhancedActions;
 
-class Screen extends React.Component<IProps> {
-	private cryptoLoadedInterval: NodeJS.Timer = setInterval(() => undefined, 0);
-	private loginTimeout: NodeJS.Timer = setTimeout(() => undefined, 0);
+// TODO: rework
+const Screen: SFC<IProps> = (props) => {
+	let cryptoInterval: number;
+	let loginTimeout: NodeJS.Timeout;
 
-	public async componentDidMount() {
-		const { login, globals, auth } = this.props;
+	const { login, auth } = props;
 
-		if (auth && !globals.logout) {
-			this.cryptoLoadedInterval = setInterval(async () => {
-				// @ts-ignore
-				if (window.crypto.loaded) {
-					clearInterval(this.cryptoLoadedInterval);
-					this.loginTimeout = setTimeout(async () => {
-						await login({
-							username: auth.alias || '',
-							password: auth.password || '',
-						});
-					}, 200);
-				}
-			}, 500);
-		}
-	}
-
-	public componentDidUpdate() {
-		const { maintenance, globals, navigation, resetNavigationToRoute } = this.props;
-		const { profileLoaded, friendsLoaded, postsLoaded, logout } = globals;
-
-		if (!logout && profileLoaded && friendsLoaded && postsLoaded) {
-			clearTimeout(this.loginTimeout);
-
-			if (__DEV__) {
-				resetNavigationToRoute(NAVIGATION.Home, navigation);
-			} else {
-				if (maintenance) {
-					resetNavigationToRoute(NAVIGATION.Maintenance, navigation);
-				} else {
-					resetNavigationToRoute(NAVIGATION.Home, navigation);
-				}
+	useLifeCycles(() => {
+		cryptoInterval = setInterval(() => {
+			// @ts-ignore
+			if (window.crypto.loaded) {
+				clearInterval(cryptoInterval);
+				loginTimeout = setTimeout(async () => {
+					await login({
+						username: auth!.alias || '',
+						password: auth!.password || '',
+					});
+				}, 200);
 			}
-		}
-	}
+		});
+	}, 500);
 
-	public render() {
-		const { dictionary, auth, globals } = this.props;
-		const { accountLoaded, profileLoaded, friendsLoaded, postsLoaded, logout } = globals;
-		const loading = {
-			accountLoaded,
-			profileLoaded,
-			friendsLoaded,
-			postsLoaded,
-		};
-
-		// @ts-ignore
-		if (!window.crypto.loaded) {
-			return <View />;
-		} else if (auth && !logout) {
-			return <LoadingScreen loading={loading} dictionary={dictionary} />;
-		} else {
-			return (
-				<LaunchScreenView
-					dictionary={dictionary}
-					onLoginPress={this.onLoginPressHandler}
-					onRegisterPress={this.onRegisterPressHandler}
-				/>
-			);
-		}
-	}
-
-	private onLoginPressHandler = () => {
-		this.props.navigation.navigate(SCREENS.Login);
-	};
-
-	private onRegisterPressHandler = () => {
-		this.props.navigation.navigate(SCREENS.Register);
-	};
-}
+	return <View />;
+};
 
 export const LaunchScreen = (props: INavigationProps) => (
 	<WithLaunch>{({ data, actions }) => <Screen {...props} {...data} {...actions} />}</WithLaunch>
