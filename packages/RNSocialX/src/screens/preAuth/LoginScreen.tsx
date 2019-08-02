@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { SFC, useEffect, useState } from 'react';
 import { AsyncStorage, EmitterSubscription, Keyboard } from 'react-native';
 
 import { WithNavigationHandlers } from '../../enhancers/intermediary';
@@ -22,96 +22,73 @@ interface IState {
 	loggingIn: boolean;
 }
 
-class Screen extends React.Component<IProps, IState> {
-	public state = {
-		error: false,
-		loggingIn: false,
-	};
+const Screen: SFC<IProps> = (props) => {
+	const [error, setError] = useState(false);
+	const [loggingIn, setLoggingIn] = useState(false);
 
-	private keyboardDidShowListener: EmitterSubscription | null = null;
+	let keyboardDidShowListener: EmitterSubscription | null = null;
 
-	public componentDidMount() {
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-	}
-
-	public componentDidUpdate() {
-		const { resetNavigationToRoute, navigation, globals, auth } = this.props;
-		const { profileLoaded, friendsLoaded, postsLoaded } = globals;
-
-		// if (auth) {
-		// 	this.switchActivityIndicator(false);
-		// }
-
-		if (!this.state.error && profileLoaded && friendsLoaded && postsLoaded) {
-			// this.switchActivityIndicator(false);
-			resetNavigationToRoute(NAVIGATION.Home, navigation);
-		}
-
-		if (!this.state.error && this.props.errors.length > 0) {
-			// this.switchActivityIndicator(false);
-			this.setState({ error: true, loggingIn: false });
-		}
-	}
-
-	public componentWillUnmount() {
-		if (this.keyboardDidShowListener) {
-			this.keyboardDidShowListener.remove();
-		}
-	}
-
-	public render() {
-		const { globals, dictionary, auth } = this.props;
-		const { profileLoaded, friendsLoaded, postsLoaded, accountLoaded } = globals;
-		const loading = {
-			accountLoaded,
-			profileLoaded,
-			friendsLoaded,
-			postsLoaded,
-		};
-		if (auth) {
-			return <LoadingScreen loading={loading} dictionary={dictionary} />;
-		}
-		return (
-			<LoginScreenView
-				dictionary={this.props.dictionary}
-				onLogin={this.onLoginHandler}
-				onNavigateToPasswordForgot={() => this.safeNavigateToScreen(SCREENS.ForgotPassword)}
-				onNavigateToRegister={() => this.safeNavigateToScreen(SCREENS.Register)}
-				onGoBack={this.props.onGoBack}
-				loginDisabled={this.state.loggingIn}
-			/>
-		);
-	}
-
-	private keyboardDidShow = async (e: any) => {
+	const keyboardDidShow = async (e: any) => {
 		const keyboardHeight = await AsyncStorage.getItem('KEYBOARD_HEIGHT');
 		if (!keyboardHeight) {
 			await AsyncStorage.setItem('KEYBOARD_HEIGHT', e.endCoordinates.height.toString());
 		}
 	};
 
-	private onLoginHandler = async (alias: string, password: string) => {
-		this.setState({ error: false, loggingIn: true });
-		// this.switchActivityIndicator(true);
-		await this.props.login(alias, password);
+	useEffect(() => {
+		keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+
+		return () => {
+			if (keyboardDidShowListener) {
+				keyboardDidShowListener.remove();
+			}
+		};
+	}, [keyboardDidShowListener]);
+
+	const onLoginHandler = async (alias: string, password: string) => {
+		setError(false);
+		setLoggingIn(true);
+		// switchActivityIndicator(true);
+		await props.login(alias, password);
 	};
 
-	private safeNavigateToScreen = (screenName: string) => {
+	const safeNavigateToScreen = (screenName: string) => {
 		Keyboard.dismiss();
-		this.props.navigation.navigate(screenName);
+		props.navigation.navigate(screenName);
 	};
 
-	private switchActivityIndicator = (state: boolean) => {
-		const { dictionary, setGlobal } = this.props;
-
-		setGlobal({
-			activity: {
-				visible: state,
-				title: dictionary.screens.login.progress,
-			},
-		});
+	const switchActivityIndicator = (state: boolean) => {
+		// const { dictionary, setGlobal } = props;
+		// setGlobal({
+		// 	activity: {
+		// 		visible: state,
+		// 		title: dictionary.screens.login.progress,
+		// 	},
+		// });
 	};
-}
+
+	const { globals, dictionary, auth } = props;
+	const { profileLoaded, friendsLoaded, postsLoaded, accountLoaded } = globals;
+	const loading = {
+		accountLoaded,
+		profileLoaded,
+		friendsLoaded,
+		postsLoaded,
+	};
+	if (auth) {
+		return <LoadingScreen loading={loading} dictionary={dictionary} />;
+	}
+	return (
+		<LoginScreenView
+			dictionary={props.dictionary}
+			onLogin={onLoginHandler}
+			onNavigateToPasswordForgot={() => safeNavigateToScreen(SCREENS.ForgotPassword)}
+			onNavigateToRegister={() => safeNavigateToScreen(SCREENS.Register)}
+			onGoBack={props.onGoBack}
+			loginDisabled={loggingIn}
+		/>
+	);
+};
 
 export const LoginScreen = (props: INavigationProps) => (
 	<WithNavigationHandlers>
