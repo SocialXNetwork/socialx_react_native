@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { SFC, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 
@@ -21,127 +21,118 @@ interface ILoadingScreenState {
 	message: string;
 }
 
-export class LoadingScreen extends React.Component<ILoadingScreenProps, ILoadingScreenState> {
-	public static getDerivedStateFromProps(props: ILoadingScreenProps) {
+export const LoadingScreen: SFC<ILoadingScreenProps> = (props) => {
+	const [progress, setProgress] = useState(0);
+	const [message, setMessage] = useState('');
+
+	useEffect(() => {
 		let count = 0;
-		let message = 'login';
+		let newMessage = 'login';
 		Object.values(props.loading).map((value) => value && count++);
 
 		switch (count) {
 			case 1:
-				message = 'nodes';
+				newMessage = 'nodes';
 				break;
 			case 2:
-				message = 'profiles';
+				newMessage = 'profiles';
 				break;
 			case 3:
-				message = 'posts';
+				newMessage = 'posts';
 				break;
 			default:
 				break;
 		}
 
-		return {
-			progress: count * 25,
-			message,
-		};
-	}
+		setProgress(count * 25);
+		setMessage(newMessage);
+	}, [props]);
 
-	public state = {
-		progress: 0,
-		message: '',
-	};
-
-	public render() {
-		const { dictionary } = this.props;
-		const { progress, message } = this.state;
-
-		return (
-			<SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
-				<Header logo={true} />
-				<View style={styles.top}>
-					<View style={styles.textContainer}>
-						<Text style={styles.text}>{dictionary.screens.loading[message]}</Text>
-						<Text style={styles.text}>{progress}%</Text>
-					</View>
-					<ProgressBar progress={progress} />
+	return (
+		<SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
+			<Header logo={true} />
+			<View style={styles.top}>
+				<View style={styles.textContainer}>
+					<Text style={styles.text}>{props.dictionary.screens.loading[message]}</Text>
+					<Text style={styles.text}>{progress}%</Text>
 				</View>
-				<View style={styles.separator} />
-				<View style={styles.post}>
-					<View style={styles.row}>
-						<View style={styles.avatar} />
-						<View style={styles.column}>
-							<View style={styles.name} />
-							<View style={styles.date} />
-						</View>
-						<View style={styles.dots} />
+				<ProgressBar progress={progress} />
+			</View>
+			<View style={styles.separator} />
+			<View style={styles.post}>
+				<View style={styles.row}>
+					<View style={styles.avatar} />
+					<View style={styles.column}>
+						<View style={styles.name} />
+						<View style={styles.date} />
 					</View>
-					<View style={styles.longText} />
-					<View style={styles.shortText} />
-					<View style={styles.row}>
-						<View style={styles.smallAvatar} />
-						<View style={styles.input} />
-					</View>
+					<View style={styles.dots} />
 				</View>
-				<View style={styles.separator} />
-				<View style={styles.post}>
-					<View style={styles.row}>
-						<View style={styles.avatar} />
-						<View style={styles.column}>
-							<View style={styles.name} />
-							<View style={styles.date} />
-						</View>
-						<View style={styles.dots} />
-					</View>
-					<View style={styles.longText} />
-					<View style={styles.shortText} />
-					<View style={styles.row}>
-						<View style={styles.smallAvatar} />
-						<View style={styles.input} />
-					</View>
+				<View style={styles.longText} />
+				<View style={styles.shortText} />
+				<View style={styles.row}>
+					<View style={styles.smallAvatar} />
+					<View style={styles.input} />
 				</View>
-				<View style={styles.separator} />
-				<View style={styles.post}>
-					<View style={styles.row}>
-						<View style={styles.avatar} />
-						<View style={styles.column}>
-							<View style={styles.name} />
-							<View style={styles.date} />
-						</View>
-						<View style={styles.dots} />
+			</View>
+			<View style={styles.separator} />
+			<View style={styles.post}>
+				<View style={styles.row}>
+					<View style={styles.avatar} />
+					<View style={styles.column}>
+						<View style={styles.name} />
+						<View style={styles.date} />
 					</View>
-					<View style={styles.longText} />
-					<View style={styles.row}>
-						<View style={styles.smallAvatar} />
-						<View style={styles.input} />
-					</View>
+					<View style={styles.dots} />
 				</View>
-				<View style={styles.separator} />
-				<View style={styles.post}>
-					<View style={styles.row}>
-						<View style={styles.avatar} />
-						<View style={styles.column}>
-							<View style={styles.name} />
-							<View style={styles.date} />
-						</View>
-						<View style={styles.dots} />
-					</View>
-					<View style={styles.longText} />
-					<View style={styles.shortText} />
-					<View style={styles.row}>
-						<View style={styles.smallAvatar} />
-						<View style={styles.input} />
-					</View>
+				<View style={styles.longText} />
+				<View style={styles.shortText} />
+				<View style={styles.row}>
+					<View style={styles.smallAvatar} />
+					<View style={styles.input} />
 				</View>
-				<View style={styles.separator} />
-				<SafeAreaView style={styles.tabs}>
-					<View style={styles.tab} />
-					<View style={styles.tab} />
-					<View style={styles.tab} />
-					<View style={styles.tab} />
-					<View style={styles.tab} />
-				</SafeAreaView>
+			</View>
+			<View style={styles.separator} />
+			<View style={styles.post}>
+				<View style={styles.row}>
+					<View style={styles.avatar} />
+					<View style={styles.column}>
+						<View style={styles.name} />
+						<View style={styles.date} />
+					</View>
+					<View style={styles.dots} />
+				</View>
+				<View style={styles.longText} />
+				<View style={styles.row}>
+					<View style={styles.smallAvatar} />
+					<View style={styles.input} />
+				</View>
+			</View>
+			<View style={styles.separator} />
+			<View style={styles.post}>
+				<View style={styles.row}>
+					<View style={styles.avatar} />
+					<View style={styles.column}>
+						<View style={styles.name} />
+						<View style={styles.date} />
+					</View>
+					<View style={styles.dots} />
+				</View>
+				<View style={styles.longText} />
+				<View style={styles.shortText} />
+				<View style={styles.row}>
+					<View style={styles.smallAvatar} />
+					<View style={styles.input} />
+				</View>
+			</View>
+			<View style={styles.separator} />
+			<SafeAreaView style={styles.tabs}>
+				<View style={styles.tab} />
+				<View style={styles.tab} />
+				<View style={styles.tab} />
+				<View style={styles.tab} />
+				<View style={styles.tab} />
 			</SafeAreaView>
-		);
-	}
-}
+		</SafeAreaView>
+	);
+};
