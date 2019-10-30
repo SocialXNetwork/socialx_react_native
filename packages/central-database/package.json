@@ -37,7 +37,7 @@
     "merge-graphql-schemas": "^1.5.8",
     "mkdirp": "^0.5.1",
     "mongodb": "^3.2.3",
-    "mongoose": "^5.4.19",
+    "mongoose": "^5.7.5",
     "mongoose-autopopulate": "^0.9.1",
     "mongoose-relationship": "^0.1.5",
     "morgan": "^1.9.1",
